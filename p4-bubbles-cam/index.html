@@ -35,7 +35,7 @@
 <body>
 <script src="../lib/kit.js"></script>
 <script type="module">
-import { initPose, startCamera, detectHands } from "../lib/motion.js";
+import { initPose, startCamera, detectHands, frameHelp, addBackButton } from "../lib/motion.js";
 const {rand, pick, shuffle, fmt} = KIT;
 const N = 10;
 
@@ -103,7 +103,7 @@ KIT.mount({
         msg.textContent = "กำลังโหลดตัวจับท่าทาง (ครั้งแรกอาจใช้เวลา 5–20 วินาที)…"; await initPose();
         usePointer = false; camReady = true; begin();
       } catch (e){
-        msg.innerHTML = "เปิดกล้องหรือโหลดตัวจับท่าทางไม่สำเร็จ<br>ตรวจว่าอนุญาตให้ใช้กล้องแล้ว และต่ออินเทอร์เน็ตอยู่ หรือกด \"ใช้เมาส์หรือนิ้วแทน\"";
+        msg.innerHTML = "เปิดกล้องหรือโหลดตัวจับท่าทางไม่สำเร็จ<br>ตรวจว่าอนุญาตให้ใช้กล้องแล้ว และต่ออินเทอร์เน็ตอยู่ หรือกด \"ใช้เมาส์หรือนิ้วแทน\"" + frameHelp();
       }
     };
     /* pointer fallback: mouse / finger acts as one hand */
@@ -166,10 +166,11 @@ KIT.mount({
     ctx.cleanup(() => { running = false; cancelAnimationFrame(raf); });
     ctx.progress(0, N);
     if (usePointer) begin();
-    else if (camReady){ ctx.stage.querySelector("#cmsg").textContent = "กำลังเปิดกล้อง…"; startCamera(video).then(begin).catch(() => { camReady = false; ctx.stage.querySelector("#cmsg").textContent = "เปิดกล้องไม่สำเร็จ ลองกดเปิดกล้องอีกครั้ง"; }); }
+    else if (camReady){ ctx.stage.querySelector("#cmsg").textContent = "กำลังเปิดกล้อง…"; startCamera(video).then(begin).catch(() => { camReady = false; ctx.stage.querySelector("#cmsg").textContent = "เปิดกล้องไม่สำเร็จ ลองกดเปิดกล้องอีกครั้ง"; ctx.stage.querySelector("#cmsg").insertAdjacentHTML("beforeend", frameHelp()); }); }
     else ctx.say("กดเปิดกล้องเพื่อเริ่มเล่น");
   }
 });
+addBackButton();
 </script>
 </body>
 </html>

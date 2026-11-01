@@ -154,3 +154,6 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .kp button{border:3px solid var(--line);background:var(--card);border-radius:16px;padding:12px 0;font-size:1.5rem;font-weight:700;box-shadow:0 4px 0 var(--line)}
 .kp button:active{transform:translateY(2px);box-shadow:0 2px 0 var(--line)}
 .kp .kp-ok{grid-column:span 3;background:var(--c,var(--orange));border-color:var(--c,var(--orange));color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.15);font-size:1.25rem}
+.frame-escape{margin-top:10px;background:#FFF1C9;border-radius:12px;padding:8px 12px;font-size:14px;line-height:1.6}
+.frame-escape a{font-weight:700;color:#c2410c}
+.home-back{margin-right:8px}

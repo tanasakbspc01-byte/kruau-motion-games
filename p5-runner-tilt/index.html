@@ -29,7 +29,7 @@
 <body>
 <script src="../lib/kit.js"></script>
 <script type="module">
-import { requestTilt, tiltFrom } from "../lib/motion.js";
+import { requestTilt, tiltFrom, frameHelp, addBackButton } from "../lib/motion.js";
 const {rand, pick, shuffle, frac} = KIT;
 const N = 10;
 
@@ -103,7 +103,7 @@ KIT.mount({
     ctx.stage.querySelector("#keys").onclick = () => { tiltMode = "keys"; begin(); };
     ctx.stage.querySelector("#go").onclick = async () => {
       const r = await requestTilt();
-      if (r !== "granted"){ msg.textContent = r === "unsupported" ? "เครื่องนี้ไม่มีเซนเซอร์เอียง ใช้ปุ่มหรือลากนิ้วแทนได้" : "ยังไม่ได้อนุญาตการเคลื่อนไหว กดเริ่มวิ่งอีกครั้งแล้วกด \"อนุญาต\""; return; }
+      if (r !== "granted"){ msg.textContent = r === "unsupported" ? "เครื่องนี้ไม่มีเซนเซอร์เอียง ใช้ปุ่มหรือลากนิ้วแทนได้" : "ยังไม่ได้อนุญาตการเคลื่อนไหว กดเริ่มวิ่งอีกครั้งแล้วกด \"อนุญาต\""; msg.insertAdjacentHTML("beforeend", frameHelp()); return; }
       calibrate();
     };
     function calibrate(){
@@ -120,7 +120,7 @@ KIT.mount({
         if (got){
           const d = tiltRaw - neutral; dot.style.left = (50 + Math.max(-45, Math.min(45, d*2))) + "%";
           if (Math.abs(d) > 14){ sign = d > 0 ? 1 : -1; tiltMode = "tilt"; KIT.sfx.good(); begin(); return; }
-          if (now - t0 > 9000 && tiltRaw === 0){ msg.textContent = "ไม่พบสัญญาณการเอียง ใช้ปุ่มหรือลากนิ้วแทนได้"; return; }
+          if (now - t0 > 9000 && tiltRaw === 0){ msg.textContent = "ไม่พบสัญญาณการเอียง ใช้ปุ่มหรือลากนิ้วแทนได้"; msg.insertAdjacentHTML("beforeend", frameHelp()); return; }
         }
         requestAnimationFrame(step);
       };
@@ -225,6 +225,7 @@ KIT.mount({
     else ctx.say("กดเริ่มวิ่งเพื่อเริ่มเล่น");
   }
 });
+addBackButton();
 </script>
 </body>
 </html>
