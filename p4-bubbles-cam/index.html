@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตบฟองคำตอบ (กล้อง)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lib/kit.css">
+<style>
+.wrapA{display:flex;justify-content:center}
+.arena{position:relative;width:min(100%, calc(76vh * 4 / 3));aspect-ratio:4/3;border-radius:24px;overflow:hidden;background:#2B2552;box-shadow:0 6px 0 #1E1A3D;touch-action:none;user-select:none;-webkit-user-select:none}
+.arena:fullscreen{width:100vw;height:100vh;border-radius:0;aspect-ratio:auto}
+.arena video{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;transform:scaleX(-1);opacity:.9}
+.arena .tint{position:absolute;inset:0;background:linear-gradient(rgba(43,37,82,.25),rgba(43,37,82,.05) 40%,rgba(43,37,82,.25))}
+.qbar{position:absolute;left:50%;top:2.5%;transform:translateX(-50%);background:rgba(255,255,255,.95);border-radius:18px;padding:6px 18px;font-weight:700;font-size:clamp(1.2rem,3.6vw,2.4rem);white-space:nowrap;max-width:94%;overflow:hidden;text-overflow:ellipsis;box-shadow:0 4px 0 rgba(0,0,0,.15);z-index:3;font-variant-numeric:tabular-nums}
+.qbar.long{white-space:normal;font-size:clamp(.95rem,2.4vw,1.5rem);text-align:center;width:92%}
+.bub{position:absolute;width:15%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);display:grid;place-items:center;font-weight:700;font-size:clamp(1rem,3.2vw,2.2rem);color:#24304A;font-variant-numeric:tabular-nums;z-index:2;
+  background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.98) 0 10%,rgba(255,255,255,.62) 11% 32%,rgba(190,225,255,.5) 33% 100%);box-shadow:inset 0 0 0 4px rgba(255,255,255,.95),0 0 24px rgba(160,210,255,.6);transition:box-shadow .1s}
+.bub.hover{box-shadow:inset 0 0 0 6px #F6CD6B,0 0 30px #F6CD6B}
+.bub.pop{animation:popout .35s forwards}
+.bub.no{animation:shake .4s;background:radial-gradient(circle,#FFD0D0,#F08A8A)}
+@keyframes popout{to{transform:translate(-50%,-50%) scale(1.7);opacity:0}}
+.hand{position:absolute;width:7%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;z-index:4;pointer-events:none;display:grid;place-items:center;font-size:clamp(1.4rem,3.5vw,2.6rem);background:rgba(246,205,107,.35);border:4px solid #F6CD6B;transition:opacity .2s}
+.hand.r{background:rgba(242,167,184,.35);border-color:#F2A7B8}
+.cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(43,37,82,.86);color:#fff;text-align:center;padding:20px;z-index:5}
+.cover p{margin:0;max-width:34ch;line-height:1.5}
+.cover .big{font-size:3rem}
+.warn{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);background:rgba(229,115,115,.92);color:#fff;border-radius:999px;padding:6px 16px;font-weight:700;z-index:4;white-space:nowrap}
+.tools{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.mode{font-size:.9rem;color:var(--ink-soft);text-align:center}
+</style>
+</head>
+<body>
+<script src="../lib/kit.js"></script>
+<script type="module">
+import { initPose, startCamera, detectHands } from "../lib/motion.js";
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 10;
+
+/* same question bank as the touch version (ป.4 บทที่ 4) */
+const GEN = {
+  1: () => { const t = rand(0,3);
+    if (t===0){ const a = rand(11,49), b = rand(2,9), c = rand(10,99); return {q:`${a} × ${b} + ${c}`, ans:a*b+c, trap:a*(b+c)}; }
+    if (t===1){ const a = rand(100,500), b = rand(20,99), c = rand(10,a); return {q:`${a} + ${b} − ${c}`, ans:a+b-c, trap:a-b+c}; }
+    if (t===2){ const a = rand(12,40), b = rand(3,9), c = rand(10, a*b-5); return {q:`${a} × ${b} − ${c}`, ans:a*b-c, trap:a*b+c}; }
+    const a = rand(10,99), b = rand(3,9), c = rand(3,12); return {q:`${a} + ${b} × ${c}`, ans:a+b*c, trap:(a+b)*c}; },
+  2: () => { const t = rand(0,3);
+    if (t===0){ const c = rand(3,9), q = rand(12,60), b = rand(10,90); return {q:`(${q*c+b} − ${b}) ÷ ${c}`, ans:q, trap:q*c}; }
+    if (t===1){ const a = rand(6,25), b = rand(4,20), c = rand(3,15); return {q:`${a} × (${b} + ${c})`, ans:a*(b+c), trap:a*b+c}; }
+    if (t===2){ const a = rand(10,40), b = rand(5,30), c = rand(2,6), d = rand(10,60); return {q:`(${a} + ${b}) × ${c} − ${d}`, ans:(a+b)*c-d, trap:a+b*c-d}; }
+    const c = rand(2,6), q = rand(5,20), dv = rand(2,6), b = c + dv; return {q:`${q*dv} ÷ (${b} − ${c})`, ans:q, trap:q*dv}; },
+  3: () => pick([
+    () => { const a = rand(3,8), b = rand(12,35), c = pick([200,500]); if (a*b >= c) return null; return {q:`ซื้อสมุด ${a} เล่ม เล่มละ ${b} บาท จ่าย ${c} บาท ได้เงินทอนกี่บาท`, ans:c-a*b, trap:a*b}; },
+    () => { const b = rand(3,9), q = rand(6,25), c = rand(2,9); return {q:`ลูกอม ${b*q} เม็ด แบ่งให้ ${b} คนเท่า ๆ กัน แล้วได้เพิ่มคนละ ${c} เม็ด แต่ละคนมีกี่เม็ด`, ans:q+c, trap:b*q+c}; },
+    () => { const a = rand(3,9), b = rand(20,a*30-10); return {q:`ไข่ ${a} แผง แผงละ 30 ฟอง ขายไป ${b} ฟอง เหลือกี่ฟอง`, ans:a*30-b, trap:a*30+b}; },
+    () => { const a = rand(4,9), b = rand(12,40), c = rand(3,9), d = rand(12,40); return {q:`ดินสอ ${a} แท่ง แท่งละ ${b} บาท ยางลบ ${c} ก้อน ก้อนละ ${d} บาท รวมกี่บาท`, ans:a*b+c*d, trap:(a+c)*(b+d)}; }
+  ])()
+};
+function gen(level){ let g; do { g = GEN[level](); } while (!g || g.ans <= 0); return g; }
+function wrongs(c){ const s = new Set([c.trap].filter(v => v > 0 && v !== c.ans)); let g = 0;
+  while (s.size < 4 && g++ < 100){ const v = c.ans + pick([1,-1]) * pick([1,2,5,10,rand(3,20)]); if (v > 0 && v !== c.ans) s.add(v); } return [...s].slice(0,4); }
+
+/* bubble slots around a child standing in the middle: reach up, out and across */
+const SLOTS = [[.14,.34],[.86,.34],[.12,.68],[.88,.68],[.5,.3]];
+let usePointer = false, camReady = false;
+
+KIT.mount({
+  key:"m-p4-bubbles", title:"ตบฟองคำตอบ (กล้อง)", subtitle:"คณิตศาสตร์ ป.4 · บทที่ 4 การบวก ลบ คูณ หารระคน · เล่นด้วยการขยับร่างกาย",
+  heroHTML:"ยืนหน้ากล้อง แล้วใช้<em>มือ</em>ตบฟองคำตอบ 🙌", heroDesc:"กล้องจะจับตำแหน่งนิ้วมือทั้งสองข้าง ยกมือไปแตะฟองที่เป็นคำตอบของโจทย์ด้านบน",
+  progIcon:"🫧",
+  howto:["ตั้งโน้ตบุ๊กหรือ iPad ให้กล้องหน้าเห็นตัวนักเรียนตั้งแต่หัวถึงเอว ยืนห่างประมาณ 1.5–2 เมตร","กด \"เปิดกล้อง\" แล้วอนุญาตให้ใช้กล้อง (ภาพประมวลผลในเครื่องเท่านั้น ไม่มีการบันทึก)","มองหาวงกลมสีเหลืองและชมพูที่นิ้วมือ แล้วยกมือไปค้างที่ฟองคำตอบสักครู่","ถ้ากล้องใช้ไม่ได้ กด \"ใช้เมาส์หรือนิ้วแทน\" เพื่อเล่นแบบแตะจอ"],
+  note:"เคล็ดลับ: ห้องควรมีแสงพอ และไม่มีคนอื่นยืนในกล้อง ต่อโปรเจกเตอร์แล้วกดปุ่ม \"เต็มจอ\" ให้เพื่อนทั้งห้องลุ้นไปด้วย",
+  levels:{
+    1:{pill:"10 ข้อ", color:"var(--green)", desc:"ระคน 2 ขั้นตอน เช่น 45 × 3 + 20"},
+    2:{pill:"10 ข้อ", color:"var(--blue)", desc:"ระคนมีวงเล็บ เช่น (120 − 36) ÷ 4"},
+    3:{pill:"10 ข้อ", color:"var(--purple)", desc:"โจทย์ปัญหาระคน 2 ขั้นตอน"}
+  },
+  play(level, ctx){
+    ctx.stage.innerHTML = `
+      <div class="wrapA"><div class="arena" id="arena">
+        <video id="vid" playsinline muted></video><div class="tint"></div>
+        <div class="qbar ${level===3?'long':''}" id="qbar">เตรียมตัว…</div>
+        <div class="hand" id="hL">🖐️</div><div class="hand r" id="hR">🖐️</div>
+        <div class="warn hidden" id="warn">ไม่เห็นตัวเลย ถอยห่างจากกล้องอีกนิด</div>
+        <div class="cover" id="cover"><div class="big">📷</div><p id="cmsg">กด "เปิดกล้อง" แล้วยืนให้กล้องเห็นตั้งแต่หัวถึงเอว</p>
+          <div class="row"><button class="btn" type="button" id="camBtn">เปิดกล้อง</button><button class="btn ghost" type="button" id="ptrBtn">ใช้เมาส์หรือนิ้วแทน</button></div></div>
+      </div></div>
+      <div class="tools"><button class="btn ghost" type="button" id="fs">⛶ เต็มจอ</button></div>
+      <div class="mode" id="mode"></div>`;
+    const arena = ctx.stage.querySelector("#arena"), video = ctx.stage.querySelector("#vid"), cover = ctx.stage.querySelector("#cover");
+    const hL = ctx.stage.querySelector("#hL"), hR = ctx.stage.querySelector("#hR"), warn = ctx.stage.querySelector("#warn");
+    let idx = 0, cur = null, bubs = [], raf = 0, running = false, busy = false, lastSeen = performance.now(), ptr = null;
+    hL.style.opacity = 0; hR.style.opacity = 0;
+
+    ctx.stage.querySelector("#fs").onclick = () => { try { (arena.requestFullscreen || arena.webkitRequestFullscreen).call(arena); } catch(e){} };
+    ctx.stage.querySelector("#ptrBtn").onclick = () => { usePointer = true; begin(); };
+    ctx.stage.querySelector("#camBtn").onclick = async () => {
+      const msg = ctx.stage.querySelector("#cmsg");
+      try {
+        msg.textContent = "กำลังเปิดกล้อง…"; await startCamera(video);
+        msg.textContent = "กำลังโหลดตัวจับท่าทาง (ครั้งแรกอาจใช้เวลา 5–20 วินาที)…"; await initPose();
+        usePointer = false; camReady = true; begin();
+      } catch (e){
+        msg.innerHTML = "เปิดกล้องหรือโหลดตัวจับท่าทางไม่สำเร็จ<br>ตรวจว่าอนุญาตให้ใช้กล้องแล้ว และต่ออินเทอร์เน็ตอยู่ หรือกด \"ใช้เมาส์หรือนิ้วแทน\"";
+      }
+    };
+    /* pointer fallback: mouse / finger acts as one hand */
+    arena.addEventListener("pointermove", e => { if (!usePointer) return; const r = arena.getBoundingClientRect(); ptr = {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height}; });
+    arena.addEventListener("pointerdown", e => { if (!usePointer) return; const r = arena.getBoundingClientRect(); ptr = {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height, tap:true}; });
+    arena.addEventListener("pointerleave", () => { if (usePointer) ptr = null; });
+
+    function begin(){
+      cover.classList.add("hidden");
+      ctx.stage.querySelector("#mode").textContent = usePointer ? "โหมดเมาส์หรือนิ้ว: แตะหรือเลื่อนไปค้างที่ฟองคำตอบ" : "โหมดกล้อง: ยกมือไปค้างที่ฟองคำตอบ";
+      if (usePointer){ video.style.display = "none"; arena.style.background = "linear-gradient(#BFE6F7,#86C8EC)"; }
+      running = true; ctx.progress(0, N); ctx.say("ตบฟองที่เป็นคำตอบ!"); next();
+      raf = requestAnimationFrame(loop);
+    }
+    function next(){
+      if (idx >= N){ running = false; ctx.finish({targetSec: level===3 ? 200 : 150}); return; }
+      cur = gen(level);
+      const vals = shuffle([cur.ans, ...wrongs(cur)]);
+      ctx.stage.querySelector("#qbar").textContent = cur.q + (level < 3 ? " = ?" : "");
+      bubs.forEach(b => b.el.remove());
+      const slots = shuffle(SLOTS.slice());
+      bubs = vals.map((v,i) => { const el = document.createElement("div"); el.className = "bub"; el.textContent = fmt(v); arena.appendChild(el);
+        return {el, v, ax:slots[i][0], ay:slots[i][1], ph:Math.random()*6, dwell:0, cool:0}; });
+    }
+    function hit(b){
+      if (busy || b.cool > 0) return;
+      if (b.v === cur.ans){
+        busy = true; b.el.classList.add("pop"); KIT.sfx.pop(); ctx.correct();
+        idx++; ctx.progress(idx, N); ctx.after(700, () => { busy = false; next(); });
+      } else {
+        b.el.classList.add("no"); b.cool = 1.2; ctx.wrong(`ฟอง ${fmt(b.v)} ยังไม่ใช่ ลองคิดใหม่`);
+        ctx.after(450, () => b.el.classList.remove("no"));
+      }
+    }
+    let last = 0;
+    function loop(t){
+      if (!ctx.alive() || !running) return;
+      const dt = Math.min(.05, (t - (last||t))/1000); last = t;
+      let hands = [];
+      if (usePointer){ if (ptr) hands = [{...ptr, side:"left"}]; }
+      else { const h = detectHands(video); if (h && h.length){ hands = h; lastSeen = t; } }
+      warn.classList.toggle("hidden", usePointer || t - lastSeen < 1500);
+      const show = (el, p) => { if (p){ el.style.opacity = 1; el.style.left = (p.x*100)+"%"; el.style.top = (p.y*100)+"%"; } else el.style.opacity = 0; };
+      show(hL, hands.find(h => h.side === "left")); show(hR, hands.find(h => h.side === "right"));
+      const ar = arena.clientWidth / arena.clientHeight;
+      bubs.forEach(b => {
+        if (b.el.classList.contains("pop")) return;
+        b.ph += dt*1.3; b.cool = Math.max(0, b.cool - dt);
+        const x = b.ax + Math.sin(b.ph)*0.018, y = b.ay + Math.cos(b.ph*0.8)*0.025;
+        b.el.style.left = (x*100)+"%"; b.el.style.top = (y*100)+"%";
+        const rad = 0.075; // bubble radius as share of width
+        const inside = hands.some(h => Math.hypot((h.x - x), (h.y - y)/ar) < rad + 0.02);
+        b.el.classList.toggle("hover", inside && b.cool === 0);
+        if (inside && b.cool === 0){ b.dwell += dt; if (b.dwell > (usePointer ? (ptr && ptr.tap ? 0 : 0.25) : 0.18)) { b.dwell = 0; hit(b); } }
+        else b.dwell = 0;
+      });
+      if (ptr) ptr.tap = false;
+      raf = requestAnimationFrame(loop);
+    }
+    ctx.cleanup(() => { running = false; cancelAnimationFrame(raf); });
+    ctx.progress(0, N);
+    if (usePointer) begin();
+    else if (camReady){ ctx.stage.querySelector("#cmsg").textContent = "กำลังเปิดกล้อง…"; startCamera(video).then(begin).catch(() => { camReady = false; ctx.stage.querySelector("#cmsg").textContent = "เปิดกล้องไม่สำเร็จ ลองกดเปิดกล้องอีกครั้ง"; }); }
+    else ctx.say("กดเปิดกล้องเพื่อเริ่มเล่น");
+  }
+});
+</script>
+</body>
+</html>

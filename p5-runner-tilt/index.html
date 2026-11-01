@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>วิ่งเก็บคำตอบทศนิยม (เอียงเครื่อง)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lib/kit.css">
+<style>
+.wrapA{display:flex;justify-content:center}
+.field{position:relative;width:min(100%, calc(72vh * 4 / 3));aspect-ratio:4/3;border-radius:24px;overflow:hidden;box-shadow:0 6px 0 #74B566;touch-action:none;user-select:none;-webkit-user-select:none}
+.field:fullscreen{width:100vw;height:100vh;border-radius:0;aspect-ratio:auto}
+.field canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.qbar{position:absolute;left:50%;top:2.5%;transform:translateX(-50%);background:rgba(255,255,255,.96);border-radius:18px;padding:6px 18px;font-weight:700;font-size:clamp(1.1rem,3.2vw,2.1rem);max-width:94%;text-align:center;box-shadow:0 4px 0 rgba(0,0,0,.15);z-index:3;font-variant-numeric:tabular-nums}
+.qbar.long{font-size:clamp(.9rem,2.3vw,1.4rem)}
+.cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(46,74,40,.86);color:#fff;text-align:center;padding:20px;z-index:5}
+.cover p{margin:0;max-width:36ch;line-height:1.5}
+.cover .big{font-size:3rem}
+.meter{width:220px;height:16px;border-radius:999px;background:rgba(255,255,255,.3);position:relative}
+.meter i{position:absolute;top:-4px;width:24px;height:24px;border-radius:50%;background:#F6CD6B;transform:translateX(-50%);left:50%}
+.pads{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pads button{font-size:1.8rem;padding:12px;border-radius:18px;border:3px solid var(--c);background:var(--card);box-shadow:0 5px 0 var(--c);font-weight:700;touch-action:none}
+.tools{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.mode{font-size:.9rem;color:var(--ink-soft);text-align:center}
+</style>
+</head>
+<body>
+<script src="../lib/kit.js"></script>
+<script type="module">
+import { requestTilt, tiltFrom } from "../lib/motion.js";
+const {rand, pick, shuffle, frac} = KIT;
+const N = 10;
+
+/* ---------- ป.5 บทที่ 2 ทศนิยม (numbers kept as integer thousandths) ---------- */
+const show = t => Number((t/1000).toFixed(3)).toLocaleString("en-US", {maximumFractionDigits:3});
+const plain = t => Number((t/1000).toFixed(3)).toString();
+const GEN = {
+  1: () => { const k = rand(0,2);
+    if (k===0){ const n = rand(1,99); return {q:`${n}/10 = ?`, html:`${frac(n,10)} = ?`, ans:n*100}; }
+    if (k===1){ const n = rand(1,999); return {q:`${n}/100 = ?`, html:`${frac(n,100)} = ?`, ans:n*10}; }
+    const n = rand(1,999); return {q:`${n}/1000 = ?`, html:`${frac(n,1000)} = ?`, ans:n}; },
+  2: () => { const k = rand(0,3);
+    if (k===0){ const a = rand(11,999)*10, b = rand(2,9); return {html:`${show(a)} × ${b} = ?`, ans:a*b}; }
+    if (k===1){ const b = rand(2,9), q = rand(11,499)*10; return {html:`${show(q*b)} ÷ ${b} = ?`, ans:q}; }
+    if (k===2){ const a = rand(101,9999), m = pick([10,100]); return {html:`${show(a)} × ${m} = ?`, ans:a*m}; }
+    const a = rand(11,999)*100, m = pick([10,100]); return {html:`${show(a)} ÷ ${m} = ?`, ans:a/m}; },
+  3: () => { const k = rand(0,3);
+    if (k===0){ const g = rand(105,9950); return {html:`${show(g)} กิโลกรัม = ? กรัม`, ans:g*1000, long:true}; }
+    if (k===1){ const ml = rand(25,2950); return {html:`${ml.toLocaleString("en-US")} มิลลิลิตร = ? ลิตร`, ans:ml, long:true}; }
+    if (k===2){ const n = rand(2,5), each = rand(105,395)*10, used = rand(100, n*each/10 - 20)*10; return {html:`ผ้า ${n} ผืน ผืนละ ${show(each)} ม. ใช้ไป ${show(used)} ม. เหลือกี่เมตร`, ans:n*each-used, long:true}; }
+    const p = rand(105,895)*10, n = rand(2,4), pay = Math.ceil(p*n/100000)*100000 + 100000; return {html:`ขนม ${n} ชิ้น ชิ้นละ ${show(p)} บาท จ่าย ${show(pay)} บาท ทอนกี่บาท`, ans:pay - p*n, long:true}; }
+};
+function gen(l){ let g; do { g = GEN[l](); } while (!g || g.ans <= 0); return g; }
+function decoys(t){ return KIT.numOptions(t, [v => v*10, v => Math.round(v/10), v => v + pick([1,-1])*pick([100,10,1000]), v => v + pick([1,-1])*pick([10,100])], 6).filter(v => v !== t && v > 0).slice(0,2); }
+
+let tiltMode = null, sign = 1, neutral = 0;   // tiltMode: "tilt" | "keys"
+let tiltRaw = 0;
+window.addEventListener("deviceorientation", e => { tiltRaw = tiltFrom(e); });
+
+KIT.mount({
+  key:"m-p5-runner", title:"วิ่งเก็บคำตอบทศนิยม", subtitle:"คณิตศาสตร์ ป.5 · บทที่ 2 ทศนิยม · เล่นด้วยการเอียงเครื่อง",
+  heroHTML:"เอียง<em>iPad</em> พาแมวน้อยวิ่งเก็บคำตอบ 🏃", heroDesc:"แมวน้อยวิ่งไปข้างหน้าเรื่อย ๆ เอียงเครื่องซ้าย-ขวาเพื่อวิ่งไปเก็บลูกบอลคำตอบที่ถูก และหลบก้อนหินกับกรวย",
+  progIcon:"🏃",
+  howto:["ถือ iPad หรือโทรศัพท์ในแนวนอน กด \"เริ่มวิ่ง\" แล้วกด \"อนุญาต\" เมื่อเครื่องถามเรื่องการเคลื่อนไหว","ทำตามขั้นตอนตั้งค่า: ถือเครื่องตรง แล้วเอียงไปทางขวาหนึ่งครั้ง","เอียงซ้าย-ขวาเพื่อวิ่งไปชนลูกบอลที่เป็นคำตอบ หลบ 🪨 และ 🚧","บนโน้ตบุ๊กใช้ปุ่มลูกศร ← → หรือลากนิ้ว/เมาส์บนสนามแทน"],
+  note:"ถ้าเอียงแล้วตัวละครไม่ขยับ ให้เปิดลิงก์ใน Safari โดยตรง (ไม่ใช่เปิดในหน้าเว็บอื่น) และเช็กว่ากดอนุญาตการเคลื่อนไหวแล้ว",
+  levels:{
+    1:{pill:"10 ข้อ", color:"var(--green)", desc:"เศษส่วนที่ตัวส่วนเป็น 10, 100, 1,000 ↔ ทศนิยม"},
+    2:{pill:"10 ข้อ", color:"var(--blue)", desc:"คูณ หาร ทศนิยมกับจำนวนนับ และด้วย 10, 100"},
+    3:{pill:"10 ข้อ", color:"var(--purple)", desc:"ทศนิยมกับหน่วยวัด และโจทย์ปัญหา"}
+  },
+  play(level, ctx){
+    ctx.stage.innerHTML = `
+      <div class="wrapA"><div class="field" id="field"><canvas id="cv"></canvas>
+        <div class="qbar" id="qbar">เตรียมตัว…</div>
+        <div class="cover" id="cover"><div class="big">🏃</div><p id="cmsg">ถือเครื่องในแนวนอน แล้วกด "เริ่มวิ่ง"</p>
+          <div class="meter hidden" id="meter"><i id="dot"></i></div>
+          <div class="row"><button class="btn" type="button" id="go">เริ่มวิ่ง (เอียงเครื่อง)</button><button class="btn ghost" type="button" id="keys">ใช้ปุ่มหรือลากนิ้วแทน</button></div></div>
+      </div></div>
+      <div class="pads" id="pads"><button type="button" id="pl" aria-label="วิ่งไปซ้าย">◀</button><button type="button" id="pr" aria-label="วิ่งไปขวา">▶</button></div>
+      <div class="tools"><button class="btn ghost" type="button" id="fs">⛶ เต็มจอ</button></div>
+      <div class="mode" id="mode"></div>`;
+    const field = ctx.stage.querySelector("#field"), cv = ctx.stage.querySelector("#cv"), g = cv.getContext("2d");
+    const cover = ctx.stage.querySelector("#cover"), msg = ctx.stage.querySelector("#cmsg"), qbar = ctx.stage.querySelector("#qbar");
+    let W = 0, H = 0, dpr = 1;
+    const resize = () => { dpr = Math.min(2, window.devicePixelRatio || 1); W = field.clientWidth; H = field.clientHeight; cv.width = W*dpr; cv.height = H*dpr; g.setTransform(dpr,0,0,dpr,0,0); };
+    resize(); window.addEventListener("resize", resize); ctx.cleanup(() => window.removeEventListener("resize", resize));
+    ctx.stage.querySelector("#fs").onclick = () => { try { (field.requestFullscreen || field.webkitRequestFullscreen).call(field); setTimeout(resize, 300); } catch(e){} };
+
+    /* ---------- controls ---------- */
+    let px = 0.5, vx = 0, keyDir = 0, drag = null;
+    const hold = (el, d) => { el.addEventListener("pointerdown", e => { keyDir = d; e.preventDefault(); }); ["pointerup","pointerleave","pointercancel"].forEach(t => el.addEventListener(t, () => { if (keyDir === d) keyDir = 0; })); };
+    hold(ctx.stage.querySelector("#pl"), -1); hold(ctx.stage.querySelector("#pr"), 1);
+    const kd = e => { if (e.key === "ArrowLeft" || e.key === "a") keyDir = -1; if (e.key === "ArrowRight" || e.key === "d") keyDir = 1; };
+    const ku = e => { if ((e.key === "ArrowLeft" || e.key === "a") && keyDir === -1) keyDir = 0; if ((e.key === "ArrowRight" || e.key === "d") && keyDir === 1) keyDir = 0; };
+    document.addEventListener("keydown", kd); document.addEventListener("keyup", ku);
+    ctx.cleanup(() => { document.removeEventListener("keydown", kd); document.removeEventListener("keyup", ku); });
+    cv.addEventListener("pointerdown", e => { drag = (e.clientX - cv.getBoundingClientRect().left)/W; });
+    cv.addEventListener("pointermove", e => { if (drag !== null) drag = (e.clientX - cv.getBoundingClientRect().left)/W; });
+    ["pointerup","pointercancel","pointerleave"].forEach(t => cv.addEventListener(t, () => drag = null));
+
+    ctx.stage.querySelector("#keys").onclick = () => { tiltMode = "keys"; begin(); };
+    ctx.stage.querySelector("#go").onclick = async () => {
+      const r = await requestTilt();
+      if (r !== "granted"){ msg.textContent = r === "unsupported" ? "เครื่องนี้ไม่มีเซนเซอร์เอียง ใช้ปุ่มหรือลากนิ้วแทนได้" : "ยังไม่ได้อนุญาตการเคลื่อนไหว กดเริ่มวิ่งอีกครั้งแล้วกด \"อนุญาต\""; return; }
+      calibrate();
+    };
+    function calibrate(){
+      const meter = ctx.stage.querySelector("#meter"), dot = ctx.stage.querySelector("#dot");
+      ctx.stage.querySelector("#go").classList.add("hidden");
+      msg.textContent = "ถือเครื่องตรง ๆ นิ่ง ๆ สักครู่…";
+      let t0 = performance.now(), got = false;
+      const step = now => {
+        if (!ctx.alive()) return;
+        if (!got && now - t0 > 1200){
+          if (tiltRaw === 0 && now - t0 < 2500){ requestAnimationFrame(step); return; }
+          neutral = tiltRaw; got = true; meter.classList.remove("hidden"); msg.textContent = "ดีมาก! ทีนี้เอียงเครื่องไปทาง ขวา ➜";
+        }
+        if (got){
+          const d = tiltRaw - neutral; dot.style.left = (50 + Math.max(-45, Math.min(45, d*2))) + "%";
+          if (Math.abs(d) > 14){ sign = d > 0 ? 1 : -1; tiltMode = "tilt"; KIT.sfx.good(); begin(); return; }
+          if (now - t0 > 9000 && tiltRaw === 0){ msg.textContent = "ไม่พบสัญญาณการเอียง ใช้ปุ่มหรือลากนิ้วแทนได้"; return; }
+        }
+        requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    /* ---------- game state ---------- */
+    let idx = 0, objs = [], running = false, raf = 0, last = 0, scroll = 0, phase = "gap", phaseT = 0, cur = null, hitFlash = 0, sparks = [];
+    const speed = level === 3 ? 0.17 : level === 2 ? 0.22 : 0.24;   // share of field height per second
+    const PY = 0.84;
+    function begin(){
+      cover.classList.add("hidden");
+      ctx.stage.querySelector("#pads").classList.toggle("hidden", tiltMode === "tilt");
+      ctx.stage.querySelector("#mode").textContent = tiltMode === "tilt" ? "โหมดเอียงเครื่อง (ปิดล็อกการหมุนจอของ iPad จะเล่นง่ายขึ้น)" : "โหมดปุ่ม: กด ◀ ▶ ลูกศร ← → หรือลากนิ้วบนสนาม";
+      running = true; ctx.progress(0, N); ctx.say("วิ่งเลย!"); newQuestion(); last = 0;
+      raf = requestAnimationFrame(loop);
+    }
+    function newQuestion(){
+      if (idx >= N){ running = false; qbar.textContent = "เข้าเส้นชัย! 🏁"; ctx.finish({targetSec: 0}); return; }
+      cur = gen(level);
+      qbar.innerHTML = cur.html; qbar.classList.toggle("long", !!cur.long);
+      // obstacles first, then the answer row
+      const lanes = shuffle([0.2, 0.5, 0.8]);
+      const nObs = level === 3 ? 1 : 2;
+      for (let i=0;i<nObs;i++) objs.push({kind:"rock", x: pick([0.2,0.35,0.5,0.65,0.8]), y: -0.12 - i*0.32, e: pick(["🪨","🚧"])});
+      const vals = shuffle([cur.ans, ...decoys(cur.ans)]);
+      vals.forEach((v,i) => objs.push({kind:"ans", x: lanes[i], y: -0.12 - nObs*0.32 - 0.2, v, row: idx}));
+    }
+    function loop(t){
+      if (!ctx.alive() || !running) return;
+      const dt = Math.min(.05, (t - (last||t))/1000); last = t;
+      // steering
+      if (tiltMode === "tilt"){ const d = (tiltRaw - neutral) * sign; const target = Math.max(0.06, Math.min(0.94, 0.5 + d/28)); px += (target - px) * Math.min(1, dt*10); }
+      if (drag !== null) px += (Math.max(0.06, Math.min(0.94, drag)) - px) * Math.min(1, dt*12);
+      if (keyDir){ vx = keyDir * 0.9; } else vx *= 0.8;
+      px = Math.max(0.06, Math.min(0.94, px + vx*dt));
+      // world
+      scroll = (scroll + speed*dt) % 1;
+      objs.forEach(o => o.y += speed*dt);
+      const ar = W / H;
+      for (const o of objs){
+        if (o.done) continue;
+        const near = Math.abs(o.x - px) < (o.kind === "rock" ? 0.07 : 0.09) && Math.abs(o.y - PY) < 0.06;
+        if (o.kind === "rock" && near){ o.done = true; hitFlash = 0.5; ctx.wrong("ชนสิ่งกีดขวาง! ระวังด้วย", 5); }
+        if (o.kind === "ans" && near && !o.row_done){
+          objs.filter(p => p.row === o.row).forEach(p => p.done = p.row_done = true);
+          if (o.v === cur.ans){ ctx.correct(100, `เก็บคำตอบถูก! ${plain(cur.ans)}`); burst(o.x, o.y, "#7FD39A"); }
+          else { ctx.wrong(`ยังไม่ใช่ คำตอบคือ ${plain(cur.ans)}`); burst(o.x, o.y, "#F08A8A"); }
+          idx++; ctx.progress(idx, N); setTimeout(() => { if (running) newQuestion(); }, 500);
+        }
+        if (o.kind === "ans" && !o.row_done && o.y > PY + 0.08){
+          objs.filter(p => p.row === o.row).forEach(p => p.done = p.row_done = true);
+          ctx.wrong(`ปล่อยคำตอบหลุดไป คำตอบคือ ${plain(cur.ans)}`);
+          idx++; ctx.progress(idx, N); setTimeout(() => { if (running) newQuestion(); }, 300);
+        }
+      }
+      objs = objs.filter(o => o.y < 1.2 && !(o.done && o.kind === "ans"));
+      hitFlash = Math.max(0, hitFlash - dt);
+      sparks.forEach(s => { s.x += s.vx*dt; s.y += s.vy*dt; s.l -= dt; }); sparks = sparks.filter(s => s.l > 0);
+      draw();
+      raf = requestAnimationFrame(loop);
+    }
+    function burst(x, y, c){ for (let i=0;i<16;i++){ const a = Math.random()*Math.PI*2, s = 0.2 + Math.random()*0.4; sparks.push({x, y, vx:Math.cos(a)*s, vy:Math.sin(a)*s, l:0.6, c}); } }
+    function draw(){
+      g.clearRect(0,0,W,H);
+      // grass + road
+      g.fillStyle = "#A8DB8F"; g.fillRect(0,0,W,H);
+      g.fillStyle = "#F3DDB3"; g.fillRect(W*0.08, 0, W*0.84, H);
+      g.fillStyle = "#E9CFA0"; g.fillRect(W*0.08, 0, W*0.02, H); g.fillRect(W*0.9, 0, W*0.02, H);
+      g.strokeStyle = "rgba(255,255,255,.8)"; g.lineWidth = 6; g.setLineDash([H*0.06, H*0.06]); g.lineDashOffset = -scroll*H*1.0;
+      [0.35, 0.65].forEach(x => { g.beginPath(); g.moveTo(W*x, 0); g.lineTo(W*x, H); g.stroke(); });
+      g.setLineDash([]);
+      // trees on the grass
+      g.font = `${H*0.07}px serif`; g.textAlign = "center"; g.textBaseline = "middle";
+      for (let i=0;i<5;i++){ const y = ((i*0.25 + scroll) % 1.1) * H; g.fillText("🌳", W*0.04, y); g.fillText("🌴", W*0.96, (y + H*0.12) % (H*1.1)); }
+      // objects
+      const r = Math.min(W, H) * 0.075;
+      objs.forEach(o => {
+        const x = o.x*W, y = o.y*H;
+        if (o.kind === "rock"){ g.font = `${r*1.6}px serif`; g.fillText(o.e, x, y); return; }
+        g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.fillStyle = "#FFFFFF"; g.fill(); g.lineWidth = 5; g.strokeStyle = "#86B6F0"; g.stroke();
+        const txt = plain(o.v); g.fillStyle = "#24304A"; g.font = `700 ${r*0.62*Math.min(1, 4.2/txt.length)}px Mali, sans-serif`; g.fillText(txt, x, y + 1);
+      });
+      // runner (cat)
+      const cx = px*W, cy = PY*H, s = r*0.95, bob = Math.sin(performance.now()/90)*s*0.08;
+      if (hitFlash > 0 && Math.floor(hitFlash*10) % 2) g.globalAlpha = 0.4;
+      g.fillStyle = "#F4B76E"; g.strokeStyle = "#5A4335"; g.lineWidth = 3;
+      g.beginPath(); g.moveTo(cx - s*0.8, cy - s*0.4 + bob); g.lineTo(cx - s*0.55, cy - s*1.2 + bob); g.lineTo(cx - s*0.15, cy - s*0.75 + bob); g.closePath(); g.fill(); g.stroke();
+      g.beginPath(); g.moveTo(cx + s*0.8, cy - s*0.4 + bob); g.lineTo(cx + s*0.55, cy - s*1.2 + bob); g.lineTo(cx + s*0.15, cy - s*0.75 + bob); g.closePath(); g.fill(); g.stroke();
+      g.beginPath(); g.arc(cx, cy + bob, s*0.85, 0, Math.PI*2); g.fillStyle = "#F6C27E"; g.fill(); g.stroke();
+      g.fillStyle = "#5A4335"; g.beginPath(); g.arc(cx - s*0.3, cy - s*0.1 + bob, s*0.1, 0, Math.PI*2); g.arc(cx + s*0.3, cy - s*0.1 + bob, s*0.1, 0, Math.PI*2); g.fill();
+      g.fillStyle = "#E8708F"; g.beginPath(); g.arc(cx, cy + s*0.15 + bob, s*0.08, 0, Math.PI*2); g.fill();
+      g.globalAlpha = 1;
+      sparks.forEach(sp => { g.globalAlpha = Math.max(0, sp.l/0.6); g.fillStyle = sp.c; g.beginPath(); g.arc(sp.x*W, sp.y*H, 6, 0, Math.PI*2); g.fill(); });
+      g.globalAlpha = 1;
+    }
+    const vis = () => { if (document.hidden){ running = false; } else if (!cover.classList.contains("hidden") || idx >= N){ } else if (!running && ctx.alive()){ running = true; last = 0; raf = requestAnimationFrame(loop); } };
+    document.addEventListener("visibilitychange", vis); ctx.cleanup(() => { document.removeEventListener("visibilitychange", vis); running = false; cancelAnimationFrame(raf); });
+    draw();
+    if (tiltMode === "keys") begin();
+    else if (tiltMode === "tilt"){ msg.textContent = "กดเริ่มวิ่ง แล้วตั้งค่าการเอียงอีกครั้ง"; }
+    else ctx.say("กดเริ่มวิ่งเพื่อเริ่มเล่น");
+  }
+});
+</script>
+</body>
+</html>

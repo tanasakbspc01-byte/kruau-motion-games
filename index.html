@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เกมขยับร่างกาย KruAu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lib/kit.css">
+<style>
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.gcard{background:var(--card);border:3px solid var(--c);border-radius:22px;box-shadow:0 5px 0 var(--c);padding:16px 18px;display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--ink)}
+.gcard:hover{transform:translateY(-2px)}
+.gcard .e{font-size:2.6rem}
+.gcard h3{font-size:1.25rem}
+.gcard .tag{align-self:flex-start;background:var(--c);color:#fff;border-radius:999px;padding:2px 10px;font-size:.85rem;font-weight:700}
+.gcard p{margin:0;color:var(--ink-soft);line-height:1.5}
+.gcard .dev{font-size:.9rem;font-weight:600}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span style="font-size:2.2rem">🐱</span><div><div class="brand-name">KruAu ขยับกายได้ความรู้</div><div class="brand-sub">เกมคณิตศาสตร์ที่เล่นด้วยการขยับร่างกายและเอียงเครื่อง</div></div></div>
+</header>
+<main class="wrap">
+  <section class="hero" style="grid-template-columns:1fr">
+    <div><h1>เรียนคณิตแบบ<em>ได้ขยับตัว</em> 🙌</h1>
+      <p>เลือกเกมด้านล่าง เกมกล้องใช้โน้ตบุ๊กหรือ iPad ตั้งให้กล้องหน้าเห็นตัวนักเรียน เกมเอียงเครื่องใช้ iPad หรือโทรศัพท์ ภาพจากกล้องประมวลผลในเครื่องเท่านั้น ไม่มีการบันทึกหรือส่งออกไป</p></div>
+  </section>
+  <div class="cards">
+    <a class="gcard" href="p4-bubbles-cam/" style="--c:var(--pink)">
+      <span class="e">🫧</span><span class="tag">ป.4 · บทที่ 4 ระคน</span><h3>ตบฟองคำตอบ (กล้อง)</h3>
+      <p>ยืนหน้ากล้อง ยกมือไปแตะฟองที่เป็นคำตอบของโจทย์บวก ลบ คูณ หารระคน</p>
+      <span class="dev">📷 โน้ตบุ๊กที่มีกล้อง หรือ iPad · ต่อโปรเจกเตอร์ได้</span></a>
+    <a class="gcard" href="p5-runner-tilt/" style="--c:var(--green)">
+      <span class="e">🏃</span><span class="tag">ป.5 · บทที่ 2 ทศนิยม</span><h3>วิ่งเก็บคำตอบทศนิยม (เอียงเครื่อง)</h3>
+      <p>เอียง iPad ซ้าย-ขวา พาแมวน้อยวิ่งไปเก็บลูกบอลคำตอบ และหลบสิ่งกีดขวาง</p>
+      <span class="dev">📱 iPad หรือโทรศัพท์ · บนโน้ตบุ๊กใช้ปุ่มลูกศรได้</span></a>
+  </div>
+</main>
+</body>
+</html>
