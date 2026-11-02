@@ -1,0 +1,153 @@
+{
+ "note": "สมุดรายชื่อเกม: ลิงก์ claude.ai/artifact/<รหัส> -> games/<folder>/ (เว็บ KruAu อ่านไฟล์นี้)",
+ "games": {
+  "E7wUQ2uoWArBZXT19LuRX6": {
+   "folder": "pizza-twins",
+   "title": "พิซซ่าคู่แฝด"
+  },
+  "TdZrvELAKUEPWXUqVb7KUx": {
+   "folder": "safe",
+   "title": "ตู้เซฟรหัสลับ"
+  },
+  "7x6PoRnPpxXRpAjMwJN6hG": {
+   "folder": "rocket",
+   "title": "จรวดฝ่าดาวเคราะห์"
+  },
+  "S3F3vveBYRpY6nGWtHZaEB": {
+   "folder": "whack-a-mole",
+   "title": "ตีตัวตุ่นนักคำนวณ"
+  },
+  "4cEpJwhE2vbG4EH1UKs2nW": {
+   "folder": "bubble-pop",
+   "title": "ตบฟองคำตอบ"
+  },
+  "8LQSFaeBkPx2fxS1LM41MB": {
+   "folder": "train-station",
+   "title": "สถานีรถไฟวุ่นวาย"
+  },
+  "AWtD8bX6qfeAin8mqNkBSK": {
+   "folder": "marbles",
+   "title": "ลูกแก้วกลิ้งบนเส้นจำนวน"
+  },
+  "3VKUZAcQychSwByXUJtLLe": {
+   "folder": "robot-arm",
+   "title": "แขนหุ่นยนต์"
+  },
+  "8dvarvH5z7QH8jpvh9uCcG": {
+   "folder": "architect",
+   "title": "สถาปนิกสวนสนุก"
+  },
+  "KpLcu8sy5t2FweTeA6DF8g": {
+   "folder": "class-poll",
+   "title": "โพลห้องเรา"
+  },
+  "CGEiKxgpCZQyevv3uzd5Qq": {
+   "folder": "smoothie",
+   "title": "ร้านน้ำปั่นผสมสูตร"
+  },
+  "UQ2JDeHMBRKhtKhwkruFmR": {
+   "folder": "balloon",
+   "title": "ยิงบอลลูนทศนิยม"
+  },
+  "MsUiSYgyRa5FZG4qVKKqB3": {
+   "folder": "human-graph",
+   "title": "กราฟมนุษย์"
+  },
+  "ULpQVHxVktrrbcgea1Afqr": {
+   "folder": "weigh-market",
+   "title": "ตลาดนัดชั่งกิโล"
+  },
+  "S3FsxnFSFrrUhxfpLtwoco": {
+   "folder": "game-show",
+   "title": "เกมโชว์ซูเปอร์เซลล์"
+  },
+  "JwQiSochFJWZMYVvum3Pt7": {
+   "folder": "rail-bridge",
+   "title": "สะพานรางรถไฟ"
+  },
+  "K6CMaMMa27koMFiFt9QL7y": {
+   "folder": "shape-detective",
+   "title": "นักสืบรูปทรง"
+  },
+  "StcVUhRuaKiwL58CfAyQYw": {
+   "folder": "magic-box",
+   "title": "กล่องเวทมนตร์"
+  },
+  "EcvhzFzgDyveVfap2beMn6": {
+   "folder": "frog",
+   "title": "กบกระโดดตัวประกอบ"
+  },
+  "8WKTVjyku8gvuh6QpyBncu": {
+   "folder": "snakes-ladders",
+   "title": "บันไดงูเศษส่วน"
+  },
+  "LZskJwvFRAQWnSkFTGZ4En": {
+   "folder": "secret-room",
+   "title": "ห้องลับทศนิยม"
+  },
+  "7tNJceG6TVFPMjXopHnV7m": {
+   "folder": "shopkeeper",
+   "title": "เถ้าแก่ตลาดนัด"
+  },
+  "DVt4EpoT99yuUYnsQEgCnR": {
+   "folder": "robot-line",
+   "title": "หุ่นยนต์เรียงแถว"
+  },
+  "3hbZEisYCZS5ADMogEjLGH": {
+   "folder": "triangles",
+   "title": "สามเหลี่ยมมนุษย์"
+  },
+  "KoPBGp3YeCQNcPsMZAeQ9e": {
+   "folder": "playground",
+   "title": "ออกแบบสนามเด็กเล่น"
+  },
+  "QM1Qgj8m1CzR3jBSj2La1i": {
+   "folder": "wheel",
+   "title": "วงล้อกลิ้งสู่เส้นชัย"
+  },
+  "AhmiSxK1igpRkfhewerRic": {
+   "folder": "box-factory",
+   "title": "โรงงานพับกล่อง"
+  },
+  "5unXmgCKAdEAS4rofmXpAu": {
+   "folder": "data-pizza",
+   "title": "พิซซ่าข้อมูล"
+  },
+  "QDfjdGDSmLvRhbx7A5W9pY": {
+   "folder": "quick-math",
+   "title": "คิดเลขไวเท่าจรวด"
+  },
+  "RceXMfvwvyRS2hUP9pi7xz": {
+   "folder": "target-sum",
+   "title": "รวมให้ได้เป้าหมาย"
+  },
+  "FsL83rU9biAdj4XtvwT3tP": {
+   "folder": "balance-scale",
+   "title": "ตาชั่งมาก–น้อย"
+  },
+  "AQaKNLgBVWkn73jKmtkk8Q": {
+   "folder": "number-chase",
+   "title": "ไล่แตะเลขตามลำดับ"
+  },
+  "CZsVcvm2C25QAApRE5zvzw": {
+   "folder": "card-flip",
+   "title": "เปิดไพ่จับคู่"
+  },
+  "5uVf1E8STUi3r8UCFpNK7n": {
+   "folder": "trace-path",
+   "title": "ลากตามทางไม่ให้หลุด"
+  },
+  "GZPkBJW9GReGrcpmW7tqAk": {
+   "folder": "time-machine",
+   "title": "ไทม์แมชชีนศักราช"
+  },
+  "6eztwTFx36Quc9Sjag6JhA": {
+   "folder": "evidence-detective",
+   "title": "นักสืบหลักฐานประวัติศาสตร์"
+  },
+  "VE5GwNpcN7oaT8wz34TnWe": {
+   "folder": "sukhothai",
+   "title": "ผจญภัยแดนสุโขทัย"
+  }
+ }
+}
