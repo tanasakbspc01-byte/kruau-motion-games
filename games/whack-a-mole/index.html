@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตีตัวตุ่นนักคำนวณ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.field{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,2vw,18px);background:#9BD38A;border-radius:24px;padding:clamp(12px,3vw,24px);box-shadow:0 6px 0 #74B566;background-image:radial-gradient(#8CC77B 3px,transparent 3.5px);background-size:26px 26px}
+.hole{position:relative;aspect-ratio:1.15;overflow:hidden;border:none;background:none;padding:0;border-radius:0 0 50% 50%/0 0 30% 30%}
+.hole::after{content:"";position:absolute;left:4%;right:4%;bottom:2%;height:30%;border-radius:50%;background:#5C3B26;box-shadow:inset 0 6px 0 #3E2716;z-index:0}
+.mole{position:absolute;left:14%;right:14%;bottom:8%;height:86%;transform:translateY(100%);transition:transform .18s ease-out;z-index:1}
+.hole.up .mole{transform:translateY(0)}
+.mole svg{position:absolute;inset:0;width:100%;height:100%}
+.tag{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);background:#fff;border-radius:12px;padding:3px 8px;font-weight:700;font-size:clamp(.85rem,2.6vw,1.25rem);white-space:nowrap;border:2px solid #5A4335;font-variant-numeric:tabular-nums}
+.hole.hit .mole{filter:hue-rotate(80deg)}
+.hole.bonk .mole{filter:grayscale(1)}
+.lip{position:absolute;left:0;right:0;bottom:0;height:16%;background:#9BD38A;z-index:2;border-radius:0 0 40% 40%}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 10;
+const MOLE = `<svg viewBox="0 0 100 110" aria-hidden="true"><ellipse cx="50" cy="70" rx="40" ry="44" fill="#A47452" stroke="#5A4335" stroke-width="3"/>
+<ellipse cx="50" cy="86" rx="24" ry="18" fill="#E6C2A0"/><circle cx="36" cy="54" r="5" fill="#2E211A"/><circle cx="64" cy="54" r="5" fill="#2E211A"/>
+<ellipse cx="50" cy="66" rx="9" ry="6" fill="#E8708F"/><circle cx="26" cy="68" r="5" fill="#F7A9B5" opacity=".7"/><circle cx="74" cy="68" r="5" fill="#F7A9B5" opacity=".7"/>
+<path d="M14 30 q6 -12 14 -6 M86 30 q-6 -12 -14 -6" stroke="#5A4335" stroke-width="3" fill="#A47452"/></svg>`;
+
+function numWrongs(ans){
+  return KIT.numOptions(ans, [
+    a => a + pick([1,-1]) * pick([1,2,10,100]),
+    a => a + pick([1,-1]) * 10 ** rand(1,3),
+    a => { const s = String(a).split(""); if (s.length<2) return a+1; const i = rand(0,s.length-2); [s[i],s[i+1]]=[s[i+1],s[i]]; return s[0]==="0"? a+11 : +s.join(""); }
+  ], 6).filter(v => v !== ans);
+}
+const GEN = {
+  1: () => {
+    if (Math.random() < .3){ const a = rand(12, 999), m = pick([10,100,1000]); return {q:`${fmt(a)} × ${fmt(m)}`, ans:a*m}; }
+    const a = rand(105, 4999), b = rand(2,9); return {q:`${fmt(a)} × ${b}`, ans:a*b};
+  },
+  2: () => {
+    if (Math.random() < .5){ const a = rand(12, 499), b = rand(11, 99); return {q:`${fmt(a)} × ${b}`, ans:a*b}; }
+    const d = rand(2,9), q = rand(15, 999); return {q:`${fmt(q*d)} ÷ ${d}`, ans:q};
+  },
+  3: () => {
+    if (Math.random() < .6){
+      const d = rand(3,9), q = rand(21, 999), r = rand(1, d-1);
+      return {q:`${fmt(q*d + r)} ÷ ${d}`, ans:`${fmt(q)} เศษ ${r}`, wr:[`${fmt(q+1)} เศษ ${r}`, `${fmt(q)} เศษ ${r===d-1?r-1:r+1}`, `${fmt(q-1)} เศษ ${r}`, `${fmt(q*10)} เศษ ${r}`, `${fmt(q)} เศษ ${d}`].filter((v,i,a)=>a.indexOf(v)===i)};
+    }
+    const d = rand(11, 45), q = rand(12, 99); return {q:`${fmt(q*d)} ÷ ${d}`, ans:q};
+  }
+};
+
+KIT.mount({
+  key:"p4-mole", title:"ตีตัวตุ่นนักคำนวณ", subtitle:"คณิตศาสตร์ ป.4 · บทที่ 3 การคูณและการหาร",
+  heroHTML:"ตีให้โดน<em>ตัวตุ่น</em>ที่ถือคำตอบ 🔨", heroDesc:"ตัวตุ่นถือป้ายตัวเลขโผล่ขึ้นมา แตะตัวที่ถือคำตอบของโจทย์ให้ทัน",
+  progIcon:"🔨",
+  howto:["คิดคำตอบของโจทย์ด้านบนไว้ก่อน","รอตัวตุ่นที่ถือคำตอบโผล่ขึ้นมา แล้วแตะให้ทัน","ตีผิดตัวเสีย 10 คะแนน","ตีถูกติดกันได้คอมโบ ครบ 10 ข้อผ่านด่าน"],
+  levels:{
+    1:{pill:"10 ข้อ", color:"var(--green)", desc:"คูณหลายหลักกับ 1 หลัก และคูณด้วย 10, 100, 1,000"},
+    2:{pill:"10 ข้อ", color:"var(--blue)", desc:"คูณหลายหลักกับ 2 หลัก และหารลงตัว"},
+    3:{pill:"10 ข้อ", color:"var(--purple)", desc:"หารมีเศษ และหารด้วยตัวหาร 2 หลัก"}
+  },
+  play(level, ctx){
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext big" id="qt"></div></div>
+      <div class="field" id="field">${Array.from({length:9},(_,i)=>`<button class="hole" type="button" data-i="${i}" aria-label="หลุมที่ ${i+1}"><div class="mole">${MOLE}<span class="tag"></span></div><div class="lip"></div></button>`).join("")}</div>`;
+    const holes = [...ctx.stage.querySelectorAll(".hole")];
+    const upMs = level===3 ? 2300 : 1900, gapMs = level===3 ? 750 : 650;
+    let idx = 0, cur = null, wrongs = [], sinceRight = 0, timer = 0, busy = false;
+    const state = holes.map(() => ({up:false, val:null, t:0}));
+    function down(i){ state[i].up = false; holes[i].classList.remove("up","hit","bonk"); holes[i].setAttribute("aria-label", `หลุมที่ ${i+1} ว่าง`); }
+    function popOne(){
+      if (!ctx.alive()) return;
+      if (busy){ timer = ctx.after(gapMs, popOne); return; }
+      const free = state.map((s,i)=>s.up?-1:i).filter(i=>i>=0);
+      if (free.length){
+        const i = pick(free);
+        const showRight = sinceRight >= 2 || Math.random() < .35;
+        const val = showRight ? cur.ans : pick(wrongs);
+        sinceRight = showRight ? 0 : sinceRight+1;
+        state[i] = {up:true, val};
+        holes[i].querySelector(".tag").textContent = typeof val === "number" ? fmt(val) : val;
+        holes[i].classList.add("up");
+        holes[i].setAttribute("aria-label", `ตัวตุ่นถือ ${typeof val === "number" ? fmt(val) : val}`);
+        clearTimeout(state[i].t);
+        state[i].t = setTimeout(() => { if (ctx.alive() && state[i].up && state[i].val === val) down(i); }, upMs);
+      }
+      timer = ctx.after(gapMs + rand(0,250), popOne);
+    }
+    ctx.cleanup(() => state.forEach(s => clearTimeout(s.t)));
+    ctx.stage.querySelector("#field").addEventListener("pointerdown", e => {
+      const h = e.target.closest(".hole"); if (!h) return;
+      const i = +h.dataset.i; if (!state[i].up || busy) return;
+      e.preventDefault();
+      if (state[i].val === cur.ans){
+        h.classList.add("hit"); ctx.correct(); busy = true;
+        idx++; ctx.progress(idx, N);
+        ctx.after(500, () => { state.forEach((_,k)=>down(k)); busy = false; next(); });
+      } else {
+        h.classList.add("bonk"); ctx.wrong(`ตัวนี้ถือ ${h.querySelector(".tag").textContent} ยังไม่ใช่คำตอบ`);
+        ctx.after(300, () => down(i));
+      }
+    });
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 110 : 90}); return; }
+      cur = GEN[level]();
+      wrongs = cur.wr ? cur.wr.filter(v=>v!==cur.ans) : numWrongs(cur.ans);
+      sinceRight = 0;
+      ctx.stage.querySelector("#qn").textContent = `ข้อ ${idx+1} จาก ${N}`;
+      ctx.stage.querySelector("#qt").textContent = cur.q + " = ?";
+    }
+    ctx.progress(0, N); ctx.say("ตัวตุ่นกำลังมา เตรียมค้อนให้พร้อม!");
+    next(); ctx.after(700, popOne);
+  }
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตบฟองคำตอบ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.tank{position:relative;height:clamp(360px,56vh,520px);border-radius:24px;overflow:hidden;background:linear-gradient(#BFE6F7,#86C8EC 70%,#6FB6E0);box-shadow:0 6px 0 #5A9FCB;touch-action:manipulation}
+.tank::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34px;background:#F3DDB3;border-radius:50% 50% 0 0/40% 40% 0 0}
+.bub{position:absolute;width:clamp(78px,17vw,118px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;transform:translate(-50%,0);border:none;padding:0;font-weight:700;font-size:clamp(1.05rem,3vw,1.5rem);color:#2E4A66;font-variant-numeric:tabular-nums;
+  background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.95) 0 10%,rgba(255,255,255,.35) 11% 30%,rgba(255,255,255,.18) 31% 100%);box-shadow:inset 0 0 0 3px rgba(255,255,255,.85),inset -8px -8px 18px rgba(120,170,220,.35);z-index:1}
+.bub.popped{animation:popout .3s forwards}
+.bub.bonk{animation:shake .4s;color:var(--bad)}
+@keyframes popout{to{transform:translate(-50%,0) scale(1.6);opacity:0}}
+.expr{letter-spacing:.02em}
+.qtext small{display:block;font-size:.65em;color:var(--ink-soft);font-weight:600}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 10;
+
+const GEN = {
+  1: () => {
+    const t = rand(0,3);
+    if (t===0){ const a = rand(11,49), b = rand(2,9), c = rand(10,99); return {q:`${a} × ${b} + ${c}`, ans:a*b+c, trap:a*(b+c)}; }
+    if (t===1){ const a = rand(100,500), b = rand(20,99), c = rand(10,a); return {q:`${a} + ${b} − ${c}`, ans:a+b-c, trap:a-(b-c)+0 === a+b-c ? a+b+c : a-(b-c)}; }
+    if (t===2){ const a = rand(12,40), b = rand(3,9), c = rand(10, a*b-5); return {q:`${a} × ${b} − ${c}`, ans:a*b-c, trap:a*(b-c) > 0 ? a*(b-c) : a*b+c}; }
+    const a = rand(10,99), b = rand(3,9), c = rand(3,12); return {q:`${a} + ${b} × ${c}`, ans:a+b*c, trap:(a+b)*c};
+  },
+  2: () => {
+    const t = rand(0,3);
+    if (t===0){ const c = rand(3,9), q = rand(12,60), b = rand(10,90); const a = q*c + b; return {q:`(${a} − ${b}) ÷ ${c}`, ans:q, trap:a - b/c|0}; }
+    if (t===1){ const a = rand(6,25), b = rand(4,20), c = rand(3,15); return {q:`${a} × (${b} + ${c})`, ans:a*(b+c), trap:a*b+c}; }
+    if (t===2){ const a = rand(10,40), b = rand(5,30), c = rand(2,6), d = rand(10,60); return {q:`(${a} + ${b}) × ${c} − ${d}`, ans:(a+b)*c-d, trap:a+b*c-d}; }
+    const c = rand(2,6), q = rand(5,20), b = c + rand(2,6); const dv = b - c; const a = q*dv; return {q:`${a} ÷ (${b} − ${c})`, ans:q, trap: Math.floor(a/b) - c > 0 ? Math.floor(a/b)-c : q+dv};
+  },
+  3: () => pick([
+    () => { const a = rand(3,8), b = rand(12,35), c = pick([100,200,500]); if (a*b >= c) return null; return {q:`ซื้อสมุด ${a} เล่ม ราคาเล่มละ ${b} บาท จ่ายเงิน ${c} บาท จะได้เงินทอนกี่บาท`, ans:c-a*b, trap:a*b}; },
+    () => { const b = rand(3,9), q = rand(6,25), c = rand(2,9); return {q:`มีลูกอม ${b*q} เม็ด แบ่งให้เด็ก ${b} คนเท่า ๆ กัน แล้วแม่ให้เพิ่มคนละ ${c} เม็ด เด็กแต่ละคนมีลูกอมกี่เม็ด`, ans:q+c, trap:(b*q+c)}; },
+    () => { const a = rand(3,9), b = rand(20,a*30-10); return {q:`แม่ค้ามีไข่ ${a} แผง แผงละ 30 ฟอง ขายไป ${b} ฟอง เหลือไข่กี่ฟอง`, ans:a*30-b, trap:a*30+b}; },
+    () => { const a = rand(4,9), b = rand(12,40), c = rand(3,9), d = rand(12,40); return {q:`ซื้อดินสอ ${a} แท่ง แท่งละ ${b} บาท และยางลบ ${c} ก้อน ก้อนละ ${d} บาท รวมจ่ายกี่บาท`, ans:a*b+c*d, trap:(a+c)*(b+d)}; },
+    () => { const c = rand(4,9), q = rand(5,15), a = rand(10,40); return {q:`นักเรียน ${a} คน และครู ${c*q-a > 0 ? c*q-a : 0} คน แบ่งขึ้นรถ ${c} คันเท่า ๆ กัน คันละกี่คน`, ans:q, trap:c*q, ok:c*q-a > 0}; }
+  ])()
+};
+function gen(level){ let g; do { g = GEN[level](); } while(!g || g.ok === false); return g; }
+function wrongsFor(c){
+  const s = new Set([c.trap].filter(v => v > 0 && v !== c.ans));
+  let g = 0;
+  while (s.size < 5 && g++ < 100){ const v = c.ans + pick([1,-1]) * pick([1,2,5,10,rand(3,20)]); if (v>0 && v!==c.ans) s.add(v); }
+  return [...s];
+}
+
+KIT.mount({
+  key:"p4-bubbles", title:"ตบฟองคำตอบ", subtitle:"คณิตศาสตร์ ป.4 · บทที่ 4 การบวก ลบ คูณ หารระคน",
+  heroHTML:"ตบ<em>ฟองสบู่</em>ที่เป็นคำตอบ 🫧", heroDesc:"ฟองสบู่ตัวเลขลอยขึ้นมา หาฟองที่เป็นคำตอบของโจทย์ระคนแล้วแตะให้แตก",
+  progIcon:"🫧",
+  howto:["ทำคูณหารก่อน แล้วค่อยบวกลบ ถ้ามีวงเล็บให้ทำในวงเล็บก่อน","แตะฟองที่เป็นคำตอบให้แตก","แตะฟองผิดเสีย 10 คะแนน","ถ้าฟองคำตอบลอยหนีไป ไม่ต้องกังวล จะมีฟองใหม่ลอยมาอีก"],
+  note:"เวอร์ชันนี้ใช้การแตะจอ ส่วนโหมดยกมือตบฟองผ่านกล้องต้องเปิดจากเว็บที่อนุญาตกล้อง",
+  levels:{
+    1:{pill:"10 ข้อ", color:"var(--green)", desc:"ระคน 2 ขั้นตอน เช่น 45 × 3 + 20"},
+    2:{pill:"10 ข้อ", color:"var(--blue)", desc:"ระคนมีวงเล็บ เช่น (120 − 36) ÷ 4"},
+    3:{pill:"10 ข้อ", color:"var(--purple)", desc:"โจทย์ปัญหาระคน 2 ขั้นตอน"}
+  },
+  play(level, ctx){
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext ${level<3?'big':''} expr" id="qt"></div></div><div class="tank" id="tank"></div>`;
+    const tank = ctx.stage.querySelector("#tank");
+    const COUNT = 5;
+    let idx = 0, cur = null, wrongs = [], bubs = [], raf = 0, last = 0, busy = false;
+    const speed = level===3 ? 38 : 48; // px per second
+    function setVal(b, v){ b.val = v; b.el.textContent = fmt(v); b.el.setAttribute("aria-label", "ฟอง " + fmt(v)); }
+    function spawn(b, startY){
+      const H = tank.clientHeight;
+      const hasRight = bubs.some(o => o !== b && o.val === cur.ans && o.y > -o.el.offsetHeight*0.5);
+      setVal(b, hasRight ? pick(wrongs) : cur.ans);
+      b.x = rand(10, 90); b.y = startY != null ? startY : H + rand(0, 60);
+      b.v = speed * (0.8 + Math.random()*0.5); b.phase = Math.random()*6;
+      b.el.className = "bub";
+    }
+    function setup(){
+      tank.innerHTML = ""; bubs = [];
+      const H = tank.clientHeight;
+      for (let i=0;i<COUNT;i++){
+        const el = document.createElement("button"); el.type = "button"; el.className = "bub"; tank.appendChild(el);
+        const b = {el}; bubs.push(b);
+        el.addEventListener("pointerdown", e => { e.preventDefault(); tap(b); });
+      }
+      const vals = shuffle([cur.ans, ...shuffle(wrongs).slice(0, COUNT-1)]);
+      bubs.forEach((b,i) => { setVal(b, vals[i]); b.x = 10 + (i*80/(COUNT-1)) + rand(-4,4); b.y = H*0.35 + (i%2)*H*0.25 + rand(0,40); b.v = speed*(0.8+Math.random()*0.5); b.phase = Math.random()*6; });
+    }
+    function frame(t){
+      if (!ctx.alive()) return;
+      const dt = Math.min(0.05, (t - (last||t)) / 1000); last = t;
+      bubs.forEach(b => {
+        if (b.el.classList.contains("popped")) return;
+        b.y -= b.v * dt; b.phase += dt*1.5;
+        if (b.y < -b.el.offsetHeight) spawn(b);
+        b.el.style.top = b.y + "px";
+        b.el.style.left = `calc(${b.x}% + ${Math.sin(b.phase)*10}px)`;
+      });
+      raf = requestAnimationFrame(frame);
+    }
+    function tap(b){
+      if (busy || b.el.classList.contains("popped")) return;
+      if (b.val === cur.ans){
+        busy = true; b.el.classList.add("popped"); KIT.sfx.pop(); ctx.correct();
+        idx++; ctx.progress(idx, N);
+        ctx.after(600, () => { busy = false; next(); });
+      } else {
+        b.el.classList.add("bonk"); ctx.wrong(`ฟอง ${fmt(b.val)} ยังไม่ใช่ ลองคิดใหม่`);
+        ctx.after(420, () => b.el.classList.remove("bonk"));
+      }
+    }
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 150 : 110}); return; }
+      cur = gen(level); wrongs = wrongsFor(cur);
+      ctx.stage.querySelector("#qn").textContent = `ข้อ ${idx+1} จาก ${N}`;
+      ctx.stage.querySelector("#qt").innerHTML = cur.q + (level<3 ? " = ?" : "");
+      setup();
+    }
+    ctx.cleanup(() => cancelAnimationFrame(raf));
+    ctx.progress(0, N); ctx.say("หาฟองที่เป็นคำตอบ แล้วแตะให้แตก!");
+    next(); raf = requestAnimationFrame(frame);
+  }
+});
+})();
+</script>
+</body>
+</html>

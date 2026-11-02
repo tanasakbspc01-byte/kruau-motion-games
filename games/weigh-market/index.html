@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตลาดนัดชั่งกิโล</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.stall{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;background:linear-gradient(#FFE3C2,#FFF1DD);border-radius:24px;padding:14px 16px;border-top:14px solid transparent;border-image:repeating-linear-gradient(90deg,#E8708F 0 26px,#fff 26px 52px) 14}
+.cust{font-size:3.2rem;line-height:1}
+.speech{background:var(--card);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1.05rem,3vw,1.35rem);line-height:1.55;position:relative}
+.speech::before{content:"";position:absolute;left:-10px;top:18px;border:10px solid transparent;border-right-color:var(--card);border-left:0}
+.till{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.screen{background:#2F3843;color:#7FE3A0;border-radius:14px;padding:10px 16px;font-size:2rem;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;min-height:62px;letter-spacing:.04em}
+.unit{font-weight:700;color:var(--ink-soft)}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:420px;width:100%;margin:0 auto}
+.pad button{border:3px solid var(--line);background:var(--card);border-radius:16px;padding:12px 0;font-size:1.5rem;font-weight:700;box-shadow:0 4px 0 var(--line)}
+.pad button:active{transform:translateY(2px);box-shadow:0 2px 0 var(--line)}
+.pad .ok{grid-column:span 3;background:var(--c);border-color:var(--c);color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.15);font-size:1.25rem}
+.purse{font-weight:700;text-align:right}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 8;
+const CUST = ["👵","👴","👩","👨","🧒","👧","👦","🧑‍🍳","👮","👩‍🏫"];
+const GOODS = [["🍊","ส้ม","กิโลกรัม",[30,60]],["🥭","มะม่วง","กิโลกรัม",[40,80]],["🍌","กล้วย","หวี",[25,45]],["🥚","ไข่ไก่","ฟอง",[4,6]],["🍞","ขนมปัง","ห่อ",[15,35]],["🥥","มะพร้าว","ลูก",[20,40]],["🍉","แตงโม","ลูก",[35,70]],["🧃","น้ำผลไม้","กล่อง",[10,20]]];
+
+const GEN = {
+  1: () => { const [e,n,u,[a,b]] = pick(GOODS), p = rand(a,b), k = rand(2,9);
+    return {html:`${e} ${n} ${u}ละ <b>${p} บาท</b><br>ขอซื้อ <b>${k} ${u}</b> ต้องจ่ายกี่บาทจ๊ะ`, ans:p*k, unit:"บาท"}; },
+  2: () => { const [e,n,u,[a,b]] = pick(GOODS), p = rand(a,b);
+    if (Math.random() < .5){ const k = rand(2,5); let m; do { m = rand(2,12); } while (m === k);
+      return {html:`${e} ${n} ${k} ${u} ราคา <b>${p*k} บาท</b><br>ขอซื้อ <b>${m} ${u}</b> ต้องจ่ายกี่บาทจ๊ะ`, ans:p*m, unit:"บาท"}; }
+    const k = rand(2,4), m = rand(2,9)*k;
+    return {html:`${e} ${n} ${k} ${u} ราคา <b>${p*k} บาท</b><br>มีเงิน <b>${p*m} บาท</b> ซื้อได้กี่${u}จ๊ะ`, ans:m, unit:u}; },
+  3: () => pick([
+    () => { const sp = rand(4,9)*10, h = rand(2,4); let h2; do { h2 = rand(2,7); } while (h2===h);
+      return {html:`🚚 รถส่งผักวิ่ง ${h} ชั่วโมง ได้ระยะทาง <b>${sp*h} กิโลเมตร</b><br>ถ้าวิ่งด้วยอัตราเร็วเท่าเดิม ${h2} ชั่วโมง จะได้กี่กิโลเมตร`, ans:sp*h2, unit:"กม."}; },
+    () => { const per = rand(4,8), cups = rand(2,4); let m; do { m = rand(2,6); } while (m===cups);
+      return {html:`🧑‍🍳 แป้ง ${cups} ถ้วย ทำขนมครกได้ <b>${per*cups} ชิ้น</b><br>ถ้าต้องการขนม ${per*m} ชิ้น ต้องใช้แป้งกี่ถ้วย`, ans:m, unit:"ถ้วย"}; },
+    () => { const per = rand(3,9)*2, q1 = rand(2,5); let m; do { m = rand(3,12); } while (m===q1);
+      return {html:`🧾 ซื้อสมุด ${q1} เล่ม จ่าย <b>${per*q1} บาท</b><br>ถ้าซื้อสมุดแบบเดียวกัน ${m} เล่ม ต้องจ่ายกี่บาท`, ans:per*m, unit:"บาท"}; },
+    () => { const a1 = rand(2,5), u1 = rand(4,9); let a2, u2; do { a2 = rand(3,8); u2 = u1 + pick([-1,1]); } while (a2===a1 || u2<2);
+      const small = `ห่อเล็ก ${a1} ชิ้น ${a1*u1} บาท`, big = `ห่อใหญ่ ${a2} ชิ้น ${a2*u2} บาท`;
+      return {deal:true, html:`🛒 ${small}<br>${big}<br>ซื้อแบบไหน<b>คุ้มกว่า</b> (ราคาต่อชิ้นถูกกว่า)`, options:["ห่อเล็ก","ห่อใหญ่","ราคาต่อชิ้นเท่ากัน"], answer: u1 < u2 ? 0 : 1}; }
+  ])()
+};
+
+KIT.mount({
+  key:"p5-market", title:"ตลาดนัดชั่งกิโล", subtitle:"คณิตศาสตร์ ป.5 · บทที่ 4 บัญญัติไตรยางศ์",
+  heroHTML:"เป็น<em>แม่ค้า</em>คิดเงินให้ถูก 🧺", heroDesc:"ลูกค้ามาซื้อของทีละคน คิดราคาด้วยบัญญัติไตรยางศ์ แล้วกดเครื่องคิดเงินให้ถูกต้อง",
+  progIcon:"🧺",
+  howto:["อ่านคำสั่งซื้อของลูกค้า หาราคาต่อ 1 หน่วยก่อน แล้วคูณจำนวนที่ต้องการ","กดตัวเลขที่เครื่องคิดเงิน แล้วกด \"ตอบลูกค้า\"","ตอบผิดเสีย 10 คะแนน แก้ตัวเลขแล้วตอบใหม่ได้","คิดเงินถูก ได้เงินเข้าลิ้นชักร้าน"],
+  levels:{
+    1:{pill:"8 ลูกค้า", color:"var(--green)", desc:"รู้ราคาต่อ 1 หน่วย หาราคาหลายหน่วย"},
+    2:{pill:"8 ลูกค้า", color:"var(--blue)", desc:"รู้ราคาหลายหน่วย หาราคาหรือจำนวนอีกค่าหนึ่ง"},
+    3:{pill:"8 ลูกค้า", color:"var(--purple)", desc:"อัตราเร็ว สูตรอาหาร และเลือกของที่คุ้มกว่า"}
+  },
+  play(level, ctx){
+    let idx = 0, purse = 0, pressRef = null;
+    const kd = e => { if (!pressRef || e.target.tagName === "INPUT") return; if (/^[0-9]$/.test(e.key)) pressRef(e.key); else if (e.key === "Backspace") pressRef("B"); else if (e.key === "Enter") pressRef("OK"); };
+    document.addEventListener("keydown", kd); ctx.cleanup(() => document.removeEventListener("keydown", kd));
+    const done = gain => { purse += gain; idx++; ctx.progress(idx, N); next(); };
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 200 : 150}); return; }
+      const q = GEN[level](), who = pick(CUST);
+      ctx.stage.innerHTML = `<div class="purse">💰 ลิ้นชักร้าน ${fmt(purse)} บาท</div>
+        <div class="stall"><div class="cust" aria-hidden="true">${who}</div><div class="speech"><div class="qlabel">ลูกค้าคนที่ ${idx+1} จาก ${N}</div>${q.html}</div></div><div id="area"></div>`;
+      const area = ctx.stage.querySelector("#area");
+      if (q.deal){ pressRef = null; KIT.mcq(ctx, area, {label:"", html:"เลือกคำตอบ", options:q.options, answer:q.answer, cols:3, onNext:() => done(0)}); return; }
+      let val = "", first = true, lock = false;
+      area.innerHTML = `<div class="till"><div class="screen" id="scr" aria-live="polite">0</div><span class="unit">${q.unit}</span></div>
+        <div class="pad" id="pad">${[7,8,9,4,5,6,1,2,3].map(d=>`<button type="button" data-k="${d}">${d}</button>`).join("")}
+        <button type="button" data-k="C" aria-label="ล้าง">ล้าง</button><button type="button" data-k="0">0</button><button type="button" data-k="B" aria-label="ลบตัวสุดท้าย">⌫</button>
+        <button type="button" class="ok" data-k="OK">ตอบลูกค้า</button></div>`;
+      const scr = area.querySelector("#scr");
+      const press = k => {
+        if (lock) return;
+        if (k === "OK"){
+          if (!val){ ctx.say("กดตัวเลขก่อนนะ"); return; }
+          if (+val === q.ans){ lock = true; ctx.correct(first?100:50, `ถูกต้อง! ลูกค้าจ่าย ${fmt(q.ans)} ${q.unit}`); ctx.after(900, () => done(q.unit==="บาท" ? q.ans : 20)); }
+          else { first = false; ctx.wrong("ลูกค้าบอกว่า \"ไม่ใช่นะจ๊ะ\" ลองหาราคาต่อ 1 หน่วยก่อน"); }
+          return;
+        }
+        KIT.sfx.tap();
+        if (k === "C") val = ""; else if (k === "B") val = val.slice(0,-1); else if (val.length < 6) val = (val === "0" ? "" : val) + k;
+        scr.textContent = val ? fmt(+val) : "0";
+      };
+      area.querySelector("#pad").onclick = e => { const b = e.target.closest("[data-k]"); if (b) press(b.dataset.k); };
+      pressRef = press;
+    }
+    ctx.progress(0, N); ctx.say("ร้านเปิดแล้ว ลูกค้าคนแรกมาแล้ว!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

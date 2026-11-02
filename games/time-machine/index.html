@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ไทม์แมชชีนศักราช</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.dial{display:flex;justify-content:center;gap:6px;margin:6px 0 12px}
+.dial span{background:#2B2552;color:#F6CD6B;border-radius:10px;padding:4px 10px;font-weight:700;font-size:clamp(1.3rem,5vw,2rem);font-variant-numeric:tabular-nums;box-shadow:inset 0 -4px 0 rgba(0,0,0,.35);min-width:1.4em;text-align:center}
+.tm{text-align:center;font-size:2.6rem;line-height:1}
+.tm.go{animation:spin .8s}
+@keyframes spin{to{transform:rotate(360deg) scale(1.1)}}
+.qtext small{display:block;font-size:.7em;color:var(--ink-soft);font-weight:600;margin-top:4px}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 10;
+const ERA = { "ค.ศ.":543, "จ.ศ.":1181, "ร.ศ.":2324, "ม.ศ.":621, "ฮ.ศ.":1122 };
+const ERA_NAME = { "ค.ศ.":"คริสต์ศักราช", "จ.ศ.":"จุลศักราช", "ร.ศ.":"รัตนโกสินทรศก", "ม.ศ.":"มหาศักราช", "ฮ.ศ.":"ฮิจเราะห์ศักราช" };
+function opts(ans, ws){ const s = [...new Set(ws.filter(w => w !== ans && w > 0))]; return shuffle(s).slice(0,3); }
+function q(html, ans, ws, explain, year){ const o = shuffle([ans, ...opts(ans, ws)]); return {html, options:o.map(String), answer:o.indexOf(ans), explain, year}; }
+function qs(html, ans, ws, explain, year){ const o = shuffle([ans, ...ws.filter(w=>w!==ans).slice(0,3)]); return {html, options:o, answer:o.indexOf(ans), explain, year}; }
+const GEN = {
+  1: () => pick([
+    () => { const [u,n] = pick([["ทศวรรษ",10],["ศตวรรษ",100],["สหัสวรรษ",1000]]); return q(`1 ${u} มีกี่ปี?`, n, [10,100,1000,12,50], `จำง่าย ๆ ทศวรรษ = 10 ปี ศตวรรษ = 100 ปี สหัสวรรษ = 1,000 ปี`); },
+    () => { const [n,u] = pick([[10,"ทศวรรษ"],[100,"ศตวรรษ"],[1000,"สหัสวรรษ"]]); return qs(`ระยะเวลา ${KIT.fmt(n)} ปี เรียกว่าอะไร?`, u, shuffle(["ทศวรรษ","ศตวรรษ","สหัสวรรษ","รอบนักษัตร"]), `10 ปี = ทศวรรษ, 100 ปี = ศตวรรษ, 1,000 ปี = สหัสวรรษ`); },
+    () => { const y = rand(2480,2569), d = Math.floor(y/10)*10; return Object.assign(q(`พ.ศ. ${y} อยู่ในทศวรรษใด?`, d, [d-10, d+10, d-20, d+20], `ทศวรรษเริ่มที่ปีที่ลงท้ายด้วย 0 เช่น ทศวรรษ ${d} คือ พ.ศ. ${d}–${d+9}`, y), {pre:"ทศวรรษ "}); },
+    () => { const era = pick(["พ.ศ.","ค.ศ."]); const y = era === "พ.ศ." ? rand(1800,2569) : rand(1300,2026); const c = Math.ceil(y/100);
+            return Object.assign(q(`${era} ${y} อยู่ใน${era === "พ.ศ." ? "พุทธ" : "คริสต์"}ศตวรรษที่เท่าไร?`, c, [c-1, c+1, Math.floor(y/100) === c ? c+2 : Math.floor(y/100)], `ศตวรรษที่ ${c} คือ ${era} ${(c-1)*100+1}–${c*100} (ปีที่ลงท้าย 00 ยังอยู่ศตวรรษเดิม)`, y), {pre:"ที่ "}); },
+    () => { const c = rand(20,26); const ans = `พ.ศ. ${(c-1)*100+1}–${c*100}`; return qs(`พุทธศตวรรษที่ ${c} คือช่วงปีใด?`, ans, shuffle([`พ.ศ. ${(c-1)*100}–${c*100-1}`, `พ.ศ. ${c*100+1}–${(c+1)*100}`, `พ.ศ. ${(c-2)*100+1}–${(c-1)*100}`]), `ศตวรรษที่ ${c} เริ่มที่ปี ${(c-1)*100+1} และจบที่ปี ${c*100}`); }
+  ])(),
+  2: () => pick([
+    () => { const y = rand(1900,2026); const a = y+543; return Object.assign(q(`ค.ศ. ${y} ตรงกับ พ.ศ. อะไร?`, a, [y+534, a+10, a-10, a+100, a-1], `พ.ศ. = ค.ศ. + 543 → ${y} + 543 = ${a}`, y), {pre:"พ.ศ. "}); },
+    () => { const y = rand(2440,2569); const a = y-543; return Object.assign(q(`พ.ศ. ${y} ตรงกับ ค.ศ. อะไร?`, a, [y-534, a+10, a-10, a+100, y+543], `ค.ศ. = พ.ศ. − 543 → ${y} − 543 = ${a}`, y), {pre:"ค.ศ. "}); },
+    () => { const [who, y] = pick([["คุณครูเกิด",rand(2510,2545)],["คุณแม่เกิด",rand(2515,2540)],["พี่ชายเกิด",rand(2550,2560)],["โรงเรียนตั้งขึ้นใน",rand(2480,2530)]]); const a = y-543;
+            return Object.assign(q(`${who} พ.ศ. ${y} ตรงกับ ค.ศ. อะไร?`, a, [y-534, a+1, a-10, a+10], `ค.ศ. = พ.ศ. − 543 → ${y} − 543 = ${a}`, y), {pre:"ค.ศ. "}); },
+    () => qs(`จะเปลี่ยน ค.ศ. เป็น พ.ศ. ต้องทำอย่างไร?`, "บวกด้วย 543", ["ลบด้วย 543","บวกด้วย 534","ลบด้วย 1181"], `พ.ศ. มากกว่า ค.ศ. อยู่ 543 ปี จึงเอา ค.ศ. + 543`),
+    () => { const y = rand(1990,2026), z = y+543 + pick([-2,-1,1,2]); const ans = z > y+543 ? `ค.ศ. ${y}` : `พ.ศ. ${z}`;
+            return qs(`ปีใดเกิดขึ้น "ก่อน"?<small>ค.ศ. ${y} หรือ พ.ศ. ${z}</small>`, ans, [z > y+543 ? `พ.ศ. ${z}` : `ค.ศ. ${y}`, "เป็นปีเดียวกัน"], `ค.ศ. ${y} = พ.ศ. ${y+543} จึงเทียบกับ พ.ศ. ${z} ได้ ปีที่น้อยกว่าเกิดก่อน`); }
+  ])(),
+  3: () => pick([
+    () => { const e = pick(["จ.ศ.","ร.ศ.","ม.ศ.","ฮ.ศ."]); const k = ERA[e]; const y = {"จ.ศ.":rand(1100,1388), "ร.ศ.":rand(100,245), "ม.ศ.":rand(1200,1948), "ฮ.ศ.":rand(1300,1447)}[e];
+            const a = y + k; const others = Object.values(ERA).filter(v=>v!==k).map(v=>y+v);
+            return Object.assign(q(`${e} ${y} ตรงกับ พ.ศ. อะไร?`, a, [...others, a+10, a-100], `พ.ศ. = ${e} + ${KIT.fmt(k)} → ${y} + ${KIT.fmt(k)} = ${a}`, y), {pre:"พ.ศ. "}); },
+    () => { const e = pick(["จ.ศ.","ร.ศ.","ฮ.ศ."]); const k = ERA[e]; const y = rand(2400,2569); const a = y - k;
+            return Object.assign(q(`พ.ศ. ${y} ตรงกับ ${e} อะไร?`, a, [a+10, a-10, a+100, y - (k===1181 ? 1122 : 1181)], `${e} = พ.ศ. − ${KIT.fmt(k)} → ${y} − ${KIT.fmt(k)} = ${a}`, y), {pre:e+" "}); },
+    () => { const e = pick(Object.keys(ERA)); return qs(`พ.ศ. = ${e} + เท่าไร?`, KIT.fmt(ERA[e]), shuffle(Object.keys(ERA).filter(x=>x!==e).map(x=>KIT.fmt(ERA[x]))), `${ERA_NAME[e]} (${e}) ห่างจาก พ.ศ. ${KIT.fmt(ERA[e])} ปี`); },
+    () => pick([
+      () => qs(`ศิลาจารึกสมัยสุโขทัยนิยมใช้ศักราชใด?`, "มหาศักราช (ม.ศ.)", ["รัตนโกสินทรศก (ร.ศ.)","คริสต์ศักราช (ค.ศ.)","ฮิจเราะห์ศักราช (ฮ.ศ.)"], "ศิลาจารึกสุโขทัย เช่น ศิลาจารึกหลักที่ 1 ใช้มหาศักราช"),
+      () => qs(`ศักราชใดเริ่มนับจากปีที่ตั้งกรุงรัตนโกสินทร์?`, "รัตนโกสินทรศก (ร.ศ.)", ["จุลศักราช (จ.ศ.)","มหาศักราช (ม.ศ.)","พุทธศักราช (พ.ศ.)"], "ร.ศ. 1 คือปีที่ตั้งกรุงรัตนโกสินทร์ (พ.ศ. 2325)"),
+      () => qs(`ชาวมุสลิมใช้ศักราชใด?`, "ฮิจเราะห์ศักราช (ฮ.ศ.)", ["จุลศักราช (จ.ศ.)","คริสต์ศักราช (ค.ศ.)","มหาศักราช (ม.ศ.)"], "ฮ.ศ. เริ่มนับจากปีที่ศาสดามุฮัมมัดอพยพจากนครมักกะฮ์ไปนครมะดีนะฮ์"),
+      () => qs(`ลายสือไทยประดิษฐ์ขึ้นเมื่อ ม.ศ. 1205 ตรงกับ พ.ศ. อะไร?`, "พ.ศ. 1826", ["พ.ศ. 1205","พ.ศ. 2386","พ.ศ. 1726"], "พ.ศ. = ม.ศ. + 621 → 1205 + 621 = 1826"),
+      () => qs(`เหตุการณ์ "วิกฤตการณ์ ร.ศ. 112" ตรงกับ พ.ศ. อะไร?`, "พ.ศ. 2436", ["พ.ศ. 2336","พ.ศ. 1293","พ.ศ. 2446"], "พ.ศ. = ร.ศ. + 2324 → 112 + 2324 = 2436")
+    ])()
+  ])()
+};
+
+KIT.mount({
+  key:"h4-era", title:"ไทม์แมชชีนศักราช", subtitle:"ประวัติศาสตร์ ป.4 · การนับและเทียบศักราช",
+  heroHTML:"หมุน<em>ไทม์แมชชีน</em>ข้ามศักราช ⏳", heroDesc:"ฝึกนับเวลาเป็นทศวรรษ ศตวรรษ และเทียบศักราช พ.ศ. ค.ศ. จ.ศ. ร.ศ. ม.ศ. ฮ.ศ.",
+  progIcon:"⏳",
+  howto:["อ่านโจทย์แล้วเลือกคำตอบที่ถูก","ตอบผิดจะมีคำใบ้วิธีคิด แล้วลองใหม่ได้","ตอบถูกครั้งแรกได้ 100 ตอบถูกครั้งถัดไปได้ 50","ครบ 10 ข้อผ่านด่าน"],
+  note:"สูตรเทียบศักราช: พ.ศ. = ค.ศ. + 543 = จ.ศ. + 1,181 = ร.ศ. + 2,324 = ม.ศ. + 621 = ฮ.ศ. + 1,122",
+  levels:{
+    1:{pill:"10 ข้อ", color:"var(--green)", desc:"ทศวรรษ ศตวรรษ สหัสวรรษ"},
+    2:{pill:"10 ข้อ", color:"var(--blue)", desc:"เทียบ พ.ศ. กับ ค.ศ."},
+    3:{pill:"10 ข้อ", color:"var(--purple)", desc:"จ.ศ. ร.ศ. ม.ศ. ฮ.ศ. และเหตุการณ์จริง"}
+  },
+  play(level, ctx){
+    ctx.stage.innerHTML = `<div class="tm" id="tm">⏳</div><div class="dial" id="dl"></div><div id="host"></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let idx = 0, last = "";
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===1 ? 100 : 140}); return; }
+      let item, g = 0; do { item = GEN[level](); } while (item.html === last && g++ < 10); last = item.html;
+      const y = String(item.year || [2,5,6,9].join(""));
+      $("#dl").innerHTML = y.split("").map(d => `<span>${d}</span>`).join("");
+      const tm = $("#tm"); tm.classList.remove("go"); void tm.offsetWidth; tm.classList.add("go");
+      const pre = item.pre || "";
+      KIT.mcq(ctx, $("#host"), { label:`ข้อ ${idx+1} จาก ${N}`, html:item.html, options:item.options.map(o => /^\d/.test(o) ? pre + o : o), answer:item.answer, cols:2, explain:item.explain,
+        onNext(){ idx++; ctx.progress(idx, N); next(); } });
+    }
+    ctx.progress(0, N); ctx.say("ออกเดินทางข้ามเวลากัน!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

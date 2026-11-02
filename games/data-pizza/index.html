@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>พิซซ่าข้อมูล</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.chart{background:var(--card);border-radius:22px;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);padding:10px;display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.chart svg{width:min(260px,70vw);height:auto}
+.legend{display:flex;flex-direction:column;gap:6px;font-weight:700}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend i{width:18px;height:18px;border-radius:5px;display:inline-block}
+.ttl{text-align:center;font-weight:700;color:var(--ink-soft)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice svg{width:100%;max-width:150px;height:auto;display:block;margin:0 auto}
+table.dt{border-collapse:collapse;margin:8px auto 0;font-variant-numeric:tabular-nums}
+table.dt th,table.dt td{border:2px solid var(--line);padding:5px 10px;text-align:center}
+table.dt th{background:#FFF1DD}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const COLORS = ["#F2A65A","#86B6F0","#7FD39A","#F2A7B8","#B7A4EE","#F6CD6B"];
+const THEMES = [
+  {t:"วิธีเดินทางมาโรงเรียน", items:["เดิน","จักรยาน","รถโรงเรียน","ผู้ปกครองมาส่ง","รถเมล์"]},
+  {t:"กีฬาที่ชอบ", items:["ฟุตบอล","แบดมินตัน","วอลเลย์บอล","ว่ายน้ำ","บาสเกตบอล"]},
+  {t:"ผลไม้ที่ชอบ", items:["มะม่วง","ทุเรียน","แตงโม","ส้ม","กล้วย"]},
+  {t:"การใช้เงินค่าขนมใน 1 สัปดาห์", items:["ซื้อขนม","ออมเงิน","ซื้ออุปกรณ์การเรียน","ค่าเดินทาง","อื่น ๆ"]}
+];
+function data(k){
+  const T = pick(THEMES), items = shuffle(T.items.slice()).slice(0,k);
+  let ps; do { const cuts = shuffle(Array.from({length:19},(_,i)=>(i+1)*5)).slice(0,k-1).sort((a,b)=>a-b); ps = [cuts[0], ...cuts.slice(1).map((c,i)=>c-cuts[i]), 100-cuts[k-2]]; } while (new Set(ps).size < k || Math.min(...ps) < 5);
+  return {title:T.t, items:items.map((n,i)=>({n, p:ps[i], c:COLORS[i]}))};
+}
+function pie(D, showPct=true, size=260){
+  const cx = 130, cy = 130, r = 120; let a = -90, s = `<svg viewBox="0 0 260 260" role="img" aria-label="แผนภูมิรูปวงกลม ${D.title}">`;
+  D.items.forEach(it => { const sweep = it.p*3.6, a1 = a + sweep, big = sweep > 180 ? 1 : 0;
+    const p0 = [cx + r*Math.cos(a*Math.PI/180), cy + r*Math.sin(a*Math.PI/180)], p1 = [cx + r*Math.cos(a1*Math.PI/180), cy + r*Math.sin(a1*Math.PI/180)];
+    s += `<path d="M${cx},${cy} L${p0[0].toFixed(1)},${p0[1].toFixed(1)} A${r},${r} 0 ${big} 1 ${p1[0].toFixed(1)},${p1[1].toFixed(1)} Z" fill="${it.c}" stroke="#fff" stroke-width="3"/>`;
+    if (showPct){ const m = (a + a1)/2*Math.PI/180; s += `<text x="${cx + r*0.62*Math.cos(m)}" y="${cy + r*0.62*Math.sin(m)}" text-anchor="middle" dominant-baseline="middle" font-size="${it.p < 10 ? 14 : 19}" font-weight="700" fill="#3a2b22" font-family="Mali">${it.p}%</text>`; }
+    a = a1; });
+  return s + `</svg>`;
+}
+const legend = D => `<div class="legend">${D.items.map(it=>`<span><i style="background:${it.c}"></i>${it.n}</span>`).join("")}</div>`;
+const view = (D, show=true) => `<div class="ttl">${D.title} (ข้อมูลตัวอย่าง)</div><div class="chart">${pie(D, show)}${legend(D)}</div>`;
+function numOpts(ans, w){ const set = [...new Set(w.filter(v => v > 0 && v !== ans))]; const l = shuffle([ans, ...shuffle(set).slice(0,3)]); let g=0; while (l.length<4 && g++<40){ const v = ans + rand(1,4)*5; if (!l.includes(v)) l.push(v); } shuffle(l); return l; }
+
+KIT.mount({
+  key:"p6-pie", title:"พิซซ่าข้อมูล", subtitle:"คณิตศาสตร์ ป.6 · บทที่ 10 การนำเสนอข้อมูล",
+  heroHTML:"แบ่ง<em>พิซซ่าข้อมูล</em>ให้ถูกชิ้น 🍕", heroDesc:"อ่านแผนภูมิรูปวงกลม คำนวณจำนวนจริงจากร้อยละ และหาขนาดมุมของแต่ละชิ้น",
+  progIcon:"🍕",
+  howto:["อ่านแผนภูมิรูปวงกลมแล้วแตะคำตอบหรือกดตัวเลข","วงกลมทั้งวง = 100% = 360°","จำนวนจริง = ร้อยละ × จำนวนทั้งหมด ÷ 100","ขนาดมุมของชิ้น = ร้อยละ × 3.6°"],
+  levels:{
+    1:{pill:"8 ข้อ", color:"var(--green)", desc:"อ่านแผนภูมิรูปวงกลม มากที่สุด น้อยที่สุด รวมกัน"},
+    2:{pill:"8 ข้อ", color:"var(--blue)", desc:"หาจำนวนจริงจากร้อยละ และหาจำนวนทั้งหมด"},
+    3:{pill:"8 ข้อ", color:"var(--purple)", desc:"ขนาดมุมของชิ้น เลือกแผนภูมิที่ถูก และเปรียบเทียบ 2 กลุ่ม"}
+  },
+  play(level, ctx){
+    let idx = 0, D = null;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ข้อ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===1 ? 110 : 200}); return; }
+      if (idx % 3 === 0) D = data(rand(3,5));
+      const host = () => ctx.stage.querySelector("#q");
+      const it = D.items;
+      if (level === 1){
+        const t = rand(0,3); ctx.stage.innerHTML = view(D) + `<div id="q"></div>`;
+        if (t < 2){ const most = t === 0; const ps = it.map(x=>x.p), v = most ? Math.max(...ps) : Math.min(...ps); const names = it.map(x=>x.n);
+          KIT.mcq(ctx, host(), {label:lbl(), html:`ข้อใดมีคนเลือก<b>${most?"มากที่สุด":"น้อยที่สุด"}</b>`, options:names, answer:ps.indexOf(v), cols:names.length > 4 ? 2 : 2, onNext:done}); }
+        else if (t === 2){ const [a,b] = shuffle(it.slice()).slice(0,2); const l = numOpts(a.p+b.p, [Math.abs(a.p-b.p), a.p+b.p+5, 100-(a.p+b.p)]);
+          KIT.mcq(ctx, host(), {label:lbl(), html:`${a.n} กับ ${b.n} รวมกันคิดเป็นกี่เปอร์เซ็นต์`, options:l.map(v=>v+"%"), answer:l.indexOf(a.p+b.p), onNext:done}); }
+        else { const [a,b] = shuffle(it.slice()).slice(0,2).sort((x,y)=>y.p-x.p); const d = a.p-b.p; const l = numOpts(d, [a.p+b.p, d+5, a.p]);
+          KIT.mcq(ctx, host(), {label:lbl(), html:`${a.n} มากกว่า ${b.n} กี่เปอร์เซ็นต์`, options:l.map(v=>v+"%"), answer:l.indexOf(d), onNext:done}); }
+        return;
+      }
+      if (level === 2){
+        const total = pick([20,40,60,80,100,120,200,300,400]);
+        const x = pick(it.filter(x => (x.p*total) % 100 === 0)) || null;
+        if (!x){ D = data(rand(3,4)); return next(); }
+        ctx.stage.innerHTML = view(D) + `<div id="q"></div>`;
+        if (Math.random() < .6) KIT.keypad(ctx, host(), {label:lbl(), html:`ถ้ามีนักเรียนตอบทั้งหมด <b>${total} คน</b> เลือก${x.n}กี่คน`, unit:"คน", answer:x.p*total/100, hint:`${x.p} × ${total} ÷ 100`, onNext:done});
+        else KIT.keypad(ctx, host(), {label:lbl(), html:`มีนักเรียนเลือก${x.n} <b>${x.p*total/100} คน</b> นักเรียนที่ตอบทั้งหมดมีกี่คน`, unit:"คน", answer:total, hint:`${x.p}% คือ ${x.p*total/100} คน ลองหาว่า 1% คือกี่คน แล้วคูณ 100`, onNext:done});
+        return;
+      }
+      const t = idx % 3;
+      if (t === 0){ const x = pick(it); ctx.stage.innerHTML = view(D) + `<div id="q"></div>`;
+        KIT.keypad(ctx, host(), {label:lbl(), html:`ชิ้นของ${x.n}มีขนาดมุมที่จุดศูนย์กลางกี่องศา`, unit:"องศา", answer:x.p*3.6, decimal:true, hint:`${x.p}% ของ 360° = ${x.p} × 3.6`, onNext:done}); }
+      else if (t === 1){
+        const total = 20 * rand(1,5);
+        const ok = D.items.every(x => (x.p*total) % 100 === 0) ? total : 100;
+        const counts = D.items.map(x => x.p*ok/100);
+        const wrong1 = {title:D.title, items:D.items.map((x,i) => ({...x, p:D.items[(i+1)%D.items.length].p}))};
+        const sw = shuffle(D.items.map(x=>x.p)); const wrong2 = {title:D.title, items:D.items.map((x,i) => ({...x, p: sw[i]}))};
+        const same = (A,B) => A.items.every((x,i)=>x.p===B.items[i].p);
+        const cands = [D, wrong1]; if (!same(wrong2, D) && !same(wrong2, wrong1)) cands.push(wrong2);
+        const order = shuffle(cands.map((c,i)=>i));
+        ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl()}</div><div class="qtext" style="font-size:1.1rem">${D.title} (ข้อมูลตัวอย่าง) จากนักเรียน ${ok} คน</div>
+          <table class="dt"><tr>${D.items.map(x=>`<th><i style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${x.c}"></i> ${x.n}</th>`).join("")}</tr><tr>${counts.map(c=>`<td>${c} คน</td>`).join("")}</tr></table></div><div id="q"></div>`;
+        KIT.mcq(ctx, host(), {label:"", html:"แผนภูมิรูปวงกลมใดแสดงข้อมูลในตารางได้ถูกต้อง", options:order.map(i => pie(cands[i], false)), answer:order.indexOf(0), cols:order.length, explain:"เทียบสีของแต่ละชิ้นกับจำนวนในตาราง ชิ้นใหญ่ต้องเป็นรายการที่มีคนมาก", onNext:done});
+      } else {
+        const x = pick(it), tA = pick([40,60,80,100]), tB = pick([100,200,300,400].filter(v=>v!==tA)), pB = pick([5,10,15,20,25,30].filter(v=>v!==x.p));
+        if ((x.p*tA) % 100 || (pB*tB) % 100) return next();
+        const a = x.p*tA/100, b = pB*tB/100;
+        if (a === b) return next();
+        ctx.stage.innerHTML = view(D) + `<div id="q"></div>`;
+        KIT.keypad(ctx, host(), {label:lbl(), html:`แผนภูมินี้มาจากห้อง ก (${tA} คน) ส่วนห้อง ข มี ${tB} คน เลือก${x.n} ${pB}%<br>ห้องไหนเลือก${x.n}มากกว่า และมากกว่ากี่คน (ตอบเป็นจำนวนคนที่ต่างกัน)`, unit:"คน", answer:Math.abs(a-b), hint:`ห้อง ก: ${x.p}% ของ ${tA} · ห้อง ข: ${pB}% ของ ${tB} แล้วหาผลต่าง`, onNext:done});
+      }
+    }
+    ctx.progress(0, N); ctx.say("พิซซ่าข้อมูลพร้อมเสิร์ฟ!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

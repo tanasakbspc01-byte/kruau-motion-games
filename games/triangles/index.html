@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สามเหลี่ยมมนุษย์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.fig{background:#FFF4F7;border-radius:22px;border:3px solid #F6D3DD;box-shadow:0 5px 0 #F6D3DD;padding:8px;display:flex;justify-content:center}
+.fig svg{width:100%;max-width:560px;height:auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.vtx{cursor:grab}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8, R = Math.PI/180;
+const C = 36, COLS = 14, ROWS = 9, M = 22, W = COLS*C + 2*M, H = ROWS*C + 2*M;
+const gx = x => M + x*C, gy = y => M + y*C;
+const ink = "#4A3A30";
+function dots(){ let s = ""; for (let x=0;x<=COLS;x++) for (let y=0;y<=ROWS;y++) s += `<circle cx="${gx(x)}" cy="${gy(y)}" r="2.6" fill="#E9B7C6"/>`; return s; }
+const T = (x,y,t,col=ink,size=19) => `<text x="${x}" y="${y}" font-size="${size}" font-weight="700" fill="${col}" font-family="Mali" text-anchor="middle" dominant-baseline="middle" paint-order="stroke" stroke="#FFF4F7" stroke-width="6">${t}</text>`;
+/* free-form triangle with angle labels A,B,C in degrees (sum 180), drawn by law of sines */
+function triByAngles(a, b, labels){
+  const c = 180 - a - b, base = 300;
+  const P = [60, 250], Q = [60 + base, 250];
+  const side = base * Math.sin(b*R) / Math.sin(c*R);
+  const Rp = [P[0] + side*Math.cos(a*R), P[1] - side*Math.sin(a*R)];
+  const pts = [P, Q, Rp];
+  const xs = pts.map(p=>p[0]), ys = pts.map(p=>p[1]);
+  const minX = Math.min(...xs) - 50, maxX = Math.max(...xs) + 50, minY = Math.min(...ys) - 40, maxY = Math.max(...ys) + 40;
+  let s = `<svg viewBox="${minX} ${minY} ${maxX-minX} ${maxY-minY}" role="img" aria-label="รูปสามเหลี่ยม"><polygon points="${pts.map(p=>p.join(",")).join(" ")}" fill="#F6CD6B" fill-opacity=".7" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>`;
+  const cen = [(P[0]+Q[0]+Rp[0])/3, (P[1]+Q[1]+Rp[1])/3];
+  pts.forEach((p,i) => { if (labels[i] == null) return; const dx = cen[0]-p[0], dy = cen[1]-p[1], L = Math.hypot(dx,dy); s += T(p[0] + dx/L*38, p[1] + dy/L*38, labels[i], i===2 && String(labels[i]).includes("x") ? "#E8708F" : "#3E6EA8", 18); });
+  return s + "</svg>";
+}
+function triBySides(kind){
+  // returns svg with side labels
+  let a, b, c;
+  if (kind === "ด้านเท่า"){ a = b = c = rand(4,9); }
+  else if (kind === "หน้าจั่ว"){ a = b = rand(5,9); do { c = rand(3,12); } while (c === a || c >= 2*a); }
+  else { do { a = rand(4,9); b = rand(4,9); c = rand(4,9); } while (a===b || b===c || a===c || a+b<=c || a+c<=b || b+c<=a); }
+  // place base c horizontal, apex from a, b (law of cosines)
+  const s = 30, cx = c*s, xA = (b*b - a*a + c*c) / (2*c) * s, yA = Math.sqrt(Math.max(1, (b*s)**2 - xA*xA));
+  const P = [0,0], Q = [cx,0], A = [xA, -yA];
+  const pts = [P,Q,A], xs = pts.map(p=>p[0]), ys = pts.map(p=>p[1]);
+  const minX = Math.min(...xs)-60, maxX = Math.max(...xs)+60, minY = Math.min(...ys)-30, maxY = Math.max(...ys)+40;
+  const mid = (u,v) => [(u[0]+v[0])/2, (u[1]+v[1])/2];
+  const cen = [(P[0]+Q[0]+A[0])/3, (P[1]+Q[1]+A[1])/3];
+  const lab = (u,v,t) => { const m = mid(u,v), dx = m[0]-cen[0], dy = m[1]-cen[1], L = Math.hypot(dx,dy)||1; return T(m[0]+dx/L*24, m[1]+dy/L*24, t, "#3E6EA8", 17); };
+  return `<svg viewBox="${minX} ${minY} ${maxX-minX} ${maxY-minY}" role="img" aria-label="รูปสามเหลี่ยม"><polygon points="${pts.map(p=>p.join(",")).join(" ")}" fill="#86D9C2" fill-opacity=".7" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>${lab(P,Q,c+" ซม.")}${lab(Q,A,a+" ซม.")}${lab(A,P,b+" ซม.")}</svg>`;
+}
+const cross = (o,a,b) => (a[0]-o[0])*(b[1]-o[1]) - (a[1]-o[1])*(b[0]-o[0]);
+const dot = (o,a,b) => (a[0]-o[0])*(b[0]-o[0]) + (a[1]-o[1])*(b[1]-o[1]);
+function angleKind(P){ let right = false, obtuse = false; for (let i=0;i<3;i++){ const d = dot(P[i], P[(i+1)%3], P[(i+2)%3]); if (d === 0) right = true; if (d < 0) obtuse = true; } return right ? "ฉาก" : obtuse ? "ป้าน" : "แหลม"; }
+
+KIT.mount({
+  key:"p6-triangle", title:"สามเหลี่ยมมนุษย์", subtitle:"คณิตศาสตร์ ป.6 · บทที่ 6 รูปสามเหลี่ยม",
+  heroHTML:"สร้าง<em>สามเหลี่ยม</em>ตามโจทย์ 🔺", heroDesc:"จำแนกรูปสามเหลี่ยม หามุมที่หายไป ลากจุดยอดสร้างสามเหลี่ยม และหาพื้นที่",
+  progIcon:"🔺",
+  howto:["ข้อที่มีจุดยอดสีชมพู 3 จุด: ลากจุดยอดไปวางบนตารางจุด แล้วกด \"ส่งงาน\"","ข้ออื่นแตะคำตอบหรือกดตัวเลข","มุมภายในของสามเหลี่ยมรวมกันได้ 180°","พื้นที่สามเหลี่ยม = ½ × ฐาน × สูง"],
+  note:"เวอร์ชันนี้ลากจุดบนจอแทนการใช้มือของเพื่อน 3 คนหน้ากล้อง",
+  levels:{
+    1:{pill:"8 ข้อ", color:"var(--green)", desc:"จำแนกสามเหลี่ยมตามมุมและตามด้าน"},
+    2:{pill:"8 ข้อ", color:"var(--blue)", desc:"หามุมที่หายไป และลากสร้างสามเหลี่ยมตามชนิด"},
+    3:{pill:"8 ข้อ", color:"var(--purple)", desc:"พื้นที่สามเหลี่ยม และสร้างสามเหลี่ยมตามพื้นที่"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ข้อ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===1 ? 110 : 220}); return; }
+      if (level === 1) return idx % 2 === 0 ? byAngle() : bySide();
+      if (level === 2) return idx % 2 === 0 ? missing() : build("kind");
+      return idx % 2 === 0 ? area() : build("area");
+    }
+    function byAngle(){
+      const k = pick(["แหลม","ฉาก","ป้าน"]);
+      let a, b; if (k === "แหลม"){ do { a = rand(50,80); b = rand(50,80); } while (180-a-b >= 90 || 180-a-b < 25); }
+      else if (k === "ฉาก"){ a = rand(30,60); b = 90; } else { a = rand(20,35); b = rand(20,35); }
+      const c = 180-a-b, labs = shuffle([a,b,c]).map(v => v + "°");
+      ctx.stage.innerHTML = `<div class="fig">${triByAngles(...(k==="ฉาก"?[a,b]:[a,b]), [a+"°", b+"°", c+"°"])}</div><div id="q"></div>`;
+      const opts = ["สามเหลี่ยมมุมแหลม","สามเหลี่ยมมุมฉาก","สามเหลี่ยมมุมป้าน"];
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"จำแนกตามขนาดของมุม รูปนี้คือสามเหลี่ยมชนิดใด", options:opts, answer:opts.indexOf("สามเหลี่ยมมุม"+k), cols:1, explain:"ดูมุมที่ใหญ่ที่สุด: น้อยกว่า 90° = มุมแหลม · 90° = มุมฉาก · มากกว่า 90° = มุมป้าน", onNext:done});
+    }
+    function bySide(){
+      const k = pick(["ด้านเท่า","หน้าจั่ว","ด้านไม่เท่า"]);
+      ctx.stage.innerHTML = `<div class="fig">${triBySides(k)}</div><div id="q"></div>`;
+      const opts = ["สามเหลี่ยมด้านเท่า","สามเหลี่ยมหน้าจั่ว","สามเหลี่ยมด้านไม่เท่า"];
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"จำแนกตามความยาวของด้าน รูปนี้คือสามเหลี่ยมชนิดใด", options:opts, answer:opts.indexOf("สามเหลี่ยม"+k), cols:1, onNext:done});
+    }
+    function missing(){
+      const t = rand(0,2);
+      if (t === 0){ let a, b; do { a = rand(25,95); b = rand(25,95); } while (a+b >= 160); const x = 180-a-b;
+        ctx.stage.innerHTML = `<div class="fig">${triByAngles(a, b, [a+"°", b+"°", "x"])}</div><div id="q"></div>`;
+        KIT.keypad(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"มุม x มีขนาดกี่องศา", unit:"องศา", answer:x, hint:"มุมภายในรวมกันได้ 180° ลบมุมที่รู้ออก", onNext:done}); }
+      else if (t === 1){ const apex = rand(4,28)*5, base = (180-apex)/2;
+        KIT.keypad(ctx, ctx.stage, {label:lbl(), html:`สามเหลี่ยมหน้าจั่วมีมุมยอด ${apex}° มุมที่ฐานแต่ละมุมมีขนาดกี่องศา`, unit:"องศา", answer:base, decimal:true, hint:"มุมที่ฐานของสามเหลี่ยมหน้าจั่วเท่ากันสองมุม (180 − มุมยอด) ÷ 2", onNext:done}); }
+      else { const a = rand(20,70);
+        ctx.stage.innerHTML = `<div class="fig">${triByAngles(90, a, ["90°", a+"°", "x"])}</div><div id="q"></div>`;
+        KIT.keypad(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"สามเหลี่ยมมุมฉาก มุม x มีขนาดกี่องศา", unit:"องศา", answer:90-a, hint:"มุมแหลมสองมุมของสามเหลี่ยมมุมฉากรวมกันได้ 90°", onNext:done}); }
+    }
+    function area(){
+      const b = rand(3,12), h = rand(2,9), t = rand(0,2);
+      if (t === 2){ const bb = rand(6,20), hh = rand(4,16) * 2 / (bb % 2 ? 2 : 1);
+        KIT.keypad(ctx, ctx.stage, {label:lbl(), html:`ธงรูปสามเหลี่ยม ฐานยาว ${bb} ซม. สูง ${hh} ซม. มีพื้นที่กี่ตารางเซนติเมตร`, unit:"ตร.ซม.", answer:bb*hh/2, decimal:true, hint:"พื้นที่ = ½ × ฐาน × สูง", onNext:done}); return; }
+      const bw = Math.min(b, 8), hw = Math.min(h, 6), off = t === 0 ? rand(0, bw) : bw + rand(1,2);
+      const x0 = 2, y0 = 7;
+      const P = [x0, y0], Q = [x0+bw, y0], A = [x0 + (t===0 ? off : off), y0 - hw];
+      let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="สามเหลี่ยมพร้อมฐานและความสูง">${dots()}<polygon points="${[P,Q,A].map(p=>gx(p[0])+","+gy(p[1])).join(" ")}" fill="#F6CD6B" fill-opacity=".75" stroke="${ink}" stroke-width="4"/>`;
+      s += `<line x1="${gx(A[0])}" y1="${gy(A[1])}" x2="${gx(A[0])}" y2="${gy(y0)}" stroke="#E8708F" stroke-width="3" stroke-dasharray="7 5"/>`;
+      if (A[0] > x0 + bw) s += `<line x1="${gx(x0+bw)}" y1="${gy(y0)}" x2="${gx(A[0])}" y2="${gy(y0)}" stroke="#E8708F" stroke-width="2" stroke-dasharray="4 4"/>`;
+      s += T(gx(x0 + bw/2), gy(y0)+22, `ฐาน ${b} ซม.`, "#3E6EA8", 17) + T(gx(A[0]) + 52, gy(y0 - hw/2), `สูง ${h} ซม.`, "#E8708F", 17) + "</svg>";
+      ctx.stage.innerHTML = `<div class="fig">${s}</div><div id="q"></div>`;
+      KIT.keypad(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"สามเหลี่ยมนี้มีพื้นที่กี่ตารางเซนติเมตร" + (t===1 ? " (ความสูงอยู่นอกรูป)" : ""), unit:"ตร.ซม.", answer:b*h/2, decimal:true, hint:"พื้นที่ = ½ × ฐาน × สูง (ใช้เส้นประสีชมพูเป็นความสูง)", onNext:done});
+    }
+    function build(mode){
+      let goal, test, hint;
+      if (mode === "kind"){
+        const k = pick(["ฉาก","ป้าน","แหลม"]);
+        goal = `ลากจุดยอดให้เป็น <b>สามเหลี่ยมมุม${k}</b>`; test = P => angleKind(P) === k; hint = P => `ตอนนี้เป็นสามเหลี่ยมมุม${angleKind(P)}`;
+      } else {
+        const A = pick([3,4,5,6,7.5,8,9,10,12,15]);
+        goal = `ลากจุดยอดให้เป็นสามเหลี่ยมที่มี<b>พื้นที่ ${A} ตารางหน่วย</b> (1 ช่อง = 1 ตารางหน่วย)`; test = P => Math.abs(cross(...P))/2 === A; hint = P => `ตอนนี้พื้นที่ ${Math.abs(cross(...P))/2} ตารางหน่วย`;
+      }
+      const P = [[2,7],[6,7],[3,3]];
+      let first = true, lock = false, drag = -1;
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl()} · ลากจุดสีชมพู</div><div class="qtext">${goal}</div></div>
+        <div class="fig"><svg viewBox="0 0 ${W} ${H}" id="g" role="application" aria-label="ตารางจุดสำหรับสร้างสามเหลี่ยม">${dots()}<polygon id="tri" fill="#F6CD6B" fill-opacity=".7" stroke="${ink}" stroke-width="4"/>${[0,1,2].map(i=>`<circle class="vtx" data-i="${i}" r="13" fill="#E8708F" stroke="#fff" stroke-width="3"/>`).join("")}</svg></div>
+        <div class="row"><button class="btn" type="button" id="send">ส่งงาน</button></div>`;
+      const svg = ctx.stage.querySelector("#g"), tri = ctx.stage.querySelector("#tri"), vs = [...svg.querySelectorAll(".vtx")];
+      const draw = () => { tri.setAttribute("points", P.map(p => gx(p[0])+","+gy(p[1])).join(" ")); vs.forEach((v,i) => { v.setAttribute("cx", gx(P[i][0])); v.setAttribute("cy", gy(P[i][1])); }); };
+      draw();
+      const toG = e => { const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const p = pt.matrixTransform(svg.getScreenCTM().inverse()); return [Math.max(0, Math.min(COLS, Math.round((p.x-M)/C))), Math.max(0, Math.min(ROWS, Math.round((p.y-M)/C)))]; };
+      svg.addEventListener("pointerdown", e => { if (lock) return; const g = toG(e);
+        let best = -1, bd = 1e9; P.forEach((p,i) => { const d = Math.hypot(p[0]-g[0], p[1]-g[1]); if (d < bd){ bd = d; best = i; } });
+        drag = best; svg.setPointerCapture(e.pointerId); P[drag] = g; draw(); });
+      svg.addEventListener("pointermove", e => { if (drag < 0 || lock) return; const g = toG(e); if (g[0] !== P[drag][0] || g[1] !== P[drag][1]){ P[drag] = g; draw(); } });
+      svg.addEventListener("pointerup", () => drag = -1);
+      ctx.stage.querySelector("#send").onclick = () => {
+        if (lock) return;
+        if (cross(...P) === 0){ ctx.say("จุดทั้งสามอยู่บนเส้นตรงเดียวกัน ยังไม่เป็นสามเหลี่ยม"); return; }
+        if (test(P)){ lock = true; tri.setAttribute("fill", "#7FD39A"); ctx.correct(first?120:60, "สร้างสามเหลี่ยมได้ถูกต้อง!"); ctx.after(1000, done); }
+        else { first = false; ctx.wrong("ยังไม่ใช่ " + hint(P)); }
+      };
+    }
+    ctx.progress(0, N); ctx.say("พร้อมสร้างสามเหลี่ยมหรือยัง?");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

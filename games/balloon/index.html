@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ยิงบอลลูนทศนิยม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.sky{position:relative;height:clamp(360px,56vh,520px);border-radius:24px;overflow:hidden;background:linear-gradient(#BFE3FF,#E6F4FF 70%,#FFF6E8);box-shadow:0 6px 0 #9CC8EE;touch-action:manipulation}
+.sky::after{content:"";position:absolute;left:0;right:0;bottom:0;height:40px;background:#A8DB8F;border-radius:60% 60% 0 0/40% 40% 0 0}
+.bal{position:absolute;width:clamp(80px,17vw,112px);transform:translate(-50%,0);border:none;background:none;padding:0;z-index:1}
+.bal .body{position:relative;width:100%;aspect-ratio:.86;border-radius:50% 50% 48% 48%;display:grid;place-items:center;font-weight:700;font-size:clamp(1rem,3vw,1.4rem);color:#3a2b22;font-variant-numeric:tabular-nums;box-shadow:inset -8px -10px 0 rgba(0,0,0,.08)}
+.bal .body::before{content:"";position:absolute;left:22%;top:14%;width:16%;height:22%;border-radius:50%;background:rgba(255,255,255,.65)}
+.bal svg{display:block;margin:-2px auto 0;width:20px;height:44px}
+.bal.popped{animation:burst .25s forwards}
+.bal.bonk .body{animation:shake .4s}
+@keyframes burst{to{transform:translate(-50%,0) scale(1.5);opacity:0}}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, frac} = KIT;
+const N = 10;
+const COLORS = ["#F6CD6B","#F2A7B8","#86D9C2","#B7A4EE","#F2A65A","#9CC8F5"];
+/* numbers kept as integer thousandths to avoid floating point slips */
+const show = t => { const s = (t/1000).toFixed(3).replace(/0+$/,"").replace(/\.$/,""); return Number(s).toLocaleString("en-US", {maximumFractionDigits:3}); };
+function shifts(t){
+  return KIT.numOptions(t, [ v => v*10, v => Math.round(v/10), v => v + pick([1,-1])*pick([100,10,1000]), v => v + pick([1,-1])*pick([10,100]) ], 6).filter(v => v !== t && v > 0);
+}
+const GEN = {
+  1: () => {
+    const k = rand(0,2);
+    if (k===0){ const n = rand(1,99); return {q:`${frac(n,10)} เขียนเป็นทศนิยมได้เท่าใด`, ans:n*100}; }
+    if (k===1){ const n = rand(1,999); return {q:`${frac(n,100)} เขียนเป็นทศนิยมได้เท่าใด`, ans:n*10}; }
+    const n = rand(1,999); return {q:`${frac(n,1000)} เขียนเป็นทศนิยมได้เท่าใด`, ans:n};
+  },
+  2: () => {
+    const k = rand(0,3);
+    if (k===0){ const a = rand(11,999)*10, b = rand(2,9); return {q:`${show(a)} × ${b}`, ans:a*b}; }
+    if (k===1){ const b = rand(2,9), q = rand(11,499)*10; return {q:`${show(q*b)} ÷ ${b}`, ans:q}; }
+    if (k===2){ const a = rand(101,9999), m = pick([10,100,1000]); if (a*m > 9999000) return GEN[2](); return {q:`${show(a)} × ${m.toLocaleString("en-US")}`, ans:a*m}; }
+    const a = rand(11,999)*100, m = pick([10,100]); return {q:`${show(a)} ÷ ${m}`, ans:a/m};
+  },
+  3: () => {
+    const k = rand(0,4);
+    if (k===0){ const g = rand(105,9950); return {q:`${show(g)} กิโลกรัม = ? กรัม`, ans:g*1000, unit:""}; }
+    if (k===1){ const ml = rand(25,2950); return {q:`${ml.toLocaleString("en-US")} มิลลิลิตร = ? ลิตร`, ans:ml}; }
+    if (k===2){ const cm = rand(105,999); return {q:`${show(cm*10)} เมตร = ? เซนติเมตร`, ans:cm*1000}; }
+    if (k===3){ const n = rand(2,5), each = rand(105,395)*10, used = rand(100, n*each/10 - 20)*10; return {q:`ซื้อผ้า ${n} ผืน ผืนละ ${show(each)} เมตร ใช้ไป ${show(used)} เมตร เหลือผ้ากี่เมตร`, ans:n*each-used}; }
+    const p = rand(105,895)*10, n = rand(2,4), pay = Math.ceil(p*n/100000)*100000 + (Math.random()<.5?0:100000);
+    return {q:`ซื้อขนม ${n} ชิ้น ชิ้นละ ${show(p)} บาท จ่ายเงิน ${show(pay)} บาท ได้เงินทอนกี่บาท`, ans:pay - p*n};
+  }
+};
+function gen(level){ let g; do { g = GEN[level](); } while (!g || g.ans <= 0); return g; }
+
+KIT.mount({
+  key:"p5-balloon", title:"ยิงบอลลูนทศนิยม", subtitle:"คณิตศาสตร์ ป.5 · บทที่ 2 ทศนิยม",
+  heroHTML:"ยิง<em>บอลลูน</em>ที่เป็นคำตอบ 🎈", heroDesc:"บอลลูนตัวเลขลอยขึ้นฟ้า แตะยิงลูกที่เป็นคำตอบ ยิงถูกติดกันได้คอมโบ",
+  progIcon:"🎈",
+  howto:["อ่านโจทย์แล้วคิดคำตอบเป็นทศนิยม","แตะบอลลูนที่เป็นคำตอบเพื่อยิง","ยิงผิดเสีย 10 คะแนน","บอลลูนคำตอบจะลอยมาเรื่อย ๆ ไม่ต้องรีบจนพลาด"],
+  levels:{
+    1:{pill:"10 ข้อ", color:"var(--green)", desc:"เศษส่วนที่ตัวส่วนเป็น 10, 100, 1,000 ↔ ทศนิยม"},
+    2:{pill:"10 ข้อ", color:"var(--blue)", desc:"คูณ หาร ทศนิยมกับจำนวนนับ และด้วย 10, 100, 1,000"},
+    3:{pill:"10 ข้อ", color:"var(--purple)", desc:"ทศนิยมกับหน่วยวัด และโจทย์ปัญหา 2 ขั้นตอน"}
+  },
+  play(level, ctx){
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext" id="qt"></div></div><div class="sky" id="sky"></div>`;
+    const sky = ctx.stage.querySelector("#sky");
+    const COUNT = 5, speed = level===3 ? 34 : 44;
+    let idx = 0, cur = null, wrongs = [], bals = [], raf = 0, last = 0, busy = false;
+    const STRING = `<svg viewBox="0 0 20 44" aria-hidden="true"><path d="M10 0 l-4 6 h8 z" fill="#8A7466"/><path d="M10 6 q-6 10 0 19 q6 9 0 19" stroke="#8A7466" stroke-width="1.5" fill="none"/></svg>`;
+    function setVal(b, v){ b.val = v; b.el.querySelector(".body").textContent = show(v); b.el.setAttribute("aria-label", "บอลลูน " + show(v)); }
+    function respawn(b){
+      const has = bals.some(o => o !== b && o.val === cur.ans && o.y > -40);
+      setVal(b, has ? pick(wrongs) : cur.ans);
+      b.x = rand(10,90); b.y = sky.clientHeight + rand(0,40); b.v = speed*(0.8+Math.random()*0.5);
+      b.el.className = "bal"; b.el.querySelector(".body").style.background = pick(COLORS);
+    }
+    function setup(){
+      sky.innerHTML = ""; bals = [];
+      const vals = shuffle([cur.ans, ...shuffle(wrongs).slice(0, COUNT-1)]);
+      vals.forEach((v,i) => {
+        const el = document.createElement("button"); el.type = "button"; el.className = "bal";
+        el.innerHTML = `<div class="body" style="background:${COLORS[i%COLORS.length]}"></div>${STRING}`;
+        sky.appendChild(el);
+        const b = {el, x:10 + i*80/(COUNT-1) + rand(-4,4), y: sky.clientHeight*0.25 + (i%2)*sky.clientHeight*0.25 + rand(0,30), v:speed*(0.8+Math.random()*0.5), ph:Math.random()*6};
+        setVal(b, v); bals.push(b);
+        el.addEventListener("pointerdown", e => { e.preventDefault(); tap(b); });
+      });
+    }
+    function frame(t){
+      if (!ctx.alive()) return;
+      const dt = Math.min(.05, (t - (last||t))/1000); last = t;
+      bals.forEach(b => { if (b.el.classList.contains("popped")) return; b.y -= b.v*dt; b.ph += dt*1.4; if (b.y < -b.el.offsetHeight) respawn(b);
+        b.el.style.top = b.y + "px"; b.el.style.left = `calc(${b.x}% + ${Math.sin(b.ph)*8}px)`; });
+      raf = requestAnimationFrame(frame);
+    }
+    function tap(b){
+      if (busy || b.el.classList.contains("popped")) return;
+      if (b.val === cur.ans){ busy = true; b.el.classList.add("popped"); KIT.sfx.pop(); ctx.correct(); idx++; ctx.progress(idx, N); ctx.after(600, () => { busy = false; next(); }); }
+      else { b.el.classList.add("bonk"); ctx.wrong(`${show(b.val)} ยังไม่ใช่ ลองดูตำแหน่งจุดทศนิยมอีกครั้ง`); ctx.after(420, () => b.el.classList.remove("bonk")); }
+    }
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 170 : 120}); return; }
+      cur = gen(level); wrongs = shifts(cur.ans);
+      ctx.stage.querySelector("#qn").textContent = `ข้อ ${idx+1} จาก ${N}`;
+      ctx.stage.querySelector("#qt").innerHTML = cur.q + (level===2 ? " = ?" : "");
+      setup();
+    }
+    ctx.cleanup(() => cancelAnimationFrame(raf));
+    ctx.progress(0, N); ctx.say("เล็งให้ดี แล้วยิงบอลลูนคำตอบ!");
+    next(); raf = requestAnimationFrame(frame);
+  }
+});
+})();
+</script>
+</body>
+</html>

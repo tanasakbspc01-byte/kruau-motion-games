@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สถาปนิกสวนสนุก</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.plot{background:#E9F6DF;border-radius:22px;border:3px solid #BFE0A8;box-shadow:0 5px 0 #BFE0A8;padding:8px;display:flex;justify-content:center}
+.plot svg{width:100%;max-width:620px;height:auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.dims{text-align:center;font-weight:700;font-size:1.1rem;min-height:1.6em;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8, C = 40, COLS = 12, ROWS = 8, M = 20;
+const W = COLS*C + 2*M, H = ROWS*C + 2*M;
+const px = (gx) => M + gx*C, py = (gy) => M + gy*C;
+
+function gridSVG(inner, id){
+  let s = `<svg viewBox="0 0 ${W} ${H}" ${id?`id="${id}"`:""} role="img" aria-label="ตารางจุด">`;
+  for (let x=0;x<=COLS;x++) s += `<line x1="${px(x)}" y1="${py(0)}" x2="${px(x)}" y2="${py(ROWS)}" stroke="#CDE6BB" stroke-width="1.5"/>`;
+  for (let y=0;y<=ROWS;y++) s += `<line x1="${px(0)}" y1="${py(y)}" x2="${px(COLS)}" y2="${py(y)}" stroke="#CDE6BB" stroke-width="1.5"/>`;
+  for (let x=0;x<=COLS;x++) for (let y=0;y<=ROWS;y++) s += `<circle cx="${px(x)}" cy="${py(y)}" r="3" fill="#8FC47A"/>`;
+  return s + inner + "</svg>";
+}
+const poly = (pts, fill="#F6CD6B") => `<polygon points="${pts.map(([x,y])=>px(x)+","+py(y)).join(" ")}" fill="${fill}" fill-opacity=".75" stroke="#5A4335" stroke-width="4" stroke-linejoin="round"/>`;
+function labelRect(x,y,w,h,unit){
+  return `<text x="${px(x)+w*C/2}" y="${py(y)-8}" text-anchor="middle" font-size="20" font-weight="700" fill="#4A3A30" font-family="Mali">${w} ${unit}</text>
+    <text x="${px(x+w)+10}" y="${py(y)+h*C/2+7}" font-size="20" font-weight="700" fill="#4A3A30" font-family="Mali">${h} ${unit}</text>`;
+}
+const SHAPES = {
+  "สี่เหลี่ยมผืนผ้า": () => { let w, h; do { w = rand(2,8); h = rand(2,6); } while (w===h); const x = rand(1, COLS-w-1), y = rand(1, ROWS-h-1); return poly([[x,y],[x+w,y],[x+w,y+h],[x,y+h]]); },
+  "สี่เหลี่ยมจัตุรัส": () => { const s = rand(2,5), x = rand(1, COLS-s-1), y = rand(1, ROWS-s-1); return poly([[x,y],[x+s,y],[x+s,y+s],[x,y+s]]); },
+  "ไม่ใช่สี่เหลี่ยมมุมฉาก": () => pick([
+    () => { const w = rand(3,6), h = rand(2,4), k = rand(1,2), x = rand(1, COLS-w-k-1), y = rand(1, ROWS-h-1); return poly([[x+k,y],[x+w+k,y],[x+w,y+h],[x,y+h]]); },
+    () => { const w = rand(4,7), h = rand(2,4), x = rand(1, COLS-w-1), y = rand(1, ROWS-h-1); return poly([[x+1,y],[x+w-1,y],[x+w,y+h],[x,y+h]]); },
+    () => { const x = rand(1, COLS-7), y = rand(1, ROWS-5); return poly([[x,y],[x+4,y],[x+6,y+3],[x+1,y+4]]); }
+  ])()
+};
+const NAMES = Object.keys(SHAPES);
+
+function buildTask(level){
+  if (level === 2){
+    if (Math.random() < .3){ const s = rand(2,5); return {text:`สร้างสระน้ำรูปสี่เหลี่ยมจัตุรัส ยาวรอบรูป <b>${4*s} หน่วย</b>`, ok:(w,h)=>w===h && 4*w===4*s, hint:(w,h)=> w!==h ? "สี่เหลี่ยมจัตุรัสต้องยาวเท่ากันทุกด้าน" : `ตอนนี้ยาวรอบรูป ${2*(w+h)} หน่วย`}; }
+    let p; do { p = rand(5,13)*2; } while (p < 10);
+    return {text:`สร้างแปลงผักรูปสี่เหลี่ยมผืนผ้า ยาวรอบรูป <b>${p} หน่วย</b>`, ok:(w,h)=>w!==h && 2*(w+h)===p, hint:(w,h)=> w===h ? "รูปนี้เป็นจัตุรัส ลองทำด้านกว้างกับด้านยาวไม่เท่ากัน" : `ตอนนี้ยาวรอบรูป ${2*(w+h)} หน่วย`};
+  }
+  if (Math.random() < .5){
+    const A = pick([6,8,10,12,15,16,18,20,24]);
+    return {text:`สร้างลานจอดรถรูปสี่เหลี่ยมมุมฉาก พื้นที่ <b>${A} ตารางหน่วย</b>`, ok:(w,h)=>w*h===A, hint:(w,h)=>`ตอนนี้พื้นที่ ${w*h} ตารางหน่วย`};
+  }
+  let w0, h0; do { w0 = rand(2,7); h0 = rand(2,6); } while (w0===h0);
+  const A = w0*h0, P = 2*(w0+h0);
+  return {text:`สร้างสนามเด็กเล่น พื้นที่ <b>${A} ตารางหน่วย</b> และยาวรอบรูป <b>${P} หน่วย</b>`, ok:(w,h)=>w*h===A && 2*(w+h)===P, hint:(w,h)=>`ตอนนี้พื้นที่ ${w*h} ตารางหน่วย ยาวรอบรูป ${2*(w+h)} หน่วย`};
+}
+function calcTask(level){
+  let w, h; do { w = rand(3,9); h = rand(2,6); } while (w===h);
+  const x = rand(1, COLS-w-2), y = rand(1, ROWS-h-1);
+  const fig = gridSVG(poly([[x,y],[x+w,y],[x+w,y+h],[x,y+h]], "#86D9C2") + labelRect(x,y,w,h,"ม."));
+  if (level === 2){
+    const ans = 2*(w+h);
+    const list = shuffle([...new Set([ans, w+h, w*h, 2*w+h])].slice(0,4));
+    return {fig, html:"ต้องใช้รั้วล้อมสวนนี้ยาวกี่เมตร", options:list.map(v=>v+" เมตร"), answer:list.indexOf(ans)};
+  }
+  if (Math.random() < .5){
+    const ans = w*h;
+    const list = shuffle([...new Set([ans, 2*(w+h), w+h, ans+w])].slice(0,4));
+    return {fig, html:"สนามหญ้านี้มีพื้นที่กี่ตารางเมตร", options:list.map(v=>v+" ตร.ม."), answer:list.indexOf(ans)};
+  }
+  const A = w*h;
+  const wr = [...new Set([A-h, h+1, 2*w, A/2, w+2])].filter(v=>Number.isInteger(v)&&v>0&&v!==w);
+  const list = shuffle([w, ...shuffle(wr).slice(0,3)]);
+  return {fig:null, html:`ห้องเรียนรูปสี่เหลี่ยมผืนผ้ามีพื้นที่ <b>${A} ตารางเมตร</b> กว้าง <b>${h} เมตร</b> ยาวกี่เมตร`, options:list.map(v=>v+" เมตร"), answer:list.indexOf(w)};
+}
+
+KIT.mount({
+  key:"p4-garden", title:"สถาปนิกสวนสนุก", subtitle:"คณิตศาสตร์ ป.4 · บทที่ 9 รูปสี่เหลี่ยมมุมฉาก",
+  heroHTML:"ออกแบบ<em>สวนสนุก</em>บนตารางจุด 🏗️", heroDesc:"รู้จักรูปสี่เหลี่ยมมุมฉาก แล้วสร้างแปลงสวนให้ได้ความยาวรอบรูปและพื้นที่ตามที่ลูกค้าสั่ง",
+  progIcon:"🏗️",
+  howto:["ด่าน 1 ดูรูปแล้วแตะชื่อที่ถูก","ด่าน 2–3 ลากนิ้วบนตารางจากมุมหนึ่งไปอีกมุมเพื่อสร้างรูปสี่เหลี่ยม แล้วกด \"ส่งงาน\"","ช่องเล็ก 1 ช่อง = 1 หน่วย ยาวรอบรูป = ผลรวมความยาวทุกด้าน พื้นที่ = กว้าง × ยาว","บางข้อเป็นโจทย์คำนวณ ให้แตะคำตอบ"],
+  levels:{
+    1:{pill:"8 ข้อ", color:"var(--green)", desc:"แยกสี่เหลี่ยมผืนผ้า จัตุรัส และรูปที่ไม่ใช่สี่เหลี่ยมมุมฉาก"},
+    2:{pill:"8 ข้อ", color:"var(--blue)", desc:"สร้างรูปตามความยาวรอบรูป และหาความยาวรั้ว"},
+    3:{pill:"8 ข้อ", color:"var(--purple)", desc:"สร้างรูปตามพื้นที่ และโจทย์ปัญหาพื้นที่"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const plan = level === 1 ? null : shuffle([1,1,1,1,0,0,0,0]); // 1 = build, 0 = calculate
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===1 ? 90 : 200}); return; }
+      const lbl = `ข้อ ${idx+1} จาก ${N}`;
+      if (level === 1){
+        const name = pick(NAMES);
+        ctx.stage.innerHTML = `<div class="plot">${gridSVG(SHAPES[name]())}</div><div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl, html:"แปลงดอกไม้นี้เป็นรูปอะไร", options:NAMES, answer:NAMES.indexOf(name), cols:1, onNext:done});
+        return;
+      }
+      if (plan[idx] === 0){
+        const t = calcTask(level);
+        ctx.stage.innerHTML = (t.fig ? `<div class="plot">${t.fig}</div>` : "") + `<div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl, html:t.html, options:t.options, answer:t.answer, onNext:done});
+        return;
+      }
+      build(buildTask(level), lbl);
+    }
+    function build(task, lbl){
+      let rect = null, start = null, first = true, lock = false;
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl} · ลากบนตารางเพื่อสร้าง</div><div class="qtext">${task.text}</div></div>
+        <div class="plot">${gridSVG(`<rect id="sel" x="0" y="0" width="0" height="0" fill="#F6CD6B" fill-opacity=".7" stroke="#5A4335" stroke-width="4" visibility="hidden"/>`, "g")}</div>
+        <div class="dims" id="dims" aria-live="polite">ยังไม่ได้สร้าง</div>
+        <div class="row"><button class="btn ghost" type="button" id="clr">ล้าง</button><button class="btn" type="button" id="send">ส่งงาน</button></div>`;
+      const svg = ctx.stage.querySelector("#g"), sel = ctx.stage.querySelector("#sel");
+      const gpt = e => { const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+        return [Math.max(0, Math.min(COLS, Math.round((p.x - M)/C))), Math.max(0, Math.min(ROWS, Math.round((p.y - M)/C)))]; };
+      const draw = (a, b) => {
+        const x = Math.min(a[0], b[0]), y = Math.min(a[1], b[1]), w = Math.abs(a[0]-b[0]), h = Math.abs(a[1]-b[1]);
+        rect = w && h ? {w, h} : null;
+        sel.setAttribute("x", px(x)); sel.setAttribute("y", py(y)); sel.setAttribute("width", w*C); sel.setAttribute("height", h*C);
+        sel.setAttribute("visibility", w || h ? "visible" : "hidden");
+        ctx.stage.querySelector("#dims").textContent = rect ? `กว้าง ${h} หน่วย × ยาว ${w} หน่วย` : "ลากให้เป็นรูปสี่เหลี่ยม";
+      };
+      svg.addEventListener("pointerdown", e => { if (lock) return; start = gpt(e); svg.setPointerCapture(e.pointerId); draw(start, start); });
+      svg.addEventListener("pointermove", e => { if (start && !lock) draw(start, gpt(e)); });
+      svg.addEventListener("pointerup", () => { start = null; });
+      ctx.stage.querySelector("#clr").onclick = () => { if (!lock){ rect = null; sel.setAttribute("visibility","hidden"); ctx.stage.querySelector("#dims").textContent = "ยังไม่ได้สร้าง"; } };
+      ctx.stage.querySelector("#send").onclick = () => {
+        if (lock) return;
+        if (!rect){ ctx.say("ลากบนตารางเพื่อสร้างรูปสี่เหลี่ยมก่อนนะ"); return; }
+        if (task.ok(rect.w, rect.h)){ lock = true; sel.setAttribute("fill", "#7FD39A"); ctx.correct(first ? 100 : 50, "ลูกค้าพอใจมาก! สร้างได้ถูกต้อง"); ctx.after(1000, done); }
+        else { first = false; ctx.wrong("ยังไม่ตรงกับที่สั่ง " + task.hint(rect.w, rect.h)); }
+      };
+    }
+    ctx.progress(0, N); ctx.say("ลูกค้ารอแบบสวนอยู่ เริ่มงานได้เลย!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

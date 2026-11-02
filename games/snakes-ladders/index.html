@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>บันไดงูเศษส่วน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.top{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:14px;align-items:start}
+.board{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;background:#5A4335;padding:6px;border-radius:18px;box-shadow:0 5px 0 #3E2E24}
+.sq{position:relative;aspect-ratio:1;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:clamp(.7rem,2vw,.95rem);line-height:1.1}
+.sq:nth-child(odd){background:#FFF1DD}.sq:nth-child(even){background:#FDE2C4}
+.sq .n{position:absolute;left:5px;top:3px;font-size:.75em;color:#8A7466}
+.sq .ev{font-size:1.25em}
+.sq .tok{position:absolute;bottom:2px;right:3px;font-size:1.3em;transition:all .3s}
+.sq.goal{background:#BFE8C7 !important}
+.side{display:flex;flex-direction:column;gap:10px}
+.dice{display:flex;align-items:center;gap:10px;justify-content:center;font-weight:700}
+.die{width:58px;height:58px;border-radius:14px;background:#fff;border:3px solid #5A4335;display:grid;place-items:center;font-size:2rem;font-weight:700;box-shadow:0 4px 0 #5A4335}
+.die.roll{animation:spin .5s}
+@keyframes spin{50%{transform:rotate(180deg) scale(1.15)}}
+.legend{font-size:.9rem;color:var(--ink-soft);text-align:center}
+.mixed{display:inline-flex;align-items:center;gap:.12em;font-weight:700}
+.mixed .w{font-size:1.2em}
+@media (max-width:700px){.top{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, gcd, frac} = KIT;
+const GOAL = 25, MAXQ = 16;
+const LADDERS = {3:11, 8:16, 14:22}, SNAKES = {13:5, 19:10, 24:15};
+function fv(n, d){ if (d < 0){ n = -n; d = -d; } const g = gcd(Math.abs(n), d) || 1; n/=g; d/=g;
+  if (d === 1) return `<span class="mixed"><span class="w">${n}</span></span>`;
+  if (n > d) return `<span class="mixed"><span class="w">${Math.floor(n/d)}</span>${frac(n%d,d)}</span>`;
+  return frac(n,d); }
+const red = (n,d) => { const g = gcd(Math.abs(n),d); return [n/g, d/g]; };
+const key = (n,d) => red(n,d).join("/");
+function fracOpts(ans, wrongs){
+  const seen = new Set([key(...ans)]), list = [ans];
+  for (const w of shuffle(wrongs)) if (w[0] > 0 && w[1] > 0 && !seen.has(key(...w)) && list.length < 4){ seen.add(key(...w)); list.push(w); }
+  let g = 0; while (list.length < 4 && g++ < 50){ const w = [ans[0] + rand(1,5), ans[1]]; if (!seen.has(key(...w))){ seen.add(key(...w)); list.push(w); } }
+  shuffle(list); return {options:list.map(f => fv(...f)), answer:list.findIndex(f => key(...f) === key(...ans))};
+}
+const lcm = (a,b) => a*b/gcd(a,b);
+const GEN = {
+  1: () => pick([
+    () => { const d = rand(3,9), n = rand(1,d-1), m = rand(2,5); if (gcd(n,d)!==1) return null; return {html:`เศษส่วนใดเท่ากับ ${frac(n*m, d*m)} และเป็น<b>เศษส่วนอย่างต่ำ</b>`, ...fracOpts([n,d], [[n*m/1, d], [n, d*m], [n+1, d], [n*2, d*m]])}; },
+    () => { let a,b,c,d; do { b = rand(3,9); d = rand(3,9); a = rand(1,b-1); c = rand(1,d-1); } while (b===d || a*d === b*c); const big = a*d > b*c ? [a,b] : [c,d];
+      return {html:`เศษส่วนใด<b>มากกว่า</b>`, options:[fv(a,b), fv(c,d)], answer: big[0]===a && big[1]===b ? 0 : 1, cols:2}; },
+    () => { const d = rand(3,8), n = rand(1,d-1), m = rand(2,4); return {html:`${frac(n,d)} = ${frac("?", d*m)} ตัวเศษคือเท่าไร`, ...numOpts(n*m, [n+m, n*d, n, n*m+1])}; },
+    () => { let a,b,c,d; do { b = pick([2,3,4,6]); d = pick([4,6,8,12]); a = rand(1,b-1); c = rand(1,d-1); } while (a*d === b*c); const L = lcm(b,d);
+      return {html:`ทำ ${frac(a,b)} และ ${frac(c,d)} ให้ตัวส่วนเท่ากัน ตัวส่วนที่น้อยที่สุดคือ`, ...numOpts(L, [b*d === L ? L*2 : b*d, b+d, Math.max(b,d)])}; }
+  ])(),
+  2: () => pick([
+    () => { const b = pick([2,3,4,6]), d = pick([3,4,6,8].filter(x=>x!==b)), a = rand(1,b-1), c = rand(1,d-1); const L = lcm(b,d);
+      return {html:`${frac(a,b)} + ${frac(c,d)} = ?`, ...fracOpts([a*L/b + c*L/d, L], [[a+c, b+d], [a*d+c*b, b*d*2], [a+c, L], [a*c, b*d]])}; },
+    () => { let b,d,a,c; do { b = pick([2,3,4,6]); d = pick([3,4,6,8].filter(x=>x!==b)); a = rand(1,b-1); c = rand(1,d-1); } while (a*d <= c*b); const L = lcm(b,d);
+      return {html:`${frac(a,b)} − ${frac(c,d)} = ?`, ...fracOpts([a*L/b - c*L/d, L], [[Math.abs(a-c)||1, Math.abs(b-d)||1], [a-c>0?a-c:1, L], [a*L/b + c*L/d, L]])}; },
+    () => { const b = rand(2,7), d = rand(2,7), a = rand(1,b-1), c = rand(1,d-1);
+      return {html:`${frac(a,b)} × ${frac(c,d)} = ?`, ...fracOpts([a*c, b*d], [[a*d, b*c], [a+c, b+d], [a*c, b+d], [a*c+1, b*d]])}; },
+    () => { const b = rand(2,7), d = rand(2,7), a = rand(1,b-1), c = rand(1,d-1);
+      return {html:`${frac(a,b)} ÷ ${frac(c,d)} = ?`, ...fracOpts([a*d, b*c], [[a*c, b*d], [b*c, a*d], [a+d, b+c]])}; },
+    () => { const w = rand(1,3), d = pick([2,3,4]), n = rand(1,d-1), k = rand(2,4);
+      return {html:`<span class="mixed"><span class="w">${w}</span>${frac(n,d)}</span> × ${k} = ?`, ...fracOpts([(w*d+n)*k, d], [[w*k*d + n, d], [(w*d+n), d*k], [(w*d+n)*k+1, d]])}; }
+  ])(),
+  3: () => pick([
+    () => { const b = pick([2,3,4]), d = pick([2,3,4,5]), f = pick([2,3,4,6]), a = rand(1,b-1), c = rand(1,d-1), e = rand(1,f-1);
+      const n = a*c*f + e*b*d, D = b*d*f;
+      return {html:`${frac(a,b)} × ${frac(c,d)} + ${frac(e,f)} = ?`, ...fracOpts([n, D], [[a*(c*f+e*d), b*d*f], [a*c+e, b*d+f], [n+D, D]])}; },
+    () => { const total = pick([12,18,20,24,30,36]), d = pick([2,3,4,6].filter(x => total % x === 0)), n = rand(1,d-1);
+      return {html:`🍬 มีขนม ${total} ชิ้น ให้น้อง ${frac(n,d)} ของทั้งหมด เหลือขนมกี่ชิ้น`, ...numOpts(total - total*n/d, [total*n/d, total-n, total/d])}; },
+    () => { const d = pick([2,3,4,5]), n = rand(1,d-1), k = rand(2,8);
+      return {html:`🧃 น้ำผลไม้ ${k} ลิตร แบ่งใส่ขวด ขวดละ ${frac(n,d)} ลิตร ได้กี่ขวด (ปัดเศษทิ้ง)`, ...numOpts(Math.floor(k*d/n), [Math.floor(k*n/d) || 1, k*d, Math.floor(k*d/n)+1])}; },
+    () => { const w = rand(2,5), d = pick([2,4]), n = 1, used1 = [1,d], used2 = [rand(1,d-1)||1, d];
+      const left = [w*d - used1[0]*1 - used2[0], d];
+      return {html:`🎀 ริบบิ้นยาว ${w} เมตร ใช้ไป ${frac(used1[0],used1[1])} เมตร และ ${frac(used2[0],used2[1])} เมตร เหลือกี่เมตร`, ...fracOpts(left, [[w*d - used1[0] + used2[0], d], [w - 1, 1], [left[0]+1, d], [left[0], d*2]])}; }
+  ])()
+};
+function numOpts(ans, w){ const set = [...new Set(w.filter(v => v > 0 && v !== ans))]; const l = shuffle([ans, ...shuffle(set).slice(0,3)]); let g=0; while (l.length < 4 && g++<40){ const v = ans + rand(1,6); if (!l.includes(v)) l.push(v); } shuffle(l); return {options:l.map(String), answer:l.indexOf(ans)}; }
+function gen(level){ let q; do { q = GEN[level](); } while (!q); return q; }
+
+const cellOrder = () => { const rows = []; for (let r=4;r>=0;r--){ const row = []; for (let c=0;c<5;c++){ const n = r*5 + ((r % 2 === 0) ? c : 4-c) + 1; row.push(n); } rows.push(row); } return rows.flat(); };
+
+KIT.mount({
+  key:"p6-ladder", title:"บันไดงูเศษส่วน", subtitle:"คณิตศาสตร์ ป.6 · บทที่ 2 เศษส่วน",
+  heroHTML:"แข่ง<em>บันไดงู</em>กับแมวน้อย 🎲", heroDesc:"ตอบเศษส่วนถูกได้ทอยลูกเต๋าเดิน ตอบผิดแมวน้อยได้เดินแทน ไปถึงช่อง 25 ให้ได้",
+  progIcon:"🏁",
+  howto:["ตอบคำถามเศษส่วน ถ้าถูกจะได้ทอยลูกเต๋าเดินตามแต้ม","ตกช่องบันได 🪜 ปีนขึ้น ตกช่องงู 🐍 ไถลลง","ตอบผิดเสีย 10 คะแนน และแมวน้อยได้ทอยแทน","ถึงช่อง 25 ก่อนชนะ (มีคำถามสูงสุด 16 ข้อ)"],
+  levels:{
+    1:{pill:"ถึงช่อง 25", color:"var(--green)", desc:"เศษส่วนที่เท่ากัน เศษส่วนอย่างต่ำ เปรียบเทียบ"},
+    2:{pill:"ถึงช่อง 25", color:"var(--blue)", desc:"บวก ลบ คูณ หาร เศษส่วนและจำนวนคละ"},
+    3:{pill:"ถึงช่อง 25", color:"var(--purple)", desc:"การบวก ลบ คูณ หารระคน และโจทย์ปัญหา"}
+  },
+  play(level, ctx){
+    let me = 1, cat = 1, asked = 0;
+    const order = cellOrder();
+    ctx.stage.innerHTML = `<div class="top"><div class="board" id="board">${order.map(n => {
+        const ev = LADDERS[n] ? `🪜<small>→${LADDERS[n]}</small>` : SNAKES[n] ? `🐍<small>→${SNAKES[n]}</small>` : n === GOAL ? "🏁" : "";
+        return `<div class="sq ${n===GOAL?'goal':''}" id="s${n}"><span class="n">${n}</span><span class="ev">${ev}</span><span class="tok"></span></div>`; }).join("")}</div>
+      <div class="side"><div class="dice"><span>⭐ เธอ</span><div class="die" id="die" aria-live="polite">🎲</div><span>🐱 แมวน้อย</span></div>
+        <div class="legend">⭐ คือตัวเธอ · 🐱 คือแมวน้อย</div><div id="q"></div></div></div>`;
+    const host = ctx.stage.querySelector("#q"), die = ctx.stage.querySelector("#die");
+    const draw = () => { ctx.stage.querySelectorAll(".tok").forEach(t => t.textContent = ""); const a = ctx.stage.querySelector(`#s${me} .tok`), b = ctx.stage.querySelector(`#s${cat} .tok`);
+      if (me === cat) a.textContent = "⭐🐱"; else { a.textContent = "⭐"; b.textContent = "🐱"; } ctx.progress(me, GOAL); };
+    draw();
+    function roll(){ const v = rand(1,6); die.textContent = v; die.classList.remove("roll"); void die.offsetWidth; die.classList.add("roll"); KIT.sfx.tap(); return v; }
+    function move(pos, v){ let p = Math.min(GOAL, pos + v); let note = "";
+      if (LADDERS[p]){ note = ` ปีนบันได 🪜 ขึ้นไปช่อง ${LADDERS[p]}`; p = LADDERS[p]; }
+      else if (SNAKES[p]){ note = ` โดนงู 🐍 ไถลลงไปช่อง ${SNAKES[p]}`; p = SNAKES[p]; }
+      return [p, note]; }
+    function turn(){
+      if (me >= GOAL){ ctx.say("ถึงเส้นชัยแล้ว! 🏁", "good"); ctx.finish({targetSec: 0}); return; }
+      if (asked >= MAXQ){ ctx.say("ครบจำนวนคำถามแล้ว ไปดูคะแนนกัน"); ctx.finish({targetSec: 0}); return; }
+      asked++;
+      const q = gen(level);
+      let firstTry = true;
+      const origWrong = ctx.wrong;
+      const wctx = Object.assign({}, ctx, {
+        correct: (base, msg) => {
+          const g = ctx.correct(firstTry ? 100 : 40);
+          if (firstTry){ const v = roll(); const [p, note] = move(me, v); me = p; ctx.say(`ถูกต้อง! ทอยได้ ${v} เดินไปช่อง ${me}${note}`, "good"); }
+          else ctx.say("ถูกแล้ว แต่ตอบครั้งที่สองไม่ได้ทอยลูกเต๋านะ", "good");
+          draw(); return g;
+        },
+        wrong: (msg) => {
+          if (firstTry){ firstTry = false; origWrong("ยังไม่ถูก"); const v = roll(); const [p, note] = move(cat, v); cat = p; draw(); ctx.say(`ผิด! แมวน้อยทอยได้ ${v} เดินไปช่อง ${cat}${note} ลองตอบใหม่`, "bad");
+            if (cat >= GOAL){ ctx.say("แมวน้อยถึงเส้นชัยก่อน! แต่เธอยังเล่นต่อได้", "bad"); cat = 1; ctx.after(1200, draw); } }
+          else origWrong("ยังไม่ถูก ลองอีกครั้ง");
+        }
+      });
+      KIT.mcq(wctx, host, {label:`คำถามที่ ${asked}`, html:q.html, options:q.options, answer:q.answer, cols:q.cols || 2, onNext:() => ctx.after(500, turn)});
+    }
+    ctx.say("ตอบถูกเพื่อทอยลูกเต๋า!");
+    turn();
+  }
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>วงล้อกลิ้งสู่เส้นชัย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.fig{background:#F2F7FF;border-radius:22px;border:3px solid #CFE0F6;box-shadow:0 5px 0 #CFE0F6;padding:8px;display:flex;justify-content:center}
+.fig svg{width:100%;max-width:560px;height:auto}
+.road{position:relative;height:150px;border-radius:22px;background:linear-gradient(#DFF1FF 0 70%,#A8DB8F 70%);overflow:hidden;box-shadow:0 5px 0 #8CC77B}
+.road .flag{position:absolute;bottom:42px;font-size:2rem}
+.road .wheel{position:absolute;bottom:40px;left:4%;transition:left 1.6s ease-in-out}
+.road .wheel svg{display:block;transition:transform 1.6s ease-in-out}
+.wheels{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.wbtn{border:3px solid var(--c);background:var(--card);border-radius:18px;padding:10px;box-shadow:0 5px 0 var(--c);display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:700}
+.wbtn.right{border-color:var(--good);box-shadow:0 5px 0 var(--good);background:#E9F8EC}
+.wbtn.wrong{border-color:var(--bad);opacity:.55}
+.note{font-size:.9rem;color:var(--ink-soft);text-align:center}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, frac} = KIT;
+const N = 8;
+const ink = "#4A3A30";
+const wheelSVG = (size, spokes=6) => `<svg viewBox="0 0 100 100" width="${size}" height="${size}" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#5A4335"/><circle cx="50" cy="50" r="36" fill="#F6CD6B"/>${Array.from({length:spokes},(_,i)=>`<line x1="50" y1="50" x2="${50+36*Math.cos(i*2*Math.PI/spokes)}" y2="${50+36*Math.sin(i*2*Math.PI/spokes)}" stroke="#5A4335" stroke-width="4"/>`).join("")}<circle cx="50" cy="50" r="7" fill="#5A4335"/></svg>`;
+function partsFig(which){
+  const cx = 200, cy = 140, r = 105;
+  const p = a => [cx + r*Math.cos(a), cy - r*Math.sin(a)];
+  const a1 = rand(10,70)*Math.PI/180, [x1,y1] = p(a1), [x2,y2] = p(a1 + Math.PI), [x3,y3] = p(rand(100,160)*Math.PI/180), [x4,y4] = p(rand(200,250)*Math.PI/180);
+  let s = `<svg viewBox="0 0 400 280" role="img" aria-label="วงกลมและส่วนประกอบ"><circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff" stroke="${which==="เส้นรอบวง"?'#E8708F':'#3E6EA8'}" stroke-width="${which==="เส้นรอบวง"?7:4}"/>`;
+  if (which === "รัศมี") s += `<line x1="${cx}" y1="${cy}" x2="${x1}" y2="${y1}" stroke="#E8708F" stroke-width="6" stroke-linecap="round"/>`;
+  if (which === "เส้นผ่านศูนย์กลาง") s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#E8708F" stroke-width="6" stroke-linecap="round"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="${which==="จุดศูนย์กลาง"?9:5}" fill="${which==="จุดศูนย์กลาง"?'#E8708F':ink}"/>`;
+  return s + "</svg>";
+}
+const PARTS = ["จุดศูนย์กลาง","รัศมี","เส้นผ่านศูนย์กลาง","เส้นรอบวง"];
+const circ = r => 2*22*r/7, area = r => 22*r*r/7;
+
+KIT.mount({
+  key:"p6-wheel", title:"วงล้อกลิ้งสู่เส้นชัย", subtitle:"คณิตศาสตร์ ป.6 · บทที่ 8 วงกลม",
+  heroHTML:"เลือก<em>วงล้อ</em>ให้กลิ้งถึงธงพอดี 🛞", heroDesc:"รู้จักส่วนประกอบของวงกลม ใช้ความยาวเส้นรอบวงเลือกวงล้อให้กลิ้งถึงเส้นชัย และหาพื้นที่วงกลม",
+  progIcon:"🛞",
+  howto:["แตะคำตอบ หรือแตะวงล้อที่ต้องการ หรือกดตัวเลขที่แป้น","ใช้ π ≈ 22/7","ความยาวเส้นรอบวง = 2 × π × รัศมี","พื้นที่วงกลม = π × รัศมี × รัศมี"],
+  note:"เวอร์ชันนี้ใช้การแตะเลือก ส่วนโหมดเอียงเครื่องกลิ้งล้อต้องเปิดจากเว็บที่อนุญาตเซนเซอร์",
+  levels:{
+    1:{pill:"8 รอบ", color:"var(--green)", desc:"ส่วนประกอบของวงกลม รัศมี ↔ เส้นผ่านศูนย์กลาง"},
+    2:{pill:"8 รอบ", color:"var(--blue)", desc:"ความยาวเส้นรอบวง และเลือกวงล้อให้ถึงธง"},
+    3:{pill:"8 รอบ", color:"var(--purple)", desc:"พื้นที่วงกลม และจำนวนรอบที่ล้อหมุน"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `รอบที่ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===1 ? 100 : 200}); return; }
+      if (level === 1){
+        if (idx % 2 === 0){ const w = pick(PARTS);
+          ctx.stage.innerHTML = `<div class="fig">${partsFig(w)}</div><div id="q"></div>`;
+          KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"ส่วนที่เป็นสีชมพูเรียกว่าอะไร", options:PARTS, answer:PARTS.indexOf(w), onNext:done});
+        } else { const r = rand(3,40);
+          if (Math.random() < .5) KIT.keypad(ctx, ctx.stage, {label:lbl(), html:`วงล้อมีรัศมี ${r} ซม. เส้นผ่านศูนย์กลางยาวกี่เซนติเมตร`, unit:"ซม.", answer:2*r, hint:"เส้นผ่านศูนย์กลาง = 2 × รัศมี", onNext:done});
+          else KIT.keypad(ctx, ctx.stage, {label:lbl(), html:`จานมีเส้นผ่านศูนย์กลาง ${2*r} ซม. รัศมียาวกี่เซนติเมตร`, unit:"ซม.", answer:r, hint:"รัศมี = เส้นผ่านศูนย์กลาง ÷ 2", onNext:done}); }
+        return;
+      }
+      if (level === 2) return idx % 2 === 0 ? chooseWheel() : (Math.random() < .5 ? KIT.keypad(ctx, ctx.stage, (() => { const r = rand(1,6)*7; return {label:lbl(), html:`ล้อจักรยานรัศมี ${r} ซม. หมุนครบ 1 รอบ เคลื่อนที่ได้กี่เซนติเมตร (π ≈ ${frac(22,7)})`, unit:"ซม.", answer:circ(r), hint:"2 × 22/7 × รัศมี", onNext:done}; })())
+        : KIT.keypad(ctx, ctx.stage, (() => { const d = rand(1,6)*14; return {label:lbl(), html:`สระน้ำวงกลมเส้นผ่านศูนย์กลาง ${d} เมตร ต้องใช้รั้วล้อมรอบยาวกี่เมตร (π ≈ ${frac(22,7)})`, unit:"เมตร", answer:22*d/7, hint:"เส้นรอบวง = π × เส้นผ่านศูนย์กลาง", onNext:done}; })()));
+      const t = idx % 4;
+      if (t === 0){ const r = rand(1,5)*7; KIT.keypad(ctx, ctx.stage, {label:lbl(), html:`พิซซ่าวงกลมรัศมี ${r} ซม. มีพื้นที่กี่ตารางเซนติเมตร (π ≈ ${frac(22,7)})`, unit:"ตร.ซม.", answer:area(r), hint:"พื้นที่ = 22/7 × รัศมี × รัศมี", onNext:done}); }
+      else if (t === 1){ const r = rand(1,4)*7, n = rand(3,25); KIT.keypad(ctx, ctx.stage, {label:lbl(), html:`ล้อรถรัศมี ${r} ซม. หมุนไป ${n} รอบ รถเคลื่อนที่ได้กี่เซนติเมตร (π ≈ ${frac(22,7)})`, unit:"ซม.", answer:circ(r)*n, hint:"ระยะทาง = เส้นรอบวง × จำนวนรอบ", onNext:done}); }
+      else if (t === 2){ const r = rand(1,4)*7, n = rand(5,40); KIT.keypad(ctx, ctx.stage, {label:lbl(), html:`ล้อรัศมี ${r} ซม. กลิ้งไปได้ระยะทาง ${(circ(r)*n).toLocaleString("en-US")} ซม. ล้อหมุนไปกี่รอบ (π ≈ ${frac(22,7)})`, unit:"รอบ", answer:n, hint:"จำนวนรอบ = ระยะทาง ÷ เส้นรอบวง", onNext:done}); }
+      else { const R2 = rand(2,4)*7, r2 = R2 - 7; KIT.keypad(ctx, ctx.stage, {label:lbl(), html:`วงแหวนมีรัศมีวงนอก ${R2} ซม. รัศมีวงใน ${r2} ซม. พื้นที่วงแหวนกี่ตารางเซนติเมตร (π ≈ ${frac(22,7)})`, unit:"ตร.ซม.", answer:area(R2) - area(r2), hint:"พื้นที่วงนอก − พื้นที่วงใน", onNext:done}); }
+    }
+    function chooseWheel(){
+      const radii = shuffle([7,14,21,28,35]).slice(0,3), target = pick(radii), dist = circ(target);
+      let first = true, lock = false;
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl()}</div><div class="qtext">ธงอยู่ห่างออกไป <b>${dist} ซม.</b><br>เลือกวงล้อที่หมุน <b>1 รอบ</b> แล้วถึงธงพอดี (π ≈ ${frac(22,7)})</div></div>
+        <div class="road" id="road"><div class="wheel" id="wh">${wheelSVG(70)}</div><div class="flag" style="left:84%">🏁</div></div>
+        <div class="wheels">${radii.map(r => `<button class="wbtn" type="button" data-r="${r}">${wheelSVG(54)}<span>รัศมี ${r} ซม.</span></button>`).join("")}</div>`;
+      ctx.stage.querySelector(".wheels").onclick = e => {
+        const b = e.target.closest(".wbtn"); if (!b || lock || b.disabled) return;
+        const r = +b.dataset.r, wh = ctx.stage.querySelector("#wh");
+        const frac2 = Math.min(1.15, circ(r)/dist);
+        wh.style.left = (4 + 80*frac2) + "%"; wh.querySelector("svg").style.transform = `rotate(${360*Math.min(1.15,frac2)}deg)`;
+        if (r === target){ lock = true; b.classList.add("right"); ctx.correct(first?100:50, `ถึงธงพอดี! เส้นรอบวง = 2 × 22/7 × ${r} = ${dist} ซม.`); ctx.after(1900, done); }
+        else { first = false; b.classList.add("wrong"); b.disabled = true; ctx.wrong(`ล้อรัศมี ${r} ซม. กลิ้งได้ ${circ(r)} ซม. ${circ(r) < dist ? "ยังไม่ถึงธง" : "เลยธงไป"}`);
+          ctx.after(1800, () => { wh.style.transition = "none"; wh.querySelector("svg").style.transition = "none"; wh.style.left = "4%"; wh.querySelector("svg").style.transform = ""; void wh.offsetWidth; wh.style.transition = ""; wh.querySelector("svg").style.transition = ""; }); }
+      };
+    }
+    ctx.progress(0, N); ctx.say("วงล้อพร้อมกลิ้งแล้ว!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

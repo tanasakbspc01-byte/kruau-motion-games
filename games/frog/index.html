@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>กบกระโดดตัวประกอบ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.pond{background:radial-gradient(circle at 30% 20%,#8FD3E8,#5DB4D2);border-radius:24px;padding:clamp(10px,2.5vw,20px);box-shadow:0 6px 0 #4A9BB8;display:grid;grid-template-columns:repeat(var(--cols,4),1fr);gap:clamp(6px,1.6vw,12px)}
+.pad{position:relative;aspect-ratio:1;border:none;border-radius:50% 50% 50% 8%;background:radial-gradient(circle at 40% 35%,#9BE07F,#5DB547);box-shadow:inset -4px -6px 0 rgba(0,0,0,.12),0 3px 0 rgba(0,0,0,.12);font-weight:700;font-size:clamp(1rem,3.4vw,1.6rem);color:#24451A;font-variant-numeric:tabular-nums;transition:transform .12s}
+.pad:active{transform:scale(.94)}
+.pad.on{background:radial-gradient(circle at 40% 35%,#FFE38A,#F2B63C)}
+.pad.on::after{content:"🐸";position:absolute;right:-4px;top:-10px;font-size:1.3em}
+.pad.b::after{content:"🐸";filter:hue-rotate(160deg)}
+.pad.both::after{content:"🐸🐸"}
+.pad.bad{background:radial-gradient(circle at 40% 35%,#F5B0B0,#E07070);animation:shake .4s}
+.pad.small{font-size:clamp(.8rem,2.4vw,1.05rem)}
+.need{font-weight:700;text-align:center}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, gcd} = KIT;
+const N = 8;
+const lcm = (a,b) => a*b/gcd(a,b);
+const factors = n => Array.from({length:n},(_,i)=>i+1).filter(d => n % d === 0);
+const isPrime = n => n > 1 && factors(n).length === 2;
+
+KIT.mount({
+  key:"p6-frog", title:"กบกระโดดตัวประกอบ", subtitle:"คณิตศาสตร์ ป.6 · บทที่ 1 ห.ร.ม. และ ค.ร.น.",
+  heroHTML:"พา<em>กบ</em>กระโดดข้ามบึง 🐸", heroDesc:"แตะใบบัวที่ถูกต้องเพื่อพากบกระโดด หาตัวประกอบ จำนวนเฉพาะ ห.ร.ม. และ ค.ร.น.",
+  progIcon:"🐸",
+  howto:["อ่านภารกิจ แล้วแตะใบบัวที่ถูกให้ครบทุกใบ","แตะผิด ใบบัวจะเป็นสีแดงและเสีย 10 คะแนน","ระดับยากมีโจทย์ปัญหา ให้กดตัวเลขตอบ","ห.ร.ม. = ตัวหารร่วมที่มากที่สุด · ค.ร.น. = ตัวคูณร่วมที่น้อยที่สุด"],
+  note:"เวอร์ชันนี้ใช้การแตะจอ ส่วนโหมดกระโดดจริงผ่านกล้องต้องเปิดจากเว็บที่อนุญาตกล้อง",
+  levels:{
+    1:{pill:"8 ภารกิจ", color:"var(--green)", desc:"ตัวประกอบ และจำนวนเฉพาะ"},
+    2:{pill:"8 ภารกิจ", color:"var(--blue)", desc:"ตัวประกอบร่วม และ ห.ร.ม."},
+    3:{pill:"8 ภารกิจ", color:"var(--purple)", desc:"ค.ร.น. และโจทย์ปัญหา ห.ร.ม. ค.ร.น."}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ภารกิจที่ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 220 : 180}); return; }
+      if (level === 1) return idx % 2 === 0 ? tapAll("factor") : tapAll("prime");
+      if (level === 2) return idx % 2 === 0 ? tapAll("common") : hcfPick();
+      return idx % 2 === 0 ? lcmTrack() : story();
+    }
+    function board(nums, task, cols=4){
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl()}</div><div class="qtext">${task}</div></div>
+        <div class="need" id="need"></div>
+        <div class="pond" style="--cols:${cols}">${nums.map(n=>`<button class="pad${String(n).length>2?' small':''}" type="button" data-n="${n}">${n}</button>`).join("")}</div>`;
+      return ctx.stage.querySelector(".pond");
+    }
+    function tapAll(kind){
+      let target, nums, task;
+      if (kind === "factor"){
+        const n = pick([12,16,18,20,24,28,30,32,36,40,42,45,48]);
+        target = factors(n);
+        const pool = Array.from({length:n},(_,i)=>i+1).filter(x => !target.includes(x));
+        nums = shuffle([...target, ...shuffle(pool).slice(0, Math.max(4, 16 - target.length))]).slice(0,16);
+        target = target.filter(t => nums.includes(t));
+        task = `กระโดดบนใบบัวที่เป็น<b>ตัวประกอบของ ${n}</b> ให้ครบทุกใบ`;
+      } else if (kind === "prime"){
+        const lo = rand(1,3)*10; const range = Array.from({length:30},(_,i)=>lo+i+1);
+        nums = shuffle(range).slice(0,16).sort((a,b)=>a-b);
+        target = nums.filter(isPrime);
+        if (target.length < 3) return tapAll("prime");
+        task = "กระโดดบนใบบัวที่เป็น<b>จำนวนเฉพาะ</b> ให้ครบทุกใบ";
+      } else {
+        let a, b; do { const g = pick([2,3,4,6]); a = g*rand(2,9); b = g*rand(2,9); } while (a === b || a > 60 || b > 60 || factors(gcd(a,b)).length < 3);
+        target = factors(gcd(a,b));
+        const pool = [...new Set([...factors(a), ...factors(b)])].filter(x => !target.includes(x));
+        const extra = Array.from({length:30},(_,i)=>i+1).filter(x => !target.includes(x) && !pool.includes(x));
+        nums = shuffle([...target, ...shuffle(pool).slice(0,6), ...shuffle(extra)]).slice(0,12).sort((x,y)=>x-y);
+        target = target.filter(t => nums.includes(t));
+        task = `กระโดดบนใบบัวที่เป็น<b>ตัวประกอบร่วมของ ${a} และ ${b}</b> ให้ครบทุกใบ`;
+      }
+      const pond = board(nums, task);
+      let left = target.length, first = true;
+      const need = ctx.stage.querySelector("#need"); need.textContent = `เหลืออีก ${left} ใบ`;
+      pond.onclick = e => {
+        const p = e.target.closest(".pad"); if (!p || p.classList.contains("on")) return;
+        const n = +p.dataset.n;
+        if (target.includes(n)){
+          p.classList.add("on"); KIT.sfx.tap(); left--; need.textContent = left ? `เหลืออีก ${left} ใบ` : "ครบแล้ว!";
+          if (!left){ pond.onclick = null; ctx.correct(first?120:60, "กบข้ามบึงได้สำเร็จ!"); ctx.after(900, done); }
+        } else {
+          first = false; p.classList.add("bad"); ctx.after(500, () => p.classList.remove("bad"));
+          ctx.wrong(kind === "prime" ? `${n} ไม่ใช่จำนวนเฉพาะ เพราะหารด้วย ${factors(n)[1]} ลงตัว` : `${n} ไม่ใช่คำตอบ ลองหารดูว่าลงตัวไหม`);
+        }
+      };
+    }
+    function hcfPick(){
+      let a, b; do { const g = pick([2,3,4,5,6,7,8,9]); a = g*rand(2,8); b = g*rand(2,8); } while (a === b || gcd(a/gcd(a,b), b/gcd(a,b)) !== 1 || a > 72 || b > 72 || gcd(a,b) < 2);
+      const h = gcd(a,b), cf = factors(h);
+      const others = shuffle([...new Set([...factors(a), ...factors(b), a, b])].filter(x => x !== h)).slice(0, 7);
+      const nums = shuffle([h, ...others]).slice(0,8).sort((x,y)=>x-y);
+      const pond = board(nums, `กระโดดไปที่ <b>ห.ร.ม. ของ ${a} และ ${b}</b>`);
+      let first = true;
+      pond.onclick = e => {
+        const p = e.target.closest(".pad"); if (!p) return; const n = +p.dataset.n;
+        if (n === h){ p.classList.add("on"); pond.onclick = null; ctx.correct(first?100:50, `ถูกต้อง! ห.ร.ม. ของ ${a} และ ${b} คือ ${h}`); ctx.after(900, done); }
+        else { first = false; p.classList.add("bad"); ctx.after(500, () => p.classList.remove("bad"));
+          ctx.wrong(cf.includes(n) ? `${n} เป็นตัวหารร่วม แต่ยังไม่มากที่สุด` : `${n} หาร ${a} และ ${b} ไม่ลงตัวทั้งคู่`); }
+      };
+    }
+    function lcmTrack(){
+      let a, b; do { a = rand(2,9); b = rand(3,10); } while (a === b || lcm(a,b) > 48 || lcm(a,b) === Math.max(a,b) && Math.random() < .6);
+      const L = lcm(a,b), max = Math.min(60, Math.max(L + rand(4,12), 24));
+      const nums = Array.from({length:max},(_,i)=>i+1);
+      const pond = board(nums, `กบเขียวกระโดดทีละ <b>${a}</b> ช่อง กบฟ้ากระโดดทีละ <b>${b}</b> ช่อง (เริ่มที่ 0) <br>ใบบัวแรกที่กบทั้งสองตัวจะเจอกันคือใบใด`, 8);
+      pond.querySelectorAll(".pad").forEach(p => { p.classList.add("small"); p.style.borderRadius = "50%"; });
+      let first = true;
+      pond.onclick = e => {
+        const p = e.target.closest(".pad"); if (!p) return; const n = +p.dataset.n;
+        if (n === L){ p.classList.add("on","both"); pond.onclick = null; ctx.correct(first?100:50, `เจอกันที่ ${L} = ค.ร.น. ของ ${a} และ ${b}`); ctx.after(1000, done); }
+        else { first = false; p.classList.add("bad"); ctx.after(500, () => p.classList.remove("bad"));
+          ctx.wrong(n % a === 0 && n % b === 0 ? `${n} เป็นตัวคูณร่วม แต่ยังไม่ใช่ใบแรก` : n % a === 0 ? `กบเขียวมาถึง ${n} แต่กบฟ้าไม่ผ่าน` : n % b === 0 ? `กบฟ้ามาถึง ${n} แต่กบเขียวไม่ผ่าน` : `ไม่มีกบตัวไหนมาถึง ${n}`); }
+      };
+    }
+    function story(){
+      const T = [
+        () => { let a,b; do { a = rand(2,9)*2; b = rand(3,10)*2; } while (a===b || lcm(a,b) > 120); return {html:`🚦 ไฟสีแดงกะพริบทุก ${a} วินาที ไฟสีเขียวกะพริบทุก ${b} วินาที ถ้ากะพริบพร้อมกันตอนนี้ อีกกี่วินาทีจะกะพริบพร้อมกันอีกครั้ง`, ans:lcm(a,b), unit:"วินาที", hint:"ใช้ ค.ร.น."}; },
+        () => { let a,b,g; do { g = rand(3,12); a = g*rand(2,6); b = g*rand(2,6); } while (a===b || gcd(a,b)!==g); return {html:`✏️ มีดินสอ ${a} แท่ง ยางลบ ${b} ก้อน จัดใส่ถุงให้แต่ละถุงมีดินสอเท่า ๆ กันและยางลบเท่า ๆ กัน ได้มากที่สุดกี่ถุง`, ans:g, unit:"ถุง", hint:"ใช้ ห.ร.ม."}; },
+        () => { let a,b; do { a = rand(3,8); b = rand(4,10); } while (a===b || lcm(a,b) > 60); return {html:`📅 ต้นรดน้ำต้นไม้ทุก ${a} วัน ฝนรดน้ำทุก ${b} วัน วันนี้รดพร้อมกัน อีกกี่วันจะรดพร้อมกันอีก`, ans:lcm(a,b), unit:"วัน", hint:"ใช้ ค.ร.น."}; },
+        () => { let a,b,g; do { g = rand(4,15); a = g*rand(2,5); b = g*rand(2,5); } while (a===b || gcd(a,b)!==g); return {html:`🎀 ริบบิ้นสีแดงยาว ${a} ซม. สีฟ้ายาว ${b} ซม. ตัดเป็นท่อนยาวเท่ากันโดยไม่เหลือเศษ ให้แต่ละท่อนยาวที่สุดได้กี่เซนติเมตร`, ans:g, unit:"ซม.", hint:"ใช้ ห.ร.ม."}; }
+      ];
+      const q = pick(T)();
+      KIT.keypad(ctx, ctx.stage, {label:lbl(), html:q.html, unit:q.unit, answer:q.ans, hint:"ยังไม่ถูก " + q.hint + " ลองอีกครั้ง", onNext:done});
+    }
+    ctx.progress(0, N); ctx.say("กบพร้อมกระโดดแล้ว!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

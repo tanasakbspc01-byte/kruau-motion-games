@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โรงงานพับกล่อง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.fig{background:repeating-linear-gradient(90deg,#EEF1F5 0 24px,#E5E9EF 24px 48px);border-radius:22px;border:3px solid #CDD5DF;box-shadow:0 5px 0 #CDD5DF;padding:10px;display:flex;justify-content:center}
+.fig svg{width:100%;max-width:440px;height:auto}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 8;
+const ink = "#4A3A30", F1 = "#F6CD6B", F2 = "#F2A65A", F3 = "#E8A04E";
+const poly = (pts, fill, extra="") => `<polygon points="${pts.map(p=>p.join(",")).join(" ")}" fill="${fill}" stroke="${ink}" stroke-width="3" stroke-linejoin="round" ${extra}/>`;
+const dashed = (a,b) => `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${ink}" stroke-width="2" stroke-dasharray="6 5"/>`;
+const wrap = (inner, vb="0 0 300 240", aria="รูปเรขาคณิตสามมิติ") => `<svg viewBox="${vb}" role="img" aria-label="${aria}">${inner}</svg>`;
+const SOLIDS = {
+  "ทรงสี่เหลี่ยมมุมฉาก": () => { const o = [50,-40]; const f = [[60,90],[190,90],[190,200],[60,200]], b = f.map(p => [p[0]+o[0], p[1]+o[1]]);
+    return wrap(dashed(b[3], f[3].map((v,i)=>v)) + dashed(b[3], b[0]) + dashed(b[3], b[2]) + poly([f[0],f[1],b[1],b[0]], F1) + poly([f[1],f[2],b[2],b[1]], F3) + poly(f, F2)); },
+  "ปริซึมสามเหลี่ยม": () => { const o = [90,-45]; const f = [[50,200],[150,200],[100,110]], b = f.map(p => [p[0]+o[0], p[1]+o[1]]);
+    return wrap(dashed(f[0], b[0]) + dashed(b[0], b[1]) + dashed(b[0], b[2]) + poly([f[1],b[1],b[2],f[2]], F3) + poly(f, F2) + poly([f[2],b[2],b[2],f[2]], F1)); },
+  "พีระมิดฐานสี่เหลี่ยม": () => { const B = [[60,190],[190,190],[240,150],[110,150]], A = [150,40];
+    return wrap(dashed(B[3], B[0]) + dashed(B[3], B[2]) + dashed(B[3], A) + poly([B[0],B[1],A], F2) + poly([B[1],B[2],A], F3)); },
+  "พีระมิดฐานสามเหลี่ยม": () => { const B = [[60,195],[200,200],[150,150]], A = [130,40];
+    return wrap(dashed(B[0], B[2]) + dashed(B[2], B[1]) + dashed(B[2], A) + poly([B[0],B[1],A], F2)); },
+  "ทรงกระบอก": () => wrap(`<path d="M80,70 L80,190 A70,22 0 0 0 220,190 L220,70" fill="${F2}" stroke="${ink}" stroke-width="3"/><ellipse cx="150" cy="70" rx="70" ry="22" fill="${F1}" stroke="${ink}" stroke-width="3"/><path d="M80,190 A70,22 0 0 1 220,190" fill="none" stroke="${ink}" stroke-width="2" stroke-dasharray="6 5"/>`),
+  "กรวย": () => wrap(`<path d="M150,30 L80,185 A70,22 0 0 0 220,185 Z" fill="${F2}" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/><path d="M80,185 A70,22 0 0 1 220,185" fill="none" stroke="${ink}" stroke-width="2" stroke-dasharray="6 5"/>`),
+  "ทรงกลม": () => wrap(`<circle cx="150" cy="120" r="90" fill="${F1}" stroke="${ink}" stroke-width="3"/><path d="M60,120 A90,26 0 0 0 240,120" fill="none" stroke="${ink}" stroke-width="2"/><path d="M60,120 A90,26 0 0 1 240,120" fill="none" stroke="${ink}" stroke-width="2" stroke-dasharray="6 5"/><circle cx="120" cy="85" r="14" fill="#fff" opacity=".6"/>`)
+};
+const FEV = {"ทรงสี่เหลี่ยมมุมฉาก":[6,12,8], "ปริซึมสามเหลี่ยม":[5,9,6], "พีระมิดฐานสี่เหลี่ยม":[5,8,5], "พีระมิดฐานสามเหลี่ยม":[4,6,4]};
+const NAMES = Object.keys(SOLIDS);
+
+/* nets */
+const S = 40;
+function cellsSVG(cells, fill=F1){
+  const xs = cells.map(c=>c[0]), ys = cells.map(c=>c[1]), w = Math.max(...xs)+1, h = Math.max(...ys)+1;
+  return wrap(cells.map(([x,y]) => `<rect x="${10+x*S}" y="${10+y*S}" width="${S}" height="${S}" fill="${fill}" stroke="${ink}" stroke-width="3"/>`).join(""), `0 0 ${w*S+20} ${h*S+20}`, "รูปคลี่");
+}
+function cubeNet(valid){
+  if (valid){
+    const k = rand(0,2);
+    if (k === 0){ const a = rand(0,3), b = rand(0,3); return [[0,1],[1,1],[2,1],[3,1],[a,0],[b,2]]; }
+    if (k === 1) return [[0,0],[1,0],[2,0],[2,1],[3,1],[4,1]];
+    return [[0,0],[1,0],[1,1],[2,1],[2,2],[3,2]];
+  }
+  const k = rand(0,2);
+  if (k === 0){ const a = rand(0,2); return [[0,1],[1,1],[2,1],[3,1],[a,0],[a+1,0]]; }
+  if (k === 1) return [[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]];
+  return [[0,1],[1,1],[2,1],[3,1],[4,1],[rand(0,4),0]];
+}
+const NETS = {
+  "ลูกบาศก์": () => cellsSVG(cubeNet(true)),
+  "ปริซึมสามเหลี่ยม": () => wrap(`${[0,1,2].map(i=>`<rect x="${20+i*70}" y="80" width="70" height="100" fill="${F1}" stroke="${ink}" stroke-width="3"/>`).join("")}${poly([[90,80],[160,80],[125,20]], F2)}${poly([[90,180],[160,180],[125,240]], F2)}`, "0 0 270 260", "รูปคลี่"),
+  "พีระมิดฐานสี่เหลี่ยม": () => wrap(`<rect x="100" y="90" width="80" height="80" fill="${F1}" stroke="${ink}" stroke-width="3"/>${poly([[100,90],[180,90],[140,20]],F2)}${poly([[180,90],[180,170],[250,130]],F2)}${poly([[100,170],[180,170],[140,240]],F2)}${poly([[100,90],[100,170],[30,130]],F2)}`, "0 0 280 260", "รูปคลี่"),
+  "ทรงกระบอก": () => wrap(`<rect x="40" y="70" width="200" height="100" fill="${F1}" stroke="${ink}" stroke-width="3"/><circle cx="140" cy="38" r="32" fill="${F2}" stroke="${ink}" stroke-width="3"/><circle cx="140" cy="202" r="32" fill="${F2}" stroke="${ink}" stroke-width="3"/>`, "0 0 280 240", "รูปคลี่"),
+  "กรวย": () => wrap(`<path d="M140,30 L60,170 A160,160 0 0 0 220,170 Z" fill="${F1}" stroke="${ink}" stroke-width="3"/><circle cx="140" cy="225" r="38" fill="${F2}" stroke="${ink}" stroke-width="3"/>`, "0 0 280 270", "รูปคลี่")
+};
+/* isometric boxes for volume */
+const CS = Math.cos(Math.PI/6), SN = Math.sin(Math.PI/6);
+const iso = (x,y,z,s) => [(x - y)*CS*s, (x + y)*SN*s - z*s];
+function boxes(list, labels){
+  const s = 26; let pts = [];
+  list.forEach(b => [[b.x,b.y,b.z],[b.x+b.w,b.y,b.z],[b.x,b.y+b.l,b.z],[b.x+b.w,b.y+b.l,b.z+b.h],[b.x,b.y,b.z+b.h],[b.x+b.w,b.y,b.z+b.h],[b.x,b.y+b.l,b.z+b.h]].forEach(p => pts.push(iso(...p,s))));
+  const minX = Math.min(...pts.map(p=>p[0])) - 110, maxX = Math.max(...pts.map(p=>p[0])) + 110, minY = Math.min(...pts.map(p=>p[1])) - 30, maxY = Math.max(...pts.map(p=>p[1])) + 40;
+  const pp = (x,y,z) => iso(x,y,z,s).map(v=>v.toFixed(1)).join(",");
+  let g = "";
+  list.forEach((b,i) => { const {x,y,z,w,l,h} = b, cols = i ? ["#9CC8F5","#6FA6E0","#5A92CC"] : [F1,F2,F3];
+    const f = (P, c) => g += `<polygon points="${P.map(p=>pp(...p)).join(" ")}" fill="${c}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>`;
+    f([[x,y,z+h],[x+w,y,z+h],[x+w,y+l,z+h],[x,y+l,z+h]], cols[0]); f([[x+w,y,z],[x+w,y+l,z],[x+w,y+l,z+h],[x+w,y,z+h]], cols[1]); f([[x,y+l,z],[x+w,y+l,z],[x+w,y+l,z+h],[x,y+l,z+h]], cols[2]); });
+  labels.forEach(([x,y,z,t,c]) => { const p = iso(x,y,z,s); g += `<text x="${p[0]}" y="${p[1]}" font-size="16" font-weight="700" font-family="Mali" fill="${c||"#3E6EA8"}" text-anchor="middle" paint-order="stroke" stroke="#EEF1F5" stroke-width="5">${t}</text>`; });
+  return `<svg viewBox="${minX} ${minY} ${maxX-minX} ${maxY-minY}" role="img" aria-label="รูปทรงประกอบ">${g}</svg>`;
+}
+
+KIT.mount({
+  key:"p6-factory", title:"โรงงานพับกล่อง", subtitle:"คณิตศาสตร์ ป.6 · บทที่ 9 รูปเรขาคณิตสามมิติ",
+  heroHTML:"หัวหน้า<em>โรงงานพับกล่อง</em> 🏭", heroDesc:"แยกรูปเรขาคณิตสามมิติ นับหน้า สัน จุดยอด ดูรูปคลี่ และหาปริมาตรของรูปทรงที่ประกอบด้วยทรงสี่เหลี่ยมมุมฉาก",
+  progIcon:"🏭",
+  howto:["ดูรูปบนสายพานแล้วแตะคำตอบ หรือกดตัวเลข","หน้า = แผ่นแบนที่ล้อมรูป · สัน = เส้นที่หน้าสองหน้ามาชนกัน · จุดยอด = มุมแหลมที่สันมาพบกัน","รูปคลี่คือการแผ่รูปสามมิติออกเป็นแผ่นเรียบ","ปริมาตรทรงสี่เหลี่ยมมุมฉาก = กว้าง × ยาว × สูง · 1 ลิตร = 1,000 ลบ.ซม."],
+  note:"เวอร์ชันนี้แสดงภาพบนจอ ส่วนโหมด AR พับกล่องบนโต๊ะจริงต้องเปิดจากเว็บที่อนุญาตกล้อง",
+  levels:{
+    1:{pill:"8 ชิ้นงาน", color:"var(--green)", desc:"ชื่อรูปเรขาคณิตสามมิติ หน้า สัน จุดยอด"},
+    2:{pill:"8 ชิ้นงาน", color:"var(--blue)", desc:"รูปคลี่ และรูปคลี่ของลูกบาศก์"},
+    3:{pill:"8 ชิ้นงาน", color:"var(--purple)", desc:"ปริมาตรและความจุของรูปทรงประกอบ"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ชิ้นงานที่ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===1 ? 120 : 200}); return; }
+      if (level === 1){
+        if (idx % 2 === 0){ const n = pick(NAMES), opts = shuffle([n, ...shuffle(NAMES.filter(x=>x!==n)).slice(0,3)]);
+          ctx.stage.innerHTML = `<div class="fig">${SOLIDS[n]()}</div><div id="q"></div>`;
+          KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"สินค้าชิ้นนี้เป็นรูปเรขาคณิตสามมิติชนิดใด", options:opts, answer:opts.indexOf(n), onNext:done});
+        } else { const n = pick(Object.keys(FEV)), k = rand(0,2), word = ["หน้า","สัน","จุดยอด"][k];
+          ctx.stage.innerHTML = `<div class="fig">${SOLIDS[n]()}</div><div id="q"></div>`;
+          KIT.keypad(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:`${n}มี<b>${word}</b>ทั้งหมดกี่${word==="หน้า"?"หน้า":word==="สัน"?"สัน":"จุด"} (นับส่วนที่มองไม่เห็นด้วย เส้นประคือด้านหลัง)`, unit:"", answer:FEV[n][k], hint:"นับให้ครบ รวมด้านหลังที่เป็นเส้นประ", onNext:done}); }
+        return;
+      }
+      if (level === 2){
+        if (idx % 2 === 0){ const n = pick(Object.keys(NETS)), opts = ["ลูกบาศก์","ปริซึมสามเหลี่ยม","พีระมิดฐานสี่เหลี่ยม","ทรงกระบอก","กรวย"];
+          ctx.stage.innerHTML = `<div class="fig">${NETS[n]()}</div><div id="q"></div>`;
+          const o4 = shuffle([n, ...shuffle(opts.filter(x=>x!==n)).slice(0,3)]);
+          KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"รูปคลี่นี้พับแล้วได้รูปอะไร", options:o4, answer:o4.indexOf(n), onNext:done});
+        } else { const ok = Math.random() < .5;
+          ctx.stage.innerHTML = `<div class="fig">${cellsSVG(cubeNet(ok), "#9CC8F5")}</div><div id="q"></div>`;
+          KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"รูปคลี่นี้พับเป็น<b>ลูกบาศก์</b>ได้หรือไม่", options:["✅ พับได้","❌ พับไม่ได้"], answer:ok?0:1, explain:"ลองนึกภาพพับขึ้นทีละหน้า ถ้ามีหน้าซ้อนกันหรือเหลือช่องว่าง แสดงว่าพับไม่ได้", onNext:done}); }
+        return;
+      }
+      const t = idx % 4;
+      if (t === 0 || t === 1){
+        const a = rand(2,5), b = rand(2,4), c = rand(2,4), d = rand(1,3), e = rand(1,3);
+        const V = a*b*c + d*b*e;
+        ctx.stage.innerHTML = `<div class="fig">${boxes([{x:0,y:0,z:0,w:a,l:b,h:c},{x:a,y:0,z:0,w:d,l:b,h:e}], [[a/2,b+0.9,0,`${a} ซม.`],[a+d/2,b+0.9,0,`${d} ซม.`],[a+d+0.6,b/2,0,`${b} ซม.`],[-0.6,b+0.4,c/2,`${c} ซม.`,"#E8708F"],[a+d+0.6,0,e/2+0.2,`${e} ซม.`,"#E8708F"]])}</div><div id="q"></div>`;
+        KIT.keypad(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"ชิ้นงานนี้ประกอบด้วยทรงสี่เหลี่ยมมุมฉาก 2 ก้อน มีปริมาตรรวมกี่ลูกบาศก์เซนติเมตร", unit:"ลบ.ซม.", answer:V, hint:"หาปริมาตรแต่ละก้อน (กว้าง × ยาว × สูง) แล้วบวกกัน", onNext:done});
+      } else if (t === 2){
+        const w = pick([10,20,30,40]), l = pick([20,25,40,50]), h = pick([10,20,30]);
+        KIT.keypad(ctx, ctx.stage, {label:lbl(), html:`ถังทรงสี่เหลี่ยมมุมฉาก กว้าง ${w} ซม. ยาว ${l} ซม. สูง ${h} ซม. จุน้ำได้เต็มที่กี่ลิตร`, unit:"ลิตร", answer:w*l*h/1000, decimal:true, hint:"ปริมาตร ลบ.ซม. ÷ 1,000 = ลิตร", onNext:done});
+      } else {
+        const k = pick([2,3]), a = k*rand(2,5), b = k*rand(2,5), c = k*rand(1,4);
+        KIT.keypad(ctx, ctx.stage, {label:lbl(), html:`กล่องกว้าง ${a} ซม. ยาว ${b} ซม. สูง ${c} ซม. บรรจุลูกเต๋าขนาด ${k} × ${k} × ${k} ซม. ได้เต็มที่กี่ลูก`, unit:"ลูก", answer:(a/k)*(b/k)*(c/k), hint:`ดูว่าแต่ละด้านเรียงลูกเต๋าได้กี่ลูก (${a}÷${k}, ${b}÷${k}, ${c}÷${k}) แล้วคูณกัน`, onNext:done});
+      }
+    }
+    ctx.progress(0, N); ctx.say("สายพานเริ่มเดินแล้ว!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

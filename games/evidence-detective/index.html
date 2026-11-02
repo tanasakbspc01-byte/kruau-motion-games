@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>นักสืบหลักฐานประวัติศาสตร์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.ev{width:100%;box-sizing:border-box;margin:14px auto 0;max-width:420px;background:#FFF8E8;border:3px dashed #D8B98A;border-radius:22px;padding:18px;text-align:center;box-shadow:0 5px 0 #E8D3AE;transition:transform .35s, opacity .35s}
+.ev .ic{font-size:clamp(3rem,12vw,4.6rem);line-height:1.1}
+.ev .nm{font-weight:700;font-size:clamp(1.15rem,3.6vw,1.5rem);margin-top:6px;line-height:1.4}
+.ev.flyL{transform:translate(-60%,40px) scale(.5) rotate(-12deg);opacity:0}
+.ev.flyR{transform:translate(60%,40px) scale(.5) rotate(12deg);opacity:0}
+.ev.no{animation:shake .4s}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.bin{border:4px solid var(--bc);background:#fff;border-radius:22px;padding:14px 10px;font-weight:700;font-size:clamp(1rem,3.2vw,1.3rem);box-shadow:0 6px 0 var(--bc);line-height:1.35;min-height:96px}
+.bin .bi{display:block;font-size:2rem}
+.bin small{display:block;font-weight:600;color:var(--ink-soft);font-size:.75em}
+.bin:active{transform:translateY(3px);box-shadow:0 3px 0 var(--bc)}
+.bin .cnt{display:inline-block;margin-top:4px;background:var(--bc);color:#fff;border-radius:999px;padding:0 10px;font-size:.85em}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const N = 10;
+/* side: 0 = left bin, 1 = right bin */
+const LV = {
+  1:{ bins:[["📜","เป็นลายลักษณ์อักษร","มีตัวหนังสือบันทึก"],["🏺","ไม่เป็นลายลักษณ์อักษร","ไม่มีตัวหนังสือ"]],
+      items:[
+        ["🪨","ศิลาจารึกพ่อขุนรามคำแหง",0,"ศิลาจารึกมีตัวอักษรจารึกไว้"],["📖","พงศาวดาร",0,"พงศาวดารเป็นการบันทึกเป็นตัวหนังสือ"],["🗒️","จดหมายเหตุ",0,"จดหมายเหตุเป็นบันทึกเหตุการณ์ด้วยตัวหนังสือ"],
+        ["🍃","คัมภีร์ใบลาน",0,"ใบลานมีตัวอักษรจารไว้"],["📰","หนังสือพิมพ์เก่า",0,"หนังสือพิมพ์มีตัวหนังสือ"],["✉️","พระราชหัตถเลขา (จดหมายของพระมหากษัตริย์)",0,"เป็นจดหมายที่เขียนด้วยตัวหนังสือ"],
+        ["📓","บันทึกการเดินทางของชาวต่างชาติ",0,"เป็นบันทึกที่เขียนไว้"],["📜","กฎหมายตราสามดวง",0,"กฎหมายเขียนเป็นตัวหนังสือ"],
+        ["🛕","เจดีย์และวัดร้าง",1,"เป็นโบราณสถาน ไม่มีตัวหนังสือบันทึกเรื่องราว"],["🏺","เครื่องสังคโลก",1,"เป็นเครื่องปั้นดินเผา ไม่ใช่ตัวหนังสือ"],["🎨","ภาพเขียนสีบนผนังถ้ำ",1,"เป็นภาพวาด ไม่ใช่ตัวหนังสือ"],
+        ["🪓","เครื่องมือหินขัด",1,"เป็นเครื่องมือเครื่องใช้"],["🥁","กลองมโหระทึก",1,"เป็นโบราณวัตถุ"],["📿","ลูกปัดโบราณ",1,"เป็นเครื่องประดับ ไม่มีตัวหนังสือ"],
+        ["🗿","พระพุทธรูปโบราณ",1,"เป็นโบราณวัตถุ"],["🗣️","คำบอกเล่าของผู้สูงอายุ",1,"เป็นการเล่าปากต่อปาก ไม่ได้เขียนไว้"],["💀","โครงกระดูกมนุษย์โบราณ",1,"เป็นหลักฐานทางโบราณคดี ไม่ใช่ตัวหนังสือ"]
+      ]},
+  2:{ bins:[["🔍","หลักฐานชั้นต้น","ปฐมภูมิ — คนในเหตุการณ์ทำไว้"],["📚","หลักฐานชั้นรอง","ทุติยภูมิ — เขียนขึ้นภายหลัง"]],
+      items:[
+        ["🪨","ศิลาจารึกสมัยสุโขทัย",0,"ทำขึ้นในสมัยนั้นเอง จึงเป็นหลักฐานชั้นต้น"],["📓","บันทึกของผู้ที่อยู่ในเหตุการณ์",0,"คนในเหตุการณ์เขียนเอง จึงเป็นชั้นต้น"],["📷","ภาพถ่ายที่ถ่ายในวันที่เกิดเหตุการณ์",0,"ถ่ายตอนเกิดเหตุการณ์จริง"],
+        ["✉️","จดหมายที่เขียนในสมัยนั้น",0,"เขียนในช่วงเวลาที่เกิดเหตุการณ์"],["🗒️","จดหมายเหตุรายวันในสมัยนั้น",0,"บันทึกไว้ในเวลาที่เกิดเรื่อง"],["🏺","ถ้วยชามที่ใช้จริงในสมัยนั้น",0,"เป็นของจริงจากยุคนั้น"],
+        ["🗣️","คำให้การของผู้เห็นเหตุการณ์",0,"ผู้เห็นเหตุการณ์เล่าเอง"],
+        ["📘","หนังสือเรียนประวัติศาสตร์",1,"เขียนขึ้นภายหลังโดยเรียบเรียงจากหลักฐานอื่น"],["📰","บทความของนักวิชาการที่เขียนในปัจจุบัน",1,"เขียนภายหลังจากศึกษาหลักฐานชั้นต้น"],["📺","สารคดีประวัติศาสตร์ทางโทรทัศน์",1,"ทำขึ้นภายหลัง"],
+        ["🎭","ละครอิงประวัติศาสตร์",1,"แต่งขึ้นภายหลัง"],["💻","เว็บไซต์สรุปประวัติศาสตร์",1,"สรุปขึ้นภายหลัง"],["📗","หนังสือการ์ตูนประวัติศาสตร์",1,"เขียนขึ้นภายหลัง"],["📕","หนังสือชีวประวัติที่เขียนขึ้นหลังผู้นั้นเสียชีวิตนานแล้ว",1,"เขียนภายหลังจากเหตุการณ์"]
+      ]},
+  3:{ bins:[["🦴","ยุคก่อนประวัติศาสตร์","ยังไม่มีตัวอักษร"],["✍️","ยุคประวัติศาสตร์","มีตัวอักษรบันทึกแล้ว"]],
+      items:[
+        ["🎨","ภาพเขียนสีที่ผาแต้ม จ.อุบลราชธานี",0,"มนุษย์สมัยนั้นยังไม่มีตัวอักษร ใช้ภาพแทน"],["🏺","ภาชนะดินเผาลายเขียนสีแดง บ้านเชียง",0,"บ้านเชียงเป็นแหล่งโบราณคดียุคก่อนประวัติศาสตร์"],["🪨","เครื่องมือหินกะเทาะ",0,"เป็นเครื่องมือของยุคหิน"],
+        ["🪓","ขวานหินขัด",0,"เป็นเครื่องมือยุคหินใหม่"],["🥁","กลองมโหระทึกสำริด",0,"เป็นของยุคโลหะ ก่อนมีตัวอักษร"],["💀","โครงกระดูกมนุษย์ที่บ้านเก่า จ.กาญจนบุรี",0,"แหล่งโบราณคดีบ้านเก่าเป็นยุคก่อนประวัติศาสตร์"],["🔥","มนุษย์ล่าสัตว์และอาศัยในถ้ำ",0,"เป็นวิถีชีวิตยุคหิน"],
+        ["📜","ศิลาจารึกพ่อขุนรามคำแหง",1,"มีตัวอักษรแล้ว จึงเป็นยุคประวัติศาสตร์"],["✍️","การประดิษฐ์ลายสือไทย",1,"เป็นเหตุการณ์ที่มีการบันทึกด้วยตัวอักษร"],["🛕","เจดีย์วัดมหาธาตุ เมืองสุโขทัย",1,"สร้างในสมัยสุโขทัยซึ่งมีตัวอักษรใช้แล้ว"],
+        ["🍶","เครื่องสังคโลกสมัยสุโขทัย",1,"ทำในสมัยสุโขทัย ซึ่งเป็นยุคประวัติศาสตร์"],["📖","พระราชพงศาวดารกรุงศรีอยุธยา",1,"มีการบันทึกเป็นตัวหนังสือ"],["⛵","บันทึกของชาวต่างชาติสมัยอยุธยา",1,"เป็นบันทึกด้วยตัวอักษร"],["📰","หนังสือพิมพ์ฉบับแรกของไทย (บางกอกรีคอร์เดอร์)",1,"พิมพ์ด้วยตัวอักษร จึงเป็นยุคประวัติศาสตร์"]
+      ]}
+};
+
+KIT.mount({
+  key:"h4-evidence", title:"นักสืบหลักฐานประวัติศาสตร์", subtitle:"ประวัติศาสตร์ ป.4 · หลักฐานและยุคสมัยทางประวัติศาสตร์",
+  heroHTML:"แยก<em>หลักฐาน</em>ให้ถูกกล่อง 🔎", heroDesc:"ดูหลักฐานแต่ละชิ้น แล้วแตะกล่องที่ถูกต้อง เป็นนักสืบประวัติศาสตร์ตัวน้อย",
+  progIcon:"🔎",
+  howto:["อ่านชื่อหลักฐานบนการ์ด","แตะกล่องซ้ายหรือขวาที่ถูกต้อง","แตะผิดจะมีคำอธิบาย แล้วลองใหม่ได้","แยกครบ 10 ชิ้นผ่านด่าน"],
+  levels:{
+    1:{pill:"10 ชิ้น", color:"var(--green)", desc:"ลายลักษณ์อักษร หรือ ไม่เป็นลายลักษณ์อักษร"},
+    2:{pill:"10 ชิ้น", color:"var(--blue)", desc:"หลักฐานชั้นต้น (ปฐมภูมิ) หรือ ชั้นรอง (ทุติยภูมิ)"},
+    3:{pill:"10 ชิ้น", color:"var(--purple)", desc:"ยุคก่อนประวัติศาสตร์ หรือ ยุคประวัติศาสตร์"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    /* balanced deck: 5 from each side */
+    const deck = shuffle([...shuffle(L.items.filter(i=>i[2]===0)).slice(0,5), ...shuffle(L.items.filter(i=>i[2]===1)).slice(0,5)]);
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext">หลักฐานชิ้นนี้อยู่กล่องไหน?</div></div>
+      <div class="ev" id="ev"><div class="ic" id="ic"></div><div class="nm" id="nm"></div></div>
+      <div class="bins">${L.bins.map((b,i)=>`<button class="bin" type="button" data-s="${i}" style="--bc:${i?'#86B6F0':'#F2A65A'}"><span class="bi">${b[0]}</span>${b[1]}<small>${b[2]}</small><span class="cnt" id="c${i}">0</span></button>`).join("")}</div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let idx = 0, lock = false, first = true; const cnt = [0,0];
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 80}); return; }
+      const it = deck[idx]; lock = false; first = true;
+      const ev = $("#ev"); ev.className = "ev";
+      $("#ic").textContent = it[0]; $("#nm").textContent = it[1];
+      $("#qn").textContent = `หลักฐานชิ้นที่ ${idx+1} จาก ${N}`;
+    }
+    ctx.stage.querySelector(".bins").addEventListener("click", e => {
+      const b = e.target.closest(".bin"); if (!b || lock) return;
+      const it = deck[idx], s = +b.dataset.s;
+      if (s === it[2]){
+        lock = true; $("#ev").classList.add(s ? "flyR" : "flyL");
+        cnt[s]++; $("#c"+s).textContent = cnt[s];
+        ctx.correct(first ? 100 : 50, `ถูกต้อง! ${it[3]}`); idx++; ctx.progress(idx, N); ctx.after(1400, next);
+      } else {
+        first = false; const ev = $("#ev"); ev.classList.remove("no"); void ev.offsetWidth; ev.classList.add("no");
+        ctx.wrong(`ยังไม่ใช่ — ${it[3]}`);
+      }
+    });
+    ctx.progress(0, N); ctx.say("เริ่มสืบหลักฐานกันเลย!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>กล่องเวทมนตร์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.fig{background:linear-gradient(#EFE8FF,#FFF6EA);border-radius:22px;border:3px solid #DCD2F6;box-shadow:0 5px 0 #DCD2F6;padding:8px;display:flex;justify-content:center;flex-wrap:wrap;gap:6px}
+.fig svg{width:100%;max-width:520px;height:auto}
+.fig.layers svg{max-width:240px}
+.tools{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 8;
+const CS = Math.cos(Math.PI/6), SN = Math.sin(Math.PI/6);
+/* isometric projection: x to the right-down, y to the left-down, z up */
+function iso(x, y, z, s){ return [(x - y)*CS*s, (x + y)*SN*s - z*s]; }
+function boxSVG(boxes, opt={}){
+  // boxes: [{x,y,z,w,l,h,col}] in unit cubes; draws visible faces with unit grid
+  let pts = [];
+  boxes.forEach(b => { for (const [x,y,z] of [[b.x,b.y,b.z],[b.x+b.w,b.y,b.z],[b.x,b.y+b.l,b.z],[b.x+b.w,b.y+b.l,b.z],[b.x,b.y,b.z+b.h],[b.x+b.w,b.y+b.l,b.z+b.h],[b.x+b.w,b.y,b.z+b.h],[b.x,b.y+b.l,b.z+b.h]]) pts.push([x,y,z]); });
+  const span = Math.max(...pts.map(p=>p[0]+p[1])) + Math.max(...pts.map(p=>p[2]));
+  const s = Math.min(opt.max || 46, 300 / Math.max(4, span));
+  const P = pts.map(([x,y,z]) => iso(x,y,z,s));
+  const padX = opt.labels ? 125 : 40; const minX = Math.min(...P.map(p=>p[0])) - padX, maxX = Math.max(...P.map(p=>p[0])) + padX, minY = Math.min(...P.map(p=>p[1])) - 30, maxY = Math.max(...P.map(p=>p[1])) + 34;
+  const pp = (x,y,z) => iso(x,y,z,s).map(v=>v.toFixed(1)).join(",");
+  let g = "";
+  boxes.forEach(b => {
+    const {x,y,z,w,l,h} = b, col = b.col || ["#F6CD6B","#F2A65A","#E8A04E"];
+    const face = (pts, fill) => g += `<polygon points="${pts.map(p=>pp(...p)).join(" ")}" fill="${fill}" stroke="#5A4335" stroke-width="2.5" stroke-linejoin="round"/>`;
+    const line = (a, b2) => g += `<line x1="${iso(...a,s)[0]}" y1="${iso(...a,s)[1]}" x2="${iso(...b2,s)[0]}" y2="${iso(...b2,s)[1]}" stroke="#5A4335" stroke-width="1.2" opacity="${opt.grid===false?0:.6}"/>`;
+    face([[x,y,z+h],[x+w,y,z+h],[x+w,y+l,z+h],[x,y+l,z+h]], col[0]);           // top
+    face([[x+w,y,z],[x+w,y+l,z],[x+w,y+l,z+h],[x+w,y,z+h]], col[1]);           // right (x = x+w)
+    face([[x,y+l,z],[x+w,y+l,z],[x+w,y+l,z+h],[x,y+l,z+h]], col[2]);           // left (y = y+l)
+    for (let i=1;i<w;i++){ line([x+i,y,z+h],[x+i,y+l,z+h]); line([x+i,y+l,z],[x+i,y+l,z+h]); }
+    for (let j=1;j<l;j++){ line([x,y+j,z+h],[x+w,y+j,z+h]); line([x+w,y+j,z],[x+w,y+j,z+h]); }
+    for (let k=1;k<h;k++){ line([x+w,y,z+k],[x+w,y+l,z+k]); line([x,y+l,z+k],[x+w,y+l,z+k]); }
+  });
+  if (opt.labels){ const [lw, ll, lh] = opt.labels, b = boxes[0];
+    const m1 = iso(b.x + b.w/2, b.y + b.l, b.z, s), m2 = iso(b.x + b.w, b.y + b.l/2, b.z, s), m3 = iso(b.x + b.w, b.y, b.z + b.h/2, s);
+    g += `<text x="${m1[0]-14}" y="${m1[1]+26}" font-size="18" font-weight="700" font-family="Mali" fill="#3E6EA8" text-anchor="end">${lw}</text>`;
+    g += `<text x="${m2[0]+14}" y="${m2[1]+24}" font-size="18" font-weight="700" font-family="Mali" fill="#3E6EA8">${ll}</text>`;
+    g += `<text x="${m3[0]+12}" y="${m3[1]}" font-size="18" font-weight="700" font-family="Mali" fill="#E8708F">${lh}</text>`; }
+  return `<svg viewBox="${minX} ${minY} ${maxX-minX} ${maxY-minY}" role="img" aria-label="${opt.aria||"ทรงสี่เหลี่ยมมุมฉาก"}">${g}</svg>`;
+}
+function opts(ans, w){ const set = [...new Set(w.filter(v => v>0 && v!==ans))]; const l = shuffle([ans, ...shuffle(set).slice(0,3)]); while (l.length < 4){ const v = ans + rand(1,9)*(rand(0,1)?1:-1); if (v>0 && !l.includes(v)) l.push(v); } return {options:l, answer:l.indexOf(ans)}; }
+
+KIT.mount({
+  key:"p5-box", title:"กล่องเวทมนตร์", subtitle:"คณิตศาสตร์ ป.5 · บทที่ 8 ปริมาตรและความจุ",
+  heroHTML:"เปิด<em>กล่องเวทมนตร์</em> นับลูกบาศก์ 📦", heroDesc:"นับลูกบาศก์ในกล่อง หาปริมาตรด้วยสูตร กว้าง × ยาว × สูง และคำนวณความจุเป็นลิตร",
+  progIcon:"📦",
+  howto:["ดูภาพกล่องแล้วแตะคำตอบ","ระดับง่ายกดปุ่ม \"แยกเป็นชั้น\" เพื่อดูลูกบาศก์ทีละชั้นได้","ปริมาตรทรงสี่เหลี่ยมมุมฉาก = กว้าง × ยาว × สูง","1 ลิตร = 1,000 ลูกบาศก์เซนติเมตร"],
+  note:"เวอร์ชันนี้แสดงกล่องเป็นภาพ 3 มิติบนจอ ส่วนโหมด AR วางกล่องบนโต๊ะจริงต้องเปิดจากเว็บที่อนุญาตกล้อง",
+  levels:{
+    1:{pill:"8 กล่อง", color:"var(--green)", desc:"นับลูกบาศก์หาปริมาตร"},
+    2:{pill:"8 กล่อง", color:"var(--blue)", desc:"ใช้สูตร กว้าง × ยาว × สูง และแปลงลิตร ↔ ลูกบาศก์เซนติเมตร"},
+    3:{pill:"8 กล่อง", color:"var(--purple)", desc:"ความจุ ความสูงของน้ำ และรูปทรงประกอบ"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `กล่องที่ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===1 ? 120 : 170}); return; }
+      if (level === 1) return countCubes();
+      if (level === 2) return formula();
+      return capacity();
+    }
+    function countCubes(){
+      const w = rand(2,4), l = rand(2,4), h = rand(2,4), V = w*l*h;
+      const visible = w*l + w*h + l*h - w - l - h + 1;
+      const q = opts(V, [visible, w*l + h, V + w*l, V - w*l, w+l+h, 2*(w*l+w*h+l*h)]);
+      let split = false;
+      const draw = () => {
+        const fig = ctx.stage.querySelector(".fig");
+        if (!split){ fig.className = "fig"; fig.innerHTML = boxSVG([{x:0,y:0,z:0,w,l,h}]); }
+        else { fig.className = "fig layers"; fig.innerHTML = Array.from({length:h},(_,k)=>boxSVG([{x:0,y:0,z:0,w,l,h:1,col:[["#F6CD6B","#F2A65A","#E8A04E"],["#9CC8F5","#6FA6E0","#5A92CC"],["#A6E3B5","#7FD39A","#62BD80"],["#F2A7B8","#E8869C","#D96F87"]][k%4]}],{max:40, aria:`ชั้นที่ ${k+1}`})).join(""); }
+      };
+      ctx.stage.innerHTML = `<div class="fig"></div><div class="tools"><button class="btn ghost" type="button" id="sp">แยกเป็นชั้น</button></div><div id="q"></div>`;
+      draw();
+      ctx.stage.querySelector("#sp").onclick = () => { split = !split; ctx.stage.querySelector("#sp").textContent = split ? "รวมเป็นกล่อง" : "แยกเป็นชั้น"; draw(); };
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"กล่องนี้ประกอบด้วยลูกบาศก์ทั้งหมดกี่ลูก (รวมลูกที่มองไม่เห็นด้วย)", options:q.options.map(v=>v+" ลูก"), answer:q.answer, explain:"ลองแยกเป็นชั้น นับ 1 ชั้นได้กี่ลูก แล้วคูณด้วยจำนวนชั้น", onNext:done});
+    }
+    function formula(){
+      const k = idx % 4;
+      if (k === 0 || k === 1){
+        const w = rand(3,12), l = rand(4,15), h = rand(2,10), V = w*l*h;
+        const q = opts(V, [w+l+h, 2*(w*l+w*h+l*h), w*l, V+w*l, w*l*h*2]);
+        ctx.stage.innerHTML = `<div class="fig">${boxSVG([{x:0,y:0,z:0,w:Math.min(w,6),l:Math.min(l,6),h:Math.min(h,5)}],{grid:false, labels:[`กว้าง ${w} ซม.`,`ยาว ${l} ซม.`,`สูง ${h} ซม.`]})}</div><div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"กล่องนี้มีปริมาตรกี่ลูกบาศก์เซนติเมตร", options:q.options.map(v=>fmt(v)+" ลบ.ซม."), answer:q.answer, explain:"ปริมาตร = กว้าง × ยาว × สูง", onNext:done});
+      } else if (k === 2){
+        const L = rand(2,15) * (rand(0,1) ? 1 : 1), cc = L*1000;
+        const toL = rand(0,1);
+        const q = toL ? opts(L, [L*10, L*100, cc/100, L+1]) : opts(cc, [L*100, L*10, cc*10, cc+100]);
+        KIT.mcq(ctx, ctx.stage, {label:lbl(), html: toL ? `${fmt(cc)} ลูกบาศก์เซนติเมตร เท่ากับกี่ลิตร` : `${L} ลิตร เท่ากับกี่ลูกบาศก์เซนติเมตร`, options:q.options.map(v => fmt(v) + (toL ? " ลิตร" : " ลบ.ซม.")), answer:q.answer, explain:"1 ลิตร = 1,000 ลูกบาศก์เซนติเมตร", onNext:done});
+      } else {
+        const w = pick([10,20,25,30]), l = pick([20,30,40,50]), h = pick([20,30,40]); const L = w*l*h/1000;
+        if (!Number.isInteger(L)) return formula();
+        const q = opts(L, [w*l*h, L*10, w*l*h/100, w+l+h]);
+        ctx.stage.innerHTML = `<div class="fig">${boxSVG([{x:0,y:0,z:0,w:3,l:5,h:3,col:["#BFE6F7","#86C8EC","#6FB6E0"]}],{grid:false, labels:[`กว้าง ${w} ซม.`,`ยาว ${l} ซม.`,`สูง ${h} ซม.`], aria:"ตู้ปลา"})}</div><div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"ตู้ปลานี้จุน้ำได้เต็มที่กี่ลิตร", options:q.options.map(v=>fmt(v)+" ลิตร"), answer:q.answer, explain:"หาปริมาตรเป็น ลบ.ซม. ก่อน แล้วหารด้วย 1,000", onNext:done});
+      }
+    }
+    function capacity(){
+      const k = idx % 4;
+      if (k === 0){
+        const w = pick([10,20,25]), l = pick([20,30,40]), hgt = rand(3,15); const L = w*l*hgt/1000;
+        if (!Number.isInteger(w*l*hgt/100)) return capacity();
+        const q = opts(hgt, [hgt*10, Math.round(L), hgt+5, w*l/100]);
+        ctx.stage.innerHTML = `<div class="fig">${boxSVG([{x:0,y:0,z:0,w:3,l:5,h:4,col:["#BFE6F7","#86C8EC","#6FB6E0"]}],{grid:false, labels:[`กว้าง ${w} ซม.`,`ยาว ${l} ซม.`,""]})}</div><div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:`เทน้ำ ${String(L).replace(".", ".")} ลิตร ลงในตู้นี้ น้ำจะสูงกี่เซนติเมตร`, options:q.options.map(v=>v+" ซม."), answer:q.answer, explain:"แปลงลิตรเป็น ลบ.ซม. แล้วหารด้วย กว้าง × ยาว", onNext:done});
+      } else if (k === 1){
+        const w = rand(4,9), l = rand(5,10), h = rand(3,8), V = w*l*h;
+        const q = opts(h, [V - w*l, h+2, w, l]);
+        KIT.mcq(ctx, ctx.stage, {label:lbl(), html:`กล่องปริมาตร <b>${fmt(V)} ลูกบาศก์เซนติเมตร</b> กว้าง ${w} ซม. ยาว ${l} ซม. สูงกี่เซนติเมตร`, options:q.options.map(v=>v+" ซม."), answer:q.answer, explain:"สูง = ปริมาตร ÷ (กว้าง × ยาว)", onNext:done});
+      } else if (k === 2){
+        const a = rand(2,4), b = rand(2,3), c = rand(2,3), d = rand(1,2), e = rand(2,3);
+        const V1 = a*b*c, V2 = d*b*e; const V = V1 + V2;
+        const q = opts(V, [V1, V2, a*b*(c+e), (a+d)*b*Math.max(c,e)]);
+        ctx.stage.innerHTML = `<div class="fig">${boxSVG([{x:0,y:0,z:0,w:a,l:b,h:c},{x:a,y:0,z:0,w:d,l:b,h:e,col:["#9CC8F5","#6FA6E0","#5A92CC"]}])}</div><div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"รูปทรงนี้ประกอบด้วยลูกบาศก์ 1 ลูกบาศก์หน่วย ทั้งหมดกี่ลูก", options:q.options.map(v=>v+" ลูก"), answer:q.answer, explain:"แยกเป็น 2 กล่อง หาปริมาตรแต่ละกล่องแล้วบวกกัน", onNext:done});
+      } else {
+        const w = pick([20,30,40]), l = pick([30,40,50]), h = pick([20,30]), full = w*l*h/1000, now = rand(1, Math.floor(full/2));
+        const add = full - now;
+        const q = opts(add, [full, now, full+now, add+5]);
+        KIT.mcq(ctx, ctx.stage, {label:lbl(), html:`ถังน้ำทรงสี่เหลี่ยมมุมฉาก กว้าง ${w} ซม. ยาว ${l} ซม. สูง ${h} ซม. มีน้ำอยู่ ${now} ลิตร ต้องเติมน้ำอีกกี่ลิตรจึงจะเต็มถัง`, options:q.options.map(v=>fmt(v)+" ลิตร"), answer:q.answer, onNext:done});
+      }
+    }
+    ctx.progress(0, N); ctx.say("กล่องเวทมนตร์ใบแรกปรากฏแล้ว!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

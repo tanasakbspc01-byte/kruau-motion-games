@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สะพานรางรถไฟ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.fig{background:#F3FAEF;border-radius:22px;border:3px solid #CFE6C2;box-shadow:0 5px 0 #CFE6C2;padding:8px;display:flex;justify-content:center}
+.fig svg{width:100%;max-width:600px;height:auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.gp{cursor:pointer}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8, R = Math.PI/180;
+const C = 40, COLS = 12, ROWS = 8, M = 20, W = COLS*C + 2*M, H = ROWS*C + 2*M;
+const gx = x => M + x*C, gy = y => M + y*C;
+const ink = "#4A3A30";
+function grid(inner, id){
+  let s = `<svg viewBox="0 0 ${W} ${H}" ${id?`id="${id}"`:""} role="img" aria-label="ตารางจุด">`;
+  for (let x=0;x<=COLS;x++) for (let y=0;y<=ROWS;y++) s += `<circle class="gp" data-x="${x}" data-y="${y}" cx="${gx(x)}" cy="${gy(y)}" r="3.2" fill="#9CC98A"/>`;
+  return s + inner + "</svg>";
+}
+const seg = (x1,y1,x2,y2,col=ink,w=5,extra="") => `<line x1="${gx(x1)}" y1="${gy(y1)}" x2="${gx(x2)}" y2="${gy(y2)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round" ${extra}/>`;
+const tag = (x,y,t,col=ink) => `<text x="${gx(x)}" y="${gy(y)}" font-size="22" font-weight="700" fill="${col}" font-family="Mali" text-anchor="middle" dominant-baseline="middle" paint-order="stroke" stroke="#F3FAEF" stroke-width="6">${t}</text>`;
+const NAMES = ["ก","ข","ค","ง"];
+const COLS4 = ["#E8708F","#3E6EA8","#E08A3C","#5BB878"];
+
+/* level 1: four lines; exactly one parallel pair and one perpendicular pair */
+function place(d){
+  let best = null;
+  for (let t=0;t<200;t++){
+    const sx = rand(0,COLS), sy = rand(0,ROWS); let k = 0;
+    while (k < 4){ const ex = sx + d[0]*(k+1), ey = sy + d[1]*(k+1); if (ex<0||ex>COLS||ey<0||ey>ROWS) break; k++; }
+    if (k >= 2) return [sx, sy, sx + d[0]*k, sy + d[1]*k];
+    if (k === 1 && !best) best = [sx, sy, sx + d[0], sy + d[1]];
+  }
+  return best;
+}
+function fourLines(){
+  const d = pick([[3,1],[2,1],[1,2],[3,2],[4,1],[1,3],[2,-1],[3,-1]]), p = [-d[1], d[0]];
+  const cross = (u,v) => u[0]*v[1]-u[1]*v[0], dot = (u,v) => u[0]*v[0]+u[1]*v[1];
+  const others = [[1,0],[0,1],[1,1],[1,-1],[2,3],[3,-2],[1,4],[4,-3]].filter(o => cross(o,d) && cross(o,p) && dot(o,d));
+  const L0 = place(d); let L1, g = 0;
+  do { L1 = place(d); } while (g++ < 100 && cross([L1[0]-L0[0], L1[1]-L0[1]], d) === 0);
+  return [L0, L1, place(p), place(pick(others))];
+}
+KIT.mount({
+  key:"p5-rails", title:"สะพานรางรถไฟ", subtitle:"คณิตศาสตร์ ป.5 · บทที่ 6 เส้นขนาน",
+  heroHTML:"สร้าง<em>รางรถไฟ</em>ให้ขนานกัน 🛤️", heroDesc:"หาเส้นขนาน เส้นตั้งฉาก ลากรางให้ขนาน และหาขนาดมุมที่เกิดจากเส้นตัดขวาง",
+  progIcon:"🛤️",
+  howto:["ระดับง่าย: ดูรูปเส้นบนตารางจุด แล้วแตะคำตอบ","ระดับกลาง: บางข้อให้แตะจุดบนตารางเพื่อลากรางให้ขนานกับรางเดิม แล้วกด \"วางราง\"","ระดับยาก: เส้นขนานถูกตัดด้วยเส้นตัดขวาง หาขนาดของมุม x","มุมแย้งมีขนาดเท่ากัน มุมภายในบนข้างเดียวกันรวมกันได้ 180°"],
+  levels:{
+    1:{pill:"8 ข้อ", color:"var(--green)", desc:"เส้นขนาน และเส้นตั้งฉาก"},
+    2:{pill:"8 ข้อ", color:"var(--blue)", desc:"ระยะห่างระหว่างเส้นขนาน และลากเส้นขนานผ่านจุด"},
+    3:{pill:"8 ข้อ", color:"var(--purple)", desc:"มุมแย้ง มุมภายใน และมุมภายนอกกับเส้นขนาน"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ข้อ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 160 : 140}); return; }
+      if (level === 1) return identify();
+      if (level === 2) return idx % 2 === 0 ? drawParallel() : distance();
+      return angles();
+    }
+    function identify(){
+      const Ls = fourLines(), kind = idx % 2 === 0 ? "ขนานกัน" : "ตั้งฉากกัน";
+      const order = shuffle([0,1,2,3]); // name mapping
+      const nameOf = i => NAMES[order.indexOf(i)];
+      let inner = "";
+      Ls.forEach((l,i) => { inner += seg(...l, COLS4[order.indexOf(i)]); inner += tag(l[2] + (l[2]>=COLS?-0.4:0.4), l[3] + (l[3]>=ROWS?-0.4:0.3), nameOf(i), COLS4[order.indexOf(i)]); });
+      const pairs = [[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
+      const correct = kind === "ขนานกัน" ? [0,1] : [0,2];
+      const label = ([i,j]) => [nameOf(i), nameOf(j)].sort().join(" กับ ");
+      const ans = label(correct);
+      const all = [...new Set(pairs.map(label))];
+      const list = shuffle([ans, ...shuffle(all.filter(x => x !== ans && !(kind==="ตั้งฉากกัน" && x === label([1,2])))).slice(0,3)]);
+      ctx.stage.innerHTML = `<div class="fig">${grid(inner)}</div><div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:`เส้นคู่ใด<b>${kind}</b>`, options:list.map(x => "เส้น " + x), answer:list.indexOf(ans), explain: kind==="ขนานกัน" ? "เส้นขนานจะเอียงเท่ากันเสมอ นับช่องดูว่าไปทางขวากี่ช่อง ขึ้นลงกี่ช่อง" : "เส้นตั้งฉากตัดกันเป็นมุมฉาก (90°)", onNext:done});
+    }
+    function distance(){
+      const y1 = rand(1,3), d = rand(2,4), y2 = y1 + d;
+      const xs = shuffle([2,4,6,8,10]).slice(0,3).sort((a,b)=>a-b);
+      const segs = [[xs[0], y1, xs[0], y2], [xs[1], y1, xs[1]+2, y2], [xs[2], y1, xs[2]-1, y2]];
+      const order = shuffle([0,1,2]);
+      let inner = seg(0,y1,COLS,y1,"#8A7466",7) + seg(0,y2,COLS,y2,"#8A7466",7);
+      segs.forEach((s,i) => { inner += seg(...s, COLS4[order[i]], 4, 'stroke-dasharray="8 6"'); inner += tag((s[0]+s[2])/2 + 0.45, (s[1]+s[3])/2, NAMES[order[i]], COLS4[order[i]]); });
+      ctx.stage.innerHTML = `<div class="fig">${grid(inner)}</div><div id="q"></div>`;
+      if (Math.random() < .5){
+        const ans = NAMES[order[0]];
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"รางรถไฟสองเส้นขนานกัน เส้นประใดแสดง<b>ระยะห่าง</b>ระหว่างเส้นขนาน", options:NAMES.slice(0,3).map(n=>"เส้น "+n), answer:NAMES.indexOf(ans), cols:3, explain:"ระยะห่างระหว่างเส้นขนานต้องตั้งฉากกับเส้นขนาน", onNext:done});
+      } else {
+        const list = shuffle([d, d+1, d+2, Math.max(1,d-1)].filter((v,i,a)=>a.indexOf(v)===i));
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"รางรถไฟสองเส้นอยู่ห่างกันกี่หน่วย (ระยะระหว่างจุด 1 ช่อง = 1 หน่วย)", options:list.map(v=>v+" หน่วย"), answer:list.indexOf(d), explain:"นับตามเส้นที่ตั้งฉากกับราง", onNext:done});
+      }
+    }
+    function drawParallel(){
+      const dirs = [[3,1],[2,1],[1,1],[3,-1],[2,-1],[1,-2],[4,1]];
+      const [a,b] = pick(dirs);
+      const sx = 1, sy = b < 0 ? ROWS - 1 : 1;
+      const k = Math.max(1, Math.min(Math.floor((COLS-2)/ (2*a)), b ? Math.floor((ROWS-2)/Math.abs(b)/2) : 3));
+      const ex = sx + a*k, ey = sy + b*k;
+      let P; do { P = [rand(2, COLS-2), rand(1, ROWS-1)]; } while ((P[0]-sx)*b - (P[1]-sy)*a === 0);
+      let Q = null, first = true, lock = false;
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl()} · ลากรางใหม่</div><div class="qtext">แตะจุดบนตารางเพื่อลากรางจากจุด <b style="color:#E8708F">P</b> ให้<b>ขนาน</b>กับรางสีน้ำตาล</div></div>
+        <div class="fig">${grid(seg(sx,sy,ex,ey,"#8A7466",8) + `<line id="nl" stroke="#E8708F" stroke-width="7" stroke-linecap="round" visibility="hidden"/>` + `<circle cx="${gx(P[0])}" cy="${gy(P[1])}" r="9" fill="#E8708F"/>` + tag(P[0]-0.45, P[1]-0.45, "P", "#E8708F"), "g")}</div>
+        <div class="row"><button class="btn" type="button" id="put">วางราง</button></div>`;
+      const svg = ctx.stage.querySelector("#g"), nl = ctx.stage.querySelector("#nl");
+      svg.addEventListener("pointerdown", e => {
+        if (lock) return;
+        const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+        const x = Math.max(0, Math.min(COLS, Math.round((p.x - M)/C))), y = Math.max(0, Math.min(ROWS, Math.round((p.y - M)/C)));
+        if (x === P[0] && y === P[1]) return;
+        Q = [x,y]; KIT.sfx.tap();
+        nl.setAttribute("x1", gx(P[0])); nl.setAttribute("y1", gy(P[1])); nl.setAttribute("x2", gx(x)); nl.setAttribute("y2", gy(y)); nl.setAttribute("visibility","visible");
+      });
+      ctx.stage.querySelector("#put").onclick = () => {
+        if (lock) return;
+        if (!Q){ ctx.say("แตะจุดบนตารางเพื่อลากรางก่อนนะ"); return; }
+        const dx = Q[0]-P[0], dy = Q[1]-P[1];
+        if (dx*b - dy*a === 0){ lock = true; nl.setAttribute("stroke", "#5BB878"); ctx.correct(first?100:50, "รางขนานกันพอดี รถไฟวิ่งได้แล้ว! 🚂"); ctx.after(1000, done); }
+        else { first = false; ctx.wrong(`ยังไม่ขนาน รางเดิมไปทางขวา ${a} ช่อง ${b>0?"ลง":"ขึ้น"} ${Math.abs(b)} ช่อง ลองนับแบบเดียวกันจากจุด P`); }
+      };
+    }
+    function angles(){
+      const th = rand(7,16)*5;
+      const theta = Math.random() < .5 ? th : 180 - th; // transversal direction from horizontal
+      const Wd = 480, Hd = 330, yA = 110, yB = 230;
+      const x1 = 240 + (yB - yA)/2/Math.tan(theta*R), x2 = 240 - (yB - yA)/2/Math.tan(theta*R);
+      const posVal = pos => (pos === 0 || pos === 2) ? theta : 180 - theta; // 0 UR,1 UL,2 LL,3 LR
+      const span = pos => [[0,theta],[theta,180],[180,180+theta],[180+theta,360]][pos];
+      const arc = (vx, vy, pos, col, label) => {
+        const [a0,a1] = span(pos), r = 30, rl = 54, am = (a0+a1)/2;
+        return `<path d="M${vx + r*Math.cos(a0*R)},${vy - r*Math.sin(a0*R)} A${r},${r} 0 0 0 ${vx + r*Math.cos(a1*R)},${vy - r*Math.sin(a1*R)}" fill="none" stroke="${col}" stroke-width="4"/>
+          <text x="${vx + rl*Math.cos(am*R)}" y="${vy - rl*Math.sin(am*R)}" font-size="20" font-weight="700" fill="${col}" font-family="Mali" text-anchor="middle" dominant-baseline="middle">${label}</text>`;
+      };
+      const givenV = rand(0,1) ? [x1,yA] : [x2,yB], givenPos = rand(0,3);
+      const askAtA = givenV[1] === yA ? false : true;
+      const askV = askAtA ? [x1,yA] : [x2,yB];
+      // choose a relationship that is interesting: alternate interior, co-interior, corresponding
+      const askPos = pick([0,1,2,3]);
+      const given = posVal(givenPos), ans = posVal(askPos);
+      const L = 230;
+      const tx = Math.cos(theta*R), ty = Math.sin(theta*R);
+      const svg = `<svg viewBox="0 0 ${Wd} ${Hd}" role="img" aria-label="เส้นขนานสองเส้นถูกตัดด้วยเส้นตัดขวาง">
+        <line x1="20" y1="${yA}" x2="${Wd-20}" y2="${yA}" stroke="#8A7466" stroke-width="6"/><line x1="20" y1="${yB}" x2="${Wd-20}" y2="${yB}" stroke="#8A7466" stroke-width="6"/>
+        <path d="M${Wd-70},${yA-8} l10,8 l-10,8 M${Wd-58},${yA-8} l10,8 l-10,8 M${Wd-70},${yB-8} l10,8 l-10,8 M${Wd-58},${yB-8} l10,8 l-10,8" stroke="#8A7466" stroke-width="3" fill="none"/>
+        <line x1="${240 - L*tx}" y1="${170 + L*ty}" x2="${240 + L*tx}" y2="${170 - L*ty}" stroke="${ink}" stroke-width="4"/>
+        ${arc(givenV[0], givenV[1], givenPos, "#3E6EA8", given + "°")}${arc(askV[0], askV[1], askPos, "#E8708F", "x")}</svg>`;
+      const list = [...new Set([ans, 180-ans, 90, ans === 90 ? 80 : (ans+10 < 180 ? ans+10 : ans-10)])].filter(v => v>0 && v<180);
+      while (list.length < 4){ const v = rand(3,33)*5; if (!list.includes(v)) list.push(v); }
+      shuffle(list);
+      ctx.stage.innerHTML = `<div class="fig">${svg}</div><div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:`เส้นสีน้ำตาลสองเส้นขนานกัน (ลูกศร ≫) มุม <b style="color:#E8708F">x</b> มีขนาดกี่องศา`, options:list.map(v=>v+"°"), answer:list.indexOf(ans), explain:"มุมแย้งและมุมที่อยู่ตำแหน่งเดียวกันมีขนาดเท่ากัน มุมที่อยู่ข้างเดียวกันของเส้นตัดขวางรวมกันได้ 180°", onNext:done});
+    }
+    ctx.progress(0, N); ctx.say("หัวหน้าช่างรอแบบรางรถไฟอยู่!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

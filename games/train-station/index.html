@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สถานีรถไฟวุ่นวาย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.station{display:flex;align-items:center;gap:12px;background:#FFF1DD;border-radius:20px;padding:10px 14px;overflow:hidden;position:relative}
+.track{position:relative;flex:1;height:58px}
+.track::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:6px;background:repeating-linear-gradient(90deg,#8A7466 0 14px,transparent 14px 22px)}
+.train{position:absolute;bottom:12px;left:-40%;height:44px;transition:left 1.4s ease-in-out}
+.train.go{left:110%}
+.train.here{left:30%}
+.pax{font-weight:700;white-space:nowrap}
+.clockwrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+.clock{width:min(62vw,240px);height:auto}
+.setters{display:grid;grid-template-columns:repeat(2,auto);gap:8px 14px;align-items:center;justify-content:center}
+.setters span{font-weight:700;text-align:right}
+.setters .row{gap:6px}
+.sbtn{min-width:62px;border-radius:14px;border:3px solid var(--c);background:var(--card);font-weight:700;font-size:1.1rem;padding:6px 10px;box-shadow:0 4px 0 var(--c)}
+.sbtn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--c)}
+table.tt{width:100%;border-collapse:collapse;margin-top:10px;font-size:clamp(.95rem,2.6vw,1.15rem);font-variant-numeric:tabular-nums}
+table.tt th{background:#5E6B7A;color:#fff;padding:6px;font-weight:600}
+table.tt td{padding:6px;border-bottom:1px dashed var(--line)}
+table.tt tr:nth-child(even) td{background:#FFF8EF}
+.qtext .sub{display:block;font-size:.7em;color:var(--ink-soft);font-weight:600;margin-top:4px}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const p2 = n => String(n).padStart(2,"0");
+const t24 = (h,m) => `${p2(h)}.${p2(m)} น.`;
+function thaiTime(h, m){
+  let s;
+  if (h===0) s = "เที่ยงคืน"; else if (h<=5) s = `ตี ${h}`; else if (h<=11) s = `${h} โมงเช้า`;
+  else if (h===12) s = "เที่ยงวัน"; else if (h===13) s = "บ่ายโมง"; else if (h<=15) s = `บ่าย ${h-12} โมง`;
+  else if (h<=18) s = `${h-12} โมงเย็น`; else s = `${h-18} ทุ่ม`;
+  return m ? `${s} ${m} นาที` : `${s}ตรง`;
+}
+const dur = mins => { const h = Math.floor(mins/60), m = mins%60; return ((h ? `${h} ชั่วโมง ` : "") + (m ? `${m} นาที` : (h ? "" : "0 นาที"))).trim(); };
+const toMin = (h,m) => h*60+m, fromMin = x => [Math.floor(x/60)%24, x%60];
+function clockSVG(h, m, id){
+  let s = `<svg class="clock" viewBox="0 0 200 200" ${id?`id="${id}"`:""} role="img" aria-label="นาฬิกาเข็ม"><circle cx="100" cy="100" r="94" fill="#fff" stroke="#5A4335" stroke-width="6"/>`;
+  for (let i=0;i<60;i++){ const a = i*6*Math.PI/180, r1 = i%5 ? 84 : 78; s += `<line x1="${100+r1*Math.sin(a)}" y1="${100-r1*Math.cos(a)}" x2="${100+88*Math.sin(a)}" y2="${100-88*Math.cos(a)}" stroke="#8A7466" stroke-width="${i%5?1.5:3}"/>`; }
+  for (let i=1;i<=12;i++){ const a = i*30*Math.PI/180; s += `<text x="${100+64*Math.sin(a)}" y="${100-64*Math.cos(a)+7}" text-anchor="middle" font-size="19" font-weight="700" fill="#4A3A30" font-family="Mali,sans-serif">${i}</text>`; }
+  s += `<g class="hh"><line x1="100" y1="100" x2="100" y2="52" stroke="#E08A3C" stroke-width="8" stroke-linecap="round"/></g>`;
+  s += `<g class="mh"><line x1="100" y1="100" x2="100" y2="26" stroke="#4A3A30" stroke-width="5" stroke-linecap="round"/></g><circle cx="100" cy="100" r="7" fill="#4A3A30"/></svg>`;
+  return s;
+}
+function setHands(svg, h, m){
+  svg.querySelector(".hh").setAttribute("transform", `rotate(${(h%12 + m/60)*30} 100 100)`);
+  svg.querySelector(".mh").setAttribute("transform", `rotate(${m*6} 100 100)`);
+}
+function opts(ans, wrongs){ const w = [...new Set(wrongs.filter(x => x !== ans))]; const list = shuffle([ans, ...shuffle(w).slice(0,3)]); return {options:list, answer:list.indexOf(ans)}; }
+
+/* ---------- question makers ---------- */
+const L1 = [
+  () => { const h = rand(13,22), m = rand(1,11)*5;
+    return {kind:"mcq", label:`🚆 รถไฟขบวนนี้ออกตอน${h>=18?"กลางคืน":h>=16?"เย็น":"บ่าย"} นาฬิกาบอกเวลาออก`, html:clockSVG(h,m,"qc"), hm:[h,m], sub:"เขียนแบบ 24 ชั่วโมงได้ว่าอย่างไร",
+      ...opts(t24(h,m), [t24(h-12,m), t24(h, (m+30)%60), t24((m/5)%12 + 12 || 12, h%12*5), t24(h+1>23?h-1:h+1, m)])}; },
+  () => { const h = rand(5,23), m = rand(0,11)*5;
+    return {kind:"mcq", label:"🚆 ประกาศจากสถานี: รถไฟจะออกเวลา", html:thaiTime(h,m), sub:"ตรงกับข้อใด",
+      ...opts(t24(h,m), [t24(h>12?h-12:h+12>23?h:h+12,m), t24(h, m===0?30:0), t24(h>=1?h-1:h+1,m), t24((h+6)%24,m)])}; },
+  () => { const h = rand(6,23), m = rand(0,11)*5;
+    return {kind:"mcq", label:"🚆 ตั๋วรถไฟเขียนเวลาไว้ว่า", html:t24(h,m), big:true, sub:"อ่านว่าอย่างไร",
+      ...opts(thaiTime(h,m), [thaiTime((h+12)%24,m), thaiTime(h, (m+20)%60), thaiTime(h>=7?h-1:h+1,m)])}; },
+  () => { const h = rand(6,21), m = rand(0,11)*5; return {kind:"set", label:"⏰ ตั้งนาฬิกาสถานีให้ตรงกับเวลารถไฟออก", target:[h,m], html:thaiTime(h,m)}; }
+];
+const L2 = [
+  () => { const s = toMin(rand(6,14), rand(0,11)*5), d = rand(4,30)*5 + rand(0,2)*60; const e = s + d; const [sh,sm] = fromMin(s), [eh,em] = fromMin(e);
+    const w = [d+60, d-40>0?d-40:d+40, d+10, Math.abs((eh-sh)*60 + (sm-em))];
+    return {kind:"mcq", label:"🚆 รถไฟออกจากสถานีต้นทางและถึงปลายทาง", html:`ออก ${t24(sh,sm)} ถึง ${t24(eh,em)}`, sub:"ใช้เวลาเดินทางเท่าไร", ...opts(dur(d), w.filter(x=>x>0).map(dur))}; },
+  () => { const s = toMin(rand(6,15), rand(0,11)*5), d = rand(3,26)*5 + rand(0,2)*60; const [sh,sm] = fromMin(s), [eh,em] = fromMin(s+d);
+    return {kind:"mcq", label:"🚆 รถไฟออกเวลา " + t24(sh,sm), html:`ใช้เวลาเดินทาง ${dur(d)}`, sub:"จะถึงปลายทางกี่โมง", ...opts(t24(eh,em), [t24(...fromMin(s+d+60)), t24(...fromMin(s+d-10)), t24(...fromMin(s+d+30)), t24(...fromMin(s+Math.floor(d/60)*100%60+d%60))])}; },
+  () => { const k = rand(0,5);
+    if (k===0){ const h = rand(1,4), m = rand(1,11)*5; const a = h*60+m; return {kind:"mcq", label:"🔁 แปลงหน่วยเวลา", html:`${h} ชั่วโมง ${m} นาที = ? นาที`, ...opts(`${a} นาที`, [`${h*100+m} นาที`, `${a+60} นาที`, `${a-10} นาที`])}; }
+    if (k===1){ const d = rand(2,5); return {kind:"mcq", label:"🔁 แปลงหน่วยเวลา", html:`${d} วัน = ? ชั่วโมง`, ...opts(`${d*24} ชั่วโมง`, [`${d*12} ชั่วโมง`, `${d*60} ชั่วโมง`, `${d*24+12} ชั่วโมง`])}; }
+    if (k===2){ const m = rand(2,9); return {kind:"mcq", label:"🔁 แปลงหน่วยเวลา", html:`${m*60} วินาที = ? นาที`, ...opts(`${m} นาที`, [`${m*10} นาที`, `${m+1} นาที`, `${m*6} นาที`])}; }
+    if (k===3){ const w = rand(2,4), d = rand(1,6); return {kind:"mcq", label:"🔁 แปลงหน่วยเวลา", html:`${w} สัปดาห์ ${d} วัน = ? วัน`, ...opts(`${w*7+d} วัน`, [`${w*5+d} วัน`, `${w*10+d} วัน`, `${w*7+d+1} วัน`])}; }
+    if (k===4){ const x = rand(70,230); return {kind:"mcq", label:"🔁 แปลงหน่วยเวลา", html:`${x} นาที = ?`, ...opts(dur(x), [dur(x+40), dur(Math.max(61,x-40)), `${Math.floor(x/100)} ชั่วโมง ${x%100} นาที`])}; }
+    const y = rand(2,4); return {kind:"mcq", label:"🔁 แปลงหน่วยเวลา", html:`${y} ปี = ? เดือน`, ...opts(`${y*12} เดือน`, [`${y*10} เดือน`, `${y*52} เดือน`, `${y*12+1} เดือน`])};
+  }
+];
+function timetable(){
+  const names = shuffle(["ขบวน 7 ด่วนพิเศษ","ขบวน 21 ทักษิณ","ขบวน 35 อีสาน","ขบวน 109 เหนือ","ขบวน 83 ชายฝั่ง"]).slice(0,4);
+  let t = toMin(rand(6,8), rand(0,5)*5);
+  return names.map(n => { t += rand(3,10)*5; const d = rand(8,40)*5; return {n, s:t, e:t+d, d}; });
+}
+function ttHTML(T){ return `<table class="tt"><thead><tr><th>ขบวน</th><th>ออก</th><th>ถึง</th></tr></thead><tbody>${T.map(r=>`<tr><td>${r.n}</td><td>${t24(...fromMin(r.s))}</td><td>${t24(...fromMin(r.e))}</td></tr>`).join("")}</tbody></table>`; }
+let TT = null;
+const L3 = [
+  () => { const r = TT.reduce((a,b) => b.d>a.d?b:a); if (TT.filter(x=>x.d===r.d).length>1) return null;
+    return {kind:"mcq", label:"📋 ตารางเดินรถวันนี้", html:ttHTML(TT), sub:"ขบวนใดใช้เวลาเดินทางนานที่สุด", ...opts(r.n, TT.map(x=>x.n))}; },
+  () => { const r = pick(TT); return {kind:"mcq", label:"📋 ตารางเดินรถวันนี้", html:ttHTML(TT), sub:`${r.n} ใช้เวลาเดินทางเท่าไร`, ...opts(dur(r.d), [dur(r.d+60), dur(Math.max(15,r.d-30)), dur(r.d+20)])}; },
+  () => { const r = pick(TT), late = rand(2,8)*5; return {kind:"mcq", label:"📋 ตารางเดินรถวันนี้", html:ttHTML(TT), sub:`${r.n} ออกช้ากว่ากำหนด ${late} นาที (ใช้เวลาเดินทางเท่าเดิม) จะถึงปลายทางกี่โมง`, ...opts(t24(...fromMin(r.e+late)), [t24(...fromMin(r.e)), t24(...fromMin(r.s+late)), t24(...fromMin(r.e+late+60)), t24(...fromMin(r.e-late))])}; },
+  () => { const k = rand(1,3), arrive = TT[k].s - rand(1,4)*5; const walk = 0; const ans = TT.find(x => x.s >= arrive);
+    return {kind:"mcq", label:"📋 ตารางเดินรถวันนี้", html:ttHTML(TT), sub:`ต้นมาถึงสถานีเวลา ${t24(...fromMin(arrive))} ขบวนแรกที่ยังขึ้นทันคือขบวนใด`, ...opts(ans.n, TT.map(x=>x.n))}; },
+  () => { const [a,b] = shuffle(TT.slice()).slice(0,2); const diff = Math.abs(a.e-b.e); if (!diff) return null;
+    return {kind:"mcq", label:"📋 ตารางเดินรถวันนี้", html:ttHTML(TT), sub:`${a.n} กับ ${b.n} ถึงปลายทางห่างกันกี่นาที`, ...opts(`${diff} นาที`, [`${diff+10} นาที`, `${Math.abs(a.s-b.s)||diff+20} นาที`, `${diff+60} นาที`, `${Math.max(5,diff-10)} นาที`])}; }
+];
+
+KIT.mount({
+  key:"p4-train", title:"สถานีรถไฟวุ่นวาย", subtitle:"คณิตศาสตร์ ป.4 · บทที่ 5 เวลา",
+  heroHTML:"ช่วยนายสถานี<em>จัดเวลารถไฟ</em> 🚆", heroDesc:"อ่านนาฬิกา ตั้งเวลา และคำนวณเวลาเดินทางให้ถูก ผู้โดยสารจะได้ขึ้นรถไฟทันเวลา",
+  progIcon:"🚆",
+  howto:["อ่านโจทย์แล้วแตะคำตอบ หรือตั้งนาฬิกาด้วยปุ่ม + และ −","ตอบถูก รถไฟจะเข้าสถานีและรับผู้โดยสาร","ตอบผิดเสีย 10 คะแนน แล้วลองใหม่ได้","เวลาแบบ 24 ชั่วโมงเขียนด้วยจุด เช่น 14.35 น."],
+  levels:{
+    1:{pill:"8 ข้อ", color:"var(--green)", desc:"อ่านนาฬิกา เวลา 12 ↔ 24 ชั่วโมง และตั้งนาฬิกา"},
+    2:{pill:"8 ข้อ", color:"var(--blue)", desc:"ระยะเวลาเดินทาง และแปลงหน่วยเวลา"},
+    3:{pill:"8 ข้อ", color:"var(--purple)", desc:"อ่านตารางเดินรถ และโจทย์ปัญหาเวลา"}
+  },
+  play(level, ctx){
+    ctx.stage.innerHTML = `<div class="station"><div class="pax" id="pax">🧑‍🤝‍🧑 0 คน</div><div class="track"><svg class="train" id="train" viewBox="0 0 160 44" aria-hidden="true">
+      <rect x="2" y="4" width="70" height="32" rx="8" fill="#E8708F"/><rect x="78" y="4" width="78" height="32" rx="6" fill="#86B6F0"/>
+      <rect x="10" y="10" width="16" height="12" rx="3" fill="#fff"/><rect x="32" y="10" width="16" height="12" rx="3" fill="#fff"/><rect x="86" y="10" width="16" height="12" rx="3" fill="#fff"/><rect x="108" y="10" width="16" height="12" rx="3" fill="#fff"/><rect x="130" y="10" width="16" height="12" rx="3" fill="#fff"/>
+      <circle cx="18" cy="38" r="5" fill="#4A3A30"/><circle cx="56" cy="38" r="5" fill="#4A3A30"/><circle cx="94" cy="38" r="5" fill="#4A3A30"/><circle cx="140" cy="38" r="5" fill="#4A3A30"/></svg></div></div><div id="q"></div>`;
+    const host = ctx.stage.querySelector("#q"), train = ctx.stage.querySelector("#train");
+    let idx = 0, pax = 0;
+    const pool = level===1 ? L1 : level===2 ? L2 : L3;
+    const order = shuffle(Array.from({length:N}, (_,i) => pool[i % pool.length]));
+    function arrive(){
+      train.classList.remove("go"); train.classList.add("here");
+      pax += rand(12,40); ctx.stage.querySelector("#pax").textContent = `🧑‍🤝‍🧑 ${pax} คน`;
+      ctx.after(700, () => { train.classList.remove("here"); train.classList.add("go"); });
+      ctx.after(1500, () => { train.style.transition = "none"; train.classList.remove("go"); void train.offsetWidth; train.style.transition = ""; });
+    }
+    function done(){ arrive(); idx++; ctx.progress(idx, N); ctx.after(900, next); }
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 200 : 150}); host.innerHTML = ""; return; }
+      if (level===3 && idx % 4 === 0) TT = timetable();
+      let q; let g = 0; do { q = order[idx](); } while (!q && g++ < 30);
+      if (!q){ q = L3[1](); }
+      if (q.kind === "set") return setClock(q);
+      KIT.mcq(ctx, host, {label:q.label, html:q.html + (q.sub ? `<span class="sub">${q.sub}</span>` : ""), big:q.big, options:q.options, answer:q.answer, cols: q.options.some(o=>o.length>16) ? 1 : 2, onNext:done});
+      const svg = host.querySelector("#qc"); if (svg && q.hm) setHands(svg, ...q.hm);
+    }
+    function setClock(q){
+      let h = rand(1,12), m = rand(0,11)*5, first = true;
+      host.innerHTML = `<div class="qcard"><div class="qlabel">${q.label}</div><div class="qtext">${q.html}</div></div>
+        <div class="clockwrap">${clockSVG(0,0,"sc")}
+          <div class="setters"><span>ชั่วโมง</span><div class="row"><button class="sbtn" type="button" data-d="h-">−1</button><button class="sbtn" type="button" data-d="h+">+1</button></div>
+          <span>นาที</span><div class="row"><button class="sbtn" type="button" data-d="m-">−5</button><button class="sbtn" type="button" data-d="m+">+5</button></div></div>
+          <button class="btn" type="button" id="check">ตรวจคำตอบ</button></div>`;
+      const svg = host.querySelector("#sc");
+      const draw = () => { setHands(svg, h, m); svg.setAttribute("aria-label", `นาฬิกาชี้ ${h} นาฬิกา ${m} นาที`); };
+      draw();
+      host.querySelector(".setters").onclick = e => {
+        const b = e.target.closest("[data-d]"); if (!b) return; KIT.sfx.tap();
+        const d = b.dataset.d;
+        if (d==="h+") h = h%12+1; if (d==="h-") h = h===1?12:h-1;
+        if (d==="m+"){ m += 5; if (m===60){ m = 0; h = h%12+1; } }
+        if (d==="m-"){ m -= 5; if (m<0){ m = 55; h = h===1?12:h-1; } }
+        draw();
+      };
+      host.querySelector("#check").onclick = () => {
+        const [th, tm] = q.target;
+        if ((h%12) === (th%12) && m === tm){ host.querySelector("#check").disabled = true; ctx.correct(first?100:50); ctx.after(500, done); }
+        else { first = false; ctx.wrong(m !== tm ? "เข็มยาว (นาที) ยังไม่ตรง ลองใหม่" : "เข็มสั้น (ชั่วโมง) ยังไม่ตรง ลองใหม่"); }
+      };
+    }
+    ctx.progress(0, N); ctx.say("รถไฟขบวนแรกกำลังรอ เริ่มเลย!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

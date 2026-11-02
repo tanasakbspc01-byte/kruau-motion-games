@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แขนหุ่นยนต์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.pic{background:var(--card);border-radius:22px;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);padding:8px;display:flex;justify-content:center}
+.pic svg{width:100%;max-width:560px;height:auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.handle{cursor:grab}
+.choices.five{grid-template-columns:repeat(3,1fr)}
+@media (max-width:520px){.choices.five{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const R = Math.PI/180;
+const ink = "#4A3A30";
+
+function arrowHead(x, y, ang, col=ink){ // ang in degrees, direction the arrow points
+  const a = ang*R, l = 16, w = 9;
+  const bx = x - l*Math.cos(a), by = y + l*Math.sin(a);
+  return `<path d="M${x},${y} L${bx + w*Math.sin(a)},${by + w*Math.cos(a)} L${bx - w*Math.sin(a)},${by - w*Math.cos(a)} Z" fill="${col}"/>`;
+}
+function angleFig(deg){
+  const vx = 200, vy = 150, L = 120;
+  const x2 = vx + L*Math.cos(deg*R), y2 = vy - L*Math.sin(deg*R);
+  const big = deg > 180 ? 1 : 0, r = 34;
+  const ax = vx + r*Math.cos(deg*R), ay = vy - r*Math.sin(deg*R);
+  let arc = deg === 90 ? `<path d="M${vx+22},${vy} L${vx+22},${vy-22} L${vx},${vy-22}" fill="none" stroke="#E8708F" stroke-width="4"/>`
+    : `<path d="M${vx+r},${vy} A${r},${r} 0 ${big} 0 ${ax},${ay}" fill="none" stroke="#E8708F" stroke-width="4"/>`;
+  return `<svg viewBox="0 0 400 290" role="img" aria-label="รูปมุม">${arc}
+    <line x1="${vx}" y1="${vy}" x2="${vx+L}" y2="${vy}" stroke="${ink}" stroke-width="5" stroke-linecap="round"/>${arrowHead(vx+L+6, vy, 0)}
+    <line x1="${vx}" y1="${vy}" x2="${x2}" y2="${y2}" stroke="${ink}" stroke-width="5" stroke-linecap="round"/>${arrowHead(vx+(L+6)*Math.cos(deg*R), vy-(L+6)*Math.sin(deg*R), deg)}
+    <circle cx="${vx}" cy="${vy}" r="6" fill="${ink}"/></svg>`;
+}
+function lineFig(kind){
+  const y = 140, a = 70, b = 330;
+  let s = `<svg viewBox="0 0 400 290" role="img" aria-label="รูปเส้น"><line x1="${a}" y1="${y}" x2="${b}" y2="${y}" stroke="${ink}" stroke-width="5"/>`;
+  if (kind === "line") s += arrowHead(a-6, y, 180) + arrowHead(b+6, y, 0);
+  if (kind === "ray") s += `<circle cx="${a}" cy="${y}" r="8" fill="${ink}"/>` + arrowHead(b+6, y, 0);
+  if (kind === "seg") s += `<circle cx="${a}" cy="${y}" r="8" fill="${ink}"/><circle cx="${b}" cy="${y}" r="8" fill="${ink}"/>`;
+  s += `<text x="${a}" y="${y+40}" text-anchor="middle" font-size="22" font-family="Mali" fill="${ink}" font-weight="700">ก</text><text x="${b}" y="${y+40}" text-anchor="middle" font-size="22" font-family="Mali" fill="${ink}" font-weight="700">ข</text>`;
+  return s + "</svg>";
+}
+function protractor(vx, vy, r){
+  let s = `<path d="M${vx-r},${vy} A${r},${r} 0 0 1 ${vx+r},${vy} Z" fill="rgba(134,182,240,.22)" stroke="#5C8FCF" stroke-width="2"/>`;
+  for (let d=0; d<=180; d++){
+    const big = d%10===0, mid = d%5===0;
+    if (!mid && r < 150) continue;
+    const l = big ? 16 : mid ? 10 : 5;
+    s += `<line x1="${vx + r*Math.cos(d*R)}" y1="${vy - r*Math.sin(d*R)}" x2="${vx + (r-l)*Math.cos(d*R)}" y2="${vy - (r-l)*Math.sin(d*R)}" stroke="#3E6EA8" stroke-width="${big?2:1}"/>`;
+    if (d%10===0){
+      s += `<text x="${vx + (r-28)*Math.cos(d*R)}" y="${vy - (r-28)*Math.sin(d*R) + 5}" text-anchor="middle" font-size="13" font-weight="700" fill="#3E6EA8" font-family="Mali">${d}</text>`;
+      s += `<text x="${vx + (r-48)*Math.cos(d*R)}" y="${vy - (r-48)*Math.sin(d*R) + 5}" text-anchor="middle" font-size="11" fill="#E08A3C" font-family="Mali">${180-d}</text>`;
+    }
+  }
+  return s + `<circle cx="${vx}" cy="${vy}" r="4" fill="#3E6EA8"/>`;
+}
+function measureFig(deg, flip){
+  const vx = 200, vy = 250, L = 190;
+  const a1 = flip ? 180 : 0, a2 = flip ? 180-deg : deg;
+  return `<svg viewBox="0 0 400 280" role="img" aria-label="มุมกับไม้โปรแทรกเตอร์">${protractor(vx,vy,175)}
+    <line x1="${vx}" y1="${vy}" x2="${vx + L*Math.cos(a1*R)}" y2="${vy - L*Math.sin(a1*R)}" stroke="#E8708F" stroke-width="5" stroke-linecap="round"/>
+    <line x1="${vx}" y1="${vy}" x2="${vx + L*Math.cos(a2*R)}" y2="${vy - L*Math.sin(a2*R)}" stroke="#E8708F" stroke-width="5" stroke-linecap="round"/></svg>`;
+}
+const ANG = [["มุมแหลม",()=>rand(2,16)*5],["มุมฉาก",()=>90],["มุมป้าน",()=>rand(19,35)*5],["มุมตรง",()=>180],["มุมกลับ",()=>rand(38,70)*5]];
+const LINES = [["เส้นตรง","line"],["รังสี","ray"],["ส่วนของเส้นตรง","seg"]];
+
+KIT.mount({
+  key:"p4-robot", title:"แขนหุ่นยนต์", subtitle:"คณิตศาสตร์ ป.4 · บทที่ 8 มุม",
+  heroHTML:"ช่วย<em>หุ่นยนต์</em>กางแขนให้ได้มุม 🤖", heroDesc:"รู้จักชนิดของมุม อ่านค่ามุมจากไม้โปรแทรกเตอร์ และหมุนแขนหุ่นยนต์ให้ได้มุมตามสั่ง",
+  progIcon:"🤖",
+  howto:["ด่าน 1–2 ดูรูปแล้วแตะคำตอบ","ด่าน 3 ลากปลายแขนหุ่นยนต์ (วงกลมสีชมพู) ให้ได้มุมตามสั่ง แล้วกด \"หยิบกล่อง\"","อ่านมุมจากสเกลที่เริ่มนับ 0 จากแขนด้านที่อยู่นิ่ง","ตอบผิดเสีย 10 คะแนน ตอบใหม่ได้"],
+  note:"เวอร์ชันนี้ใช้การลากและแตะ ส่วนโหมดกางแขนจริงผ่านกล้องต้องเปิดจากเว็บที่อนุญาตกล้อง",
+  levels:{
+    1:{pill:"8 ข้อ", color:"var(--green)", desc:"เส้นตรง รังสี ส่วนของเส้นตรง และชนิดของมุม"},
+    2:{pill:"8 ข้อ", color:"var(--blue)", desc:"อ่านขนาดของมุมจากไม้โปรแทรกเตอร์"},
+    3:{pill:"8 ข้อ", color:"var(--purple)", desc:"หมุนแขนหุ่นยนต์ให้ได้มุมตามที่กำหนด"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const kinds = level===1 ? shuffle([0,1,2,3,4,0,2,"L"]) : null;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 160 : 110}); return; }
+      const lbl = `ข้อ ${idx+1} จาก ${N}`;
+      if (level === 1){
+        const k = kinds[idx];
+        if (k === "L"){
+          const [name, kind] = pick(LINES);
+          ctx.stage.innerHTML = `<div class="pic">${lineFig(kind)}</div><div id="q"></div>`;
+          KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl, html:"รูปนี้เรียกว่าอะไร", options:LINES.map(l=>l[0]), answer:LINES.findIndex(l=>l[0]===name), cols:3, onNext:done});
+        } else {
+          const deg = ANG[k][1]();
+          ctx.stage.innerHTML = `<div class="pic">${angleFig(deg)}</div><div id="q"></div>`;
+          KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl, html:"มุมที่มีเส้นโค้งสีชมพูเป็นมุมชนิดใด", options:ANG.map(a=>a[0]), answer:k, onNext:done});
+          ctx.stage.querySelector(".choices").classList.add("five");
+        }
+      } else if (level === 2){
+        const deg = rand(3,33)*5, flip = Math.random() < .4;
+        const wr = [180-deg, deg+10, deg-10, deg+5].filter(x => x>0 && x<180 && x!==deg);
+        const list = shuffle([deg, ...[...new Set(wr)].slice(0,3)]);
+        ctx.stage.innerHTML = `<div class="pic">${measureFig(deg, flip)}</div><div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl, html:"มุมระหว่างเส้นสีชมพูสองเส้นมีขนาดกี่องศา", options:list.map(x=>x+"°"), answer:list.indexOf(deg), explain:"อย่าลืมเริ่มนับจาก 0 ที่ทับแขนข้างหนึ่งนะ", onNext:done});
+      } else {
+        robot(lbl);
+      }
+    }
+    function robot(lbl){
+      const target = rand(2,35)*5; let cur = rand(0,1) ? 20 : 160, first = true, lock = false;
+      if (Math.abs(cur-target) < 15) cur = 100;
+      const vx = 200, vy = 250, L = 165;
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl}</div><div class="qtext">หมุนแขนหุ่นยนต์ให้ได้มุม <b>${target}°</b> แล้วกดหยิบกล่อง</div></div>
+        <div class="pic"><svg viewBox="0 0 400 290" id="rs" role="slider" tabindex="0" aria-label="แขนหุ่นยนต์ ลากหรือใช้ปุ่มลูกศร">
+          ${protractor(vx,vy,150)}
+          <line x1="${vx}" y1="${vy}" x2="${vx+L+10}" y2="${vy}" stroke="#8A97A6" stroke-width="12" stroke-linecap="round"/>
+          <g id="arm"><line x1="${vx}" y1="${vy}" x2="${vx+L}" y2="${vy}" stroke="#E8708F" stroke-width="12" stroke-linecap="round"/>
+            <path d="M${vx+L},${vy-14} l18,-6 M${vx+L},${vy+14} l18,6" stroke="#5A4335" stroke-width="5" stroke-linecap="round"/>
+            <circle class="handle" cx="${vx+L}" cy="${vy}" r="16" fill="#F2A7B8" stroke="#5A4335" stroke-width="3"/></g>
+          <rect x="${vx-26}" y="${vy}" width="52" height="30" rx="6" fill="#5E6B7A"/><circle cx="${vx}" cy="${vy}" r="12" fill="#C9D1DA" stroke="#5A4335" stroke-width="3"/>
+          <g id="box" visibility="hidden"><rect x="-14" y="-14" width="28" height="28" rx="4" fill="#F6CD6B" stroke="#5A4335" stroke-width="3"/></g>
+        </svg></div>
+        <div class="row"><button class="btn ghost" type="button" id="m">−1°</button><button class="btn ghost" type="button" id="p">+1°</button><button class="btn" type="button" id="grab">หยิบกล่อง</button></div>`;
+      const svg = ctx.stage.querySelector("#rs"), arm = ctx.stage.querySelector("#arm");
+      const draw = () => { arm.setAttribute("transform", `rotate(${-cur} ${vx} ${vy})`); svg.setAttribute("aria-valuenow", cur); };
+      draw();
+      const set = v => { if (lock) return; cur = Math.max(0, Math.min(180, Math.round(v))); draw(); };
+      const angOf = e => { const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const p = pt.matrixTransform(svg.getScreenCTM().inverse()); let a = Math.atan2(vy - p.y, p.x - vx)/R; if (a < -90) a = 180; if (a < 0) a = 0; return a; };
+      let drag = false;
+      svg.addEventListener("pointerdown", e => { drag = true; svg.setPointerCapture(e.pointerId); set(angOf(e)); });
+      svg.addEventListener("pointermove", e => { if (drag) set(angOf(e)); });
+      svg.addEventListener("pointerup", () => drag = false);
+      svg.addEventListener("keydown", e => { if (e.key==="ArrowLeft"||e.key==="ArrowUp"){ set(cur+1); e.preventDefault(); } if (e.key==="ArrowRight"||e.key==="ArrowDown"){ set(cur-1); e.preventDefault(); } });
+      ctx.stage.querySelector("#m").onclick = () => set(cur-1);
+      ctx.stage.querySelector("#p").onclick = () => set(cur+1);
+      ctx.stage.querySelector("#grab").onclick = () => {
+        if (lock) return;
+        if (Math.abs(cur - target) <= 2){
+          lock = true;
+          const bx = vx + (L+22)*Math.cos(cur*R), by = vy - (L+22)*Math.sin(cur*R);
+          const box = ctx.stage.querySelector("#box"); box.setAttribute("transform", `translate(${bx},${by})`); box.setAttribute("visibility","visible");
+          ctx.correct(first ? 100 : 50, `หยิบกล่องได้! แขนกางได้ ${cur}°`);
+          ctx.after(1000, done);
+        } else {
+          first = false;
+          ctx.wrong(`ยังไม่ได้ ${target}° ลองอ่านสเกลอีกครั้ง ต้อง${cur < target ? "กางแขนเพิ่ม" : "หุบแขนลง"}`);
+        }
+      };
+    }
+    ctx.progress(0, N); ctx.say("หุ่นยนต์พร้อมทำงานแล้ว!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

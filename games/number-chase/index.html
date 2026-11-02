@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ไล่แตะเลขตามลำดับ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.find{display:flex;align-items:center;justify-content:center;gap:12px}
+.find b{font-size:clamp(2rem,7vw,3rem);background:var(--c);color:#fff;border-radius:18px;padding:0 20px;min-width:2.2em;text-align:center;font-variant-numeric:tabular-nums}
+.board{width:100%;display:grid;gap:8px;margin:14px auto 0;max-width:560px}
+.cell{aspect-ratio:1;border-radius:16px;border:3px solid var(--line);background:var(--card);font-weight:700;box-shadow:0 4px 0 var(--line);font-variant-numeric:tabular-nums;display:grid;place-items:center;padding:0}
+.cell span{display:inline-block}
+.cell.done{background:#E8F8EE;border-color:#BFE8CF;color:#9CC9AC;box-shadow:none}
+.cell.miss{animation:shake .35s;background:#FDE8E8}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const ROUNDS = 3;
+const COLORS = ["#E8708F","#3C8DDB","#2FA866","#E08A3C","#8B6FD6","#C9A227"];
+const LV = {
+  1:{n:3, fs:"clamp(1.8rem,8vw,3rem)"},
+  2:{n:4, fs:"clamp(1.5rem,6vw,2.4rem)"},
+  3:{n:5, fs:"clamp(1.2rem,4.8vw,2rem)", fancy:true}
+};
+
+KIT.mount({
+  key:"x4-schulte", title:"ไล่แตะเลขตามลำดับ", subtitle:"เกมฝึกสมาธิและการใช้เมาส์ · ป.1–6",
+  heroHTML:"หาให้เจอ แตะให้ไว<em>1 → 2 → 3…</em> 👀", heroDesc:"ตัวเลขกระจายอยู่ทั่วกระดาน ไล่แตะจากน้อยไปมากให้เร็วที่สุด ฝึกสายตาและสมาธิ",
+  progIcon:"🔢",
+  howto:["ดูเลขที่ต้องหาในกรอบสี","แตะช่องที่มีเลขนั้น แล้วหาเลขถัดไป","แตะผิดเสีย 5 คะแนน","เล่น 3 กระดาน ยิ่งเร็วยิ่งได้โบนัสเวลา"],
+  levels:{
+    1:{pill:"3×3", color:"var(--green)", desc:"เลข 1–9 กระดานเล็ก"},
+    2:{pill:"4×4", color:"var(--blue)", desc:"เลข 1–16"},
+    3:{pill:"5×5", color:"var(--purple)", desc:"เลข 1–25 สีและมุมเอียงหลอกตา"}
+  },
+  play(level, ctx){
+    const L = LV[level], M = L.n*L.n;
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="find">หาเลข <b id="fd">1</b></div></div>
+      <div class="board" id="bd" style="grid-template-columns:repeat(${L.n},1fr)"></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let round = 0, want = 1;
+    function board(){
+      if (round >= ROUNDS){ ctx.finish({targetSec: [0,25,60,120][level]}); return; }
+      want = 1;
+      $("#qn").textContent = `กระดานที่ ${round+1} จาก ${ROUNDS}`; $("#fd").textContent = 1;
+      $("#bd").innerHTML = shuffle(Array.from({length:M},(_,i)=>i+1)).map(v => {
+        const st = L.fancy ? `color:${pick(COLORS)};transform:rotate(${rand(-35,35)}deg);font-size:calc(${L.fs} * ${(.8+Math.random()*.45).toFixed(2)})` : `font-size:${L.fs}`;
+        return `<button class="cell" type="button" data-v="${v}" aria-label="เลข ${v}"><span style="${st}">${v}</span></button>`;
+      }).join("");
+    }
+    $("#bd").addEventListener("pointerdown", e => {
+      const b = e.target.closest(".cell"); if (!b || b.classList.contains("done")) return;
+      e.preventDefault();
+      if (+b.dataset.v === want){
+        b.classList.add("done"); ctx.correct(10, " "); want++;
+        ctx.say(want > M ? "ครบกระดาน! เก่งมาก" : `ถูก! ต่อไปหาเลข ${want}`, "good");
+        $("#fd").textContent = want > M ? "✓" : want;
+        ctx.progress(round*M + want-1, ROUNDS*M);
+        if (want > M){ round++; ctx.after(800, board); }
+      } else {
+        b.classList.remove("miss"); void b.offsetWidth; b.classList.add("miss");
+        ctx.wrong(`นั่นคือเลข ${b.dataset.v} กำลังหาเลข ${want} อยู่นะ`, 5);
+      }
+    });
+    ctx.progress(0, ROUNDS*M); ctx.say("เริ่มจากเลข 1 เลย!");
+    board();
+  }
+});
+})();
+</script>
+</body>
+</html>

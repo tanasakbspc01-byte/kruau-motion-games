@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>กราฟมนุษย์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.chart{background:var(--card);border-radius:22px;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);padding:8px}
+.chart svg{width:100%;height:auto;display:block;touch-action:none;user-select:none;-webkit-user-select:none}
+table.dt{border-collapse:collapse;margin:8px auto 0;font-variant-numeric:tabular-nums;font-size:clamp(.9rem,2.5vw,1.1rem)}
+table.dt th,table.dt td{border:2px solid var(--line);padding:5px 8px;text-align:center}
+table.dt th{background:#FFF1DD}
+.tip{font-size:.95rem;color:var(--ink-soft);text-align:center}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const BAR_SETS = [
+  {title:"จำนวนหนังสือที่นักเรียนยืมห้องสมุด", unit:"เล่ม", cats:["จันทร์","อังคาร","พุธ","พฤหัสฯ","ศุกร์"]},
+  {title:"จำนวนขวดพลาสติกที่แต่ละห้องเก็บได้", unit:"ขวด", cats:["ป.5/1","ป.5/2","ป.5/3","ป.5/4"]},
+  {title:"จำนวนผู้เข้าชมนิทรรศการ", unit:"คน", cats:["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค."]}
+];
+const LINE_SETS = [
+  {title:"ความสูงของต้นถั่ว", unit:"ซม.", xl:"สัปดาห์ที่", cats:["1","2","3","4","5","6"], gen:() => { let v = rand(2,4)*2, a=[]; for (let i=0;i<6;i++){ a.push(v); v += rand(1,4)*2; } return a; }, step:2},
+  {title:"อุณหภูมิในหนึ่งวัน", unit:"องศาเซลเซียส", xl:"เวลา", base:20, cats:["06.00","09.00","12.00","15.00","18.00","21.00"], gen:() => { const b = rand(22,25); return [b, b+rand(3,5), b+rand(7,10), b+rand(6,9), b+rand(3,5), b+rand(0,2)]; }, step:1},
+  {title:"จำนวนนักเรียนที่มาสาย", unit:"คน", xl:"วัน", cats:["จ.","อ.","พ.","พฤ.","ศ."], gen:() => Array.from({length:5},()=>rand(1,9)), step:1}
+];
+
+/* chart(D): {cats, vals, step, base, type, unit, title}; edit: values being built (null = show D.vals) */
+function chart(D, edit, id){
+  const W = 640, H = 360, L = 66, B = 290, T = 24, n = D.cats.length, bw = (W - L - 20)/n;
+  const base = D.base || 0, vals = edit || D.vals;
+  const top = Math.max(...D.vals, ...(edit||[0])) ;
+  const units = Math.max(5, Math.ceil((top - base)/D.step) + 1);
+  const uh = (B - T)/units, yOf = v => B - (v - base)/D.step*uh;
+  let s = `<svg viewBox="0 0 ${W} ${H}" ${id?`id="${id}"`:""} role="img" aria-label="${D.title}">`;
+  for (let u=0;u<=units;u++){ const y = B - u*uh; s += `<line x1="${L}" y1="${y}" x2="${W-14}" y2="${y}" stroke="${u?'#EADBC8':'#5A4335'}" stroke-width="${u?1.5:3}"/><text x="${L-10}" y="${y+6}" text-anchor="end" font-size="16" fill="#4A3A30" font-family="Mali" font-weight="600">${base + u*D.step}</text>`; }
+  s += `<line x1="${L}" y1="${T-6}" x2="${L}" y2="${B}" stroke="#5A4335" stroke-width="3"/>`;
+  if (base > 0) s += `<path d="M${L-9},${B-10} l9,-5 l-9,-5 l9,-5" fill="none" stroke="#E8708F" stroke-width="3"/><rect x="${L-2}" y="${B-22}" width="4" height="14" fill="#fff"/><path d="M${L-9},${B-10} l18,-5 l-18,-5" fill="none" stroke="#5A4335" stroke-width="2.5"/>`;
+  const pts = [];
+  D.cats.forEach((c,i) => {
+    const cx = L + i*bw + bw/2;
+    s += `<rect class="col" data-i="${i}" x="${L+i*bw}" y="${T-6}" width="${bw}" height="${B-T+6}" fill="transparent"/>`;
+    s += `<text x="${cx}" y="${B+26}" text-anchor="middle" font-size="16" fill="#4A3A30" font-family="Mali" font-weight="600">${c}</text>`;
+    const v = vals[i];
+    if (v == null) return;
+    if (D.type === "bar"){ if (v > base) s += `<rect x="${cx - bw*0.3}" y="${yOf(v)}" width="${bw*0.6}" height="${B - yOf(v)}" rx="6" fill="${["#F2A65A","#86B6F0","#7FD39A","#F2A7B8","#B7A4EE"][i%5]}" stroke="#5A4335" stroke-width="2" pointer-events="none"/>`; }
+    else pts.push([cx, yOf(v)]);
+  });
+  if (D.type === "line" && pts.length){
+    s += `<polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="#E8708F" stroke-width="4" pointer-events="none"/>`;
+    pts.forEach(([x,y]) => s += `<circle cx="${x}" cy="${y}" r="8" fill="#fff" stroke="#E8708F" stroke-width="4" pointer-events="none"/>`);
+  }
+  s += `<text x="${W/2}" y="${H-6}" text-anchor="middle" font-size="15" fill="#8A7466" font-family="Mali">${D.xl||""}</text>`;
+  return s + `</svg>`;
+}
+function barData(broken){
+  const S = pick(BAR_SETS), step = broken ? pick([5,10]) : pick([2,5]);
+  let vals; do { vals = S.cats.map(() => (broken ? rand(12,20) : rand(1,9)) * step); } while (new Set(vals).size < vals.length);
+  const base = broken ? Math.floor((Math.min(...vals) - 2*step)/step)*step : 0;
+  return {...S, vals, step, base:Math.max(0, base), type:"bar"};
+}
+function lineData(){ const S = pick(LINE_SETS); return {...S, vals:S.gen(), type:"line"}; }
+const table = D => `<table class="dt"><tr><th>${D.xl||"รายการ"}</th>${D.cats.map(c=>`<th>${c}</th>`).join("")}</tr><tr><td>${D.unit}</td>${D.vals.map(v=>`<td>${v}</td>`).join("")}</tr></table>`;
+function opts(ans, w){ const set = [...new Set(w.filter(v => v !== ans && (typeof v === "string" || v >= 0)))]; const l = shuffle([ans, ...shuffle(set).slice(0,3)]); return {options:l.map(String), answer:l.indexOf(ans)}; }
+
+function readQ(D){
+  const v = D.vals, c = D.cats, n = v.length, u = D.unit;
+  const Q = [];
+  const mx = Math.max(...v), mn = Math.min(...v);
+  if (v.filter(x=>x===mx).length===1) Q.push(() => ({html:`${D.xl ? D.xl+"ใด" : "ข้อใด"}มีค่า<b>มากที่สุด</b>`, ...opts(c[v.indexOf(mx)], c)}));
+  if (v.filter(x=>x===mn).length===1) Q.push(() => ({html:`${D.xl ? D.xl+"ใด" : "ข้อใด"}มีค่า<b>น้อยที่สุด</b>`, ...opts(c[v.indexOf(mn)], c)}));
+  Q.push(() => { const i = rand(0,n-1); return {html:`${D.xl?D.xl+" ":""}${c[i]} มีค่าเท่าใด (${u})`, ...opts(v[i], [v[i]+D.step, v[i]-D.step, v[i]+2*D.step, v[(i+1)%n]])}; });
+  Q.push(() => { const i = rand(0,n-1), j = (i + rand(1,n-1)) % n; const d = Math.abs(v[i]-v[j]); if (!d) return null; return {html:`${c[i]} กับ ${c[j]} ต่างกันกี่${u}`, ...opts(d, [d+D.step, d-D.step, v[i]+v[j], d+1])}; });
+  if (D.type === "line"){
+    const diffs = v.slice(1).map((x,i)=>x - v[i]);
+    const best = Math.max(...diffs);
+    if (best > 0 && diffs.filter(x=>x===best).length===1){ const labels = c.slice(1).map((x,i)=>`${c[i]} ถึง ${x}`); Q.push(() => ({html:"ช่วงใดค่า<b>เพิ่มขึ้นมากที่สุด</b>", ...opts(labels[diffs.indexOf(best)], labels)})); }
+    const worst = Math.min(...diffs);
+    if (worst < 0 && diffs.filter(x=>x===worst).length===1){ const labels = c.slice(1).map((x,i)=>`${c[i]} ถึง ${x}`); Q.push(() => ({html:"ช่วงใดค่า<b>ลดลงมากที่สุด</b>", ...opts(labels[diffs.indexOf(worst)], labels)})); }
+    Q.push(() => { const i = rand(0,n-2); const d = v[i+1]-v[i]; const word = d > 0 ? "เพิ่มขึ้น" : d < 0 ? "ลดลง" : "เท่าเดิม"; return {html:`จาก ${c[i]} ถึง ${c[i+1]} ค่า${"เพิ่มขึ้น ลดลง หรือเท่าเดิม"}`, ...opts(word, ["เพิ่มขึ้น","ลดลง","เท่าเดิม"])}; });
+  } else {
+    Q.push(() => { const s = v.reduce((a,b)=>a+b,0); return {html:`รวมทั้งหมดกี่${u}`, ...opts(s, [s+D.step, s-D.step, s+10, mx*n])}; });
+  }
+  let q, g = 0; do { q = pick(Q)(); } while (!q && g++ < 30); return q;
+}
+
+KIT.mount({
+  key:"p5-graph", title:"กราฟมนุษย์", subtitle:"คณิตศาสตร์ ป.5 · บทที่ 3 การนำเสนอข้อมูล",
+  heroHTML:"สร้างและอ่าน<em>กราฟ</em>ด้วยตัวเอง 📈", heroDesc:"แตะในกราฟเพื่อสร้างแผนภูมิแท่งและกราฟเส้นให้ตรงกับตาราง แล้วตอบคำถามจากกราฟที่สร้าง",
+  progIcon:"📈",
+  howto:["ข้อที่ให้สร้างกราฟ: แตะในช่องของแต่ละรายการตรงระดับที่ต้องการ แล้วกด \"ตรวจกราฟ\"","ข้อที่ให้อ่านกราฟ: ดูกราฟแล้วแตะคำตอบ","สังเกตมาตราส่วน และแกนที่ถูกย่น (สัญลักษณ์ซิกแซกที่แกนตั้ง)","ตอบผิดเสีย 10 คะแนน ลองใหม่ได้"],
+  note:"เวอร์ชันนี้ใช้การแตะจอ ส่วนโหมดยกมือปรับความสูงผ่านกล้องต้องเปิดจากเว็บที่อนุญาตกล้อง",
+  levels:{
+    1:{pill:"8 ข้อ", color:"var(--green)", desc:"สร้างและอ่านแผนภูมิแท่ง (1 ช่องแทน 2 หรือ 5)"},
+    2:{pill:"8 ข้อ", color:"var(--blue)", desc:"สร้างและอ่านกราฟเส้น"},
+    3:{pill:"8 ข้อ", color:"var(--purple)", desc:"แผนภูมิแท่งที่ย่นแกน และวิเคราะห์การเปลี่ยนแปลงในกราฟเส้น"}
+  },
+  play(level, ctx){
+    let idx = 0, D = null;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ข้อ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 160 : 220}); return; }
+      if (level === 3){
+        if (idx % 2 === 0) D = idx % 4 === 0 ? barData(true) : lineData();
+        const q = readQ(D);
+        ctx.stage.innerHTML = `<div class="chart">${chart(D)}</div><div class="tip">${D.title} (หน่วย: ${D.unit})${D.base?" · แกนตั้งเริ่มที่ "+D.base:""}</div><div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:q.html, options:q.options, answer:q.answer, cols:q.options.some(o=>o.length>12)?1:2, onNext:done});
+        return;
+      }
+      if (idx % 2 === 0){ D = level === 1 ? barData(false) : lineData(); build(); }
+      else {
+        const q = readQ(D);
+        ctx.stage.innerHTML = `<div class="chart">${chart(D)}</div><div class="tip">กราฟที่เธอเพิ่งสร้าง: ${D.title}</div><div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:q.html, options:q.options, answer:q.answer, cols:q.options.some(o=>o.length>12)?1:2, onNext:done});
+      }
+    }
+    function build(){
+      const cur = D.cats.map(() => D.type === "bar" ? (D.base||0) : null);
+      let first = true, lock = false;
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl()} · สร้าง${D.type==="bar"?"แผนภูมิแท่ง":"กราฟเส้น"}จากตาราง</div>
+          <div class="qtext" style="font-size:1.1rem">${D.title}</div>${table(D)}<div class="tip" style="margin-top:6px">1 ช่องแทน ${D.step} ${D.unit}</div></div>
+        <div class="chart" id="cw"></div><div class="row"><button class="btn" type="button" id="chk">ตรวจกราฟ</button></div>`;
+      const cw = ctx.stage.querySelector("#cw");
+      const base = D.base || 0, units = Math.max(5, Math.ceil((Math.max(...D.vals) - base)/D.step) + 1);
+      const draw = () => { cw.innerHTML = chart(D, cur, "bc"); const svg = cw.querySelector("svg");
+        svg.addEventListener("pointerdown", e => { if (lock) return; const t = e.target.closest("[data-i]"); if (!t) return;
+          const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+          const u = Math.max(0, Math.min(units, Math.round((290 - p.y)/((290-24)/units))));
+          cur[+t.dataset.i] = base + u * D.step; KIT.sfx.tap(); draw(); }); };
+      draw();
+      ctx.stage.querySelector("#chk").onclick = () => {
+        if (lock) return;
+        const bad = D.cats.filter((c,i) => cur[i] !== D.vals[i]);
+        if (!bad.length){ lock = true; ctx.correct(first?150:75, "กราฟถูกต้องครบทุกจุด!"); ctx.after(900, done); }
+        else { first = false; ctx.wrong(`ยังไม่ถูก: ${bad.slice(0,3).join(", ")} ดูค่าในตารางแล้วนับช่องใหม่`); }
+      };
+    }
+    ctx.progress(0, N); ctx.say("มาสร้างกราฟกันเลย!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

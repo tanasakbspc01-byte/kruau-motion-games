@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เปิดไพ่จับคู่</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.grid{width:100%;display:grid;gap:10px;margin:14px auto 0;max-width:560px;perspective:800px}
+.card{position:relative;aspect-ratio:5/6;border:none;background:none;padding:0;cursor:pointer}
+.card .in{position:absolute;inset:0;transition:transform .35s;transform-style:preserve-3d}
+.card.up .in,.card.ok .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:grid;place-items:center;box-shadow:0 4px 0 rgba(0,0,0,.12)}
+.back{background:var(--c);border:3px solid rgba(255,255,255,.7);background-image:radial-gradient(rgba(255,255,255,.35) 2px,transparent 2.5px);background-size:14px 14px}
+.back::after{content:"🐾";font-size:clamp(1.2rem,4vw,2rem);opacity:.85}
+.front{background:#fff;border:3px solid var(--line);transform:rotateY(180deg);font-size:clamp(1.8rem,7vw,3.2rem)}
+.card.ok .front{border-color:#3FAE6A;background:#E8F8EE}
+.card.ok{animation:pulse .4s}
+@keyframes pulse{50%{transform:scale(1.08)}}
+.peek{text-align:center;margin-top:10px;color:var(--ink-soft);font-weight:700}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const SETS = {
+  1:["🐱","🐶","🐰","🐻","🐼","🐸","🐵","🐯"],
+  2:["🍎","🍌","🍇","🍉","🍓","🍍","🥕","🌽","🍒","🥝"],
+  3:["🐱","😺","😸","🐯","🦁","🐶","🐺","🦊","🐻","🐼","🐨","🐹"]   /* look-alike faces */
+};
+const LV = {1:{pairs:6, cols:4, peek:3}, 2:{pairs:8, cols:4, peek:2}, 3:{pairs:10, cols:5, peek:0}};
+
+KIT.mount({
+  key:"x5-memory", title:"เปิดไพ่จับคู่", subtitle:"เกมฝึกความจำและสมาธิ · ป.1–6",
+  heroHTML:"จำให้ดี แล้ว<em>จับคู่</em>ให้ครบ 🃏", heroDesc:"เปิดไพ่ทีละ 2 ใบ ถ้ารูปเหมือนกันได้คู่ ถ้าไม่เหมือนไพ่จะคว่ำกลับ ต้องจำตำแหน่งไว้ให้ดี",
+  progIcon:"🃏",
+  howto:["ตอนเริ่มจะได้ดูไพ่ทั้งหมดแป๊บหนึ่ง (ด่านง่ายและกลาง)","แตะเปิดไพ่ทีละ 2 ใบ รูปเหมือนกัน = ได้คู่","เปิดผิดคู่ทั้งที่เคยเห็นไพ่ใบนั้นแล้ว เสีย 5 คะแนน","จับคู่ครบทุกใบผ่านด่าน"],
+  levels:{
+    1:{pill:"6 คู่", color:"var(--green)", desc:"ไพ่ 12 ใบ ได้ดูก่อน 3 วินาที"},
+    2:{pill:"8 คู่", color:"var(--blue)", desc:"ไพ่ 16 ใบ ได้ดูก่อน 2 วินาที"},
+    3:{pill:"10 คู่", color:"var(--purple)", desc:"ไพ่ 20 ใบ รูปคล้ายกัน ไม่มีให้ดูก่อน"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const pics = shuffle(SETS[level].slice()).slice(0, L.pairs);
+    const deck = shuffle([...pics, ...pics]);
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">หาคู่ให้ครบ ${L.pairs} คู่</div><div class="qtext" id="st">ดูไพ่ให้ดีนะ…</div></div>
+      <div class="grid" id="gd" style="grid-template-columns:repeat(${L.cols},1fr)">${deck.map((p,i)=>`<button class="card" type="button" data-i="${i}" aria-label="ไพ่ใบที่ ${i+1}"><div class="in"><div class="face back"></div><div class="face front">${p}</div></div></button>`).join("")}</div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    const cards = [...ctx.stage.querySelectorAll(".card")];
+    const seen = new Set();
+    let open = [], lock = true, got = 0;
+    const start = () => { cards.forEach(c => c.classList.remove("up")); lock = false; $("#st").textContent = "แตะเปิดไพ่ได้เลย!"; ctx.say("หาคู่ที่เหมือนกันนะ"); };
+    if (L.peek){ cards.forEach(c => c.classList.add("up")); ctx.after(L.peek*1000, start); } else start();
+    $("#gd").addEventListener("click", e => {
+      const c = e.target.closest(".card"); if (!c || lock || c.classList.contains("up") || c.classList.contains("ok")) return;
+      KIT.sfx.tap(); c.classList.add("up"); open.push(c);
+      if (open.length < 2) return;
+      lock = true;
+      const [a,b] = open, ia = +a.dataset.i, ib = +b.dataset.i;
+      if (deck[ia] === deck[ib]){
+        ctx.after(300, () => {
+          a.classList.add("ok"); b.classList.add("ok"); a.classList.remove("up"); b.classList.remove("up");
+          a.setAttribute("aria-label", deck[ia]); b.setAttribute("aria-label", deck[ib]);
+          got++; ctx.correct(100, `ได้คู่ ${deck[ia]} แล้ว!`); ctx.progress(got, L.pairs);
+          $("#st").textContent = `ได้แล้ว ${got} คู่`;
+          open = []; lock = false;
+          if (got === L.pairs) ctx.finish({targetSec: [0,45,80,140][level]});
+        });
+      } else {
+        /* penalise only a memory slip: the partner of the first card had already been seen */
+        const slip = [...seen].some(k => k !== ia && deck[k] === deck[ia]);
+        if (slip) ctx.wrong(`เคยเห็น ${deck[ia]} อีกใบแล้วนะ ลองนึกตำแหน่งดู`, 5);
+        else ctx.say("ไม่ใช่คู่กัน จำตำแหน่งไว้นะ");
+        seen.add(ia); seen.add(ib);
+        ctx.after(900, () => { a.classList.remove("up"); b.classList.remove("up"); open = []; lock = false; });
+      }
+    });
+    ctx.progress(0, L.pairs);
+  }
+});
+})();
+</script>
+</body>
+</html>

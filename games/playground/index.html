@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ออกแบบสนามเด็กเล่น</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.fig{background:#EEF8F1;border-radius:22px;border:3px solid #C7E7D1;box-shadow:0 5px 0 #C7E7D1;padding:8px;display:flex;justify-content:center}
+.fig svg{width:100%;max-width:560px;height:auto}
+.tools{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const ink = "#4A3A30";
+const C = 34, COLS = 14, ROWS = 9, M = 22, W = COLS*C + 2*M, H = ROWS*C + 2*M;
+const gx = x => M + x*C, gy = y => M + y*C;
+const T = (x,y,t,col=ink,size=17) => `<text x="${x}" y="${y}" font-size="${size}" font-weight="700" fill="${col}" font-family="Mali" text-anchor="middle" dominant-baseline="middle" paint-order="stroke" stroke="#EEF8F1" stroke-width="6">${t}</text>`;
+const NAMES = {3:"สามเหลี่ยม",4:"สี่เหลี่ยม",5:"ห้าเหลี่ยม",6:"หกเหลี่ยม",7:"เจ็ดเหลี่ยม",8:"แปดเหลี่ยม"};
+function regular(n, irregular){
+  const pts = [];
+  for (let i=0;i<n;i++){ const a = -Math.PI/2 + i*2*Math.PI/n + (irregular ? (Math.random()-.5)*0.5 : 0); const r = irregular ? 90 + rand(-25,20) : 100; pts.push([200 + r*Math.cos(a), 130 + r*Math.sin(a)]); }
+  return `<svg viewBox="0 0 400 260" role="img" aria-label="รูปหลายเหลี่ยม"><polygon points="${pts.map(p=>p.map(v=>v.toFixed(1)).join(",")).join(" ")}" fill="#86D9C2" fill-opacity=".75" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="${ink}"/>`).join("")}</svg>`;
+}
+function labeledPoly(sides){
+  const n = sides.length, pts = [];
+  for (let i=0;i<n;i++){ const a = -Math.PI/2 + i*2*Math.PI/n; pts.push([200 + 100*Math.cos(a), 135 + 100*Math.sin(a)]); }
+  let s = `<svg viewBox="0 0 400 270" role="img" aria-label="รูปหลายเหลี่ยมพร้อมความยาวด้าน"><polygon points="${pts.map(p=>p.join(",")).join(" ")}" fill="#F6CD6B" fill-opacity=".7" stroke="${ink}" stroke-width="4"/>`;
+  pts.forEach((p,i) => { const q = pts[(i+1)%n], m = [(p[0]+q[0])/2, (p[1]+q[1])/2], dx = m[0]-200, dy = m[1]-135, L = Math.hypot(dx,dy); s += T(m[0]+dx/L*22, m[1]+dy/L*22, sides[i]+" ม.", "#3E6EA8"); });
+  return s + "</svg>";
+}
+function dots(){ let s = ""; for (let x=0;x<=COLS;x++) for (let y=0;y<=ROWS;y++) s += `<circle cx="${gx(x)}" cy="${gy(y)}" r="2.4" fill="#9CCFAE"/>`; return s; }
+const gpoly = (pts, fill="#F6CD6B") => `<polygon points="${pts.map(([x,y])=>gx(x)+","+gy(y)).join(" ")}" fill="${fill}" fill-opacity=".75" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>`;
+const shoelace = pts => Math.abs(pts.reduce((s,p,i) => { const q = pts[(i+1)%pts.length]; return s + p[0]*q[1] - q[0]*p[1]; }, 0))/2;
+
+KIT.mount({
+  key:"p6-polygon", title:"ออกแบบสนามเด็กเล่น", subtitle:"คณิตศาสตร์ ป.6 · บทที่ 7 รูปหลายเหลี่ยม",
+  heroHTML:"ออกแบบ<em>สนามเด็กเล่น</em>หลายเหลี่ยม 🛝", heroDesc:"รู้จักรูปหลายเหลี่ยม หาผลบวกมุมภายใน ความยาวรอบรูป และพื้นที่ของรูปที่ซับซ้อน",
+  progIcon:"🛝",
+  howto:["ดูรูปแล้วแตะคำตอบหรือกดตัวเลข","ผลบวกมุมภายในรูป n เหลี่ยม = (n − 2) × 180°","พื้นที่คางหมู = ½ × ผลบวกด้านคู่ขนาน × สูง · พื้นที่รูปว่าว = ½ × ผลคูณเส้นทแยงมุม","ระดับยากกด \"แบ่งรูป\" เพื่อดูวิธีแบ่งเป็นรูปย่อยได้"],
+  levels:{
+    1:{pill:"8 แบบ", color:"var(--green)", desc:"ชื่อรูปหลายเหลี่ยม และผลบวกของมุมภายใน"},
+    2:{pill:"8 แบบ", color:"var(--blue)", desc:"ความยาวรอบรูป พื้นที่คางหมูและรูปว่าว"},
+    3:{pill:"8 แบบ", color:"var(--purple)", desc:"พื้นที่รูปหลายเหลี่ยมโดยแบ่งเป็นรูปย่อย"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `แบบที่ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===1 ? 110 : 220}); return; }
+      if (level === 1) return idx % 2 === 0 ? nameIt() : angleSum();
+      if (level === 2) return [perimeter, trapezoid, kite, perimeter][idx % 4]();
+      return composite();
+    }
+    function nameIt(){
+      const n = rand(3,8);
+      ctx.stage.innerHTML = `<div class="fig">${regular(n, Math.random()<.5)}</div><div id="q"></div>`;
+      const opts = shuffle(Object.keys(NAMES).map(Number).filter(x => x !== n)).slice(0,3).concat(n); shuffle(opts);
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"รูปนี้คือรูปอะไร", options:opts.map(k => "รูป" + NAMES[k]), answer:opts.indexOf(n), explain:"นับจำนวนด้านหรือจำนวนจุดยอด", onNext:done});
+    }
+    function angleSum(){
+      const n = rand(4,8), s = (n-2)*180;
+      if (Math.random() < .5){
+        ctx.stage.innerHTML = `<div class="fig">${regular(n, true)}</div><div id="q"></div>`;
+        const opts = shuffle([...new Set([s, n*180, (n-1)*180, s+90])]);
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"มุมภายในทุกมุมของรูปนี้รวมกันได้กี่องศา", options:opts.map(v => v.toLocaleString("en-US")+"°"), answer:opts.indexOf(s), explain:"(จำนวนด้าน − 2) × 180°", onNext:done});
+      } else {
+        const known = []; let left = s; for (let i=0;i<n-1;i++){ const v = rand(80, 160); known.push(v); left -= v; }
+        if (left <= 30 || left >= 300) return angleSum();
+        KIT.keypad(ctx, ctx.stage, {label:lbl(), html:`รูป${NAMES[n]}มีมุมภายใน ${known.map(v=>v+"°").join(", ")} และมุม x<br>มุม x มีขนาดกี่องศา`, unit:"องศา", answer:left, hint:`มุมภายในรวมกันได้ (${n} − 2) × 180 = ${s}°`, onNext:done});
+      }
+    }
+    function perimeter(){
+      const n = rand(5,7), sides = Array.from({length:n}, () => rand(3,15));
+      ctx.stage.innerHTML = `<div class="fig">${labeledPoly(sides)}</div><div id="q"></div>`;
+      KIT.keypad(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"ต้องใช้รั้วล้อมสนามรอบรูปนี้ยาวกี่เมตร", unit:"เมตร", answer:sides.reduce((a,b)=>a+b,0), hint:"บวกความยาวทุกด้าน", onNext:done});
+    }
+    function trapezoid(){
+      let a, b; do { a = rand(2,6); b = rand(a+2, 11); } while ((a+b) % 2 && Math.random() < .3);
+      const h = rand(2,6), l = rand(0, b-a), x0 = 1, y0 = 7;
+      const pts = [[x0+l, y0-h],[x0+l+a, y0-h],[x0+b, y0],[x0, y0]];
+      let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="สี่เหลี่ยมคางหมู">${dots()}${gpoly(pts,"#F6CD6B")}<line x1="${gx(x0+l)}" y1="${gy(y0-h)}" x2="${gx(x0+l)}" y2="${gy(y0)}" stroke="#E8708F" stroke-width="3" stroke-dasharray="7 5"/>`;
+      s += T(gx(x0+l+a/2), gy(y0-h)-16, `${a} ม.`, "#3E6EA8") + T(gx(x0+b/2), gy(y0)+20, `${b} ม.`, "#3E6EA8") + T(gx(x0+l)-30, gy(y0-h/2), `${h} ม.`, "#E8708F") + "</svg>";
+      ctx.stage.innerHTML = `<div class="fig">${s}</div><div id="q"></div>`;
+      KIT.keypad(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"บ่อทรายรูปสี่เหลี่ยมคางหมูนี้มีพื้นที่กี่ตารางเมตร", unit:"ตร.ม.", answer:(a+b)*h/2, decimal:true, hint:"½ × (ผลบวกด้านคู่ขนาน) × สูง", onNext:done});
+    }
+    function kite(){
+      const w = rand(1,4), t = rand(1,3), bt = rand(t+1, 5), cx = 7, cy = 1 + t;
+      const pts = [[cx,cy-t],[cx+w,cy],[cx,cy+bt],[cx-w,cy]];
+      let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="รูปว่าว">${dots()}${gpoly(pts,"#F2A7B8")}<line x1="${gx(cx-w)}" y1="${gy(cy)}" x2="${gx(cx+w)}" y2="${gy(cy)}" stroke="#E8708F" stroke-width="3" stroke-dasharray="7 5"/><line x1="${gx(cx)}" y1="${gy(cy-t)}" x2="${gx(cx)}" y2="${gy(cy+bt)}" stroke="#E8708F" stroke-width="3" stroke-dasharray="7 5"/>`;
+      s += T(gx(cx+w)+40, gy(cy), `${2*w} ม.`, "#3E6EA8") + T(gx(cx)+38, gy(cy+bt/2+0.3), `${t+bt} ม.`, "#3E6EA8") + "</svg>";
+      ctx.stage.innerHTML = `<div class="fig">${s}</div><div id="q"></div>`;
+      KIT.keypad(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"ลานว่าวนี้มีพื้นที่กี่ตารางเมตร (เส้นประคือเส้นทแยงมุม)", unit:"ตร.ม.", answer:2*w*(t+bt)/2, decimal:true, hint:"½ × เส้นทแยงมุม × เส้นทแยงมุม", onNext:done});
+    }
+    function composite(){
+      const k = idx % 4;
+      let pts, parts;
+      if (k === 0){ const w = rand(3,7), h = rand(2,4), r = rand(1,3), x0 = 2, y0 = 7; pts = [[x0,y0],[x0+w,y0],[x0+w,y0-h],[x0+w/2,y0-h-r],[x0,y0-h]]; if (w % 2) return composite();
+        parts = [gpoly([[x0,y0],[x0+w,y0],[x0+w,y0-h],[x0,y0-h]],"#9CC8F5"), gpoly([[x0,y0-h],[x0+w,y0-h],[x0+w/2,y0-h-r]],"#F2A7B8")]; }
+      else if (k === 1){ const a = rand(5,9), b = rand(2,4), c = rand(2,4), d = rand(4,7), x0 = 1, y0 = 8; if (d <= b) return composite(); pts = [[x0,y0],[x0+a,y0],[x0+a,y0-b],[x0+c,y0-b],[x0+c,y0-d],[x0,y0-d]];
+        parts = [gpoly([[x0,y0],[x0+a,y0],[x0+a,y0-b],[x0,y0-b]],"#9CC8F5"), gpoly([[x0,y0-b],[x0+c,y0-b],[x0+c,y0-d],[x0,y0-d]],"#F2A7B8")]; }
+      else if (k === 2){ const w = rand(4,8), h = rand(3,5), s2 = rand(1,3), x0 = 2, y0 = 7; pts = [[x0,y0],[x0+w,y0],[x0+w+s2,y0-h],[x0+s2+0,y0-h]];
+        pts = [[x0,y0],[x0+w+s2,y0],[x0+w,y0-h],[x0,y0-h]];
+        parts = [gpoly([[x0,y0],[x0+w,y0],[x0+w,y0-h],[x0,y0-h]],"#9CC8F5"), gpoly([[x0+w,y0],[x0+w+s2,y0],[x0+w,y0-h]],"#F2A7B8")]; }
+      else { const w = rand(5,9), h = rand(3,5), cut = rand(1,3), x0 = 2, y0 = 7; pts = [[x0,y0],[x0+w,y0],[x0+w,y0-h+cut],[x0+w-cut,y0-h],[x0,y0-h]];
+        parts = [gpoly([[x0,y0],[x0+w,y0],[x0+w,y0-h],[x0,y0-h]],"#9CC8F5"), gpoly([[x0+w,y0-h+cut],[x0+w,y0-h],[x0+w-cut,y0-h]],"#fff")]; }
+      const A = shoelace(pts);
+      let split = false;
+      ctx.stage.innerHTML = `<div class="fig" id="fg"></div><div class="tools"><button class="btn ghost" type="button" id="sp">แบ่งรูป</button></div><div id="q"></div>`;
+      const draw = () => { ctx.stage.querySelector("#fg").innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="รูปหลายเหลี่ยมบนตารางจุด">${dots()}${split ? parts.join("") : gpoly(pts)}</svg>`; };
+      draw();
+      ctx.stage.querySelector("#sp").onclick = () => { split = !split; ctx.stage.querySelector("#sp").textContent = split ? "รวมรูป" : "แบ่งรูป"; draw(); };
+      KIT.keypad(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"สนามนี้มีพื้นที่กี่ตารางหน่วย (ระยะระหว่างจุด 1 ช่อง = 1 หน่วย)", unit:"ตร.หน่วย", answer:A, decimal:true, hint: k === 3 ? "หาพื้นที่สี่เหลี่ยมใหญ่ แล้วลบส่วนที่ถูกตัดออก" : "แบ่งเป็นรูปย่อย หาพื้นที่แต่ละรูปแล้วบวกกัน", onNext:done});
+    }
+    ctx.progress(0, N); ctx.say("ผู้อำนวยการรอแบบสนามเด็กเล่นอยู่!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

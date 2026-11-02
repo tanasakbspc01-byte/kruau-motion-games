@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>จรวดฝ่าดาวเคราะห์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.space{position:relative;height:clamp(360px,58vh,540px);border-radius:24px;overflow:hidden;background:linear-gradient(#26285A,#3D3B7A 60%,#5B4F98);touch-action:manipulation;cursor:pointer;box-shadow:0 6px 0 #1E1F48}
+.space::before{content:"";position:absolute;inset:0;background-image:radial-gradient(#fff 1px,transparent 1.5px),radial-gradient(#fff .8px,transparent 1.2px);background-size:90px 90px,53px 53px;background-position:0 0,20px 35px;opacity:.55}
+.lane-line{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed rgba(255,255,255,.15)}
+.planet{position:absolute;width:min(27%,140px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;transform:translate(-50%,0);color:#3a2b22;font-weight:700;font-size:clamp(.85rem,2.6vw,1.2rem);text-align:center;padding:6px;font-variant-numeric:tabular-nums;box-shadow:inset -10px -10px 0 rgba(0,0,0,.12)}
+.planet.p0{background:#F6CD6B}.planet.p1{background:#F2A7B8}.planet.p2{background:#86D9C2}
+.planet.ok{outline:5px solid #7FFFA2}
+.planet.no{opacity:.35}
+.rocket{position:absolute;bottom:18px;width:min(20%,100px);aspect-ratio:1;transform:translateX(-50%);transition:left .18s ease-out;display:grid;place-items:center}
+.rocket svg{width:100%;height:100%}
+.flame{animation:flick .15s infinite alternate}
+@keyframes flick{to{transform:scaleY(1.25)}}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ctrl{font-size:1.6rem;padding:14px;border-radius:18px;border:3px solid var(--c);background:var(--card);box-shadow:0 5px 0 var(--c);font-weight:700}
+.ctrl:active{transform:translateY(3px);box-shadow:0 2px 0 var(--c)}
+.fuel{height:12px;border-radius:999px;background:#E9DCCB;overflow:hidden}
+.fuel i{display:block;height:100%;background:linear-gradient(90deg,var(--orange),var(--yellow));transition:width .4s}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 10;
+
+function noCarryPair(len){
+  let a="", b="";
+  for (let i=0;i<len;i++){ const x = rand(i?0:1, 8); const y = rand(i?0:1, 9-x); a += x; b += y; }
+  return [+a, +b];
+}
+function noBorrowPair(len){
+  let a="", b="";
+  for (let i=0;i<len;i++){ const x = rand(i?0:2, 9); const y = rand(i?0:1, x); a += x; b += y; }
+  if (+a === +b) return noBorrowPair(len);
+  return [+a, +b];
+}
+const near = ans => K3(ans);
+function K3(ans){
+  return KIT.numOptions(ans, [
+    a => a + pick([1,-1]) * 10 ** rand(1,4),
+    a => a + pick([1,-1]) * 10 ** rand(3,5),
+    a => a + pick([1,-1]) * rand(1,9) * 1000
+  ], 3);
+}
+function roundTo(n,p){ const b = 10**p; return Math.round(n/b)*b; }
+
+const GEN = {
+  1: () => {
+    if (Math.random() < .5){ const [a,b] = noCarryPair(6); return {q:`${fmt(a)} + ${fmt(b)} = ?`, ans:a+b}; }
+    const [a,b] = noBorrowPair(6); return {q:`${fmt(a)} − ${fmt(b)} = ?`, ans:a-b};
+  },
+  2: () => {
+    const t = rand(0,3);
+    if (t===0){ const a = rand(150000, 799999), b = rand(105000, 899999-a+100000); return {q:`${fmt(a)} + ${fmt(b)} = ?`, ans:a+b}; }
+    if (t===1){ const a = rand(300000, 999999), b = rand(100000, a-50000); return {q:`${fmt(a)} − ${fmt(b)} = ?`, ans:a-b}; }
+    if (t===2){ const x = rand(100000, 600000), b = rand(50000, 300000); return {q:`□ + ${fmt(b)} = ${fmt(x+b)}<br><small>□ คือจำนวนใด</small>`, ans:x}; }
+    const a = rand(400000, 999999), x = rand(100000, a-100000); return {q:`${fmt(a)} − □ = ${fmt(a-x)}<br><small>□ คือจำนวนใด</small>`, ans:x};
+  },
+  3: () => {
+    const t = rand(0,3);
+    if (t===0){
+      const p = pick([4,5]); const name = p===4 ? "หมื่น" : "แสน";
+      const a = rand(110000, 880000), b = rand(110000, 880000), op = Math.random()<.5 ? "+" : "−";
+      const [x,y] = op==="+" || a>=b ? [a,b] : [b,a];
+      const ans = op==="+" ? roundTo(x,p)+roundTo(y,p) : roundTo(x,p)-roundTo(y,p);
+      if (ans <= 0) return GEN[3]();
+      return {q:`ประมาณผลลัพธ์เป็นจำนวนเต็ม${name}<br>${fmt(x)} ${op} ${fmt(y)}`, ans, opts:KIT.numOptions(ans,[v=>v+10**p, v=>v-10**p, v=>v+2*10**p],3)};
+    }
+    const T = [
+      () => { const a = rand(120000,500000), b = rand(20000,90000); return {q:`ห้องสมุดจังหวัดมีหนังสือ ${fmt(a)} เล่ม ซื้อเพิ่มอีก ${fmt(b)} เล่ม รวมมีหนังสือกี่เล่ม`, ans:a+b}; },
+      () => { const a = rand(300000,900000), b = rand(100000,a-50000); return {q:`งานกาชาดมีคนมาเที่ยว ${fmt(a)} คน เป็นเด็ก ${fmt(b)} คน เป็นผู้ใหญ่กี่คน`, ans:a-b}; },
+      () => { const a = rand(150000,400000), b = rand(150000,400000), c = rand(50000,150000); return {q:`โรงงานผลิตขนม ${fmt(a)} ห่อ และ ${fmt(b)} ห่อ ขายไป ${fmt(c)} ห่อ เหลือขนมกี่ห่อ`, ans:a+b-c}; }
+    ];
+    return pick(T)();
+  }
+};
+
+KIT.mount({
+  key:"p4-rocket", title:"จรวดฝ่าดาวเคราะห์", subtitle:"คณิตศาสตร์ ป.4 · บทที่ 2 การบวกและการลบ",
+  heroHTML:"บังคับจรวด ชน<em>ดาวคำตอบ</em> 🚀", heroDesc:"ดาวเคราะห์ 3 ดวงลอยลงมา บังคับจรวดไปชนดวงที่เป็นคำตอบที่ถูกต้อง",
+  progIcon:"🪐",
+  howto:["อ่านโจทย์ด้านบน แล้วคิดคำตอบ","แตะช่องทางซ้าย กลาง หรือขวา หรือกดปุ่ม ◀ ▶ เพื่อย้ายจรวด","ใช้ปุ่มลูกศรบนคีย์บอร์ดก็ได้","ชนดาวที่ถูกได้คะแนนและเติมเชื้อเพลิง ชนผิดเสีย 10 คะแนน"],
+  note:"เวอร์ชันนี้ใช้การแตะจอ (โหมดเอียงเครื่องต้องเปิดจากเว็บที่อนุญาตเซนเซอร์)",
+  levels:{
+    1:{pill:"10 ข้อ", color:"var(--green)", desc:"บวก ลบ ไม่มีการทดและการยืม"},
+    2:{pill:"10 ข้อ", color:"var(--blue)", desc:"บวก ลบ มีการทด การยืม และหาตัวไม่ทราบค่า"},
+    3:{pill:"10 ข้อ", color:"var(--purple)", desc:"ประมาณผลลัพธ์ และโจทย์ปัญหา"}
+  },
+  play(level, ctx){
+    ctx.stage.innerHTML = `
+      <div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext" id="qt"></div></div>
+      <div class="fuel" aria-hidden="true"><i id="fuel" style="width:0%"></i></div>
+      <div class="space" id="space" role="application" aria-label="อวกาศ แตะช่องทางเพื่อย้ายจรวด">
+        <div class="lane-line" style="left:33.33%"></div><div class="lane-line" style="left:66.66%"></div>
+        <div class="rocket" id="rocket" style="left:50%"><svg viewBox="0 0 100 100" aria-hidden="true">
+          <path class="flame" style="transform-origin:50px 80px" d="M40 78 Q50 100 60 78 Z" fill="#FFB347"/>
+          <path d="M50 6 C66 20 68 46 64 78 H36 C32 46 34 20 50 6 Z" fill="#fff" stroke="#5A4335" stroke-width="3"/>
+          <circle cx="50" cy="38" r="9" fill="#86B6F0" stroke="#5A4335" stroke-width="3"/>
+          <path d="M36 58 L22 76 L36 74 Z M64 58 L78 76 L64 74 Z" fill="#E8708F" stroke="#5A4335" stroke-width="3" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="controls"><button class="ctrl" type="button" id="left" aria-label="ย้ายจรวดไปซ้าย">◀</button><button class="ctrl" type="button" id="right" aria-label="ย้ายจรวดไปขวา">▶</button></div>`;
+    const space = ctx.stage.querySelector("#space"), rocket = ctx.stage.querySelector("#rocket");
+    let lane = 1, idx = 0, planets = [], y = 0, raf = 0, active = false, t0 = 0, cur = null;
+    const dur = level===1 ? 7000 : level===2 ? 7500 : 9500;
+    const setLane = l => { lane = Math.max(0, Math.min(2, l)); rocket.style.left = ((lane+.5)/3*100) + "%"; };
+    space.addEventListener("pointerdown", e => { const r = space.getBoundingClientRect(); setLane(Math.floor((e.clientX - r.left) / r.width * 3)); });
+    ctx.stage.querySelector("#left").onclick = () => setLane(lane-1);
+    ctx.stage.querySelector("#right").onclick = () => setLane(lane+1);
+    const key = e => { if (e.key === "ArrowLeft") setLane(lane-1); if (e.key === "ArrowRight") setLane(lane+1); };
+    document.addEventListener("keydown", key);
+    ctx.cleanup(() => { document.removeEventListener("keydown", key); cancelAnimationFrame(raf); });
+
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 0}); return; }
+      cur = GEN[level]();
+      const vals = cur.opts ? cur.opts : shuffle([cur.ans, ...K3(cur.ans).filter(v=>v!==cur.ans).slice(0,2)]);
+      const three = vals.length === 3 ? vals : shuffle([cur.ans, ...vals.filter(v=>v!==cur.ans).slice(0,2)]);
+      cur.lanes = three;
+      ctx.stage.querySelector("#qn").textContent = `ข้อ ${idx+1} จาก ${N}`;
+      ctx.stage.querySelector("#qt").innerHTML = cur.q;
+      planets.forEach(p => p.remove());
+      planets = three.map((v,i) => { const p = document.createElement("div"); p.className = "planet p"+i; p.style.left = ((i+.5)/3*100)+"%"; p.style.top = "-150px"; p.textContent = fmt(v); space.appendChild(p); return p; });
+      active = true; t0 = performance.now();
+      raf = requestAnimationFrame(tick);
+    }
+    function tick(now){
+      if (!ctx.alive() || !active) return;
+      const H = space.clientHeight, pH = planets[0].offsetHeight;
+      const endY = H - rocket.offsetHeight - 18 - pH*0.6;
+      const k = Math.min(1, (now - t0) / dur);
+      y = -pH + (endY + pH) * k;
+      planets.forEach(p => p.style.top = y + "px");
+      if (k >= 1){ land(); return; }
+      raf = requestAnimationFrame(tick);
+    }
+    function land(){
+      active = false;
+      const right = cur.lanes[lane] === cur.ans;
+      const ci = cur.lanes.indexOf(cur.ans);
+      planets.forEach((p,i) => p.classList.add(i===ci ? "ok" : "no"));
+      if (right){ ctx.correct(); }
+      else ctx.wrong(`ชนดาวผิดดวง! คำตอบคือ ${fmt(cur.ans)}`);
+      idx++; ctx.progress(idx, N);
+      ctx.stage.querySelector("#fuel").style.width = (ctx.stage.dataset.ok = (+(ctx.stage.dataset.ok||0) + (right?1:0))) / N * 100 + "%";
+      ctx.after(1300, next);
+    }
+    ctx.progress(0, N); ctx.say("เตรียมตัว... ออกเดินทาง!");
+    ctx.after(900, next);
+  }
+});
+})();
+</script>
+</body>
+</html>

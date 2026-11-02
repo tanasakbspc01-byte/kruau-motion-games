@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เกมโชว์ซูเปอร์เซลล์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.studio{background:radial-gradient(ellipse at 50% 0%,#5B4F98,#2B2552 70%);border-radius:24px;padding:16px;color:#fff;box-shadow:0 6px 0 #1E1A3D;display:flex;flex-direction:column;gap:12px}
+.lights{display:flex;justify-content:space-between}
+.lights i{width:12px;height:12px;border-radius:50%;background:#F6CD6B;box-shadow:0 0 10px #F6CD6B;animation:blink 1s infinite alternate}
+.lights i:nth-child(even){animation-delay:.5s;background:#F2A7B8;box-shadow:0 0 10px #F2A7B8}
+@keyframes blink{to{opacity:.35}}
+.host{display:flex;gap:12px;align-items:center}
+.host svg{width:64px;height:64px;flex:none}
+.board{flex:1;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.25);border-radius:16px;padding:12px 14px;font-weight:700;font-size:clamp(1.1rem,3.3vw,1.5rem);line-height:1.5}
+.board .qn{font-size:.85rem;opacity:.8;font-weight:600}
+.timer{height:12px;border-radius:999px;background:rgba(255,255,255,.18);overflow:hidden}
+.timer i{display:block;height:100%;background:linear-gradient(90deg,#7FD39A,#F6CD6B,#F08A8A);transform-origin:left;transition:transform .25s linear}
+.grid100{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;width:min(240px,60vw);margin:6px auto 0;background:#fff;padding:3px;border-radius:8px}
+.grid100 i{aspect-ratio:1;background:#EDE7F8;border-radius:2px}
+.grid100 i.on{background:#E8708F}
+.abcd{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.abcd .choice{border-color:var(--k);box-shadow:0 5px 0 var(--k);text-align:left;display:flex;gap:10px;align-items:center}
+.abcd .choice b{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--k);color:#fff;flex:none}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt, frac} = KIT;
+const N = 8;
+const KEYS = ["#F2A65A","#86B6F0","#7FD39A","#E8708F"];
+function opts(ans, w, fmtFn=String){ const set = [...new Set(w.filter(v => v !== ans && v > 0))]; const l = shuffle([ans, ...shuffle(set).slice(0,3)]); return {options:l.map(fmtFn), answer:l.indexOf(ans)}; }
+const pct = v => v + "%";
+const baht = v => fmt(v) + " บาท";
+
+const GEN = {
+  1: () => pick([
+    () => { const k = rand(5,95); const cells = shuffle(Array.from({length:100},(_,i)=>i)).slice(0,k); const set = new Set(cells);
+      const g = `<div class="grid100" aria-label="ตาราง 100 ช่อง แรเงา ${k} ช่อง">${Array.from({length:100},(_,i)=>`<i class="${set.has(i)?'on':''}"></i>`).join("")}</div>`;
+      return {html:`ส่วนที่แรเงาสีชมพูคิดเป็นร้อยละเท่าไร${g}`, ...opts(k, [100-k, k+10, k-10, k+1], pct)}; },
+    () => { const k = rand(1,99); return {html:`${frac(k,100)} เขียนเป็นร้อยละได้เท่าไร`, ...opts(k, [100-k, k*10, k+10, Math.round(k/10)||k+2], pct)}; },
+    () => { const k = rand(1,99); return {html:`${k}% เขียนเป็นเศษส่วนได้เท่าไร`, ...opts(k, [100-k, k+1, k+10], v => frac(v,100))}; },
+    () => { const [n,d] = pick([[1,2],[1,4],[3,4],[1,5],[2,5],[3,5],[4,5],[1,10],[3,10],[7,10],[1,20],[9,20],[1,25],[6,25]]); const k = n*100/d;
+      return {html:`${frac(n,d)} คิดเป็นร้อยละเท่าไร`, ...opts(k, [n*10, d, k+5, 100-k, n+d], pct)}; }
+  ])(),
+  2: () => pick([
+    () => { const p = pick([10,20,25,50,75,5,40,60]), base = rand(2,20)*20; const a = base*p/100;
+      return {html:`${p}% ของ ${fmt(base)} เท่ากับเท่าไร`, ...opts(a, [base-a, a*2, a+10, Math.round(base/p)])}; },
+    () => { const p = pick([10,20,25,30,50]), price = rand(4,30)*20; const sale = price - price*p/100;
+      return {html:`🏷️ เสื้อราคา ${fmt(price)} บาท ลดราคา ${p}%<br>ต้องจ่ายเงินกี่บาท`, ...opts(sale, [price*p/100, price-p, sale+20, price], baht)}; },
+    () => { const full = pick([20,25,50]), got = rand(Math.ceil(full/2), full); if ((got*100) % full) return null; const k = got*100/full;
+      return {html:`📝 สอบได้ ${got} คะแนน จากคะแนนเต็ม ${full} คิดเป็นร้อยละเท่าไร`, ...opts(k, [got, 100-k, k+5, full], pct)}; },
+    () => { const total = pick([20,25,40,50]), p = pick([10,20,25,40,60]); if ((total*p) % 100) return null; const a = total*p/100;
+      return {html:`🧒 นักเรียน ${total} คน ใส่แว่น ${p}% มีนักเรียนใส่แว่นกี่คน`, ...opts(a, [total-a, p, a+2, a*2])}; }
+  ])(),
+  3: () => pick([
+    () => { const cost = rand(4,20)*50, p = pick([10,20,25,30,40]); const sell = cost + cost*p/100;
+      return {html:`🛍️ ซื้อของมา ${fmt(cost)} บาท ขายไป ${fmt(sell)} บาท<br>ได้กำไรร้อยละเท่าไร`, ...opts(p, [sell-cost, p+10, 100-p, Math.round((sell-cost)/sell*100)], pct)}; },
+    () => { const cost = rand(4,20)*50, p = pick([10,20,25]); const sell = cost - cost*p/100;
+      return {html:`📉 ซื้อจักรยานมา ${fmt(cost)} บาท ขายขาดทุน ${p}%<br>ขายไปราคากี่บาท`, ...opts(sell, [cost + cost*p/100, cost*p/100, cost-p, sell-50], baht)}; },
+    () => { const cost = rand(4,20)*50, p = pick([10,20,25,40]); const sell = cost + cost*p/100;
+      return {html:`📈 ซื้อพัดลมมา ${fmt(cost)} บาท ต้องการกำไร ${p}%<br>ต้องตั้งราคาขายกี่บาท`, ...opts(sell, [cost*p/100, cost - cost*p/100, cost+p, sell+50], baht)}; },
+    () => { const price = rand(5,20)*100, p1 = pick([10,20]), p2 = pick([10,20,50]); const after = price*(100-p1)/100*(100-p2)/100; if (after % 1) return null;
+      return {html:`🏷️ ทีวีราคา ${fmt(price)} บาท ลด ${p1}% แล้วลดอีก ${p2}% จากราคาที่ลดแล้ว<br>ราคาสุดท้ายกี่บาท`, ...opts(after, [price*(100-p1-p2)/100, price-p1-p2, after+100, price*(100-p1)/100], baht)}; }
+  ])()
+};
+function gen(l){ let q; do { q = GEN[l](); } while (!q || q.answer < 0); return q; }
+
+KIT.mount({
+  key:"p5-show", title:"เกมโชว์ซูเปอร์เซลล์", subtitle:"คณิตศาสตร์ ป.5 · บทที่ 5 ร้อยละ",
+  heroHTML:"ตอบเร็ว ตอบถูก ใน<em>เกมโชว์ร้อยละ</em> 🎤", heroDesc:"แข่งตอบคำถามร้อยละกับเวลา ยิ่งตอบเร็วยิ่งได้คะแนนมาก เล่นบนจอหน้าห้องแล้วให้เพื่อนผลัดกันตอบได้",
+  progIcon:"🎤",
+  howto:["อ่านคำถามแล้วแตะคำตอบ A B C D ก่อนเวลาหมด","ตอบเร็วได้คะแนนพิเศษ ตอบผิดเสีย 10 คะแนนแต่ยังตอบใหม่ได้ถ้ายังมีเวลา","หมดเวลาจะเฉลยแล้วไปข้อต่อไป","ร้อยละ หรือ % คือ จำนวนส่วนใน 100 ส่วน"],
+  levels:{
+    1:{pill:"8 ข้อ · ข้อละ 25 วิ", color:"var(--green)", desc:"ตาราง 100 ช่อง เศษส่วน ↔ ร้อยละ"},
+    2:{pill:"8 ข้อ · ข้อละ 30 วิ", color:"var(--blue)", desc:"ร้อยละของจำนวน และการลดราคา"},
+    3:{pill:"8 ข้อ · ข้อละ 40 วิ", color:"var(--purple)", desc:"กำไร ขาดทุน ราคาขาย และลดราคา 2 ต่อ"}
+  },
+  play(level, ctx){
+    const LIM = level===1 ? 25 : level===2 ? 30 : 40;
+    let idx = 0, tick = 0;
+    ctx.cleanup(() => clearInterval(tick));
+    function next(){
+      clearInterval(tick);
+      if (idx >= N){ ctx.finish({targetSec: 0}); return; }
+      const q = gen(level);
+      let left = LIM, lock = false, first = true;
+      ctx.stage.innerHTML = `<div class="studio"><div class="lights">${"<i></i>".repeat(10)}</div>
+        <div class="host"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#hatcat"/></svg>
+          <div class="board"><div class="qn">คำถามข้อที่ ${idx+1} จาก ${N}</div>${q.html}</div></div>
+        <div class="timer" aria-hidden="true"><i id="bar"></i></div></div>
+        <div class="abcd">${q.options.map((o,i)=>`<button class="choice" type="button" data-i="${i}" style="--k:${KEYS[i]}"><b>${"ABCD"[i]}</b><span>${o}</span></button>`).join("")}</div>`;
+      const bar = ctx.stage.querySelector("#bar");
+      tick = setInterval(() => {
+        if (!ctx.alive()){ clearInterval(tick); return; }
+        left -= 0.25; bar.style.transform = `scaleX(${Math.max(0,left/LIM)})`;
+        if (left <= 0 && !lock){ lock = true; clearInterval(tick);
+          ctx.stage.querySelectorAll(".choice").forEach((b,i) => { b.disabled = true; if (i === q.answer) b.classList.add("right"); });
+          ctx.wrong("หมดเวลา! คำตอบที่ถูกคือข้อสีเขียว", 0); idx++; ctx.progress(idx, N); ctx.after(2000, next); }
+      }, 250);
+      ctx.stage.querySelector(".abcd").onclick = e => {
+        const b = e.target.closest(".choice"); if (!b || b.disabled || lock) return;
+        if (+b.dataset.i === q.answer){
+          lock = true; clearInterval(tick); b.classList.add("right");
+          ctx.stage.querySelectorAll(".choice").forEach(x => x.disabled = true);
+          const base = Math.round((first ? 60 : 30) + left*3);
+          ctx.correct(base, `ถูกต้อง! ตอบใน ${Math.round(LIM-left)} วินาที +${base}`);
+          idx++; ctx.progress(idx, N); ctx.after(1100, next);
+        } else { first = false; b.classList.add("wrong"); b.disabled = true; ctx.wrong("ผิด! รีบเลือกใหม่ เวลายังเดินอยู่"); }
+      };
+    }
+    ctx.progress(0, N); ctx.say("ยินดีต้อนรับสู่เกมโชว์ซูเปอร์เซลล์!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ลูกแก้วกลิ้งบนเส้นจำนวน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.board{background:var(--card);border-radius:22px;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);padding:8px 6px;overflow-x:auto}
+.board svg{width:100%;min-width:560px;height:auto;display:block;touch-action:none;user-select:none;-webkit-user-select:none}
+.ball{cursor:grab;transition:transform .12s ease-out}
+.ball.drag{transition:none;cursor:grabbing}
+.ctrls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center}
+.nudge{min-width:70px;font-size:1.4rem;border-radius:16px;border:3px solid var(--c);background:var(--card);box-shadow:0 4px 0 var(--c);font-weight:700;padding:8px 12px}
+.nudge:active{transform:translateY(2px);box-shadow:0 2px 0 var(--c)}
+.readout{font-weight:700;color:var(--ink-soft);min-width:9ch;text-align:center}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const X0 = 50, X1 = 950;
+
+/* each question: lo, steps (n ticks), step, decimals, target index k, prompt html */
+function q1(){ let k; do { k = rand(1,49); } while (k % 10 === 0); return {lo:0, n:50, step:0.1, dec:1, major:10, mid:5, k, prompt:`วางลูกแก้วที่ <b>${(k/10).toFixed(1)}</b>`}; }
+function q2(){ const lo = rand(0,8); let k; do { k = rand(1,99); } while (k % 10 === 0); return {lo, n:100, step:0.01, dec:2, major:10, mid:5, k, prompt:`วางลูกแก้วที่ <b>${(lo + k/100).toFixed(2)}</b>`}; }
+function q3(){
+  const t = rand(0,2);
+  if (t === 0){ // 1-decimal add/sub on 0-5
+    let a, b, r; do { a = rand(5,38); b = rand(3,25); r = Math.random()<.5 ? a+b : a-b; } while (r <= 0 || r >= 50 || r % 10 === 0);
+    const op = r === a+b ? "+" : "−";
+    return {lo:0, n:50, step:0.1, dec:1, major:10, mid:5, k:r, prompt:`กลิ้งลูกแก้วไปที่ผลลัพธ์ของ <b>${(a/10).toFixed(1)} ${op} ${(b/10).toFixed(1)}</b>`};
+  }
+  const lo = rand(1,7); let a, b, r;
+  do { a = rand(lo*100, lo*100+99); b = rand(5, 95); r = Math.random()<.5 ? a+b : a-b; } while (r <= lo*100 || r >= lo*100+100 || r % 10 === 0);
+  const op = r === a+b ? "+" : "−";
+  return {lo, n:100, step:0.01, dec:2, major:10, mid:5, k:r - lo*100, prompt:`กลิ้งลูกแก้วไปที่ผลลัพธ์ของ <b>${(a/100).toFixed(2)} ${op} ${(b/100).toFixed(2)}</b>`};
+}
+const GEN = {1:q1, 2:q2, 3:q3};
+const val = (q,k) => (q.lo + k*q.step).toFixed(q.dec);
+
+function lineSVG(q){
+  const dx = (X1 - X0) / q.n;
+  let s = `<svg viewBox="0 0 1000 200" id="nl" role="slider" tabindex="0" aria-label="เส้นจำนวน ลากลูกแก้วหรือใช้ปุ่มลูกศร">
+    <rect x="0" y="0" width="1000" height="200" fill="transparent"/>
+    <line x1="${X0-20}" y1="130" x2="${X1+20}" y2="130" stroke="#5A4335" stroke-width="5" stroke-linecap="round"/>`;
+  for (let i=0;i<=q.n;i++){
+    const x = X0 + i*dx, maj = i % q.major === 0, mid = !maj && i % q.mid === 0;
+    const h = maj ? 22 : mid ? 15 : 9;
+    s += `<line x1="${x}" y1="${130-h}" x2="${x}" y2="${130+h}" stroke="${maj?'#5A4335':'#A8968A'}" stroke-width="${maj?3.5:mid?2.2:1.3}"/>`;
+    if (maj) s += `<text x="${x}" y="182" text-anchor="middle" font-size="26" font-weight="700" fill="#4A3A30" font-family="Mali,sans-serif">${val(q,i)}</text>`;
+  }
+  s += `<g id="flag" visibility="hidden"><line x1="0" y1="60" x2="0" y2="128" stroke="#5BB878" stroke-width="4"/><path d="M0 60 L34 70 L0 80 Z" fill="#5BB878"/></g>
+    <g class="ball" id="ball"><circle cx="0" cy="104" r="22" fill="#86B6F0" stroke="#3E6EA8" stroke-width="3"/><circle cx="-7" cy="96" r="7" fill="#fff" opacity=".8"/><path d="M-10 112 q10 6 20 0" stroke="#3E6EA8" stroke-width="3" fill="none" opacity=".6"/></g></svg>`;
+  return s;
+}
+
+KIT.mount({
+  key:"p4-marble", title:"ลูกแก้วกลิ้งบนเส้นจำนวน", subtitle:"คณิตศาสตร์ ป.4 · บทที่ 7 ทศนิยม",
+  heroHTML:"กลิ้ง<em>ลูกแก้ว</em>ให้หยุดตรงทศนิยม 🔵", heroDesc:"ลากหรือกลิ้งลูกแก้วไปหยุดบนเส้นจำนวนตรงตำแหน่งของทศนิยม",
+  progIcon:"🔵",
+  howto:["ลากลูกแก้ว หรือกดปุ่ม ◀ ▶ เพื่อกลิ้งทีละช่อง","นับช่องเล็กให้ดี ช่องเล็ก 1 ช่อง = 0.1 หรือ 0.01 แล้วแต่ด่าน","กด \"ปล่อยลูกแก้ว\" เพื่อตรวจคำตอบ","ผิดจะมีคำใบ้ว่าต้องไปทางไหน ผิด 2 ครั้งจะเฉลยแล้วไปข้อต่อไป"],
+  note:"เวอร์ชันนี้ใช้การลากและแตะ ส่วนโหมดเอียงเครื่องต้องเปิดจากเว็บที่อนุญาตเซนเซอร์",
+  levels:{
+    1:{pill:"8 ข้อ", color:"var(--green)", desc:"ทศนิยม 1 ตำแหน่ง บนเส้นจำนวน 0 ถึง 5"},
+    2:{pill:"8 ข้อ", color:"var(--blue)", desc:"ทศนิยม 2 ตำแหน่ง ช่องละ 0.01"},
+    3:{pill:"8 ข้อ", color:"var(--purple)", desc:"บวก ลบ ทศนิยม แล้ววางผลลัพธ์"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 200 : 150}); return; }
+      const q = GEN[level]();
+      let k = Math.round(q.n/2) + rand(-3,3), tries = 0, locked = false;
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">ข้อ ${idx+1} จาก ${N}</div><div class="qtext">${q.prompt}</div></div>
+        <div class="board">${lineSVG(q)}</div>
+        <div class="ctrls"><button class="nudge" type="button" id="l" aria-label="กลิ้งไปซ้าย 1 ช่อง">◀</button>
+          <span class="readout" aria-hidden="true">🔵</span>
+          <button class="nudge" type="button" id="r" aria-label="กลิ้งไปขวา 1 ช่อง">▶</button>
+          <button class="btn" type="button" id="go">ปล่อยลูกแก้ว</button></div>`;
+      const svg = ctx.stage.querySelector("#nl"), ball = ctx.stage.querySelector("#ball");
+      const dx = (X1-X0)/q.n;
+      const show = () => { ball.style.transform = `translate(${X0 + k*dx}px,0)`; svg.setAttribute("aria-valuenow", k); };
+      show();
+      const setK = v => { if (locked) return; const nk = Math.max(0, Math.min(q.n, v)); if (nk !== k){ k = nk; KIT.sfx.tap(); show(); } };
+      ctx.stage.querySelector("#l").onclick = () => setK(k-1);
+      ctx.stage.querySelector("#r").onclick = () => setK(k+1);
+      svg.addEventListener("keydown", e => { if (e.key==="ArrowLeft"){ setK(k-1); e.preventDefault(); } if (e.key==="ArrowRight"){ setK(k+1); e.preventDefault(); } });
+      const toK = e => { const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const p = pt.matrixTransform(svg.getScreenCTM().inverse()); return Math.round((p.x - X0)/dx); };
+      let drag = false;
+      svg.addEventListener("pointerdown", e => { drag = true; ball.classList.add("drag"); svg.setPointerCapture(e.pointerId); setK(toK(e)); });
+      svg.addEventListener("pointermove", e => { if (drag) setK(toK(e)); });
+      const up = () => { drag = false; ball.classList.remove("drag"); };
+      svg.addEventListener("pointerup", up); svg.addEventListener("pointercancel", up);
+      ctx.stage.querySelector("#go").onclick = () => {
+        if (locked) return;
+        if (k === q.k){ locked = true; ctx.correct(tries ? 50 : 100, `ตรงเป๊ะ! ${val(q,k)} ถูกต้อง`); advance(); return; }
+        tries++;
+        if (tries >= 2){
+          locked = true; ctx.wrong(`ยังไม่ตรง ลูกแก้วอยู่ที่ ${val(q,k)} คำตอบคือ ${val(q,q.k)} (ธงสีเขียว)`);
+          const f = ctx.stage.querySelector("#flag"); f.setAttribute("transform", `translate(${X0 + q.k*dx},0)`); f.setAttribute("visibility","visible");
+          advance(2200); return;
+        }
+        ctx.wrong(`ตอนนี้อยู่ที่ ${val(q,k)} ต้องกลิ้งไปทาง${q.k > k ? "ขวา" : "ซ้าย"}อีก`);
+      };
+    }
+    function advance(ms=900){ idx++; ctx.progress(idx, N); ctx.after(ms, next); }
+    ctx.progress(0, N); ctx.say("ลากลูกแก้วไปวางให้ตรงตำแหน่ง!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

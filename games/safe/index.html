@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตู้เซฟรหัสลับ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.vault{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center;background:#5E6B7A;border-radius:24px;padding:14px 16px;color:#fff;box-shadow:0 6px 0 #46515D}
+.vault svg{width:100%;height:auto}
+.door{transform-origin:12px 50%;transition:transform .9s cubic-bezier(.3,1.2,.4,1)}
+.vault.open .door{transform:perspective(300px) rotateY(-70deg)}
+.code-title{font-weight:700;font-size:1rem;opacity:.9}
+.slots{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.slot{width:38px;height:48px;border-radius:10px;background:#2F3843;display:grid;place-items:center;font-size:1.6rem;font-weight:700;color:#7FE3A0;font-variant-numeric:tabular-nums;box-shadow:inset 0 3px 0 rgba(0,0,0,.35)}
+.slot.now{outline:3px solid var(--yellow)}
+.slot.filled{animation:pop .4s}
+.lamps{display:flex;gap:6px;margin-top:10px;align-items:center;font-size:.9rem}
+.lamp{width:14px;height:14px;border-radius:50%;background:#2F3843}
+.lamp.on{background:var(--bad);box-shadow:0 0 8px var(--bad)}
+.choice.words{font-size:clamp(.95rem,2.6vw,1.15rem);text-align:left}
+@media (max-width:520px){.vault{grid-template-columns:90px 1fr}.slot{width:30px;height:40px;font-size:1.25rem}}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt, thaiWords, thaiDigits} = KIT;
+const PLACES = ["หน่วย","สิบ","ร้อย","พัน","หมื่น","แสน","ล้าน"];
+const Q_PER_LEVEL = 8;
+
+/* number with n digits; zeros allowed in the middle */
+function makeNum(digits, zeroChance=.2){
+  let s = String(rand(1,9));
+  for (let i=1;i<digits;i++) s += Math.random() < zeroChance ? "0" : String(rand(0,9));
+  return +s;
+}
+function variants(n){
+  const s = String(n).split(""); const out = new Set();
+  for (let g=0; g<40 && out.size<6; g++){
+    const t = s.slice(); const k = rand(0, 2);
+    if (k===0){ const i = rand(0,t.length-2); [t[i],t[i+1]] = [t[i+1],t[i]]; }
+    else if (k===1){ const i = rand(1,t.length-1); t[i] = String((+t[i] + rand(1,8)) % 10); }
+    else { const z = t.indexOf("0"); if (z>0){ const j = rand(1,t.length-1); t[z] = t[j]; t[j] = "0"; } else { const i = rand(1,t.length-1); t[i] = "0"; } }
+    if (t[0] !== "0"){ const v = +t.join(""); if (v !== n) out.add(v); }
+  }
+  return [...out];
+}
+function optsFrom(ans, wrongs, render){
+  const list = shuffle([ans, ...shuffle(wrongs).slice(0,3)]);
+  return {options:list.map(render), answer:list.indexOf(ans)};
+}
+const expanded = n => { const s = String(n); return s.split("").map((d,i) => d==="0" ? null : fmt(+d * 10 ** (s.length-1-i))).filter(Boolean).join(" + "); };
+function roundTo(n, p){ const b = 10**p; return Math.round(n/b)*b; }
+
+const GEN = {
+  1: [
+    () => { const n = makeNum(rand(6,7)); const o = optsFrom(n, variants(n), v => thaiWords(v));
+            return {label:"🔑 คำใบ้: เลือกคำอ่านที่ถูกต้อง", html:fmt(n), big:true, ...o, cols:1, words:true}; },
+    () => { const n = makeNum(rand(6,7)); const o = optsFrom(n, variants(n), fmt);
+            return {label:"🔑 คำใบ้: ตัวเลขฮินดูอารบิกของคำอ่านนี้คือข้อใด", html:thaiWords(n), ...o}; },
+    () => { const n = makeNum(rand(6,7)); const o = optsFrom(n, variants(n), fmt);
+            return {label:"🔑 คำใบ้: ตัวเลขไทยนี้เขียนเป็นตัวเลขฮินดูอารบิกได้อย่างไร", html:thaiDigits(fmt(n)), big:true, ...o}; },
+    () => { const n = makeNum(rand(6,7)); const o = optsFrom(n, variants(n), v => thaiDigits(fmt(v)));
+            return {label:"🔑 คำใบ้: เขียนเป็นตัวเลขไทยได้อย่างไร", html:fmt(n), big:true, ...o}; }
+  ],
+  2: [
+    () => { const n = makeNum(7, .05); const s = String(n); const p = rand(0,6); const d = s[s.length-1-p];
+            const cands = [p-2,p-1,p+1,p+2].filter(x => x>=0 && x<=6);
+            const o = optsFrom(PLACES[p], shuffle(cands).slice(0,3).map(x=>PLACES[x]), v => "หลัก"+v);
+            return {label:`🔑 คำใบ้: เลข ${d} ที่ขีดเส้นใต้อยู่ในหลักใด`, html:underline(s,p), big:true, ...o}; },
+    () => { let n, s, p, d; do { n = makeNum(7,.05); s = String(n); p = rand(1,6); d = +s[s.length-1-p]; } while(!d);
+            const v = d * 10**p; const o = optsFrom(v, [d*10**(p-1), d*10**(p+1), d*10**Math.max(0,p-2), (d+1)*10**p].filter(x=>x!==v), fmt);
+            return {label:`🔑 คำใบ้: เลข ${d} ที่ขีดเส้นใต้มีค่าเท่าใด`, html:underline(s,p), big:true, ...o}; },
+    () => { const n = makeNum(rand(6,7), .3); const o = optsFrom(n, variants(n), fmt);
+            return {label:"🔑 คำใบ้: รูปกระจายนี้คือจำนวนใด", html:expanded(n), ...o}; },
+    () => { const n = makeNum(rand(6,7), .3); const o = optsFrom(expanded(n), variants(n).map(expanded), v => v);
+            return {label:"🔑 คำใบ้: เขียนในรูปกระจายได้อย่างไร", html:fmt(n), big:true, ...o, cols:1}; }
+  ],
+  3: [
+    () => { const base = makeNum(7,.1); const nums = new Set([base]); while(nums.size<4){ const v = variants(base); nums.add(pick(v)); }
+            const arr = [...nums]; const want = Math.random()<.5 ? "มากที่สุด" : "น้อยที่สุด";
+            const ans = want==="มากที่สุด" ? Math.max(...arr) : Math.min(...arr);
+            const o = optsFrom(ans, arr.filter(x=>x!==ans), fmt);
+            return {label:`🔑 คำใบ้: จำนวนใด${want}`, html:"เปรียบเทียบให้ดีนะ!", ...o}; },
+    () => { const a = makeNum(rand(6,7),.1); const b = Math.random()<.15 ? a : pick(variants(a));
+            const sym = a>b ? ">" : a<b ? "<" : "=";
+            return {label:"🔑 คำใบ้: เติมเครื่องหมายใน ◯ ให้ถูกต้อง", html:`${fmt(a)} ◯ ${fmt(b)}`, options:[">","<","="], answer:[">","<","="].indexOf(sym), cols:3}; },
+    () => { const n = makeNum(7,.1); const p = pick([3,4,5,6]); const names = {3:"พัน",4:"หมื่น",5:"แสน",6:"ล้าน"};
+            const r = roundTo(n,p); const b = 10**p;
+            const wrongs = [Math.floor(n/b)*b === r ? Math.ceil(n/b)*b : Math.floor(n/b)*b, roundTo(n, p===6?5:p+1), roundTo(n, p-1)].filter(x => x!==r && x>0);
+            const o = optsFrom(r, [...new Set(wrongs)], fmt);
+            return {label:`🔑 คำใบ้: ค่าประมาณเป็นจำนวนเต็ม${names[p]}ของจำนวนนี้คือข้อใด`, html:fmt(n), big:true, ...o}; }
+  ]
+};
+function underline(s, p){
+  const i = s.length-1-p; const f = fmt(+s);
+  let count = -1, out = "";
+  for (const ch of f){ if (/\d/.test(ch)){ count++; out += count===i ? `<u style="text-decoration-thickness:4px;color:#E8708F">${ch}</u>` : ch; } else out += ch; }
+  return out;
+}
+
+KIT.mount({
+  key:"p4-safe", title:"ตู้เซฟรหัสลับ", subtitle:"คณิตศาสตร์ ป.4 · บทที่ 1 จำนวนนับที่มากกว่า 100,000",
+  heroHTML:"ไขคำใบ้ เปิด<em>ตู้เซฟ</em>ให้ได้ 🔐", heroDesc:"ตอบคำใบ้เรื่องจำนวนให้ถูก จะได้รหัสทีละหลักจนเปิดตู้เซฟได้",
+  progIcon:"🔑", progress:true,
+  howto:["อ่านคำใบ้แล้วแตะคำตอบที่ถูก","ตอบถูกได้รหัส 1 หลัก ครบ 8 หลักตู้เซฟจะเปิด","ตอบผิดสัญญาณกันขโมยจะดัง และเสีย 10 คะแนน ตอบใหม่ได้","ตอบถูกครั้งแรกได้คะแนนเต็ม ถูกติดกันได้คอมโบ"],
+  levels:{
+    1:{pill:"8 คำใบ้", color:"var(--green)", desc:"อ่าน เขียน ตัวเลขฮินดูอารบิก ตัวเลขไทย ตัวหนังสือ"},
+    2:{pill:"8 คำใบ้", color:"var(--blue)", desc:"หลัก ค่าประจำหลัก และรูปกระจาย"},
+    3:{pill:"8 คำใบ้", color:"var(--purple)", desc:"เปรียบเทียบ เรียงลำดับ และค่าประมาณ"}
+  },
+  play(level, ctx){
+    const code = Array.from({length:Q_PER_LEVEL}, () => rand(0,9));
+    ctx.stage.innerHTML = `
+      <div class="vault" id="vault">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <rect x="6" y="6" width="108" height="108" rx="12" fill="#3B4550"/>
+          <g class="door"><rect x="12" y="12" width="96" height="96" rx="8" fill="#8A97A6" stroke="#2F3843" stroke-width="3"/>
+          <circle cx="60" cy="60" r="24" fill="#C9D1DA" stroke="#2F3843" stroke-width="3"/>
+          <g id="dial"><line x1="60" y1="40" x2="60" y2="80" stroke="#2F3843" stroke-width="5" stroke-linecap="round"/><line x1="40" y1="60" x2="80" y2="60" stroke="#2F3843" stroke-width="5" stroke-linecap="round"/></g>
+          <rect x="94" y="48" width="8" height="24" rx="3" fill="#F6CD6B"/></g>
+        </svg>
+        <div><div class="code-title">รหัสลับตู้เซฟ</div>
+          <div class="slots">${code.map((_,i)=>`<span class="slot" id="slot${i}">?</span>`).join("")}</div>
+          <div class="lamps">สัญญาณกันขโมย ${[0,1,2].map(i=>`<span class="lamp" id="lamp${i}"></span>`).join("")}</div></div>
+      </div>
+      <div id="q"></div>`;
+    const host = ctx.stage.querySelector("#q");
+    const gens = GEN[level];
+    let idx = 0, alarms = 0, dialAngle = 0;
+    ctx.progress(0, Q_PER_LEVEL);
+    ctx.say("ตอบคำใบ้ข้อแรกเพื่อเริ่มไขรหัส!");
+    const order = shuffle(Array.from({length:Q_PER_LEVEL}, (_,i) => gens[i % gens.length]));
+    const origWrong = ctx.wrong;
+    const wctx = Object.assign({}, ctx, {
+      wrong: (msg) => { origWrong("ปี๊บ ๆ! สัญญาณดัง ลองคิดใหม่อีกครั้ง"); alarms = (alarms+1)%4; [0,1,2].forEach(i => document.getElementById("lamp"+i).classList.toggle("on", i < alarms)); document.getElementById("vault").classList.add("shake"); ctx.after(450, () => document.getElementById("vault").classList.remove("shake")); }
+    });
+    function next(){
+      if (idx >= Q_PER_LEVEL){
+        document.getElementById("vault").classList.add("open");
+        ctx.say("เปิดตู้เซฟได้แล้ว! 💰", "good");
+        ctx.after(900, () => ctx.finish({targetSec: level===1?140:level===2?160:170}));
+        host.innerHTML = ""; return;
+      }
+      document.querySelectorAll(".slot").forEach((s,i) => s.classList.toggle("now", i===idx));
+      const q = order[idx]();
+      const i0 = idx;
+      KIT.mcq(wctx, host, Object.assign(q, {onNext:() => {
+        const s = document.getElementById("slot"+i0); s.textContent = code[i0]; s.classList.add("filled"); s.classList.remove("now");
+        dialAngle += 120; document.getElementById("dial").setAttribute("transform", `rotate(${dialAngle} 60 60)`);
+        idx++; ctx.progress(idx, Q_PER_LEVEL); next();
+      }}));
+      if (q.words) host.querySelectorAll(".choice").forEach(b => b.classList.add("words"));
+    }
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

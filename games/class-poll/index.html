@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โพลห้องเรา</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.chart{background:var(--card);border-radius:22px;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);padding:8px}
+.chart svg{width:100%;height:auto;display:block;touch-action:none;user-select:none;-webkit-user-select:none}
+.src{display:inline-block;font-size:.85rem;font-weight:700;border-radius:999px;padding:2px 10px;background:#FFF1DD;color:var(--orange-deep)}
+.src.class{background:#E9F8EC;color:#3E8E57}
+table.dt{border-collapse:collapse;margin:8px auto 0;font-variant-numeric:tabular-nums;font-size:clamp(.95rem,2.6vw,1.15rem)}
+table.dt th,table.dt td{border:2px solid var(--line);padding:6px 10px;text-align:center}
+table.dt th{background:#FFF1DD}
+.adj{display:grid;gap:6px}
+.adj button{border:2px solid var(--line);background:var(--paper);border-radius:10px;font-weight:700;font-size:1.05rem;padding:4px 0;min-width:40px}
+.teacher{display:grid;gap:10px}
+.teacher .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.teacher label{font-weight:600;font-size:.95rem;display:flex;flex-direction:column;gap:4px}
+.teacher input[type=number],.teacher select{border:2px solid var(--line);border-radius:12px;padding:8px 10px;font-size:1rem;background:var(--paper);font-family:inherit}
+.teacher .chk{flex-direction:row;align-items:center;gap:8px}
+.saved{color:var(--good);font-weight:700;min-height:1.3em}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const THEMES = {
+  fruit:{title:"ผลไม้ที่ชอบ", items:[["🍎","แอปเปิล"],["🍌","กล้วย"],["🥭","มะม่วง"],["🍉","แตงโม"],["🍇","องุ่น"]]},
+  sport:{title:"กีฬาที่ชอบ", items:[["⚽","ฟุตบอล"],["🏀","บาสเกตบอล"],["🏸","แบดมินตัน"],["🏐","วอลเลย์บอล"],["🏊","ว่ายน้ำ"]]},
+  pet:{title:"สัตว์ที่อยากเลี้ยง", items:[["🐶","สุนัข"],["🐱","แมว"],["🐰","กระต่าย"],["🐟","ปลา"],["🐦","นก"]]},
+  color:{title:"สีที่ชอบ", items:[["🔴","สีแดง"],["🔵","สีน้ำเงิน"],["🟢","สีเขียว"],["🟡","สีเหลือง"],["🟣","สีม่วง"]]}
+};
+const CLASS_KEY = "kruau-p4-poll-class-v1";
+function loadClass(){ try { const o = JSON.parse(localStorage.getItem(CLASS_KEY) || "null"); return o && o.use ? o : null; } catch(e){ return null; } }
+
+/* dataset = {title, items:[{e,n,c}], cls:bool} */
+function sample(mult=1, k=5){
+  const key = pick(Object.keys(THEMES)), T = THEMES[key];
+  const pickItems = shuffle(T.items.slice()).slice(0, k);
+  let counts; do { counts = pickItems.map(() => rand(1, mult===1 ? 14 : 8) * mult); } while (new Set(counts).size < counts.length);
+  return {title:T.title, items:pickItems.map(([e,n],i) => ({e, n, c:counts[i]})), cls:false};
+}
+function classData(){
+  const o = loadClass(); if (!o) return null;
+  const T = THEMES[o.theme]; if (!T) return null;
+  const items = T.items.map(([e,n],i) => ({e, n, c:+o.counts[i] || 0})).filter(x => x.c > 0);
+  return items.length >= 3 ? {title:T.title + " (ห้องเรา)", items, cls:true} : null;
+}
+function scaleFor(D){ const cs = D.items.map(x=>x.c), mx = Math.max(...cs);
+  if (mx > 20 && cs.every(c => c%5===0)) return 5; if (mx > 10 && cs.every(c => c%2===0)) return 2; return 1; }
+
+function chartSVG(D, scale, bars, id){
+  const n = D.items.length, mx = Math.max(...D.items.map(x=>x.c));
+  const units = Math.max(5, Math.ceil(mx/scale) + 1);
+  const W = 640, H = 360, L = 62, B = 300, T = 24, bw = (W - L - 20) / n;
+  const uh = (B - T) / units;
+  let s = `<svg viewBox="0 0 ${W} ${H}" ${id?`id="${id}"`:""} role="img" aria-label="แผนภูมิแท่ง ${D.title}">`;
+  for (let u=0; u<=units; u++){ const y = B - u*uh;
+    s += `<line x1="${L}" y1="${y}" x2="${W-14}" y2="${y}" stroke="${u?'#EADBC8':'#5A4335'}" stroke-width="${u?1.5:3}"/>`;
+    s += `<text x="${L-10}" y="${y+6}" text-anchor="end" font-size="17" fill="#4A3A30" font-family="Mali" font-weight="600">${u*scale}</text>`; }
+  s += `<line x1="${L}" y1="${T-6}" x2="${L}" y2="${B}" stroke="#5A4335" stroke-width="3"/>`;
+  s += `<text x="14" y="${(T+B)/2}" font-size="15" fill="#8A7466" font-family="Mali" transform="rotate(-90 14 ${(T+B)/2})" text-anchor="middle">จำนวน (คน)</text>`;
+  const cols = ["#F2A65A","#86B6F0","#7FD39A","#F2A7B8","#B7A4EE"];
+  D.items.forEach((it,i) => {
+    const x = L + i*bw + bw*0.2, w = bw*0.6, hU = bars ? bars[i] : it.c/scale;
+    s += `<rect class="col" data-i="${i}" x="${L + i*bw}" y="${T-6}" width="${bw}" height="${B-T+6}" fill="transparent"/>`;
+    s += `<rect class="bar" data-i="${i}" x="${x}" y="${B - hU*uh}" width="${w}" height="${hU*uh}" rx="6" fill="${cols[i%5]}" stroke="#5A4335" stroke-width="2"/>`;
+    s += `<text x="${L + i*bw + bw/2}" y="${B+30}" text-anchor="middle" font-size="24">${it.e}</text><text x="${L + i*bw + bw/2}" y="${B+54}" text-anchor="middle" font-size="15" fill="#4A3A30" font-family="Mali" font-weight="600">${it.n}</text>`;
+  });
+  return s + `</svg>`;
+}
+const srcTag = D => `<span class="src ${D.cls?'class':''}">${D.cls ? "ข้อมูลห้องเรา" : "ข้อมูลตัวอย่าง"}</span>`;
+function mcOpts(ans, w){ const set = [...new Set(w.filter(v => v !== ans && v >= 0))]; const l = shuffle([ans, ...shuffle(set).slice(0,3)]); return {options:l.map(String), answer:l.indexOf(ans)}; }
+
+function readQ(D, scale){
+  const it = D.items, cs = it.map(x=>x.c);
+  const mx = Math.max(...cs), mn = Math.min(...cs);
+  const T = [];
+  if (cs.filter(c=>c===mx).length === 1) T.push(() => { const l = shuffle(it.map(x=>x.n)); return {html:`${D.title} อะไรมีคนเลือก<b>มากที่สุด</b>`, options:l, answer:l.indexOf(it[cs.indexOf(mx)].n)}; });
+  if (cs.filter(c=>c===mn).length === 1) T.push(() => { const l = shuffle(it.map(x=>x.n)); return {html:`${D.title} อะไรมีคนเลือก<b>น้อยที่สุด</b>`, options:l, answer:l.indexOf(it[cs.indexOf(mn)].n)}; });
+  T.push(() => { const x = pick(it); return {html:`${x.e} ${x.n} มีคนเลือกกี่คน`, ...mcOpts(x.c, [x.c+scale, x.c-scale, x.c+1, x.c-1, Math.round(x.c/scale)])}; });
+  T.push(() => { const [a,b] = shuffle(it.slice()).slice(0,2); const [p,q] = a.c>=b.c ? [a,b] : [b,a]; if (p.c===q.c) return null; const d = p.c-q.c; return {html:`${p.n} มีคนเลือกมากกว่า ${q.n} กี่คน`, ...mcOpts(d, [d+scale, d-scale, p.c+q.c, d+1])}; });
+  T.push(() => { const s = cs.reduce((a,b)=>a+b,0); return {html:"มีคนตอบแบบสำรวจนี้ทั้งหมดกี่คน", ...mcOpts(s, [s+scale, s-scale, s+2, mx*it.length])}; });
+  T.push(() => { const [a,b] = shuffle(it.slice()).slice(0,2); const s = a.c+b.c; return {html:`${a.n} กับ ${b.n} รวมกันมีกี่คน`, ...mcOpts(s, [s+scale, s-1, Math.abs(a.c-b.c), s+2])}; });
+  let q; let g = 0; do { q = pick(T)(); } while (!q && g++ < 20);
+  return q;
+}
+
+KIT.mount({
+  key:"p4-poll", title:"โพลห้องเรา", subtitle:"คณิตศาสตร์ ป.4 · บทที่ 10 การนำเสนอข้อมูล",
+  heroHTML:"อ่านและสร้าง<em>แผนภูมิแท่ง</em> 📊", heroDesc:"ตอบคำถามจากแผนภูมิแท่ง สร้างแผนภูมิจากตาราง และอ่านตารางสองทาง ครูใส่ข้อมูลจริงของห้องได้",
+  progIcon:"📊",
+  howto:["ด่าน 1 และ 3 อ่านแผนภูมิหรือตารางแล้วแตะคำตอบ","ด่าน 2 แตะในช่องของแต่ละแท่ง หรือกด + และ − ให้แท่งสูงตรงกับตาราง แล้วกด \"ตรวจแผนภูมิ\"","ดูมาตราส่วนให้ดี 1 ช่องอาจแทน 1, 2 หรือ 5 คน","ครูสำรวจข้อมูลจริงในห้อง แล้วกรอกในกล่อง \"ข้อมูลห้องเรา\" ด้านล่างได้"],
+  levels:{
+    1:{pill:"8 ข้อ", color:"var(--green)", desc:"อ่านแผนภูมิแท่ง มากที่สุด น้อยที่สุด ต่างกันเท่าไร"},
+    2:{pill:"8 ข้อ", color:"var(--blue)", desc:"สร้างแผนภูมิแท่งจากตาราง (1 ช่องแทน 2 หรือ 5)"},
+    3:{pill:"8 ข้อ", color:"var(--purple)", desc:"ตารางสองทาง และโจทย์ปัญหาจากข้อมูล"}
+  },
+  play(level, ctx){
+    let idx = 0, D = null, scale = 1;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ข้อ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===2 ? 220 : 150}); return; }
+      if (level === 1){
+        if (idx % 4 === 0){ D = classData() || sample(pick([1,1,2])); scale = scaleFor(D); }
+        const q = readQ(D, scale);
+        ctx.stage.innerHTML = `<div class="chart">${chartSVG(D, scale)}</div><div style="text-align:center">${srcTag(D)} แผนภูมิแท่ง${D.title} · 1 ช่องแทน ${scale} คน</div><div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:q.html, options:q.options, answer:q.answer, onNext:done});
+      } else if (level === 2){
+        if (idx % 2 === 0){
+          const cd = classData();
+          D = (idx === 0 && cd) ? cd : sample(pick([2,5]), 4); scale = scaleFor(D);
+          buildChart();
+        } else {
+          const x = pick(D.items), u = x.c / scale;
+          const w = [x.c, u*2, u+1, u-1].filter(v => v !== u && v > 0);
+          const q = mcOpts(u, w);
+          ctx.stage.innerHTML = `<div class="chart">${chartSVG(D, scale)}</div><div id="q"></div>`;
+          KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:`ถ้า 1 ช่องแทน ${scale} คน แท่งของ ${x.e} ${x.n} (${x.c} คน) ต้องสูงกี่ช่อง`, options:q.options.map(o=>o+" ช่อง"), answer:q.answer, onNext:done});
+        }
+      } else {
+        twoWay();
+      }
+    }
+    function buildChart(){
+      const bars = D.items.map(() => 0); let first = true, lock = false;
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl()} · สร้างแผนภูมิแท่งจากตาราง ${srcTag(D)}</div>
+        <table class="dt"><tr><th>${D.title}</th>${D.items.map(x=>`<th>${x.e} ${x.n}</th>`).join("")}</tr><tr><td>จำนวน (คน)</td>${D.items.map(x=>`<td>${x.c}</td>`).join("")}</tr></table>
+        <div class="qtext" style="font-size:1.1rem">1 ช่องแทน <b>${scale} คน</b></div></div>
+        <div class="chart" id="cw"></div>
+        <div class="row" id="adj"></div>
+        <div class="row"><button class="btn" type="button" id="chk">ตรวจแผนภูมิ</button></div>`;
+      const cw = ctx.stage.querySelector("#cw");
+      const draw = () => { cw.innerHTML = chartSVG(D, scale, bars, "bc"); bind(); };
+      ctx.stage.querySelector("#adj").innerHTML = D.items.map((x,i) => `<div class="adj"><span style="text-align:center">${x.e}</span><button type="button" data-i="${i}" data-d="1" aria-label="เพิ่มแท่ง ${x.n}">+</button><button type="button" data-i="${i}" data-d="-1" aria-label="ลดแท่ง ${x.n}">−</button></div>`).join("");
+      ctx.stage.querySelector("#adj").onclick = e => { const b = e.target.closest("button"); if (!b || lock) return; const i = +b.dataset.i; bars[i] = Math.max(0, Math.min(20, bars[i] + +b.dataset.d)); KIT.sfx.tap(); draw(); };
+      function bind(){
+        const svg = cw.querySelector("svg");
+        const units = Math.max(5, Math.ceil(Math.max(...D.items.map(x=>x.c))/scale) + 1);
+        const setFrom = e => { if (lock) return; const t = e.target.closest("[data-i]"); if (!t) return; const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+          const u = Math.max(0, Math.min(units, Math.round((300 - p.y) / ((300-24)/units)))); const i = +t.dataset.i; if (bars[i] !== u){ bars[i] = u; KIT.sfx.tap(); draw(); } };
+        svg.addEventListener("pointerdown", setFrom);
+      }
+      draw();
+      ctx.stage.querySelector("#chk").onclick = () => {
+        if (lock) return;
+        const bad = D.items.filter((x,i) => bars[i] !== x.c/scale);
+        if (!bad.length){ lock = true; ctx.correct(first ? 150 : 75, "แผนภูมิถูกต้องทุกแท่ง!"); ctx.after(900, done); }
+        else { first = false; ctx.wrong(`แท่งของ ${bad.map(x=>x.n).join(", ")} ยังไม่ถูก ${bad[0].n} มี ${bad[0].c} คน ต้องสูง ${bad[0].c}÷${scale} ช่อง`); }
+      };
+    }
+    let TW = null;
+    function twoWay(){
+      if (idx % 4 === 0){
+        const key = pick(Object.keys(THEMES)), T = THEMES[key];
+        const items = shuffle(T.items.slice()).slice(0,4);
+        const rows = pick([["ป.4/1","ป.4/2"],["นักเรียนชาย","นักเรียนหญิง"]]);
+        TW = {title:T.title, items, rows, v: rows.map(() => items.map(() => rand(2,15)))};
+      }
+      const {items, rows, v} = TW;
+      const rt = v.map(r => r.reduce((a,b)=>a+b,0)), ct = items.map((_,j) => v[0][j]+v[1][j]), all = rt[0]+rt[1];
+      const html = `<table class="dt"><tr><th>${TW.title}</th>${items.map(x=>`<th>${x[0]} ${x[1]}</th>`).join("")}<th>รวม</th></tr>
+        ${rows.map((r,i)=>`<tr><th>${r}</th>${v[i].map(c=>`<td>${c}</td>`).join("")}<td>?</td></tr>`).join("")}
+        <tr><th>รวม</th>${items.map(()=>"<td>?</td>").join("")}<td>?</td></tr></table>`;
+      const Q = [
+        () => { const i = rand(0,1), j = rand(0,3); return {q:`${rows[i]} เลือก${items[j][1]}กี่คน`, a:v[i][j], w:[v[1-i][j], v[i][(j+1)%4], ct[j]]}; },
+        () => { const i = rand(0,1); return {q:`${rows[i]} ตอบแบบสำรวจทั้งหมดกี่คน`, a:rt[i], w:[rt[1-i], all, rt[i]+1]}; },
+        () => { const j = rand(0,3); return {q:`มีคนเลือก${items[j][1]}รวมทั้งหมดกี่คน`, a:ct[j], w:[v[0][j], v[1][j], ct[j]+2]}; },
+        () => ({q:"มีคนตอบแบบสำรวจรวมทั้งหมดกี่คน", a:all, w:[rt[0], rt[1], all+10]}),
+        () => { const j = rand(0,3); const d = Math.abs(v[0][j]-v[1][j]); if (!d) return null; const more = v[0][j] > v[1][j] ? 0 : 1; return {q:`ใน${items[j][1]} ${rows[more]} เลือกมากกว่า ${rows[1-more]} กี่คน`, a:d, w:[ct[j], d+1, d+2, Math.max(v[0][j],v[1][j])]}; },
+        () => { const mx = Math.max(...ct); if (ct.filter(c=>c===mx).length > 1) return null; return {q:"รวมทั้งสองกลุ่ม อะไรมีคนเลือกมากที่สุด", a:items[ct.indexOf(mx)][1], w:items.map(x=>x[1])}; }
+      ];
+      let q, g = 0; do { q = pick(Q)(); } while (!q && g++ < 20);
+      const o = typeof q.a === "string" ? (() => { const l = shuffle(items.map(x=>x[1])); return {options:l, answer:l.indexOf(q.a)}; })() : mcOpts(q.a, q.w);
+      ctx.stage.innerHTML = `<div class="chart" style="overflow-x:auto">${html}</div><div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl() + " · ตารางสองทาง (ข้อมูลตัวอย่าง)", html:q.q, options:o.options.map(String), answer:o.answer, onNext:done});
+    }
+    ctx.progress(0, N); ctx.say("ข้อมูลมาแล้ว มาอ่านกันเลย!");
+    next();
+  }
+});
+
+/* ---------- teacher panel on the start screen ---------- */
+const start = document.getElementById("kStart");
+const panel = document.createElement("section");
+panel.className = "panel teacher";
+const saved = (() => { try { return JSON.parse(localStorage.getItem(CLASS_KEY) || "null"); } catch(e){ return null; } })() || {theme:"fruit", counts:[0,0,0,0,0], use:false};
+panel.innerHTML = `<h3 class="section-title">✏️ ข้อมูลห้องเรา (สำหรับครู)</h3>
+  <div style="color:var(--ink-soft);font-size:.95rem">สำรวจในห้องด้วยการยกมือ แล้วกรอกจำนวนคน ด่าน 1 และด่าน 2 (ข้อแรก) จะใช้ข้อมูลนี้แทนข้อมูลตัวอย่าง ต้องมีอย่างน้อย 3 ตัวเลือกที่มากกว่า 0</div>
+  <label>หัวข้อสำรวจ<select id="tTheme">${Object.entries(THEMES).map(([k,T])=>`<option value="${k}">${T.title}</option>`).join("")}</select></label>
+  <div class="grid" id="tCounts"></div>
+  <label class="chk"><input type="checkbox" id="tUse"> ใช้ข้อมูลห้องเราในเกม</label>
+  <div class="row" style="justify-content:flex-start"><button class="btn" type="button" id="tSave">บันทึกข้อมูล</button><span class="saved" id="tMsg" aria-live="polite"></span></div>`;
+start.appendChild(panel);
+const tTheme = panel.querySelector("#tTheme"), tCounts = panel.querySelector("#tCounts");
+function renderCounts(){
+  const T = THEMES[tTheme.value];
+  tCounts.innerHTML = T.items.map(([e,n],i) => `<label>${e} ${n}<input type="number" min="0" max="50" inputmode="numeric" id="tc${i}" value="${tTheme.value===saved.theme ? (saved.counts[i]||0) : 0}"></label>`).join("");
+}
+tTheme.value = saved.theme; panel.querySelector("#tUse").checked = !!saved.use; renderCounts();
+tTheme.onchange = renderCounts;
+panel.querySelector("#tSave").onclick = () => {
+  const counts = THEMES[tTheme.value].items.map((_,i) => Math.max(0, Math.min(50, parseInt(panel.querySelector("#tc"+i).value) || 0)));
+  const use = panel.querySelector("#tUse").checked;
+  Object.assign(saved, {theme:tTheme.value, counts, use});
+  const ok = counts.filter(c=>c>0).length >= 3;
+  try { localStorage.setItem(CLASS_KEY, JSON.stringify(saved)); } catch(e){}
+  panel.querySelector("#tMsg").textContent = !use ? "บันทึกแล้ว (ยังไม่เปิดใช้ ติ๊กช่องด้านบนเพื่อใช้)" : ok ? "บันทึกแล้ว เกมจะใช้ข้อมูลห้องเรา" : "ต้องมีอย่างน้อย 3 ตัวเลือกที่มากกว่า 0";
+};
+})();
+</script>
+</body>
+</html>

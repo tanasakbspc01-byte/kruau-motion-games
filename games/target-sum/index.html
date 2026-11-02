@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>รวมให้ได้เป้าหมาย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.goal{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.target{font-size:clamp(2.2rem,8vw,3.4rem);font-weight:700;color:#fff;background:var(--c);border-radius:24px;padding:4px 26px;box-shadow:0 5px 0 rgba(0,0,0,.15);font-variant-numeric:tabular-nums}
+.sum{font-size:1.15rem;font-weight:700;color:var(--ink-soft)}
+.sum b{font-size:1.6rem;color:var(--ink);font-variant-numeric:tabular-nums}
+.meter{height:16px;border-radius:999px;background:#EFE6DA;overflow:hidden;margin-top:10px}
+.meter i{display:block;height:100%;width:0;background:var(--c);transition:width .2s}
+.meter.over i{background:#F08A8A}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+.tile{aspect-ratio:1.25;border-radius:18px;border:3px solid var(--line);background:var(--card);font-weight:700;font-size:clamp(1.4rem,5vw,2.1rem);box-shadow:0 5px 0 var(--line);font-variant-numeric:tabular-nums;transition:transform .12s}
+.tile.on{background:var(--c);border-color:var(--c);color:#fff;transform:translateY(-4px)}
+.tile.gone{visibility:hidden}
+.tile.shake{animation:shake .4s}
+.row{display:flex;gap:10px;justify-content:center;margin-top:14px}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+/* each level: make a target and a set of tiles that contains at least one solution */
+const CFG = {
+  1:{ make(){ const T = pick([10,10,10,9,8,7]); const a = rand(1,T-1); return {T, sol:[a, T-a], pool:()=>rand(1,9)}; }, tiles:8, hint:"เลือก 2 ใบ" },
+  2:{ make(){ const T = rand(3,10)*5; const a = rand(1,T/5-2)*5, b = rand(1,(T-a)/5-1)*5; const c = T-a-b; return {T, sol: c>0 ? [a,b,c] : [a, T-a], pool:()=>rand(1,9)*5}; }, tiles:8, hint:"2 หรือ 3 ใบ" },
+  3:{ make(){
+        if (Math.random() < .5){ const a = rand(1,8); const b = rand(1, 9-a); return {T:1, sol:[a/10, b/10, (10-a-b)/10].filter(v=>v>0), pool:()=>rand(1,9)/10, dec:true}; }
+        const T = pick([100,100,120,150,200]); const a = rand(1,T/10-2)*10 - 5, b = rand(2,(T-a)/5-2)*5; return {T, sol:[a,b,T-a-b].filter(v=>v>0), pool:()=>rand(1,19)*5};
+      }, tiles:12, hint:"2–3 ใบ" }
+};
+const show = v => Number.isInteger(v) ? String(v) : v.toFixed(1);
+
+KIT.mount({
+  key:"x2-target", title:"รวมให้ได้เป้าหมาย", subtitle:"คณิตศาสตร์ ป.1–6 · เกมบวกเลขคั่นเวลา",
+  heroHTML:"แตะตัวเลขให้<em>รวมกันพอดี</em> 🎯", heroDesc:"เลือกการ์ดตัวเลขที่บวกกันได้เท่ากับเป้าหมายพอดี มีหลายวิธีก็ได้ เลือกวิธีไหนก็ถูก",
+  progIcon:"🎯",
+  howto:["ดูเลขเป้าหมายในกรอบสี","แตะการ์ดตัวเลขเพื่อเลือก (แตะซ้ำเพื่อยกเลิก)","ผลรวมเท่าเป้าหมายพอดี = ผ่าน ถ้าเกินจะต้องเลือกใหม่","มีปุ่มล้างถ้าอยากเริ่มเลือกใหม่"],
+  levels:{
+    1:{pill:"ป.1–2", color:"var(--green)", desc:"รวมให้ได้ 7–10 ใช้เลข 1–9"},
+    2:{pill:"ป.3–4", color:"var(--blue)", desc:"รวมให้ได้ 15–50 ใช้เลขที่ลงท้าย 0 หรือ 5"},
+    3:{pill:"ป.5–6", color:"var(--purple)", desc:"รวมทศนิยมให้ได้ 1 หรือรวมให้ได้ 100–200"}
+  },
+  play(level, ctx){
+    const C = CFG[level];
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div>
+        <div class="goal"><span>เป้าหมาย</span><span class="target" id="tg"></span><span class="sum">รวมตอนนี้ <b id="sm">0</b></span></div>
+        <div class="meter" id="mt"><i></i></div></div>
+      <div class="tiles" id="tl"></div>
+      <div class="row"><button class="btn" type="button" id="clr" style="--c:#B9A894">↺ ล้างที่เลือก</button></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let idx = 0, cur, sel = [], lock = false, firstTry = true;
+    const total = () => Math.round(sel.reduce((s,i)=>s+cur.vals[i],0)*10)/10;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 160 : 110}); return; }
+      const m = C.make(); const vals = m.sol.slice();
+      while (vals.length < C.tiles){ const v = m.pool(); if (v < m.T) vals.push(v); }
+      cur = {T:m.T, vals:shuffle(vals)}; sel = []; lock = false; firstTry = true;
+      $("#qn").textContent = `ด่านย่อย ${idx+1} จาก ${N} · ${C.hint}`;
+      $("#tg").textContent = show(m.T);
+      $("#tl").style.gridTemplateColumns = `repeat(4,1fr)`;
+      $("#tl").innerHTML = cur.vals.map((v,i)=>`<button class="tile" type="button" data-i="${i}">${show(v)}</button>`).join("");
+      upd();
+    }
+    function upd(){
+      const s = total();
+      $("#sm").textContent = show(s);
+      $("#mt i").style.width = Math.min(100, s/cur.T*100) + "%";
+      $("#mt").classList.toggle("over", s > cur.T + 1e-9);
+      ctx.stage.querySelectorAll(".tile").forEach(b => b.classList.toggle("on", sel.includes(+b.dataset.i)));
+    }
+    $("#tl").addEventListener("click", e => {
+      const b = e.target.closest(".tile"); if (!b || lock) return;
+      const i = +b.dataset.i; KIT.sfx.tap();
+      sel = sel.includes(i) ? sel.filter(x=>x!==i) : [...sel, i]; upd();
+      const s = total();
+      if (Math.abs(s - cur.T) < 1e-9){
+        lock = true; ctx.correct(firstTry ? 100 : 60, `พอดีเป๊ะ! ${sel.map(k=>show(cur.vals[k])).join(" + ")} = ${show(cur.T)}`);
+        idx++; ctx.progress(idx, N); ctx.after(1100, next);
+      } else if (s > cur.T){
+        firstTry = false; ctx.wrong(`เกินไป ${show(Math.round((s-cur.T)*10)/10)} แล้ว ลองเลือกใหม่นะ`, 5);
+        ctx.stage.querySelectorAll(".tile.on").forEach(t => t.classList.add("shake"));
+        lock = true; ctx.after(600, () => { sel = []; lock = false; ctx.stage.querySelectorAll(".shake").forEach(t=>t.classList.remove("shake")); upd(); });
+      }
+    });
+    $("#clr").onclick = () => { if (!lock){ sel = []; upd(); } };
+    ctx.progress(0, N); ctx.say("หาการ์ดที่รวมกันได้เป้าหมายพอดีนะ");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

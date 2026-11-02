@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>นักสืบรูปทรง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.fig{background:#F5F1FD;border-radius:22px;border:3px solid #DCD2F6;box-shadow:0 5px 0 #DCD2F6;padding:8px;display:flex;justify-content:center}
+.fig svg{width:100%;max-width:560px;height:auto}
+.case{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft)}
+.badge{display:inline-flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.badge span{background:#F5F1FD;border:2px solid #DCD2F6;border-radius:999px;padding:2px 10px;font-size:.85rem;font-weight:700}
+.badge span.got{background:#E9F8EC;border-color:var(--good)}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const C = 36, COLS = 14, ROWS = 9, M = 18, W = COLS*C + 2*M, H = ROWS*C + 2*M;
+const gx = x => M + x*C, gy = y => M + y*C;
+function grid(inner){
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="รูปบนตารางจุด">`;
+  for (let x=0;x<=COLS;x++) for (let y=0;y<=ROWS;y++) s += `<circle cx="${gx(x)}" cy="${gy(y)}" r="2.6" fill="#B9AAE6"/>`;
+  return s + inner + "</svg>";
+}
+const poly = (pts, fill="#F6CD6B") => `<polygon points="${pts.map(([x,y])=>gx(x)+","+gy(y)).join(" ")}" fill="${fill}" fill-opacity=".8" stroke="#5A4335" stroke-width="4" stroke-linejoin="round"/>`;
+const txt = (x,y,t,col="#4A3A30") => `<text x="${gx(x)}" y="${gy(y)}" font-size="19" font-weight="700" fill="${col}" font-family="Mali" text-anchor="middle" dominant-baseline="middle" paint-order="stroke" stroke="#F5F1FD" stroke-width="6">${t}</text>`;
+const dash = (x1,y1,x2,y2) => `<line x1="${gx(x1)}" y1="${gy(y1)}" x2="${gx(x2)}" y2="${gy(y2)}" stroke="#E8708F" stroke-width="3" stroke-dasharray="7 5"/>`;
+
+const TYPES = ["สี่เหลี่ยมจัตุรัส","สี่เหลี่ยมผืนผ้า","สี่เหลี่ยมด้านขนาน","สี่เหลี่ยมขนมเปียกปูน","สี่เหลี่ยมคางหมู","รูปว่าว"];
+const MAKE = {
+  "สี่เหลี่ยมจัตุรัส": () => { const s = rand(3,5), x = rand(1,COLS-s-1), y = rand(1,ROWS-s-1); return [[x,y],[x+s,y],[x+s,y+s],[x,y+s]]; },
+  "สี่เหลี่ยมผืนผ้า": () => { let w,h; do { w = rand(3,8); h = rand(2,6); } while (w===h); const x = rand(1,COLS-w-1), y = rand(1,ROWS-h-1); return [[x,y],[x+w,y],[x+w,y+h],[x,y+h]]; },
+  "สี่เหลี่ยมด้านขนาน": () => { const w = rand(4,7), h = rand(2,5), k = rand(1,3); if (k*k+h*h === w*w) return MAKE["สี่เหลี่ยมด้านขนาน"](); const x = rand(1,COLS-w-k-1), y = rand(1,ROWS-h-1); return [[x+k,y],[x+w+k,y],[x+w,y+h],[x,y+h]]; },
+  "สี่เหลี่ยมขนมเปียกปูน": () => { const [a,b] = pick([[2,3],[3,2],[2,4],[4,2],[3,4],[4,3]]); const cx = rand(a+1, COLS-a-1), cy = rand(b+1, ROWS-b-1); return [[cx,cy-b],[cx+a,cy],[cx,cy+b],[cx-a,cy]]; },
+  "สี่เหลี่ยมคางหมู": () => { const top = rand(2,4), h = rand(2,4), l = rand(1,2), r = rand(0,2), x = rand(1, COLS-top-l-r-1), y = rand(1,ROWS-h-1); if (l===r) return MAKE["สี่เหลี่ยมคางหมู"](); return [[x+l,y],[x+l+top,y],[x+l+top+r,y+h],[x,y+h]]; },
+  "รูปว่าว": () => { const a = rand(2,3), t = rand(1,2), bt = rand(3,4), cx = rand(a+1, COLS-a-1), cy = rand(t+1, ROWS-bt-1); return [[cx,cy-t],[cx+a,cy],[cx,cy+bt],[cx-a,cy]]; }
+};
+const FACTS = [
+  ["รูปสี่เหลี่ยมใดมีด้านขนานกัน<b>เพียงคู่เดียว</b>", "สี่เหลี่ยมคางหมู"],
+  ["รูปใดมีด้านยาวเท่ากันทุกด้าน แต่<b>ไม่มีมุมฉาก</b>", "สี่เหลี่ยมขนมเปียกปูน"],
+  ["รูปใดมีด้านประชิดยาวเท่ากัน 2 คู่ และด้านตรงข้าม<b>ไม่ขนานกัน</b>", "รูปว่าว"],
+  ["รูปใดมีด้านตรงข้ามขนานกันและยาวเท่ากัน แต่<b>ไม่มีมุมฉาก</b> และด้านไม่ยาวเท่ากันทุกด้าน", "สี่เหลี่ยมด้านขนาน"],
+  ["รูปใดมีมุมฉากทั้ง 4 มุม แต่ด้านกว้างกับด้านยาว<b>ไม่เท่ากัน</b>", "สี่เหลี่ยมผืนผ้า"],
+  ["รูปใดมีมุมฉากทั้ง 4 มุม และด้าน<b>ยาวเท่ากันทุกด้าน</b>", "สี่เหลี่ยมจัตุรัส"]
+];
+const TF = [
+  ["เส้นทแยงมุมของรูปสี่เหลี่ยมขนมเปียกปูนตัดกันเป็นมุมฉาก", true],
+  ["มุมตรงข้ามของรูปสี่เหลี่ยมด้านขนานมีขนาดเท่ากัน", true],
+  ["รูปสี่เหลี่ยมคางหมูมีด้านขนานกัน 2 คู่", false],
+  ["มุมภายในของรูปสี่เหลี่ยมทุกรูปรวมกันได้ 360°", true],
+  ["เส้นทแยงมุมของรูปสี่เหลี่ยมผืนผ้ายาวเท่ากัน", true],
+  ["รูปว่าวมีด้านยาวเท่ากันทุกด้าน", false],
+  ["รูปสี่เหลี่ยมด้านขนานมีเส้นทแยงมุมยาวเท่ากันเสมอ", false],
+  ["เส้นทแยงมุมของรูปว่าวตัดกันเป็นมุมฉาก", true]
+];
+
+KIT.mount({
+  key:"p5-shapes", title:"นักสืบรูปทรง", subtitle:"คณิตศาสตร์ ป.5 · บทที่ 7 รูปสี่เหลี่ยม",
+  heroHTML:"ไขคดี<em>รูปสี่เหลี่ยม</em> 🔍", heroDesc:"สืบหาชนิดของรูปสี่เหลี่ยมจากลักษณะของด้านและมุม แล้วคำนวณความยาวรอบรูปและพื้นที่",
+  progIcon:"🔍",
+  howto:["ดูรูปบนตารางจุด นับช่องเพื่อดูว่าด้านขนานหรือยาวเท่ากันไหม","แตะคำตอบที่ถูก ตอบผิดเสีย 10 คะแนน","ไขคดีครบได้ตรานักสืบสะสม","พื้นที่สี่เหลี่ยมด้านขนาน = ฐาน × สูง · พื้นที่ขนมเปียกปูน = ½ × ผลคูณเส้นทแยงมุม"],
+  levels:{
+    1:{pill:"8 คดี", color:"var(--green)", desc:"บอกชนิดของรูปสี่เหลี่ยม 6 ชนิด"},
+    2:{pill:"8 คดี", color:"var(--blue)", desc:"สมบัติของด้าน มุม และเส้นทแยงมุม"},
+    3:{pill:"8 คดี", color:"var(--purple)", desc:"ความยาวรอบรูปและพื้นที่ สี่เหลี่ยมด้านขนาน ขนมเปียกปูน"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const got = [];
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `คดีที่ ${idx+1} จาก ${N}`;
+    const badges = () => `<div class="badge">${TYPES.map(t=>`<span class="${got.includes(t)?'got':''}">${t.replace("สี่เหลี่ยม","")}</span>`).join("")}</div>`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 200 : 130}); return; }
+      if (level === 1){
+        const t = pick(TYPES);
+        ctx.stage.innerHTML = `<div class="fig">${grid(poly(MAKE[t]()))}</div>${badges()}<div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"รูปนี้เป็นรูปสี่เหลี่ยมชนิดใด (เลือกชื่อที่เจาะจงที่สุด)", options:TYPES, answer:TYPES.indexOf(t), explain:"นับช่องดูว่าด้านไหนขนานกัน ด้านไหนยาวเท่ากัน และมีมุมฉากไหม", onNext:() => { if (!got.includes(t)) got.push(t); done(); }});
+        return;
+      }
+      if (level === 2){
+        if (idx % 2 === 0){
+          const [q, ans] = pick(FACTS);
+          const t = ans; ctx.stage.innerHTML = `<div class="fig">${grid(poly(MAKE[pick(TYPES)](), "#DCD2F6"))}</div><div id="q"></div>`;
+          KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl() + " · รูปบนตารางเป็นเพียงตัวอย่าง อาจไม่ใช่คำตอบ", html:q, options:TYPES, answer:TYPES.indexOf(ans), onNext:done});
+        } else {
+          const [st, tf] = pick(TF);
+          KIT.mcq(ctx, ctx.stage, {label:lbl() + " · จริงหรือไม่จริง", html:st, options:["✅ จริง","❌ ไม่จริง"], answer:tf?0:1, cols:2, onNext:done});
+        }
+        return;
+      }
+      area();
+    }
+    function area(){
+      const k = idx % 4;
+      let inner, html, ans, wr, unit = "ตร.ซม.";
+      if (k === 0){ const b = rand(4,8), h = rand(2,5), s = rand(1,3), x = rand(1, COLS-b-s-1), y = rand(1, ROWS-h-1);
+        inner = poly([[x+s,y],[x+s+b,y],[x+b,y+h],[x,y+h]]) + dash(x+s,y,x+s,y+h) + txt(x+b/2, y+h+0.55, `${b} ซม.`) + txt(x+s+0.9, y+h/2, `${h} ซม.`, "#E8708F");
+        html = "สี่เหลี่ยมด้านขนานนี้มีพื้นที่กี่ตารางเซนติเมตร"; ans = b*h; wr = [2*(b+h), b*h/2, (b+h)*2+s, b*h+h]; }
+      else if (k === 1){ const [a,bb] = pick([[2,3],[3,2],[2,4],[4,2],[3,4],[4,3]]), cx = rand(a+1, COLS-a-1), cy = rand(bb+1, ROWS-bb-1);
+        inner = poly([[cx,cy-bb],[cx+a,cy],[cx,cy+bb],[cx-a,cy]], "#86D9C2") + dash(cx-a,cy,cx+a,cy) + dash(cx,cy-bb,cx,cy+bb) + txt(cx+a/2, cy-0.5, `${2*a} ซม.`, "#E8708F") + txt(cx+0.9, cy+bb/2+0.3, `${2*bb} ซม.`, "#E8708F");
+        html = "สี่เหลี่ยมขนมเปียกปูนนี้มีพื้นที่กี่ตารางเซนติเมตร (เส้นประคือเส้นทแยงมุม)"; ans = 2*a*bb; wr = [4*a*bb, 2*a+2*bb, a*bb, 2*(2*a+2*bb)]; }
+      else if (k === 2){ const s = rand(5,15);
+        inner = null; html = `สวนรูปสี่เหลี่ยมขนมเปียกปูน ด้านยาวด้านละ <b>${s} เมตร</b> ต้องใช้รั้วล้อมรอบยาวกี่เมตร`; ans = 4*s; wr = [s*s, 2*s, 4*s+4, s*s/2|0]; unit = "เมตร"; }
+      else { const b = rand(6,15), h = rand(3,9);
+        inner = null; html = `แปลงผักรูปสี่เหลี่ยมด้านขนาน ฐานยาว <b>${b} เมตร</b> สูง <b>${h} เมตร</b> ปลูกผักได้ตารางเมตรละ 4 ต้น ปลูกได้ทั้งหมดกี่ต้น`; ans = b*h*4; wr = [b*h, (b+h)*2*4, b*h*2, (b+h)*4]; unit = "ต้น"; }
+      const list = shuffle([ans, ...shuffle([...new Set(wr.filter(v => v>0 && v!==ans))]).slice(0,3)]);
+      ctx.stage.innerHTML = (inner ? `<div class="fig">${grid(inner)}</div>` : "") + `<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html, options:list.map(v => v + " " + unit), answer:list.indexOf(ans), onNext:done});
+    }
+    ctx.progress(0, N); ctx.say("มีคดีใหม่เข้ามา นักสืบพร้อมไหม?");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

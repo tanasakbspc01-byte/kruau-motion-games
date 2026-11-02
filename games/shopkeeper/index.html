@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เถ้าแก่ตลาดนัด</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.shop{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;background:linear-gradient(110deg,#FFE3C2,#FDE6EE);border-radius:22px;padding:12px 16px}
+.shop .big{font-size:3.2rem;line-height:1}
+.shop .nm{font-weight:700;font-size:1.15rem}
+.shop .sub{color:var(--ink-soft);font-size:.9rem}
+.cash{font-weight:700;font-size:1.3rem;color:#3E8E57;font-variant-numeric:tabular-nums;text-align:right}
+.bar{height:10px;border-radius:999px;background:#EADBC8;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#7FD39A,#F6CD6B);transition:width .5s}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 8;
+const TIERS = [["🛒","รถเข็นขายน้ำ",0],["⛺","แผงลอยตลาดนัด",300],["🏪","ร้านค้าหน้าโรงเรียน",800],["🏬","ห้างเล็ก ๆ ของเรา",1500]];
+function numOpts(ans, w){ const set = [...new Set(w.filter(v => v > 0 && v !== ans))]; const l = shuffle([ans, ...shuffle(set).slice(0,3)]); let g=0; while (l.length < 4 && g++<40){ const v = ans + rand(1,9)*pick([1,-1]); if (v>0 && !l.includes(v)) l.push(v); } shuffle(l); return l; }
+
+const GEN = {
+  1: () => pick([
+    () => { const a = rand(1,5), b = rand(2,7), k = rand(2,6); if (a===b) return null; return {kind:"kp", html:`🥤 สูตรน้ำหวาน ใช้น้ำหวาน : น้ำเปล่า = <b>${a} : ${b}</b><br>ถ้าใช้น้ำหวาน ${a*k} แก้ว ต้องใช้น้ำเปล่ากี่แก้ว`, ans:b*k, unit:"แก้ว", profit:60}; },
+    () => { const a = rand(1,6), b = rand(2,9), k = rand(2,5); if (a===b) return null; const ans = `${a*k} : ${b*k}`;
+      const l = shuffle([ans, `${a+k} : ${b+k}`, `${a*k} : ${b+k}`, `${b*k} : ${a*k}`].filter((v,i,x)=>x.indexOf(v)===i));
+      return {kind:"mcq", html:`อัตราส่วนใด<b>เท่ากับ</b> ${a} : ${b}`, options:l, answer:l.indexOf(ans), profit:50}; },
+    () => { const boys = rand(8,20), girls = rand(8,20); if (boys===girls) return null; const t = boys + girls;
+      return {kind:"mcq", html:`👦 ลูกค้าเด็กผู้ชาย ${boys} คน 👧 เด็กผู้หญิง ${girls} คน<br>อัตราส่วนเด็กผู้หญิงต่อลูกค้าทั้งหมดคือ`, options:shuffle([`${girls} : ${t}`, `${boys} : ${t}`, `${girls} : ${boys}`, `${t} : ${girls}`]), ansText:`${girls} : ${t}`, profit:50}; },
+    () => { const a = rand(2,5), b = rand(2,6), sum = (a+b)*rand(2,6); return {kind:"kp", html:`🍩 ขายโดนัทรสช็อกโกแลต : รสสตรอว์เบอร์รี = <b>${a} : ${b}</b><br>ขายได้ทั้งหมด ${sum} ชิ้น เป็นรสช็อกโกแลตกี่ชิ้น`, ans:sum*a/(a+b), unit:"ชิ้น", profit:70}; }
+  ])(),
+  2: () => pick([
+    () => { const cost = rand(4,20)*50, p = pick([10,20,25,30,40]); return {kind:"kp", html:`📦 รับของมา ${fmt(cost)} บาท อยากได้กำไร ${p}%<br>ต้องขายราคากี่บาท`, ans:cost*(100+p)/100, unit:"บาท", profit:120}; },
+    () => { const price = rand(4,30)*20, p = pick([10,20,25,50]); return {kind:"kp", html:`🏷️ ลดราคาสินค้า ${p}% จากราคา ${fmt(price)} บาท<br>ลูกค้าต้องจ่ายกี่บาท`, ans:price*(100-p)/100, unit:"บาท", profit:100}; },
+    () => { const cost = rand(4,20)*50, p = pick([10,20,25,40,50]), sell = cost*(100+p)/100; return {kind:"kp", html:`📈 รับของมา ${fmt(cost)} บาท ขายได้ ${fmt(sell)} บาท<br>ได้กำไรร้อยละเท่าไร`, ans:p, unit:"%", profit:120}; },
+    () => { const cost = rand(4,20)*50, p = pick([10,20,25]), sell = cost*(100-p)/100; return {kind:"kp", html:`📉 รับของมา ${fmt(cost)} บาท แต่ขายได้แค่ ${fmt(sell)} บาท<br>ขาดทุนร้อยละเท่าไร`, ans:p, unit:"%", profit:80}; }
+  ])(),
+  3: () => pick([
+    () => { const price = rand(5,20)*100, p1 = pick([10,20]), p2 = pick([10,20,50]); const after = price*(100-p1)*(100-p2)/10000; if (after % 1) return null;
+      return {kind:"kp", html:`🏷️ ราคา ${fmt(price)} บาท ลด ${p1}% แล้วลดอีก ${p2}% จากราคาที่ลดแล้ว<br>ราคาสุดท้ายกี่บาท`, ans:after, unit:"บาท", profit:180}; },
+    () => { const P = rand(2,20)*1000, r = pick([1,2,3,4,5]); return {kind:"kp", html:`🏦 ฝากเงิน ${fmt(P)} บาท ธนาคารให้ดอกเบี้ย ${r}% ต่อปี<br>ครบ 1 ปีจะได้ดอกเบี้ยกี่บาท`, ans:P*r/100, unit:"บาท", profit:150}; },
+    () => { const a = rand(1,4), b = rand(2,5), total = (a+b)*rand(50,200); if (a===b) return null; return {kind:"kp", html:`🤝 เราและเพื่อนลงทุนในอัตราส่วน ${a} : ${b} ได้กำไรรวม ${fmt(total)} บาท<br>แบ่งตามอัตราส่วนเดียวกัน <b>เรา</b>ได้กี่บาท`, ans:total*a/(a+b), unit:"บาท", profit:180}; },
+    () => { const n1 = rand(3,6), u1 = rand(9,15), n2 = rand(7,12); const u2 = u1 + pick([-1,1]); if (u2 < 5) return null;
+      const ans = u1 < u2 ? "ร้าน ก" : "ร้าน ข";
+      return {kind:"mcq", html:`🛒 ร้าน ก ขายดินสอ ${n1} แท่ง ${n1*u1} บาท<br>ร้าน ข ขายดินสอ ${n2} แท่ง ${n2*u2} บาท<br>ร้านไหนขายดินสอ<b>ถูกกว่า</b>ต่อแท่ง`, options:["ร้าน ก","ร้าน ข","ราคาเท่ากัน"], ansText:ans, profit:150, cols:3}; }
+  ])()
+};
+function gen(l){ let q; do { q = GEN[l](); } while (!q); if (q.ansText) q.answer = q.options.indexOf(q.ansText); return q; }
+
+KIT.mount({
+  key:"p6-tycoon", title:"เถ้าแก่ตลาดนัด", subtitle:"คณิตศาสตร์ ป.6 · บทที่ 4 ร้อยละและอัตราส่วน",
+  heroHTML:"เริ่มจากรถเข็น สู่<em>ห้างของเรา</em> 🏪", heroDesc:"ใช้อัตราส่วนและร้อยละคิดสูตร ตั้งราคา และแบ่งกำไร ตอบถูกได้เงินมาขยายร้าน",
+  progIcon:"💰",
+  howto:["อ่านสถานการณ์ในร้าน แล้วกดตัวเลขหรือแตะคำตอบ","ตอบถูกได้กำไรเข้าร้าน ตอบผิดเสีย 10 คะแนน แต่ตอบใหม่ได้","เงินถึงเป้า ร้านจะขยายใหญ่ขึ้น","ร้อยละของจำนวน = จำนวน × ร้อยละ ÷ 100"],
+  levels:{
+    1:{pill:"8 สถานการณ์", color:"var(--green)", desc:"อัตราส่วน และอัตราส่วนที่เท่ากัน"},
+    2:{pill:"8 สถานการณ์", color:"var(--blue)", desc:"กำไร ขาดทุน ราคาขาย และส่วนลด"},
+    3:{pill:"8 สถานการณ์", color:"var(--purple)", desc:"ลดราคา 2 ต่อ ดอกเบี้ย แบ่งกำไรตามอัตราส่วน"}
+  },
+  play(level, ctx){
+    let idx = 0, cash = 0;
+    const tier = () => { let t = TIERS[0]; TIERS.forEach(x => { if (cash >= x[2]) t = x; }); return t; };
+    const nextTier = () => TIERS.find(x => x[2] > cash);
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===1 ? 180 : 240}); return; }
+      const q = gen(level), [e, nm] = tier(), nt = nextTier();
+      ctx.stage.innerHTML = `<div class="shop"><span class="big" aria-hidden="true">${e}</span><div><div class="nm">${nm}</div>
+          <div class="sub">${nt ? `ขยายเป็น${nt[1]} ${nt[0]} เมื่อมีเงิน ${fmt(nt[2])} บาท` : "ร้านใหญ่ที่สุดแล้ว!"}</div>
+          <div class="bar"><i style="width:${nt ? Math.min(100, cash/nt[2]*100) : 100}%"></i></div></div>
+          <div class="cash">💰 ${fmt(cash)}<div class="sub">บาท</div></div></div><div id="q"></div>`;
+      const host = ctx.stage.querySelector("#q");
+      const lbl = `สถานการณ์ที่ ${idx+1} จาก ${N}`;
+      const onNext = () => { const before = tier()[1]; cash += q.profit; idx++; ctx.progress(idx, N); if (tier()[1] !== before){ ctx.say(`ร้านขยายแล้ว! ตอนนี้เป็น${tier()[1]} ${tier()[0]}`, "good"); KIT.sfx.win(); } next(); };
+      if (q.kind === "kp") KIT.keypad(ctx, host, {label:lbl, html:q.html, unit:q.unit, answer:q.ans, decimal:true, hint:"ยังไม่ถูก ลองคิดทีละขั้น", onNext});
+      else KIT.mcq(ctx, host, {label:lbl, html:q.html, options:q.options, answer:q.answer, cols:q.cols||2, onNext});
+    }
+    ctx.progress(0, N); ctx.say("เปิดร้านวันแรก สู้ ๆ เถ้าแก่!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

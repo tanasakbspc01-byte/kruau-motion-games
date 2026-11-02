@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>หุ่นยนต์เรียงแถว</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.belt{display:flex;gap:8px;align-items:flex-end;justify-content:center;flex-wrap:wrap;background:repeating-linear-gradient(90deg,#5E6B7A 0 18px,#4E5966 18px 36px);border-radius:18px;padding:14px 10px 18px;box-shadow:0 5px 0 #3B4550}
+.box{min-width:58px;height:58px;padding:0 8px;border-radius:12px;background:#F6CD6B;border:3px solid #5A4335;display:grid;place-items:center;font-weight:700;font-size:1.25rem;font-variant-numeric:tabular-nums}
+.box.q{background:#fff;color:#E8708F;font-size:1.6rem;animation:pop 1.2s infinite}
+.box.e{font-size:1.9rem;background:#FFF8EF}
+.figs{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;align-items:flex-end;background:var(--card);border-radius:18px;padding:12px;border:3px solid var(--line)}
+.fig{display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:700;color:var(--ink-soft)}
+.fig svg{height:auto}
+.frac{font-size:.9em}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, frac, gcd} = KIT;
+const N = 8;
+const ROBOT = `<svg viewBox="0 0 60 60" width="54" height="54" aria-hidden="true"><rect x="12" y="16" width="36" height="30" rx="8" fill="#86B6F0" stroke="#5A4335" stroke-width="3"/><circle cx="24" cy="30" r="4" fill="#4A3A30"/><circle cx="36" cy="30" r="4" fill="#4A3A30"/><line x1="30" y1="16" x2="30" y2="6" stroke="#5A4335" stroke-width="3"/><circle cx="30" cy="5" r="3" fill="#E8708F"/><rect x="18" y="46" width="8" height="8" fill="#5A4335"/><rect x="34" y="46" width="8" height="8" fill="#5A4335"/></svg>`;
+function opts(ans, w, f=String){ const set = [...new Set(w.filter(v => v !== ans && (typeof v !== "number" || v > 0)))]; const l = shuffle([ans, ...shuffle(set).slice(0,3)]); let g = 0; while (l.length < 4 && g++ < 30){ const v = typeof ans === "number" ? ans + rand(1,9) : null; if (v && !l.includes(v)) l.push(v); } shuffle(l); return {options:l.map(f), answer:l.indexOf(ans)}; }
+const belt = items => `<div class="belt">${ROBOT}${items.map(x => `<span class="box ${x==='?'?'q':''} ${x.e?'e':''}">${x.e ? x.e : x}</span>`).join("")}</div>`;
+function dotFig(kind, n){
+  const pts = [];
+  if (kind === "square") for (let i=0;i<n;i++) for (let j=0;j<n;j++) pts.push([i,j]);
+  if (kind === "rect") for (let i=0;i<n+1;i++) for (let j=0;j<n;j++) pts.push([i,j]);
+  if (kind === "L") { for (let i=0;i<=n;i++) pts.push([0,i]); for (let i=1;i<=n;i++) pts.push([i,n]); }
+  if (kind === "tri") for (let r=0;r<n;r++) for (let c=0;c<=r;c++) pts.push([c + (n-1-r)/2, r]);
+  const W = (Math.max(...pts.map(p=>p[0]))+1)*16+8, H = (Math.max(...pts.map(p=>p[1]))+1)*16+8;
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W*1.6}" aria-hidden="true">${pts.map(([x,y])=>`<circle cx="${x*16+12}" cy="${y*16+12}" r="6" fill="#E8708F"/>`).join("")}</svg>`;
+}
+const DOT = {square:n=>n*n, rect:n=>n*(n+1), L:n=>2*n+1, tri:n=>n*(n+1)/2};
+const DOTN = {square:"รูปที่ n มีจุด n × n", rect:"", L:"", tri:""};
+
+const GEN = {
+  1: () => pick([
+    () => { const a = rand(2,30), d = pick([2,3,4,5,6,7,9,11,25]); const s = [0,1,2,3,4].map(i => a + i*d); return {kind:"mcq", html:"กล่องถัดไปมีเลขอะไร", fig:belt([...s.map(String), "?"]), ...opts(a+5*d, [a+5*d+1, a+5*d-d+1, a+6*d, a+4*d+d*2])}; },
+    () => { const a = rand(80,200), d = pick([3,4,6,8,12,15]); const s = [0,1,2,3].map(i => a - i*d); return {kind:"mcq", html:"กล่องถัดไปมีเลขอะไร", fig:belt([...s.map(String), "?"]), ...opts(a-4*d, [a-4*d+d, a-4*d-1, a-3*d-2*d, a+d])}; },
+    () => { const a = rand(1,5), r = pick([2,3]); const s = [0,1,2,3].map(i => a * r**i); return {kind:"mcq", html:"กล่องถัดไปมีเลขอะไร", fig:belt([...s.map(String), "?"]), ...opts(a*r**4, [a*r**3 + (a*r**3 - a*r**2), a*r**4 + r, a*r**3*2 + 1])}; },
+    () => { const E = shuffle(["🍎","🍌","🍇","🍊","⭐","🔷"]).slice(0, rand(2,3)); const rep = rand(2,3); const seq = []; for (let i=0;i<E.length*rep;i++) seq.push(E[i % E.length]);
+      const k = rand(seq.length+3, 30), ans = E[(k-1) % E.length];
+      return {kind:"mcq", html:`แบบรูปซ้ำไปเรื่อย ๆ กล่องที่ <b>${k}</b> คืออะไร`, fig:belt(seq.map(e => ({e}))), options:E.slice(), answer:E.indexOf(ans), cols:E.length}; }
+  ])(),
+  2: () => pick([
+    () => { const d = pick([2,3,4,5,6,8]); const s = [1,2,3,4,5].map(i => i); return {kind:"mcq", html:"กล่องถัดไปคือเศษส่วนใด", fig:belt([...s.map(i => frac(i,d)), "?"]), ...opts(6, [7, 5, 12], v => frac(v,d))}; },
+    () => { const st = pick([0.25, 0.5, 0.2, 0.75, 1.5, 0.05]); const a = pick([0, st, 1]); const s = [0,1,2,3].map(i => +(a + i*st).toFixed(2)); const ans = +(a + 4*st).toFixed(2);
+      return {kind:"mcq", html:"กล่องถัดไปคือทศนิยมใด", fig:belt([...s.map(String), "?"]), ...opts(ans, [+(ans+st).toFixed(2), +(ans-0.01).toFixed(2), +(s[3]*2).toFixed(2), +(ans+0.1).toFixed(2)])}; },
+    () => { const kind = pick(["square","rect","L","tri"]); const k = rand(5,7);
+      const figs = `<div class="figs">${[1,2,3].map(n => `<div class="fig">${dotFig(kind,n)}<span>รูปที่ ${n}</span></div>`).join("")}<div class="fig"><span style="font-size:2rem">…</span></div></div>`;
+      return {kind:"kp", html:`ถ้าวาดต่อไปเรื่อย ๆ <b>รูปที่ ${k}</b> จะมีจุดทั้งหมดกี่จุด`, fig:figs, ans:DOT[kind](k), unit:"จุด"}; }
+  ])(),
+  3: () => pick([
+    () => { const d = rand(2,9), c = rand(-3,6); const t = n => d*n + c; if (t(1) <= 0) return null; const k = rand(15,40);
+      return {kind:"kp", html:`จำนวนใน<b>ลำดับที่ ${k}</b> ของแบบรูปนี้คืออะไร`, fig:belt([1,2,3,4].map(n => String(t(n))).concat(["…"])), ans:t(k), unit:""}; },
+    () => { const d = rand(2,9), c = rand(-3,6); const t = n => d*n + c; if (t(1) <= 0) return null; const rule = c === 0 ? `${d}n` : c > 0 ? `${d}n + ${c}` : `${d}n − ${-c}`;
+      const w = [c === 0 ? `n + ${d}` : `${d+1}n ${c>0?"+":"−"} ${Math.abs(c)}`, `${d}n + ${c+1}`.replace("+ -","− "), `n + ${t(1)}`, `${c===0?d+1:d}n`];
+      return {kind:"mcq", html:"จำนวนในลำดับที่ n ของแบบรูปนี้ เขียนแทนด้วยข้อใด", fig:belt([1,2,3,4].map(n => String(t(n))).concat(["…"])), ...opts(rule, w)}; },
+    () => { const k = rand(8,20);
+      const tri = k => {
+        const V = []; for (let i=0;i<k+2;i++){ const j = Math.floor(i/2); V.push(i % 2 === 0 ? [10 + 30*j, 40] : [25 + 30*j, 10]); }
+        const zig = V.slice(0, k+2).map(p => p.join(",")).join(" ");
+        let hz = ""; for (let t=0;t<k;t++){ const a2 = V[t], b2 = V[t+2]; hz += `<line x1="${a2[0]}" y1="${a2[1]}" x2="${b2[0]}" y2="${b2[1]}" stroke="#E08A3C" stroke-width="4" stroke-linecap="round"/>`; }
+        const W2 = 30*Math.ceil((k+2)/2) + 20;
+        return `<svg viewBox="0 0 ${W2} 50" width="${W2*1.4}" aria-hidden="true"><polyline points="${zig}" fill="none" stroke="#E08A3C" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>${hz}</svg>`; };
+      const sticks = n => 2*n + 1;
+      return {kind:"kp", html:`ใช้ไม้ขีดต่อรูปสามเหลี่ยมเรียงกัน รูปที่ n มีสามเหลี่ยม n รูป (รูปที่ 1 ใช้ 3 ก้าน รูปที่ 2 ใช้ ${sticks(2)} ก้าน รูปที่ 3 ใช้ ${sticks(3)} ก้าน) <b>รูปที่ ${k}</b> ใช้ไม้ขีดกี่ก้าน`, fig:`<div class="figs">${[1,2,3].map(n=>`<div class="fig">${tri(n)}<span>รูปที่ ${n}</span></div>`).join("")}</div>`, ans:sticks(k), unit:"ก้าน"}; }
+  ])()
+};
+function gen(l){ let q; do { q = GEN[l](); } while (!q); return q; }
+
+KIT.mount({
+  key:"p6-pattern", title:"หุ่นยนต์เรียงแถว", subtitle:"คณิตศาสตร์ ป.6 · บทที่ 5 แบบรูป",
+  heroHTML:"ไขรหัส<em>แบบรูป</em>ให้หุ่นยนต์ 🤖", heroDesc:"หุ่นยนต์เรียงกล่องตามกฎลับ หาว่ากล่องต่อไปคืออะไร และหาจำนวนในลำดับที่ไกล ๆ",
+  progIcon:"📦",
+  howto:["ดูกล่องบนสายพาน หากฎว่าเพิ่มหรือลดทีละเท่าไร","แตะคำตอบ หรือกดตัวเลขที่แป้นแล้วกด \"ตอบ\"","ตอบผิดเสีย 10 คะแนน ตอบใหม่ได้","ระดับยาก: ลองหาความสัมพันธ์ระหว่างลำดับที่ (n) กับจำนวน"],
+  levels:{
+    1:{pill:"8 สายพาน", color:"var(--green)", desc:"แบบรูปของจำนวนนับ และแบบรูปซ้ำ"},
+    2:{pill:"8 สายพาน", color:"var(--blue)", desc:"แบบรูปเศษส่วน ทศนิยม และรูปจุด"},
+    3:{pill:"8 สายพาน", color:"var(--purple)", desc:"จำนวนในลำดับที่ n และโจทย์ไม้ขีด"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 220 : 160}); return; }
+      const q = gen(level), lbl = `สายพานที่ ${idx+1} จาก ${N}`;
+      ctx.stage.innerHTML = `${q.fig}<div id="q"></div>`;
+      const host = ctx.stage.querySelector("#q"), onNext = () => { idx++; ctx.progress(idx, N); next(); };
+      if (q.kind === "kp") KIT.keypad(ctx, host, {label:lbl, html:q.html, unit:q.unit, answer:q.ans, hint:"ยังไม่ถูก ลองหาว่าแต่ละรูปเพิ่มขึ้นทีละเท่าไร", onNext});
+      else KIT.mcq(ctx, host, {label:lbl, html:q.html, options:q.options, answer:q.answer, cols:q.cols||2, onNext});
+    }
+    ctx.progress(0, N); ctx.say("หุ่นยนต์เริ่มเรียงกล่องแล้ว!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

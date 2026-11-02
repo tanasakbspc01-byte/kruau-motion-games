@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คิดเลขไวเท่าจรวด</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.tbar{height:14px;border-radius:999px;background:#EFE6DA;overflow:hidden;margin:12px 0 4px}
+.tbar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#7FD39A,#F6CD6B 60%,#F08A8A);transform-origin:left;transition:transform .1s linear}
+.sky{position:relative;height:70px;margin-top:6px}
+.sky .rk{position:absolute;bottom:0;left:0;font-size:44px;transition:left .5s ease;transform:rotate(45deg)}
+.sky .moon{position:absolute;right:0;bottom:6px;font-size:44px}
+.sky .trail{position:absolute;left:0;right:56px;bottom:22px;border-top:3px dashed #E2D6C6}
+.choice.show{border-color:#3FAE6A;box-shadow:0 5px 0 #3FAE6A;background:#E8F8EE}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 12;
+const SEC = {1:10, 2:9, 3:10};
+const GEN = {
+  1: () => { /* ป.1–2 */
+    const t = rand(1,4);
+    if (t === 1){ const a = rand(1,9), b = rand(1,10-a > 0 ? 10-a : 1); return {q:`${a} + ${b}`, ans:a+b}; }
+    if (t === 2){ const a = rand(2,12), b = rand(1,8); return {q:`${a} + ${b}`, ans:a+b}; }
+    if (t === 3){ const a = rand(5,20), b = rand(1,a-1); return {q:`${a} − ${b}`, ans:a-b}; }
+    const a = rand(1,8)*10, b = rand(1,9-a/10)*10; return Math.random()<.5 ? {q:`${a} + ${b}`, ans:a+b} : {q:`${a+b} − ${b}`, ans:a};
+  },
+  2: () => { /* ป.3–4 */
+    const t = rand(1,4);
+    if (t <= 2){ const a = rand(2,12), b = rand(2,12); return {q:`${a} × ${b}`, ans:a*b}; }
+    if (t === 3){ const b = rand(2,12), q = rand(2,12); return {q:`${b*q} ÷ ${b}`, ans:q}; }
+    const a = rand(25,99), b = rand(11,99); return Math.random()<.5 ? {q:`${a} + ${b}`, ans:a+b} : {q:`${a+b} − ${b}`, ans:a};
+  },
+  3: () => { /* ป.5–6 */
+    const t = rand(1,5);
+    if (t === 1){ const a = rand(12,49), b = rand(3,9); return {q:`${a} × ${b}`, ans:a*b}; }
+    if (t === 2){ const b = rand(3,9), q = rand(12,40); return {q:`${fmt(b*q)} ÷ ${b}`, ans:q}; }
+    if (t === 3){ const a = rand(2,9), b = rand(2,9), c = rand(1,20); return {q:`${a} × ${b} + ${c}`, ans:a*b+c}; }
+    if (t === 4){ const a = rand(1,9), b = rand(1,9); return {q:`0.${a} + 0.${b}`, ans:Math.round((a+b))/10, dec:true}; }
+    const p = pick([10,20,25,50]), n = pick([20,40,60,80,100,200]); return {q:`${p}% ของ ${n}`, ans:p*n/100};
+  }
+};
+function wrongs(c){
+  const s = new Set(), A = c.ans;
+  const mk = c.dec ? [()=>Math.round(A*10+pick([1,-1,10,-2]))/10, ()=>Math.round(A*10+pick([2,-1]))/10] :
+    [()=>A+pick([1,-1,2,-2]), ()=>A+pick([10,-10]), ()=>A+pick([3,-3,5,-5])];
+  let g = 0; while (s.size < 3 && g++ < 200){ const v = pick(mk)(); if (v >= 0 && v !== A) s.add(v); }
+  return [...s];
+}
+const show = v => typeof v === "number" && !Number.isInteger(v) ? String(v) : fmt(v);
+
+KIT.mount({
+  key:"x1-speed", title:"คิดเลขไวเท่าจรวด", subtitle:"คณิตศาสตร์ ป.1–6 · เกมคิดเลขเร็วคั่นเวลา",
+  heroHTML:"คิดให้ไว<em>จรวด</em>พุ่งถึงดวงจันทร์ 🚀", heroDesc:"ตอบให้ทันก่อนแถบเวลาหมด ตอบถูกจรวดจะบินไปข้างหน้า",
+  progIcon:"🚀",
+  howto:["ดูโจทย์แล้วแตะคำตอบที่ถูก","ต้องตอบก่อนแถบเวลาหมด ตอบเร็วได้คะแนนเพิ่ม","ตอบผิดหรือหมดเวลา เกมจะเฉลยแล้วไปข้อต่อไป","ครบ 12 ข้อ จรวดถึงดวงจันทร์"],
+  levels:{
+    1:{pill:"ป.1–2", color:"var(--green)", desc:"บวก ลบ ไม่เกิน 20 และบวกลบจำนวนเต็มสิบ"},
+    2:{pill:"ป.3–4", color:"var(--blue)", desc:"สูตรคูณแม่ 2–12 หารลงตัว บวกลบสองหลัก"},
+    3:{pill:"ป.5–6", color:"var(--purple)", desc:"คูณ หาร โจทย์ระคน ทศนิยม และร้อยละ"}
+  },
+  play(level, ctx){
+    ctx.stage.innerHTML = `<div class="sky"><div class="trail"></div><span class="moon">🌕</span><span class="rk" id="rk">🚀</span></div>
+      <div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext big" id="qt"></div><div class="tbar"><i id="tb"></i></div></div>
+      <div class="choices" id="ch" style="grid-template-columns:repeat(2,1fr)"></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let idx = 0, cur, lock = false, t0 = 0, raf = 0, right = 0;
+    const lim = SEC[level]*1000;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: N*SEC[level]*0.55|0}); return; }
+      cur = GEN[level](); lock = false;
+      const opts = shuffle([cur.ans, ...wrongs(cur)]);
+      $("#qn").textContent = `ข้อ ${idx+1} จาก ${N}`; $("#qt").textContent = cur.q + " = ?";
+      $("#ch").innerHTML = opts.map(v => `<button class="choice" type="button" data-v="${v}">${show(v)}</button>`).join("");
+      t0 = performance.now(); tick();
+    }
+    function tick(){
+      if (!ctx.alive() || lock) return;
+      const left = Math.max(0, 1 - (performance.now()-t0)/lim);
+      $("#tb").style.transform = `scaleX(${left})`;
+      if (left <= 0){ done(null); return; }
+      raf = requestAnimationFrame(tick);
+    }
+    ctx.cleanup(() => cancelAnimationFrame(raf));
+    function done(btn){
+      lock = true; cancelAnimationFrame(raf);
+      const all = [...ctx.stage.querySelectorAll(".choice")]; all.forEach(b => b.disabled = true);
+      const good = all.find(b => +b.dataset.v === cur.ans);
+      if (btn && btn === good){
+        btn.classList.add("right");
+        const left = Math.max(0, 1 - (performance.now()-t0)/lim);
+        ctx.correct(60 + Math.round(left*60)); right++;
+      } else {
+        if (btn) btn.classList.add("wrong");
+        good.classList.add("show");
+        ctx.wrong(btn ? `${cur.q} = ${show(cur.ans)} นะ` : `หมดเวลา! ${cur.q} = ${show(cur.ans)}`);
+      }
+      idx++; ctx.progress(idx, N);
+      $("#rk").style.left = `calc(${(right/N)*100}% - ${(right/N)*56}px)`;
+      ctx.after(btn && btn === good ? 650 : 1500, next);
+    }
+    $("#ch").addEventListener("click", e => { const b = e.target.closest(".choice"); if (b && !lock) done(b); });
+    ctx.progress(0, N); ctx.say("พร้อมไหม? 3… 2… 1… ไป!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตาชั่งมาก–น้อย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.scale{position:relative;width:100%;height:clamp(210px,40vw,270px);margin:8px auto 0;max-width:640px}
+.post{position:absolute;left:50%;bottom:0;width:16px;height:84%;transform:translateX(-50%);background:#B98A5E;border-radius:8px}
+.base{position:absolute;left:50%;bottom:0;width:150px;height:18px;transform:translateX(-50%);background:#8A6141;border-radius:10px}
+.beam{position:absolute;left:18%;right:18%;top:16%;height:12px;background:#8A6141;border-radius:8px;transition:transform .6s cubic-bezier(.3,1.5,.5,1);transform-origin:50% 50%}
+.pan{position:absolute;top:calc(16% + 6px);width:40%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;transition:transform .6s cubic-bezier(.3,1.5,.5,1)}
+.pan.l{left:22%} .pan.r{left:78%}
+.pan .str{width:2px;height:28px;background:#8A6141}
+.pan button{min-width:100%;border:4px solid var(--c);background:#fff;border-radius:0 0 40px 40px/0 0 30px 30px;padding:16px 8px 18px;font-weight:700;font-size:clamp(1.15rem,4vw,1.9rem);box-shadow:0 5px 0 var(--c);font-variant-numeric:tabular-nums;line-height:1.3}
+.pan button:active{transform:translateY(3px)}
+.eq{display:flex;justify-content:center;margin-top:14px}
+.eq .btn{font-size:1.2rem}
+.frac{font-size:.95em}
+.right-b{background:#E8F8EE!important;border-color:#3FAE6A!important}
+.wrong-b{background:#FDE8E8!important;border-color:#E57373!important}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, frac} = KIT;
+const N = 12;
+/* each item: {L:{html,v}, R:{html,v}} */
+const num = v => ({html:KIT.fmt(v), v});
+function pairEq(mk){ for (let g=0; g<50; g++){ const p = mk(); if (Math.random() < .25 || p.L.v !== p.R.v) return p; } return mk(); }
+const GEN = {
+  1: () => pick([
+    () => { const a = rand(10,99); let b = a + pick([-1,1,-10,10,-9,9,0]); return {L:num(a), R:num(b)}; },
+    () => { const a = rand(1,9), b = rand(1,9), c = rand(2,18); return {L:{html:`${a} + ${b}`, v:a+b}, R:num(Math.random()<.3 ? a+b : c)}; },
+    () => { const a = rand(5,15), b = rand(1,5), c = rand(1,9), d = rand(1,9); return {L:{html:`${a} − ${b}`, v:a-b}, R:{html:`${c} + ${d}`, v:c+d}}; }
+  ])(),
+  2: () => pick([
+    () => { const a = rand(1000,9999); const s = String(a).split(""); const i = rand(1,3); [s[i-1],s[i]] = [s[i],s[i-1]]; const b = Math.random()<.2 ? a : +s.join(""); return {L:num(a), R:num(b < 1000 ? a+rand(1,9) : b)}; },
+    () => { const a = rand(3,9), b = rand(3,9); const p = a*b; return {L:{html:`${a} × ${b}`, v:p}, R:num(Math.random()<.3 ? p : p + pick([-2,-1,1,2,-5,5]))}; },
+    () => { const a = rand(2,9), b = rand(2,9), c = rand(2,9), d = rand(2,9); return {L:{html:`${a} × ${b}`, v:a*b}, R:{html:`${c} × ${d}`, v:c*d}}; },
+    () => { const d = rand(2,9), q = rand(3,12), b = rand(2,9), c = rand(2,9); return {L:{html:`${d*q} ÷ ${d}`, v:q}, R:{html:`${b} + ${c}`, v:b+c}}; }
+  ])(),
+  3: () => pick([
+    () => { const a = rand(1,99)/100, b = Math.random()<.5 ? rand(1,9)/10 : rand(1,99)/100; return {L:{html:String(a), v:a}, R:{html:String(b), v:b}}; },
+    () => { const [n,d] = pick([[1,2],[1,4],[3,4],[1,5],[2,5],[3,5],[1,10],[7,10]]); const v = n/d; const alt = Math.random()<.4 ? v : Math.round((v + pick([-.1,.1,-.05,.05]))*100)/100; return {L:{html:frac(n,d), v}, R:{html:String(alt), v:alt}}; },
+    () => { const d = pick([3,4,5,6,8]), a = rand(1,d-1), e = pick([3,4,5,6,8].filter(x=>x!==d)), b = rand(1,e-1); return {L:{html:frac(a,d), v:a/d}, R:{html:frac(b,e), v:b/e}}; },
+    () => { const p = pick([10,20,25,50,75]), n = pick([20,40,80,100,200]), x = p*n/100; const y = Math.random()<.35 ? x : x + pick([-5,5,-10,10]); return {L:{html:`${p}% ของ ${n}`, v:x}, R:num(y)}; }
+  ])()
+};
+const sign = (a,b) => Math.abs(a-b) < 1e-9 ? 0 : (a > b ? -1 : 1); /* -1 left heavier */
+
+KIT.mount({
+  key:"x3-scale", title:"ตาชั่งมาก–น้อย", subtitle:"คณิตศาสตร์ ป.1–6 · เกมเปรียบเทียบจำนวนคั่นเวลา",
+  heroHTML:"ฝั่งไหน<em>หนักกว่า</em>? ⚖️", heroDesc:"แตะจานฝั่งที่มีค่ามากกว่า ถ้าเท่ากันแตะปุ่ม \"เท่ากัน\" แล้วดูตาชั่งเอียงเฉลย",
+  progIcon:"⚖️",
+  howto:["คิดค่าของทั้งสองฝั่ง","แตะจานฝั่งที่มากกว่า (หนักกว่า)","ถ้าสองฝั่งเท่ากัน แตะปุ่ม = เท่ากัน","ตอบผิดเสีย 10 คะแนน ครบ 12 ข้อผ่านด่าน"],
+  levels:{
+    1:{pill:"ป.1–2", color:"var(--green)", desc:"เปรียบเทียบจำนวนสองหลัก และผลบวกลบง่าย ๆ"},
+    2:{pill:"ป.3–4", color:"var(--blue)", desc:"จำนวนสี่หลัก ผลคูณ ผลหาร"},
+    3:{pill:"ป.5–6", color:"var(--purple)", desc:"ทศนิยม เศษส่วน และร้อยละ"}
+  },
+  play(level, ctx){
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext">ฝั่งไหนมากกว่ากัน?</div></div>
+      <div class="scale"><div class="post"></div><div class="base"></div>
+        <div class="beam" id="bm"></div>
+        <div class="pan l" id="pl"><div class="str"></div><button type="button" data-s="-1"></button></div>
+        <div class="pan r" id="pr"><div class="str"></div><button type="button" data-s="1"></button></div></div>
+      <div class="eq"><button class="btn" type="button" data-s="0">= เท่ากัน</button></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    const W = () => $(".scale").clientWidth;
+    let idx = 0, cur, lock = false, first = true;
+    function tilt(s){
+      const deg = s*-9;  /* left heavier -> beam goes down on left */
+      $("#bm").style.transform = `rotate(${-deg}deg)`;
+      const dy = Math.sin(deg*Math.PI/180) * W()*0.28;
+      $("#pl").style.transform = `translate(-50%, ${dy}px)`; $("#pr").style.transform = `translate(-50%, ${-dy}px)`;
+    }
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 120 : 90}); return; }
+      cur = GEN[level](); lock = false; first = true;
+      $("#qn").textContent = `ข้อ ${idx+1} จาก ${N}`;
+      $("#pl button").innerHTML = cur.L.html; $("#pr button").innerHTML = cur.R.html;
+      ctx.stage.querySelectorAll("[data-s]").forEach(b => { b.disabled = false; b.classList.remove("right-b","wrong-b"); });
+      tilt(0);
+    }
+    ctx.stage.addEventListener("click", e => {
+      const b = e.target.closest("[data-s]"); if (!b || lock || b.disabled) return;
+      const ans = sign(cur.L.v, cur.R.v), s = +b.dataset.s;
+      if (s === ans){
+        lock = true; b.classList.add("right-b"); tilt(ans);
+        ctx.correct(first ? 100 : 50); idx++; ctx.progress(idx, N); ctx.after(1300, next);
+      } else {
+        first = false; b.classList.add("wrong-b"); b.disabled = true;
+        ctx.wrong(s === 0 ? "สองฝั่งไม่เท่ากันนะ ลองคิดค่าอีกครั้ง" : "ยังไม่ใช่ ลองคิดค่าของแต่ละฝั่งใหม่");
+      }
+    });
+    ctx.progress(0, N); ctx.say("แตะจานฝั่งที่มากกว่า");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ห้องลับทศนิยม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.room{position:relative;border-radius:24px;padding:16px;color:#fff;box-shadow:0 6px 0 rgba(0,0,0,.25);display:flex;flex-direction:column;gap:12px}
+.room h3{font-size:1.2rem}
+.items{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.item{border:3px dashed rgba(255,255,255,.6);background:rgba(255,255,255,.12);border-radius:18px;padding:12px 6px;color:#fff;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.95rem}
+.item .e{font-size:2.6rem;line-height:1.1}
+.item.solved{border-style:solid;background:rgba(127,211,154,.35)}
+.item.solved .e::after{content:" ✔"}
+.door{display:flex;align-items:center;gap:10px;font-weight:700;background:rgba(0,0,0,.2);border-radius:14px;padding:8px 12px}
+.locks{letter-spacing:.2em;font-size:1.3rem}
+.back2{align-self:flex-start}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, frac} = KIT;
+const ROOMS = [
+  {name:"ห้องอียิปต์โบราณ", bg:"linear-gradient(135deg,#C98B4E,#8A5A2E)", items:[["🏺","แจกันโบราณ"],["📜","ม้วนกระดาษ"],["🗿","รูปปั้นหิน"]]},
+  {name:"ห้องไดโนเสาร์", bg:"linear-gradient(135deg,#5EA36B,#2E6B45)", items:[["🦴","กระดูก"],["🥚","ไข่ยักษ์"],["🦕","โครงกระดูก"]]},
+  {name:"ห้องอวกาศ", bg:"linear-gradient(135deg,#4B4A9C,#1E1C4F)", items:[["🚀","จรวด"],["🪐","ดาวเสาร์"],["👽","มนุษย์ต่างดาว"]]}
+];
+/* decimals as integers scaled by 1000 */
+const s = t => (t/1000).toFixed(3).replace(/\.?0+$/,"");
+const dec = (min, max, places) => { const step = 10 ** (3 - places); let v; do { v = rand(Math.ceil(min*1000/step), Math.floor(max*1000/step)) * step; } while (v % (step*10) === 0); return v; };
+const GEN = {
+  1: () => pick([
+    () => { const [n,d] = pick([[1,2],[1,4],[3,4],[1,5],[2,5],[3,5],[4,5],[1,8],[3,8],[5,8],[7,8],[1,20],[7,20],[3,25],[12,25]]); return {html:`${frac(n,d)} เขียนเป็นทศนิยมได้เท่าไร`, ans:n/d}; },
+    () => { const a = dec(0.2, 9.9, 1), b = dec(0.2, 9.9, 1); return {html:`${s(a)} × ${s(b)} = ?`, ans:a*b/1e6}; },
+    () => { const a = dec(0.11, 9.99, 2), k = rand(2,9); return {html:`${s(a)} × ${k} = ?`, ans:a*k/1000}; },
+    () => { const a = dec(1.1, 20, 1), b = dec(0.01, 0.99, 2); return {html:`${s(a)} × ${s(b)} = ?`, ans:a*b/1e6}; }
+  ])(),
+  2: () => pick([
+    () => { const k = rand(2,9), q = dec(0.1, 9.9, 1); return {html:`${s(q*k)} ÷ ${k} = ?`, ans:q/1000}; },
+    () => { const b = dec(0.2, 0.9, 1), q = rand(2,15); return {html:`${s(b*q)} ÷ ${s(b)} = ?`, ans:q}; },
+    () => { const b = dec(0.02, 0.99, 2), q = rand(2,12); return {html:`${s(b*q)} ÷ ${s(b)} = ?`, ans:q}; },
+    () => { const b = dec(1.1, 4.9, 1), q = dec(0.2, 9.9, 1); const a = b*q/1000; if (a % 10) return null; return {html:`${s(a)} ÷ ${s(b)} = ?`, ans:q/1000}; }
+  ])(),
+  3: () => pick([
+    () => { const p = dec(10, 60, 2), n = rand(2,5), pay = Math.ceil(p*n/1000/50)*50 + 50; return {html:`ซื้อขนม ${n} ห่อ ห่อละ ${s(p)} บาท จ่ายเงิน ${pay} บาท ได้เงินทอนกี่บาท`, ans:(pay*1000 - p*n)/1000, unit:"บาท"}; },
+    () => { const L = dec(5, 20, 1), k = rand(2,6); const piece = L/k; if (piece % 10) return null; return {html:`เชือกยาว ${s(L)} เมตร ตัดเป็น ${k} ท่อนเท่า ๆ กัน แต่ละท่อนยาวกี่เมตร`, ans:piece/1000, unit:"เมตร"}; },
+    () => { const per = dec(0.25, 2.5, 2), n = rand(3,8), got = dec(1, 9, 1); return {html:`ใช้น้ำวันละ ${s(per)} ลิตร ${n} วัน แล้วเติมน้ำเพิ่ม ${s(got)} ลิตร รวมแล้วเป็นน้ำกี่ลิตร (ใช้ไป + เติมเพิ่ม)`, ans:(per*n + got)/1000, unit:"ลิตร"}; },
+    () => { const w = dec(1.2, 3.5, 1), h = dec(1.5, 4.5, 1); return {html:`พื้นห้องกว้าง ${s(w)} เมตร ยาว ${s(h)} เมตร มีพื้นที่กี่ตารางเมตร`, ans:w*h/1e6, unit:"ตร.ม."}; }
+  ])()
+};
+function gen(l){ let q; do { q = GEN[l](); } while (!q); q.ans = Math.round(q.ans * 1e6) / 1e6; return q; }
+
+KIT.mount({
+  key:"p6-escape", title:"ห้องลับทศนิยม", subtitle:"คณิตศาสตร์ ป.6 · บทที่ 3 ทศนิยม",
+  heroHTML:"หนีออกจาก<em>พิพิธภัณฑ์</em>ตอนกลางคืน 🗝️", heroDesc:"แตะสิ่งของในแต่ละห้องเพื่อหาโจทย์ทศนิยม ไขครบ 3 ชิ้นประตูจะเปิด ผ่าน 3 ห้องเพื่อหนีออกไป",
+  progIcon:"🗝️",
+  howto:["แตะสิ่งของในห้องเพื่อเปิดโจทย์","กดตัวเลขและจุดทศนิยมที่แป้น แล้วกด \"ตอบ\"","ไขครบ 3 ชิ้น ประตูห้องจะเปิด","ตอบผิดเสีย 10 คะแนน ตอบใหม่ได้"],
+  levels:{
+    1:{pill:"3 ห้อง 9 ปริศนา", color:"var(--green)", desc:"เศษส่วน ↔ ทศนิยม และการคูณทศนิยม"},
+    2:{pill:"3 ห้อง 9 ปริศนา", color:"var(--blue)", desc:"การหารทศนิยม"},
+    3:{pill:"3 ห้อง 9 ปริศนา", color:"var(--purple)", desc:"โจทย์ปัญหาทศนิยมหลายขั้นตอน"}
+  },
+  play(level, ctx){
+    let room = 0, solvedTotal = 0;
+    function showRoom(){
+      if (room >= 3){ ctx.say("หนีออกจากพิพิธภัณฑ์ได้แล้ว! 🎉", "good"); ctx.finish({targetSec: level===3 ? 300 : 240}); return; }
+      const R = ROOMS[room], solved = R.solved || (R.solved = [false,false,false]);
+      ctx.stage.innerHTML = `<div class="room" style="background:${R.bg}"><h3>ห้องที่ ${room+1}: ${R.name}</h3>
+        <div class="items">${R.items.map(([e,n],i)=>`<button class="item ${solved[i]?'solved':''}" type="button" data-i="${i}" ${solved[i]?"disabled":""}><span class="e">${e}</span>${n}</button>`).join("")}</div>
+        <div class="door">🚪 ประตูห้อง <span class="locks">${solved.map(x=>x?"🔓":"🔒").join("")}</span></div></div>`;
+      ctx.stage.querySelector(".items").onclick = e => { const b = e.target.closest(".item"); if (!b || b.disabled) return; KIT.sfx.tap(); puzzle(+b.dataset.i); };
+    }
+    function puzzle(i){
+      const R = ROOMS[room], q = gen(level);
+      ctx.stage.innerHTML = `<button class="btn ghost back2" type="button" id="bk">← กลับไปดูห้อง</button><div id="kp"></div>`;
+      ctx.stage.querySelector("#bk").onclick = showRoom;
+      KIT.keypad(ctx, ctx.stage.querySelector("#kp"), {label:`${R.items[i][0]} ${R.items[i][1]} · ปริศนาที่ ${solvedTotal+1} จาก 9`, html:q.html, unit:q.unit||"", answer:q.ans, decimal:true,
+        hint:"ยังไม่ถูก ตรวจตำแหน่งจุดทศนิยมอีกครั้ง",
+        onNext:() => { R.solved[i] = true; solvedTotal++; ctx.progress(solvedTotal, 9);
+          if (R.solved.every(Boolean)){ ctx.say(`ประตู${R.name}เปิดแล้ว!`, "good"); room++; } showRoom(); }});
+    }
+    ROOMS.forEach(r => r.solved = null);
+    ctx.progress(0, 9); ctx.say("ไฟดับแล้ว! แตะสิ่งของเพื่อหาทางออก");
+    showRoom();
+  }
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ร้านน้ำปั่นผสมสูตร</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.cups{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cup{border:3px solid var(--c);background:var(--card);border-radius:20px;padding:10px 12px 12px;box-shadow:0 5px 0 var(--c);display:flex;flex-direction:column;align-items:center;gap:6px;min-width:110px;font-size:1.5rem}
+.cup svg{width:70px;height:90px}
+.cup.right{border-color:var(--good);box-shadow:0 5px 0 var(--good);background:#E9F8EC}
+.cup.wrong{border-color:var(--bad);box-shadow:0 5px 0 var(--bad);opacity:.6}
+.cup .ord{font-size:1rem;font-weight:700;color:var(--good);min-height:1.2em}
+.pour{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.jug svg{width:150px;height:auto}
+.pctrl{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.scoop{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.scoop button{border:3px solid var(--c);background:var(--card);border-radius:14px;padding:6px 14px;font-weight:700;font-size:1.15rem;box-shadow:0 4px 0 var(--c)}
+.scoop button:active{transform:translateY(2px);box-shadow:0 2px 0 var(--c)}
+.order{font-size:clamp(1.1rem,3.2vw,1.5rem);font-weight:700;line-height:1.6}
+.mixed{display:inline-flex;align-items:center;gap:.12em;font-weight:700}
+.mixed .w{font-size:1.2em}
+@media (max-width:520px){.pour{grid-template-columns:1fr;justify-items:center}}
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, gcd, frac} = KIT;
+const N = 8;
+const lcm = (a,b) => a*b/gcd(a,b);
+function fv(n, d){ // simplified html: whole, fraction, or mixed number
+  const g = gcd(n,d); n/=g; d/=g;
+  if (d === 1) return `<span class="mixed"><span class="w">${n}</span></span>`;
+  if (n > d) return `<span class="mixed"><span class="w">${Math.floor(n/d)}</span>${frac(n%d,d)}</span>`;
+  return frac(n,d);
+}
+const key = (n,d) => { const g = gcd(n,d); return n/g + "/" + d/g; };
+function cupSVG(n, d, col="#F2A65A"){
+  const lvl = Math.min(1, n/d), h = 70*lvl;
+  return `<svg viewBox="0 0 70 90" aria-hidden="true"><path d="M8 8 L14 84 H56 L62 8 Z" fill="#FFF8EF" stroke="#5A4335" stroke-width="3"/>
+    <clipPath id="c${n}_${d}"><path d="M8 8 L14 84 H56 L62 8 Z"/></clipPath>
+    <rect x="0" y="${84-h}" width="70" height="${h}" fill="${col}" opacity=".8" clip-path="url(#c${n}_${d})"/></svg>`;
+}
+const FRUITS = [["🍊","น้ำส้ม","#F2A65A"],["🥭","น้ำมะม่วง","#F6CD6B"],["🍓","น้ำสตรอว์เบอร์รี","#F2A7B8"],["🥛","นมสด","#E9E2D6"],["🍉","น้ำแตงโม","#F08A8A"],["🍇","น้ำองุ่น","#B7A4EE"]];
+
+/* proper fraction with denominator in list, avoiding duplicates by value */
+function fracs(count, dens=[2,3,4,5,6,8,10,12]){
+  const out = [], seen = new Set(); let g = 0;
+  while (out.length < count && g++ < 300){ const d = pick(dens), n = rand(1, d-1), k = key(n,d); if (!seen.has(k)){ seen.add(k); out.push([n,d]); } }
+  return out;
+}
+
+KIT.mount({
+  key:"p5-juice", title:"ร้านน้ำปั่นผสมสูตร", subtitle:"คณิตศาสตร์ ป.5 · บทที่ 1 เศษส่วน",
+  heroHTML:"ผสม<em>น้ำปั่น</em>ให้ได้ตามสูตร 🥤", heroDesc:"เปรียบเทียบเศษส่วน เทน้ำผลไม้ให้ได้ปริมาณพอดี และคำนวณสูตรสำหรับหลายแก้ว",
+  progIcon:"🥤",
+  howto:["ระดับง่าย: เลือกแก้วที่มีน้ำมากหรือน้อยที่สุด หรือแตะแก้วเรียงจากน้อยไปมาก","ระดับกลาง: กดตักทีละช้อนตวงให้น้ำในเหยือกได้ปริมาณพอดีตามออเดอร์ แล้วกดเสิร์ฟ","ระดับยาก: คำนวณการคูณและการหารเศษส่วน แล้วแตะคำตอบ","ตอบผิดเสีย 10 คะแนน ลองใหม่ได้"],
+  levels:{
+    1:{pill:"8 ออเดอร์", color:"var(--green)", desc:"เปรียบเทียบและเรียงลำดับเศษส่วน จำนวนคละ"},
+    2:{pill:"8 ออเดอร์", color:"var(--blue)", desc:"บวก ลบ เศษส่วนที่ตัวส่วนไม่เท่ากัน และจำนวนคละ"},
+    3:{pill:"8 ออเดอร์", color:"var(--purple)", desc:"คูณ หาร เศษส่วน และโจทย์ปัญหา"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ออเดอร์ที่ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===1 ? 120 : level===2 ? 200 : 180}); return; }
+      if (level === 1) return [pickCup, orderCups, compareMixed][idx % 3]();
+      if (level === 2) return pour();
+      return calc();
+    }
+    function pickCup(){
+      const fs = fracs(rand(3,4)), most = Math.random() < .5;
+      const vals = fs.map(([n,d]) => n/d), target = most ? Math.max(...vals) : Math.min(...vals);
+      const fr = shuffle(FRUITS.slice());
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl()}</div><div class="qtext">ลูกค้าอยากได้แก้วที่มีน้ำ<b>${most?"มากที่สุด":"น้อยที่สุด"}</b> (หน่วยเป็นถ้วย)</div></div>
+        <div class="cups">${fs.map(([n,d],i) => `<button class="cup" type="button" data-i="${i}">${cupSVG(n,d,fr[i][2])}<span>${frac(n,d)}</span></button>`).join("")}</div>`;
+      let first = true;
+      ctx.stage.querySelector(".cups").onclick = e => {
+        const b = e.target.closest(".cup"); if (!b || b.disabled) return;
+        const i = +b.dataset.i;
+        if (vals[i] === target){ b.classList.add("right"); ctx.stage.querySelectorAll(".cup").forEach(x=>x.disabled=true); ctx.correct(first?100:50); ctx.after(800, done); }
+        else { first = false; b.classList.add("wrong"); b.disabled = true; ctx.wrong("ลองทำตัวส่วนให้เท่ากันแล้วเปรียบเทียบตัวเศษ"); }
+      };
+    }
+    function orderCups(){
+      const fs = fracs(4);
+      const sorted = fs.map((f,i)=>[f[0]/f[1], i]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+      let step = 0, first = true;
+      const fr = shuffle(FRUITS.slice());
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl()}</div><div class="qtext">แตะแก้วเรียงจาก<b>น้อยไปมาก</b></div></div>
+        <div class="cups">${fs.map(([n,d],i) => `<button class="cup" type="button" data-i="${i}"><span class="ord"></span>${cupSVG(n,d,fr[i][2]).replace(/<rect[^>]*>/,"")}<span>${frac(n,d)}</span></button>`).join("")}</div>`;
+      ctx.stage.querySelector(".cups").onclick = e => {
+        const b = e.target.closest(".cup"); if (!b || b.disabled) return;
+        const i = +b.dataset.i;
+        if (i === sorted[step]){ step++; b.disabled = true; b.classList.add("right"); b.querySelector(".ord").textContent = "ลำดับ " + step; KIT.sfx.tap();
+          if (step === 4){ ctx.correct(first?100:50, "เรียงถูกต้องทั้งหมด!"); ctx.after(900, done); } }
+        else { first = false; b.classList.add("shake"); ctx.after(400, () => b.classList.remove("shake")); ctx.wrong("ยังไม่ใช่แก้วที่น้อยที่สุดในที่เหลือ"); }
+      };
+    }
+    function compareMixed(){
+      const w = rand(1,3), [a,b] = fracs(2, [3,4,5,6,8]);
+      const w2 = Math.random() < .25 ? w + pick([-1,1]) || w+1 : w;
+      const x = w + a[0]/a[1], y = w2 + b[0]/b[1];
+      const sym = x > y ? ">" : x < y ? "<" : "=";
+      KIT.mcq(ctx, ctx.stage, {label:lbl(), html:`ใส่เครื่องหมายใน ◯<br><span class="mixed"><span class="w">${w}</span>${frac(a[0],a[1])}</span> ◯ <span class="mixed"><span class="w">${w2}</span>${frac(b[0],b[1])}</span>`, options:[">","<","="], answer:[">","<","="].indexOf(sym), cols:3, onNext:done});
+    }
+    function pour(){
+      // target = a/b ± c/d, may include a whole part
+      let A, B, op, tn, td, L;
+      for (let g = 0; g < 500; g++){
+        const d1 = pick([2,3,4,6]), d2 = pick([2,3,4,6,8,12].filter(x => x !== d1));
+        const LL = lcm(d1, d2); if (LL > 12) continue;
+        const n1 = rand(1, d1-1) + (Math.random() < .35 ? d1 : 0), n2 = rand(1, d2-1);
+        const o = Math.random() < .55 ? "+" : "−";
+        const t = o === "+" ? n1*(LL/d1) + n2*(LL/d2) : n1*(LL/d1) - n2*(LL/d2);
+        if (t <= 0 || t > 2*LL) continue;
+        A = [n1, d1]; B = [n2, d2]; op = o; tn = t; td = LL; L = LL; break;
+      }
+      const [f1, f2] = shuffle(FRUITS.slice()).slice(0,2);
+      const story = op === "+" ? `ผสม${f1[1]} ${fv(...A)} ถ้วย กับ${f2[1]} ${fv(...B)} ถ้วย` : `มี${f1[1]} ${fv(...A)} ถ้วย ใช้ไปทำขนม ${fv(...B)} ถ้วย <br>เทส่วนที่<b>เหลือ</b>ลงเหยือก`;
+      let cnt = 0, first = true, lock = false;
+      const H = 220, top = 20, per = (H - top) / (2*L);
+      let marks = "";
+      for (let i=1;i<=2*L;i++){ const y = H - i*per; marks += `<line x1="${i%L===0?10:40}" y1="${y}" x2="56" y2="${y}" stroke="#5A4335" stroke-width="${i%L===0?3:1.5}"/>`; if (i % L === 0) marks += `<text x="62" y="${y+6}" font-size="16" font-weight="700" fill="#4A3A30" font-family="Mali">${i/L} ถ้วย</text>`; }
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl()} · เทให้ได้ปริมาณพอดี</div><div class="order">${story}</div></div>
+        <div class="pour"><div class="jug"><svg viewBox="0 0 140 ${H+10}" role="img" aria-label="เหยือกตวง"><rect x="10" y="${top}" width="46" height="${H-top}" rx="6" fill="#fff" stroke="#5A4335" stroke-width="3"/>
+          <rect id="fill" x="12" y="${H}" width="42" height="0" fill="${f1[2]}" opacity=".85"/>${marks}</svg></div>
+          <div class="pctrl"><div style="font-weight:700">ช้อนตวงขนาด ${frac(1,L)} ถ้วย</div>
+            <div class="scoop"><button type="button" id="minus" aria-label="เทออก 1 ช้อน">− ${frac(1,L)}</button><button type="button" id="plus" aria-label="ตักเพิ่ม 1 ช้อน">+ ${frac(1,L)}</button></div>
+            <div id="now" style="color:var(--ink-soft);font-weight:600">ในเหยือก: 0 ช้อน</div>
+            <button class="btn" type="button" id="serve">เสิร์ฟ</button></div></div>`;
+      const fill = ctx.stage.querySelector("#fill");
+      const draw = () => { const h = cnt*per; fill.setAttribute("y", H - h); fill.setAttribute("height", h); ctx.stage.querySelector("#now").textContent = `ในเหยือก: ${cnt} ช้อน`; };
+      ctx.stage.querySelector("#plus").onclick = () => { if (!lock && cnt < 2*L){ cnt++; KIT.sfx.tap(); draw(); } };
+      ctx.stage.querySelector("#minus").onclick = () => { if (!lock && cnt > 0){ cnt--; KIT.sfx.tap(); draw(); } };
+      ctx.stage.querySelector("#serve").onclick = () => {
+        if (lock) return;
+        if (cnt === tn){ lock = true; ctx.correct(first?100:50, `พอดีเป๊ะ! ${tn} ช้อน`);
+          ctx.stage.querySelector("#now").innerHTML = `ได้ ${frac(tn,L)} = ${fv(tn,L)} ถ้วย`; ctx.after(1300, done); }
+        else { first = false; ctx.wrong(cnt < tn ? "ยังน้อยไป ลูกค้าอยากได้มากกว่านี้" : "มากเกินไปแล้ว ลองเทออกบ้าง"); }
+      };
+    }
+    function calc(){
+      const t = idx % 4;
+      let html, an, ad, wr;
+      if (t === 0){ const d = pick([3,4,5,6,8]), n = rand(1,d-1), k = rand(2,6);
+        html = `สูตรน้ำปั่น 1 แก้ว ใช้นม ${frac(n,d)} ถ้วย ทำ ${k} แก้ว ต้องใช้นมกี่ถ้วย`; an = n*k; ad = d; wr = [[n+k,d],[n*k,d*k],[n,d*k],[n*k+1,d]]; }
+      else if (t === 1){ const d1 = pick([2,3,4]), n1 = rand(1,d1-1), d2 = pick([3,4,5,6]), n2 = rand(1,d2-1);
+        html = `ใช้น้ำผึ้ง ${frac(n1,d1)} ของ ${frac(n2,d2)} ถ้วย คิดเป็นน้ำผึ้งกี่ถ้วย`; an = n1*n2; ad = d1*d2; wr = [[n1+n2,d1+d2],[n1*d2,d1*n2],[n1*n2,d1+d2],[n1+n2,d1*d2]]; }
+      else if (t === 2){ const d = pick([2,3,4,5]), n = rand(1,d-1), cups = n * rand(2,6);
+        html = `มีน้ำแตงโม ${cups} ถ้วย เทแก้วละ ${frac(n,d)} ถ้วย ได้กี่แก้ว`; an = cups*d/n; ad = 1; wr = [[cups*n,d],[cups,1],[an+1,1],[an-1,1],[cups*d,1]]; }
+      else { const d = pick([2,3,4,5,6]), n = rand(1,d-1), k = rand(2,5);
+        html = `แบ่งนมสด ${frac(n,d)} ถ้วย ใส่แก้ว ${k} ใบเท่า ๆ กัน แต่ละใบได้กี่ถ้วย`; an = n; ad = d*k; wr = [[n*k,d],[n,d+k],[n+k,d*k],[1,k]]; }
+      const ak = key(an,ad), seen = new Set([ak]); const opts = [[an,ad]];
+      for (const [x,y] of shuffle(wr)) { if (x>0 && y>0 && !seen.has(key(x,y)) && opts.length < 4){ seen.add(key(x,y)); opts.push([x,y]); } }
+      while (opts.length < 4){ const x = an + opts.length, k = key(x,ad); if (!seen.has(k)){ seen.add(k); opts.push([x,ad]); } }
+      const list = shuffle(opts);
+      KIT.mcq(ctx, ctx.stage, {label:lbl(), html, options:list.map(([x,y]) => fv(x,y) + " " + (t===2 ? "แก้ว" : "ถ้วย")), answer:list.findIndex(([x,y]) => key(x,y) === ak), onNext:done});
+    }
+    ctx.progress(0, N); ctx.say("ลูกค้าคนแรกมาแล้ว!");
+    next();
+  }
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>พิซซ่าคู่แฝด</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* KruAu classroom world: cream paper with dot grid, pastel chips, chunky rounded cards. One theme by choice. */
+  --paper:#FDF4EA;
+  --card:#FFFFFF;
+  --ink:#4A3A30;
+  --ink-soft:#8A7466;
+  --orange:#F2A65A;
+  --orange-deep:#E08A3C;
+  --pink:#F2A7B8;
+  --green:#7FD39A;
+  --blue:#86B6F0;
+  --purple:#B7A4EE;
+  --line:#F1DFC9;
+  --cheese:#F8C565;
+  --crust:#D88A3A;
+  --pepperoni:#D9534F;
+  --dough:#FFF5E6;
+  --font:"Mali","Sarabun","Leelawadee UI","Thonburi",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  font-family:var(--font);color:var(--ink);
+  background-color:var(--paper);
+  background-image:radial-gradient(#EBD9C4 1.2px,transparent 1.3px);
+  background-size:22px 22px;
+  -webkit-tap-highlight-color:transparent;
+}
+button,input{font-family:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--orange-deep);outline-offset:3px}
+h1,h2,h3{text-wrap:balance;margin:0}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:2px dashed var(--line);background:rgba(253,244,234,.92);position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand svg{width:46px;height:46px;flex:none}
+.brand-name{font-weight:700;font-size:1.35rem;color:var(--orange-deep);line-height:1.1}
+.brand-sub{font-size:.85rem;color:var(--ink-soft)}
+.sound-btn{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font-weight:600;font-size:.95rem;box-shadow:0 3px 0 var(--line)}
+
+.wrap{max-width:980px;margin:0 auto;padding:18px 16px 40px;display:flex;flex-direction:column;gap:18px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:linear-gradient(110deg,#F9D9C6 0%,#F6D0DD 55%,#E3D8F6 100%);border-radius:28px;padding:22px;box-shadow:0 6px 0 rgba(224,138,60,.15)}
+.hero-cat{width:130px;height:130px}
+.bubble{display:inline-block;background:var(--card);border-radius:18px;padding:8px 14px;font-weight:600;font-size:.98rem;box-shadow:0 3px 0 rgba(0,0,0,.05);position:relative;margin-bottom:8px}
+.bubble::before{content:"";position:absolute;left:-8px;top:14px;border:8px solid transparent;border-right-color:var(--card);border-left:0}
+.hero h1{font-size:clamp(1.6rem,4.2vw,2.4rem);line-height:1.25}
+.hero h1 span{color:#E8708F}
+.hero p{margin:6px 0 0;color:var(--ink-soft)}
+.name-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.name-row input{flex:1 1 220px;min-width:0;border:3px solid #fff;background:var(--card);border-radius:999px;padding:12px 18px;font-size:1.1rem;font-weight:600}
+.name-row input::placeholder{color:#C2AFA2;font-weight:400}
+.name-err{color:#C0392B;font-weight:600;font-size:.95rem;min-height:1.3em;margin-top:6px}
+
+.section-title{display:flex;align-items:center;gap:8px;font-size:1.3rem;font-weight:700}
+
+/* level picker */
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.level{border:3px solid var(--c);background:var(--card);border-radius:22px;padding:14px 16px;text-align:left;box-shadow:0 5px 0 var(--c);display:flex;flex-direction:column;gap:6px;transition:transform .12s}
+.level:hover{transform:translateY(-2px)}
+.level:active{transform:translateY(3px);box-shadow:0 2px 0 var(--c)}
+.level .lv-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.level .lv-name{font-weight:700;font-size:1.25rem}
+.level .lv-pill{background:var(--c);color:#fff;border-radius:999px;padding:2px 10px;font-size:.85rem;font-weight:700;white-space:nowrap}
+.level .lv-desc{font-size:.95rem;color:var(--ink-soft);line-height:1.4}
+.level .lv-best{font-size:.9rem;font-weight:600}
+
+.two-col{display:grid;grid-template-columns:1fr 1.1fr;gap:18px;align-items:start}
+.panel{background:var(--card);border-radius:22px;padding:16px 18px;border:2px dashed var(--line)}
+.howto ol{margin:10px 0 0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px;line-height:1.5}
+.demo-pair{display:flex;align-items:center;gap:10px;margin-top:12px;font-weight:700;color:var(--ink-soft)}
+.demo-pair .mini{width:70px;height:70px;border-radius:14px;background:var(--dough);display:grid;place-items:center;border:2px solid var(--line);font-size:1.5rem;color:var(--ink)}
+.demo-pair .mini svg{width:58px;height:58px}
+
+/* leaderboard */
+.lb-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.tabs{display:flex;gap:6px}
+.tab{border:2px solid var(--line);background:var(--paper);border-radius:999px;padding:4px 12px;font-weight:700;font-size:.9rem}
+.tab[aria-selected="true"]{background:var(--orange);border-color:var(--orange);color:#fff}
+.lb{width:100%;border-collapse:collapse;margin-top:10px;font-variant-numeric:tabular-nums}
+.lb th{font-size:.85rem;color:var(--ink-soft);font-weight:600;text-align:left;padding:4px 6px;border-bottom:2px solid var(--line)}
+.lb td{padding:7px 6px;border-bottom:1px dashed var(--line);font-weight:600}
+.lb td.num,.lb th.num{text-align:right}
+.lb tr.me td{background:#FFF1DD}
+.medal{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;font-size:.85rem;font-weight:700;background:var(--paper)}
+.medal.m1{background:#FBD46D}.medal.m2{background:#E2E2EA}.medal.m3{background:#F1C09A}
+.lb-empty{color:var(--ink-soft);text-align:center;padding:18px 6px}
+.lb-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;font-size:.85rem;color:var(--ink-soft);flex-wrap:wrap}
+.link-btn{border:none;background:none;color:var(--ink-soft);text-decoration:underline;font-size:.85rem;padding:4px}
+
+/* game */
+.hud{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.hud-left,.hud-right{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chip{background:var(--card);border:2px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700;font-variant-numeric:tabular-nums;box-shadow:0 3px 0 var(--line);white-space:nowrap}
+.chip.player{border-color:var(--pink)}
+.chip.lv{background:var(--c);border-color:var(--c);color:#fff}
+.back-btn{background:var(--orange);color:#fff;border:none;border-radius:999px;padding:8px 16px;font-weight:700;box-shadow:0 3px 0 var(--orange-deep)}
+.combo{color:#E8708F;font-weight:700;min-height:1.4em;text-align:center;font-size:1.05rem}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:760px;width:100%;margin:0 auto;perspective:1000px}
+.board.cols3{max-width:600px}
+.card{position:relative;aspect-ratio:1/1.05;border:none;background:none;padding:0;border-radius:18px}
+.card .inner{position:absolute;inset:0;transition:transform .45s cubic-bezier(.3,1.4,.5,1);transform-style:preserve-3d}
+.card.up .inner,.card.done .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:grid;place-items:center;padding:8px;overflow:hidden}
+.face.back{background:var(--c, var(--orange));box-shadow:0 5px 0 rgba(0,0,0,.12);background-image:radial-gradient(rgba(255,255,255,.35) 2px,transparent 2.5px);background-size:16px 16px}
+.face.back svg{width:52%;height:52%}
+.face.front{transform:rotateY(180deg);background:var(--card);border:3px solid var(--line);box-shadow:0 5px 0 var(--line)}
+.card.done .face.front{border-color:var(--green);box-shadow:0 5px 0 #5BB878;background:#F2FCF4}
+.card.bad .face.front{border-color:#F08A8A;animation:shake .4s}
+.card.done{animation:pop .45s}
+.card:disabled{cursor:default}
+.face.front .pz{display:flex;gap:4px;align-items:center;justify-content:center;width:100%;height:100%}
+.face.front .pz svg{width:86%;height:86%;max-width:150px}
+.face.front .pz.multi svg{width:48%;height:auto}
+.val{font-size:clamp(1.5rem,4.6vw,2.4rem)}
+.val.small{font-size:clamp(1rem,2.9vw,1.45rem);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.25em}
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;vertical-align:middle;font-weight:700}
+.frac .n{border-bottom:.12em solid currentColor;padding:0 .18em .06em}
+.frac .d{padding:.06em .18em 0}
+.mixed{display:inline-flex;align-items:center;gap:.12em;font-weight:700}
+.mixed .w{font-size:1.25em}
+.op{font-weight:700;color:var(--orange-deep)}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(74,58,48,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}
+.modal.open{display:flex}
+.sheet{background:var(--card);border-radius:28px;padding:22px;max-width:440px;width:100%;text-align:center;box-shadow:0 8px 0 rgba(0,0,0,.12);display:flex;flex-direction:column;gap:10px;align-items:center}
+.sheet h2{font-size:1.6rem}
+.stars{font-size:2.4rem;letter-spacing:.1em}
+.stars .off{filter:grayscale(1);opacity:.35}
+.breakdown{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.breakdown td{padding:5px 4px;border-bottom:1px dashed var(--line);text-align:left}
+.breakdown td:last-child{text-align:right;font-weight:700}
+.breakdown tr.total td{font-size:1.2rem;border-bottom:none;color:var(--orange-deep)}
+.rank{background:#FFF1DD;border-radius:14px;padding:8px 12px;font-weight:700;width:100%}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%}
+.btn{border:none;border-radius:999px;padding:11px 18px;font-weight:700;font-size:1rem;background:var(--c,var(--orange));color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.15);flex:1 1 120px}
+.btn.ghost{background:var(--paper);color:var(--ink);box-shadow:0 4px 0 var(--line)}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.sheet .cat-mini{width:90px;height:90px}
+
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:30;overflow:hidden}
+.confetti i{position:absolute;top:-20px;width:10px;height:14px;border-radius:3px;animation:fall linear forwards}
+
+@keyframes shake{0%,100%{transform:rotateY(180deg) translateX(0)}25%{transform:rotateY(180deg) translateX(-6px)}75%{transform:rotateY(180deg) translateX(6px)}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.07)}100%{transform:scale(1)}}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+.hidden{display:none !important}
+
+@media (max-width:760px){
+  .two-col{grid-template-columns:1fr}
+  .levels{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .hero{grid-template-columns:1fr;text-align:left}
+  .hero-cat{width:90px;height:90px}
+  .board{gap:8px}
+  .board.cols3{grid-template-columns:repeat(3,1fr)}
+  .brand-sub{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .card .inner{transition:none}
+  .card.done,.card.bad .face.front{animation:none}
+  .confetti{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#cat"/></svg>
+    <div>
+      <div class="brand-name">พิซซ่าคู่แฝด</div>
+      <div class="brand-sub">คณิตศาสตร์ ป.4 · บทที่ 6 เศษส่วน</div>
+    </div>
+  </div>
+  <button class="sound-btn" id="soundBtn" type="button" aria-pressed="true">🔊 เสียงเปิด</button>
+</header>
+
+<!-- START SCREEN -->
+<main class="wrap" id="startScreen">
+  <section class="hero">
+    <svg class="hero-cat" viewBox="0 0 100 100" aria-hidden="true"><use href="#chefcat"/></svg>
+    <div>
+      <div class="bubble" id="greet">ใส่ชื่อแล้วเลือกด่านได้เลยจ้า~</div>
+      <h1>เปิดการ์ด หา<span>คู่แฝด</span>เศษส่วน 🍕</h1>
+      <p>หาการ์ด 2 ใบที่มีค่าเท่ากัน ยิ่งเร็วและผิดน้อย ยิ่งได้คะแนนสูง</p>
+      <div class="name-row">
+        <label for="nameInput" class="hidden">ชื่อนักเรียน</label>
+        <input id="nameInput" type="text" maxlength="20" autocomplete="off" placeholder="พิมพ์ชื่อเล่นหรือชื่อ-เลขที่ เช่น มะปราง 12">
+      </div>
+      <div class="name-err" id="nameErr" role="alert"></div>
+    </div>
+  </section>
+
+  <h2 class="section-title">🎯 เลือกด่าน</h2>
+  <div class="levels" id="levels"></div>
+
+  <div class="two-col">
+    <section class="panel howto">
+      <h3 class="section-title">📖 วิธีเล่น</h3>
+      <ol>
+        <li>แตะการ์ดทีละ 2 ใบเพื่อเปิดดู</li>
+        <li>ถ้า 2 ใบมีค่าเท่ากัน การ์ดจะค้างไว้และได้คะแนน</li>
+        <li>จับคู่ถูกติดกันได้โบนัสคอมโบ เปิดผิดเสีย 10 คะแนน</li>
+        <li>จับคู่ครบเร็วได้โบนัสเวลาเพิ่ม</li>
+      </ol>
+      <div class="demo-pair" aria-label="ตัวอย่าง: ภาพพิซซ่า 3 ใน 4 ชิ้น คู่กับ เศษ 3 ส่วน 4">
+        <span class="mini" id="demoPizza"></span>
+        <span>=</span>
+        <span class="mini"><span class="frac"><span class="n">3</span><span class="d">4</span></span></span>
+        <span>คู่แฝดกัน!</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="lb-head">
+        <h3 class="section-title">🏆 ตารางคะแนน</h3>
+        <div class="tabs" role="tablist" id="lbTabs"></div>
+      </div>
+      <table class="lb" aria-live="polite">
+        <thead><tr><th>อันดับ</th><th>ชื่อ</th><th class="num">เวลา</th><th class="num">คะแนน</th></tr></thead>
+        <tbody id="lbBody"></tbody>
+      </table>
+      <div class="lb-foot">
+        <span>เก็บคะแนนสูงสุดของแต่ละคนในเครื่องนี้</span>
+        <button class="link-btn" id="clearBtn" type="button">ล้างตารางด่านนี้</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- GAME SCREEN -->
+<main class="wrap hidden" id="gameScreen">
+  <div class="hud">
+    <div class="hud-left">
+      <button class="back-btn" id="quitBtn" type="button">← ออก</button>
+      <span class="chip player" id="hudName"></span>
+      <span class="chip lv" id="hudLevel"></span>
+    </div>
+    <div class="hud-right">
+      <span class="chip" id="hudTime">⏱ 0:00</span>
+      <span class="chip" id="hudPairs">🍕 0/0</span>
+      <span class="chip" id="hudScore">⭐ 0</span>
+    </div>
+  </div>
+  <div class="combo" id="combo" aria-live="polite"></div>
+  <div class="board" id="board"></div>
+</main>
+
+<!-- RESULT -->
+<div class="modal" id="resultModal" role="dialog" aria-modal="true" aria-labelledby="resTitle">
+  <div class="sheet">
+    <svg class="cat-mini" viewBox="0 0 100 100" aria-hidden="true"><use href="#chefcat"/></svg>
+    <h2 id="resTitle">เก่งมาก!</h2>
+    <div class="stars" id="resStars"></div>
+    <table class="breakdown"><tbody id="resBody"></tbody></table>
+    <div class="rank" id="resRank"></div>
+    <div class="btn-row">
+      <button class="btn" id="againBtn" type="button">เล่นอีกครั้ง</button>
+      <button class="btn" id="nextBtn" type="button" style="--c:var(--green)">ด่านถัดไป →</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn ghost" id="homeBtn" type="button">ดูตารางคะแนน / เปลี่ยนผู้เล่น</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM -->
+<div class="modal" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+  <div class="sheet">
+    <h2 id="cfTitle">ล้างตารางคะแนน?</h2>
+    <p id="cfText" style="margin:0;color:var(--ink-soft)"></p>
+    <div class="btn-row">
+      <button class="btn ghost" id="cfNo" type="button">ยกเลิก</button>
+      <button class="btn" id="cfYes" type="button" style="--c:#E57373">ล้างเลย</button>
+    </div>
+  </div>
+</div>
+
+<div class="confetti" id="confetti"></div>
+
+<!-- SVG symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="cat" viewBox="0 0 100 100">
+      <path d="M18 40 L22 10 L42 28 Z" fill="#F4B76E" stroke="#5A4335" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M82 40 L78 10 L58 28 Z" fill="#F4B76E" stroke="#5A4335" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M24 16 L27 30 L36 27 Z" fill="#F7B7C3"/>
+      <path d="M76 16 L73 30 L64 27 Z" fill="#F7B7C3"/>
+      <ellipse cx="50" cy="56" rx="38" ry="34" fill="#F6C27E" stroke="#5A4335" stroke-width="3"/>
+      <path d="M44 24 q2 8 0 12 M50 23 v13 M56 24 q-2 8 0 12" stroke="#E0964A" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <ellipse cx="50" cy="70" rx="15" ry="11" fill="#FFF3E3"/>
+      <path d="M34 54 q5 -6 10 0" stroke="#5A4335" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M56 54 q5 -6 10 0" stroke="#5A4335" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="30" cy="64" r="5" fill="#F7A9B5" opacity=".8"/>
+      <circle cx="70" cy="64" r="5" fill="#F7A9B5" opacity=".8"/>
+      <path d="M47 64 h6 l-3 3 z" fill="#E8708F"/>
+      <path d="M44 70 q3 4 6 0 q3 4 6 0" stroke="#5A4335" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="chefcat" viewBox="0 0 100 100">
+      <use href="#cat" x="0" y="8" width="100" height="92"/>
+      <path d="M30 30 q-10 -14 6 -18 q4 -12 14 -6 q10 -6 14 6 q16 4 6 18 z" fill="#fff" stroke="#5A4335" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="31" y="26" width="38" height="9" rx="3" fill="#fff" stroke="#5A4335" stroke-width="3"/>
+    </symbol>
+  </defs>
+</svg>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+const rand = (a,b) => a + Math.floor(Math.random()*(b-a+1));
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+const gcd = (a,b) => b ? gcd(b, a%b) : a;
+const key = (n,d) => { const g = gcd(n,d); return (n/g)+"/"+(d/g); };
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+const LEVELS = {
+  1:{name:"ด่าน 1 · ง่าย", pill:"6 คู่", color:"var(--green)", cols:4, pairs:6, desc:"ภาพพิซซ่า ↔ เศษส่วน", gen:genL1},
+  2:{name:"ด่าน 2 · กลาง", pill:"8 คู่", color:"var(--blue)", cols:4, pairs:8, desc:"เศษส่วนที่เท่ากัน · เศษเกิน ↔ จำนวนคละ", gen:genL2},
+  3:{name:"ด่าน 3 · ยาก", pill:"8 คู่", color:"var(--purple)", cols:4, pairs:8, desc:"บวก ลบ เศษส่วนตัวส่วนเท่ากัน ↔ คำตอบ", gen:genL3}
+};
+
+/* ---------- pizza drawing ---------- */
+function onePizza(k, d){
+  const cx=50, cy=50, r=42;
+  let s = '<svg viewBox="0 0 100 100" aria-hidden="true">';
+  s += `<circle cx="${cx}" cy="${cy}" r="${r+4}" fill="#F3E2CC"/>`;
+  if (d === 1){
+    s += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${k? 'var(--cheese)':'var(--dough)'}"/>`;
+    if (k) s += pep(cx+14,cy-10)+pep(cx-16,cy+6)+pep(cx+6,cy+18);
+  } else {
+    for (let j=0;j<d;j++){
+      const a0 = (-90 + j*360/d) * Math.PI/180, a1 = (-90 + (j+1)*360/d) * Math.PI/180;
+      const x0 = cx + r*Math.cos(a0), y0 = cy + r*Math.sin(a0), x1 = cx + r*Math.cos(a1), y1 = cy + r*Math.sin(a1);
+      const filled = j < k;
+      s += `<path d="M${cx},${cy} L${x0.toFixed(2)},${y0.toFixed(2)} A${r},${r} 0 0 1 ${x1.toFixed(2)},${y1.toFixed(2)} Z" fill="${filled?'var(--cheese)':'var(--dough)'}"/>`;
+      if (filled){
+        const am = (a0+a1)/2, rr = d>6 ? 27 : 24;
+        s += pep(cx + rr*Math.cos(am), cy + rr*Math.sin(am), d>6 ? 4.5 : 6);
+      }
+    }
+    for (let j=0;j<d;j++){
+      const a = (-90 + j*360/d) * Math.PI/180;
+      s += `<line x1="${cx}" y1="${cy}" x2="${(cx+r*Math.cos(a)).toFixed(2)}" y2="${(cy+r*Math.sin(a)).toFixed(2)}" stroke="#B9732F" stroke-width="2"/>`;
+    }
+  }
+  s += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--crust)" stroke-width="5"/>`;
+  return s + '</svg>';
+}
+function pep(x,y,r=6){ return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="var(--pepperoni)"/><circle cx="${(x-r/3).toFixed(1)}" cy="${(y-r/3).toFixed(1)}" r="${(r/3).toFixed(1)}" fill="#E98682"/>`; }
+function pizzas(n, d){
+  const count = Math.max(1, Math.ceil(n/d));
+  let s = `<div class="pz${count>1?' multi':''}">`;
+  for (let i=0;i<count;i++) s += onePizza(Math.min(d, n - i*d), d);
+  return s + '</div>';
+}
+
+/* ---------- number rendering ---------- */
+const frac = (n,d) => `<span class="frac"><span class="n">${n}</span><span class="d">${d}</span></span>`;
+const mixed = (w,n,d) => `<span class="mixed"><span class="w">${w}</span>${frac(n,d)}</span>`;
+function face(f){
+  switch(f.t){
+    case "pizza": return pizzas(f.n, f.d);
+    case "frac":  return `<span class="val">${frac(f.n,f.d)}</span>`;
+    case "mixed": return `<span class="val">${mixed(f.w,f.n,f.d)}</span>`;
+    case "expr":  return `<span class="val small">${f.html}</span>`;
+  }
+}
+function label(f){
+  const fr = (n,d) => `${n} ส่วน ${d}`;
+  switch(f.t){
+    case "pizza": return `ภาพพิซซ่า ${fr(f.n,f.d)}`;
+    case "frac": return `เศษ ${fr(f.n,f.d)}`;
+    case "mixed": return `${f.w} กับ เศษ ${fr(f.n,f.d)}`;
+    case "expr": return f.say;
+  }
+}
+
+/* ---------- level generators (each pair has a unique value) ---------- */
+function genL1(){
+  const used = new Set(), out = [];
+  let guard = 0;
+  while (out.length < 6 && guard++ < 500){
+    const d = pick([2,3,4,5,6,8]), n = rand(1, d-1), k = key(n,d);
+    if (used.has(k)) continue;
+    used.add(k);
+    out.push([{t:"pizza",n,d},{t:"frac",n,d}]);
+  }
+  return out;
+}
+function genL2(){
+  const used = new Set(), out = [];
+  const tryAdd = (n,d,pair) => { const k = key(n,d); if (used.has(k)) return false; used.add(k); out.push(pair); return true; };
+  let g = 0;
+  // 2 pairs: fraction ↔ equivalent fraction (text)
+  for (let c=0; c<2 && g<500; g++){
+    const b = pick([2,3,4,5]), a = rand(1,b-1); if (gcd(a,b)!==1) continue;
+    const m = pick([2,3,4]); if (b*m > 15) continue;
+    if (tryAdd(a,b,[{t:"frac",n:a,d:b},{t:"frac",n:a*m,d:b*m}])) c++;
+  }
+  // 2 pairs: pizza ↔ simplest form
+  for (let c=0; c<2 && g<1000; g++){
+    const dd = pick([4,6,8]), nn = rand(1,dd-1); if (gcd(nn,dd)===1) continue;
+    const q = gcd(nn,dd);
+    if (tryAdd(nn,dd,[{t:"pizza",n:nn,d:dd},{t:"frac",n:nn/q,d:dd/q}])) c++;
+  }
+  // 2 pairs: improper ↔ mixed (text)
+  for (let c=0; c<2 && g<1500; g++){
+    const d = pick([3,4,5,6]), w = rand(1,2), r = rand(1,d-1);
+    if (tryAdd(w*d+r,d,[{t:"frac",n:w*d+r,d},{t:"mixed",w,n:r,d}])) c++;
+  }
+  // 2 pairs: pizzas ↔ improper fraction
+  for (let c=0; c<2 && g<2000; g++){
+    const d = pick([2,3,4,6]), r = rand(1,d-1);
+    if (tryAdd(d+r,d,[{t:"pizza",n:d+r,d},{t:"frac",n:d+r,d}])) c++;
+  }
+  return out;
+}
+function genL3(){
+  const used = new Set(), out = [];
+  const plan = shuffle(["add","add","add","sub","sub","whole","over","over"]);
+  let g = 0;
+  for (const kind of plan){
+    while (g++ < 3000){
+      let pair = null, n, d;
+      if (kind === "add"){
+        d = rand(5,12); const a = rand(1,d-2), b = rand(1,d-1-a); n = a+b;
+        pair = [{t:"expr",html:`${frac(a,d)}<span class="op">+</span>${frac(b,d)}`,say:`${a} ส่วน ${d} บวก ${b} ส่วน ${d}`},{t:"frac",n,d}];
+      } else if (kind === "sub"){
+        d = rand(5,12); const a = rand(2,d-1), b = rand(1,a-1); n = a-b;
+        pair = [{t:"expr",html:`${frac(a,d)}<span class="op">−</span>${frac(b,d)}`,say:`${a} ส่วน ${d} ลบ ${b} ส่วน ${d}`},{t:"frac",n,d}];
+      } else if (kind === "whole"){
+        d = rand(3,10); const a = rand(1,d-1); n = d-a;
+        pair = [{t:"expr",html:`<span class="val small" style="font-size:1.3em">1</span><span class="op">−</span>${frac(a,d)}`,say:`1 ลบ ${a} ส่วน ${d}`},{t:"frac",n,d}];
+      } else {
+        d = rand(3,8); const a = rand(1,d-1), b = rand(1,d-1); const s = a+b;
+        if (s <= d || s % d === 0) continue;
+        n = s;
+        pair = [{t:"expr",html:`${frac(a,d)}<span class="op">+</span>${frac(b,d)}`,say:`${a} ส่วน ${d} บวก ${b} ส่วน ${d}`},{t:"mixed",w:Math.floor(s/d),n:s%d,d}];
+      }
+      const k = key(n,d);
+      if (used.has(k)) continue;
+      used.add(k); out.push(pair); break;
+    }
+  }
+  return out;
+}
+
+/* ---------- leaderboard storage (this device) ---------- */
+const LB_KEY = "kruau-pizza-twins-lb-v1";
+let memLB = {1:[],2:[],3:[]};
+function loadLB(){
+  try { const raw = localStorage.getItem(LB_KEY); if (raw){ const o = JSON.parse(raw); if (o && o[1]) memLB = o; } } catch(e){}
+  return memLB;
+}
+function saveLB(){ try { localStorage.setItem(LB_KEY, JSON.stringify(memLB)); } catch(e){} }
+function sortLB(list){ return list.sort((a,b) => b.score - a.score || a.time - b.time); }
+function submitScore(level, entry){
+  const list = memLB[level] || (memLB[level] = []);
+  const nk = entry.name.trim().toLowerCase();
+  const i = list.findIndex(e => e.name.trim().toLowerCase() === nk);
+  let improved = true;
+  if (i >= 0){
+    const old = list[i];
+    if (old.score > entry.score || (old.score === entry.score && old.time <= entry.time)) improved = false;
+    else list[i] = entry;
+  } else list.push(entry);
+  sortLB(list);
+  if (list.length > 50) list.length = 50;
+  saveLB();
+  const rank = list.findIndex(e => e.name.trim().toLowerCase() === nk) + 1;
+  return {rank, improved, total:list.length, best:list[rank-1]};
+}
+const fmtTime = s => Math.floor(s/60) + ":" + String(s%60).padStart(2,"0");
+
+/* ---------- sound ---------- */
+let soundOn = true, ac = null;
+function tone(freq, dur=0.12, type="sine", when=0, vol=0.15){
+  if (!soundOn) return;
+  try {
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    const t = ac.currentTime + when, o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t+dur);
+    o.connect(g).connect(ac.destination); o.start(t); o.stop(t+dur+0.02);
+  } catch(e){}
+}
+const sfx = {
+  flip: () => tone(520, .07, "triangle"),
+  good: () => { tone(660,.1,"sine"); tone(880,.14,"sine",.09); },
+  bad:  () => tone(200,.18,"square",0,.06),
+  win:  () => [523,659,784,1047].forEach((f,i)=>tone(f,.18,"triangle",i*.12))
+};
+$("soundBtn").addEventListener("click", () => {
+  soundOn = !soundOn;
+  $("soundBtn").textContent = soundOn ? "🔊 เสียงเปิด" : "🔇 เสียงปิด";
+  $("soundBtn").setAttribute("aria-pressed", soundOn);
+});
+
+/* ---------- start screen ---------- */
+let currentTab = 1, lastPlayer = "";
+function renderLevels(){
+  const name = $("nameInput").value.trim().toLowerCase();
+  $("levels").innerHTML = Object.entries(LEVELS).map(([id,L]) => {
+    const mine = name && (memLB[id]||[]).find(e => e.name.trim().toLowerCase() === name);
+    return `<button class="level" type="button" data-level="${id}" style="--c:${L.color}">
+      <span class="lv-top"><span class="lv-name">${L.name}</span><span class="lv-pill">${L.pill}</span></span>
+      <span class="lv-desc">${L.desc}</span>
+      <span class="lv-best">${mine ? "สถิติของฉัน: "+mine.score+" คะแนน" : "ยังไม่เคยเล่น"}</span>
+    </button>`;
+  }).join("");
+}
+function renderTabs(){
+  $("lbTabs").innerHTML = [1,2,3].map(i => `<button class="tab" role="tab" type="button" data-tab="${i}" aria-selected="${i===currentTab}">ด่าน ${i}</button>`).join("");
+}
+function renderLB(highlight){
+  const list = memLB[currentTab] || [];
+  if (!list.length){
+    $("lbBody").innerHTML = `<tr><td colspan="4" class="lb-empty">ยังไม่มีใครเล่นด่าน ${currentTab} เป็นคนแรกเลย!</td></tr>`;
+    return;
+  }
+  const hl = (highlight||"").trim().toLowerCase();
+  $("lbBody").innerHTML = list.slice(0,10).map((e,i) => `
+    <tr class="${e.name.trim().toLowerCase()===hl?'me':''}">
+      <td><span class="medal ${i<3?'m'+(i+1):''}">${i+1}</span></td>
+      <td>${esc(e.name)}</td>
+      <td class="num">${fmtTime(e.time)}</td>
+      <td class="num">${e.score}</td>
+    </tr>`).join("");
+}
+$("lbTabs").addEventListener("click", e => {
+  const b = e.target.closest("[data-tab]"); if (!b) return;
+  currentTab = +b.dataset.tab; renderTabs(); renderLB(lastPlayer);
+});
+$("nameInput").addEventListener("input", () => { $("nameErr").textContent = ""; renderLevels(); });
+$("levels").addEventListener("click", e => {
+  const b = e.target.closest("[data-level]"); if (!b) return;
+  const name = $("nameInput").value.trim();
+  if (!name){
+    $("nameErr").textContent = "พิมพ์ชื่อก่อนนะ จะได้ขึ้นตารางคะแนน";
+    $("nameInput").focus(); return;
+  }
+  lastPlayer = name;
+  startGame(+b.dataset.level);
+});
+$("clearBtn").addEventListener("click", () => {
+  $("cfText").textContent = `คะแนนทั้งหมดของด่าน ${currentTab} ในเครื่องนี้จะถูกลบ`;
+  $("confirmModal").classList.add("open"); $("cfNo").focus();
+});
+$("cfNo").addEventListener("click", () => $("confirmModal").classList.remove("open"));
+$("cfYes").addEventListener("click", () => {
+  memLB[currentTab] = []; saveLB(); renderLB(); renderLevels();
+  $("confirmModal").classList.remove("open");
+});
+
+/* ---------- game ---------- */
+let G = null, timerId = null;
+function startGame(level){
+  const L = LEVELS[level];
+  const pairs = L.gen();
+  const deck = [];
+  pairs.forEach((p,i) => p.forEach(f => deck.push({pair:i, f})));
+  shuffle(deck);
+  G = {level, L, deck, open:[], lock:false, matched:0, pairs:pairs.length, score:0, combo:0, mistakes:0, sec:0, started:false};
+  $("hudName").textContent = "🐱 " + lastPlayer;
+  $("hudLevel").textContent = L.name; $("hudLevel").style.setProperty("--c", L.color);
+  updateHud();
+  $("combo").textContent = "เปิดการ์ดใบแรกได้เลย!";
+  const board = $("board");
+  board.className = "board" + (L.pairs === 6 ? " cols3" : "");
+  board.style.setProperty("--c", L.color);
+  board.innerHTML = deck.map((c,i) => `
+    <button class="card" type="button" data-i="${i}" aria-label="การ์ดใบที่ ${i+1} คว่ำอยู่">
+      <span class="inner">
+        <span class="face back"><svg viewBox="0 0 100 100"><use href="#cat"/></svg></span>
+        <span class="face front">${face(c.f)}</span>
+      </span>
+    </button>`).join("");
+  $("startScreen").classList.add("hidden");
+  $("gameScreen").classList.remove("hidden");
+  window.scrollTo(0,0);
+  clearInterval(timerId);
+}
+function updateHud(){
+  $("hudTime").textContent = "⏱ " + fmtTime(G.sec);
+  $("hudPairs").textContent = `🍕 ${G.matched}/${G.pairs}`;
+  $("hudScore").textContent = "⭐ " + G.score;
+}
+$("board").addEventListener("click", e => {
+  const btn = e.target.closest(".card"); if (!btn || !G || G.lock) return;
+  const i = +btn.dataset.i;
+  if (btn.classList.contains("up") || btn.classList.contains("done")) return;
+  if (!G.started){ G.started = true; timerId = setInterval(() => { G.sec++; updateHud(); }, 1000); }
+  sfx.flip();
+  btn.classList.add("up");
+  btn.setAttribute("aria-label", label(G.deck[i].f));
+  G.open.push(i);
+  if (G.open.length < 2) return;
+  G.lock = true;
+  const [a,b] = G.open, ca = cardEl(a), cb = cardEl(b);
+  if (G.deck[a].pair === G.deck[b].pair){
+    setTimeout(() => {
+      G.combo++;
+      const gain = 100 + (G.combo-1)*25;
+      G.score += gain; G.matched++;
+      [ca,cb].forEach(c => { c.classList.remove("up"); c.classList.add("done"); c.disabled = true; });
+      $("combo").textContent = G.combo > 1 ? `คอมโบ x${G.combo}! +${gain}` : `ถูกต้อง! +${gain}`;
+      sfx.good(); G.open = []; G.lock = false; updateHud();
+      if (G.matched === G.pairs) finish();
+    }, 350);
+  } else {
+    setTimeout(() => {
+      [ca,cb].forEach(c => c.classList.add("bad"));
+      G.combo = 0; G.mistakes++; G.score = Math.max(0, G.score - 10);
+      $("combo").textContent = "ยังไม่ใช่คู่กัน ลองจำตำแหน่งไว้นะ";
+      sfx.bad(); updateHud();
+      setTimeout(() => {
+        [ca,cb].forEach((c,k) => { c.classList.remove("up","bad"); c.setAttribute("aria-label", `การ์ดใบที่ ${G.open[k]+1} คว่ำอยู่`); });
+        G.open = []; G.lock = false;
+      }, 750);
+    }, 450);
+  }
+});
+const cardEl = i => $("board").querySelector(`[data-i="${i}"]`);
+
+function finish(){
+  clearInterval(timerId);
+  const timeBonus = Math.max(0, G.pairs*8 - G.sec) * 10;
+  const base = G.score;
+  const total = base + timeBonus;
+  const stars = G.mistakes <= Math.floor(G.pairs/2) ? 3 : G.mistakes <= G.pairs ? 2 : 1;
+  const res = submitScore(G.level, {name:lastPlayer, score:total, time:G.sec, stars, at:Date.now()});
+  setTimeout(() => {
+    sfx.win(); confetti();
+    $("resTitle").textContent = stars === 3 ? `สุดยอด ${lastPlayer}!` : stars === 2 ? `เก่งมาก ${lastPlayer}!` : `ผ่านแล้ว ${lastPlayer}!`;
+    $("resStars").innerHTML = [1,2,3].map(s => `<span class="${s<=stars?'':'off'}">⭐</span>`).join("");
+    $("resStars").setAttribute("aria-label", `ได้ ${stars} ดาว`);
+    $("resBody").innerHTML = `
+      <tr><td>คะแนนจับคู่ (รวมคอมโบ)</td><td>${base}</td></tr>
+      <tr><td>โบนัสเวลา (${fmtTime(G.sec)})</td><td>+${timeBonus}</td></tr>
+      <tr><td>เปิดผิด</td><td>${G.mistakes} ครั้ง</td></tr>
+      <tr class="total"><td>คะแนนรวม</td><td>${total}</td></tr>`;
+    $("resRank").textContent = res.improved
+      ? `🏆 อันดับที่ ${res.rank} จาก ${res.total} คน ใน${G.L.name}`
+      : `สถิติเดิมของเธอดีกว่า (${res.best.score} คะแนน) ยังอยู่อันดับที่ ${res.rank}`;
+    $("nextBtn").classList.toggle("hidden", G.level >= 3);
+    $("resultModal").classList.add("open");
+    $("againBtn").focus();
+  }, 500);
+}
+$("againBtn").addEventListener("click", () => { $("resultModal").classList.remove("open"); startGame(G.level); });
+$("nextBtn").addEventListener("click", () => { $("resultModal").classList.remove("open"); startGame(Math.min(3, G.level+1)); });
+$("homeBtn").addEventListener("click", () => { $("resultModal").classList.remove("open"); goHome(G.level); });
+$("quitBtn").addEventListener("click", () => goHome(G ? G.level : 1));
+function goHome(level){
+  clearInterval(timerId);
+  $("gameScreen").classList.add("hidden");
+  $("startScreen").classList.remove("hidden");
+  currentTab = level; renderTabs(); renderLB(lastPlayer); renderLevels();
+  $("greet").textContent = lastPlayer ? `ให้เพื่อนคนต่อไปใส่ชื่อแล้วเล่นต่อได้เลย~` : "ใส่ชื่อแล้วเลือกด่านได้เลยจ้า~";
+  window.scrollTo(0,0);
+}
+
+function confetti(){
+  const box = $("confetti"), colors = ["#F2A65A","#F2A7B8","#7FD39A","#86B6F0","#B7A4EE","#F8C565"];
+  let html = "";
+  for (let i=0;i<60;i++){
+    html += `<i style="left:${Math.random()*100}%;background:${pick(colors)};animation-duration:${1.6+Math.random()*1.6}s;animation-delay:${Math.random()*.5}s;transform:rotate(${rand(0,180)}deg)"></i>`;
+  }
+  box.innerHTML = html;
+  setTimeout(() => box.innerHTML = "", 3800);
+}
+
+/* ---------- init ---------- */
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") $("confirmModal").classList.remove("open");
+  if (e.key === "Enter" && document.activeElement === $("nameInput")) { const b = $("levels").querySelector("[data-level='1']"); b && b.click(); }
+});
+$("demoPizza").innerHTML = onePizza(3,4);
+loadLB(); renderLevels(); renderTabs(); renderLB();
+})();
+</script>
+</body>
+</html>
