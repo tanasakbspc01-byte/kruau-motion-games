@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ไฟเขียว ไฟแดง ฐานสอง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.tl{display:flex;justify-content:center;gap:10px;margin:4px 0 0}
+.tl i{width:26px;height:26px;border-radius:50%;background:#ddd;display:block;transition:.2s}
+.tl i.r.on{background:#E57373;box-shadow:0 0 14px #E57373}.tl i.g.on{background:#3FCF7A;box-shadow:0 0 14px #3FCF7A}
+.card{width:100%;box-sizing:border-box;margin:12px auto 0;max-width:520px;background:#fff;border:3px solid var(--line);border-radius:22px;padding:18px;text-align:center;box-shadow:0 5px 0 var(--line)}
+.card .ic{font-size:clamp(2.8rem,11vw,4rem);line-height:1.1}
+.card .tx{font-weight:700;font-size:clamp(1.15rem,3.8vw,1.55rem);line-height:1.45;margin-top:6px}
+.tbar{height:12px;border-radius:999px;background:#EFE6DA;overflow:hidden;margin-top:12px}
+.tbar i{display:block;height:100%;width:100%;background:var(--c);transform-origin:left}
+.yn{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.yn button{border:none;border-radius:22px;padding:16px 8px;font-weight:700;font-size:clamp(1.2rem,4vw,1.6rem);color:#fff;box-shadow:0 6px 0 rgba(0,0,0,.18)}
+.yn .ok{background:#3FAE6A}.yn .no{background:#E06767}
+.yn button span{display:block;font-size:2.2rem;line-height:1}
+.yn button:active{transform:translateY(3px)}
+.yn button.hint{outline:5px solid #F6CD6B}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const N = 12;
+/* [icon, text, ok(1 = เหมาะสม ✓, 0 = ไม่เหมาะสม ✗), why, minLevel] */
+const BANK = [
+  ["🦓","เด็กชายเก่งเดินข้ามถนนตรงทางม้าลาย",1,"ปฏิบัติตามกฎจราจร ปลอดภัย",1],
+  ["🚰","เด็กหญิงแพรเปิดน้ำทิ้งไว้",0,"ทำให้สิ้นเปลืองน้ำ",1],
+  ["🚗","นายพลจอดรถขวางประตูบ้านคนอื่น",0,"ทำให้คนอื่นเดือดร้อน",1],
+  ["🏞️","นางวิภาเทขยะลงแม่น้ำลำคลอง",0,"ทำให้น้ำเน่าเสีย",1],
+  ["🧹","เด็กชายก้องช่วยเพื่อนทำความสะอาดห้องเรียน",1,"มีน้ำใจ รับผิดชอบส่วนรวม",1],
+  ["🌸","นางพรเด็ดดอกไม้ในสวนสาธารณะไปปักแจกันที่บ้าน",0,"เอาของส่วนรวมมาเป็นของตัวเอง",1],
+  ["⛏️","นายแก้วช่วยขุดลอกคลองในชุมชน",1,"ช่วยเหลือส่วนรวม",1],
+  ["🗑️","เด็กหญิงพลอยช่วยเก็บขยะในห้องเรียน",1,"ทำให้ห้องเรียนสะอาด",1],
+  ["🚑","อาสาสมัครมูลนิธิช่วยเหลือผู้บาดเจ็บจากอุบัติเหตุ",1,"เสียสละเพื่อผู้อื่น",1],
+  ["🏃","นายชัชวาลขับรถชนคนแล้วหนี",0,"ไม่รับผิดชอบและผิดกฎหมาย",1],
+  ["🙋","ยกมือก่อนพูดในห้องเรียน",1,"มีมารยาท เคารพผู้อื่น",1],
+  ["🧃","ดื่มนมเสร็จแล้วทิ้งกล่องลงถังขยะ",1,"รักษาความสะอาด",1],
+  ["✏️","แอบหยิบดินสอของเพื่อนไปโดยไม่ขอ",0,"เอาของคนอื่นโดยไม่ได้รับอนุญาต",1],
+  ["🧍","ยืนเข้าแถวเคารพธงชาติตอนเช้า",1,"ปฏิบัติตามระเบียบโรงเรียน",1],
+  ["📝","ลอกการบ้านเพื่อนไปส่งครู",0,"ไม่ซื่อสัตย์ และไม่ได้ความรู้",2],
+  ["💰","เก็บเงินได้แล้วนำไปคืนครูเพื่อหาเจ้าของ",1,"ซื่อสัตย์สุจริต",2],
+  ["☎️","ใช้โทรศัพท์ของที่ทำงานโทรคุยธุระส่วนตัว",0,"เอาของหลวงมาใช้เพื่อตนเอง",2],
+  ["🎁","ไม่รับของขวัญจากคนที่มาขอให้ช่วยเรื่องงาน",1,"ไม่รับสิ่งตอบแทนที่ไม่ควรได้",2],
+  ["🗳️","รับเงินจากผู้สมัครแล้วเลือกเขาเป็นหัวหน้าห้อง",0,"เป็นการขายเสียง",2],
+  ["🧾","แม่ค้าทอนเงินเกิน จึงนำเงินไปคืน",1,"ซื่อสัตย์ ไม่เอาเปรียบผู้อื่น",2],
+  ["⏰","มาโรงเรียนสายเพราะไม่อยากทำเวร",0,"เอาเปรียบเพื่อนที่ต้องทำแทน",2],
+  ["📚","อ่านหนังสือเตรียมสอบด้วยตัวเอง",1,"ตั้งใจและซื่อสัตย์ต่อตนเอง",2],
+  ["👕","แต่งกายถูกระเบียบมาโรงเรียน",1,"ปฏิบัติตามกฎของโรงเรียน",2],
+  ["🍬","เวรประจำวันรับขนมจากเพื่อนแล้วไม่จดชื่อคนมาสาย",0,"รับสิ่งตอบแทนแล้วไม่ทำหน้าที่ตรงไปตรงมา",3],
+  ["🏅","กรรมการนับคะแนนเพิ่มคะแนนให้ทีมของเพื่อนสนิท",0,"ใช้หน้าที่ช่วยพวกพ้อง ไม่ยุติธรรม",3],
+  ["📒","เหรัญญิกห้องจดรายรับรายจ่ายให้เพื่อนตรวจดูได้",1,"โปร่งใส ตรวจสอบได้",3],
+  ["🤫","สัญญากับเพื่อนว่าจะไม่บอกครูถ้าเพื่อนลอกข้อสอบ",0,"เป็นการช่วยให้เพื่อนทุจริต",3],
+  ["🗣️","บอกเพื่อนดี ๆ ว่าไม่ควรลอกข้อสอบ แล้วชวนกันอ่านหนังสือ",1,"เป็นเพื่อนที่ดี ช่วยให้เพื่อนทำสิ่งถูก",3],
+  ["🪑","ยืมเก้าอี้ของหมู่บ้านไปใช้งานที่บ้านแล้วไม่คืน",0,"เอาของส่วนรวมไปเป็นของตน",3],
+  ["🙅","ไม่รับจ้างทำรายงานแทนเพื่อน",1,"ไม่ช่วยให้เพื่อนทุจริต",3],
+  ["🚐","นำรถของหน่วยงานไปใช้ในงานแต่งงานลูก",0,"ใช้ทรัพย์สินของหลวงเพื่อตนเอง",3],
+  ["📢","เห็นเพื่อนแอบเอาของห้องกลับบ้าน จึงบอกให้นำมาคืน",1,"ไม่ทนต่อการทุจริต",3]
+];
+const SEC = {1:0, 2:8, 3:6};
+
+KIT.mount({
+  key:"ac-binary", title:"ไฟเขียว ไฟแดง ฐานสอง", subtitle:"การป้องกันการทุจริต ป.4 · หน่วยที่ 1 ระบบคิดฐานสอง (ถูก / ผิด)",
+  heroHTML:"คิดแบบ<em>ฐานสอง</em> ถูก ✓ หรือ ผิด ✗ 🚦", heroDesc:"ระบบคิดฐานสองคือคิดให้ชัด ทำได้ หรือ ทำไม่ได้ ไม่มีครึ่ง ๆ กลาง ๆ อ่านการกระทำแล้วตัดสินให้ไว",
+  progIcon:"🚦",
+  howto:["อ่านการกระทำบนการ์ด","ถ้าเป็นสิ่งที่ควรทำ แตะ ✓ ไฟเขียว","ถ้าไม่ควรทำ แตะ ✗ ไฟแดง","ด่านกลางและยากมีเวลาจำกัด ตอบเร็วได้คะแนนเพิ่ม"],
+  levels:{
+    1:{pill:"12 ข้อ", color:"var(--green)", desc:"พฤติกรรมใกล้ตัว ไม่จับเวลา"},
+    2:{pill:"12 ข้อ", color:"var(--blue)", desc:"เรื่องความซื่อสัตย์ จับเวลา 8 วินาที"},
+    3:{pill:"12 ข้อ", color:"var(--purple)", desc:"สถานการณ์ที่ต้องคิดให้ดี จับเวลา 6 วินาที"}
+  },
+  play(level, ctx){
+    const pool = BANK.filter(b => b[4] <= level);
+    const top = shuffle(pool.filter(b => b[4] === level));
+    const deck = shuffle([...top.slice(0, level===1 ? N : 7), ...shuffle(pool.filter(b => b[4] < level)).slice(0, level===1 ? 0 : N-7)]).slice(0,N);
+    const lim = SEC[level]*1000;
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext">ควรทำ หรือ ไม่ควรทำ?</div><div class="tl"><i class="r"></i><i class="g"></i></div></div>
+      <div class="card"><div class="ic" id="ic"></div><div class="tx" id="tx"></div>${lim ? '<div class="tbar"><i id="tb"></i></div>' : ''}</div>
+      <div class="yn"><button class="ok" type="button" data-v="1"><span>✓</span>ควรทำ</button><button class="no" type="button" data-v="0"><span>✗</span>ไม่ควรทำ</button></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let idx = 0, lock = false, t0 = 0, raf = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===1 ? 70 : 60}); return; }
+      const it = deck[idx]; lock = false;
+      $("#ic").textContent = it[0]; $("#tx").textContent = it[1]; $("#qn").textContent = `ข้อ ${idx+1} จาก ${N}`;
+      ctx.stage.querySelectorAll(".tl i").forEach(i => i.classList.remove("on"));
+      ctx.stage.querySelectorAll(".yn button").forEach(b => b.classList.remove("hint"));
+      t0 = performance.now(); if (lim) tick();
+    }
+    function tick(){
+      if (!ctx.alive() || lock) return;
+      const left = Math.max(0, 1 - (performance.now()-t0)/lim);
+      $("#tb").style.transform = `scaleX(${left})`;
+      if (left <= 0){ answer(null); return; }
+      raf = requestAnimationFrame(tick);
+    }
+    ctx.cleanup(() => cancelAnimationFrame(raf));
+    function answer(v){
+      lock = true; cancelAnimationFrame(raf);
+      const it = deck[idx];
+      ctx.stage.querySelector(".tl ." + (it[2] ? "g" : "r")).classList.add("on");
+      if (v === it[2]){
+        const left = lim ? Math.max(0, 1 - (performance.now()-t0)/lim) : 1;
+        ctx.correct(lim ? 60 + Math.round(left*60) : 100, `ถูกต้อง! ${it[2] ? "ควรทำ" : "ไม่ควรทำ"} เพราะ${it[3]}`);
+        idx++; ctx.progress(idx, N); ctx.after(1300, next);
+      } else {
+        ctx.stage.querySelector(`.yn [data-v="${it[2]}"]`).classList.add("hint");
+        ctx.wrong(`${v === null ? "หมดเวลา! " : ""}ข้อนี้${it[2] ? "ควรทำ" : "ไม่ควรทำ"} เพราะ${it[3]}`);
+        idx++; ctx.progress(idx, N); ctx.after(2300, next);
+      }
+    }
+    ctx.stage.querySelector(".yn").addEventListener("click", e => { const b = e.target.closest("button"); if (b && !lock) answer(+b.dataset.v); });
+    ctx.progress(0, N); ctx.say("ตัดสินใจให้ชัด ถูก หรือ ผิด!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

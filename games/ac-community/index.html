@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ชุมชนน่าอยู่</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.map{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:10px;background:#CDEBC5;border-radius:24px;padding:12px;box-sizing:border-box;box-shadow:0 6px 0 #A8D39C}
+.pl{position:relative;border:3px solid #fff;background:#F8FFF4;border-radius:18px;padding:10px 4px;font-weight:700;font-size:clamp(.8rem,2.5vw,1rem);box-shadow:0 4px 0 rgba(0,0,0,.08);min-height:96px;line-height:1.3}
+.pl .e{display:block;font-size:clamp(2rem,7vw,2.8rem);line-height:1.1}
+.pl .alert{position:absolute;top:-8px;right:-6px;font-size:1.6rem;display:none;animation:bob .8s infinite alternate}
+.pl.prob{background:#FFF1E6;border-color:#F2A65A}
+.pl.prob .alert{display:block}
+.pl.fix{background:#E2F7E8;border-color:#3FAE6A}
+@keyframes bob{to{transform:translateY(-5px)}}
+.happy{display:flex;align-items:center;gap:10px;margin-top:8px;font-weight:700}
+.happy .bar{flex:1;height:14px;border-radius:999px;background:#EFE6DA;overflow:hidden}
+.happy .bar i{display:block;height:100%;background:linear-gradient(90deg,#F08A8A,#F6CD6B,#3FCF7A);transition:width .4s}
+.panel{margin-top:12px}
+.panel .hint{text-align:center;color:var(--ink-soft);font-weight:700;padding:10px}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle, pick} = KIT;
+const N = 8;
+const PLACES = [["park","🌳","สวนสาธารณะ"],["gym","🏃","ลานออกกำลังกาย"],["road","🛣️","ถนนในหมู่บ้าน"],["hall","🏛️","ศาลาประชาคม"],["temple","🛕","วัด"],["play","🛝","สนามเด็กเล่น"],["canal","🏞️","คลองในชุมชน"],["news","📢","หอกระจายข่าว"],["home","🏠","บ้านของเรา"]];
+/* [place, problem, best, wrong(3)] */
+const PROBS = [
+  ["park","มีคนเด็ดดอกไม้ในสวนสาธารณะกลับบ้าน","บอกเขาดี ๆ ว่าดอกไม้เป็นของส่วนรวม ไม่ควรเด็ด",["เด็ดบ้าง จะได้ไม่น้อยหน้า","ไม่สนใจ ไม่ใช่เรื่องของเรา","ถ่ายรูปไปประจานในโซเชียล"]],
+  ["park","ม้านั่งในสวนสาธารณะชำรุด","แจ้งผู้ใหญ่บ้านให้ช่วยซ่อมแซม",["ถอดไม้ไปใช้ที่บ้าน","เตะให้พังไปเลย","นั่งต่อแรง ๆ ไม่เป็นไร"]],
+  ["gym","มีขวดน้ำพลาสติกวางทิ้งไว้ที่ลานออกกำลังกาย","เก็บไปทิ้งถังขยะรีไซเคิล",["เตะไปไว้มุมลาน","ปล่อยไว้ให้คนอื่นเก็บ","โยนลงคลอง"]],
+  ["road","มีรถจอดขวางทางเข้าออกบ้านคนอื่น","บอกผู้ใหญ่ให้แจ้งเจ้าของรถหรือผู้ใหญ่บ้าน",["ปล่อยลมยางรถ","เขียนด่าที่กระจกรถ","จอดขวางบ้าง"]],
+  ["road","มีคนติดป้ายโฆษณาบนเสาไฟฟ้าโดยไม่ได้รับอนุญาต","แจ้งผู้ใหญ่บ้าน เพราะผิดกฎของหมู่บ้าน",["ติดป้ายของเราเพิ่ม","ไม่สนใจ","ฉีกแล้วโยนทิ้งข้างทาง"]],
+  ["road","สุนัขของเราถ่ายบนทางเท้า","เก็บกวาดให้เรียบร้อยทันที",["ปล่อยไว้ เดี๋ยวฝนก็ล้าง","รีบพาสุนัขเดินหนี","เขี่ยไปไว้หน้าบ้านคนอื่น"]],
+  ["hall","ไฟในศาลาประชาคมเปิดทิ้งไว้ ไม่มีคนใช้","ปิดไฟเพื่อประหยัดไฟฟ้าของส่วนรวม",["ปล่อยไว้ ไม่ใช่บ้านเรา","เปิดพัดลมเพิ่ม","ถอดหลอดไฟกลับบ้าน"]],
+  ["hall","เก้าอี้ของหมู่บ้านถูกยืมไปแล้วไม่ได้นำมาคืน","ชวนผู้ยืมนำมาคืนที่เดิม เพราะเป็นของส่วนรวม",["ยืมไปใช้ที่บ้านอีกคน","เอาไปขาย","ไม่บอกใคร"]],
+  ["temple","ลานวัดมีใบไม้ร่วงเต็มไปหมด","ช่วยกันกวาดลานวัด",["เผาใบไม้กลางลานวัด","รอให้คนอื่นกวาด","เดินเตะใบไม้เล่น"]],
+  ["play","ชิงช้าในสนามเด็กเล่นโซ่หลุด","บอกผู้ใหญ่ให้ซ่อม และไม่เล่นจนกว่าจะซ่อมเสร็จ",["เล่นต่อแรง ๆ","ถอดโซ่ไปขาย","ชวนน้อง ๆ มาเล่น"]],
+  ["play","เพื่อนแย่งเครื่องเล่นไม่ยอมผลัดกัน","ชวนเพื่อนต่อแถวผลัดกันเล่น",["แย่งคืนแรง ๆ","ฟ้องแล้วกลับบ้านไปเลย","แอบทำเครื่องเล่นพัง"]],
+  ["canal","มีขยะลอยเต็มคลองในชุมชน","ร่วมกิจกรรมเก็บขยะและขุดลอกคลองกับชุมชน",["ทิ้งขยะเพิ่ม เพราะสกปรกอยู่แล้ว","ไม่สนใจ","บ่นแต่ไม่ช่วย"]],
+  ["news","หอกระจายข่าวประกาศให้พาสุนัขไปฉีดวัคซีน","บอกคนในบ้าน และพาสุนัขไปฉีดตามนัด",["ไม่ฟังประกาศ","ปิดเสียงตามสาย","ฟังแล้วลืมไป"]],
+  ["news","ช่วงเลือกตั้ง มีคนมาแจกเงินให้เลือกเขา","ไม่รับเงิน และบอกผู้ใหญ่ให้แจ้งเจ้าหน้าที่",["รับเงินแล้วเลือกเขา","รับเงินแต่ไม่บอกใคร","ขอเงินเพิ่ม"]],
+  ["home","เห็นเพื่อนบ้านแอบต่อสายไฟฟ้าสาธารณะไปใช้ในบ้าน","บอกผู้ใหญ่ให้แจ้งเจ้าหน้าที่ เพราะไฟฟ้าเป็นของส่วนรวม",["ต่อสายไฟมาใช้บ้าง","ไม่สนใจ","ช่วยเขาซ่อนสายไฟ"]],
+  ["home","ก๊อกน้ำประปาหน้าบ้านรั่ว","ปิดวาล์วและแจ้งผู้ปกครองให้ซ่อม",["ปล่อยให้น้ำไหล","เอาถังมารองแล้วลืม","ใช้น้ำเล่นให้คุ้ม"]]
+];
+const LV = {1:{opts:2, conc:1}, 2:{opts:3, conc:2}, 3:{opts:4, conc:3}};
+
+KIT.mount({
+  key:"ac-town", title:"ชุมชนน่าอยู่", subtitle:"การป้องกันการทุจริต ป.4 · หน่วยที่ 4 พลเมืองกับความรับผิดชอบต่อสังคม",
+  heroHTML:"ช่วยกันดูแล<em>ชุมชน</em>ให้น่าอยู่ 🏘️", heroDesc:"มีปัญหาเกิดขึ้นในที่สาธารณะของชุมชน แตะสถานที่ที่มีเครื่องหมาย ⚠️ แล้วเลือกวิธีแก้ที่เป็นพลเมืองดี",
+  progIcon:"🏘️",
+  howto:["มองหาสถานที่ที่มี ⚠️","แตะสถานที่นั้นเพื่อดูปัญหา","เลือกวิธีแก้ปัญหาที่ถูกต้องที่สุด","แก้ปัญหาครบ 8 เรื่อง ชุมชนน่าอยู่ ผ่านด่าน"],
+  levels:{
+    1:{pill:"8 ปัญหา", color:"var(--green)", desc:"ปัญหาทีละเรื่อง 2 ทางเลือก"},
+    2:{pill:"8 ปัญหา", color:"var(--blue)", desc:"ปัญหาพร้อมกัน 2 ที่ 3 ทางเลือก"},
+    3:{pill:"8 ปัญหา", color:"var(--purple)", desc:"ปัญหาพร้อมกัน 3 ที่ 4 ทางเลือก"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const queue = shuffle(PROBS.slice());
+    ctx.stage.innerHTML = `<div class="happy">😟 ความน่าอยู่ <div class="bar"><i id="hp" style="width:20%"></i></div> 😊</div>
+      <div class="map" id="mp">${PLACES.map(p=>`<button class="pl" type="button" data-p="${p[0]}"><span class="alert">⚠️</span><span class="e">${p[1]}</span>${p[2]}</button>`).join("")}</div>
+      <div class="panel" id="pn"><div class="hint">แตะสถานที่ที่มี ⚠️</div></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    const active = {};   /* place -> problem */
+    let solved = 0, open = null, qi = 0;
+    function fill(){
+      while (Object.keys(active).length < L.conc && solved + Object.keys(active).length < N){
+        const k = queue.findIndex((q,i) => i >= qi && !active[q[0]]);
+        if (k < 0) break;
+        const q = queue.splice(k,1)[0]; active[q[0]] = q;
+        const el = ctx.stage.querySelector(`.pl[data-p="${q[0]}"]`); el.classList.remove("fix"); el.classList.add("prob");
+      }
+    }
+    $("#mp").addEventListener("click", e => {
+      const b = e.target.closest(".pl"); if (!b) return;
+      const q = active[b.dataset.p];
+      if (!q){ ctx.say("ที่นี่เรียบร้อยดี ลองหาที่ที่มี ⚠️"); return; }
+      open = b.dataset.p;
+      const opts = shuffle([q[2], ...shuffle(q[3].slice()).slice(0, L.opts-1)]);
+      const place = PLACES.find(p => p[0] === open);
+      KIT.mcq(ctx, $("#pn"), { label:`${place[1]} ${place[2]} · ปัญหาที่ ${solved+1} จาก ${N}`, html:`${KIT.esc(q[1])}<br><small style="font-size:.75em;color:var(--ink-soft)">พลเมืองดีควรทำอย่างไร?</small>`,
+        options:opts.map(KIT.esc), answer:opts.indexOf(q[2]), cols:1, explain:"ยังไม่ใช่ ลองคิดว่าทำอย่างไรส่วนรวมจะได้ประโยชน์",
+        onNext(){
+          delete active[q[0]]; const el = ctx.stage.querySelector(`.pl[data-p="${q[0]}"]`); el.classList.remove("prob"); el.classList.add("fix");
+          solved++; ctx.progress(solved, N); $("#hp").style.width = (20 + solved/N*80) + "%";
+          $("#pn").innerHTML = `<div class="hint">${solved < N ? "เยี่ยม! หาที่ที่มี ⚠️ ต่อไป" : "ชุมชนน่าอยู่แล้ว! 🎉"}</div>`;
+          if (solved >= N) ctx.finish({targetSec: level===1 ? 90 : 120}); else fill();
+        } });
+    });
+    ctx.progress(0, N); ctx.say("มีปัญหาเกิดขึ้นในชุมชน ไปช่วยกันเถอะ!");
+    fill();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

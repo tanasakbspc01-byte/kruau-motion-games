@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>จับผิดเมืองสุจริต</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.town{display:grid;gap:10px;margin-top:14px;width:100%}
+.p{position:relative;border:3px solid var(--line);background:#fff;border-radius:18px;padding:10px 8px 12px;text-align:center;box-shadow:0 4px 0 var(--line);font-weight:600;font-size:clamp(.9rem,2.7vw,1.08rem);line-height:1.4;min-height:130px;overflow:hidden}
+.p .f{font-size:clamp(2rem,7vw,2.8rem);line-height:1.15;display:block}
+.p.bad{border-color:#E06767;background:#FDECEC;box-shadow:0 4px 0 #E06767}
+.p.bad::after{content:"ทุจริต!";position:absolute;top:8px;right:-30px;transform:rotate(30deg);background:#E06767;color:#fff;font-weight:700;padding:2px 36px;font-size:.85rem}
+.p.good{animation:shake .4s}
+.p.reveal{border-color:#3FAE6A;background:#EAF8EF}
+.left{font-weight:700;color:var(--ink-soft)}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const ROUNDS = 4;
+const FACES = ["👦","👧","🧑","👩","👨","👵","👴","🧒","👩‍🏫","👨‍💼","👩‍💼","👮"];
+/* [text, bad, why, minLevel] */
+const BANK = [
+  ["ลอกข้อสอบของเพื่อน",1,"ไม่ซื่อสัตย์ต่อการสอบ",1],
+  ["เก็บเงินห้องแล้วเอาไปซื้อขนมกินเอง",1,"เอาเงินส่วนรวมไปใช้เอง",1],
+  ["แอบเอาลูกฟุตบอลของโรงเรียนกลับบ้าน",1,"เอาของส่วนรวมไปเป็นของตน",1],
+  ["รับจ้างทำรายงานแทนเพื่อน",1,"ช่วยให้เพื่อนโกงงาน",1],
+  ["รับเงินจากคนที่มาหาเสียงเลือกตั้ง",1,"เป็นการขายเสียง",1],
+  ["นำรถของทางราชการไปจำนำ",1,"เอาทรัพย์สินของหลวงไปหาประโยชน์",2],
+  ["เบิกค่าน้ำมันเกินกว่าที่ใช้จริง",1,"เบิกเงินเท็จ เป็นการโกง",2],
+  ["ใช้โทรศัพท์ของที่ทำงานโทรธุระส่วนตัว",1,"ใช้ของหลวงเพื่อตนเอง",2],
+  ["ใช้ตำแหน่งช่วยให้ญาติได้งานโดยไม่ต้องสอบ",1,"ผลประโยชน์ทับซ้อน ช่วยพวกพ้อง",2],
+  ["เวรประจำวันรับขนมแล้วไม่จดชื่อเพื่อนที่มาสาย",1,"รับสิ่งตอบแทนแล้วไม่ทำหน้าที่",3],
+  ["กรรมการตัดสินให้คะแนนทีมของน้องตัวเองสูงกว่าความจริง",1,"ผลประโยชน์ทับซ้อน ไม่ยุติธรรม",3],
+  ["นำข้อสอบที่ครูเก็บไว้มาบอกเพื่อนก่อนสอบ",1,"นำความลับมาใช้หาประโยชน์",3],
+  ["หัวหน้าห้องจดชื่อเพื่อนสนิทว่ามาเรียน ทั้งที่ไม่มา",1,"ใช้หน้าที่ช่วยพวกพ้อง",3],
+  ["ทำข้อสอบด้วยตัวเอง",0,"",1],
+  ["เก็บเงินได้แล้วนำไปคืนครู",0,"",1],
+  ["ช่วยเพื่อนทำเวรทำความสะอาดห้อง",0,"",1],
+  ["คืนเงินทอนที่แม่ค้าทอนเกิน",0,"",1],
+  ["ทิ้งขยะลงถังให้ถูกประเภท",0,"",1],
+  ["ตั้งใจทำการบ้านด้วยตัวเอง",0,"",1],
+  ["ไม่รับของขวัญจากผู้มาติดต่อราชการ",0,"",2],
+  ["ไม่รับเงินจากผู้มาหาเสียงเลือกตั้ง",0,"",2],
+  ["ไม่รับเงินที่เพื่อนจ้างให้ทำรายงาน",0,"",2],
+  ["ผู้อำนวยการไม่รับเงินฝากเด็กเข้าเรียน",0,"",2],
+  ["จดบัญชีเงินห้องให้ทุกคนตรวจดูได้",0,"",3],
+  ["บอกครูเมื่อเห็นเพื่อนแอบเอาของส่วนรวมกลับบ้าน",0,"",3],
+  ["กรรมการไม่ยอมตัดสินการแข่งขันที่น้องตัวเองลงแข่ง",0,"",3],
+  ["ปิดไฟและพัดลมก่อนออกจากห้องเรียน",0,"",3]
+];
+const LV = {1:{n:6, bad:2, cols:3}, 2:{n:8, bad:3, cols:4}, 3:{n:9, bad:4, cols:3}};
+
+KIT.mount({
+  key:"ac-spot", title:"จับผิดเมืองสุจริต", subtitle:"การป้องกันการทุจริต ป.4 · หน่วยที่ 1 ความแตกต่างระหว่างจริยธรรมและการทุจริต",
+  heroHTML:"ใครกำลัง<em>ทุจริต</em>? หาให้เจอ 🕵️", heroDesc:"ในเมืองมีคนทำดีและคนทุจริตปะปนกัน แตะเฉพาะคนที่ทุจริตให้ครบ อย่าไปแตะคนที่ทำดีนะ",
+  progIcon:"🕵️",
+  howto:["อ่านการกระทำของแต่ละคน","แตะคนที่ทุจริต จะขึ้นตรา \"ทุจริต!\"","แตะคนที่ทำดีเสีย 10 คะแนน","หาครบทุกคนในเมืองแล้วไปเมืองต่อไป มี 4 เมือง"],
+  levels:{
+    1:{pill:"4 เมือง", color:"var(--green)", desc:"6 คน มีคนทุจริต 2 คน"},
+    2:{pill:"4 เมือง", color:"var(--blue)", desc:"8 คน มีคนทุจริต 3 คน รวมเรื่องของหลวง"},
+    3:{pill:"4 เมือง", color:"var(--purple)", desc:"9 คน มีคนทุจริต 4 คน รวมผลประโยชน์ทับซ้อน"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const badPool = shuffle(BANK.filter(b => b[1] && b[3] <= level)), goodPool = shuffle(BANK.filter(b => !b[1] && b[3] <= level));
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext">แตะคนที่ <u>ทุจริต</u> <span class="left" id="lf"></span></div></div>
+      <div class="town" id="tw" style="grid-template-columns:repeat(${L.cols},1fr)"></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let round = 0, found = 0, people = [], lock = false, bi = 0, gi = 0;
+    const take = (pool, k, start) => { const out = []; for (let i=0;i<k;i++) out.push(pool[(start+i) % pool.length]); return out; };
+    function town(){
+      if (round >= ROUNDS){ ctx.finish({targetSec: level===3 ? 150 : 110}); return; }
+      const bads = take(badPool, L.bad, bi); bi += L.bad;
+      const goods = take(goodPool, L.n - L.bad, gi); gi += L.n - L.bad;
+      people = shuffle([...bads, ...goods]); found = 0; lock = false;
+      const faces = shuffle(FACES.slice());
+      $("#qn").textContent = `เมืองที่ ${round+1} จาก ${ROUNDS}`;
+      $("#lf").textContent = `(เหลือ ${L.bad} คน)`;
+      $("#tw").innerHTML = people.map((p,i)=>`<button class="p" type="button" data-i="${i}"><span class="f">${faces[i % faces.length]}</span>${p[0]}</button>`).join("");
+    }
+    $("#tw").addEventListener("click", e => {
+      const b = e.target.closest(".p"); if (!b || lock || b.classList.contains("bad")) return;
+      const p = people[+b.dataset.i];
+      if (p[1]){
+        b.classList.add("bad"); found++; $("#lf").textContent = `(เหลือ ${L.bad - found} คน)`;
+        ctx.correct(100, `จับได้! ${p[2]}`);
+        if (found === L.bad){
+          lock = true; round++; ctx.progress(round, ROUNDS);
+          ctx.stage.querySelectorAll(".p:not(.bad)").forEach(x => x.classList.add("reveal"));
+          ctx.after(1600, town);
+        }
+      } else {
+        b.classList.remove("good"); void b.offsetWidth; b.classList.add("good");
+        ctx.wrong(`คนนี้ "${p[0]}" เป็นการกระทำที่ดี มีจริยธรรม`);
+      }
+    });
+    ctx.progress(0, ROUNDS); ctx.say("สอดส่องให้ดี ใครกำลังทุจริต?");
+    town();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

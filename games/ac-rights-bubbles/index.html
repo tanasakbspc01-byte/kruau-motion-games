@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ฟองสิทธิ ฟองหน้าที่</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.ask{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.ask b{background:var(--c);color:#fff;border-radius:16px;padding:2px 18px;font-size:clamp(1.4rem,5vw,2rem)}
+.sea{position:relative;width:100%;height:clamp(380px,62vh,520px);border-radius:24px;overflow:hidden;background:linear-gradient(#BFE6FF,#E9F7FF);box-shadow:0 6px 0 #9FCDEB;margin-top:10px;touch-action:manipulation}
+.bb{position:absolute;width:30%;max-width:190px;aspect-ratio:1;border-radius:50%;border:none;padding:10px;display:grid;place-items:center;text-align:center;font-weight:700;font-size:clamp(.75rem,2.3vw,.98rem);line-height:1.3;color:#24304A;
+  background:radial-gradient(circle at 30% 28%,rgba(255,255,255,.98) 0 9%,rgba(255,255,255,.7) 10% 35%,rgba(200,232,255,.75) 36% 100%);box-shadow:inset 0 0 0 3px rgba(255,255,255,.95),0 4px 12px rgba(80,140,200,.25);transform:translateX(-50%)}
+.bb .e{display:block;font-size:1.6em;line-height:1.1}
+.bb.pop{animation:pp .35s forwards}
+.bb.bad{background:radial-gradient(circle,#FFD7D7,#F2A0A0);animation:shake .4s}
+@keyframes pp{to{transform:translateX(-50%) scale(1.6);opacity:0}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle, pick, rand} = KIT;
+/* [icon, text, type] type: R = สิทธิ, D = หน้าที่, X = การกระทำที่ไม่ควรทำ (ด่านยาก) */
+const BANK = [
+  ["🏫","ได้เรียนหนังสือฟรีอย่างน้อย 12 ปี","R"],["🛐","นับถือศาสนาที่ตนเองเลือก","R"],["🚌","เดินทางไปที่ต่าง ๆ ในประเทศ","R"],
+  ["🏠","อยู่อาศัยในบ้านของตนอย่างสงบสุข","R"],["💡","ได้ใช้บริการไฟฟ้าสาธารณะ","R"],["🏥","ได้รับการรักษาพยาบาล","R"],
+  ["💬","แสดงความคิดเห็นอย่างสุภาพ","R"],["🧑‍🌾","เลือกประกอบอาชีพสุจริต","R"],["🌳","ได้ใช้สวนสาธารณะของชุมชน","R"],["📞","ติดต่อสื่อสารกับผู้อื่น","R"],
+  ["📜","ปฏิบัติตามกฎของหมู่บ้าน","D"],["🚯","ไม่ทิ้งขยะในที่สาธารณะ","D"],["🔌","ใช้ไฟฟ้าอย่างประหยัด","D"],["🚫","ไม่ลักลอบใช้ไฟฟ้าสาธารณะ","D"],
+  ["🪑","ดูแลรักษาสมบัติของหมู่บ้าน","D"],["🤝","เคารพสิทธิของผู้อื่น","D"],["📚","ตั้งใจเรียนหนังสือ","D"],["🛣️","ไม่กีดขวางทางสาธารณะ","D"],
+  ["🎉","ช่วยเหลือกิจกรรมของชุมชน","D"],["🚦","ปฏิบัติตามกฎจราจร","D"],
+  ["🪧","ติดป้ายโฆษณาบนเสาไฟฟ้า","X"],["🌸","เด็ดดอกไม้ในสวนสาธารณะ","X"],["🐕","ปล่อยสุนัขถ่ายบนทางเท้าแล้วไม่เก็บ","X"],["🔊","เปิดเพลงเสียงดังตอนกลางคืน","X"]
+];
+const LV = {1:{need:4, speed:38, gap:1700, trick:false}, 2:{need:5, speed:52, gap:1350, trick:false}, 3:{need:6, speed:64, gap:1100, trick:true}};
+const PLAN = [{t:"D", n:"หน้าที่", ic:"🧹"},{t:"R", n:"สิทธิ", ic:"🎁"},{t:"D", n:"หน้าที่", ic:"🧹"}];
+
+KIT.mount({
+  key:"ac-rights", title:"ฟองสิทธิ ฟองหน้าที่", subtitle:"การป้องกันการทุจริต ป.4 · หน่วยที่ 4 พลเมืองกับความรับผิดชอบต่อสังคม",
+  heroHTML:"แตะฟองให้ถูก<em>สิทธิ</em>หรือ<em>หน้าที่</em> 🫧", heroDesc:"สิทธิ คือสิ่งที่เราได้รับหรือทำได้ หน้าที่ คือสิ่งที่เราต้องทำเพื่อส่วนรวม แตะเฉพาะฟองที่ตรงกับโจทย์",
+  progIcon:"🫧",
+  howto:["ดูโจทย์ด้านบนว่าให้แตะ สิทธิ หรือ หน้าที่","แตะฟองที่ตรงกับโจทย์ก่อนลอยหายไป","แตะผิดฟองเสีย 10 คะแนน","ผ่าน 3 รอบผ่านด่าน"],
+  levels:{
+    1:{pill:"3 รอบ", color:"var(--green)", desc:"ฟองลอยช้า แตะให้ถูก 4 ฟองต่อรอบ"},
+    2:{pill:"3 รอบ", color:"var(--blue)", desc:"ฟองลอยเร็วขึ้น 5 ฟองต่อรอบ"},
+    3:{pill:"3 รอบ", color:"var(--purple)", desc:"เร็ว และมีฟองการกระทำที่ไม่ควรทำปนมา"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const pool = BANK.filter(b => L.trick || b[2] !== "X");
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="ask">แตะเฉพาะฟองที่เป็น <b id="ak"></b> <span id="cn"></span></div></div><div class="sea" id="sea"></div>`;
+    const $ = s => ctx.stage.querySelector(s), sea = $("#sea");
+    let round = 0, got = 0, total = 0, bubs = [], raf = 0, last = 0, spawnAt = 0, lock = false, recent = [];
+    function start(){
+      if (round >= PLAN.length){ ctx.finish({targetSec: 100}); return; }
+      got = 0; lock = false; bubs.forEach(b => b.el.remove()); bubs = [];
+      $("#qn").textContent = `รอบที่ ${round+1} จาก ${PLAN.length}`;
+      $("#ak").textContent = `${PLAN[round].ic} ${PLAN[round].n}`; $("#cn").textContent = `(0/${L.need})`;
+      spawnAt = 0;
+    }
+    function spawn(){
+      const want = PLAN[round].t;
+      const match = Math.random() < .5;
+      const cand = pool.filter(b => (match ? b[2] === want : b[2] !== want) && !recent.includes(b[1]));
+      const it = pick(cand.length ? cand : pool);
+      recent.push(it[1]); if (recent.length > 8) recent.shift();
+      const el = document.createElement("button"); el.type = "button"; el.className = "bb";
+      el.innerHTML = `<span class="e">${it[0]}</span>${it[1]}`;
+      const lanes = [18,50,82].filter(x => !bubs.some(b => Math.abs(b.x - x) < 5 && b.y > sea.clientHeight - 220));
+      const x = lanes.length ? pick(lanes) : pick([18,50,82]);
+      sea.appendChild(el);
+      const b = {el, it, x, y: sea.clientHeight + 10, w: Math.random()*6};
+      el.style.left = x + "%"; el.style.top = b.y + "px";
+      el.addEventListener("pointerdown", e => { e.preventDefault(); tap(b); });
+      bubs.push(b);
+    }
+    function tap(b){
+      if (lock || b.done) return;
+      const want = PLAN[round].t;
+      if (b.it[2] === want){
+        b.done = true; b.el.classList.add("pop"); KIT.sfx.pop(); got++; total++;
+        $("#cn").textContent = `(${got}/${L.need})`;
+        ctx.correct(100, `ถูกต้อง! "${b.it[1]}" เป็น${PLAN[round].n}`); ctx.progress(total, L.need*PLAN.length);
+        ctx.after(350, () => b.el.remove());
+        if (got >= L.need){ lock = true; round++; ctx.after(1200, start); }
+      } else {
+        b.el.classList.remove("bad"); void b.el.offsetWidth; b.el.classList.add("bad");
+        const kind = b.it[2] === "R" ? "สิทธิ" : b.it[2] === "D" ? "หน้าที่" : "การกระทำที่ไม่ควรทำ";
+        ctx.wrong(`"${b.it[1]}" เป็น${kind} ไม่ใช่${PLAN[round].n}`);
+      }
+    }
+    function loop(t){
+      if (!ctx.alive()) return;
+      const dt = Math.min(.05, (t - (last || t))/1000); last = t;
+      if (!lock && round < PLAN.length){
+        spawnAt -= dt*1000;
+        if (spawnAt <= 0){ spawn(); spawnAt = L.gap + rand(0,300); }
+      }
+      bubs = bubs.filter(b => {
+        if (b.done) return !!b.el.parentNode;
+        b.y -= L.speed*dt; b.w += dt*2;
+        b.el.style.top = b.y + "px"; b.el.style.marginLeft = (Math.sin(b.w)*8) + "px";
+        if (b.y < -200){ b.el.remove(); return false; }
+        return true;
+      });
+      raf = requestAnimationFrame(loop);
+    }
+    ctx.cleanup(() => cancelAnimationFrame(raf));
+    ctx.progress(0, L.need*PLAN.length); ctx.say("อ่านฟองให้ดี แล้วแตะให้ถูก!");
+    start(); raf = requestAnimationFrame(loop);
+  }
+});
+
+})();
+</script>
+</body>
+</html>

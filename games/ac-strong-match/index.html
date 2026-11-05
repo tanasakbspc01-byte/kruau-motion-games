@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>จับคู่ STRONG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.cols{display:grid;grid-template-columns:minmax(86px,.42fr) 1fr;gap:12px;margin-top:12px;width:100%}
+.col{display:flex;flex-direction:column;gap:10px}
+.m{border:3px solid var(--line);background:#fff;border-radius:16px;padding:10px 12px;font-weight:700;box-shadow:0 4px 0 var(--line);line-height:1.35;font-size:clamp(.95rem,2.9vw,1.15rem);min-height:58px;text-align:left}
+.m.L{text-align:center;font-size:clamp(1.6rem,6vw,2.3rem);color:#fff;border:none;box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.m.L small{display:block;font-size:.42em;opacity:.95;line-height:1.1}
+.m.sel{outline:4px solid #F6CD6B;transform:scale(1.03)}
+.m.ok{opacity:.55;filter:saturate(.6)}
+.m.R.ok{background:#EAF8EF;border-color:#3FAE6A}
+.m.no{animation:shake .4s}
+.strong{display:flex;justify-content:center;gap:6px;margin:2px 0 4px}
+.strong b{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#fff;font-size:1.3rem;opacity:.3;transition:.3s}
+.strong b.on{opacity:1;transform:translateY(-3px)}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const LET = [["S","Sufficient","#F2A65A"],["T","Transparent","#3C8DDB"],["R","Realize","#E8708F"],["O","Onward","#2FA866"],["N","Knowledge","#8B6FD6"],["G","Generosity","#C9A227"]];
+const MEAN = ["พอเพียง","โปร่งใส","ตื่นรู้","มุ่งไปข้างหน้า","ความรู้","เอื้ออาทร"];
+const EX = {
+  school:["ใช้ของใช้ส่วนรวมอย่างพอดี ไม่ฟุ่มเฟือย","จดบัญชีเงินห้องให้ทุกคนตรวจสอบได้","รู้ทันว่าการซื้อเสียงเลือกหัวหน้าห้องเป็นสิ่งผิด","ตั้งใจพัฒนาตนเองให้เป็นแบบอย่างที่ดี","ศึกษาหาความรู้เรื่องการทุจริต","ช่วยเหลือแบ่งปันเพื่อนโดยไม่หวังสิ่งตอบแทน"],
+  waste:["รู้จักคัดแยกขยะ เห็นคุณค่าของขยะ","ทำบัญชีรายรับจากการขายขยะอย่างเปิดเผย","ตระหนักถึงผลเสียของการทิ้งขยะไม่ถูกที่","นำขยะมาประดิษฐ์เป็นของใช้ใหม่","รู้วิธีคัดแยกขยะให้ถูกประเภท","เชิญชวนเพื่อนบ้านช่วยกันคัดแยกขยะ"],
+  vote:["ไม่รับของแจกเพื่อแลกกับคะแนนเสียง","ตรวจสอบคุณสมบัติผู้สมัครแต่ละคนอย่างเปิดเผย","รู้จักเลือกผู้นำที่มีคุณสมบัติเหมาะสม","เป็นแบบอย่างในการใช้สิทธิ์เลือกตั้ง","ทำป้ายรณรงค์ให้ความรู้เรื่องประชาธิปไตย","ชวนเพื่อน ๆ ไปใช้สิทธิ์เลือกตั้ง"]
+};
+const ROUNDS = {
+  1:[{t:"จับคู่ตัวอักษรกับความหมาย", r:MEAN},{t:"จับคู่ตัวอักษรกับคำภาษาอังกฤษ", r:LET.map(l=>l[1])}],
+  2:[{t:"จับคู่ตัวอักษรกับความหมาย", r:MEAN},{t:"การกระทำในโรงเรียน ตรงกับข้อใดของ STRONG", r:EX.school}],
+  3:[{t:"การกระทำในโรงเรียน ตรงกับข้อใดของ STRONG", r:EX.school},{t:"เรื่องขยะในชุมชน ตรงกับข้อใดของ STRONG", r:EX.waste},{t:"การเลือกตั้งในโรงเรียน ตรงกับข้อใดของ STRONG", r:EX.vote}]
+};
+
+KIT.mount({
+  key:"ac-strong", title:"จับคู่ STRONG", subtitle:"การป้องกันการทุจริต ป.4 · หน่วยที่ 3 STRONG / จิตพอเพียงต่อต้านการทุจริต",
+  heroHTML:"รวมพลัง<em>STRONG</em> ต้านทุจริต 💪", heroDesc:"จับคู่ตัวอักษร S T R O N G กับความหมายและตัวอย่างการกระทำ ให้ครบทุกตัว",
+  progIcon:"💪",
+  howto:["แตะตัวอักษรทางซ้าย","แล้วแตะข้อความทางขวาที่คู่กัน","จับคู่ผิดเสีย 10 คะแนน","จับคู่ครบทุกรอบผ่านด่าน"],
+  note:"S = Sufficient พอเพียง · T = Transparent โปร่งใส · R = Realize ตื่นรู้ · O = Onward มุ่งไปข้างหน้า · N = Knowledge ความรู้ · G = Generosity เอื้ออาทร",
+  levels:{
+    1:{pill:"2 รอบ", color:"var(--green)", desc:"ความหมาย และคำภาษาอังกฤษ"},
+    2:{pill:"2 รอบ", color:"var(--blue)", desc:"ความหมาย และตัวอย่างในโรงเรียน"},
+    3:{pill:"3 รอบ", color:"var(--purple)", desc:"ตัวอย่างในโรงเรียน เรื่องขยะ และการเลือกตั้ง"}
+  },
+  play(level, ctx){
+    const R = ROUNDS[level], total = R.length*6;
+    let round = 0, got = 0, sel = null;
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext" id="qt"></div>
+      <div class="strong">${LET.map((l,i)=>`<b style="background:${l[2]}" data-k="${i}">${l[0]}</b>`).join("")}</div></div>
+      <div class="cols"><div class="col" id="cl"></div><div class="col" id="cr"></div></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    function show(){
+      if (round >= R.length){ ctx.finish({targetSec: level===3 ? 150 : 90}); return; }
+      const rd = R[round]; sel = null;
+      $("#qn").textContent = `รอบที่ ${round+1} จาก ${R.length}`; $("#qt").textContent = rd.t;
+      ctx.stage.querySelectorAll(".strong b").forEach(b => b.classList.remove("on"));
+      const lo = shuffle([0,1,2,3,4,5]), ro = shuffle([0,1,2,3,4,5]);
+      $("#cl").innerHTML = lo.map(i=>`<button class="m L" type="button" data-k="${i}" style="background:${LET[i][2]}">${LET[i][0]}${level===1 && round===0 ? `<small>${LET[i][1]}</small>` : ""}</button>`).join("");
+      $("#cr").innerHTML = ro.map(i=>`<button class="m R" type="button" data-k="${i}">${rd.r[i]}</button>`).join("");
+    }
+    $("#cl").addEventListener("click", e => {
+      const b = e.target.closest(".m"); if (!b || b.classList.contains("ok")) return;
+      ctx.stage.querySelectorAll(".m.L.sel").forEach(x => x.classList.remove("sel"));
+      sel = b; b.classList.add("sel"); KIT.sfx.tap();
+      ctx.say(`${LET[+b.dataset.k][0]} = ${LET[+b.dataset.k][1]} — แตะข้อความที่คู่กัน`);
+    });
+    $("#cr").addEventListener("click", e => {
+      const b = e.target.closest(".m"); if (!b || b.classList.contains("ok")) return;
+      if (!sel){ ctx.say("แตะตัวอักษรทางซ้ายก่อนนะ"); return; }
+      const k = +sel.dataset.k;
+      if (+b.dataset.k === k){
+        sel.classList.remove("sel"); sel.classList.add("ok"); b.classList.add("ok"); sel = null; got++;
+        ctx.stage.querySelector(`.strong b[data-k="${k}"]`).classList.add("on");
+        ctx.correct(100, `ถูกต้อง! ${LET[k][0]} (${LET[k][1]}) = ${MEAN[k]}`); ctx.progress(got, total);
+        if (got % 6 === 0){ round++; ctx.after(1200, show); }
+      } else {
+        b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
+        ctx.wrong(`ข้อนี้ไม่ใช่ ${LET[k][0]} (${MEAN[k]}) ลองข้อความอื่นนะ`);
+      }
+    });
+    ctx.progress(0, total); ctx.say("แตะตัวอักษรก่อน แล้วแตะข้อความที่คู่กัน");
+    show();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

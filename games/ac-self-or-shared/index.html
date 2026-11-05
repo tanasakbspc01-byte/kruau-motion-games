@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ส่วนตน หรือ ส่วนรวม?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.ev{width:100%;box-sizing:border-box;margin:14px auto 0;max-width:440px;background:#FFF8E8;border:3px dashed #D8B98A;border-radius:22px;padding:18px;text-align:center;box-shadow:0 5px 0 #E8D3AE;transition:transform .35s, opacity .35s}
+.ev .ic{font-size:clamp(3rem,12vw,4.6rem);line-height:1.1}
+.ev .nm{font-weight:700;font-size:clamp(1.15rem,3.6vw,1.5rem);margin-top:6px;line-height:1.4}
+.ev.flyL{transform:translate(-60%,40px) scale(.5) rotate(-12deg);opacity:0}
+.ev.flyR{transform:translate(60%,40px) scale(.5) rotate(12deg);opacity:0}
+.ev.no{animation:shake .4s}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.bin{border:4px solid var(--bc);background:#fff;border-radius:22px;padding:14px 10px;font-weight:700;font-size:clamp(1rem,3.2vw,1.3rem);box-shadow:0 6px 0 var(--bc);line-height:1.35;min-height:96px}
+.bin .bi{display:block;font-size:2rem}
+.bin small{display:block;font-weight:600;color:var(--ink-soft);font-size:.75em}
+.bin:active{transform:translateY(3px);box-shadow:0 3px 0 var(--bc)}
+.bin .cnt{display:inline-block;margin-top:4px;background:var(--bc);color:#fff;border-radius:999px;padding:0 10px;font-size:.85em}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const N = 10;
+/* [icon, text, side(0 ส่วนตน / 1 ส่วนรวม), why] */
+const LV = {
+  1:{ bins:[["🙋","ประโยชน์ส่วนตน","ทำเพื่อตัวเราเอง"],["🤝","ประโยชน์ส่วนรวม","ทำเพื่อทุกคน"]],
+      items:[
+        ["🪥","แปรงฟันหลังอาหารกลางวัน",0,"ทำให้ฟันของเราเองสะอาด"],["📒","ส่งการบ้านทันเวลา",0,"เป็นผลดีกับการเรียนของเราเอง"],["📖","อ่านหนังสือเตรียมสอบ",0,"ช่วยให้เราเองสอบได้ดี"],
+        ["🏃","ออกกำลังกายทุกเช้า",0,"ทำให้ร่างกายของเราแข็งแรง"],["🍱","กินข้าวกลางวันให้หมด",0,"ทำให้ร่างกายเราได้สารอาหาร"],["👟","ผูกเชือกรองเท้าให้แน่น",0,"ช่วยให้เราเดินได้ปลอดภัย"],["🧸","ซื้อของเล่นด้วยเงินเก็บของตัวเอง",0,"ได้ของเล่นสำหรับตัวเราเอง"],
+        ["🧹","ช่วยทำความสะอาดห้องเรียน",1,"ห้องเรียนสะอาด ทุกคนได้ใช้ร่วมกัน"],["🗑️","เก็บขยะรอบบริเวณโรงเรียน",1,"โรงเรียนสะอาดน่าอยู่สำหรับทุกคน"],["🚽","ราดน้ำห้องน้ำให้สะอาดหลังใช้",1,"คนต่อไปได้ใช้ห้องน้ำที่สะอาด"],
+        ["💡","ปิดไฟเมื่อออกจากห้องเรียน",1,"ประหยัดไฟฟ้าของโรงเรียน"],["🚰","ปิดก๊อกน้ำให้สนิท",1,"ประหยัดน้ำที่ทุกคนใช้ร่วมกัน"],["📚","คืนหนังสือห้องสมุดตรงเวลา",1,"เพื่อนคนอื่นจะได้ยืมอ่านต่อ"],["🧍","เข้าแถวรับอาหารตามลำดับ",1,"ทุกคนได้รับความยุติธรรมเท่ากัน"]
+      ]},
+  2:{ bins:[["😈","เห็นแก่ตัวเอง","ส่วนตนเดือดร้อนส่วนรวม"],["🤝","เพื่อส่วนรวม","ทุกคนอยู่ร่วมกันได้ดี"]],
+      items:[
+        ["🚮","ทิ้งขยะบนพื้น",0,"สะดวกตัวเอง แต่ชุมชนสกปรก"],["🏃‍♂️","แซงคิวซื้ออาหาร",0,"ได้ก่อนคนเดียว แต่คนอื่นเสียเปรียบ"],["🚗","ขับรถย้อนศร",0,"ถึงเร็วแต่อาจทำให้คนอื่นเกิดอุบัติเหตุ"],
+        ["🛵","ขับมอเตอร์ไซค์บนทางเท้า",0,"ทางเท้าเป็นของคนเดิน"],["🪧","ติดป้ายโฆษณาข้างถนนโดยไม่ได้รับอนุญาต",0,"ทำให้บ้านเมืองไม่เป็นระเบียบ"],["💐","เดินขายพวงมาลัยกลางถนน",0,"อันตรายและกีดขวางการจราจร"],
+        ["🅿️","จอดรถในที่ห้ามจอด",0,"สะดวกตัวเองแต่กีดขวางคนอื่น"],["🌸","เด็ดดอกไม้ในสวนสาธารณะไปปักแจกันที่บ้าน",0,"ดอกไม้เป็นของส่วนรวม"],
+        ["🧍","เข้าคิวซื้ออาหาร",1,"ทุกคนได้รับตามลำดับอย่างยุติธรรม"],["🗑️","ทิ้งขยะลงถัง",1,"ชุมชนสะอาดน่าอยู่"],["🏪","ขายของในที่ที่ทางราชการกำหนด",1,"ไม่กีดขวางทางของคนอื่น"],
+        ["🚙","ไม่จอดรถซื้อของข้างทาง",1,"รถคันอื่นผ่านไปได้สะดวก"],["🦺","ช่วยขุดลอกคลองในชุมชน",1,"น้ำไหลสะดวก ทุกคนได้ประโยชน์"],["🦓","เดินข้ามถนนตรงทางม้าลาย",1,"ปลอดภัยและเป็นระเบียบ"]
+      ]},
+  3:{ bins:[["⚠️","เอาส่วนรวมมาเป็นของตน","ผลประโยชน์ขัดกัน"],["🛡️","รักษาประโยชน์ส่วนรวม","ไม่เอาเปรียบส่วนรวม"]],
+      items:[
+        ["🪑","นำเก้าอี้ของหมู่บ้านไปใช้ที่บ้านเป็นของส่วนตัว",0,"เก้าอี้เป็นของทุกคนในหมู่บ้าน"],["🚐","ใช้รถประจำหมู่บ้านไปเที่ยวส่วนตัว",0,"รถเป็นของส่วนรวม ไม่ใช่ของตนเอง"],["☎️","ใช้โทรศัพท์ของที่ทำงานโทรคุยธุระส่วนตัว",0,"ใช้ของหลวงเพื่อตัวเอง"],
+        ["🚿","เปิดน้ำประปาของโรงเรียนทิ้งไว้เล่นน้ำ",0,"สิ้นเปลืองน้ำที่ทุกคนใช้ร่วมกัน"],["📝","ลอกการบ้านเพื่อนเพื่อให้ส่งทันเวลา",0,"ได้ประโยชน์ตัวเองโดยไม่ซื่อสัตย์"],["⏰","มาโรงเรียนสายเพราะไม่อยากทำเวร",0,"ปล่อยงานส่วนรวมให้เพื่อนทำแทน"],
+        ["🎈","หัวหน้าห้องเอาเงินห้องไปซื้อขนมกินเอง",0,"เงินห้องเป็นของเพื่อนทุกคน"],
+        ["⚽","เก็บอุปกรณ์กีฬาของโรงเรียนคืนที่เดิม",1,"คนอื่นจะได้ใช้ต่อ"],["🔦","ใช้ไฟฟ้าสาธารณะอย่างประหยัด",1,"ไฟฟ้าเป็นของส่วนรวม"],["🔧","ช่วยซ่อมแซมของใช้ส่วนรวมที่ชำรุด",1,"ของส่วนรวมใช้ได้นานขึ้น"],
+        ["📣","แจ้งผู้ใหญ่บ้านเมื่อเห็นท่อประปาหมู่บ้านแตก",1,"ช่วยรักษาน้ำของทุกคน"],["🧽","ตั้งใจทำเวรให้ห้องเรียนสะอาด",1,"รับผิดชอบงานของส่วนรวม"],["📒","จดรายรับรายจ่ายเงินห้องให้ทุกคนตรวจดูได้",1,"โปร่งใส ทุกคนตรวจสอบได้"],["🙅","ไม่นำของของโรงเรียนกลับบ้าน",1,"ของโรงเรียนเป็นของทุกคน"]
+      ]}
+};
+
+KIT.mount({
+  key:"ac-share", title:"ส่วนตน หรือ ส่วนรวม?", subtitle:"การป้องกันการทุจริต ป.4 · หน่วยที่ 1 การคิดแยกแยะผลประโยชน์ส่วนตนและส่วนรวม",
+  heroHTML:"แยกให้ออก<em>ส่วนตน</em>หรือ<em>ส่วนรวม</em> ⚖️", heroDesc:"อ่านการกระทำบนการ์ด แล้วแตะกล่องที่ถูกต้อง ฝึกคิดแยกแยะผลประโยชน์ส่วนตนกับผลประโยชน์ส่วนรวม",
+  progIcon:"⚖️",
+  howto:["อ่านการกระทำบนการ์ด","แตะกล่องซ้ายหรือขวาที่ถูกต้อง","แตะผิดจะมีคำอธิบาย แล้วลองใหม่ได้","แยกครบ 10 การ์ดผ่านด่าน"],
+  levels:{
+    1:{pill:"10 การ์ด", color:"var(--green)", desc:"ที่โรงเรียน: ทำเพื่อตัวเรา หรือ ทำเพื่อทุกคน"},
+    2:{pill:"10 การ์ด", color:"var(--blue)", desc:"ในชุมชน: เห็นแก่ตัว หรือ เพื่อส่วนรวม"},
+    3:{pill:"10 การ์ด", color:"var(--purple)", desc:"ผลประโยชน์ขัดกัน: เอาของส่วนรวมมาใช้เป็นของตน"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const deck = shuffle([...shuffle(L.items.filter(i=>i[2]===0)).slice(0,5), ...shuffle(L.items.filter(i=>i[2]===1)).slice(0,5)]);
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext">การกระทำนี้อยู่กล่องไหน?</div></div>
+      <div class="ev" id="ev"><div class="ic" id="ic"></div><div class="nm" id="nm"></div></div>
+      <div class="bins">${L.bins.map((b,i)=>`<button class="bin" type="button" data-s="${i}" style="--bc:${i?'#7FD39A':'#F2A65A'}"><span class="bi">${b[0]}</span>${b[1]}<small>${b[2]}</small><span class="cnt" id="c${i}">0</span></button>`).join("")}</div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let idx = 0, lock = false, first = true; const cnt = [0,0];
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 80}); return; }
+      const it = deck[idx]; lock = false; first = true;
+      $("#ev").className = "ev"; $("#ic").textContent = it[0]; $("#nm").textContent = it[1];
+      $("#qn").textContent = `การ์ดที่ ${idx+1} จาก ${N}`;
+    }
+    ctx.stage.querySelector(".bins").addEventListener("click", e => {
+      const b = e.target.closest(".bin"); if (!b || lock) return;
+      const it = deck[idx], s = +b.dataset.s;
+      if (s === it[2]){
+        lock = true; $("#ev").classList.add(s ? "flyR" : "flyL"); cnt[s]++; $("#c"+s).textContent = cnt[s];
+        ctx.correct(first ? 100 : 50, `ถูกต้อง! ${it[3]}`); idx++; ctx.progress(idx, N); ctx.after(1400, next);
+      } else {
+        first = false; const ev = $("#ev"); ev.classList.remove("no"); void ev.offsetWidth; ev.classList.add("no");
+        ctx.wrong(`ลองคิดใหม่ — ${it[3]}`);
+      }
+    });
+    ctx.progress(0, N); ctx.say("เริ่มแยกการ์ดกันเลย!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

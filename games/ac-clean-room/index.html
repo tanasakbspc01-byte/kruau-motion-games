@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เวรวันนี้ ห้องสะอาด</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.room{position:relative;width:100%;aspect-ratio:16/9;border-radius:24px;background:linear-gradient(#FDF3E1 0 58%,#E3C9A3 58%);box-shadow:0 6px 0 #CDAE84;overflow:hidden;margin-top:10px}
+.room .board{position:absolute;left:35%;top:6%;width:30%;height:26%;background:#3E6B4F;border:6px solid #A47F59;border-radius:8px;color:#fff;font-weight:700;display:grid;place-items:center;font-size:clamp(.8rem,2.4vw,1.2rem)}
+.it{position:absolute;transform:translate(-50%,-50%);font-size:clamp(1.8rem,5.5vw,2.6rem);border:none;background:none;padding:4px;line-height:1;border-radius:14px;transition:transform .15s}
+.it.sel{background:rgba(246,205,107,.6);transform:translate(-50%,-50%) scale(1.25);outline:3px solid #E0A93C}
+.it.gone{transform:translate(-50%,-50%) scale(0);opacity:0;transition:.3s}
+.it.no{animation:shake .4s}
+.bins{display:grid;gap:10px;margin-top:12px}
+.bin{border:4px solid var(--bc);background:#fff;border-radius:18px;padding:8px 6px;font-weight:700;font-size:clamp(.85rem,2.6vw,1.05rem);box-shadow:0 5px 0 var(--bc);line-height:1.3}
+.bin .bi{display:block;font-size:1.9rem}
+.bin small{display:block;font-weight:600;color:var(--ink-soft);font-size:.78em}
+.bin:active{transform:translateY(3px)}
+.pick{text-align:center;font-weight:700;min-height:1.6em;margin-top:6px}
+@media (max-width:600px){.room{aspect-ratio:1/1}.room .board{font-size:.75rem}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle, rand} = KIT;
+/* bins: id -> [icon, name, note, color] */
+const BINS = {
+  trash:["🗑️","ถังขยะ","ของที่ไม่ใช้แล้ว","#86B6F0"],
+  keep:["🗄️","เก็บเข้าที่","ของใช้ที่ยังใช้ได้","#F2A65A"],
+  wet:["🟢","ขยะเปียก","ถังสีเขียว เศษอาหาร ใบไม้","#3FAE6A"],
+  rec:["🟡","ขยะรีไซเคิล","ถังสีเหลือง ขาย/นำกลับมาใช้ได้","#E0B030"],
+  gen:["🔵","ขยะทั่วไป","ถังสีน้ำเงิน ย่อยสลายยาก ขายไม่ได้","#3C8DDB"],
+  haz:["🔴","ขยะอันตราย","ถังสีแดง มีสารพิษ","#E06767"]
+};
+/* [icon, name, kind] kind: wet/rec/gen/haz/keep */
+const ITEMS = [
+  ["🍌","เปลือกกล้วย","wet"],["🍚","เศษข้าว","wet"],["🍂","ใบไม้แห้ง","wet"],["🍎","แกนแอปเปิล","wet"],
+  ["🥤","ขวดน้ำพลาสติก","rec"],["🥫","กระป๋องน้ำอัดลม","rec"],["📰","กระดาษหนังสือพิมพ์","rec"],["📦","กล่องกระดาษ","rec"],
+  ["🍬","ซองขนม","gen"],["🧻","ทิชชูใช้แล้ว","gen"],["🥡","กล่องโฟม","gen"],["🛍️","ถุงพลาสติกเปื้อนอาหาร","gen"],
+  ["🔋","ถ่านไฟฉายหมดแล้ว","haz"],["💡","หลอดไฟเสีย","haz"],["🧴","กระป๋องสเปรย์","haz"],
+  ["📚","หนังสือเรียน","keep"],["✏️","ดินสอ","keep"],["🎒","กระเป๋านักเรียน","keep"],["🧹","ไม้กวาด","keep"],["📏","ไม้บรรทัด","keep"]
+];
+const LV = {
+  1:{bins:["trash","keep"], map:k => k==="keep" ? "keep" : "trash", kinds:["wet","rec","gen","keep"], n:10},
+  2:{bins:["wet","rec","gen"], map:k => k, kinds:["wet","rec","gen"], n:12},
+  3:{bins:["wet","rec","gen","haz"], map:k => k, kinds:["wet","rec","gen","haz"], n:14}
+};
+
+KIT.mount({
+  key:"ac-clean", title:"เวรวันนี้ ห้องสะอาด", subtitle:"การป้องกันการทุจริต ป.4 · หน่วยที่ 2 การทำเวร (และการทิ้งขยะให้ถูกที่)",
+  heroHTML:"ทำ<em>เวร</em>ให้ห้องเรียนสะอาด 🧹", heroDesc:"วันนี้เป็นเวรของเรา เก็บขยะในห้องทิ้งให้ถูกถัง และเก็บของใช้เข้าที่ ไม่ปล่อยให้เพื่อนทำแทน",
+  progIcon:"🧹",
+  howto:["แตะของในห้องเรียน 1 ชิ้น","แล้วแตะถังหรือที่เก็บที่ถูกต้อง","ทิ้งผิดถังเสีย 10 คะแนน","เก็บครบทุกชิ้น ห้องสะอาด ผ่านด่าน"],
+  levels:{
+    1:{pill:"10 ชิ้น", color:"var(--green)", desc:"แยก ขยะ กับ ของใช้ที่ต้องเก็บเข้าที่"},
+    2:{pill:"12 ชิ้น", color:"var(--blue)", desc:"แยกขยะ 3 ถัง เปียก / รีไซเคิล / ทั่วไป"},
+    3:{pill:"14 ชิ้น", color:"var(--purple)", desc:"แยกขยะ 4 ถังสี รวมขยะอันตราย"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const pool = ITEMS.filter(x => L.kinds.includes(x[2]));
+    /* make sure every bin gets at least 2 items */
+    let items = [];
+    L.bins.forEach(b => items.push(...shuffle(pool.filter(x => L.map(x[2]) === b)).slice(0,2)));
+    items = shuffle([...items, ...shuffle(pool.filter(x => !items.includes(x))).slice(0, L.n - items.length)]);
+    /* place items on a loose grid so they never overlap */
+    const cells = shuffle(Array.from({length:18},(_,i)=>i).filter(i => !(i>=2 && i<=3) && !(i>=8 && i<=9))).slice(0, items.length);
+    ctx.stage.innerHTML = `<div class="room" id="rm"><div class="board">ห้อง ป.4 · เวรวันนี้ 🧹</div>
+      ${items.map((x,i)=>{ const c = cells[i], col = c % 6, row = Math.floor(c / 6); return `<button class="it" type="button" data-i="${i}" aria-label="${x[1]}" style="left:${10 + col*16 + rand(-3,3)}%;top:${row < 1 ? 22 : row === 1 ? 50 : 78}%">${x[0]}</button>`; }).join("")}</div>
+      <div class="pick" id="pk">แตะของในห้องก่อน</div>
+      <div class="bins" style="grid-template-columns:repeat(${L.bins.length},1fr)">${L.bins.map(b=>{ const B = BINS[b]; return `<button class="bin" type="button" data-b="${b}" style="--bc:${B[3]}"><span class="bi">${B[0]}</span>${B[1]}<small>${B[2]}</small></button>`; }).join("")}</div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let sel = null, done = 0;
+    $("#rm").addEventListener("click", e => {
+      const b = e.target.closest(".it"); if (!b || b.classList.contains("gone")) return;
+      ctx.stage.querySelectorAll(".it.sel").forEach(x => x.classList.remove("sel"));
+      sel = b; b.classList.add("sel"); KIT.sfx.tap();
+      $("#pk").textContent = `เลือก: ${items[+b.dataset.i][0]} ${items[+b.dataset.i][1]} → แตะถังที่ถูกต้อง`;
+    });
+    ctx.stage.querySelector(".bins").addEventListener("click", e => {
+      const b = e.target.closest(".bin"); if (!b) return;
+      if (!sel){ ctx.say("แตะของในห้องก่อน แล้วค่อยแตะถังนะ"); return; }
+      const x = items[+sel.dataset.i], want = L.map(x[2]);
+      if (b.dataset.b === want){
+        sel.classList.remove("sel"); sel.classList.add("gone"); sel = null; done++;
+        ctx.correct(100, `ถูกต้อง! ${x[1]} → ${BINS[want][1]}`); ctx.progress(done, items.length);
+        $("#pk").textContent = done < items.length ? "แตะของชิ้นต่อไป" : "ห้องสะอาดแล้ว! ✨";
+        if (done === items.length) ctx.finish({targetSec: [0,50,70,90][level]});
+      } else {
+        sel.classList.remove("no"); void sel.offsetWidth; sel.classList.add("no");
+        ctx.wrong(`${x[1]} ไม่ใช่${BINS[b.dataset.b][1]} ลองถังอื่นนะ`);
+      }
+    });
+    ctx.progress(0, items.length); ctx.say("ช่วยกันทำเวรให้ห้องสะอาดกัน!");
+  }
+});
+
+})();
+</script>
+</body>
+</html>
