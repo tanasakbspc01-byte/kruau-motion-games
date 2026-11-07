@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เก็บใบตองดี</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="block.css">
+<style>
+.field{position:relative;width:100%;height:clamp(400px,64vh,540px);background:linear-gradient(#9ED8FF,#E9F7FF 70%,#8BD46B 70%);border:4px solid var(--block);border-radius:10px;box-shadow:0 6px 0 var(--block);overflow:hidden;touch-action:none;user-select:none}
+.leaf{position:absolute;transform:translateX(-50%);text-align:center;width:120px;pointer-events:none}
+.leaf .e{display:block;font-size:2.6rem;line-height:1}
+.leaf .t{display:inline-block;background:#fff;border:2px solid var(--block);border-radius:6px;padding:1px 6px;font-weight:800;font-size:.78rem;line-height:1.25}
+.bk{position:absolute;bottom:8px;width:110px;height:64px;transform:translateX(-50%);display:flex;align-items:flex-end;justify-content:center;pointer-events:none}
+.bk .bs{font-size:3rem;line-height:1}
+.bk .av{position:absolute;bottom:40px;width:32px;height:44px}
+.pad{display:flex;justify-content:center;gap:16px;margin-top:10px}
+.pad .btn{min-width:110px;font-size:1.4rem}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script src="block.js"></script>
+<script>
+(function(){
+const {pick, rand} = KIT;
+const NEED = 10;
+const GOOD = [["🍃","ใบตองสด สีเขียว"],["🍃","ใบเต็มแผ่น ไม่ฉีกขาด"],["🍃","ใบตองตานี เหนียว เป็นมัน"],["🍃","ใบไม่มีรอยช้ำ"],["🍃","เช็ดสะอาดแล้ว"]];
+const BADL = [["🍂","ใบฉีกขาด"],["🍂","ใบเหลืองเหี่ยว"],["🥀","ใบมีรอยช้ำดำ"],["🍂","ใบมีรูแมลงกัด"]];
+const TRICK = [["🍃","ใบอ่อนเกินไป ฉีกง่าย"],["🍃","ใบมีรอยช้ำนิดหน่อย"],["🍃","ใบมีรอยขาดเล็ก ๆ"]];
+const LV = {1:{speed:95, gap:1250, icons:true}, 2:{speed:125, gap:1050, icons:true}, 3:{speed:150, gap:900, icons:false}};
+
+BK.mount({
+  key:"w-catch", title:"เก็บใบตองดี", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 5 งานประดิษฐ์จากใบตอง (การเลือกใบตอง)",
+  heroHTML:"รับ<em>ใบตองดี</em> หลบใบตองเสีย 🧺", heroDesc:"ใบตองร่วงลงมาจากต้นกล้วย เลื่อนตะกร้ารับเฉพาะใบตองที่เหมาะกับงานประดิษฐ์",
+  progIcon:"🧺",
+  howto:["เลื่อนตะกร้าด้วยการลากนิ้ว เลื่อนเมาส์ ปุ่ม ◀ ▶ หรือปุ่มลูกศร","รับใบตองดี: สด เขียว ไม่ฉีกขาด ไม่ช้ำ","รับใบตองเสียเสียหัวใจ ❤️","รับใบดีครบ 10 ใบผ่านด่าน"],
+  levels:{
+    1:{pill:"10 ใบ", color:"var(--green)", desc:"ร่วงช้า ใบเสียเป็นสีน้ำตาล ดูง่าย"},
+    2:{pill:"10 ใบ", color:"var(--blue)", desc:"ร่วงเร็วขึ้น"},
+    3:{pill:"10 ใบ", color:"var(--purple)", desc:"ร่วงเร็ว ใบทุกใบสีเขียว ต้องอ่านป้ายให้ดี"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    ctx.stage.innerHTML = `<div class="field" id="fd"><div class="bk" id="bk"><span class="av">${BK.avatar(BK.shirtFor(ctx.name))}</span><span class="bs">🧺</span></div></div>
+      <div class="pad"><button class="btn" type="button" id="lf">◀</button><button class="btn" type="button" id="rt">▶</button></div>`;
+    const $ = s => ctx.stage.querySelector(s), fd = $("#fd"), bk = $("#bk");
+    let x = .5, dir = 0, leaves = [], got = 0, last = 0, spawnT = 0, raf = 0;
+    const W = () => fd.clientWidth, H = () => fd.clientHeight;
+    const place = () => { x = Math.max(.08, Math.min(.92, x)); bk.style.left = (x*100) + "%"; }; place();
+    fd.addEventListener("pointermove", e => { if (e.pointerType === "mouse" || e.buttons){ const r = fd.getBoundingClientRect(); x = (e.clientX - r.left)/r.width; place(); } });
+    fd.addEventListener("pointerdown", e => { const r = fd.getBoundingClientRect(); x = (e.clientX - r.left)/r.width; place(); });
+    const hold = (el, d) => { el.addEventListener("pointerdown", () => dir = d); ["pointerup","pointerleave","pointercancel"].forEach(t => el.addEventListener(t, () => dir = 0)); };
+    hold($("#lf"), -1); hold($("#rt"), 1);
+    const kd = e => { if (e.key === "ArrowLeft") dir = -1; if (e.key === "ArrowRight") dir = 1; }, ku = e => { if (e.key === "ArrowLeft" || e.key === "ArrowRight") dir = 0; };
+    document.addEventListener("keydown", kd); document.addEventListener("keyup", ku);
+    ctx.cleanup(() => { cancelAnimationFrame(raf); document.removeEventListener("keydown", kd); document.removeEventListener("keyup", ku); });
+    function spawn(){
+      const good = Math.random() < .55;
+      const it = good ? pick(GOOD) : (level === 3 && Math.random() < .5 ? pick(TRICK) : pick(BADL));
+      const icon = L.icons ? it[0] : "🍃";
+      const el = document.createElement("div"); el.className = "leaf"; el.innerHTML = `<span class="e">${icon}</span><span class="t">${it[1]}</span>`;
+      const lx = .1 + Math.random()*.8; el.style.left = (lx*100) + "%"; fd.appendChild(el);
+      leaves.push({el, x:lx, y:-60, good, it, sw:Math.random()*6});
+    }
+    function loop(t){
+      if (!ctx.alive()) return;
+      const dt = Math.min(.05, (t - (last||t))/1000); last = t;
+      if (dir){ x += dir*dt*0.9; place(); }
+      spawnT -= dt*1000; if (spawnT <= 0 && got < NEED){ spawn(); spawnT = L.gap + rand(0,300); }
+      const h = H(), w = W();
+      leaves = leaves.filter(l => {
+        l.y += L.speed*dt; l.sw += dt*2.2;
+        l.el.style.top = l.y + "px"; l.el.style.marginLeft = (Math.sin(l.sw)*10) + "px";
+        if (l.y > h - 120 && l.y < h - 60 && Math.abs(l.x - x)*w < 62){
+          l.el.remove();
+          if (l.good){ got++; ctx.correct(100, `รับได้! ${l.it[1]} ✔`); ctx.progress(got, NEED); if (got >= NEED) ctx.finish({targetSec: 60}); }
+          else ctx.wrong(`โอ๊ะ! "${l.it[1]}" ไม่เหมาะกับงานประดิษฐ์`);
+          return false;
+        }
+        if (l.y > h + 10){ l.el.remove(); return false; }
+        return true;
+      });
+      raf = requestAnimationFrame(loop);
+    }
+    ctx.progress(0, NEED); ctx.say("เลื่อนตะกร้ารับใบตองดี!");
+    raf = requestAnimationFrame(loop);
+  }
+});
+
+})();
+</script>
+</body>
+</html>

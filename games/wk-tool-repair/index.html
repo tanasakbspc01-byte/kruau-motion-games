@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ช่างซ่อมประจำเซิร์ฟเวอร์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="block.css">
+<style>
+.npc{display:flex;gap:12px;align-items:center;width:100%;background:#fff;border:4px solid var(--block);border-radius:10px;box-shadow:0 6px 0 var(--block);padding:12px}
+.npc .av{width:60px;height:84px;flex:none}
+.npc .bub{flex:1;background:#FFF7D6;border:3px solid var(--block);border-radius:8px;padding:10px 12px;font-weight:800;font-size:clamp(1.05rem,3.4vw,1.35rem);line-height:1.45;position:relative}
+.npc .bub small{display:block;font-size:.7em;color:var(--ink-soft);font-weight:700}
+.npc .e{font-size:1.6em}
+.inv{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px;margin-top:14px;background:#1F2A44;border-radius:10px;padding:10px;width:100%}
+.slot{border:3px solid #4F5B76;background:#2E3B5C;color:#fff;border-radius:6px;padding:8px 4px;font-weight:700;font-size:clamp(.75rem,2.3vw,.9rem);line-height:1.25;min-height:84px}
+.slot .e{display:block;font-size:2rem}
+.slot:active{transform:translateY(3px)}
+.slot.ok{border-color:#3DBE5A;background:#2F6B45}
+.slot.no{animation:shake .4s;border-color:#E5484D}
+.slot:disabled{opacity:.35}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script src="block.js"></script>
+<script>
+(function(){
+const {shuffle, pick} = KIT;
+const N = 10;
+const TOOLS = {
+  hammer:["🔨","ค้อน"], screw:["🪛","ไขควง"], plier:["🗜️","คีม"], saw:["🪚","เลื่อย"], tape:["📏","ตลับเมตร"],
+  drill:["🔩","สว่าน"], wrench:["🔧","ประแจ"], chisel:["🛠️","สิ่ว"], plane:["🪵","กบไสไม้"], glue:["🧴","กาวลาเท็กซ์"], cello:["🩹","เทปใส"], square:["📐","ฉาก"]
+};
+const CHANG = {elec:["⚡","ช่างไฟฟ้า"], plumb:["🚰","ช่างประปา"], wood:["🪚","ช่างไม้"], engine:["🛵","ช่างซ่อมเครื่องยนต์"]};
+/* [need, request, tool] */
+const REQ = [
+  ["🪑","ขาเก้าอี้หลวม อยากตอกตะปูยึดให้แน่น","hammer"],["🖼️","อยากตอกตะปูบนผนังไม้เพื่อแขวนรูป","hammer"],
+  ["🚪","สกรูบานพับประตูหลวม ต้องขันให้แน่น","screw"],["🗄️","มือจับลิ้นชักโยก ต้องขันสกรูให้แน่น","screw"],
+  ["➰","ต้องการตัดลวดให้สั้นลง","plier"],["🪝","ต้องการดัดลวดเป็นตะขอแขวนของ","plier"],
+  ["🪵","ต้องการตัดไม้ให้สั้นลง","saw"],["🌳","ต้องการตัดกิ่งไม้ที่ยื่นมาเกะกะ","saw"],
+  ["🏫","ต้องการวัดขนาดความกว้างของห้องเรียน","tape"],["📏","ต้องการวัดความสูงของขาโต๊ะ","tape"],
+  ["🧱","ต้องการเจาะรูที่ผนังเพื่อติดชั้นวางของ","drill"],
+  ["🚲","นอตหกเหลี่ยมที่ล้อจักรยานหลวม","wrench"],
+  ["🗿","ต้องการแกะสลักลวดลายบนแผ่นไม้","chisel"],
+  ["🪵","ผิวไม้ขรุขระ ต้องการไสให้เรียบ","plane"],
+  ["🪑","ไม้เก้าอี้มีรอยแตกเล็ก ๆ ต้องทากาวยึด","glue"],
+  ["📕","ปกหนังสือเรียนขาด ต้องการซ่อม","cello"],
+  ["📦","ต้องการตรวจว่ามุมกล่องไม้ได้มุมฉากหรือไม่","square"]
+];
+const CREQ = [
+  ["📺","โทรทัศน์ที่บ้านเปิดไม่ติด","elec"],["💡","หลอดไฟและปลั๊กไฟในบ้านเสีย","elec"],
+  ["🚿","ท่อน้ำใต้อ่างล้างหน้ารั่ว","plumb"],["🚽","ชักโครกกดน้ำไม่ลง","plumb"],
+  ["🚪","บานประตูไม้ผุ ต้องเปลี่ยนใหม่","wood"],["🪑","ต้องการต่อโต๊ะไม้ตัวใหม่","wood"],
+  ["🛵","รถจักรยานยนต์สตาร์ทไม่ติด","engine"],["🚗","เครื่องยนต์รถยนต์มีเสียงดังผิดปกติ","engine"]
+];
+const LV = {
+  1:{tools:["hammer","screw","plier","saw","tape"], chang:0},
+  2:{tools:["hammer","screw","plier","saw","tape","drill","wrench","cello"], chang:0},
+  3:{tools:Object.keys(TOOLS), chang:3}
+};
+
+BK.mount({
+  key:"w-tools", title:"ช่างซ่อมประจำเซิร์ฟเวอร์", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 4 ซ่อมแซมอุปกรณ์",
+  heroHTML:"หยิบ<em>เครื่องมือช่าง</em>ให้ถูกงาน 🛠️", heroDesc:"ชาวบ้านในเซิร์ฟเวอร์มาขอให้ช่วยซ่อมของ เลือกเครื่องมือจากช่องเก็บของให้เหมาะกับงาน",
+  progIcon:"🛠️",
+  howto:["อ่านคำขอของชาวบ้าน","แตะเครื่องมือในช่องเก็บของที่เหมาะกับงาน","เลือกผิดเสียหัวใจ ❤️","ช่วยครบ 10 คนผ่านด่าน (ด่านตำนานมีให้เลือกช่างด้วย)"],
+  levels:{
+    1:{pill:"10 งาน", color:"var(--green)", desc:"5 เครื่องมือพื้นฐาน: ค้อน ไขควง คีม เลื่อย ตลับเมตร"},
+    2:{pill:"10 งาน", color:"var(--blue)", desc:"8 เครื่องมือ เพิ่มสว่าน ประแจ เทปใส"},
+    3:{pill:"10 งาน", color:"var(--purple)", desc:"12 เครื่องมือ + เลือกช่าง (ไฟฟ้า ประปา ไม้ เครื่องยนต์)"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    let deck = shuffle(REQ.filter(r => L.tools.includes(r[2]))).slice(0, N - L.chang).map(r => ({k:"t", r}));
+    deck = shuffle([...deck, ...shuffle(CREQ.slice()).slice(0, L.chang).map(r => ({k:"c", r}))]);
+    ctx.stage.innerHTML = `<div class="npc"><div class="av" id="av"></div><div class="bub" id="bb"></div></div><div class="inv" id="iv"></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    const shirts = ["#FF9F1C","#00B8D9","#8B5CF6","#E5484D","#3DBE5A"];
+    let idx = 0, first = true, lock = false;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 110 : 85}); return; }
+      const d = deck[idx]; first = true; lock = false;
+      $("#av").innerHTML = BK.avatar(pick(shirts), "#4F5B76");
+      $("#bb").innerHTML = `<small>ชาวบ้านคนที่ ${idx+1} จาก ${N}${d.k === "c" ? " · ต้องเรียกช่างประเภทไหน?" : " · ใช้เครื่องมืออะไรดี?"}</small><span class="e">${d.r[0]}</span> ${d.r[1]}`;
+      const list = d.k === "c" ? Object.entries(CHANG) : L.tools.map(k => [k, TOOLS[k]]);
+      $("#iv").innerHTML = list.map(([k,v]) => `<button class="slot" type="button" data-k="${k}"><span class="e">${v[0]}</span>${v[1]}</button>`).join("");
+    }
+    $("#iv").addEventListener("click", e => {
+      const b = e.target.closest(".slot"); if (!b || b.disabled || lock) return;
+      const d = deck[idx], name = (d.k === "c" ? CHANG : TOOLS)[d.r[2]][1];
+      if (b.dataset.k === d.r[2]){
+        lock = true; b.classList.add("ok"); ctx.correct(first ? 100 : 50, `ถูกต้อง! ใช้${name} 👍`); idx++; ctx.progress(idx, N); ctx.after(1100, next);
+      } else {
+        first = false; b.disabled = true; b.classList.add("no"); ctx.wrong(`${b.textContent.trim()} ไม่เหมาะกับงานนี้`);
+      }
+    });
+    ctx.progress(0, N); ctx.say("มีชาวบ้านมาขอความช่วยเหลือ!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

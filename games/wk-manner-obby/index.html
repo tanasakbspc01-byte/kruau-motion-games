@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Obby มารยาทเด็กดี</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="block.css">
+<style>
+.sky{position:relative;background:linear-gradient(#8FD3FF,#D8F0FF);border:4px solid var(--block);border-radius:10px;box-shadow:0 6px 0 var(--block);padding:14px 12px 16px;width:100%}
+.sit{background:#fff;border:3px solid var(--block);border-radius:8px;padding:10px 12px;text-align:center;font-weight:700;font-size:clamp(1.05rem,3.4vw,1.35rem);line-height:1.45}
+.sit .tag{display:inline-block;background:#1F2A44;color:#FFD23F;border-radius:6px;padding:0 10px;font-size:.75em;margin-bottom:4px}
+.sit .e{display:block;font-size:2.4rem;line-height:1.1}
+.plats{display:grid;gap:14px;margin-top:16px}
+.pl{position:relative;border:none;background:none;padding:0;text-align:left}
+.pl .top{display:block;background:#fff;border:4px solid var(--block);border-bottom:none;border-radius:8px 8px 0 0;padding:10px 12px;font-weight:700;font-size:clamp(.95rem,3vw,1.12rem);line-height:1.4;min-height:58px}
+.pl .base{display:block;height:16px;background:var(--pc);border:4px solid var(--block);border-radius:0 0 6px 6px;box-shadow:0 5px 0 var(--block)}
+.pl.ok .top{background:#D7F8DF}
+.pl.bad{animation:drop .7s forwards}
+@keyframes drop{40%{transform:translateY(10px) rotate(2deg)}100%{transform:translateY(0);opacity:.45}}
+.pl:disabled{cursor:default}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script src="block.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const N = 10;
+const COLORS = ["#3DBE5A","#2F80ED","#FF9F1C","#8B5CF6"];
+/* [area, icon, situation, best, wrongs[3], why, hard] */
+const BANK = [
+  ["ต้อนรับแขก","🚪","มีแขกมาหาคุณพ่อที่บ้าน","ไหว้และกล่าวสวัสดีครับ/ค่ะ แล้วเชิญแขกนั่ง",["วิ่งหนีเข้าห้อง","มองหน้าแล้วเดินผ่านไป","ตะโกนเรียกพ่อเสียงดัง"],"แสดงความเคารพและต้อนรับแขกอย่างสุภาพ",0],
+  ["ต้อนรับแขก","🥤","แขกนั่งรอคุณแม่อยู่ในห้องรับแขก","นำน้ำดื่มใส่แก้วพอประมาณ วางบนถาดมาเสิร์ฟ",["ยื่นขวดน้ำให้แขกเปิดดื่มเอง","ถามแขกว่าจะกินน้ำไหม แล้วไปเล่นต่อ","รินน้ำจนล้นแก้ว"],"เสิร์ฟน้ำด้วยถาด ไม่เต็มแก้วจนหก",0],
+  ["ต้อนรับแขก","📺","พ่อแม่คุยธุระกับแขกในห้องนั่งเล่น แต่เราอยากดูทีวีในห้องนั้น","ขอตัวไปเล่นที่อื่นก่อน",["เปิดทีวีเสียงเบา ๆ","นั่งฟังผู้ใหญ่คุยด้วย","เปิดทีวีแต่ปิดเสียง"],"ไม่รบกวนการพูดคุยธุระของผู้ใหญ่",1],
+  ["ต้อนรับแขก","👋","แขกกำลังจะกลับบ้าน","ไหว้ลาและเดินไปส่งแขกที่ประตู",["นั่งดูโทรศัพท์ต่อ","รีบปิดประตูตามหลังแขก","บอกแขกว่าให้กลับเร็ว ๆ"],"ส่งแขกอย่างมีมารยาท",0],
+  ["ต้อนรับแขก","🙏","จะไหว้แขกผู้ใหญ่แบบผู้หญิง","ถอยเท้าไปข้างหลังเล็กน้อย ย่อตัวลง ยกมือพนมให้นิ้วชี้จรดระหว่างคิ้ว",["โบกมือทักทาย","ยกมือพนมไว้ที่อก ไม่ก้มศีรษะ","ไหว้ขณะเดินผ่านไปเร็ว ๆ"],"การไหว้ผู้ใหญ่ ปลายนิ้วชี้จรดระหว่างคิ้ว",1],
+  ["รับประทานอาหาร","🥄","กินข้าวกับครอบครัว มีกับข้าววางรวมกัน","ใช้ช้อนกลางตักกับข้าว",["ใช้ช้อนของตัวเองตักกับข้าว","เอื้อมมือข้ามจานคนอื่นไปตัก","ตักกับข้าวที่ชอบไว้คนเดียว"],"ช้อนกลางช่วยให้ถูกสุขลักษณะ",0],
+  ["รับประทานอาหาร","😮","มีอาหารอยู่ในปาก แต่อยากเล่าเรื่องให้เพื่อนฟัง","เคี้ยวและกลืนให้หมดก่อน แล้วค่อยพูด",["ใช้มือปิดปากแล้วพูด","พูดเลยเพราะเรื่องสำคัญ","อ้าปากหัวเราะเสียงดัง"],"ไม่พูดขณะมีอาหารในปาก",0],
+  ["รับประทานอาหาร","🍽️","กินข้าวเสร็จแล้ว","รวบช้อนส้อมไว้ด้วยกันในจาน",["วางช้อนส้อมไขว้กัน","ทิ้งช้อนไว้บนโต๊ะ","ลุกออกไปทันที ทิ้งจานไว้"],"รวบช้อนส้อมแสดงว่ากินเสร็จแล้ว",1],
+  ["รับประทานอาหาร","🍜","อาหารร้อนมาก","รอให้อาหารเย็นลงเล็กน้อยแล้วค่อยกิน",["เป่าอาหารแรง ๆ จนกระเด็น","ซดเสียงดัง","คายอาหารออกมาบนโต๊ะ"],"ไม่ทำเสียงดังหรือเลอะเทอะขณะกิน",1],
+  ["รับประทานอาหาร","🍚","ตักอาหารใส่จานของตัวเอง","ตักแต่พอดีและกินให้หมด",["ตักเยอะ ๆ ไว้ก่อน กินไม่หมดก็ทิ้ง","ตักแต่ของที่ชอบจนหมดถาด","ใช้มือหยิบอาหาร"],"ตักพอดีไม่เหลือทิ้ง",0],
+  ["ในห้องเรียน","👩‍🏫","ครูกำลังสอนหน้าห้อง","ตั้งใจฟังและจดบันทึก",["คุยกับเพื่อนข้าง ๆ","ลุกเดินไปหาเพื่อน","แอบกินขนมใต้โต๊ะ"],"ตั้งใจเรียนขณะครูสอน",0],
+  ["ในห้องเรียน","🙋","อยากถามครูระหว่างเรียน","ยกมือขออนุญาตก่อนพูด",["ตะโกนถามจากที่นั่ง","เดินไปดึงแขนครู","ถามเพื่อนเสียงดังแทน"],"ยกมือแสดงความสุภาพ",0],
+  ["ในห้องเรียน","✏️","เพื่อนบอกว่าโต๊ะเรียนเป็นของเรา ขีดเขียนได้","ไม่ขีดเขียน เพราะโต๊ะเป็นของโรงเรียน รุ่นน้องต้องใช้ต่อ",["ขีดเขียนได้ เพราะไม่มีใครเดือดร้อน","ขีดเขียนได้ เพราะเป็นโต๊ะของเรา","ขีดได้นิดหน่อยถ้าครูไม่เห็น"],"ช่วยรักษาของส่วนรวม",1],
+  ["ในห้องเรียน","🧃","อยากดื่มนมตอนกำลังเรียน","รอดื่มตอนพักตามข้อตกลงของห้อง",["ดื่มเลยเพราะหิว","แอบดื่มใต้โต๊ะ","เดินออกไปดื่มนอกห้องโดยไม่บอก"],"ไม่นำอาหารเข้ามากินระหว่างเรียน",1],
+  ["ห้องน้ำ","🚽","ใช้ห้องน้ำเสร็จแล้ว","กดชักโครกหรือราดน้ำให้สะอาด แล้วล้างมือ",["รีบออกมาเลย","ราดน้ำแต่ไม่ล้างมือ","ปล่อยให้คนต่อไปราดแทน"],"รักษาความสะอาดของห้องน้ำ",0],
+  ["ห้องน้ำ","🧻","ในห้องน้ำมีป้ายห้ามทิ้งกระดาษชำระลงโถ","ทิ้งกระดาษชำระลงถังขยะ",["ทิ้งลงโถ เพราะกดน้ำก็ไหลไป","ทิ้งไว้บนพื้น","ยัดไว้หลังโถ"],"กระดาษบางชนิดไม่ละลายน้ำ ทำให้ท่ออุดตัน",1],
+  ["ห้องน้ำ","🚶","มีคนรอใช้ห้องน้ำต่อแถวอยู่","ใช้ห้องน้ำให้เสร็จโดยเร็วและต่อแถวตามลำดับ",["เล่นโทรศัพท์ในห้องน้ำนาน ๆ","แซงคิวเพื่อน","เคาะประตูเร่งคนข้างใน"],"เกรงใจผู้อื่นที่รอใช้",1],
+  ["ห้องน้ำ","💧","ล้างมือเสร็จ แต่น้ำยังไหลอยู่","ปิดก๊อกน้ำให้สนิท",["ปล่อยไว้ เดี๋ยวคนต่อไปใช้","ปิดครึ่งเดียว","ใช้น้ำเล่นสาดเพื่อน"],"ประหยัดน้ำของส่วนรวม",0]
+];
+const LV = {1:{opts:2, hard:false}, 2:{opts:3, hard:true}, 3:{opts:4, hard:true}};
+
+BK.mount({
+  key:"w-manner", title:"Obby มารยาทเด็กดี", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 2 มารยาทเด็กดี",
+  heroHTML:"กระโดดบน<em>แพลตฟอร์มมารยาทดี</em> 🙏", heroDesc:"อ่านสถานการณ์ แล้วกระโดดไปยังแพลตฟอร์มที่เป็นมารยาทที่ดี ถ้าเลือกผิด แพลตฟอร์มจะร่วง!",
+  progIcon:"🙏",
+  howto:["อ่านสถานการณ์: ต้อนรับแขก กินข้าว ในห้องเรียน ห้องน้ำ","แตะแพลตฟอร์มที่เป็นมารยาทที่ดีที่สุด","เลือกผิดแพลตฟอร์มร่วง เสียหัวใจ ❤️","ผ่าน 10 ด่านถึงธงชัย"],
+  levels:{
+    1:{pill:"10 ด่าน", color:"var(--green)", desc:"2 แพลตฟอร์ม เรื่องใกล้ตัว"},
+    2:{pill:"10 ด่าน", color:"var(--blue)", desc:"3 แพลตฟอร์ม มีเรื่องที่ต้องคิดมากขึ้น"},
+    3:{pill:"10 ด่าน", color:"var(--purple)", desc:"4 แพลตฟอร์ม ตัวเลือกหลอกเยอะ"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const pool = BANK.filter(b => L.hard || !b[6]);
+    const deck = shuffle(pool.slice()).slice(0, N);
+    ctx.stage.innerHTML = `<div class="sky"><div class="qlabel" id="qn" style="text-align:center;font-weight:700"></div><div class="sit" id="st"></div><div class="plats" id="pl"></div></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let idx = 0, first = true;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===1 ? 80 : 120}); return; }
+      const [area, ic, sit, best, wr] = deck[idx]; first = true;
+      const opts = shuffle([best, ...shuffle(wr.slice()).slice(0, L.opts-1)]);
+      $("#qn").textContent = `ด่าน ${idx+1} จาก ${N}`;
+      $("#st").innerHTML = `<span class="tag">${area}</span><span class="e">${ic}</span>${KIT.esc(sit)} — ควรทำอย่างไร?`;
+      $("#pl").style.gridTemplateColumns = L.opts === 4 ? "1fr 1fr" : "1fr";
+      $("#pl").innerHTML = opts.map((o,i)=>`<button class="pl" type="button" data-ok="${o===best?1:0}" style="--pc:${COLORS[i]}"><span class="top">${KIT.esc(o)}</span><span class="base"></span></button>`).join("");
+    }
+    $("#pl").addEventListener("click", e => {
+      const b = e.target.closest(".pl"); if (!b || b.disabled) return;
+      const it = deck[idx];
+      if (b.dataset.ok === "1"){
+        b.classList.add("ok"); ctx.stage.querySelectorAll(".pl").forEach(x => x.disabled = true);
+        ctx.correct(first ? 100 : 50, `กระโดดถูก! ${it[5]}`); idx++; ctx.progress(idx, N); ctx.after(1200, next);
+      } else {
+        first = false; b.disabled = true; b.classList.add("bad");
+        ctx.wrong(`แพลตฟอร์มร่วง! ลองคิดใหม่ — ${it[5]}`);
+      }
+    });
+    ctx.progress(0, N); ctx.say("พร้อมกระโดดแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

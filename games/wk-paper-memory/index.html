@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>การ์ดจับคู่งานกระดาษ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="block.css">
+<style>
+.grid{width:100%;display:grid;gap:8px;margin:10px auto 0;max-width:640px;perspective:800px}
+.card{position:relative;aspect-ratio:4/5;border:none;background:none;padding:0}
+.card .in{position:absolute;inset:0;transition:transform .35s;transform-style:preserve-3d}
+.card.up .in,.card.ok .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border:4px solid var(--block);border-radius:8px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;box-shadow:0 4px 0 var(--block)}
+.back{background:#2F80ED;background-image:linear-gradient(45deg,rgba(255,255,255,.18) 25%,transparent 25% 50%,rgba(255,255,255,.18) 50% 75%,transparent 75%);background-size:22px 22px}
+.back::after{content:"?";color:#fff;font-weight:900;font-size:clamp(1.6rem,6vw,2.4rem);text-shadow:0 3px 0 #1F2A44}
+.front{background:#fff;transform:rotateY(180deg);font-weight:800;font-size:clamp(.66rem,2.1vw,.88rem);line-height:1.25;text-align:center}
+.front .e{font-size:clamp(1.4rem,5vw,2rem);line-height:1.1}
+.front.b{background:#FFF7D6}
+.card.ok .face.front{background:#D7F8DF;border-color:#1E8E3E}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script src="block.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+/* [icon A, A, icon B, B] */
+const PAIRS = [
+  ["🌸","กระดาษสา","🌺","ดอกไม้ประดิษฐ์ กลีบบาง"],
+  ["📦","กระดาษลูกฟูก","✏️","กล่องใส่ดินสอ แข็งแรง"],
+  ["🌈","กระดาษสี","🦋","ผีเสื้อแปะผนัง"],
+  ["🎁","กระดาษห่อของขวัญ","🎀","ห่อของขวัญ"],
+  ["📰","หนังสือพิมพ์เก่า","🛍️","ถุงกระดาษ"],
+  ["🕳️","เครื่องเจาะกระดาษ","🔖","เจาะรูร้อยริบบิ้น"],
+  ["🧴","กาวลาเท็กซ์","🧩","ติดกระดาษให้แน่น"],
+  ["🔪","คัตเตอร์","📐","ตัดกระดาษแข็งให้ตรง"],
+  ["🖌️","พู่กัน","🎨","ระบายสีชิ้นงาน"],
+  ["✂️","กรรไกร","〰️","ตัดเป็นรูปโค้ง"]
+];
+const LV = {1:{n:4, cols:4, peek:4, pool:[0,1,2,3,4]}, 2:{n:6, cols:4, peek:3, pool:[0,1,2,3,4,5,6,7,8,9]}, 3:{n:8, cols:4, peek:0, pool:[0,1,2,3,4,5,6,7,8,9]}};
+
+BK.mount({
+  key:"w-memory", title:"การ์ดจับคู่งานกระดาษ", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 6 งานประดิษฐ์จากกระดาษ",
+  heroHTML:"จำให้แม่น <em>จับคู่</em>ให้ครบ 🃏", heroDesc:"เปิดการ์ดทีละ 2 ใบ จับคู่ชนิดกระดาษกับผลงาน และเครื่องมือกับวิธีใช้",
+  progIcon:"🃏",
+  howto:["ตอนเริ่มได้ดูการ์ดทั้งหมดแป๊บหนึ่ง (มือใหม่และโปร)","แตะเปิดการ์ดทีละ 2 ใบ","คู่ที่ถูก: กระดาษ ↔ ผลงาน หรือ เครื่องมือ ↔ วิธีใช้","เปิดผิดทั้งที่เคยเห็นการ์ดคู่ของมันแล้ว เสียหัวใจ ❤️"],
+  levels:{
+    1:{pill:"4 คู่", color:"var(--green)", desc:"ชนิดกระดาษกับผลงาน ดูก่อน 4 วินาที"},
+    2:{pill:"6 คู่", color:"var(--blue)", desc:"รวมเครื่องมือ ดูก่อน 3 วินาที"},
+    3:{pill:"8 คู่", color:"var(--purple)", desc:"16 การ์ด ไม่มีให้ดูก่อน"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const pairs = shuffle(L.pool.slice()).slice(0, L.n);
+    const deck = shuffle(pairs.flatMap(p => [{p, s:0}, {p, s:1}]));
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">จับคู่ให้ครบ ${L.n} คู่</div><div class="qtext" id="st">ดูการ์ดให้ดีนะ…</div></div>
+      <div class="grid" id="gd" style="grid-template-columns:repeat(${L.cols},1fr)">${deck.map((c,i)=>{ const P = PAIRS[c.p]; return `<button class="card" type="button" data-i="${i}" aria-label="การ์ดใบที่ ${i+1}"><div class="in"><div class="face back"></div><div class="face front ${c.s ? "b" : ""}"><span class="e">${c.s ? P[2] : P[0]}</span>${c.s ? P[3] : P[1]}</div></div></button>`; }).join("")}</div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    const cards = [...ctx.stage.querySelectorAll(".card")];
+    const seen = new Set(); let open = [], lock = true, got = 0;
+    const start = () => { cards.forEach(c => c.classList.remove("up")); lock = false; $("#st").textContent = "แตะเปิดการ์ดได้เลย!"; };
+    if (L.peek){ cards.forEach(c => c.classList.add("up")); ctx.after(L.peek*1000, start); } else start();
+    $("#gd").addEventListener("click", e => {
+      const c = e.target.closest(".card"); if (!c || lock || c.classList.contains("up") || c.classList.contains("ok")) return;
+      KIT.sfx.tap(); c.classList.add("up"); open.push(c);
+      if (open.length < 2) return;
+      lock = true;
+      const [a,b] = open, A = deck[+a.dataset.i], B = deck[+b.dataset.i];
+      if (A.p === B.p && A.s !== B.s){
+        ctx.after(300, () => { a.classList.add("ok"); b.classList.add("ok"); a.classList.remove("up"); b.classList.remove("up"); got++;
+          const P = PAIRS[A.p]; ctx.correct(100, `คู่กัน! ${P[1]} ↔ ${P[3]}`); ctx.progress(got, L.n); $("#st").textContent = `ได้แล้ว ${got} คู่`;
+          open = []; lock = false; if (got === L.n) ctx.finish({targetSec: [0,40,70,110][level]}); });
+      } else {
+        const ia = +a.dataset.i;
+        const slip = [...seen].some(k => k !== ia && deck[k].p === A.p);
+        if (slip) ctx.wrong("เคยเห็นการ์ดคู่ของใบแรกแล้วนะ ลองนึกตำแหน่งดู", 5); else ctx.say("ยังไม่ใช่คู่กัน จำตำแหน่งไว้นะ");
+        seen.add(ia); seen.add(+b.dataset.i);
+        ctx.after(900, () => { a.classList.remove("up"); b.classList.remove("up"); open = []; lock = false; });
+      }
+    });
+    ctx.progress(0, L.n);
+  }
+});
+
+})();
+</script>
+</body>
+</html>

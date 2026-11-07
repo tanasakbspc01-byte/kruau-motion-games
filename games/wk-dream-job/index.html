@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ไขปริศนาอาชีพในฝัน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="block.css">
+<style>
+.box{width:100%;background:#1F2A44;border:4px solid var(--block);border-radius:10px;box-shadow:0 6px 0 #0E1424;padding:14px;color:#fff}
+.box h3{text-align:center;color:#FFD23F;font-size:clamp(1.1rem,3.6vw,1.4rem)}
+.mys{width:70px;height:96px;margin:6px auto;filter:brightness(0) invert(.25)}
+.mys.show{filter:none}
+.clues{display:grid;gap:6px;margin-top:8px}
+.clue{background:#2E3B5C;border:3px solid #4F5B76;border-radius:6px;padding:8px 10px;font-weight:700;font-size:clamp(.95rem,3vw,1.12rem)}
+.clue.lock{color:#7C88A6}
+.more{display:flex;justify-content:center;margin-top:10px}
+.ans{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-top:14px;width:100%}
+.job{border:4px solid var(--block);background:#fff;border-radius:8px;padding:8px 4px;font-weight:800;font-size:clamp(.82rem,2.5vw,1rem);box-shadow:0 5px 0 var(--block);min-height:82px}
+.job .e{display:block;font-size:1.9rem}
+.job.ok{background:#D7F8DF;border-color:#1E8E3E}
+.job.no{animation:shake .4s;opacity:.4}
+.pts{text-align:center;font-weight:900;color:#FFD23F;margin-top:6px}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script src="block.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const N = 8;
+/* [icon, job, clues (general → specific), skill] */
+const JOBS = [
+  ["👨‍⚕️","หมอ",["ทำงานที่โรงพยาบาลหรือคลินิก","ช่วยให้คนหายป่วย","ต้องเรียนเรื่องร่างกายมนุษย์อย่างละเอียด","ใช้หูฟังตรวจเสียงหัวใจ"],"ความรู้วิทยาศาสตร์ ความรับผิดชอบสูง"],
+  ["👩‍🏫","ครู",["ทำงานที่โรงเรียน","ช่วยให้คนมีความรู้","ต้องอดทนและรักเด็ก","ตรวจการบ้านและสอนหน้าห้อง"],"การสื่อสาร ความอดทน"],
+  ["👮","ตำรวจ",["ทำงานรับใช้ประชาชน","ดูแลความปลอดภัยในชุมชน","ต้องแข็งแรงและกล้าหาญ","จับผู้กระทำผิดกฎหมาย"],"ความกล้าหาญ ความยุติธรรม"],
+  ["🧑‍🌾","เกษตรกร",["ทำงานกลางแจ้งเป็นส่วนใหญ่","ต้องรู้เรื่องดิน น้ำ และฤดูกาล","ผลผลิตกลายเป็นอาหารของทุกคน","ปลูกข้าว ปลูกผัก เลี้ยงสัตว์"],"ความขยัน ความรู้เรื่องพืชและสัตว์"],
+  ["💇","ช่างตัดผม",["ทำให้ผู้คนดูดีขึ้น","ต้องมีฝีมือและมีศิลปะ","ร้านมีกระจกบานใหญ่และเก้าอี้หมุนได้","ใช้กรรไกร หวี และปัตตาเลี่ยน"],"ความประณีต การบริการ"],
+  ["👨‍✈️","นักบิน",["งานนี้ต้องเดินทางบ่อย","ต้องเก่งภาษาอังกฤษ","ทำงานอยู่สูงเหนือก้อนเมฆ","ขับเครื่องบินพาผู้โดยสาร"],"สมาธิ ความรับผิดชอบต่อชีวิตผู้อื่น"],
+  ["👩‍🍳","พ่อครัวแม่ครัว",["ทำงานในห้องที่มีเตาและหม้อ","ต้องรักความสะอาด","ชิมรสชาติอยู่บ่อย ๆ","ปรุงอาหารให้คนกิน"],"ความสะอาด ความคิดสร้างสรรค์"],
+  ["🧑‍🚒","นักดับเพลิง",["ต้องพร้อมออกปฏิบัติงานตลอดเวลา","ต้องแข็งแรงและกล้าหาญ","ขับรถสีแดงเปิดไซเรน","ใช้สายฉีดน้ำดับไฟ"],"ความกล้าหาญ การช่วยเหลือผู้อื่น"],
+  ["👷","วิศวกร",["ต้องเก่งคณิตศาสตร์และวิทยาศาสตร์","ออกแบบและคำนวณ","สวมหมวกนิรภัยเมื่อไปที่ก่อสร้าง","ออกแบบสะพาน ถนน และอาคาร"],"การคำนวณ ความละเอียดรอบคอบ"],
+  ["🧑‍💻","นักพัฒนาเกม",["ทำงานกับคอมพิวเตอร์ทั้งวัน","ต้องคิดอย่างเป็นขั้นตอน","เขียนโค้ดสั่งงานคอมพิวเตอร์","สร้างเกมที่เด็ก ๆ ชอบเล่น"],"การคิดเชิงคำนวณ ความคิดสร้างสรรค์"],
+  ["🧑‍⚕️","สัตวแพทย์",["ทำงานที่คลินิกหรือโรงพยาบาล","ต้องรักและเข้าใจสัตว์","คนไข้พูดไม่ได้","รักษาสุนัขและแมวที่ป่วย"],"ความเมตตา ความรู้วิทยาศาสตร์"],
+  ["🎣","ชาวประมง",["ต้องตื่นแต่เช้ามืด","ทำงานกลางแจ้งตากแดดตากลม","ต้องรู้เรื่องลมและคลื่น","ออกเรือหาปลา"],"ความอดทน ความขยัน"],
+  ["⚡","ช่างไฟฟ้า",["ทำงานช่างที่ต้องระวังอันตราย","ใช้ไขควงและคีมเป็นประจำ","ต้องรู้เรื่องวงจร","ซ่อมปลั๊กและหลอดไฟ"],"ความรอบคอบ ความปลอดภัย"],
+  ["🎤","นักข่าว",["ต้องช่างสังเกตและช่างถาม","ไปในที่ที่มีเหตุการณ์สำคัญ","ต้องเขียนและพูดเก่ง","รายงานข่าวให้ประชาชนรู้"],"การสื่อสาร ความซื่อสัตย์ต่อข้อเท็จจริง"]
+];
+const LV = {1:{opts:4, start:2}, 2:{opts:6, start:1}, 3:{opts:8, start:1}};
+
+BK.mount({
+  key:"w-guess", title:"ไขปริศนาอาชีพในฝัน", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 7 อาชีพในฝัน",
+  heroHTML:"ฉันคือ<em>อาชีพอะไร</em>? 🔍", heroDesc:"อ่านคำใบ้แล้วทายอาชีพ ยิ่งใช้คำใบ้น้อย ยิ่งได้เหรียญมาก",
+  progIcon:"🔍",
+  howto:["อ่านคำใบ้ที่เปิดอยู่","ถ้ายังไม่แน่ใจ กด \"ขอคำใบ้เพิ่ม\"","แตะอาชีพที่คิดว่าใช่ ใช้คำใบ้น้อยได้คะแนนมาก","ทายผิดเสียหัวใจ ❤️ ทายครบ 8 อาชีพผ่านด่าน"],
+  levels:{
+    1:{pill:"8 ปริศนา", color:"var(--green)", desc:"เริ่มด้วย 2 คำใบ้ เลือกจาก 4 อาชีพ"},
+    2:{pill:"8 ปริศนา", color:"var(--blue)", desc:"เริ่มด้วย 1 คำใบ้ เลือกจาก 6 อาชีพ"},
+    3:{pill:"8 ปริศนา", color:"var(--purple)", desc:"เริ่มด้วย 1 คำใบ้ เลือกจาก 8 อาชีพ"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const deck = shuffle(JOBS.slice()).slice(0, N);
+    ctx.stage.innerHTML = `<div class="box"><h3 id="qn"></h3><div class="mys" id="my"></div><div class="clues" id="cl"></div><div class="more"><button class="btn" type="button" id="mo">💡 ขอคำใบ้เพิ่ม</button></div><div class="pts" id="pt"></div></div><div class="ans" id="an"></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let idx = 0, shown = 0, lock = false, miss = 0;
+    function draw(){
+      const j = deck[idx];
+      $("#cl").innerHTML = j[2].map((c,i) => `<div class="clue ${i < shown ? "" : "lock"}">${i < shown ? `💬 ${c}` : "🔒 คำใบ้ที่ " + (i+1)}</div>`).join("");
+      $("#mo").disabled = shown >= 4;
+      $("#pt").textContent = `ทายถูกตอนนี้ได้ ${pts()} คะแนน`;
+    }
+    const pts = () => Math.max(40, 160 - (shown-1)*30 - miss*20);
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 120}); return; }
+      const j = deck[idx]; shown = L.start; lock = false; miss = 0;
+      $("#qn").textContent = `ปริศนาที่ ${idx+1} จาก ${N}: ฉันคืออาชีพอะไร?`;
+      $("#my").className = "mys"; $("#my").innerHTML = BK.avatar("#FFD23F");
+      const opts = shuffle([j, ...shuffle(JOBS.filter(x => x !== j)).slice(0, L.opts-1)]);
+      $("#an").innerHTML = opts.map(o => `<button class="job" type="button" data-j="${o[1]}"><span class="e">${o[0]}</span>${o[1]}</button>`).join("");
+      draw();
+    }
+    $("#mo").onclick = () => { if (shown < 4 && !lock){ shown++; KIT.sfx.tap(); draw(); } };
+    $("#an").addEventListener("click", e => {
+      const b = e.target.closest(".job"); if (!b || lock || b.classList.contains("no")) return;
+      const j = deck[idx];
+      if (b.dataset.j === j[1]){
+        const gain = pts(); lock = true; b.classList.add("ok"); shown = 4; draw(); $("#my").className = "mys show"; $("#my").innerHTML = `<div style="font-size:4rem;text-align:center">${j[0]}</div>`;
+        ctx.correct(gain, `ใช่แล้ว! ${j[1]} — ทักษะสำคัญ: ${j[3]}`); idx++; ctx.progress(idx, N); ctx.after(2000, next);
+      } else {
+        miss++; b.classList.add("no"); if (shown < 4) shown++; draw();
+        ctx.wrong(`ยังไม่ใช่ ${b.dataset.j} — เปิดคำใบ้เพิ่มให้แล้ว`);
+      }
+    });
+    ctx.progress(0, N); ctx.say("อ่านคำใบ้ แล้วทายอาชีพ!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

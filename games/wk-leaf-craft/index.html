@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โต๊ะคราฟต์ใบตอง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="block.css">
+<style>
+.table{width:100%;background:#B5713C;border:4px solid var(--block);border-radius:10px;box-shadow:0 6px 0 var(--block);padding:12px;color:#fff}
+.table h3{font-size:clamp(1.1rem,3.6vw,1.4rem);text-shadow:0 2px 0 #1F2A44;text-align:center}
+.grid9{display:grid;grid-template-columns:repeat(3,64px);gap:6px;justify-content:center;margin:10px auto}
+.grid9 i{width:64px;height:64px;background:#8A5A2E;border:3px solid #5E3B1C;border-radius:4px;display:grid;place-items:center;font-size:2rem;font-style:normal}
+.res{text-align:center;font-weight:800;text-shadow:0 2px 0 #1F2A44}
+.mats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;width:100%}
+.mat{border:3px solid var(--block);background:#fff;border-radius:8px;padding:8px 4px;font-weight:700;font-size:clamp(.74rem,2.3vw,.92rem);line-height:1.25;box-shadow:0 4px 0 var(--block);min-height:82px}
+.mat .e{display:block;font-size:1.8rem}
+.mat.in{background:#D7F8DF;border-color:#1E8E3E}
+.mat.no{animation:shake .4s;background:#FFD9D9}
+.mat:disabled{opacity:.4}
+.go{display:flex;justify-content:center;margin-top:12px}
+.steps{display:grid;gap:8px;margin-top:12px;width:100%}
+.st{display:flex;gap:10px;align-items:center;text-align:left;border:3px solid var(--block);background:#fff;border-radius:8px;padding:10px;font-weight:700;box-shadow:0 4px 0 var(--block);font-size:clamp(.92rem,2.9vw,1.08rem)}
+.st .n{flex:none;width:32px;height:32px;border-radius:6px;background:#E6ECF5;display:grid;place-items:center;font-weight:900}
+.st.done{background:#D7F8DF;border-color:#1E8E3E}.st.done .n{background:#1E8E3E;color:#fff}
+.st.no{animation:shake .4s}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script src="block.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const MAT = {
+  tani:["🍃","ใบตองกล้วยตานี"], namwa:["🌿","ใบตองกล้วยน้ำว้า"], sci:["✂️","กรรไกร"], ruler:["📏","ไม้บรรทัด"], cloth:["🧽","ผ้าสะอาดชุบน้ำ"],
+  pin:["📌","ไม้กลัด"], staple:["🖇️","ลวดเย็บกระดาษ"], needle:["📍","เข็มหมุด"], incense:["🕯️","ธูปและเทียน"], flower:["🌼","ดอกไม้สด"], pencil:["✏️","ดินสอ"],
+  nail:["🔩","ตะปู"], hammer:["🔨","ค้อน"], superglue:["🧪","กาวร้อน"], bad:["🥀","ใบตองเหลืองฉีกขาด"], plastic:["🛍️","ถุงพลาสติก"], paint:["🎨","สีโปสเตอร์"], saw:["🪚","เลื่อย"]
+};
+const BAD = ["nail","hammer","superglue","bad","plastic","paint","saw"];
+const PRODUCTS = [
+  {ic:"🥮", name:"กระทงใส่ขนม", need:["tani","sci","ruler","cloth","pin"]},
+  {ic:"🍌", name:"ห่อขนม", need:["namwa","cloth","sci","pin"]},
+  {ic:"🪔", name:"ธูปแพเทียนแพ (พานขอขมา)", need:["tani","needle","sci","incense","flower"]},
+  {ic:"🍽️", name:"ถาดใบตองใส่ของ", need:["tani","sci","staple","cloth","pencil"]}
+];
+const PROCESS = ["ออกแบบชิ้นงาน","เตรียมวัสดุอุปกรณ์","ลงมือปฏิบัติตามขั้นตอน","ปรับปรุงแก้ไขผลงาน แล้วนำไปใช้"];
+const KRATONG = ["เลือกใบตองกล้วยตานีที่ไม่ฉีกขาด","เช็ดใบตองด้วยผ้าสะอาดชุบน้ำบิดหมาด ๆ","วัดและตัดใบตองตามขนาดที่ต้องการ","พับครึ่งใบตองให้ซ้อนทบกัน","จับจีบมุมกระทงทั้ง 4 มุม","กลัดมุมด้วยไม้กลัดให้แน่น","ตรวจความเรียบร้อยแล้วนำไปใส่ขนม"];
+const LV = {1:{rounds:4, steps:false}, 2:{rounds:3, steps:true}, 3:{rounds:3, steps:true}};
+
+BK.mount({
+  key:"w-craft", title:"โต๊ะคราฟต์ใบตอง", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 5 งานประดิษฐ์จากใบตอง",
+  heroHTML:"คราฟต์<em>งานใบตอง</em>บนโต๊ะประดิษฐ์ 🍃", heroDesc:"เลือกวัสดุอุปกรณ์ให้ครบและถูกต้อง แล้วเรียงขั้นตอนการทำ เพื่อคราฟต์ผลงานจากใบตอง",
+  progIcon:"🍃",
+  howto:["ดูชิ้นงานที่ต้องคราฟต์","แตะเลือกวัสดุอุปกรณ์ที่ต้องใช้ให้ครบ (ของที่ไม่ต้องใช้ ห้ามแตะ)","กด \"คราฟต์!\" เมื่อเลือกครบ","ด่านโปรและตำนาน ต้องเรียงขั้นตอนการทำด้วย"],
+  levels:{
+    1:{pill:"4 ชิ้นงาน", color:"var(--green)", desc:"เลือกวัสดุอุปกรณ์ให้ถูก"},
+    2:{pill:"3 ชิ้นงาน", color:"var(--blue)", desc:"เลือกวัสดุ + เรียงขั้นตอนการทำงานประดิษฐ์ 4 ขั้น"},
+    3:{pill:"3 ชิ้นงาน", color:"var(--purple)", desc:"เลือกวัสดุ + เรียงขั้นตอน รวมขั้นตอนทำกระทงใส่ขนม 7 ขั้น"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    let prods = shuffle(PRODUCTS.slice()).slice(0, L.rounds);
+    if (level === 3 && !prods.includes(PRODUCTS[0])) prods = shuffle([PRODUCTS[0], ...prods.slice(0, L.rounds-1)]);
+    const total = prods.length * (L.steps ? 2 : 1);
+    ctx.stage.innerHTML = `<div class="table"><h3 id="pn"></h3><div class="grid9" id="g9"></div><div class="res" id="rs"></div></div><div id="area"></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let pi = 0, done = 0;
+    function product(){
+      if (pi >= prods.length){ ctx.finish({targetSec: level===1 ? 80 : 140}); return; }
+      const P = prods[pi]; const chosen = new Set();
+      $("#pn").textContent = `ชิ้นงานที่ ${pi+1}/${prods.length}: ${P.ic} ${P.name}`;
+      const opts = shuffle([...P.need, ...shuffle(BAD.slice()).slice(0, 8 - P.need.length)]);
+      const draw = () => { const arr = [...chosen]; $("#g9").innerHTML = Array.from({length:9},(_,i)=>`<i>${arr[i] ? MAT[arr[i]][0] : ""}</i>`).join(""); $("#rs").textContent = `เลือกแล้ว ${chosen.size}/${P.need.length}`; };
+      $("#area").innerHTML = `<div class="mats" id="mt">${opts.map(k=>`<button class="mat" type="button" data-k="${k}"><span class="e">${MAT[k][0]}</span>${MAT[k][1]}</button>`).join("")}</div><div class="go"><button class="btn" type="button" id="cf">🛠️ คราฟต์!</button></div>`;
+      draw(); let first = true;
+      $("#mt").onclick = e => {
+        const b = e.target.closest(".mat"); if (!b || b.disabled) return; const k = b.dataset.k;
+        if (chosen.has(k)){ chosen.delete(k); b.classList.remove("in"); draw(); return; }
+        if (!P.need.includes(k)){ first = false; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no"); b.disabled = true; ctx.wrong(`${MAT[k][1]} ไม่ต้องใช้ในงาน${P.name}`); return; }
+        chosen.add(k); b.classList.add("in"); KIT.sfx.tap(); draw();
+      };
+      $("#cf").onclick = () => {
+        const miss = P.need.filter(k => !chosen.has(k));
+        if (miss.length){ ctx.say(`ยังขาดอีก ${miss.length} อย่าง ลองดูให้ครบนะ`); return; }
+        ctx.correct(first ? 120 : 70, `ได้วัสดุครบ! ✨`); done++; ctx.progress(done, total);
+        if (L.steps) ctx.after(900, () => order(P)); else { pi++; ctx.after(1100, product); }
+      };
+    }
+    function order(P){
+      const steps = (level === 3 && P === PRODUCTS[0]) ? KRATONG : PROCESS; let k = 0, first = true;
+      $("#rs").textContent = "เรียงขั้นตอนการทำให้ถูก";
+      $("#area").innerHTML = `<div class="qcard" style="margin-top:12px"><div class="qtext">แตะขั้นตอน${steps === PROCESS ? "การทำงานประดิษฐ์" : "การทำกระทงใส่ขนม"}จากแรกไปสุดท้าย</div></div><div class="steps" id="sp">${shuffle(steps.map((s,i)=>({s,i}))).map(x=>`<button class="st" type="button" data-i="${x.i}"><span class="n">?</span>${x.s}</button>`).join("")}</div>`;
+      $("#sp").onclick = e => {
+        const b = e.target.closest(".st"); if (!b || b.classList.contains("done")) return;
+        if (+b.dataset.i === k){ b.classList.add("done"); k++; b.querySelector(".n").textContent = k; KIT.sfx.tap();
+          if (k === steps.length){ ctx.correct(first ? 150 : 80, `คราฟต์ ${P.name} สำเร็จ! ${P.ic}`); done++; ctx.progress(done, total); pi++; ctx.after(1300, product); }
+        } else { first = false; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no"); ctx.wrong(`ยังไม่ใช่ขั้นที่ ${k+1}`); }
+      };
+    }
+    ctx.progress(0, total); ctx.say("มาคราฟต์งานใบตองกัน!");
+    product();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

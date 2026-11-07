@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ขั้นตอนโปร ทำงานเป็นระบบ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="block.css">
+<style>
+.task{display:flex;align-items:center;gap:12px;justify-content:center}
+.task .e{font-size:2.6rem}
+.slots{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.slots i{font-style:normal;width:46px;height:46px;border:3px dashed var(--block);border-radius:8px;display:grid;place-items:center;font-weight:900;background:#fff}
+.slots i.on{background:#3DBE5A;color:#fff;border-style:solid}
+.opts{display:grid;gap:10px;margin-top:14px;width:100%}
+.st{display:flex;gap:10px;align-items:center;text-align:left;border:4px solid var(--block);background:#fff;border-radius:10px;padding:12px;font-weight:700;box-shadow:0 6px 0 var(--block);font-size:clamp(.95rem,3vw,1.15rem);line-height:1.4}
+.st .n{flex:none;width:36px;height:36px;border-radius:6px;background:#E6ECF5;display:grid;place-items:center;font-weight:900}
+.st.done{background:#D7F8DF;border-color:#1E8E3E}
+.st.done .n{background:#1E8E3E;color:#fff}
+.st.no{animation:shake .4s}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script src="block.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const TASKS = [
+  ["🛠️","กระบวนการทำงาน 4 ขั้น",["วิเคราะห์งาน ว่าจะทำอะไร เพื่ออะไร","วางแผนงาน กำหนดขั้นตอน อุปกรณ์ เวลา","ปฏิบัติงานตามแผน","ประเมินผลงาน หาข้อบกพร่องและวิธีแก้ไข"]],
+  ["👕","ซักเสื้อผ้าด้วยมือ",["แยกผ้าขาวกับผ้าสีออกจากกัน","แช่ผ้าในน้ำผสมผงซักฟอก","ขยี้ตรงที่สกปรก","ล้างด้วยน้ำสะอาด","บิดหมาด ๆ แล้วตากให้แห้ง","พับหรือรีดแล้วเก็บเข้าที่"]],
+  ["📁","จัดเก็บเอกสารเข้าแฟ้ม",["แยกเอกสารตามประเภท","เรียงเอกสารตามวันเดือนปี","เก็บเอกสารเข้าแฟ้มของแต่ละประเภท","ตั้งแฟ้มเรียงไว้ในตู้หรือชั้น"]],
+  ["🪑","จัดโต๊ะเขียนหนังสือ",["นำของทั้งหมดออกจากโต๊ะ","เช็ดทำความสะอาดโต๊ะ","แยกประเภทของที่จะจัดเก็บ","จัดหนังสือ วางเรียงตามขนาด","จัดเครื่องเขียนใส่กล่องหรือแก้ว","จัดพื้นที่บนโต๊ะให้ว่างพอเขียนหนังสือ"]],
+  ["👜","ทำความสะอาดกระเป๋าหนัง",["ปัดฝุ่นด้วยไม้กวาดขนไก่","เช็ดด้วยผ้าชุบน้ำบิดหมาด ๆ","เช็ดซ้ำด้วยผ้าแห้ง","ผึ่งลมให้แห้งแล้วเก็บเข้าที่"]],
+  ["👟","ล้างรองเท้าผ้าใบ",["เคาะดินและฝุ่นออก","ถอดเชือกรองเท้าออก","แปรงด้วยน้ำผสมผงซักฟอก","ล้างด้วยน้ำสะอาด","ผึ่งให้แห้งในที่ร่มที่ลมโกรก"]],
+  ["🎒","จัดกระเป๋านักเรียนตอนเย็น",["ดูตารางสอนของวันพรุ่งนี้","นำหนังสือและสมุดของวันนี้ออก","ใส่หนังสือและสมุดตามตารางสอน","ใส่เครื่องเขียนในกล่องดินสอ","ปิดกระเป๋าวางไว้ที่เดิม"]],
+  ["🧦","ดูแลถุงเท้าหลังซัก",["ตากถุงเท้าให้แห้ง","เก็บถุงเท้าจากราวตาก","จับคู่ถุงเท้าสีเดียวกัน","พับเก็บเป็นคู่ในลิ้นชัก"]]
+];
+const LV = {1:{len:3, rounds:5}, 2:{len:4, rounds:6}, 3:{len:6, rounds:6}};
+
+BK.mount({
+  key:"w-steps", title:"ขั้นตอนโปร ทำงานเป็นระบบ", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 1 ดูแลและจัดเก็บของใช้ (กระบวนการทำงาน)",
+  heroHTML:"เรียง<em>ขั้นตอน</em>ให้ถูก งานเสร็จไว ⚙️", heroDesc:"งานบ้านทุกงานมีลำดับขั้นตอน แตะขั้นตอนที่ต้องทำก่อนไปหลังให้ถูกต้อง",
+  progIcon:"⚙️",
+  howto:["อ่านชื่องาน","แตะขั้นตอนที่ต้องทำ \"ก่อน\" ไล่ไปจนถึงขั้นสุดท้าย","แตะผิดลำดับเสียหัวใจ ❤️","เรียงครบทุกงานผ่านด่าน"],
+  levels:{
+    1:{pill:"5 งาน", color:"var(--green)", desc:"งานละ 3 ขั้นตอน"},
+    2:{pill:"6 งาน", color:"var(--blue)", desc:"งานละ 4 ขั้นตอน"},
+    3:{pill:"6 งาน", color:"var(--purple)", desc:"งานละ 4–6 ขั้นตอน (ครบทุกขั้น)"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const tasks = shuffle(TASKS.slice()).slice(0, L.rounds).map(t => {
+      let s = t[2];
+      if (s.length > L.len){ const k = Math.floor(Math.random()*(s.length - L.len + 1)); s = s.slice(k, k + L.len); }
+      return {ic:t[0], name:t[1], steps:s};
+    });
+    const total = tasks.reduce((a,t) => a + t.steps.length, 0);
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="task"><span class="e" id="ic"></span><span class="qtext" id="tn"></span></div><div class="slots" id="sl"></div></div><div class="opts" id="op"></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let ti = 0, k = 0, got = 0, first = true;
+    function show(){
+      if (ti >= tasks.length){ ctx.finish({targetSec: level===3 ? 160 : 100}); return; }
+      const t = tasks[ti]; k = 0; first = true;
+      $("#qn").textContent = `งานที่ ${ti+1} จาก ${tasks.length} · แตะขั้นตอนแรกก่อน`; $("#ic").textContent = t.ic; $("#tn").textContent = t.name;
+      $("#sl").innerHTML = t.steps.map((_,i)=>`<i>${i+1}</i>`).join("");
+      $("#op").innerHTML = shuffle(t.steps.map((s,i)=>({s,i}))).map(x=>`<button class="st" type="button" data-i="${x.i}"><span class="n">?</span><span>${x.s}</span></button>`).join("");
+    }
+    $("#op").addEventListener("click", e => {
+      const b = e.target.closest(".st"); if (!b || b.classList.contains("done")) return;
+      const t = tasks[ti];
+      if (+b.dataset.i === k){
+        b.classList.add("done"); b.querySelector(".n").textContent = k+1; $("#sl").children[k].classList.add("on"); k++; got++;
+        KIT.sfx.tap(); ctx.progress(got, total);
+        if (k === t.steps.length){ ctx.correct(first ? 150 : 80, `เรียง "${t.name}" ถูกครบ! 🎉`); ti++; ctx.after(1300, show); }
+        else ctx.say(`ถูก! ขั้นที่ ${k+1} คืออะไรต่อ?`, "good");
+      } else {
+        first = false; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
+        ctx.wrong(`ยังไม่ใช่ขั้นที่ ${k+1} ลองคิดว่าต้องทำอะไรก่อน`);
+      }
+    });
+    ctx.progress(0, total); ctx.say("ทำงานเป็นขั้นตอน งานจะสำเร็จ!");
+    show();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

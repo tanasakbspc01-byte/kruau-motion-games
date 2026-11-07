@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คัดแยกต้นไม้ในคลัง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="block.css">
+<style>
+.ev{width:100%;max-width:440px;margin:0 auto;background:#fff;border:4px solid var(--block);border-radius:10px;box-shadow:0 6px 0 var(--block);padding:16px;text-align:center;transition:transform .35s,opacity .35s}
+.ev .ic{font-size:clamp(3rem,12vw,4.4rem);line-height:1.1}
+.ev .nm{font-weight:800;font-size:clamp(1.15rem,3.6vw,1.45rem);margin-top:6px;line-height:1.4}
+.ev.fly{transform:translateY(60px) scale(.4);opacity:0}
+.ev.no{animation:shake .4s}
+.bins{display:grid;gap:12px;margin-top:16px;width:100%}
+.bin{border:4px solid var(--block);background:var(--bc);color:#fff;border-radius:10px;padding:12px 8px;font-weight:900;font-size:clamp(.95rem,3vw,1.2rem);box-shadow:0 6px 0 var(--block);line-height:1.3;text-shadow:0 2px 0 rgba(0,0,0,.3)}
+.bin .bi{display:block;font-size:2rem;text-shadow:none}
+.bin small{display:block;font-weight:700;font-size:.72em;opacity:.95}
+.bin .cnt{display:inline-block;margin-top:4px;background:#fff;color:var(--ink);border-radius:6px;padding:0 10px;text-shadow:none}
+.bin:active{transform:translateY(3px);box-shadow:0 3px 0 var(--block)}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script src="block.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const N = 10;
+const LV = {
+  1:{ bins:[["🌸","ไม้ดอก","ปลูกเพื่อชมดอก","#FF5D8F"],["🪴","ไม้ประดับ","ปลูกเพื่อชมใบและลำต้น","#3DBE5A"]],
+      items:[["🌼","ดาวเรือง",0],["🌹","กุหลาบ",0],["🤍","มะลิ",0],["🌺","ชบา",0],["🔴","ดอกเข็ม",0],["🟣","บานไม่รู้โรย",0],["🌻","ทานตะวัน",0],["🌸","เฟื่องฟ้า",0],["🌷","กล้วยไม้",0],
+             ["🪴","พลูด่าง",1],["🍁","โกสน",1],["🌿","เฟิร์น",1],["🗡️","ลิ้นมังกร",1],["🍃","ว่านกาบหอย",1],["🌱","กวักมรกต",1],["🌳","ไทรเกาหลี",1]],
+      why:["ปลูกเพื่อชมความสวยงามของดอก","ปลูกเพื่อชมใบและลำต้น ไม่เน้นดอก"] },
+  2:{ bins:[["🌰","ขยายพันธุ์แบบอาศัยเพศ","ใช้เมล็ด","#FF9F1C"],["✂️","แบบไม่อาศัยเพศ","ใช้กิ่ง ลำต้น หน่อ","#2F80ED"]],
+      items:[["🌼","เพาะเมล็ดดาวเรืองในถาดเพาะ",0],["🌻","หยอดเมล็ดทานตะวันลงหลุม",0],["🟣","เพาะเมล็ดบานไม่รู้โรย",0],["🌰","ต้นที่งอกจากเมล็ด มีรากแก้ว",0],["🐝","ผึ้งช่วยผสมเกสรจนติดเมล็ด",0],
+             ["🌺","ปักชำกิ่งชบา",1],["🪴","ตัดยอดพลูด่างไปปักชำ",1],["🤍","ตอนกิ่งมะลิ",1],["🗡️","แยกหน่อลิ้นมังกรไปปลูก",1],["🌵","แยกหน่อว่านหางจระเข้",1],["🍁","ปักชำกิ่งโกสน",1]],
+      why:["อาศัยเพศ คือการใช้เมล็ดที่เกิดจากการผสมเกสร","ไม่อาศัยเพศ คือใช้ส่วนของต้นเดิม เช่น กิ่ง ยอด หน่อ"] },
+  3:{ bins:[["🌰","เพาะเมล็ด","","#FF9F1C"],["✂️","ปักชำ","","#2F80ED"],["🌱","แยกหน่อ","","#3DBE5A"]],
+      items:[["🌼","ดาวเรือง",0],["🌻","ทานตะวัน",0],["🟣","บานไม่รู้โรย",0],["💮","บานชื่น",0],
+             ["🌺","ชบา",1],["🪴","พลูด่าง",1],["🍁","โกสน",1],["🔴","ดอกเข็ม",1],["🌸","เฟื่องฟ้า",1],
+             ["🗡️","ลิ้นมังกร",2],["🌵","ว่านหางจระเข้",2],["❤️","หน้าวัว",2],["🎋","ธรรมรักษา",2]],
+      why:["นิยมเพาะจากเมล็ด","นิยมตัดกิ่งไปปักชำ","นิยมแยกหน่อจากกอเดิม"] }
+};
+
+BK.mount({
+  key:"w-plants", title:"คัดแยกต้นไม้ในคลัง", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 3 ไม้ดอกไม้ประดับ",
+  heroHTML:"จัดต้นไม้เข้า<em>คลังให้ถูกช่อง</em> 🪴", heroDesc:"แยกไม้ดอกกับไม้ประดับ และวิธีขยายพันธุ์ เก็บเข้าคลังให้ถูกต้อง",
+  progIcon:"🪴",
+  howto:["ดูต้นไม้บนการ์ด","แตะช่องคลังที่ถูกต้อง","ผิดเสียหัวใจ ❤️ แล้วลองใหม่ได้","ครบ 10 ต้นผ่านด่าน"],
+  levels:{
+    1:{pill:"10 ต้น", color:"var(--green)", desc:"ไม้ดอก หรือ ไม้ประดับ"},
+    2:{pill:"10 ต้น", color:"var(--blue)", desc:"ขยายพันธุ์แบบอาศัยเพศ หรือ ไม่อาศัยเพศ"},
+    3:{pill:"10 ต้น", color:"var(--purple)", desc:"ต้นนี้นิยมขยายพันธุ์วิธีไหน: เพาะเมล็ด ปักชำ แยกหน่อ"}
+  },
+  play(level, ctx){
+    const L = LV[level], nb = L.bins.length;
+    let deck = [];
+    for (let b=0;b<nb;b++) deck.push(...shuffle(L.items.filter(x => x[2] === b)).slice(0, Math.floor(N/nb)));
+    deck = shuffle([...deck, ...shuffle(L.items.filter(x => !deck.includes(x))).slice(0, N - deck.length)]);
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext">เก็บเข้าช่องไหน?</div></div>
+      <div class="ev" id="ev"><div class="ic" id="ic"></div><div class="nm" id="nm"></div></div>
+      <div class="bins" style="grid-template-columns:repeat(${nb},1fr)">${L.bins.map((b,i)=>`<button class="bin" type="button" data-s="${i}" style="--bc:${b[3]}"><span class="bi">${b[0]}</span>${b[1]}${b[2] ? `<small>${b[2]}</small>` : ""}<span class="cnt" id="c${i}">0</span></button>`).join("")}</div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let idx = 0, lock = false, first = true; const cnt = L.bins.map(() => 0);
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 80}); return; }
+      const it = deck[idx]; lock = false; first = true;
+      $("#ev").className = "ev"; $("#ic").textContent = it[0]; $("#nm").textContent = it[1]; $("#qn").textContent = `ต้นที่ ${idx+1} จาก ${N}`;
+    }
+    ctx.stage.querySelector(".bins").addEventListener("click", e => {
+      const b = e.target.closest(".bin"); if (!b || lock) return;
+      const it = deck[idx], s = +b.dataset.s;
+      if (s === it[2]){
+        lock = true; $("#ev").classList.add("fly"); cnt[s]++; $("#c"+s).textContent = cnt[s];
+        ctx.correct(first ? 100 : 50, `ถูกต้อง! ${it[1]} — ${L.why[s]}`); idx++; ctx.progress(idx, N); ctx.after(1300, next);
+      } else {
+        first = false; const ev = $("#ev"); ev.classList.remove("no"); void ev.offsetWidth; ev.classList.add("no");
+        ctx.wrong(`ยังไม่ใช่ช่องนี้ ลองใหม่นะ`);
+      }
+    });
+    ctx.progress(0, N); ctx.say("จัดเข้าคลังกันเลย!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

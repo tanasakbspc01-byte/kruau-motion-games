@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Obby จัดห้องเก็บของ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="block.css">
+<style>
+.room{position:relative;width:100%;background:#FFF7E6;border:4px solid var(--block);border-radius:10px;box-shadow:0 6px 0 var(--block);padding:12px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:120px}
+.it{border:3px solid var(--block);background:#fff;border-radius:8px;padding:6px 8px;font-weight:700;font-size:clamp(.82rem,2.5vw,1rem);box-shadow:0 4px 0 var(--block);line-height:1.25;width:clamp(86px,22%,130px)}
+.it .e{display:block;font-size:clamp(1.8rem,6vw,2.4rem);line-height:1.1}
+.it.sel{background:#FFE58A;transform:translateY(-4px) scale(1.05)}
+.it.gone{display:none}
+.it.no{animation:shake .4s}
+.spots{display:grid;gap:10px;margin-top:14px;width:100%}
+.sp{border:4px solid var(--block);background:var(--sc);color:#fff;border-radius:10px;padding:10px 6px;font-weight:800;box-shadow:0 6px 0 var(--block);font-size:clamp(.85rem,2.6vw,1.05rem);line-height:1.3;text-shadow:0 2px 0 rgba(0,0,0,.35)}
+.sp .e{display:block;font-size:2rem;text-shadow:none}
+.sp small{display:block;font-weight:600;font-size:.78em;opacity:.95}
+.sp .n{display:inline-block;background:#fff;color:var(--ink);border-radius:6px;padding:0 8px;margin-top:4px;text-shadow:none}
+.hint{text-align:center;font-weight:700;margin-top:8px}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script src="block.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const SPOTS = {
+  hang:["🚪","ตู้เสื้อผ้า (แขวน)","เสื้อนักเรียน ชุดที่ต้องรีด","#2F80ED"],
+  fold:["🗄️","ลิ้นชัก (พับเก็บ)","เสื้อยืด ถุงเท้า","#8B5CF6"],
+  shelf:["📚","ชั้นหนังสือ","หนังสือ เรียงตามขนาด","#3DBE5A"],
+  toy:["🧸","กล่องของเล่น","ของเล่นเล่นเสร็จแล้ว","#FF9F1C"],
+  wash:["🧺","ตะกร้าผ้าใช้แล้ว","รอนำไปซัก","#00B8D9"],
+  doc:["📁","แฟ้มเอกสาร","เอกสารสำคัญ","#E5484D"],
+  pen:["✏️","กล่องเครื่องเขียน","บนโต๊ะเขียนหนังสือ","#FF5D8F"]
+};
+/* [icon, name, spot, why] */
+const ITEMS = [
+  ["👔","เสื้อนักเรียนที่รีดแล้ว","hang","แขวนไว้ เสื้อจะไม่ยับ"],["🧥","เสื้อกันหนาว","hang","แขวนไว้ให้คงรูปทรง"],["👗","ชุดไปงาน","hang","แขวนไว้ไม่ให้ยับ"],
+  ["👕","เสื้อยืดที่พับแล้ว","fold","พับเก็บในลิ้นชักให้เป็นระเบียบ"],["🧦","ถุงเท้าที่ซักแล้ว","fold","จับคู่แล้วพับเก็บในลิ้นชัก"],["🩳","กางเกงขาสั้น","fold","พับเก็บในลิ้นชัก"],
+  ["📕","หนังสือนิทาน","shelf","เก็บบนชั้นหนังสือ ไม่ซ่อนใต้หมอน"],["📗","หนังสือเรียน","shelf","เรียงบนชั้นให้หยิบง่าย"],["📓","สมุดการบ้าน","shelf","เก็บเข้าชั้นให้เป็นที่"],
+  ["🚗","รถของเล่น","toy","เล่นเสร็จเก็บเข้ากล่องของเล่น"],["🧩","ตัวต่อจิ๊กซอว์","toy","เก็บรวมในกล่องไม่ให้หาย"],["🪀","โยโย่","toy","เก็บเข้ากล่องของเล่น"],
+  ["🧦","ถุงเท้าที่ใส่แล้ว","wash","ของใช้แล้วต้องนำไปซัก"],["🎽","ชุดกีฬาเปียกเหงื่อ","wash","ผึ่งให้แห้งแล้วใส่ตะกร้ารอซัก"],["👕","เสื้อเปื้อนซอส","wash","ใส่ตะกร้ารอซัก ไม่กองบนที่นอน"],
+  ["📄","สูติบัตร","doc","เอกสารสำคัญเก็บในแฟ้ม ไม่พกไปโรงเรียน"],["🏅","เกียรติบัตร","doc","เก็บในแฟ้มไม่ให้ยับ"],["📃","สมุดพก / ใบรายงานผล","doc","เก็บในแฟ้มเอกสาร"],
+  ["✏️","ดินสอ","pen","เก็บรวมในกล่องเครื่องเขียน"],["📏","ไม้บรรทัด","pen","เก็บในกล่องเครื่องเขียน"],["🖍️","สีเทียน","pen","เก็บในกล่องเครื่องเขียน"]
+];
+const LV = {1:{spots:["shelf","toy","wash"], n:9}, 2:{spots:["hang","fold","shelf","toy","wash"], n:12}, 3:{spots:["hang","fold","shelf","toy","wash","doc","pen"], n:14}};
+
+BK.mount({
+  key:"w-room", title:"Obby จัดห้องเก็บของ", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 1 ดูแลและจัดเก็บของใช้",
+  heroHTML:"จัดห้องให้<em>เป๊ะ</em> หยิบง่าย หายรู้ ดูงามตา 🏠", heroDesc:"ของกระจายเต็มห้อง! แตะของแต่ละชิ้น แล้วแตะที่เก็บที่ถูกต้อง จัดให้ครบทั้งห้อง",
+  progIcon:"🏠",
+  howto:["แตะของในห้อง 1 ชิ้น","แตะที่เก็บที่เหมาะสม","ผิดเสียหัวใจ ❤️ หัวใจหมดจะรีสปอน","จัดครบทุกชิ้นผ่านด่าน ได้แรงก์ตามความแม่นยำ"],
+  levels:{
+    1:{pill:"9 ชิ้น", color:"var(--green)", desc:"3 ที่เก็บ: ชั้นหนังสือ กล่องของเล่น ตะกร้าผ้า"},
+    2:{pill:"12 ชิ้น", color:"var(--blue)", desc:"5 ที่เก็บ: เพิ่มตู้เสื้อผ้า (แขวน) และลิ้นชัก (พับ)"},
+    3:{pill:"14 ชิ้น", color:"var(--purple)", desc:"7 ที่เก็บ: เพิ่มแฟ้มเอกสารสำคัญ และกล่องเครื่องเขียน"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    let items = [];
+    L.spots.forEach(s => items.push(...shuffle(ITEMS.filter(x => x[2] === s)).slice(0,2)));
+    const rest = shuffle(ITEMS.filter(x => L.spots.includes(x[2]) && !items.includes(x)));
+    items = shuffle([...items, ...rest.slice(0, L.n - items.length)]);
+    ctx.stage.innerHTML = `<div class="room" id="rm">${items.map((x,i)=>`<button class="it" type="button" data-i="${i}"><span class="e">${x[0]}</span>${x[1]}</button>`).join("")}</div>
+      <div class="hint" id="hn">แตะของ 1 ชิ้นก่อน</div>
+      <div class="spots" style="grid-template-columns:repeat(${Math.min(4, L.spots.length)},1fr)">${L.spots.map(s=>{ const S = SPOTS[s]; return `<button class="sp" type="button" data-s="${s}" style="--sc:${S[3]}"><span class="e">${S[0]}</span>${S[1]}<small>${S[2]}</small></button>`; }).join("")}</div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let sel = null, done = 0;
+    $("#rm").addEventListener("click", e => {
+      const b = e.target.closest(".it"); if (!b) return;
+      ctx.stage.querySelectorAll(".it.sel").forEach(x => x.classList.remove("sel"));
+      sel = b; b.classList.add("sel"); KIT.sfx.tap();
+      $("#hn").textContent = `ถือ ${items[+b.dataset.i][0]} ${items[+b.dataset.i][1]} → แตะที่เก็บ`;
+    });
+    ctx.stage.querySelector(".spots").addEventListener("click", e => {
+      const b = e.target.closest(".sp"); if (!b) return;
+      if (!sel){ ctx.say("แตะของในห้องก่อนนะ"); return; }
+      const x = items[+sel.dataset.i];
+      if (b.dataset.s === x[2]){
+        sel.classList.add("gone"); sel = null; done++;
+        ctx.correct(100, `เก็บถูกที่! ${x[3]}`); ctx.progress(done, items.length);
+        $("#hn").textContent = done < items.length ? "แตะของชิ้นต่อไป" : "ห้องเรียบร้อยแล้ว! ✨";
+        if (done === items.length) ctx.finish({targetSec: [0,50,70,90][level]});
+      } else {
+        sel.classList.remove("no"); void sel.offsetWidth; sel.classList.add("no");
+        ctx.wrong(`${x[1]} ไม่ควรเก็บที่${SPOTS[b.dataset.s][1]}`);
+      }
+    });
+    ctx.progress(0, items.length); ctx.say("จัดห้องให้เป็นระเบียบกัน!");
+  }
+});
+
+})();
+</script>
+</body>
+</html>

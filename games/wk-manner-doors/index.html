@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Speed Run ประตูมารยาท</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="block.css">
+<style>
+.card{width:100%;background:#fff;border:4px solid var(--block);border-radius:10px;box-shadow:0 6px 0 var(--block);padding:16px;text-align:center}
+.card .e{font-size:clamp(2.6rem,10vw,3.6rem);line-height:1.1}
+.card .tx{font-weight:800;font-size:clamp(1.15rem,3.8vw,1.5rem);line-height:1.45;margin-top:6px}
+.tbar{height:14px;border:3px solid var(--block);border-radius:6px;background:#E6ECF5;overflow:hidden;margin-top:12px}
+.tbar i{display:block;height:100%;width:100%;background:#FFD23F;transform-origin:left}
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.door{border:5px solid var(--block);border-radius:10px 10px 4px 4px;min-height:140px;color:#fff;font-weight:900;font-size:clamp(1.1rem,4vw,1.5rem);box-shadow:0 7px 0 var(--block);text-shadow:0 2px 0 rgba(0,0,0,.35);position:relative;background:var(--dc);background-image:linear-gradient(90deg,transparent 46%,rgba(0,0,0,.18) 46% 54%,transparent 54%)}
+.door span{display:block;font-size:2.4rem;text-shadow:none}
+.door:active{transform:translateY(4px);box-shadow:0 3px 0 var(--block)}
+.door.hint{outline:6px solid #FFD23F}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script src="block.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const N = 12;
+/* [icon, text, polite(1/0), why, hard] */
+const BANK = [
+  ["🙏","ไหว้และกล่าวสวัสดีเมื่อเจอแขกของพ่อแม่",1,"แสดงความเคารพผู้ใหญ่",0],
+  ["🏃","วิ่งเล่นส่งเสียงดังขณะแขกคุยกับแม่",0,"รบกวนผู้ใหญ่",0],
+  ["🥤","เสิร์ฟน้ำให้แขกโดยวางแก้วบนถาด",1,"ต้อนรับแขกอย่างเหมาะสม",0],
+  ["👋","เดินไปส่งแขกที่ประตูเมื่อแขกกลับ",1,"มีน้ำใจต่อแขก",0],
+  ["🥄","ใช้ช้อนกลางตักกับข้าว",1,"ถูกสุขลักษณะ",0],
+  ["😮","พูดคุยขณะที่มีอาหารเต็มปาก",0,"ไม่สุภาพ อาหารอาจกระเด็น",0],
+  ["🍚","ตักอาหารแต่พอดีและกินให้หมด",1,"ไม่เหลือทิ้ง",0],
+  ["🙋","ยกมือก่อนพูดในห้องเรียน",1,"เคารพครูและเพื่อน",0],
+  ["🗣️","คุยกับเพื่อนขณะครูสอน",0,"รบกวนการเรียน",0],
+  ["🚽","ราดน้ำหรือกดชักโครกหลังใช้ห้องน้ำ",1,"รักษาความสะอาด",0],
+  ["💧","เปิดน้ำทิ้งไว้หลังล้างมือ",0,"สิ้นเปลืองน้ำ",0],
+  ["🧼","ล้างมือหลังเข้าห้องน้ำ",1,"รักษาสุขอนามัย",0],
+  ["🙅","เดินผ่านผู้ใหญ่โดยไม่ก้มตัว",0,"ควรก้มตัวเล็กน้อยเมื่อเดินผ่านผู้ใหญ่",0],
+  ["🍽️","รวบช้อนส้อมเมื่อกินเสร็จ",1,"แสดงว่ากินอิ่มแล้ว",1],
+  ["🍜","ซดน้ำแกงเสียงดัง",0,"ไม่สุภาพบนโต๊ะอาหาร",1],
+  ["📺","เปิดทีวีเสียงเบา ๆ ในห้องที่พ่อแม่คุยธุระกับแขก",0,"ควรเลี่ยงไปที่อื่น ไม่รบกวนผู้ใหญ่",1],
+  ["🤲","ใช้มือปิดปากแล้วพูดขณะเคี้ยวอาหาร",0,"ควรกลืนให้หมดก่อนแล้วค่อยพูด",1],
+  ["✏️","ขีดเขียนชื่อตัวเองบนโต๊ะเรียน",0,"โต๊ะเป็นของโรงเรียน ต้องช่วยรักษา",1],
+  ["🧻","ทิ้งกระดาษชำระลงโถ ทั้งที่มีป้ายห้าม",0,"อาจทำให้ท่ออุดตัน",1],
+  ["🚶","ต่อแถวรอใช้ห้องน้ำตามลำดับ",1,"เคารพสิทธิของผู้อื่น",1],
+  ["🧃","นำนมมาดื่มในห้องเรียนขณะครูสอน",0,"ควรดื่มตอนพักตามข้อตกลง",1],
+  ["🪑","ช่วยจัดเก้าอี้ให้เรียบร้อยก่อนออกจากห้อง",1,"รักษาความเป็นระเบียบ",1],
+  ["🍴","เอื้อมมือข้ามจานของผู้อื่นไปตักอาหาร",0,"ควรขอให้ผู้อื่นส่งให้",1],
+  ["🫗","รินน้ำให้แขกเต็มแก้วจนล้น",0,"ควรรินพอประมาณ ไม่หก",1],
+  ["📱","เล่นโทรศัพท์ในห้องน้ำนาน ๆ ขณะมีคนรอ",0,"ควรใช้ห้องน้ำให้เสร็จโดยเร็ว",1],
+  ["🙇","กล่าวขอบคุณเมื่อมีคนส่งอาหารให้",1,"แสดงความมีน้ำใจและสุภาพ",1]
+];
+const SEC = {1:0, 2:7, 3:5};
+
+BK.mount({
+  key:"w-doors", title:"Speed Run ประตูมารยาท", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 2 มารยาทเด็กดี",
+  heroHTML:"วิ่งผ่าน<em>ประตูที่ถูก</em>ให้ไว 🚪", heroDesc:"อ่านพฤติกรรม แล้ววิ่งเข้าประตูเขียว (สุภาพ) หรือประตูแดง (ไม่สุภาพ) ให้ถูก ด่านโปรและตำนานมีเวลาจำกัด",
+  progIcon:"🚪",
+  howto:["อ่านพฤติกรรมบนการ์ด","สุภาพ แตะประตูเขียว 🟢 ไม่สุภาพ แตะประตูแดง 🔴","ผิดหรือหมดเวลาเสียหัวใจ ❤️","ผ่าน 12 ประตูถึงธงชัย ตอบเร็วได้เหรียญเพิ่ม"],
+  levels:{
+    1:{pill:"12 ประตู", color:"var(--green)", desc:"ไม่จับเวลา เรื่องง่าย ๆ"},
+    2:{pill:"12 ประตู", color:"var(--blue)", desc:"จับเวลา 7 วินาที"},
+    3:{pill:"12 ประตู", color:"var(--purple)", desc:"จับเวลา 5 วินาที เรื่องที่ต้องคิดให้ดี"}
+  },
+  play(level, ctx){
+    const easy = shuffle(BANK.filter(b => !b[4])), hard = shuffle(BANK.filter(b => b[4]));
+    const deck = level === 1 ? easy.slice(0,N) : level === 2 ? shuffle([...easy.slice(0,6), ...hard.slice(0,6)]) : shuffle([...hard.slice(0,9), ...easy.slice(0,3)]);
+    const lim = SEC[level]*1000;
+    ctx.stage.innerHTML = `<div class="card"><div class="qlabel" id="qn" style="font-weight:700"></div><div class="e" id="ic"></div><div class="tx" id="tx"></div>${lim ? '<div class="tbar"><i id="tb"></i></div>' : ''}</div>
+      <div class="doors"><button class="door" type="button" data-v="1" style="--dc:#3DBE5A"><span>🟢</span>สุภาพ</button><button class="door" type="button" data-v="0" style="--dc:#E5484D"><span>🔴</span>ไม่สุภาพ</button></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let idx = 0, lock = false, t0 = 0, raf = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 70}); return; }
+      const it = deck[idx]; lock = false;
+      $("#qn").textContent = `ประตูที่ ${idx+1} จาก ${N}`; $("#ic").textContent = it[0]; $("#tx").textContent = it[1];
+      ctx.stage.querySelectorAll(".door").forEach(d => d.classList.remove("hint"));
+      t0 = performance.now(); if (lim) tick();
+    }
+    function tick(){
+      if (!ctx.alive() || lock) return;
+      const left = Math.max(0, 1 - (performance.now()-t0)/lim); $("#tb").style.transform = `scaleX(${left})`;
+      if (left <= 0){ pick(null); return; } raf = requestAnimationFrame(tick);
+    }
+    ctx.cleanup(() => cancelAnimationFrame(raf));
+    function pick(v){
+      lock = true; cancelAnimationFrame(raf);
+      const it = deck[idx];
+      if (v === it[2]){
+        const left = lim ? Math.max(0, 1 - (performance.now()-t0)/lim) : 1;
+        ctx.correct(lim ? 60 + Math.round(left*60) : 100, `${it[2] ? "สุภาพ" : "ไม่สุภาพ"} ถูกต้อง! ${it[3]}`); idx++; ctx.progress(idx, N); ctx.after(1200, next);
+      } else {
+        ctx.stage.querySelector(`.door[data-v="${it[2]}"]`).classList.add("hint");
+        ctx.wrong(`${v === null ? "หมดเวลา! " : ""}ข้อนี้${it[2] ? "สุภาพ" : "ไม่สุภาพ"} — ${it[3]}`); idx++; ctx.progress(idx, N); ctx.after(2200, next);
+      }
+    }
+    ctx.stage.querySelector(".doors").addEventListener("click", e => { const d = e.target.closest(".door"); if (d && !lock) pick(+d.dataset.v); });
+    ctx.progress(0, N); ctx.say("3… 2… 1… วิ่ง!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

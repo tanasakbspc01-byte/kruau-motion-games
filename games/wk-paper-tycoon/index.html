@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ร้านงานกระดาษ Tycoon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="block.css">
+<style>
+.counter{display:flex;gap:12px;align-items:center;width:100%;background:#fff;border:4px solid var(--block);border-radius:10px;box-shadow:0 6px 0 var(--block);padding:12px}
+.counter .av{width:56px;height:78px;flex:none}
+.counter .bub{flex:1;background:#E6F4FF;border:3px solid var(--block);border-radius:8px;padding:10px 12px;font-weight:800;font-size:clamp(1.05rem,3.3vw,1.3rem);line-height:1.45}
+.counter .bub small{display:block;font-size:.7em;color:var(--ink-soft)}
+.counter .bub .e{font-size:1.5em}
+.phase{text-align:center;font-weight:900;margin:12px 0 4px}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;width:100%}
+.pp{border:4px solid var(--block);border-radius:8px;padding:10px 6px;font-weight:800;font-size:clamp(.8rem,2.4vw,.95rem);line-height:1.3;box-shadow:0 5px 0 var(--block);background:var(--pc);min-height:96px}
+.pp .e{display:block;font-size:2rem}
+.pp:active{transform:translateY(3px)}
+.pp.ok{outline:5px solid #3DBE5A}
+.pp.no{animation:shake .4s;opacity:.4}
+.sales{text-align:center;font-weight:900;margin-top:10px}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script src="block.js"></script>
+<script>
+(function(){
+const {shuffle, pick} = KIT;
+const N = 8;
+const PAPER = {
+  sa:["🌸","กระดาษสา","#FFE3EE"], corr:["📦","กระดาษลูกฟูก","#F3D9B1"], color:["🌈","กระดาษสี","#E4F1FF"], hard:["🟫","กระดาษแข็ง","#EDE4D3"],
+  gift:["🎁","กระดาษห่อของขวัญ","#FFF1C9"], news:["📰","กระดาษหนังสือพิมพ์เก่า","#EEEEEE"], used:["📄","กระดาษใช้แล้วหน้าเดียว","#F7F7F7"]
+};
+const TOOL = {cutter:["🔪","คัตเตอร์ + ไม้บรรทัดเหล็ก"], sci:["✂️","กรรไกร"], glue:["🧴","กาวลาเท็กซ์"], punch:["🕳️","เครื่องเจาะกระดาษ"], brush:["🖌️","พู่กันและสี"], ruler:["📏","ไม้บรรทัด"], pencil:["✏️","ดินสอ"]};
+/* [icon, order, paper, toolQuestion, tool] */
+const ORDERS = [
+  ["🌺","ดอกไม้ประดิษฐ์ กลีบบางนุ่ม พลิ้วสวย","sa","ต้องการระบายสีกลีบดอกให้สวย ใช้อะไร?","brush"],
+  ["✏️","กล่องใส่ดินสอที่แข็งแรง","corr","ต้องการตัดกระดาษลูกฟูกให้ตรง ใช้อะไร?","cutter"],
+  ["🦋","ผีเสื้อแปะผนังห้องเรียน สีสดใส","color","ต้องการตัดเป็นรูปปีกผีเสื้อโค้ง ๆ ใช้อะไร?","sci"],
+  ["🔖","ที่คั่นหนังสือ ไม่งอง่าย","hard","ต้องการเจาะรูเพื่อร้อยริบบิ้น ใช้อะไร?","punch"],
+  ["🎁","ห่อของขวัญวันเกิดให้สวยงาม","gift","ต้องการติดรอยต่อของกระดาษห่อให้แน่น ใช้อะไร?","glue"],
+  ["🛍️","ถุงใส่ของ ช่วยลดถุงพลาสติก นำของเหลือใช้มาทำ","news","ต้องการติดขอบถุงให้แน่น ใช้อะไร?","glue"],
+  ["📒","สมุดโน้ตเล่มเล็ก ใช้ทรัพยากรอย่างคุ้มค่า","used","ต้องการวัดขนาดกระดาษให้เท่ากันทุกแผ่น ใช้อะไร?","ruler"],
+  ["🪴","กระถางดอกไม้กระดาษ สีสันสดใส","color","ต้องการร่างแบบลงบนกระดาษก่อนตัด ใช้อะไร?","pencil"]
+];
+const LV = {1:{opts:3, tool:false}, 2:{opts:5, tool:false}, 3:{opts:7, tool:true}};
+
+BK.mount({
+  key:"w-paper", title:"ร้านงานกระดาษ Tycoon", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 6 งานประดิษฐ์จากกระดาษ",
+  heroHTML:"เปิด<em>ร้านงานกระดาษ</em> รับออร์เดอร์ 🏪", heroDesc:"ลูกค้าสั่งของประดิษฐ์จากกระดาษ เลือกชนิดกระดาษให้เหมาะกับงาน ด่านตำนานต้องเลือกเครื่องมือด้วย",
+  progIcon:"🏪",
+  howto:["อ่านออร์เดอร์ของลูกค้า","แตะกระดาษที่เหมาะกับงานนั้น","ด่านตำนาน: เลือกเครื่องมือที่เหมาะกับขั้นตอนต่อ","ทำครบ 8 ออร์เดอร์ ร้านรุ่ง!"],
+  levels:{
+    1:{pill:"8 ออร์เดอร์", color:"var(--green)", desc:"เลือกกระดาษจาก 3 ชนิด"},
+    2:{pill:"8 ออร์เดอร์", color:"var(--blue)", desc:"เลือกกระดาษจาก 5 ชนิด"},
+    3:{pill:"8 ออร์เดอร์", color:"var(--purple)", desc:"กระดาษ 7 ชนิด + เลือกเครื่องมือที่เหมาะสม"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const deck = shuffle(ORDERS.slice()).slice(0, N);
+    const total = N * (L.tool ? 2 : 1);
+    const shirts = ["#FF9F1C","#00B8D9","#8B5CF6","#E5484D","#3DBE5A","#FF5D8F"];
+    ctx.stage.innerHTML = `<div class="counter"><div class="av" id="av"></div><div class="bub" id="bb"></div></div><div class="phase" id="ph"></div><div class="shelf" id="sh"></div><div class="sales" id="sl">💰 ยอดขาย 0 ชิ้น</div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let idx = 0, done = 0, sold = 0, phase = "paper", first = true;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level===3 ? 120 : 80}); return; }
+      const o = deck[idx]; phase = "paper"; first = true;
+      $("#av").innerHTML = BK.avatar(pick(shirts), "#4F5B76");
+      $("#bb").innerHTML = `<small>ออร์เดอร์ที่ ${idx+1} จาก ${N}</small><span class="e">${o[0]}</span> อยากได้${o[1]}`;
+      $("#ph").textContent = "📜 เลือกกระดาษที่เหมาะสม";
+      const keys = shuffle([o[2], ...shuffle(Object.keys(PAPER).filter(k => k !== o[2])).slice(0, L.opts-1)]);
+      $("#sh").innerHTML = keys.map(k => `<button class="pp" type="button" data-k="${k}" style="--pc:${PAPER[k][2]}"><span class="e">${PAPER[k][0]}</span>${PAPER[k][1]}</button>`).join("");
+    }
+    function toolStep(o){
+      phase = "tool"; first = true;
+      $("#ph").textContent = "🛠️ " + o[3];
+      const keys = shuffle([o[4], ...shuffle(Object.keys(TOOL).filter(k => k !== o[4])).slice(0, 3)]);
+      $("#sh").innerHTML = keys.map(k => `<button class="pp" type="button" data-k="${k}" style="--pc:#FFFFFF"><span class="e">${TOOL[k][0]}</span>${TOOL[k][1]}</button>`).join("");
+    }
+    function sell(o){ sold++; $("#sl").textContent = `💰 ยอดขาย ${sold} ชิ้น`; idx++; ctx.after(1200, next); }
+    $("#sh").addEventListener("click", e => {
+      const b = e.target.closest(".pp"); if (!b || idx >= N || b.classList.contains("no") || b.classList.contains("ok") || ctx.stage.querySelector(".pp.ok")) return;
+      const o = deck[idx];
+      if (phase === "paper"){
+        if (b.dataset.k === o[2]){ b.classList.add("ok"); ctx.correct(first ? 100 : 50, `${PAPER[o[2]][1]} เหมาะเลย!`); done++; ctx.progress(done, total); if (L.tool) ctx.after(900, () => toolStep(o)); else sell(o); }
+        else { first = false; b.classList.add("no"); ctx.wrong(`${PAPER[b.dataset.k][1]} ไม่เหมาะกับงานนี้`); }
+      } else {
+        if (b.dataset.k === o[4]){ b.classList.add("ok"); ctx.correct(first ? 100 : 50, `ใช้${TOOL[o[4]][1]} ถูกต้อง! ส่งของได้`); done++; ctx.progress(done, total); sell(o); }
+        else { first = false; b.classList.add("no"); ctx.wrong(`${TOOL[b.dataset.k][1]} ไม่เหมาะกับขั้นตอนนี้`); }
+      }
+    });
+    ctx.progress(0, total); ctx.say("ร้านเปิดแล้ว! ลูกค้ามาแล้ว");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

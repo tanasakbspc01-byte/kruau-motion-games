@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สายพานอาชีพ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="block.css">
+<style>
+.belt{position:relative;width:100%;height:190px;background:#4F5B76;border:4px solid var(--block);border-radius:10px;box-shadow:0 6px 0 var(--block);overflow:hidden}
+.belt::before{content:"";position:absolute;left:0;right:0;bottom:22px;height:22px;background:repeating-linear-gradient(90deg,#2E3B5C 0 20px,#1F2A44 20px 40px);animation:roll 1s linear infinite}
+@keyframes roll{to{background-position:40px 0}}
+.belt .end{position:absolute;left:0;top:0;bottom:0;width:46px;background:repeating-linear-gradient(45deg,#FFD23F 0 10px,#1F2A44 10px 20px);opacity:.85}
+.job{position:absolute;bottom:46px;width:150px;background:#fff;border:4px solid var(--block);border-radius:8px;padding:8px 6px;text-align:center;font-weight:800;font-size:.95rem;line-height:1.3;box-shadow:0 5px 0 var(--block)}
+.job .e{display:block;font-size:2.2rem;line-height:1.1}
+.job.out{transition:transform .35s,opacity .35s;transform:translateY(-60px) scale(.6);opacity:0}
+.cats{display:grid;gap:10px;margin-top:14px;width:100%}
+.cat{border:4px solid var(--block);background:var(--cc);color:#fff;border-radius:10px;padding:12px 6px;font-weight:900;font-size:clamp(.95rem,3vw,1.2rem);box-shadow:0 6px 0 var(--block);text-shadow:0 2px 0 rgba(0,0,0,.3);line-height:1.3}
+.cat .e{display:block;font-size:1.9rem;text-shadow:none}
+.cat small{display:block;font-size:.7em;font-weight:700}
+.cat:active{transform:translateY(3px);box-shadow:0 3px 0 var(--block)}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script src="block.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const N = 10;
+const SETS = {
+  type:{ cats:[["🏛️","ข้าราชการ","ทำงานให้รัฐ","#2F80ED"],["🏢","ลูกจ้าง","ทำงานให้นายจ้าง ได้ค่าจ้าง","#8B5CF6"],["🧑‍🌾","อาชีพอิสระ","เป็นเจ้าของกิจการเอง","#3DBE5A"]],
+    jobs:[["👩‍🏫","ครูโรงเรียนรัฐบาล",0],["👮","ตำรวจ",0],["🪖","ทหาร",0],["👩‍⚕️","พยาบาลโรงพยาบาลรัฐ",0],["🏛️","ปลัดอำเภอ",0],
+          ["👔","พนักงานบริษัท",1],["🏭","พนักงานโรงงาน",1],["🏪","พนักงานร้านสะดวกซื้อ",1],["🛎️","พนักงานโรงแรม",1],["🚚","พนักงานขับรถส่งของของบริษัท",1],
+          ["🌾","ชาวนา",2],["🍉","แม่ค้าขายผลไม้",2],["💈","เจ้าของร้านตัดผม",2],["📷","ช่างภาพอิสระ",2],["🌳","ชาวสวนยาง",2],["📱","คนขายของออนไลน์ของตัวเอง",2]] },
+  kind:{ cats:[["🏭","การผลิต","ทำสิ่งของ/ผลผลิตขึ้นมา","#FF9F1C"],["🛒","การค้า","ซื้อมา ขายไป","#E5484D"],["🤝","การบริการ","ช่วยอำนวยความสะดวกให้ผู้อื่น","#00B8D9"]],
+    jobs:[["🌾","ชาวนาปลูกข้าว",0],["🎣","ชาวประมง",0],["🪑","ช่างทำเฟอร์นิเจอร์",0],["🐔","เกษตรกรเลี้ยงไก่ไข่",0],["🧵","ช่างทอผ้า",0],
+          ["🍉","แม่ค้าขายผลไม้ในตลาด",1],["🏪","เจ้าของร้านขายของชำ",1],["👕","พ่อค้าขายเสื้อผ้าออนไลน์",1],["🛻","พ่อค้าคนกลางรับซื้อข้าว",1],
+          ["💈","ช่างตัดผม",2],["👨‍⚕️","หมอ",2],["🚕","คนขับแท็กซี่",2],["🔧","ช่างซ่อมรถ",2],["👩‍🏫","ครู",2]] }
+};
+const LV = {1:{set:"type", cats:[0,2], speed:45}, 2:{set:"type", cats:[0,1,2], speed:60}, 3:{set:"kind", cats:[0,1,2], speed:75}};
+
+BK.mount({
+  key:"w-jobs", title:"สายพานอาชีพ", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 7 อาชีพในฝัน",
+  heroHTML:"คัดแยก<em>อาชีพ</em>บนสายพาน ⚙️", heroDesc:"การ์ดอาชีพเลื่อนมาตามสายพาน แตะปุ่มประเภทอาชีพให้ถูกก่อนการ์ดตกขอบ",
+  progIcon:"⚙️",
+  howto:["อ่านอาชีพบนการ์ดที่เลื่อนมา","แตะปุ่มประเภทอาชีพที่ถูกต้อง","ตอบผิดหรือการ์ดตกขอบเสียหัวใจ ❤️","คัดครบ 10 อาชีพผ่านด่าน"],
+  levels:{
+    1:{pill:"10 อาชีพ", color:"var(--green)", desc:"ข้าราชการ หรือ อาชีพอิสระ สายพานช้า"},
+    2:{pill:"10 อาชีพ", color:"var(--blue)", desc:"ข้าราชการ / ลูกจ้าง / อาชีพอิสระ"},
+    3:{pill:"10 อาชีพ", color:"var(--purple)", desc:"อาชีพการผลิต / การค้า / การบริการ สายพานเร็ว"}
+  },
+  play(level, ctx){
+    const L = LV[level], S = SETS[L.set];
+    const deck = shuffle(S.jobs.filter(j => L.cats.includes(j[2]))).slice(0, N);
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext">อาชีพนี้เป็นประเภทไหน?</div></div>
+      <div class="belt" id="bt"><span class="end"></span></div>
+      <div class="cats" style="grid-template-columns:repeat(${L.cats.length},1fr)">${L.cats.map(c=>{ const C = S.cats[c]; return `<button class="cat" type="button" data-c="${c}" style="--cc:${C[3]}"><span class="e">${C[0]}</span>${C[1]}<small>${C[2]}</small></button>`; }).join("")}</div>`;
+    const $ = s => ctx.stage.querySelector(s), bt = $("#bt");
+    let idx = 0, card = null, x = 0, last = 0, raf = 0, lock = false;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 80}); return; }
+      const j = deck[idx]; lock = false;
+      $("#qn").textContent = `อาชีพที่ ${idx+1} จาก ${N}`;
+      card = document.createElement("div"); card.className = "job"; card.innerHTML = `<span class="e">${j[0]}</span>${j[1]}`;
+      bt.appendChild(card); x = bt.clientWidth - 170; card.style.left = x + "px";
+    }
+    function resolve(c){
+      if (lock || !card) return; lock = true;
+      const j = deck[idx], el = card; card = null;
+      const right = c === j[2];
+      if (right) ctx.correct(100, `ถูกต้อง! ${j[1]} เป็น${S.cats[j[2]][1]}`);
+      else ctx.wrong(`${c === null ? "การ์ดตกขอบ! " : ""}${j[1]} เป็น${S.cats[j[2]][1]}`);
+      el.classList.add("out"); setTimeout(() => el.remove(), 400);
+      idx++; ctx.progress(idx, N); ctx.after(right ? 700 : 1600, next);
+    }
+    function loop(t){
+      if (!ctx.alive()) return;
+      const dt = Math.min(.05, (t - (last||t))/1000); last = t;
+      if (card && !lock){ x -= L.speed*dt; card.style.left = x + "px"; if (x < 10) resolve(null); }
+      raf = requestAnimationFrame(loop);
+    }
+    ctx.cleanup(() => cancelAnimationFrame(raf));
+    ctx.stage.querySelector(".cats").addEventListener("click", e => { const b = e.target.closest(".cat"); if (b) resolve(+b.dataset.c); });
+    ctx.progress(0, N); ctx.say("สายพานเริ่มทำงาน!");
+    next(); raf = requestAnimationFrame(loop);
+  }
+});
+
+})();
+</script>
+</body>
+</html>

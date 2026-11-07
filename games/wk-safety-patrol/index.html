@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>หน่วยลาดตระเวนความปลอดภัย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="block.css">
+<style>
+.shop{display:grid;gap:12px;width:100%;background:#E9D3B0;border:4px solid var(--block);border-radius:10px;box-shadow:0 6px 0 var(--block);padding:12px;background-image:linear-gradient(90deg,rgba(0,0,0,.06) 2px,transparent 2px);background-size:60px 100%}
+.wk{position:relative;border:4px solid var(--block);background:#fff;border-radius:8px;padding:8px 6px 10px;min-height:150px;box-shadow:0 5px 0 var(--block);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;overflow:hidden}
+.wk .av{width:38px;height:54px}
+.wk .act{font-size:clamp(.74rem,2.3vw,.92rem);font-weight:800;background:#F1F4F9;border-radius:6px;padding:3px 6px;margin-top:6px;line-height:1.3;min-height:2.6em;display:flex;align-items:center}
+.wk .bub{position:absolute;top:6px;right:8px;font-size:1.5rem;opacity:0;transform:scale(.4);transition:.15s}
+.wk.on .bub{opacity:1;transform:scale(1)}
+.wk.on{background:#FFF1C9}
+.wk.fix{background:#D7F8DF}
+.wk.oops{animation:shake .4s;background:#FFD9D9}
+.boss{text-align:center;font-weight:800;margin-top:8px}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script src="block.js"></script>
+<script>
+(function(){
+const {pick, rand, shuffle} = KIT;
+const NEED = 12;
+const SAFE = [["🥽","สวมแว่นตานิรภัยขณะเลื่อยไม้"],["🧰","เก็บเครื่องมือเข้ากล่องเป็นที่"],["🔍","ตรวจเครื่องมือก่อนใช้งาน"],["🪛","ใช้ไขควงขันสกรู"],["👕","สวมเสื้อผ้ารัดกุม"],["🧽","เช็ดทำความสะอาดเครื่องมือหลังใช้"],["📖","อ่านวิธีใช้ก่อนลงมือ"]];
+const RISK = [
+  ["😜","หยอกล้อกันขณะใช้เลื่อย","ไม่ควรหยอกล้อขณะทำงานช่าง อาจเกิดอุบัติเหตุ"],
+  ["🪛","ใช้ไขควงแกะสลักไม้","ใช้เครื่องมือผิดประเภท ควรใช้สิ่ว"],
+  ["🔨","วางค้อนเกะกะบนพื้นทางเดิน","ควรเก็บเครื่องมือให้เป็นที่ ป้องกันสะดุด"],
+  ["👘","ใส่เสื้อผ้าหลวมรุ่มร่ามขณะใช้สว่าน","เสื้อผ้าหลวมอาจถูกเครื่องมือดึง"],
+  ["🪚","ใช้เลื่อยที่ใบเลื่อยใกล้หัก","ต้องซ่อมหรือเปลี่ยนก่อนใช้"],
+  ["✂️","ส่งกรรไกรให้เพื่อนโดยหันปลายแหลมไปทางเพื่อน","ควรหันด้ามจับไปทางผู้รับ"],
+  ["🔨","ใช้ค้อนที่หัวค้อนหลวมโยก","หัวค้อนอาจหลุดใส่คนได้"],
+  ["🏃","วิ่งเล่นในห้องช่าง","ห้องช่างมีของมีคม ต้องเดินอย่างระมัดระวัง"]
+];
+/* care mistakes that look harmless (ตำนาน) */
+const TRICK = [
+  ["📦","ใช้กรรไกรเสร็จ เก็บลงกล่องทันทีโดยไม่เช็ด","ควรเช็ดทำความสะอาดก่อนเก็บ"],
+  ["🧲","เก็บเครื่องมือเหล็กที่เปียกน้ำโดยไม่เช็ดให้แห้ง","จะทำให้เป็นสนิม ควรเช็ดแห้งและทาน้ำมัน"],
+  ["🔨","ถอดหัวค้อนออกจากด้ามแล้ววางไว้บนโต๊ะ","ทำให้ค้อนชำรุดและหาย ควรเก็บให้ครบชิ้น"]
+];
+const LV = {1:{n:6, up:2800, gap:1000}, 2:{n:9, up:2200, gap:780}, 3:{n:9, up:1800, gap:620, trick:true}};
+
+BK.mount({
+  key:"w-safety", title:"หน่วยลาดตระเวนความปลอดภัย", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 4 ซ่อมแซมอุปกรณ์ (ความปลอดภัยในงานช่าง)",
+  heroHTML:"ตรวจ<em>โรงช่าง</em>ให้ปลอดภัย 🦺", heroDesc:"ในโรงช่างมีคนทำงานไม่ปลอดภัยโผล่มาเรื่อย ๆ แตะเตือนให้ทัน แต่อย่าแตะคนที่ทำถูกต้องนะ",
+  progIcon:"🦺",
+  howto:["ดูการกระทำของช่างแต่ละคน","คนที่ทำไม่ปลอดภัย (มี ⚠️) ให้แตะเตือนทันที","แตะคนที่ทำถูกเสียหัวใจ ❤️","เตือนครบ 12 ครั้งผ่านด่าน"],
+  levels:{
+    1:{pill:"6 ช่าง", color:"var(--green)", desc:"ช้า ๆ ดูทัน"},
+    2:{pill:"9 ช่าง", color:"var(--blue)", desc:"เร็วขึ้น ช่างมากขึ้น"},
+    3:{pill:"9 ช่าง", color:"var(--purple)", desc:"เร็ว + ความผิดเรื่องการดูแลเครื่องมือที่ดูไม่อันตราย"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const shirts = shuffle(["#FF9F1C","#00B8D9","#8B5CF6","#E5484D","#3DBE5A","#FF5D8F","#2F80ED","#C9A227","#14B8A6"]);
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qtext">แตะเตือนช่างที่ทำงาน <u>ไม่ปลอดภัย</u></div></div>
+      <div class="shop" id="sh" style="grid-template-columns:repeat(3,1fr)">${Array.from({length:L.n},(_,i)=>`<button class="wk" type="button" data-i="${i}"><span class="bub"></span><span class="av">${BK.avatar(shirts[i], "#4F5B76")}</span><span class="act"></span></button>`).join("")}</div>
+      <div class="boss">🦺 เตือนแล้ว <span id="ct">0</span>/${NEED}</div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    const W = [...ctx.stage.querySelectorAll(".wk")];
+    const st = W.map(() => ({}));
+    let got = 0;
+    function calm(i){ st[i] = {}; const s = pick(SAFE); W[i].classList.remove("on","fix","oops"); W[i].querySelector(".bub").textContent = ""; W[i].querySelector(".act").textContent = s[0] + " " + s[1]; }
+    W.forEach((_,i) => calm(i));
+    function spawn(){
+      if (!ctx.alive()) return;
+      const free = st.map((s,i) => (s.bad || s.busy) ? -1 : i).filter(i => i >= 0);
+      if (free.length > 1){
+        const i = pick(free); const tr = L.trick && Math.random() < .35; const a = pick(tr ? TRICK : RISK);
+        const mine = {bad:true, a}; st[i] = mine;
+        W[i].classList.add("on"); W[i].querySelector(".bub").textContent = "⚠️"; W[i].querySelector(".act").textContent = a[0] + " " + a[1];
+        mine.t = setTimeout(() => { if (ctx.alive() && st[i] === mine) calm(i); }, L.up + rand(0,400));
+      }
+      ctx.after(L.gap + rand(0,300), spawn);
+    }
+    ctx.cleanup(() => st.forEach(s => clearTimeout(s.t)));
+    $("#sh").addEventListener("pointerdown", e => {
+      const w = e.target.closest(".wk"); if (!w) return; e.preventDefault();
+      const i = +w.dataset.i, s = st[i]; if (s.busy || got >= NEED) return;
+      if (s.bad){
+        clearTimeout(s.t); st[i] = {busy:true}; w.classList.remove("on"); w.classList.add("fix");
+        w.querySelector(".bub").textContent = "✅"; w.querySelector(".act").textContent = "👍 ขอบคุณที่เตือน!";
+        got++; $("#ct").textContent = got; ctx.correct(100, `เตือนทัน! ${s.a[2]}`); ctx.progress(got, NEED);
+        ctx.after(900, () => calm(i));
+        if (got >= NEED) ctx.finish({targetSec: level===1 ? 70 : 55});
+      } else {
+        w.classList.remove("oops"); void w.offsetWidth; w.classList.add("oops");
+        ctx.wrong("ช่างคนนี้ทำงานอย่างปลอดภัยอยู่แล้วนะ");
+      }
+    });
+    ctx.progress(0, NEED); ctx.say("ออกลาดตระเวนได้!");
+    ctx.after(800, spawn);
+  }
+});
+
+})();
+</script>
+</body>
+</html>
