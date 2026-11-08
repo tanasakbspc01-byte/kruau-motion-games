@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ภารกิจแผนที่แคว้นโบราณ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.mwrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;align-items:start}
+.mapbox{background:#CDEBFF;border-radius:20px;box-shadow:0 6px 0 #9FCDEB;padding:6px}
+.mapbox svg{width:100%;height:auto;display:block;max-height:62vh}
+.rg{cursor:pointer;stroke:#fff;stroke-width:2;transition:filter .2s}
+.rg:hover{filter:brightness(1.06)}
+.rg.no{animation:blink .5s}
+@keyframes blink{50%{fill:#F6B4B4}}
+.rl{font:700 9px Mali,sans-serif;fill:#24304A;pointer-events:none}
+.pin{cursor:pointer}
+.pin circle{fill:#fff;stroke:#24304A;stroke-width:2}
+.pin text{font:700 7.5px Mali,sans-serif;fill:#24304A;paint-order:stroke;stroke:#fff;stroke-width:2.5px}
+.pin.ok circle{fill:#2FA866}
+.pin.no circle{fill:#E06767}
+.clue{background:#fff;border:3px solid var(--line);border-radius:20px;padding:14px;box-shadow:0 5px 0 var(--line);text-align:center}
+.clue .e{font-size:2.8rem;line-height:1.1}
+.clue .t{font-weight:700;font-size:clamp(1.05rem,3.3vw,1.3rem);line-height:1.45;margin-top:6px}
+.clue .h{color:var(--ink-soft);font-weight:600;margin-top:8px;font-size:.95rem}
+.found{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;justify-content:center}
+.found span{background:#E8F8EE;border-radius:999px;padding:2px 10px;font-weight:700;font-size:.85rem}
+@media (max-width:620px){.mwrap{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const N = 8;
+const REG = {
+  n:{name:"ภาคเหนือ", c:"#BFE6C4", pts:"70,10 100,2 130,20 125,60 115,100 80,110 55,80 55,40", lx:80, ly:55},
+  ne:{name:"ภาคตะวันออกเฉียงเหนือ", c:"#FFE3A8", pts:"125,60 150,55 190,90 195,130 175,170 130,170 115,140 115,100", lx:135, ly:120},
+  c:{name:"ภาคกลาง", c:"#FFC9D6", pts:"80,110 115,100 115,140 130,170 140,195 120,205 95,195 85,170 70,140", lx:88, ly:150},
+  s:{name:"ภาคใต้", c:"#C9DCFF", pts:"85,200 95,195 105,210 95,240 100,280 115,320 110,350 95,345 85,300 75,260 80,230", lx:62, ly:300}
+};
+const PROV = {chiangrai:["เชียงราย",100,20], lamphun:["ลำพูน",84,58], mhs:["แม่ฮ่องสอน",62,42], lopburi:["ลพบุรี",106,138], nakhonpathom:["นครปฐม",92,175], kanchanaburi:["กาญจนบุรี",76,152], nakhonphanom:["นครพนม",178,92], udon:["อุดรธานี",148,80], ubon:["อุบลราชธานี",180,150], surat:["สุราษฎร์ธานี",90,252], nakhonsi:["นครศรีธรรมราช",104,282]};
+const KING = {yonok:["โยนก",100,20], hari:["หริภุญชัย",84,58], lavo:["ละโว้",106,138], dvara:["ทวารวดี",92,175], kotra:["โคตรบูรณ์",178,92], tampra:["ตามพรลิงค์",104,282], sri:["ศรีวิชัย",90,252]};
+/* level 1: [icon, clue, region]  level 2: [icon, clue, province]  level 3: [icon, clue, kingdom] */
+const Q1 = [["🏯","แคว้นหริภุญชัย","n"],["🏯","แคว้นโยนก","n"],["🏯","แคว้นทวารวดี","c"],["🏯","แคว้นละโว้","c"],["🏯","แคว้นโคตรบูรณ์","ne"],["🏯","แคว้นศรีวิชัย","s"],["🏯","แคว้นตามพรลิงค์","s"],["🏺","แหล่งโบราณคดีบ้านเชียง","ne"],["🎨","ภาพเขียนสีผาแต้ม","ne"],["🕳️","ถ้ำผี (ที่อยู่ของคนยุคหิน)","n"]];
+const Q2 = [["🏯","แคว้นหริภุญชัย","lamphun"],["🏯","แคว้นโยนก","chiangrai"],["🏯","แคว้นละโว้","lopburi"],["🏯","แคว้นโคตรบูรณ์","nakhonphanom"],["🏯","แคว้นตามพรลิงค์","nakhonsi"],["🏺","แหล่งโบราณคดีบ้านเชียง","udon"],["🎨","ภาพเขียนสีผาแต้ม","ubon"],["💀","แหล่งโบราณคดีบ้านเก่า","kanchanaburi"],["🕳️","ถ้ำผีและถ้ำลอด","mhs"],["🛕","พระปฐมเจดีย์ (ทวารวดี)","nakhonpathom"]];
+const Q3 = [["👑","พระนางจามเทวี ปกครองแคว้นนี้ตามตำนาน","hari"],["🛕","พระธาตุเก่าแก่กลางเมืองลำพูน","hari"],["🛕","พระปรางค์สามยอด จ.ลพบุรี","lavo"],["🪙","เหรียญเงินจารึก \"ศรีทวารวดีศวรปุณยะ\"","dvara"],["🛕","พระปฐมเจดีย์ จ.นครปฐม","dvara"],["🛕","พระธาตุพนม","kotra"],["🛕","พระบรมธาตุเจดีย์นครศรีธรรมราช","tampra"],["🛕","พระบรมธาตุไชยา จ.สุราษฎร์ธานี","sri"],["👑","พญามังราย กษัตริย์แห่งราชวงศ์ลาวจักราช","yonok"],["⚓","แคว้นทางใต้ที่ควบคุมการค้าทางทะเล","sri"]];
+
+KIT.mount({
+  key:"h4-map", title:"ภารกิจแผนที่แคว้นโบราณ", subtitle:"ประวัติศาสตร์ ป.4 · หน่วยที่ 2 การตั้งถิ่นฐานและพัฒนาการของมนุษย์ (แคว้นโบราณในดินแดนไทย)",
+  heroHTML:"ปักหมุด<em>แคว้นโบราณ</em>บนแผนที่ 📍", heroDesc:"เป็นนักสำรวจ หาตำแหน่งแคว้นโบราณ แหล่งโบราณคดี และโบราณสถานบนแผนที่ประเทศไทยแบบง่าย",
+  progIcon:"📍",
+  howto:["อ่านโจทย์ว่าต้องหาอะไร","ด่านง่าย: แตะภาคบนแผนที่","ด่านกลาง: แตะหมุดจังหวัด · ด่านยาก: แตะหมุดแคว้น","ผิดเสีย 10 คะแนน ปักหมุดครบ 8 ครั้งผ่านด่าน"],
+  note:"แผนที่ในเกมเป็นแผนที่แบบง่าย ไม่ใช่ขนาดและรูปร่างจริง",
+  levels:{
+    1:{pill:"8 หมุด", color:"var(--green)", desc:"แคว้นนี้อยู่ภาคไหน"},
+    2:{pill:"8 หมุด", color:"var(--blue)", desc:"แคว้นหรือแหล่งโบราณคดีอยู่จังหวัดไหน"},
+    3:{pill:"8 หมุด", color:"var(--purple)", desc:"โบราณสถานหรือบุคคลนี้เป็นของแคว้นไหน"}
+  },
+  play(level, ctx){
+    const deck = shuffle((level===1 ? Q1 : level===2 ? Q2 : Q3).slice()).slice(0, N);
+    const pins = level === 2 ? PROV : level === 3 ? KING : null;
+    const svg = `<svg viewBox="40 0 170 360" aria-label="แผนที่ประเทศไทยแบบง่าย">
+      ${Object.entries(REG).map(([k,r]) => `<polygon class="rg" data-r="${k}" points="${r.pts}" fill="${r.c}"/>`).join("")}
+      ${level === 1 ? Object.values(REG).map(r => `<text class="rl" x="${r.lx}" y="${r.ly}">${r.name.replace("ภาคตะวันออกเฉียงเหนือ","ภาคอีสาน")}</text>`).join("") : ""}
+      ${pins ? Object.entries(pins).map(([k,p]) => `<g class="pin" data-p="${k}"><circle cx="${p[1]}" cy="${p[2]}" r="5"/><text x="${p[1]+7}" y="${p[2]+3}">${p[0]}</text></g>`).join("") : ""}
+    </svg>`;
+    ctx.stage.innerHTML = `<div class="mwrap"><div class="mapbox" id="mb">${svg}</div><div><div class="clue"><div class="qlabel" id="qn"></div><div class="e" id="ic"></div><div class="t" id="tx"></div><div class="h" id="hn"></div></div><div class="found" id="fd"></div></div></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let idx = 0, first = true, lock = false;
+    const hint = level === 1 ? "แตะภาคที่ถูกต้องบนแผนที่" : level === 2 ? "แตะหมุดจังหวัดที่ถูกต้อง" : "แตะหมุดแคว้นที่ถูกต้อง";
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 90}); return; }
+      const q = deck[idx]; first = true; lock = false;
+      $("#qn").textContent = `หมุดที่ ${idx+1} จาก ${N}`; $("#ic").textContent = q[0]; $("#tx").textContent = level === 3 ? q[1] : `${q[1]} อยู่ที่ไหน?`; $("#hn").textContent = hint;
+      ctx.stage.querySelectorAll(".pin").forEach(p => p.classList.remove("ok","no"));
+    }
+    $("#mb").addEventListener("click", e => {
+      if (lock || idx >= N) return;
+      const q = deck[idx];
+      const t = level === 1 ? e.target.closest(".rg") : e.target.closest(".pin");
+      if (!t) return;
+      const key = level === 1 ? t.dataset.r : t.dataset.p;
+      const right = key === q[2];
+      const label = level === 1 ? REG[q[2]].name : (pins[q[2]][0]);
+      if (right){
+        lock = true; if (level > 1) t.classList.add("ok");
+        const s = document.createElement("span"); s.textContent = `📍 ${q[1].split(" (")[0]} → ${label}`; $("#fd").appendChild(s);
+        ctx.correct(first ? 100 : 50, `ถูกต้อง! ${label}`); idx++; ctx.progress(idx, N); ctx.after(1200, next);
+      } else {
+        first = false; t.classList.remove("no"); void t.getBoundingClientRect(); t.classList.add("no");
+        ctx.wrong(`ยังไม่ใช่${level === 1 ? REG[key].name : pins[key][0]} ลองใหม่นะ`);
+      }
+    });
+    ctx.progress(0, N); ctx.say("นักสำรวจ ออกเดินทางได้!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

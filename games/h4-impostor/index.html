@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ใครคือตัวปลอม?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.ship{width:100%;background:#1E2140;border-radius:22px;padding:14px;box-shadow:0 6px 0 #10122A;color:#fff}
+.ship h3{text-align:center;color:#F6CD6B;font-size:clamp(1.05rem,3.4vw,1.35rem)}
+.crew{display:grid;gap:10px;margin-top:12px}
+.cm{display:flex;gap:10px;align-items:center;text-align:left;background:#2D3160;border:3px solid #474C8A;border-radius:16px;padding:10px;color:#fff;font-weight:700;font-size:clamp(.92rem,2.9vw,1.1rem);line-height:1.4}
+.cm .av{flex:none;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:2rem;background:var(--ac)}
+.cm .q{flex:1;background:#fff;color:#24304A;border-radius:12px;padding:8px 10px;position:relative}
+.cm .q::before{content:"";position:absolute;left:-8px;top:16px;border:8px solid transparent;border-right-color:#fff;border-left:0}
+.cm:active{transform:translateY(2px)}
+.cm.out{background:#7A2B3A;border-color:#E06767}
+.cm.safe{opacity:.5}
+.cm.no{animation:shake .4s}
+.res{text-align:center;margin-top:10px;font-weight:700;color:#F6CD6B;min-height:1.4em}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const N = 8;
+const T = {
+  1:["ยุคหินเก่า คนล่าสัตว์และเก็บของป่าเป็นอาหาร","ยุคหินใหม่ คนเริ่มเพาะปลูกและเลี้ยงสัตว์","ยุคโลหะ คนรู้จักใช้สำริดและเหล็ก","คนโบราณชอบตั้งถิ่นฐานใกล้แหล่งน้ำ","ยุคหินใหม่ใช้เครื่องมือหินขัด","ยุคหินเก่า คนอาศัยในถ้ำและเพิงผา","กลองมโหระทึกทำจากสำริด","ที่ราบลุ่มแม่น้ำเหมาะกับการเพาะปลูก"],
+  2:["บ้านเชียงอยู่จังหวัดอุดรธานี","ผาแต้มอยู่จังหวัดอุบลราชธานี","แคว้นหริภุญชัยอยู่ภาคเหนือ ที่จังหวัดลำพูน","แคว้นทวารวดีอยู่ภาคกลาง","แคว้นศรีวิชัยอยู่ภาคใต้","สำริดคือทองแดงผสมดีบุก","สมัยประวัติศาสตร์เริ่มเมื่อมีตัวอักษรบันทึก","บ้านเก่าอยู่จังหวัดกาญจนบุรี"],
+  3:["พระนางจามเทวีเป็นกษัตริย์ของแคว้นหริภุญชัย","พระปรางค์สามยอด จ.ลพบุรี เป็นหลักฐานของแคว้นละโว้","แคว้นโคตรบูรณ์อยู่บริเวณจังหวัดนครพนม","พระบรมธาตุเจดีย์นครศรีธรรมราชเกี่ยวข้องกับแคว้นตามพรลิงค์","แคว้นโยนกอยู่บริเวณจังหวัดเชียงราย","ผู้คนในแคว้นทวารวดีนับถือพระพุทธศาสนา","แคว้นโบราณรับวัฒนธรรมอินเดียผ่านการค้าขาย","พระบรมธาตุไชยา จ.สุราษฎร์ธานี เป็นหลักฐานของแคว้นศรีวิชัย"]
+};
+const F = {
+  1:[["ยุคหินเก่า คนปลูกข้าวในนาแปลงใหญ่","ยุคหินเก่ายังไม่รู้จักเพาะปลูก"],["ยุคหินใหม่ คนใช้มีดเหล็กตัดไม้","มีดเหล็กมาในยุคโลหะ"],["คนโบราณชอบตั้งบ้านบนยอดเขาที่ไม่มีน้ำ","คนโบราณเลือกอยู่ใกล้แหล่งน้ำ"],["ยุคโลหะ คนยังไม่รู้จักใช้โลหะ","ยุคโลหะคือยุคที่ใช้โลหะทำเครื่องมือ"],["กลองมโหระทึกทำจากพลาสติก","กลองมโหระทึกทำจากสำริด"],["ยุคหินเก่า คนอยู่ในบ้านอิฐหลังใหญ่","ยุคหินเก่าอาศัยในถ้ำและเพิงผา"]],
+  2:[["บ้านเชียงอยู่จังหวัดภูเก็ต","บ้านเชียงอยู่จังหวัดอุดรธานี"],["แคว้นศรีวิชัยอยู่ภาคเหนือ","ศรีวิชัยอยู่ภาคใต้"],["แคว้นหริภุญชัยอยู่ภาคใต้","หริภุญชัยอยู่ภาคเหนือ (ลำพูน)"],["สำริดคือเหล็กผสมพลาสติก","สำริดคือทองแดงผสมดีบุก"],["สมัยประวัติศาสตร์เริ่มเมื่อมนุษย์รู้จักใช้ไฟ","สมัยประวัติศาสตร์เริ่มเมื่อมีตัวอักษร"],["ผาแต้มอยู่จังหวัดเชียงราย","ผาแต้มอยู่จังหวัดอุบลราชธานี"]],
+  3:[["พระนางจามเทวีเป็นกษัตริย์ของแคว้นศรีวิชัย","พระนางจามเทวีเป็นกษัตริย์ของหริภุญชัย"],["พระปรางค์สามยอดเป็นหลักฐานของแคว้นโยนก","พระปรางค์สามยอดเป็นหลักฐานของละโว้"],["แคว้นตามพรลิงค์อยู่ที่จังหวัดลำพูน","ตามพรลิงค์อยู่ที่นครศรีธรรมราช"],["แคว้นโคตรบูรณ์อยู่ภาคใต้","โคตรบูรณ์อยู่ภาคตะวันออกเฉียงเหนือ (นครพนม)"],["แคว้นทวารวดีมีศูนย์กลางอยู่ที่จังหวัดเชียงราย","ทวารวดีอยู่ภาคกลาง"],["แคว้นละโว้อยู่ที่จังหวัดนครศรีธรรมราช","ละโว้อยู่ที่ลพบุรี"]]
+};
+const AV = [["🧑‍🚀","#E8708F"],["👩‍🔬","#3C8DDB"],["🧙","#2FA866"],["🥷","#E08A3C"],["🧑‍🎤","#8B6FD6"],["🤠","#C9A227"]];
+const LV = {1:3, 2:4, 3:4};
+
+KIT.mount({
+  key:"h4-impostor", title:"ใครคือตัวปลอม?", subtitle:"ประวัติศาสตร์ ป.4 · หน่วยที่ 2 การตั้งถิ่นฐานและพัฒนาการของมนุษย์",
+  heroHTML:"หา<em>ตัวปลอม</em>ที่พูดผิด! 🎭", heroDesc:"ลูกเรือแต่ละคนพูดเรื่องประวัติศาสตร์ มีอยู่ 1 คนที่พูดไม่จริง โหวตให้ถูกคน!",
+  progIcon:"🎭",
+  howto:["อ่านสิ่งที่ลูกเรือทุกคนพูด","มีเพียง 1 คนที่พูดผิด = ตัวปลอม","แตะโหวตคนที่คิดว่าเป็นตัวปลอม","โหวตผิดเสีย 10 คะแนน จับได้ครบ 8 รอบผ่านด่าน"],
+  levels:{
+    1:{pill:"8 รอบ", color:"var(--green)", desc:"ลูกเรือ 3 คน เรื่องยุคหิน–ยุคโลหะ"},
+    2:{pill:"8 รอบ", color:"var(--blue)", desc:"ลูกเรือ 4 คน เรื่องแหล่งโบราณคดีและแคว้นโบราณ"},
+    3:{pill:"8 รอบ", color:"var(--purple)", desc:"ลูกเรือ 4 คน เรื่องแคว้นโบราณและหลักฐาน"}
+  },
+  play(level, ctx){
+    const k = LV[level];
+    const fakes = shuffle(F[level].slice());
+    const pool = level === 1 ? T[1] : [...T[level], ...T[level-1].slice(0,3)];
+    ctx.stage.innerHTML = `<div class="ship"><h3 id="qn"></h3><div class="crew" id="cr"></div><div class="res" id="rs"></div></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let r = 0, first = true, lock = false, cur;
+    function round(){
+      if (r >= N){ ctx.finish({targetSec: 120}); return; }
+      const fk = fakes[r % fakes.length]; first = true; lock = false;
+      const trues = shuffle(pool.slice()).slice(0, k-1);
+      cur = shuffle([{t:fk[0], fake:true, why:fk[1]}, ...trues.map(t => ({t}))]);
+      const av = shuffle(AV.slice());
+      $("#qn").textContent = `รอบที่ ${r+1}/${N} · ใครคือตัวปลอม?`; $("#rs").textContent = "";
+      $("#cr").innerHTML = cur.map((c,i)=>`<button class="cm" type="button" data-i="${i}"><span class="av" style="--ac:${av[i][1]}">${av[i][0]}</span><span class="q">${c.t}</span></button>`).join("");
+    }
+    $("#cr").addEventListener("click", e => {
+      const b = e.target.closest(".cm"); if (!b || lock || b.classList.contains("safe")) return;
+      const c = cur[+b.dataset.i];
+      if (c.fake){
+        lock = true; b.classList.add("out"); ctx.stage.querySelectorAll(".cm").forEach(x => { if (x !== b) x.classList.add("safe"); });
+        $("#rs").textContent = `🎭 จับได้! ความจริงคือ ${c.why}`;
+        ctx.correct(first ? 100 : 50, "โหวตถูก! ตัวปลอมถูกส่งออกจากยาน"); r++; ctx.progress(r, N); ctx.after(2200, round);
+      } else { first = false; b.classList.add("safe","no"); ctx.wrong("คนนี้พูดความจริงนะ! ตัวปลอมยังอยู่"); }
+    });
+    ctx.progress(0, N); ctx.say("ประชุมฉุกเฉิน! มีตัวปลอมอยู่ในยาน");
+    round();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ปัดการ์ดโบราณ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.deckzone{position:relative;width:100%;height:300px;display:grid;place-items:center;touch-action:pan-y}
+.sides{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center;pointer-events:none;padding:0 4px}
+.sides span{writing-mode:vertical-rl;font-weight:700;color:var(--ink-soft);opacity:.6;font-size:.95rem}
+.sc{position:absolute;width:min(78%,300px);height:250px;border-radius:22px;background:#fff;border:3px solid var(--line);box-shadow:0 8px 0 var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;text-align:center;cursor:grab;user-select:none;touch-action:none}
+.sc .e{font-size:4rem;line-height:1.1}
+.sc .t{font-weight:700;font-size:clamp(1.05rem,3.4vw,1.3rem);line-height:1.4;margin-top:8px}
+.sc .tagL,.sc .tagR{position:absolute;top:14px;padding:2px 10px;border-radius:8px;font-weight:700;opacity:0;border:3px solid}
+.sc .tagL{left:12px;color:#E06767;border-color:#E06767;transform:rotate(-12deg)}
+.sc .tagR{right:12px;color:#2FA866;border-color:#2FA866;transform:rotate(12deg)}
+.sc.back{transform:scale(.94) translateY(12px);opacity:.6;pointer-events:none}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;width:100%}
+.btns button{border:none;border-radius:16px;padding:12px 8px;color:#fff;font-weight:700;font-size:clamp(.92rem,3vw,1.12rem);box-shadow:0 5px 0 rgba(0,0,0,.18);line-height:1.3}
+.btns .l{background:#E08A3C}.btns .r{background:#3C8DDB}
+.album{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+.album i{font-style:normal;width:40px;height:52px;border-radius:8px;background:#EFE6DA;display:grid;place-items:center;font-size:1.5rem;filter:grayscale(1);opacity:.4}
+.album i.on{filter:none;opacity:1;background:#FFF1C9;box-shadow:0 3px 0 #E8D3AE;animation:pop .4s}
+@keyframes pop{50%{transform:scale(1.3)}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const N = 10;
+const LV = {
+  1:{ L:["🦴","สมัยก่อนประวัติศาสตร์","ยังไม่มีตัวอักษร"], R:["📜","สมัยประวัติศาสตร์","มีตัวอักษรบันทึก"],
+      items:[["🎨","ภาพเขียนสีที่ผาแต้ม",0],["🪨","เครื่องมือหินกะเทาะ",0],["🥁","กลองมโหระทึกสำริด",0],["🏺","ภาชนะดินเผาลายเขียนสีบ้านเชียง",0],["💀","โครงกระดูกมนุษย์ที่บ้านเก่า",0],["🖌️","ภาพเขียนสีเขาจันทน์งาม",0],["🪓","ขวานหินขัด",0],
+             ["🗿","ศิลาจารึกพ่อขุนรามคำแหง",1],["📖","พงศาวดาร",1],["🗒️","จดหมายเหตุ",1],["🍃","คัมภีร์ใบลานที่จารึกอักษร",1],["🪙","เหรียญเงินมีจารึกชื่อทวารวดี",1],["📕","ตำนานจามเทวีวงศ์",1]],
+      why:["ยังไม่มีการใช้ตัวอักษรบันทึก","มีการบันทึกด้วยตัวอักษรแล้ว"] },
+  2:{ L:["🪨","ยุคหิน","เครื่องมือทำจากหิน"], R:["🔔","ยุคโลหะ","เครื่องมือทำจากสำริด/เหล็ก"],
+      items:[["🪓","ขวานหินขัด",0],["🪨","เครื่องมือหินกะเทาะ",0],["🕳️","อาศัยอยู่ตามถ้ำและเพิงผา",0],["🦌","ล่าสัตว์ด้วยหอกปลายหิน",0],["🎨","ภาพเขียนสีบนผนังถ้ำ",0],
+             ["🥁","กลองมโหระทึกสำริด",1],["⭕","กำไลสำริด",1],["🗡️","ใบหอกเหล็ก",1],["🔪","มีดเหล็ก",1],["🏺","แม่พิมพ์สำหรับหล่อสำริด",1],["📿","ลูกปัดหินคาร์เนเลียน",1]],
+      why:["ใช้หินทำเครื่องมือ","รู้จักใช้โลหะทำเครื่องมือเครื่องใช้"] },
+  3:{ L:["🦌","ยุคหินเก่า","เร่ร่อน ล่าสัตว์"], R:["🌾","ยุคหินใหม่","ตั้งหลักแหล่ง เพาะปลูก"],
+      items:[["🦌","ล่าสัตว์และเก็บของป่าเป็นอาหาร",0],["🕳️","อาศัยอยู่ในถ้ำและเพิงผา",0],["🪨","เครื่องมือหินกะเทาะหยาบ ๆ",0],["🚶","ย้ายที่อยู่ตามแหล่งอาหาร",0],["🔥","รู้จักใช้ไฟ แต่ยังไม่เพาะปลูก",0],
+             ["🌾","เริ่มเพาะปลูกข้าว",1],["🐖","เลี้ยงสัตว์ไว้เป็นอาหารและใช้แรงงาน",1],["🛖","ตั้งบ้านเรือนเป็นหลักแหล่งถาวร",1],["🪓","เครื่องมือหินขัดผิวเรียบ",1],["🏺","ทำภาชนะดินเผาใส่อาหาร",1],["🧵","รู้จักทอผ้า",1]],
+      why:["คนยุคหินเก่าเร่ร่อนและหาอาหารจากธรรมชาติ","คนยุคหินใหม่ตั้งหลักแหล่ง ผลิตอาหารเองได้"] }
+};
+
+KIT.mount({
+  key:"h4-swipe", title:"ปัดการ์ดโบราณ", subtitle:"ประวัติศาสตร์ ป.4 · หน่วยที่ 1 เวลาและเหตุการณ์ (ยุคสมัยทางประวัติศาสตร์)",
+  heroHTML:"<em>ปัดซ้าย–ขวา</em> สะสมการ์ดโบราณ 🃏", heroDesc:"ปัดการ์ดไปทางยุคที่ถูกต้อง ตอบถูกได้การ์ดเข้าอัลบั้ม สะสมให้ครบ 10 ใบ",
+  progIcon:"🃏",
+  howto:["ดูการ์ดหลักฐานหรือวิถีชีวิต","ลากการ์ดไปซ้ายหรือขวา (หรือแตะปุ่มด้านล่าง)","ถูก การ์ดเข้าอัลบั้ม ผิดเสีย 10 คะแนน แล้วการ์ดเด้งกลับให้ลองใหม่","สะสมครบ 10 ใบผ่านด่าน"],
+  levels:{
+    1:{pill:"10 ใบ", color:"var(--green)", desc:"สมัยก่อนประวัติศาสตร์ หรือ สมัยประวัติศาสตร์"},
+    2:{pill:"10 ใบ", color:"var(--blue)", desc:"ยุคหิน หรือ ยุคโลหะ"},
+    3:{pill:"10 ใบ", color:"var(--purple)", desc:"ยุคหินเก่า หรือ ยุคหินใหม่ (ดูจากวิถีชีวิต)"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const deck = shuffle([...shuffle(L.items.filter(i=>!i[2])).slice(0,5), ...shuffle(L.items.filter(i=>i[2])).slice(0,5)]);
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext">ปัดไปทางไหน?</div></div>
+      <div class="deckzone" id="dz"><div class="sides"><span>◀ ${L.L[1]}</span><span>${L.R[1]} ▶</span></div></div>
+      <div class="btns"><button class="l" type="button" data-s="0">◀ ${L.L[0]} ${L.L[1]}<br><small>${L.L[2]}</small></button><button class="r" type="button" data-s="1">${L.R[0]} ${L.R[1]} ▶<br><small>${L.R[2]}</small></button></div>
+      <div class="album" id="al">${deck.map(()=>`<i>?</i>`).join("")}</div>`;
+    const $ = s => ctx.stage.querySelector(s), dz = $("#dz");
+    let idx = 0, card = null, first = true, lock = false;
+    function show(){
+      if (idx >= N){ ctx.finish({targetSec: 70}); return; }
+      dz.querySelectorAll(".sc").forEach(c => c.remove());
+      if (idx + 1 < N){ const bk = document.createElement("div"); bk.className = "sc back"; bk.innerHTML = `<div class="e">❔</div>`; dz.appendChild(bk); }
+      const it = deck[idx]; first = true; lock = false;
+      card = document.createElement("div"); card.className = "sc";
+      card.innerHTML = `<span class="tagL">${L.L[1]}</span><span class="tagR">${L.R[1]}</span><div class="e">${it[0]}</div><div class="t">${it[1]}</div>`;
+      dz.appendChild(card); $("#qn").textContent = `การ์ดที่ ${idx+1} จาก ${N}`;
+      let sx = 0, dx = 0, drag = false;
+      card.addEventListener("pointerdown", e => { if (lock) return; drag = true; sx = e.clientX; card.setPointerCapture(e.pointerId); card.style.transition = "none"; });
+      card.addEventListener("pointermove", e => { if (!drag) return; dx = e.clientX - sx; card.style.transform = `translateX(${dx}px) rotate(${dx/18}deg)`;
+        card.querySelector(".tagL").style.opacity = Math.max(0, -dx/90); card.querySelector(".tagR").style.opacity = Math.max(0, dx/90); });
+      const up = () => { if (!drag) return; drag = false; card.style.transition = "transform .3s"; if (Math.abs(dx) > 90) answer(dx > 0 ? 1 : 0); else reset(); dx = 0; };
+      card.addEventListener("pointerup", up); card.addEventListener("pointercancel", up);
+    }
+    function reset(){ if (!card) return; card.style.transform = ""; card.querySelectorAll(".tagL,.tagR").forEach(t => t.style.opacity = 0); }
+    function answer(s){
+      if (lock) return; const it = deck[idx];
+      if (s === it[2]){
+        lock = true; card.style.transition = "transform .35s, opacity .35s"; card.style.transform = `translateX(${s ? 420 : -420}px) rotate(${s ? 25 : -25}deg)`; card.style.opacity = 0;
+        const slot = $("#al").children[idx]; slot.textContent = it[0]; slot.classList.add("on");
+        ctx.correct(first ? 100 : 50, `ได้การ์ด! ${it[1]} — ${L.why[s]}`); idx++; ctx.progress(idx, N); ctx.after(700, show);
+      } else { first = false; reset(); ctx.wrong(`ยังไม่ใช่ ${s ? L.R[1] : L.L[1]} นะ ลองคิดใหม่`); }
+    }
+    ctx.stage.querySelector(".btns").addEventListener("click", e => { const b = e.target.closest("button"); if (b) answer(+b.dataset.s); });
+    ctx.progress(0, N); ctx.say("ปัดการ์ดไปทางที่ถูกต้อง!");
+    show();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ศึกยุทธหัตถีสุโขทัย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.arena{position:relative;width:100%;height:210px;border-radius:22px;background:linear-gradient(#FFD9A0,#FFF0D6 55%,#D9B27C 55%);box-shadow:0 6px 0 #B98A5E;overflow:hidden}
+.ft{position:absolute;bottom:22px;width:40%;text-align:center;transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
+.ft .el{font-size:clamp(4rem,14vw,5.6rem);line-height:1;display:inline-block}
+.ft.me{left:4%}.ft.me .el{transform:scaleX(-1)}
+.ft.foe{right:4%}
+.ft .nm{display:block;font-weight:700;font-size:.85rem;background:rgba(255,255,255,.85);border-radius:999px;padding:1px 10px;margin:4px auto 0;width:max-content}
+.ft.me.hit{transform:translateX(70%)}
+.ft.foe.hit{transform:translateX(-70%)}
+.ft.hurt .el{animation:hurt .5s}
+@keyframes hurt{20%,60%{filter:brightness(2) saturate(0);transform:translateX(-8px)}40%{transform:translateX(8px)}}
+.ft.me.hurt .el{animation-name:hurtm}
+@keyframes hurtm{20%,60%{filter:brightness(2) saturate(0)}}
+.boom{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%) scale(0);font-size:3rem;transition:transform .2s}
+.boom.on{transform:translate(-50%,-50%) scale(1)}
+.hp{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;width:100%}
+.hp .bar{height:18px;border-radius:999px;background:#EFE6DA;overflow:hidden;border:2px solid var(--line)}
+.hp .bar i{display:block;height:100%;transition:width .4s}
+.hp .me i{background:linear-gradient(90deg,#2FA866,#7FD39A)}
+.hp .foe i{background:linear-gradient(90deg,#E06767,#F2A0A0);margin-left:auto}
+.hp small{font-weight:700;display:block;margin-bottom:2px}
+.hp .foe small{text-align:right}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+/* [question, answer, wrongs(3), why] */
+const B1 = [
+  ["ใครเป็นปฐมกษัตริย์ของสุโขทัย?","พ่อขุนศรีอินทราทิตย์",["พ่อขุนรามคำแหง","พญาลิไท","พ่อขุนบานเมือง"],"ปฐมกษัตริย์คือพ่อขุนศรีอินทราทิตย์ ราว พ.ศ. 1792"],
+  ["ใครประดิษฐ์ลายสือไทย?","พ่อขุนรามคำแหงมหาราช",["พ่อขุนศรีอินทราทิตย์","พญาลิไท","พ่อขุนผาเมือง"],"พ่อขุนรามคำแหงประดิษฐ์ลายสือไทย พ.ศ. 1826"],
+  ["ใครทรงพระราชนิพนธ์ไตรภูมิพระร่วง?","พญาลิไท",["พ่อขุนรามคำแหง","พ่อขุนบานเมือง","พระยาเลอไทย"],"พญาลิไท (พระมหาธรรมราชาที่ 1)"],
+  ["พ่อขุนรามคำแหงชนช้างชนะใคร?","ขุนสามชน เจ้าเมืองฉอด",["พญามังราย","พระเจ้าอู่ทอง","พ่อขุนผาเมือง"],"ชนะขุนสามชน จึงได้พระนามว่า รามคำแหง"],
+  ["การปกครองสมัยพ่อขุนรามคำแหงเป็นแบบใด?","พ่อปกครองลูก",["ธรรมราชา","สมบูรณาญาสิทธิราชย์","ประชาธิปไตย"],"กษัตริย์ใกล้ชิดราษฎรเหมือนพ่อดูแลลูก"],
+  ["ราษฎรเดือดร้อนจะไปสั่นอะไรที่หน้าประตูวัง?","กระดิ่ง",["กลอง","ระฆังวัด","ฆ้อง"],"แขวนกระดิ่งไว้ให้ราษฎรมาร้องทุกข์"],
+  ["อาชีพหลักของชาวสุโขทัยคืออะไร?","เกษตรกรรม",["ประมงทะเล","ทำเหมืองแร่","ทำโรงงาน"],"ชาวสุโขทัยทำนา ทำสวนเป็นหลัก"],
+  ["ชาวสุโขทัยนับถือศาสนาใดเป็นหลัก?","พระพุทธศาสนา",["ศาสนาคริสต์","ศาสนาอิสลาม","ศาสนาซิกข์"],"พระพุทธศาสนาเป็นศูนย์รวมจิตใจ"],
+  ["ใครร่วมกับพ่อขุนบางกลางหาวขับไล่ขอม?","พ่อขุนผาเมือง",["ขุนสามชน","พญาลิไท","พญามังราย"],"พ่อขุนผาเมืองและพ่อขุนบางกลางหาวร่วมกันตั้งสุโขทัย"]
+];
+const B2 = [
+  ["สุโขทัยประกาศอิสรภาพจากอำนาจของใคร?","ขอม",["พม่า","จีน","ล้านนา"],"ขับไล่ขอมสบาดโขลญลำพง แล้วตั้งสุโขทัย"],
+  ["กษัตริย์องค์ที่ 2 ของสุโขทัยคือใคร?","พ่อขุนบานเมือง",["พ่อขุนรามคำแหง","พญาลิไท","พระยาเลอไทย"],"ต่อจากพ่อขุนศรีอินทราทิตย์คือพ่อขุนบานเมือง"],
+  ["\"เจ้าเมืองบ่เอาจกอบ\" หมายถึงอะไร?","ไม่เก็บภาษีผ่านด่าน",["ไม่ให้ค้าขาย","ไม่เก็บข้าว","ไม่ให้คนเข้าเมือง"],"ไม่เก็บจกอบ ทำให้การค้าเสรีรุ่งเรือง"],
+  ["การปกครองสมัยพญาลิไทเป็นแบบใด?","ธรรมราชา",["พ่อปกครองลูก","นายปกครองบ่าว","ประชาธิปไตย"],"ใช้หลักธรรมทางพระพุทธศาสนาในการปกครอง"],
+  ["พ่อขุนรามคำแหงนิมนต์พระสงฆ์ลังกาวงศ์มาจากเมืองใด?","นครศรีธรรมราช",["เชียงใหม่","ลพบุรี","อยุธยา"],"พระพุทธศาสนาเถรวาทลัทธิลังกาวงศ์เข้ามาทางนครศรีธรรมราช"],
+  ["สินค้าส่งออกที่มีชื่อเสียงของสุโขทัยคืออะไร?","เครื่องสังคโลก",["ผ้าไหม","เครื่องเทศ","ทองคำ"],"สังคโลกส่งไปขายหลายประเทศ"],
+  ["สุโขทัยตั้งอยู่บริเวณลุ่มแม่น้ำใด?","แม่น้ำยม",["แม่น้ำโขง","แม่น้ำมูล","แม่น้ำตาปี"],"เมืองสุโขทัยอยู่ลุ่มแม่น้ำยม"],
+  ["ศิลาจารึกหลักที่ 1 เป็นหลักฐานสมัยกษัตริย์องค์ใด?","พ่อขุนรามคำแหงมหาราช",["พ่อขุนศรีอินทราทิตย์","พญาลิไท","พระมหาธรรมราชาที่ 4"],"ศิลาจารึกหลักที่ 1 เล่าเรื่องสมัยพ่อขุนรามคำแหง"],
+  ["ข้อใดแสดงว่าสุโขทัยค้าขายเสรี?","ใครใคร่ค้าช้างค้า ใครใคร่ค้าม้าค้า",["ในน้ำมีปลา ในนามีข้าว","ปากประตูมีกระดิ่ง","เมืองสุโขทัยนี้ดี"],"ข้อความในศิลาจารึกบอกว่าใครอยากค้าอะไรก็ค้าได้"]
+];
+const B3 = [
+  ["พ่อขุนรามคำแหงครองราชย์ช่วง พ.ศ. ใด?","พ.ศ. 1822–1841",["พ.ศ. 1792–1822","พ.ศ. 1890–1911","พ.ศ. 1962–1981"],"พ่อขุนรามคำแหงครองราชย์ พ.ศ. 1822–1841"],
+  ["พญาลิไทคือพระมหาธรรมราชาองค์ที่เท่าไร?","องค์ที่ 1",["องค์ที่ 2","องค์ที่ 3","องค์ที่ 4"],"พญาลิไท = พระมหาธรรมราชาที่ 1"],
+  ["กษัตริย์องค์สุดท้ายของสุโขทัยคือใคร?","พระมหาธรรมราชาที่ 4 (บรมปาล)",["พญาลิไท","พระยางั่วนำถม","พ่อขุนบานเมือง"],"หลังพระมหาธรรมราชาที่ 4 สุโขทัยรวมกับอยุธยา"],
+  ["สุโขทัยรวมเข้ากับอาณาจักรใด?","อยุธยา",["ล้านนา","ล้านช้าง","ขอม"],"ราว พ.ศ. 1981 สุโขทัยรวมเป็นส่วนหนึ่งของอยุธยา"],
+  ["กษัตริย์องค์ใดครองราชย์ต่อจากพ่อขุนรามคำแหง?","พระยาเลอไทย",["พญาลิไท","พ่อขุนบานเมือง","พระยางั่วนำถม"],"พระยาเลอไทยครองราชย์ พ.ศ. 1841"],
+  ["เหตุใดสุโขทัยสมัยหลังจึงเสื่อมอำนาจลง?","อยุธยาเข้มแข็งขึ้นและแผ่อำนาจขึ้นมา",["เกิดน้ำท่วมทั้งเมือง","ไม่มีคนนับถือศาสนา","ขาดแคลนช้าง"],"อยุธยาเข้มแข็งขึ้นจนสุโขทัยตกอยู่ใต้อำนาจ"],
+  ["การปกครองแบบธรรมราชามีจุดเด่นอย่างไร?","กษัตริย์ใช้หลักธรรมทางพระพุทธศาสนาปกครองราษฎร",["กษัตริย์ใช้กำลังทหารบังคับ","ให้ราษฎรเลือกตั้งผู้นำ","ไม่มีกษัตริย์ปกครอง"],"พญาลิไทใช้ธรรมะปกครองให้ราษฎรอยู่เย็นเป็นสุข"],
+  ["ข้อใดเรียงกษัตริย์สุโขทัยได้ถูกต้อง?","ศรีอินทราทิตย์ → บานเมือง → รามคำแหง",["รามคำแหง → ศรีอินทราทิตย์ → บานเมือง","บานเมือง → รามคำแหง → ศรีอินทราทิตย์","ลิไท → รามคำแหง → บานเมือง"],"ลำดับคือ ศรีอินทราทิตย์ บานเมือง รามคำแหง"],
+  ["พ่อขุนบางกลางหาว เมื่อขึ้นครองราชย์มีพระนามว่าอะไร?","พ่อขุนศรีอินทราทิตย์",["พ่อขุนบานเมือง","พ่อขุนผาเมือง","พญาลิไท"],"พ่อขุนบางกลางหาว = พ่อขุนศรีอินทราทิตย์"]
+];
+const LV = {1:{bank:B1, opts:3, hp:5}, 2:{bank:B2, opts:4, hp:6}, 3:{bank:B3, opts:4, hp:7}};
+
+KIT.mount({
+  key:"h4-duel", title:"ศึกยุทธหัตถีสุโขทัย", subtitle:"ประวัติศาสตร์ ป.4 · หน่วยที่ 3 ความเป็นมาของชาติไทย (สุโขทัย)",
+  heroHTML:"ตอบถูก ช้างของเรา<em>พุ่งชน</em>! 🐘", heroDesc:"เป็นพ่อขุนรามคำแหงตอนหนุ่ม ขี่ช้างสู้กับขุนสามชน ตอบคำถามสุโขทัยให้ถูกเพื่อให้ช้างของเราเป็นฝ่ายชนะ",
+  progIcon:"🐘",
+  howto:["อ่านคำถามเกี่ยวกับอาณาจักรสุโขทัย","ตอบถูก ช้างเราพุ่งชน พลังฝ่ายตรงข้ามลด","ตอบผิด ฝ่ายตรงข้ามพุ่งชนเรา (เสีย 10 คะแนน)","ทำให้พลังฝ่ายตรงข้ามหมดเพื่อชนะ ถ้าพลังเราหมดจะได้พลังคืนแล้วสู้ต่อ"],
+  levels:{
+    1:{pill:"พลัง 5", color:"var(--green)", desc:"กษัตริย์และเรื่องพื้นฐานของสุโขทัย 3 ตัวเลือก"},
+    2:{pill:"พลัง 6", color:"var(--blue)", desc:"การเมือง เศรษฐกิจ ศาสนา 4 ตัวเลือก"},
+    3:{pill:"พลัง 7", color:"var(--purple)", desc:"ลำดับกษัตริย์ ช่วงเวลา และความเสื่อมของสุโขทัย"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    let deck = shuffle(L.bank.slice()); let qi = 0;
+    const draw = () => { if (qi >= deck.length){ deck = shuffle(L.bank.slice()); qi = 0; } return deck[qi++]; };
+    ctx.stage.innerHTML = `<div class="arena"><div class="ft me" id="me"><span class="el">🐘</span><span class="nm">⚔️ ${KIT.esc(ctx.name || "เรา")}</span></div><span class="boom" id="bm">💥</span><div class="ft foe" id="fo"><span class="el">🐘</span><span class="nm">ขุนสามชน</span></div></div>
+      <div class="hp"><div class="me"><small>❤️ พลังเรา <span id="mh"></span></small><div class="bar"><i id="mb"></i></div></div><div class="foe"><small>พลังขุนสามชน <span id="fh"></span> 🛡️</small><div class="bar"><i id="fb"></i></div></div></div>
+      <div id="host" style="width:100%"></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let me = L.hp, foe = L.hp;
+    const hud = () => { $("#mb").style.width = (me/L.hp*100) + "%"; $("#fb").style.width = (foe/L.hp*100) + "%"; $("#mh").textContent = `${me}/${L.hp}`; $("#fh").textContent = `${foe}/${L.hp}`; };
+    const clash = (who) => {
+      const a = $(who === "me" ? "#me" : "#fo"), d = $(who === "me" ? "#fo" : "#me");
+      a.classList.add("hit"); $("#bm").classList.add("on");
+      setTimeout(() => { a.classList.remove("hit"); $("#bm").classList.remove("on"); d.classList.remove("hurt"); void d.offsetWidth; d.classList.add("hurt"); }, 320);
+    };
+    const ow = ctx.wrong;
+    ctx.wrong = (msg, pen) => {
+      ow(msg, pen); clash("foe"); me = Math.max(0, me - 1); hud();
+      if (me === 0) ctx.after(700, () => { me = L.hp; hud(); ctx.say("💪 ฟื้นพลัง! สู้ต่อ อย่ายอมแพ้"); });
+    };
+    function next(){
+      if (foe <= 0){ ctx.say("🏆 ชนะศึกยุทธหัตถี!", "good"); ctx.after(900, () => ctx.finish({targetSec: 100})); return; }
+      const [q, ans, wr, why] = draw();
+      const o = shuffle([ans, ...shuffle(wr.slice()).slice(0, L.opts-1)]);
+      KIT.mcq(ctx, $("#host"), {label:`พลังขุนสามชนเหลือ ${foe}`, html:KIT.esc(q), options:o.map(KIT.esc), answer:o.indexOf(ans), cols:2, explain:why,
+        onNext(){ clash("me"); foe--; hud(); ctx.progress(L.hp - foe, L.hp); ctx.after(600, next); }});
+    }
+    hud(); ctx.progress(0, L.hp); ctx.say("ช้างทรงพร้อมแล้ว! ตอบให้ถูกเพื่อพุ่งชน");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

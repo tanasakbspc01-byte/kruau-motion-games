@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ข้ามแม่น้ำยม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.river{position:relative;width:100%;border-radius:22px;overflow:hidden;box-shadow:0 6px 0 #4E9BC9;background:#7CC4EE}
+.bank{height:56px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:700}
+.bank.far{background:linear-gradient(#8BD46B,#6CBF55);font-size:1.6rem}
+.bank.near{background:linear-gradient(#6CBF55,#8BD46B)}
+.water{position:relative;height:250px;background:repeating-linear-gradient(170deg,#7CC4EE 0 22px,#8FD0F4 22px 26px);background-size:100% 52px;animation:flow 2.5s linear infinite}
+@keyframes flow{to{background-position:0 52px}}
+.row{position:absolute;left:0;right:0;height:100px;display:flex;justify-content:space-around;align-items:center;padding:0 6px}
+.row.next{top:20px}
+.row.done{top:140px;opacity:.55}
+.stone{min-width:clamp(92px,22%,150px);max-width:46%;min-height:62px;border:none;border-radius:50% 46% 52% 44%/52% 50% 46% 48%;background:radial-gradient(circle at 35% 30%,#D9D2C3,#A89F8E);box-shadow:0 6px 0 #7E7565;font-weight:700;font-size:clamp(.82rem,2.6vw,1rem);line-height:1.3;padding:10px 12px;color:#24304A}
+.stone:active{transform:translateY(3px)}
+.stone.sink{animation:sink .7s forwards;pointer-events:none}
+@keyframes sink{60%{transform:translateY(16px) scale(.9);opacity:.6}100%{transform:translateY(30px) scale(.6);opacity:0}}
+.stone.ok{background:radial-gradient(circle at 35% 30%,#CFF0DA,#7FC79A);box-shadow:0 6px 0 #4E9B6A}
+.rhero{position:absolute;font-size:2.4rem;transform:translate(-50%,-70%);transition:left .45s, top .45s;z-index:2;pointer-events:none}
+.row.drift{animation:drift 3.2s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translateX(-7%)}to{transform:translateX(7%)}}
+.ask{width:100%;margin-top:12px;background:#fff;border:3px solid var(--line);border-radius:18px;padding:12px;box-shadow:0 5px 0 var(--line);text-align:center;font-weight:700;font-size:clamp(1.05rem,3.4vw,1.3rem);line-height:1.45}
+.ask small{display:block;color:var(--ink-soft);font-size:.72em}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle, pick} = KIT;
+const N = 8;
+/* [question, answer, wrongs(3)] — answers short so they fit on stones */
+const BANK = {
+  1:[["ตัวอักษรที่พ่อขุนรามคำแหงประดิษฐ์","ลายสือไทย",["อักษรขอม","อักษรจีน","อักษรโรมัน"]],
+     ["เครื่องปั้นดินเผาเคลือบที่มีชื่อเสียงของสุโขทัย","เครื่องสังคโลก",["เครื่องเบญจรงค์","เครื่องแก้ว","เครื่องเงิน"]],
+     ["ศาสนาที่ชาวสุโขทัยนับถือ","พระพุทธศาสนา",["ศาสนาคริสต์","ศาสนาอิสลาม","ศาสนาพราหมณ์อย่างเดียว"]],
+     ["ประเพณีเผาเทียนเล่นไฟสมัยสุโขทัย คล้ายประเพณีใดวันนี้","ลอยกระทง",["สงกรานต์","แห่เทียนพรรษา","ตักบาตรเทโว"]],
+     ["อาชีพหลักของชาวสุโขทัย","ทำนา ทำสวน",["ทำเหมืองแร่","ทำประมงทะเลลึก","ทำโรงงาน"]],
+     ["ปฐมกษัตริย์ของสุโขทัย","พ่อขุนศรีอินทราทิตย์",["พ่อขุนรามคำแหง","พญาลิไท","พระเจ้าอู่ทอง"]],
+     ["ราษฎรเดือดร้อนไปสั่นอะไรหน้าประตูวัง","กระดิ่ง",["กลอง","ฆ้อง","แตร"]],
+     ["หลักฐานที่เล่าเรื่องสมัยพ่อขุนรามคำแหง","ศิลาจารึกหลักที่ 1",["หนังสือพิมพ์","ภาพถ่าย","พงศาวดารรัตนโกสินทร์"]],
+     ["แม่น้ำสายสำคัญของเมืองสุโขทัย","แม่น้ำยม",["แม่น้ำโขง","แม่น้ำมูล","แม่น้ำตาปี"]]],
+  2:[["เขื่อนดินกักเก็บน้ำของสุโขทัย","สรีดภงส์",["ตระพัง","คูเมือง","ฝายแม้ว"]],
+     ["สระน้ำในเมืองสุโขทัยเรียกว่า","ตระพัง",["สรีดภงส์","บึงบอระเพ็ด","อ่างเก็บน้ำ"]],
+     ["แหล่งเตาเผาเครื่องสังคโลก","เตาทุเรียง",["บ้านเชียง","ผาแต้ม","เตาบ้านโป่ง"]],
+     ["วรรณกรรมของพญาลิไท","ไตรภูมิพระร่วง",["รามเกียรติ์","ขุนช้างขุนแผน","พระอภัยมณี"]],
+     ["พระพุทธรูปที่เป็นเอกลักษณ์ของสุโขทัย","ปางลีลา",["ปางนาคปรก","ปางห้ามญาติ","ปางสมาธิแบบอยุธยา"]],
+     ["ภาษีผ่านด่านที่สุโขทัยไม่เก็บ","จกอบ",["อากร","ส่วย","ฤชา"]],
+     ["การปกครองสมัยพ่อขุนรามคำแหง","พ่อปกครองลูก",["ธรรมราชา","นายปกครองบ่าว","ประชาธิปไตย"]],
+     ["การปกครองสมัยพญาลิไท","ธรรมราชา",["พ่อปกครองลูก","สมบูรณาญาสิทธิราชย์","ประชาธิปไตย"]],
+     ["นิกายของพระพุทธศาสนาที่รุ่งเรืองในสุโขทัย","เถรวาท ลังกาวงศ์",["มหายาน","วัชรยาน","เซน"]]],
+  3:[["ศักราชที่ใช้ในศิลาจารึกสุโขทัย","มหาศักราช",["รัตนโกสินทรศก","คริสต์ศักราช","ฮิจเราะห์ศักราช"]],
+     ["ปีที่ประดิษฐ์ลายสือไทย","พ.ศ. 1826",["พ.ศ. 1792","พ.ศ. 1893","พ.ศ. 2325"]],
+     ["ปีที่ตั้งอาณาจักรสุโขทัย (โดยประมาณ)","พ.ศ. 1792",["พ.ศ. 1826","พ.ศ. 1981","พ.ศ. 2310"]],
+     ["ขุนนางขอมที่ถูกขับไล่ก่อนตั้งสุโขทัย","ขอมสบาดโขลญลำพง",["ขุนสามชน","พญามังราย","พระเจ้าอู่ทอง"]],
+     ["ข้อความในศิลาจารึกที่บอกว่าบ้านเมืองอุดมสมบูรณ์","ในน้ำมีปลา ในนามีข้าว",["เจ้าเมืองบ่เอาจกอบ","ใครจักใคร่ค้าช้างค้า","ปากประตูมีกระดิ่ง"]],
+     ["เมืองที่พระสงฆ์ลังกาวงศ์เดินทางมาสุโขทัย","นครศรีธรรมราช",["เชียงใหม่","ลพบุรี","อยุธยา"]],
+     ["กษัตริย์ที่ครองราชย์ต่อจากพ่อขุนรามคำแหง","พระยาเลอไทย",["พญาลิไท","พ่อขุนบานเมือง","พระยางั่วนำถม"]],
+     ["อาณาจักรที่สุโขทัยรวมเข้าไปในที่สุด","อยุธยา",["ล้านนา","ล้านช้าง","ขอม"]],
+     ["ประเทศที่พบเครื่องสังคโลกส่งออกไปขาย","ญี่ปุ่น อินโดนีเซีย ฟิลิปปินส์",["อังกฤษ ฝรั่งเศส","อเมริกา แคนาดา","บราซิล เปรู"]]]
+};
+const LV = {1:{stones:2, drift:false}, 2:{stones:3, drift:false}, 3:{stones:3, drift:true}};
+
+KIT.mount({
+  key:"h4-river", title:"ข้ามแม่น้ำยม", subtitle:"ประวัติศาสตร์ ป.4 · หน่วยที่ 3 ความเป็นมาของชาติไทย (ภูมิปัญญาสุโขทัย)",
+  heroHTML:"กระโดด<em>ข้ามแม่น้ำยม</em> ไปเมืองสุโขทัย 🏞️", heroDesc:"เหยียบก้อนหินที่มีคำตอบถูกเท่านั้น! ก้อนผิดจะจมลงน้ำ ข้ามให้ครบ 8 แถวเพื่อไปถึงเมืองสุโขทัย",
+  progIcon:"🏞️",
+  howto:["อ่านคำถามด้านล่างแม่น้ำ","แตะก้อนหินที่มีคำตอบถูกเพื่อกระโดดไป","ก้อนผิดจะจม เสีย 10 คะแนน แล้วเลือกใหม่","ข้ามครบ 8 แถวถึงฝั่งเมืองสุโขทัย"],
+  levels:{
+    1:{pill:"8 แถว", color:"var(--green)", desc:"ก้อนหิน 2 ก้อน เรื่องพื้นฐานของสุโขทัย"},
+    2:{pill:"8 แถว", color:"var(--blue)", desc:"ก้อนหิน 3 ก้อน ภูมิปัญญา การปกครอง ศาสนา"},
+    3:{pill:"8 แถว", color:"var(--purple)", desc:"ก้อนหิน 3 ก้อน ลอยไปมาตามกระแสน้ำ เรื่องเชิงลึก"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const deck = shuffle(BANK[level].slice()).slice(0, N);
+    ctx.stage.innerHTML = `<div class="river" id="rv"><div class="bank far">🏯 เมืองสุโขทัย 🛕</div><div class="water" id="wt"></div><div class="bank near" id="nb">🌾 ฝั่งนี้</div><span class="rhero" id="hr">🧒</span></div>
+      <div class="ask" id="ak"></div>`;
+    const $ = s => ctx.stage.querySelector(s), wt = $("#wt"), hero = $("#hr");
+    let idx = 0, first = true, lock = false;
+    const placeHero = el => { const r = el.getBoundingClientRect(), R = $("#rv").getBoundingClientRect(); hero.style.left = (r.left - R.left + r.width/2) + "px"; hero.style.top = (r.top - R.top + r.height/2) + "px"; };
+    function row(){
+      if (idx >= N){ placeHero($(".bank.far")); ctx.say("🎉 ถึงเมืองสุโขทัยแล้ว!", "good"); ctx.after(900, () => ctx.finish({targetSec: 90})); return; }
+      const [q, ans, wr] = deck[idx]; first = true; lock = false;
+      wt.querySelectorAll(".row.done").forEach(r => r.remove());
+      wt.querySelectorAll(".row.next").forEach(r => { r.classList.remove("next","drift"); r.classList.add("done"); r.querySelectorAll(".stone:not(.ok)").forEach(s => s.remove()); });
+      const opts = shuffle([ans, ...shuffle(wr.slice()).slice(0, L.stones-1)]);
+      const el = document.createElement("div"); el.className = "row next" + (L.drift ? " drift" : "");
+      el.innerHTML = opts.map(o => `<button class="stone" type="button" data-ok="${o===ans?1:0}">${KIT.esc(o)}</button>`).join("");
+      wt.appendChild(el);
+      $("#ak").innerHTML = `<small>แถวที่ ${idx+1} จาก ${N} · เหยียบก้อนที่ตอบถูก</small>${KIT.esc(q)}`;
+      if (idx === 0) placeHero($("#nb")); else { const ok = wt.querySelector(".row.done .stone.ok"); if (ok) placeHero(ok); }
+    }
+    wt.addEventListener("click", e => {
+      const s = e.target.closest(".row.next .stone"); if (!s || lock) return;
+      if (s.dataset.ok === "1"){
+        lock = true; s.classList.add("ok"); placeHero(s); KIT.sfx.pop();
+        ctx.correct(first ? 100 : 50, `กระโดดสำเร็จ! "${s.textContent}"`); idx++; ctx.progress(idx, N);
+        ctx.after(900, () => { row(); });
+      } else { first = false; s.classList.add("sink"); ctx.wrong(`ตู้ม! "${s.textContent}" ไม่ใช่คำตอบ ก้อนหินจมแล้ว`); }
+    });
+    ctx.progress(0, N); ctx.say("ระวังก้อนหินหลอก!");
+    row();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

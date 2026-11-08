@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สร้างเมืองสุโขทัย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.city{position:relative;width:100%;max-width:480px;margin:0 auto;box-sizing:border-box;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#9ED37F;border-radius:20px;padding:10px;box-shadow:0 6px 0 #74B356;background-image:radial-gradient(rgba(255,255,255,.25) 2px,transparent 2.5px);background-size:18px 18px}
+.plot{aspect-ratio:1.25;border-radius:12px;background:rgba(255,255,255,.35);border:2px dashed rgba(0,0,0,.12);display:grid;place-items:center;font-size:clamp(1.8rem,7vw,2.8rem)}
+.plot.b{background:rgba(255,255,255,.7);border:2px solid #fff;animation:rise .5s cubic-bezier(.3,1.6,.5,1)}
+.plot small{display:block;font-size:.55rem;font-weight:700;line-height:1.1}
+@keyframes rise{from{transform:scale(0) translateY(20px)}}
+.stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+.stats span{background:#fff;border-radius:999px;padding:3px 12px;font-weight:700;box-shadow:0 3px 0 var(--line)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px;margin-top:12px;width:100%}
+.bc{border:3px solid var(--line);background:#fff;border-radius:16px;padding:10px 6px;font-weight:700;box-shadow:0 5px 0 var(--line);font-size:clamp(.8rem,2.5vw,.95rem);line-height:1.3}
+.bc .e{display:block;font-size:2rem}
+.bc .c{display:inline-block;margin-top:4px;background:#FFF1C9;border-radius:999px;padding:0 8px;font-size:.8em}
+.bc:disabled{opacity:.35}
+.bc.done{display:none}
+.tip{text-align:center;font-weight:700;color:var(--ink-soft);margin-top:10px}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+/* [icon, building, side (ด้าน), question, answer, wrongs(3), fact] */
+const BLD = [
+  ["🏯","พระราชวัง","การเมืองการปกครอง","สมัยพ่อขุนรามคำแหง กษัตริย์ปกครองราษฎรแบบใด?","พ่อปกครองลูก",["ธรรมราชา","นายปกครองบ่าว","ประชาธิปไตย"],"กษัตริย์ดูแลราษฎรใกล้ชิดเหมือนพ่อกับลูก"],
+  ["🔔","กระดิ่งหน้าประตูวัง","การเมืองการปกครอง","กระดิ่งหน้าประตูวังมีไว้เพื่ออะไร?","ให้ราษฎรมาร้องทุกข์",["บอกเวลาเปิดตลาด","เรียกทหารมาฝึก","ไล่นกในนาข้าว"],"ราษฎรสั่นกระดิ่ง กษัตริย์จะออกมาตัดสินความ"],
+  ["💧","สรีดภงส์","เศรษฐกิจ","สรีดภงส์ (ทำนบพระร่วง) สร้างขึ้นเพื่ออะไร?","กักเก็บน้ำไว้ใช้",["เป็นกำแพงกันข้าศึก","เป็นถนนเข้าเมือง","เป็นที่เลี้ยงปลา"],"เป็นเขื่อนดินกักเก็บน้ำ ภูมิปัญญาการจัดการน้ำ"],
+  ["🌾","นาข้าว","เศรษฐกิจ","ข้อความใดในศิลาจารึกบอกว่าสุโขทัยอุดมสมบูรณ์?","ในน้ำมีปลา ในนามีข้าว",["ใครจักใคร่ค้าช้างค้า","เจ้าเมืองบ่เอาจกอบ","ปากประตูมีกระดิ่ง"],"บ้านเมืองอุดมสมบูรณ์ด้วยอาหาร"],
+  ["🛒","ตลาดค้าขายเสรี","เศรษฐกิจ","ทำไมการค้าขายในสุโขทัยจึงคึกคัก?","ไม่เก็บภาษีผ่านด่าน (จกอบ)",["มีห้างสรรพสินค้า","มีรถไฟขนสินค้า","ห้ามคนต่างเมืองเข้ามา"],"ใครใคร่ค้าช้างค้า ใครใคร่ค้าม้าค้า"],
+  ["🏺","เตาทุเรียง","เศรษฐกิจ","เตาทุเรียงใช้ผลิตอะไร?","เครื่องสังคโลก",["อาวุธเหล็ก","ผ้าไหม","กระดาษสา"],"เครื่องสังคโลกส่งขายหลายประเทศ"],
+  ["🛕","วัดมหาธาตุ","สังคมและวัฒนธรรม","ชาวสุโขทัยนับถือพระพุทธศาสนานิกายใด?","เถรวาท ลัทธิลังกาวงศ์",["มหายาน","วัชรยาน","เซน"],"วัดเป็นศูนย์กลางของชุมชน"],
+  ["🪨","ศิลาจารึก","สังคมและวัฒนธรรม","ศิลาจารึกหลักที่ 1 จารึกด้วยตัวอักษรใด?","ลายสือไทย",["อักษรขอม","อักษรจีน","อักษรโรมัน"],"ลายสือไทยเป็นต้นแบบอักษรไทยปัจจุบัน"],
+  ["📖","หอไตร (เก็บคัมภีร์)","สังคมและวัฒนธรรม","ไตรภูมิพระร่วงของพญาลิไทสอนเรื่องอะไร?","บาปบุญ นรก สวรรค์ ให้คนทำความดี",["วิธีทำสงคราม","การค้าขายกับจีน","การปลูกข้าว"],"เป็นวรรณกรรมทางพระพุทธศาสนา"],
+  ["🪔","ลานเผาเทียนเล่นไฟ","สังคมและวัฒนธรรม","ประเพณีเผาเทียนเล่นไฟคล้ายประเพณีใดในปัจจุบัน?","ลอยกระทง",["สงกรานต์","บุญบั้งไฟ","แห่ผีตาโขน"],"ประเพณีสืบทอดมาถึงวันนี้"],
+  ["🗿","โรงหล่อพระพุทธรูป","สังคมและวัฒนธรรม","พระพุทธรูปปางใดงดงามเป็นเอกลักษณ์ของสุโขทัย?","ปางลีลา",["ปางนาคปรก","ปางห้ามสมุทร","ปางมารวิชัยแบบอยุธยา"],"ปางลีลาแสดงท่าก้าวเดินอย่างอ่อนช้อย"],
+  ["🏊","ตระพัง (สระน้ำ)","เศรษฐกิจ","ตระพังในเมืองสุโขทัยคืออะไร?","สระน้ำสำหรับเก็บน้ำใช้",["สนามมวย","ตลาดน้ำ","คอกช้าง"],"ช่วยให้มีน้ำใช้ในหน้าแล้ง"]
+];
+const LV = {1:{n:6, opts:3}, 2:{n:8, opts:4}, 3:{n:10, opts:4, side:true}};
+const SIDES = ["เศรษฐกิจ","การเมืองการปกครอง","สังคมและวัฒนธรรม"];
+
+KIT.mount({
+  key:"h4-city", title:"สร้างเมืองสุโขทัย", subtitle:"ประวัติศาสตร์ ป.4 · หน่วยที่ 3 ความเป็นมาของชาติไทย (ภูมิปัญญาไทยสมัยสุโขทัย)",
+  heroHTML:"สร้าง<em>เมืองสุโขทัย</em>ให้รุ่งเรือง 🏯", heroDesc:"เลือกสิ่งก่อสร้างที่ต้องการ ตอบคำถามให้ถูกเพื่อสร้างลงในเมือง เมืองจะรุ่งเรืองขึ้นเรื่อย ๆ",
+  progIcon:"🏯",
+  howto:["แตะการ์ดสิ่งก่อสร้างที่อยากสร้าง","ตอบคำถามเกี่ยวกับสิ่งก่อสร้างนั้นให้ถูก","ถูก = สร้างลงในเมือง ผิด = เสีย 10 คะแนน แล้วลองใหม่","ด่านยาก: ต้องบอกด้วยว่าเป็นภูมิปัญญาด้านใด"],
+  levels:{
+    1:{pill:"6 อาคาร", color:"var(--green)", desc:"สร้าง 6 อย่าง คำถาม 3 ตัวเลือก"},
+    2:{pill:"8 อาคาร", color:"var(--blue)", desc:"สร้าง 8 อย่าง คำถาม 4 ตัวเลือก"},
+    3:{pill:"10 อาคาร", color:"var(--purple)", desc:"สร้าง 10 อย่าง + บอกว่าเป็นภูมิปัญญาด้านเศรษฐกิจ การปกครอง หรือสังคมวัฒนธรรม"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const blds = shuffle(BLD.slice()).slice(0, L.n);
+    const total = L.n * (L.side ? 2 : 1);
+    ctx.stage.innerHTML = `<div class="city" id="ct">${Array.from({length:12},()=>`<div class="plot"></div>`).join("")}</div>
+      <div class="stats"><span id="pp">👥 ประชากร 100</span><span id="pr">✨ ความรุ่งเรือง 0%</span></div>
+      <div id="host" style="width:100%"></div><div class="cards" id="cd"></div><div class="tip" id="tp">แตะการ์ดเพื่อเลือกสร้าง</div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let built = 0, done = 0, people = 100;
+    const plots = shuffle([...ctx.stage.querySelectorAll(".plot")]);
+    const cards = () => { $("#cd").innerHTML = blds.map((b,i)=>`<button class="bc ${b.done?"done":""}" type="button" data-i="${i}"><span class="e">${b[0]}</span>${b[1]}<br><span class="c">🔨 สร้าง</span></button>`).join(""); };
+    cards();
+    function place(b){
+      const p = plots[built]; p.classList.add("b"); p.innerHTML = `<div>${b[0]}<small>${b[1]}</small></div>`;
+      built++; people += 120; $("#pp").textContent = `👥 ประชากร ${people}`; $("#pr").textContent = `✨ ความรุ่งเรือง ${Math.round(built/L.n*100)}%`;
+    }
+    function ask(i){
+      const b = blds[i];
+      $("#cd").style.display = "none"; $("#tp").textContent = "";
+      const o = shuffle([b[4], ...shuffle(b[5].slice()).slice(0, L.opts-1)]);
+      KIT.mcq(ctx, $("#host"), {label:`${b[0]} สร้าง${b[1]}`, html:KIT.esc(b[3]), options:o.map(KIT.esc), answer:o.indexOf(b[4]), cols:2, explain:b[6],
+        onNext(){
+          done++; ctx.progress(done, total);
+          if (L.side){
+            const so = shuffle(SIDES.slice());
+            KIT.mcq(ctx, $("#host"), {label:`${b[0]} ${b[1]}`, html:`${KIT.esc(b[1])} เป็นภูมิปัญญาด้านใด?`, options:so, answer:so.indexOf(b[2]), cols:1, explain:`${b[1]} เป็นภูมิปัญญาด้าน${b[2]}`,
+              onNext(){ done++; ctx.progress(done, total); finishBuild(b); }});
+          } else finishBuild(b);
+        }});
+    }
+    function finishBuild(b){
+      b.done = true; place(b); $("#host").innerHTML = ""; $("#cd").style.display = "";
+      cards(); $("#tp").textContent = built < L.n ? `สร้าง${b[1]}แล้ว! ${b[6]}` : "🎉 เมืองสุโขทัยรุ่งเรืองแล้ว!";
+      if (built >= L.n) ctx.after(900, () => ctx.finish({targetSec: L.n * (L.side ? 18 : 12)}));
+    }
+    $("#cd").addEventListener("click", e => { const c = e.target.closest(".bc"); if (c) ask(+c.dataset.i); });
+    ctx.progress(0, total); ctx.say("เลือกสิ่งก่อสร้างแรกของเมืองกันเลย!");
+  }
+});
+
+})();
+</script>
+</body>
+</html>

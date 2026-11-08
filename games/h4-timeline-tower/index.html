@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>หอคอยไทม์ไลน์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.site{position:relative;width:100%;display:grid;grid-template-columns:1fr 1.1fr;gap:14px;align-items:end}
+.tower{position:relative;min-height:330px;background:linear-gradient(#D9F0FF,#F3FAFF);border-radius:20px;box-shadow:inset 0 -14px 0 #9BD08F;display:flex;flex-direction:column-reverse;align-items:center;padding:14px 8px 18px;gap:4px}
+.tower .crane{position:absolute;top:6px;right:10px;font-size:2rem}
+.tb{width:88%;border-radius:10px;padding:8px 6px;color:#fff;font-weight:700;text-align:center;font-size:clamp(.78rem,2.4vw,.98rem);line-height:1.25;box-shadow:0 4px 0 rgba(0,0,0,.18);animation:drop .45s cubic-bezier(.3,1.5,.5,1)}
+.tb small{display:block;opacity:.9;font-weight:600}
+@keyframes drop{from{transform:translateY(-140px);opacity:0}}
+.pile{display:grid;gap:10px}
+.pb{border:none;border-radius:12px;padding:12px 8px;color:#fff;font-weight:700;font-size:clamp(.9rem,2.8vw,1.1rem);line-height:1.3;box-shadow:0 5px 0 rgba(0,0,0,.2);text-align:center}
+.pb:active{transform:translateY(3px)}
+.pb.no{animation:shake .4s}
+.ask{text-align:center;font-weight:700;margin:6px 0 10px}
+@media (max-width:560px){.site{grid-template-columns:1fr}.tower{min-height:220px}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle, rand, pick} = KIT;
+const COLORS = ["#E8708F","#3C8DDB","#2FA866","#E08A3C","#8B6FD6","#C9A227","#14A3B8"];
+/* each set: name, items in order (oldest/shortest first), level range */
+const SETS = [
+  {lv:[1], t:"เรียงหน่วยเวลา จาก สั้น → ยาว", items:["วัน","สัปดาห์","เดือน","ปี","ทศวรรษ","ศตวรรษ","สหัสวรรษ"]},
+  {lv:[1], t:"เรียงเหตุการณ์ในชีวิต จาก ก่อน → หลัง", items:["เกิด","หัดเดิน","เข้าอนุบาล","เรียน ป.1","เรียน ป.4"]},
+  {lv:[1,2], t:"เรียงยุคก่อนประวัติศาสตร์ จาก เก่า → ใหม่", items:["ยุคหินเก่า","ยุคหินใหม่","ยุคสำริด","ยุคเหล็ก"]},
+  {lv:[2,3], t:"เรียงสมัยของไทย จาก เก่า → ใหม่", items:["ทวารวดี (ก่อนสุโขทัย)","สุโขทัย (พ.ศ. 1792)","อยุธยา (พ.ศ. 1893)","ธนบุรี (พ.ศ. 2310)","รัตนโกสินทร์ (พ.ศ. 2325)"]},
+  {lv:[3], t:"เรียงเหตุการณ์ จาก เก่า → ใหม่", items:["ตั้งอาณาจักรสุโขทัย","ประดิษฐ์ลายสือไทย","ตั้งกรุงศรีอยุธยา","ตั้งกรุงธนบุรี","ตั้งกรุงรัตนโกสินทร์"]},
+  {lv:[1,2], gen:"be", t:"เรียงปี พ.ศ. จาก น้อย → มาก"},
+  {lv:[2,3], gen:"dec", t:"เรียงช่วงเวลา จาก เก่า → ใหม่"},
+  {lv:[3], gen:"mix", t:"เรียงปี จาก เก่า → ใหม่ (ระวัง ค.ศ.!)"}
+];
+const N = {1:4, 2:5, 3:6};
+function build(set, n){
+  if (set.gen === "be"){ const ys = new Set(); while (ys.size < n) ys.add(rand(2480,2569)); return [...ys].sort((a,b)=>a-b).map(y => `พ.ศ. ${y}`); }
+  if (set.gen === "dec"){ const ds = shuffle([2490,2500,2510,2520,2530,2540,2550,2560]).slice(0,n).sort((a,b)=>a-b); return ds.map(d => `ทศวรรษ ${d}`); }
+  if (set.gen === "mix"){ const ys = new Set(); while (ys.size < n) ys.add(rand(2440,2569)); return [...ys].sort((a,b)=>a-b).map(y => Math.random() < .5 ? `ค.ศ. ${y-543}` : `พ.ศ. ${y}`); }
+  const it = set.items; if (it.length <= n) return it.slice();
+  const keep = shuffle(it.map((_,i)=>i)).slice(0,n).sort((a,b)=>a-b); return keep.map(i => it[i]);
+}
+
+KIT.mount({
+  key:"h4-tower", title:"หอคอยไทม์ไลน์", subtitle:"ประวัติศาสตร์ ป.4 · หน่วยที่ 1 เวลาและเหตุการณ์ (ยุคสมัย)",
+  heroHTML:"ต่อ<em>หอคอยเวลา</em> เรียงให้ถูกจากฐาน 🏗️", heroDesc:"แตะบล็อกที่มาก่อนให้วางเป็นฐาน แล้วไล่ต่อขึ้นไปจนสุด หอคอยจะสูงขึ้นเรื่อย ๆ",
+  progIcon:"🏗️",
+  howto:["อ่านคำสั่งว่าเรียงแบบไหน","แตะบล็อกที่ \"มาก่อน\" เพื่อวางเป็นฐานหอคอย","แตะบล็อกถัดไปต่อขึ้นไปจนครบ","แตะผิดลำดับเสีย 10 คะแนน ครบ 4 หอคอยผ่านด่าน"],
+  levels:{
+    1:{pill:"4 หอคอย", color:"var(--green)", desc:"หอคอยละ 4 บล็อก หน่วยเวลา ชีวิตเรา ยุคหิน–โลหะ"},
+    2:{pill:"4 หอคอย", color:"var(--blue)", desc:"หอคอยละ 5 บล็อก สมัยของไทย ทศวรรษ ปี พ.ศ."},
+    3:{pill:"4 หอคอย", color:"var(--purple)", desc:"หอคอยละ 6 บล็อก ปี พ.ศ. ปน ค.ศ. และเหตุการณ์สำคัญ"}
+  },
+  play(level, ctx){
+    const n = N[level];
+    const sets = shuffle(SETS.filter(s => s.lv.includes(level))).slice(0,4);
+    while (sets.length < 4) sets.push(pick(SETS.filter(s => s.lv.includes(level))));
+    const total = sets.length;
+    ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext" id="qt"></div></div>
+      <div class="site"><div class="tower" id="tw"><span class="crane">🏗️</span></div><div><div class="ask" id="ak"></div><div class="pile" id="pl"></div></div></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let si = 0, order = [], k = 0, first = true;
+    function tower(){
+      if (si >= total){ ctx.finish({targetSec: level===3 ? 150 : 100}); return; }
+      const S = sets[si]; order = build(S, n); k = 0; first = true;
+      $("#qn").textContent = `หอคอยที่ ${si+1} จาก ${total}`; $("#qt").textContent = S.t;
+      $("#tw").innerHTML = `<span class="crane">🏗️</span>`;
+      const col = shuffle(COLORS.slice());
+      $("#pl").innerHTML = shuffle(order.map((t,i)=>({t,i}))).map(x=>`<button class="pb" type="button" data-i="${x.i}" style="background:${col[x.i % col.length]}">${x.t}</button>`).join("");
+      $("#ak").textContent = "แตะบล็อกที่เป็นฐาน (มาก่อนสุด)";
+    }
+    $("#pl").addEventListener("click", e => {
+      const b = e.target.closest(".pb"); if (!b) return;
+      if (+b.dataset.i === k){
+        const blk = document.createElement("div"); blk.className = "tb"; blk.style.background = b.style.background; blk.textContent = b.textContent;
+        $("#tw").appendChild(blk); b.remove(); k++; KIT.sfx.pop();
+        if (k === order.length){ ctx.correct(first ? 150 : 80, "หอคอยตั้งตรงเป๊ะ! 🎉"); si++; ctx.progress(si, total); $("#ak").textContent = "สำเร็จ!"; ctx.after(1300, tower); }
+        else $("#ak").textContent = `ดีมาก! บล็อกที่ ${k+1} คืออะไร?`;
+      } else {
+        first = false; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
+        ctx.wrong("ยังไม่ใช่บล็อกถัดไป หอคอยโยกเลย! ลองคิดลำดับใหม่");
+      }
+    });
+    ctx.progress(0, total); ctx.say("มาสร้างหอคอยเวลากัน!");
+    tower();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

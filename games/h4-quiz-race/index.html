@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ควิซเรซ ข้ามศตวรรษ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.track{width:100%;background:#2B2552;border-radius:20px;padding:12px;box-shadow:0 6px 0 #1A1636}
+.lane{position:relative;height:46px;border-bottom:2px dashed rgba(255,255,255,.18)}
+.lane:last-child{border-bottom:none}
+.lane .nm{position:absolute;left:6px;top:50%;transform:translateY(-50%);color:#fff;font-weight:700;font-size:.8rem;opacity:.75;width:64px}
+.lane .rk{position:absolute;top:50%;font-size:1.9rem;transform:translate(-50%,-50%);transition:left .5s cubic-bezier(.3,1.5,.5,1)}
+.lane .fin{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:1.4rem}
+.lane.me{background:rgba(246,205,107,.15);border-radius:12px}
+.lane.me .nm{color:#F6CD6B;opacity:1}
+.place{color:#F6CD6B;text-align:center;font-weight:700;margin-top:6px}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const GOAL = 10;
+const ERA = [["สุโขทัย",1792,1892],["อยุธยา",1982,2309],["ธนบุรี",2311,2324],["รัตนโกสินทร์",2326,2569]];
+function mc(q, ans, ws, ex){ const o = shuffle([ans, ...shuffle([...new Set(ws.filter(w => w !== ans))]).slice(0,3)]); return {q, o:o.map(String), a:o.indexOf(ans), ex}; }
+const GEN = {
+  1: () => pick([
+    () => { const [u,n] = pick([["ทศวรรษ",10],["ศตวรรษ",100],["สหัสวรรษ",1000]]); return mc(`1 ${u} = กี่ปี?`, n, [10,100,1000,12], "ทศวรรษ 10 ปี ศตวรรษ 100 ปี สหัสวรรษ 1,000 ปี"); },
+    () => { const k = rand(2,9); return mc(`${k} ทศวรรษ = กี่ปี?`, k*10, [k*100, k, k*10+10, k*1000], `1 ทศวรรษ = 10 ปี → ${k} × 10 = ${k*10}`); },
+    () => { const k = rand(2,9); return mc(`${k*100} ปี = กี่ศตวรรษ?`, k, [k*10, k+1, k-1], `100 ปี = 1 ศตวรรษ → ${k*100} ÷ 100 = ${k}`); },
+    () => { const k = rand(2,5); return mc(`${k} ศตวรรษ = กี่ทศวรรษ?`, k*10, [k, k*100, k*10+5], `1 ศตวรรษ = 10 ทศวรรษ`); },
+    () => { const y = rand(2500,2569), d = Math.floor(y/10)*10; return mc(`พ.ศ. ${y} อยู่ในทศวรรษใด?`, d, [d-10, d+10, d+5], `ทศวรรษเริ่มที่ปีลงท้ายด้วย 0 → ทศวรรษ ${d} (${d}–${d+9})`); }
+  ])(),
+  2: () => pick([
+    () => { const y = rand(1800,2569), c = Math.ceil(y/100); return mc(`พ.ศ. ${y} อยู่ในพุทธศตวรรษที่เท่าไร?`, c, [c-1, c+1, c+2], `พุทธศตวรรษที่ ${c} คือ พ.ศ. ${(c-1)*100+1}–${c*100}`); },
+    () => { const y = rand(1500,2026), c = Math.ceil(y/100); return mc(`ค.ศ. ${y} อยู่ในคริสต์ศตวรรษที่เท่าไร?`, c, [c-1, c+1, c+2], `คริสต์ศตวรรษที่ ${c} คือ ค.ศ. ${(c-1)*100+1}–${c*100}`); },
+    () => { const a = rand(245,255)*10, k = rand(2,7); return mc(`ตั้งแต่ พ.ศ. ${a} ถึง พ.ศ. ${a + k*10} ห่างกันกี่ทศวรรษ?`, k, [k*10, k+1, k-1], `${k*10} ปี ÷ 10 = ${k} ทศวรรษ`); },
+    () => { const d = rand(250,256)*10; return mc(`"ทศวรรษ ${d}" คือช่วงปีใด?`, `พ.ศ. ${d}–${d+9}`, [`พ.ศ. ${d-9}–${d}`, `พ.ศ. ${d+1}–${d+10}`, `พ.ศ. ${d}–${d+99}`], `ทศวรรษเริ่มที่ปีลงท้ายด้วย 0 และจบที่ปีลงท้ายด้วย 9`); }
+  ])(),
+  3: () => pick([
+    () => { const [n,a,b] = pick(ERA); const y = rand(a,b); return mc(`พ.ศ. ${y} อยู่ใน "สมัย" ใดของไทย?`, n, ERA.map(e => e[0]), `สุโขทัย 1792 · อยุธยา 1893 · ธนบุรี 2310–2325 · รัตนโกสินทร์ 2325–ปัจจุบัน`); },
+    () => { const y = rand(1001,2026), m = Math.ceil(y/1000); return mc(`ค.ศ. ${y} อยู่ในคริสต์สหัสวรรษที่เท่าไร?`, m, [m-1, m+1, m+2].filter(x => x > 0), `สหัสวรรษที่ ${m} คือ ค.ศ. ${(m-1)*1000+1}–${m*1000}`); },
+    () => mc(`ลายสือไทยประดิษฐ์ขึ้น พ.ศ. 1826 อยู่ในพุทธศตวรรษที่เท่าไร?`, 19, [18, 20, 17], `พุทธศตวรรษที่ 19 คือ พ.ศ. 1801–1900`),
+    () => mc(`สมัยธนบุรีมีระยะเวลาประมาณกี่ปี? (พ.ศ. 2310–2325)`, 15, [25, 5, 150], `2325 − 2310 = 15 ปี (ราว 1 ทศวรรษครึ่ง)`),
+    () => { const y = rand(2326,2569), n = y - 2325, c = Math.floor(n/100); return mc(`ถ้านับจากตั้งกรุงรัตนโกสินทร์ (พ.ศ. 2325) ถึง พ.ศ. ${y} ผ่านมาแล้วกี่ศตวรรษเต็ม?`, c, [c+1, c+2, n].filter(x => x !== c), `${y} − 2325 = ${n} ปี → ${c} ศตวรรษเต็ม (${c*100} ปี)`); }
+  ])()
+};
+const BOTS = [["🤖","บอทโกโก้"],["👾","บอทพิกเซล"],["🦖","บอทไดโน"]];
+const SKILL = {1:[.5,.38,.3], 2:[.6,.48,.38], 3:[.7,.58,.48]};
+
+KIT.mount({
+  key:"h4-race", title:"ควิซเรซ ข้ามศตวรรษ", subtitle:"ประวัติศาสตร์ ป.4 · หน่วยที่ 1 เวลาและเหตุการณ์",
+  heroHTML:"แข่ง<em>ตอบเร็ว</em>กับบอท ใครถึงเส้นชัยก่อน! 🏁", heroDesc:"ตอบถูก จรวดของเราพุ่งไปข้างหน้า 1 ช่อง บอทก็ตอบไปพร้อมกัน ใครถึงเส้นชัย 10 ช่องก่อนชนะ",
+  progIcon:"🏁",
+  howto:["อ่านโจทย์เรื่องทศวรรษ ศตวรรษ สหัสวรรษ และสมัยต่าง ๆ","ตอบถูก จรวดเราเดินหน้า 1 ช่อง","ตอบผิดไม่ถอยหลัง แต่บอทจะแซงได้","ถึงเส้นชัย 10 ช่องจบเกม ดูว่าได้ที่เท่าไร"],
+  levels:{
+    1:{pill:"10 ช่อง", color:"var(--green)", desc:"ทศวรรษ ศตวรรษ สหัสวรรษ แปลงหน่วยง่าย ๆ"},
+    2:{pill:"10 ช่อง", color:"var(--blue)", desc:"ปีนี้อยู่ศตวรรษที่เท่าไร นับช่วงทศวรรษ"},
+    3:{pill:"10 ช่อง", color:"var(--purple)", desc:"สมัยสุโขทัย–รัตนโกสินทร์ สหัสวรรษ และโจทย์คิดเชิงเวลา บอทเก่งขึ้น"}
+  },
+  play(level, ctx){
+    const racers = [{ic:"🚀", nm:ctx.name || "ฉัน", p:0, me:true}, ...BOTS.map(b => ({ic:b[0], nm:b[1], p:0}))];
+    ctx.stage.innerHTML = `<div class="track" id="tr">${racers.map((r,i)=>`<div class="lane ${r.me?"me":""}"><span class="nm">${KIT.esc(r.nm).slice(0,10)}</span><span class="rk" id="r${i}" style="left:22%">${r.ic}</span><span class="fin">🏁</span></div>`).join("")}</div><div class="place" id="pl"></div><div id="host" style="width:100%"></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let qn = 0, finishedOrder = [];
+    const draw = () => racers.forEach((r,i) => { $("#r"+i).style.left = (22 + r.p/GOAL*68) + "%"; });
+    const rank = () => 1 + racers.filter(r => !r.me && r.p > racers[0].p).length;
+    function botsMove(){
+      racers.forEach((r,i) => { if (r.me || r.p >= GOAL) return; if (Math.random() < SKILL[level][i-1]){ r.p++; if (r.p >= GOAL) finishedOrder.push(r.nm); } });
+      draw(); $("#pl").textContent = racers[0].p >= GOAL ? "" : `ตอนนี้เราอยู่อันดับ ${rank()} จาก 4`;
+    }
+    function next(){
+      if (racers[0].p >= GOAL){
+        const place = finishedOrder.length + 1; $("#pl").textContent = `🏆 เข้าเส้นชัยอันดับ ${place}!`;
+        if (place === 1) ctx.correct(150, "ชนะเลิศ! เข้าเส้นชัยเป็นที่ 1"); 
+        ctx.after(900, () => ctx.finish({targetSec: 100})); return;
+      }
+      const it = GEN[level](); qn++;
+      KIT.mcq(ctx, $("#host"), {label:`โจทย์ที่ ${qn}`, html:KIT.esc(it.q), options:it.o.map(KIT.esc), answer:it.a, cols:2, explain:it.ex,
+        onNext(){ racers[0].p++; draw(); ctx.progress(racers[0].p, GOAL); ctx.after(250, next); }});
+      /* every question, bots also take a step chance */
+      botsMove();
+    }
+    const ow = ctx.wrong; ctx.wrong = (...a) => { ow(...a); botsMove(); };  /* a wrong answer gives the bots another step */
+    ctx.progress(0, GOAL); ctx.say("3… 2… 1… ออกตัว!");
+    draw(); next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>
