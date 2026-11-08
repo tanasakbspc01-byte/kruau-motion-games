@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>รู้จักใบตอง การเลือก และการเตรียม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#2EAE5F;--main-deep:#1E8A47}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🍃</span>
+  <div class="ttl"><b>รู้จักใบตอง การเลือก และการเตรียม</b><small>การงานอาชีพ ป.4 · หน่วยที่ 5 งานประดิษฐ์จากใบตอง · สื่อที่ 1</small></div>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge" style="background:var(--orange)">การงานอาชีพ ป.4 · หน่วยที่ 5</span>
+  <div id="leafHero"></div>
+  <h1 style="color:var(--main-deep);text-shadow:0 4px 0 #CFF3DB">งานประดิษฐ์จากใบตอง<br><small style="font-size:.55em">รู้จักใบตอง การเลือก และการเตรียม</small></h1>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul>
+      <li>บอก <b>ประโยชน์ของงานใบตอง</b> และ <b>ชนิดของใบตอง</b> ได้</li>
+      <li><b>เลือกใบตอง</b> ที่เหมาะกับงานประดิษฐ์ได้</li>
+      <li>บอก <b>วิธีเตรียมใบตอง</b> และ <b>วัสดุอุปกรณ์</b> ได้</li>
+      <li><b>เก็บรักษา</b> ใบตอง และทำงานอย่าง <b>ปลอดภัย</b> ได้</li>
+    </ul>
+  </div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button>
+</div></section>
+
+<section class="slide" data-title="งานใบตองคืออะไร"><div class="inner">
+  <h2 class="h"><span class="e">🍃</span>งานใบตอง ภูมิปัญญาไทย</h2>
+  <div class="key"><b>ใบตอง</b> คือ <b>ใบกล้วย</b> ที่นำมาใช้ประโยชน์ คนไทยใช้ใบตองมาตั้งแต่สมัยโบราณ เป็น <span class="hl">ภูมิปัญญาไทย</span> ที่สืบทอดกันมา</div>
+  <div class="grid" style="--min:200px">
+    <div class="card c-green center"><div class="emoji-xl" style="font-size:2.6rem">🍙</div><b>ห่ออาหาร</b><p>ห่อหมก ข้าวต้มมัด ขนมกล้วย</p></div>
+    <div class="card c-orange center"><div class="emoji-xl" style="font-size:2.6rem">🪷</div><b>กระทง</b><p>กระทงลอย กระทงใส่ขนม</p></div>
+    <div class="card c-pink center"><div class="emoji-xl" style="font-size:2.6rem">🌸</div><b>บายศรี พานพุ่ม</b><p>ใช้ในพิธีกรรม งานประเพณี</p></div>
+    <div class="card c-blue center"><div class="emoji-xl" style="font-size:2.6rem">🍡</div><b>ภาชนะใส่ขนม</b><p>กรวย ถาด ห่อขนม</p></div>
+  </div>
+  <div class="card c-teal">
+    <h3>👍 ข้อดีของงานใบตอง</h3>
+    <ul>
+      <li>หาได้ง่ายในท้องถิ่น ราคาถูก</li>
+      <li><b>ย่อยสลายได้ตามธรรมชาติ</b> ช่วยลดขยะโฟมและพลาสติก 🌍</li>
+      <li>ช่วยอนุรักษ์ภูมิปัญญาไทย และ <b>สร้างรายได้</b> เป็นอาชีพได้</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ชนิดของใบตอง"><div class="inner">
+  <h2 class="h"><span class="e">🌿</span>ชนิดของใบตอง และส่วนของใบตอง</h2>
+  <div class="grid" style="--min:290px">
+    <div class="card c-green">
+      <h3 class="t-green">🍌 ใบตองกล้วยตานี</h3>
+      <p>ใบสีเขียวเข้ม ผิวมัน <b>เหนียว นุ่ม ไม่แตกง่าย</b> พับจีบได้สวย</p>
+      <p>✨ <b>เหมาะกับงานประดิษฐ์</b> เช่น กระทง บายศรี</p>
+    </div>
+    <div class="card c-yellow">
+      <h3 style="color:#B07A00">🍌 ใบตองกล้วยน้ำว้า</h3>
+      <p>หาง่าย มีทั่วไป แต่ใบ <b>เปราะ ฉีกขาดง่ายกว่า</b></p>
+      <p>🍙 นิยม <b>ใช้ห่ออาหารและขนม</b></p>
+    </div>
+  </div>
+  <div class="card c-blue">
+    <h3>🔍 ส่วนของใบตองที่ควรรู้</h3>
+    <div class="row" style="gap:18px;align-items:flex-start">
+      <div id="leafParts" style="flex:1 1 280px"></div>
+      <ul style="flex:1 1 260px">
+        <li><b>ด้านหน้า (ด้านมัน)</b> ผิวเรียบ สีเขียวเข้ม เป็นมัน — นิยมหันออกด้านนอกให้สวยงาม</li>
+        <li><b>ด้านหลัง (ด้านด้าน)</b> สีอ่อนกว่า ไม่มัน</li>
+        <li><b>แนวเส้นใบ</b> ใบตองฉีกได้ง่ายตามแนวเส้นใบ จึงต้องระวังเวลาพับ</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="การเลือกใบตอง"><div class="inner">
+  <h2 class="h"><span class="e">✅</span>การเลือกใบตอง</h2>
+  <div class="grid" style="--min:290px">
+    <div class="card c-green">
+      <h3 class="t-green">👍 ใบตองที่ดี</h3>
+      <ul>
+        <li>เป็น <b>ใบเพสลาด</b> คือ ใบที่ไม่อ่อนและไม่แก่เกินไป</li>
+        <li>สีเขียวสด ผิวเรียบ เป็นมัน</li>
+        <li>ใบไม่ฉีกขาด ไม่มีรู ไม่มีรอยช้ำหรือจุดด่าง</li>
+        <li>ใบนุ่ม เหนียว พับแล้วไม่แตก</li>
+      </ul>
+    </div>
+    <div class="card c-red">
+      <h3 class="t-red">👎 ใบตองที่ไม่ควรใช้</h3>
+      <ul>
+        <li><b>ใบอ่อนเกินไป</b> นิ่ม บาง ขาดง่าย</li>
+        <li><b>ใบแก่เกินไป</b> แข็ง กรอบ แตกง่าย สีเหลือง</li>
+        <li>ใบที่ฉีกขาดเป็นริ้ว มีรู มีรอยช้ำ หรือเหี่ยวแห้ง</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card c-purple">
+    <h3>🎮 คัดใบตอง: ใบไหนใช้ได้ ใบไหนไม่ควรใช้</h3>
+    <div data-sorter="pick"></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="การเตรียมใบตอง"><div class="inner">
+  <h2 class="h"><span class="e">🧽</span>ขั้นตอนการเตรียมใบตอง</h2>
+  <div class="steps" id="prep" style="display:grid;gap:10px">
+    <div class="step"><div class="card c-green"><h3>1️⃣ ตัดใบตองออกจากก้านใบ</h3><p>ใช้กรรไกรตัดใบตองออกจากก้านกลางใบ (ทางกล้วย) โดยให้ผู้ใหญ่ช่วยดูแล</p></div></div>
+    <div class="step"><div class="card c-blue"><h3>2️⃣ เช็ดทำความสะอาด</h3><p>ใช้ผ้าสะอาดชุบน้ำบิดหมาด ๆ เช็ดทั้งด้านหน้าและด้านหลัง <b>เช็ดไปตามแนวเส้นใบ</b> เพื่อไม่ให้ใบฉีก</p></div></div>
+    <div class="step"><div class="card c-orange"><h3>3️⃣ ทำให้ใบตองนิ่ม (ถ้าใบกรอบ)</h3><p>นำไปผึ่งลมหรือผึ่งแดดอ่อน ๆ สักครู่ให้ใบนิ่ม พับแล้วไม่แตก (ถ้าลนไฟอ่อน ๆ ต้องให้ผู้ใหญ่ทำ)</p></div></div>
+    <div class="step"><div class="card c-purple"><h3>4️⃣ ตัดหรือฉีกตามขนาด</h3><p>ตัด/ฉีกใบตองเป็นชิ้นตามขนาดที่ต้องการใช้ ฉีกตามแนวเส้นใบจะได้ขอบตรง</p></div></div>
+    <div class="step"><div class="card c-teal"><h3>5️⃣ เก็บไว้ให้สด</h3><p>วางซ้อนกัน ห่อด้วยผ้าชุบน้ำหมาด ๆ เก็บไว้ในที่ร่ม รอนำไปประดิษฐ์</p></div></div>
+  </div>
+  <div class="row center"><button class="btn" data-reveal="prep">ดูขั้นต่อไป 👇</button></div>
+</div></section>
+
+<section class="slide" data-title="วัสดุอุปกรณ์"><div class="inner">
+  <h2 class="h"><span class="e">🧰</span>วัสดุอุปกรณ์ในงานใบตอง</h2>
+  <p class="sub">👆 แตะการ์ดเพื่อดูว่าใช้ทำอะไร</p>
+  <div class="grid" style="--min:170px">
+    <button class="flip c-green" style="--fh:150px"><div class="fi"><div class="fa"><span class="e">🍃</span>ใบตอง</div><div class="fb">วัสดุหลักในการประดิษฐ์</div></div></button>
+    <button class="flip c-red" style="--fh:150px"><div class="fi"><div class="fa"><span class="e">✂️</span>กรรไกร</div><div class="fb">ตัดใบตองให้ได้รูปร่างและขนาดที่ต้องการ</div></div></button>
+    <button class="flip c-orange" style="--fh:150px"><div class="fi"><div class="fa"><span class="e">🥢</span>ไม้กลัด</div><div class="fb">กลัดยึดใบตองให้ติดกัน (ทำจากก้านมะพร้าวหรือไม้ไผ่)</div></div></button>
+    <button class="flip c-blue" style="--fh:150px"><div class="fi"><div class="fa"><span class="e">📎</span>เครื่องเย็บกระดาษ</div><div class="fb">เย็บยึดใบตองแทนไม้กลัด ทำได้เร็ว</div></div></button>
+    <button class="flip c-teal" style="--fh:150px"><div class="fi"><div class="fa"><span class="e">🧽</span>ผ้าสะอาด</div><div class="fb">เช็ดใบตองให้สะอาด และใช้ห่อเก็บใบตอง</div></div></button>
+    <button class="flip c-purple" style="--fh:150px"><div class="fi"><div class="fa"><span class="e">⭕</span>แบบวงกลม</div><div class="fb">ถ้วย จาน หรือกระดาษแข็ง ใช้ทาบวาดวงกลมก่อนตัด</div></div></button>
+    <button class="flip c-pink" style="--fh:150px"><div class="fi"><div class="fa"><span class="e">📏</span>ไม้บรรทัด</div><div class="fb">วัดขนาดใบตองให้เท่ากัน</div></div></button>
+    <button class="flip c-yellow" style="--fh:150px"><div class="fi"><div class="fa"><span class="e">🪣</span>ภาชนะใส่น้ำ</div><div class="fb">ใส่น้ำไว้ชุบผ้า และพรมน้ำให้ใบตองสด</div></div></button>
+  </div>
+</div></section>
+
+<section class="slide" data-title="การเก็บรักษา"><div class="inner">
+  <h2 class="h"><span class="e">❄️</span>การเก็บรักษาใบตองและผลงาน</h2>
+  <div class="grid" style="--min:290px">
+    <div class="card c-blue">
+      <h3>🍃 ใบตองที่ยังไม่ใช้</h3>
+      <ul>
+        <li>ห่อด้วยผ้าชุบน้ำหมาด ๆ หรือใส่ถุงพลาสติก</li>
+        <li>เก็บไว้ใน <b>ที่ร่ม</b> อากาศถ่ายเท</li>
+        <li><b>ไม่ตากแดดจัด</b> เพราะใบจะเหี่ยวและกรอบ</li>
+      </ul>
+    </div>
+    <div class="card c-purple">
+      <h3>🪷 ผลงานที่ทำเสร็จแล้ว</h3>
+      <ul>
+        <li>พรมน้ำเล็กน้อย</li>
+        <li>ใส่ถุงพลาสติก เก็บในตู้เย็นช่องธรรมดา จะสดได้นานขึ้น</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card c-green">
+    <h3>🧹 หลังทำงานเสร็จ</h3>
+    <ul>
+      <li>เก็บเศษใบตองทิ้งให้เรียบร้อย หรือนำไป <b>ทำปุ๋ยหมัก</b> 🌱</li>
+      <li>ทำความสะอาดและเก็บอุปกรณ์เข้าที่ ล้างมือให้สะอาด</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ความปลอดภัย"><div class="inner">
+  <h2 class="h"><span class="e">🦺</span>ทำงานอย่างปลอดภัย</h2>
+  <div class="grid" style="--min:250px">
+    <div class="card c-red"><h3>✂️ กรรไกร</h3><p>ใช้อย่างระวัง ไม่หยอกล้อกัน เวลาส่งให้เพื่อน <b>ยื่นด้ามจับให้</b> เก็บเข้าที่เมื่อใช้เสร็จ</p></div>
+    <div class="card c-orange"><h3>🥢 ไม้กลัด / ลวดเย็บ</h3><p>ปลายแหลม ระวังทิ่มมือ เก็บใส่กล่องหรือภาชนะ ไม่วางเกลื่อนโต๊ะ</p></div>
+    <div class="card c-yellow"><h3>🔥 ไฟและของร้อน</h3><p>ถ้าต้องลนไฟใบตอง <b>ให้ผู้ใหญ่ทำ</b> หรือดูแลอย่างใกล้ชิด</p></div>
+    <div class="card c-blue"><h3>🧼 ความสะอาด</h3><p>ล้างมือก่อนและหลังทำงาน โดยเฉพาะงานที่ใช้ใส่อาหาร</p></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เรียงขั้นตอน"><div class="inner">
+  <h2 class="h"><span class="e">🧩</span>กิจกรรม: เรียงขั้นตอนการเตรียมใบตอง</h2>
+  <div data-order="prep"></div>
+</div></section>
+
+<section class="slide" data-title="แบบทดสอบ"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบ (8 ข้อ)</h2>
+  <div data-quiz="main"></div>
+</div></section>
+
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปบทเรียน</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class="grid" style="--min:250px">
+    <div class="card c-green"><h3>🍃 ใบตอง</h3><p>ใบกล้วย ใบตองกล้วยตานีเหนียว เหมาะกับงานประดิษฐ์ ย่อยสลายได้</p></div>
+    <div class="card c-blue"><h3>✅ เลือก</h3><p>ใบเพสลาด สีเขียวสด เป็นมัน ไม่ฉีกขาด</p></div>
+    <div class="card c-orange"><h3>🧽 เตรียม</h3><p>ตัดจากก้าน → เช็ดตามแนวเส้นใบ → ทำให้นิ่ม → ตัดตามขนาด → เก็บให้สด</p></div>
+    <div class="card c-purple"><h3>❄️ เก็บรักษา</h3><p>ห่อผ้าชุบน้ำหมาด ๆ ไว้ในที่ร่ม ไม่ตากแดดจัด</p></div>
+  </div>
+  <div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button><a class="btn ghost" href="../wk4-leaf-tray/" style="text-decoration:none">➡️ ไปสื่อ: ทำกระทงใบตอง</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+Kit.sorters.pick = {
+  bins: [{ k: 'g', t: '👍 ใช้ได้', c: 'var(--green)' }, { k: 'b', t: '👎 ไม่ควรใช้', c: 'var(--red)' }],
+  items: [
+    { t: '🟢 ใบสีเขียวสด เป็นมัน', k: 'g' }, { t: '🌿 ใบเพสลาด ไม่อ่อนไม่แก่', k: 'g' }, { t: '💪 ใบเหนียว พับไม่แตก', k: 'g' },
+    { t: '🟡 ใบแก่ สีเหลือง กรอบ', k: 'b', w: 'ใบแก่แข็งกรอบ แตกง่าย' }, { t: '🕳️ ใบมีรูและรอยช้ำ', k: 'b', w: 'ทำให้ผลงานไม่สวยและไม่แข็งแรง' },
+    { t: '🌱 ใบอ่อนมาก บางนิ่ม', k: 'b', w: 'ใบอ่อนเกินไปจะขาดง่าย' }, { t: '🍂 ใบเหี่ยวแห้ง', k: 'b', w: 'ใบแห้งจะกรอบแตกง่าย' }
+  ]
+};
+Kit.orders.prep = [
+  '✂️ ตัดใบตองออกจากก้านใบ',
+  '🧽 เช็ดทำความสะอาดด้วยผ้าชุบน้ำหมาด ๆ ตามแนวเส้นใบ',
+  '☀️ ผึ่งลมหรือแดดอ่อน ๆ ให้ใบตองนิ่ม',
+  '📏 ตัดหรือฉีกใบตองตามขนาดที่ต้องการ',
+  '🧺 ห่อผ้าชุบน้ำหมาด ๆ เก็บไว้ในที่ร่ม รอนำไปประดิษฐ์'
+];
+Kit.quizzes.main = [
+  { q: 'ใบตอง คือ ใบของพืชชนิดใด', c: ['ต้นกล้วย', 'ต้นมะพร้าว', 'ต้นบัว', 'ต้นไผ่'], a: 0, w: 'ใบตองคือใบกล้วย' },
+  { q: 'ใบตองกล้วยชนิดใด เหนียว ไม่แตกง่าย เหมาะกับงานประดิษฐ์มากที่สุด', c: ['กล้วยตานี', 'กล้วยหอม', 'กล้วยไข่', 'กล้วยเล็บมือนาง'], a: 0, w: 'ใบตองกล้วยตานีเหนียว นุ่ม พับจีบได้ดี' },
+  { q: 'ข้อใดเป็นลักษณะของใบตองที่ดี', c: ['ใบเพสลาด สีเขียวสด ผิวมัน ไม่ฉีกขาด', 'ใบแก่สีเหลือง แข็ง', 'ใบอ่อนมาก บางใส', 'ใบที่มีรอยช้ำเล็กน้อย'], a: 0, w: 'ใบเพสลาด = ไม่อ่อนและไม่แก่เกินไป' },
+  { q: 'การเช็ดทำความสะอาดใบตอง ควรทำอย่างไร', c: ['ใช้ผ้าชุบน้ำหมาด ๆ เช็ดตามแนวเส้นใบ', 'ขัดด้วยแปรงแรง ๆ', 'แช่น้ำสบู่ทั้งคืน', 'เช็ดขวางแนวเส้นใบ'], a: 0, w: 'เช็ดตามแนวเส้นใบจะไม่ทำให้ใบตองฉีก' },
+  { q: 'ถ้าใบตองกรอบ พับแล้วแตก ควรทำอย่างไร', c: ['ผึ่งลมหรือแดดอ่อน ๆ ให้ใบตองนิ่มก่อน', 'นำไปแช่ตู้เย็นช่องแข็ง', 'ทาน้ำมันพืช', 'ตากแดดจัดทั้งวัน'], a: 0, w: 'ผึ่งให้ใบตองนิ่ม จะพับได้ไม่แตก' },
+  { q: 'อุปกรณ์ใดใช้ “กลัดยึด” ใบตองให้ติดกัน', c: ['ไม้กลัด', 'ไม้บรรทัด', 'ผ้าเช็ดใบตอง', 'ภาชนะใส่น้ำ'], a: 0, w: 'ไม้กลัดหรือลวดเย็บกระดาษใช้ยึดใบตอง' },
+  { q: 'การเก็บรักษาใบตองให้สดอยู่เสมอ ควรทำอย่างไร', c: ['ห่อด้วยผ้าชุบน้ำหมาด ๆ เก็บในที่ร่ม', 'วางตากแดดไว้กลางสนาม', 'ใส่กล่องปิดสนิทไว้ข้างเตา', 'วางไว้บนโต๊ะไม่ต้องห่อ'], a: 0, w: 'ความชื้นและที่ร่มช่วยให้ใบตองไม่เหี่ยว' },
+  { q: 'การส่งกรรไกรให้เพื่อนอย่างปลอดภัย ควรทำอย่างไร', c: ['หันด้ามจับให้เพื่อน', 'โยนให้เพื่อน', 'หันปลายแหลมให้เพื่อน', 'วางไว้บนพื้นให้เพื่อนหยิบเอง'], a: 0, w: 'ยื่นด้ามจับให้ผู้รับ ป้องกันการบาดมือ' }
+];
+
+/* วาดใบตอง */
+function leafSVG(w, labels) {
+  var s = '<svg viewBox="0 0 320 150" style="width:' + w + ';height:auto" role="img" aria-label="ใบตอง">' +
+    '<path d="M10 75 C70 5,250 5,312 75 C250 145,70 145,10 75 Z" fill="#3DBE6A" stroke="#1E7A3E" stroke-width="4"/>' +
+    '<path d="M10 75 C70 40,250 40,312 75 Z" fill="#5AD383" opacity=".55"/>' +
+    '<line x1="6" y1="75" x2="314" y2="75" stroke="#C9E8A8" stroke-width="5"/>';
+  for (var x = 40; x < 300; x += 18) {
+    s += '<path d="M' + x + ' 75 Q' + (x + 6) + ' 45 ' + (x + 16) + ' ' + (22 + Math.abs(160 - x) / 9) + '" stroke="#24914A" stroke-width="1.6" fill="none"/>';
+    s += '<path d="M' + x + ' 75 Q' + (x + 6) + ' 105 ' + (x + 16) + ' ' + (128 - Math.abs(160 - x) / 9) + '" stroke="#24914A" stroke-width="1.6" fill="none"/>';
+  }
+  if (labels) {
+    s += '<g font-family="Mali,sans-serif" font-size="13" font-weight="700" fill="#3B2E5A">' +
+      '<rect x="112" y="60" width="96" height="28" rx="8" fill="#fff" opacity=".9"/><text x="160" y="79" text-anchor="middle">ก้านกลางใบ</text>' +
+      '<rect x="210" y="16" width="86" height="26" rx="8" fill="#FFF3C4"/><text x="253" y="34" text-anchor="middle">เส้นใบ ↙</text></g>';
+  }
+  return s + '</svg>';
+}
+Kit.setup = function () {
+  document.getElementById('leafHero').innerHTML = leafSVG('min(320px,80vw)');
+  document.getElementById('leafParts').innerHTML = leafSVG('100%', true);
+};
+</script>
+</body>
+</html>

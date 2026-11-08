@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>การบวกและการลบเศษส่วน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#3FA9F5;--main-deep:#1E7FC8}
+.fbar i.p{background:var(--purple)}
+.fbar i.x{background:repeating-linear-gradient(45deg,#FFD9DE 0 6px,#fff 6px 12px);position:relative}
+.fbar i.x::after{content:"✕";position:absolute;inset:0;display:grid;place-items:center;color:var(--bad);font-weight:700;font-size:1.3rem;font-style:normal}
+.fbar i{position:relative}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">➕</span>
+  <div class="ttl"><b>การบวกและการลบเศษส่วน</b><small>คณิตศาสตร์ ป.4 · บทที่ 6 เศษส่วน · สื่อที่ 2</small></div>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">คณิตศาสตร์ ป.4 · บทที่ 6 เศษส่วน</span>
+  <div class="emoji-xl">🍰➕🥤➖</div>
+  <h1 style="color:var(--main-deep);text-shadow:0 4px 0 #CDEBFF">การบวกและการลบ<br>เศษส่วน</h1>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul>
+      <li>หาผลบวก ผลลบของเศษส่วนที่ <b>ตัวส่วนเท่ากัน</b> ได้</li>
+      <li>หาผลบวก ผลลบของเศษส่วนที่ <b>ตัวส่วนตัวหนึ่งเป็นพหุคูณของอีกตัวหนึ่ง</b> ได้</li>
+      <li>หาผลบวก ผลลบของ <b>จำนวนคละ</b> ได้</li>
+      <li>แสดงวิธีหาคำตอบของ <b>โจทย์ปัญหา</b> การบวก การลบเศษส่วนได้</li>
+    </ul>
+  </div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button>
+</div></section>
+
+<section class="slide" data-title="บวก ตัวส่วนเท่ากัน"><div class="inner">
+  <h2 class="h"><span class="e">➕</span>บวกเศษส่วนที่ตัวส่วนเท่ากัน</h2>
+  <div class="key">🧠 <b>นำตัวเศษมาบวกกัน</b> ส่วน <b>ตัวส่วนคงเดิม</b> &nbsp;→&nbsp; {2/7} + {3/7} = {2 + 3/7} = {5/7}</div>
+  <div class="card c-blue">
+    <h3>🎛️ ลองบวกเอง (ตัวส่วน = <span id="adD">7</span>)</h3>
+    <div class="row" style="justify-content:space-around">
+      <div class="ctrl"><span class="pill" style="--c:var(--orange)">ตัวที่ 1</span><button class="step-btn" data-ad="a-">−</button><span class="val" id="adA">2</span><button class="step-btn" data-ad="a+">+</button></div>
+      <div class="ctrl"><span class="pill" style="--c:var(--purple)">ตัวที่ 2</span><button class="step-btn" data-ad="b-">−</button><span class="val" id="adB">3</span><button class="step-btn" data-ad="b+">+</button></div>
+      <div class="ctrl">ตัวส่วน<button class="step-btn" data-ad="d-">−</button><span class="val" id="adD2">7</span><button class="step-btn" data-ad="d+">+</button></div>
+    </div>
+    <div id="adBar" style="margin:14px 0"></div>
+    <p class="big center" id="adTxt"></p>
+  </div>
+  <div class="note">⚠️ ห้ามบวกตัวส่วน! {2/7} + {3/7} <b>ไม่ใช่</b> {5/14} เพราะชิ้นยังมีขนาดเท่าเดิม คือ ชิ้นละ {1/7}</div>
+</div></section>
+
+<section class="slide" data-title="ลบ ตัวส่วนเท่ากัน"><div class="inner">
+  <h2 class="h"><span class="e">➖</span>ลบเศษส่วนที่ตัวส่วนเท่ากัน</h2>
+  <div class="key">🧠 <b>นำตัวเศษมาลบกัน</b> ส่วน <b>ตัวส่วนคงเดิม</b> แล้วทำผลลัพธ์ให้เป็น <b>เศษส่วนอย่างต่ำ</b> (ถ้าทำได้)</div>
+  <div class="card c-pink">
+    <h3>ตัวอย่าง: {5/6} − {2/6} = ?</h3>
+    <div class="steps" id="sb1">
+      <div class="step"><p>1️⃣ มีอยู่ {5/6} (ระบาย 5 ช่อง)</p><div data-bars="5/6"></div></div>
+      <div class="step"><p>2️⃣ เอาออก {2/6} (กากบาท 2 ช่อง) เหลือ 3 ช่อง</p><div data-bars="5/6/2"></div></div>
+      <div class="step"><p>3️⃣ {5/6} − {2/6} = {5 − 2/6} = {3/6}</p></div>
+      <div class="step"><p>4️⃣ ทำเป็นเศษส่วนอย่างต่ำ: {3 ÷ 3/6 ÷ 3} = {1/2}</p><p class="big center t-red">{5/6} − {2/6} = {1/2}</p></div>
+    </div>
+    <div class="row center"><button class="btn" style="--c:var(--pink)" data-reveal="sb1">ดูขั้นต่อไป 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ตัวส่วนเป็นพหุคูณ (บวก)"><div class="inner">
+  <h2 class="h"><span class="e">🔁</span>ตัวส่วนไม่เท่ากัน: ทำให้เท่ากันก่อน</h2>
+  <div class="key">ถ้าตัวส่วนตัวหนึ่ง <b>เป็นพหุคูณ</b> ของอีกตัวหนึ่ง ให้ทำเศษส่วนที่ตัวส่วนน้อยกว่า ให้มี <b>ตัวส่วนเท่ากับตัวส่วนที่มากกว่า</b> แล้วจึงบวก</div>
+  <div class="card c-green">
+    <h3>ตัวอย่าง: {1/2} + {3/8} = ?</h3>
+    <div class="steps" id="ad2">
+      <div class="step"><p>1️⃣ 8 เป็นพหุคูณของ 2 (2 × 4 = 8) จึงทำ {1/2} ให้ตัวส่วนเป็น 8</p><p class="big center">{1 × 4/2 × 4} = {4/8}</p></div>
+      <div class="step"><p>2️⃣ ตอนนี้ตัวส่วนเท่ากันแล้ว</p><div data-bars="4/8/0/3"></div></div>
+      <div class="step"><p>3️⃣ {4/8} + {3/8} = {4 + 3/8} = {7/8}</p><p class="big center t-green">{1/2} + {3/8} = {7/8}</p></div>
+    </div>
+    <div class="row center"><button class="btn" style="--c:var(--green)" data-reveal="ad2">ดูขั้นต่อไป 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ตัวส่วนเป็นพหุคูณ (ลบ)"><div class="inner">
+  <h2 class="h"><span class="e">🔁</span>ลบเศษส่วน ตัวส่วนเป็นพหุคูณ</h2>
+  <div class="card c-purple">
+    <h3>ตัวอย่าง: {5/6} − {1/3} = ?</h3>
+    <div class="steps" id="sb2">
+      <div class="step"><p>1️⃣ 6 เป็นพหุคูณของ 3 → {1/3} = {1 × 2/3 × 2} = {2/6}</p></div>
+      <div class="step"><p>2️⃣ {5/6} − {2/6} = {5 − 2/6} = {3/6}</p></div>
+      <div class="step"><p>3️⃣ ทำเป็นเศษส่วนอย่างต่ำ {3/6} = {1/2}</p><p class="big center t-purple">{5/6} − {1/3} = {1/2}</p></div>
+    </div>
+    <div class="row center"><button class="btn" style="--c:var(--purple)" data-reveal="sb2">ดูขั้นต่อไป 👇</button></div>
+  </div>
+  <div class="note">📌 สรุปขั้นตอน: <b>① ทำตัวส่วนให้เท่ากัน → ② บวก/ลบตัวเศษ → ③ ทำให้เป็นเศษส่วนอย่างต่ำ</b> (ถ้าได้เศษเกิน จะเขียนเป็นจำนวนคละก็ได้)</div>
+</div></section>
+
+<section class="slide" data-title="จำนวนคละ"><div class="inner">
+  <h2 class="h"><span class="e">🍕</span>บวก ลบ จำนวนคละ</h2>
+  <div class="grid" style="--min:320px">
+    <div class="card c-orange">
+      <h3>บวก: {1 1/2} + {2 1/4} = ?</h3>
+      <div class="steps" id="mx1">
+        <div class="step"><p><b>วิธีที่ 1</b> แยกบวก จำนวนนับ + จำนวนนับ, เศษส่วน + เศษส่วน</p><p>(1 + 2) + ({1/2} + {1/4}) = 3 + ({2/4} + {1/4}) = 3 + {3/4}</p></div>
+        <div class="step"><p><b>วิธีที่ 2</b> เปลี่ยนเป็นเศษเกินก่อน</p><p>{3/2} + {9/4} = {6/4} + {9/4} = {15/4}</p></div>
+        <div class="step"><p class="big center t-orange">{1 1/2} + {2 1/4} = {3 3/4}</p></div>
+      </div>
+      <div class="row center"><button class="btn" data-reveal="mx1" style="--c:var(--orange)">ดูขั้นต่อไป 👇</button></div>
+    </div>
+    <div class="card c-teal">
+      <h3>ลบ: {3 1/4} − {1 1/2} = ?</h3>
+      <div class="steps" id="mx2">
+        <div class="step"><p>1️⃣ เปลี่ยนเป็นเศษเกิน {3 1/4} = {13/4} และ {1 1/2} = {3/2}</p></div>
+        <div class="step"><p>2️⃣ ทำตัวส่วนให้เท่ากัน {3/2} = {6/4}</p></div>
+        <div class="step"><p>3️⃣ {13/4} − {6/4} = {7/4} = {1 3/4}</p><p class="big center" style="color:var(--teal)">{3 1/4} − {1 1/2} = {1 3/4}</p></div>
+      </div>
+      <div class="row center"><button class="btn" data-reveal="mx2" style="--c:var(--teal)">ดูขั้นต่อไป 👇</button></div>
+    </div>
+  </div>
+  <div class="note">💡 การลบจำนวนคละ ถ้าเศษส่วนตัวตั้งน้อยกว่าตัวลบ (เช่น {1/4} &lt; {1/2}) วิธี <b>เปลี่ยนเป็นเศษเกินก่อน</b> จะง่ายที่สุด</div>
+</div></section>
+
+<section class="slide" data-title="โจทย์ปัญหา"><div class="inner">
+  <h2 class="h"><span class="e">🕵️</span>แสดงวิธีทำโจทย์ปัญหา</h2>
+  <div class="card c-blue">
+    <p class="big" style="font-size:clamp(1.1rem,3vw,1.4rem)">🧁 แม่มีแป้ง {3/4} กิโลกรัม ใช้ทำขนมไป {3/8} กิโลกรัม แม่เหลือแป้งกี่กิโลกรัม</p>
+    <div class="steps" id="wp1" style="margin-top:10px">
+      <div class="step"><p>🔍 <b>โจทย์ถาม</b> แม่เหลือแป้งกี่กิโลกรัม</p></div>
+      <div class="step"><p>📌 <b>โจทย์บอก</b> มีแป้ง {3/4} กก. ใช้ไป {3/8} กก.</p></div>
+      <div class="step"><p>🧮 <b>วิธีคิด</b> “เหลือ” ใช้การลบ → ประโยคสัญลักษณ์ {3/4} − {3/8} = ☐</p></div>
+      <div class="step"><p>✏️ <b>วิธีทำ</b> {3/4} − {3/8} = {6/8} − {3/8} = {3/8}</p></div>
+      <div class="step"><p class="big t-blue">✅ <b>ตอบ</b> แม่เหลือแป้ง {3/8} กิโลกรัม</p></div>
+      <div class="step"><p>🔁 <b>ตรวจคำตอบ</b> {3/8} + {3/8} = {6/8} = {3/4} ✔️ ตรงกับแป้งที่มีตอนแรก</p></div>
+    </div>
+    <div class="row center"><button class="btn" data-reveal="wp1">ดูขั้นต่อไป 👇</button></div>
+  </div>
+  <div class="grid" style="--min:200px">
+    <div class="card c-green center"><b>คำที่มักใช้ “บวก”</b><p>รวม ทั้งหมด เพิ่มขึ้น อีก</p></div>
+    <div class="card c-red center"><b>คำที่มักใช้ “ลบ”</b><p>เหลือ ใช้ไป ให้ไป มากกว่า/น้อยกว่าเท่าไร</p></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ใบงานฝึกคิด"><div class="inner">
+  <h2 class="h"><span class="e">✍️</span>ใบงาน: ฝึกบวก ลบ เศษส่วน (10 ข้อ)</h2>
+  <p class="sub">พิมพ์ตัวเศษ (ช่องบน) และตัวส่วน (ช่องล่าง) แล้วกด “ตรวจคำตอบ” — ตอบเป็นเศษเกินได้ แต่ถ้าทำเป็นอย่างต่ำได้จะเก่งที่สุด!</p>
+  <div class="card c-orange noswipe" id="ws"></div>
+</div></section>
+
+<section class="slide" data-title="แบบทดสอบ"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบโจทย์ปัญหา (8 ข้อ)</h2>
+  <div data-quiz="main"></div>
+</div></section>
+
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปบทเรียน</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class="grid" style="--min:260px">
+    <div class="card c-blue"><h3>ตัวส่วนเท่ากัน</h3><p>บวก/ลบ เฉพาะ <b>ตัวเศษ</b> ตัวส่วนคงเดิม<br>{2/7} + {3/7} = {5/7}</p></div>
+    <div class="card c-green"><h3>ตัวส่วนเป็นพหุคูณ</h3><p>ทำตัวส่วนให้เท่ากันก่อน<br>{1/2} + {3/8} = {4/8} + {3/8} = {7/8}</p></div>
+    <div class="card c-orange"><h3>จำนวนคละ</h3><p>แยกบวกจำนวนนับกับเศษส่วน หรือเปลี่ยนเป็นเศษเกินก่อน</p></div>
+    <div class="card c-purple"><h3>คำตอบ</h3><p>ทำเป็น <b>เศษส่วนอย่างต่ำ</b> หรือ <b>จำนวนคละ</b> และอย่าลืมใส่หน่วย</p></div>
+  </div>
+  <div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+function F(a, b) { return Kit.fx('{' + a + '/' + b + '}'); }
+function nice(n, d) {
+  var g = gcd(n, d), a = n / g, b = d / g;
+  if (b === 1) return '' + a;
+  if (a > b) return F(a, b) + ' = ' + Kit.fx('{' + Math.floor(a / b) + ' ' + (a % b) + '/' + b + '}');
+  return F(a, b);
+}
+/* แถบ: n ช่องสีส้ม, ตามด้วย x ช่องถูกกากบาท(ลบออก), ตามด้วย p ช่องสีม่วง */
+function bar(n, d, cross, plus) {
+  var h = '<div class="fbar" style="--c:var(--orange)">';
+  for (var i = 0; i < d; i++) {
+    var cls = i < n ? 'on' : (i < n + (plus || 0) ? 'on p' : '');
+    var x = cross && i >= n - cross && i < n ? ' x' : '';
+    h += '<i class="' + cls + x + '"></i>';
+  }
+  return h + '</div>';
+}
+
+Kit.quizzes.main = [
+  { q: 'น้ำดื่มน้ำส้ม {2/5} ลิตร ดื่มนมอีก {1/5} ลิตร น้ำดื่มทั้งหมดกี่ลิตร', c: ['{3/5} ลิตร', '{3/10} ลิตร', '{1/5} ลิตร', '{2/10} ลิตร'], a: 0, w: '“ทั้งหมด” ใช้การบวก {2/5} + {1/5} = {3/5}' },
+  { q: 'มีเชือกยาว {7/8} เมตร ตัดไปใช้ {3/8} เมตร เหลือเชือกยาวกี่เมตร', c: ['{1/2} เมตร', '{4/16} เมตร', '{10/8} เมตร', '{3/8} เมตร'], a: 0, w: '{7/8} − {3/8} = {4/8} = {1/2} เมตร' },
+  { q: 'ต้นกล้าสูง {1/4} เมตร ผ่านไป 1 เดือนสูงขึ้นอีก {3/8} เมตร ตอนนี้ต้นกล้าสูงกี่เมตร', c: ['{5/8} เมตร', '{4/12} เมตร', '{4/8} เมตร', '{1/2} เมตร'], a: 0, w: '{1/4} = {2/8} แล้ว {2/8} + {3/8} = {5/8}' },
+  { q: 'แม่ซื้อเนื้อหมู {5/6} กิโลกรัม ใช้ทำกับข้าว {1/3} กิโลกรัม เหลือเนื้อหมูกี่กิโลกรัม', c: ['{1/2} กิโลกรัม', '{4/3} กิโลกรัม', '{4/6} กิโลกรัม', '{2/3} กิโลกรัม'], a: 0, w: '{1/3} = {2/6} แล้ว {5/6} − {2/6} = {3/6} = {1/2}' },
+  { q: 'ต้นวิ่งได้ {1 1/2} กิโลเมตร ฝนวิ่งได้ {2 1/4} กิโลเมตร ทั้งสองคนวิ่งได้รวมกันกี่กิโลเมตร', c: ['{3 3/4} กิโลเมตร', '{3 2/6} กิโลเมตร', '{3 1/4} กิโลเมตร', '{4 3/4} กิโลเมตร'], a: 0, w: '(1 + 2) + ({2/4} + {1/4}) = {3 3/4}' },
+  { q: 'มีข้าวสาร {3 1/4} กิโลกรัม หุงไป {1 1/2} กิโลกรัม เหลือข้าวสารกี่กิโลกรัม', c: ['{1 3/4} กิโลกรัม', '{2 1/4} กิโลกรัม', '{2 3/4} กิโลกรัม', '{1 1/4} กิโลกรัม'], a: 0, w: '{13/4} − {6/4} = {7/4} = {1 3/4}' },
+  { q: 'แก้วทาสีรั้วไป {3/10} ของรั้ว โอ๋ทาอีก {2/5} ของรั้ว ทั้งสองคนทาสีรั้วไปทั้งหมดเท่าไร', c: ['{7/10} ของรั้ว', '{5/15} ของรั้ว', '{5/10} ของรั้ว', '{1/2} ของรั้ว'], a: 0, w: '{2/5} = {4/10} แล้ว {3/10} + {4/10} = {7/10}' },
+  { q: 'ใช้กระดาษสีแดง {3/4} แผ่น ใช้กระดาษสีเขียว {1/2} แผ่น ใช้กระดาษสีแดง<u>มากกว่า</u>สีเขียวกี่แผ่น', c: ['{1/4} แผ่น', '{2/2} แผ่น', '{1 1/4} แผ่น', '{2/4} แผ่น'], a: 0, w: '“มากกว่าเท่าไร” ใช้การลบ {3/4} − {2/4} = {1/4}' }
+];
+
+/* ---------- ใบงานสุ่มโจทย์ ---------- */
+function makeProblem() {
+  var t = Math.floor(Math.random() * 4), d, m, a, b, n, d2, op;
+  if (t < 2) { /* ตัวส่วนเท่ากัน */
+    d = [3, 4, 5, 6, 7, 8, 9, 10, 12][Math.floor(Math.random() * 9)];
+    op = t === 0 ? '+' : '−';
+    if (op === '+') { a = 1 + Math.floor(Math.random() * (d - 1)); b = 1 + Math.floor(Math.random() * (d - 1)); }
+    else { b = 1 + Math.floor(Math.random() * (d - 2)); a = b + 1 + Math.floor(Math.random() * (d - 1 - b)); }
+    return { a: a, d1: d, b: b, d2: d, op: op };
+  }
+  /* ตัวส่วนตัวหนึ่งเป็นพหุคูณของอีกตัว */
+  d = [2, 3, 4, 5][Math.floor(Math.random() * 4)]; m = [2, 3][Math.floor(Math.random() * 2)]; d2 = d * m;
+  if (d2 > 12) m = 2, d2 = d * 2;
+  a = 1 + Math.floor(Math.random() * (d - 1)); b = 1 + Math.floor(Math.random() * (d2 - 1));
+  op = t === 2 ? '+' : '−';
+  if (op === '−') b = 1 + Math.floor(Math.random() * (a * m - 1));
+  if (op === '−' && b < 1) b = 1;
+  return Math.random() < 0.5 ? { a: a, d1: d, b: b, d2: d2, op: op } : (op === '+' ? { a: b, d1: d2, b: a, d2: d, op: op } : { a: a, d1: d, b: b, d2: d2, op: op });
+}
+function solve(p) {
+  var D = Math.max(p.d1, p.d2), A = p.a * D / p.d1, B = p.b * D / p.d2;
+  return { n: p.op === '+' ? A + B : A - B, d: D, A: A, B: B, D: D };
+}
+function howTo(p) {
+  var s = solve(p), lines = [];
+  if (p.d1 !== p.d2) lines.push('① ทำตัวส่วนให้เท่ากัน: ' + F(p.a, p.d1) + ' ' + p.op + ' ' + F(p.b, p.d2) + ' = ' + F(s.A, s.D) + ' ' + p.op + ' ' + F(s.B, s.D));
+  lines.push((p.d1 !== p.d2 ? '② ' : '① ') + (p.op === '+' ? 'บวก' : 'ลบ') + 'ตัวเศษ ตัวส่วนคงเดิม: ' + Kit.fx('{' + s.A + ' ' + p.op + ' ' + s.B + '/' + s.D + '}') + ' = ' + F(s.n, s.D));
+  if (s.n === 0) lines.push('คำตอบคือ 0');
+  else if (gcd(s.n, s.D) > 1 || s.n > s.D) lines.push('✨ คำตอบอย่างต่ำ: ' + nice(s.n, s.D));
+  return lines.map(function (l) { return '<div>' + l + '</div>'; }).join('');
+}
+var WS = { i: 0, good: 0, list: [], tried: false };
+function wsStart() {
+  WS = { i: 0, good: 0, list: [], tried: false };
+  var seen = {};
+  while (WS.list.length < 10) {
+    var p = makeProblem(), k = p.a + '/' + p.d1 + p.op + p.b + '/' + p.d2;
+    if (!seen[k] && solve(p).n > 0) { seen[k] = 1; WS.list.push(p); }
+  }
+  wsShow();
+}
+function wsShow() {
+  var box = document.getElementById('ws'), p = WS.list[WS.i];
+  WS.tried = false;
+  box.innerHTML = '<div class="qhead"><span>ข้อ ' + (WS.i + 1) + ' / 10</span><span>✅ ' + WS.good + '</span></div>' +
+    '<div class="row center big" style="gap:14px;margin:12px 0">' + F(p.a, p.d1) + ' <span>' + p.op + '</span> ' + F(p.b, p.d2) + ' <span>=</span>' +
+    '<span class="fin"><input class="ninput" id="wsN" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="ตัวเศษ"><hr><input class="ninput" id="wsD" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="ตัวส่วน"></span></div>' +
+    '<div class="row center"><button class="btn" id="wsCheck">✔️ ตรวจคำตอบ</button><button class="btn ghost" id="wsHow">💡 ดูวิธีทำ</button></div>' +
+    '<div class="feedback center" id="wsFb" style="margin-top:10px"></div><div class="line3 hidden" id="wsSol" style="margin-top:8px"></div>' +
+    '<div class="row center hidden" id="wsNextRow" style="margin-top:10px"><button class="btn" id="wsNext" style="--c:var(--green)">' + (WS.i < 9 ? 'ข้อต่อไป ➜' : 'ดูผลคะแนน 🏁') + '</button></div>';
+  var n = document.getElementById('wsN'), d = document.getElementById('wsD');
+  n.addEventListener('keydown', function (e) { if (e.key === 'Enter') d.focus(); });
+  d.addEventListener('keydown', function (e) { if (e.key === 'Enter') check(); });
+  document.getElementById('wsCheck').onclick = check;
+  document.getElementById('wsHow').onclick = function () {
+    var sol = document.getElementById('wsSol'); sol.innerHTML = howTo(p); sol.classList.remove('hidden');
+    if (!WS.tried) WS.tried = 'peek';
+    document.getElementById('wsNextRow').classList.remove('hidden');
+  };
+  document.getElementById('wsNext').onclick = function () { WS.i++; if (WS.i < 10) wsShow(); else wsDone(); };
+  function check() {
+    var N = parseInt(n.value, 10), Dn = parseInt(d.value, 10), s = solve(p), fb = document.getElementById('wsFb');
+    if (isNaN(N) || isNaN(Dn) || Dn === 0) { fb.innerHTML = '<span class="t-red">กรอกตัวเศษและตัวส่วนให้ครบก่อนนะ ✏️</span>'; return; }
+    var ok = N * s.d === s.n * Dn;
+    n.classList.toggle('ok', ok); d.classList.toggle('ok', ok); n.classList.toggle('no', !ok); d.classList.toggle('no', !ok);
+    if (ok) {
+      if (WS.tried === false) WS.good++;
+      WS.tried = true;
+      Kit.sound.good();
+      var low = gcd(N, Dn) === 1;
+      fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง!</span> ' + (low ? (N > Dn ? 'เขียนเป็นจำนวนคละได้ ' + nice(N, Dn) : 'เป็นเศษส่วนอย่างต่ำแล้ว เยี่ยมมาก ⭐') : 'ทำให้เป็นอย่างต่ำได้อีกนะ → ' + nice(s.n, s.d));
+      document.getElementById('wsNextRow').classList.remove('hidden');
+      document.querySelector('.qhead span:last-child').textContent = '✅ ' + WS.good;
+    } else {
+      if (WS.tried === false) WS.tried = 'wrong';
+      Kit.sound.bad();
+      fb.innerHTML = '<span class="t-red">ยังไม่ถูก ลองอีกครั้ง หรือกด 💡 ดูวิธีทำ</span>';
+    }
+  }
+}
+function wsDone() {
+  Kit.score.practice = [WS.good, 10];
+  var s = Kit.starsFor(WS.good, 10), box = document.getElementById('ws');
+  box.innerHTML = '<div class="result pop"><div class="stars">' + Kit.starText(s) + '</div><div class="big">ถูกในครั้งแรก ' + WS.good + ' / 10 ข้อ</div>' +
+    '<p>' + (s === 3 ? 'สุดยอด! คิดเลขเศษส่วนคล่องมาก 🏆' : 'ฝึกอีกรอบ โจทย์จะสุ่มใหม่ทุกครั้งนะ 💪') + '</p>' +
+    '<div class="row center"><button class="btn ghost" id="wsAgain">🔁 สุ่มโจทย์ชุดใหม่</button><button class="btn" onclick="Kit.go(Kit.cur+1)">ไปทำแบบทดสอบ ➜</button></div></div>';
+  document.getElementById('wsAgain').onclick = wsStart;
+  if (s >= 2) { Kit.sound.win(); Kit.confetti(); }
+}
+
+Kit.setup = function () {
+  document.querySelectorAll('[data-bars]').forEach(function (el) {
+    var p = el.getAttribute('data-bars').split('/').map(Number);
+    el.innerHTML = bar(p[0], p[1], p[2], p[3]);
+  });
+  var ad = { a: 2, b: 3, d: 7 };
+  function drawAd() {
+    if (ad.a + ad.b > ad.d) ad.b = Math.max(1, ad.d - ad.a);
+    if (ad.a + ad.b > ad.d) ad.a = ad.d - ad.b;
+    document.getElementById('adA').textContent = ad.a;
+    document.getElementById('adB').textContent = ad.b;
+    document.getElementById('adD').textContent = ad.d;
+    document.getElementById('adD2').textContent = ad.d;
+    document.getElementById('adBar').innerHTML = bar(ad.a, ad.d, 0, ad.b);
+    document.getElementById('adTxt').innerHTML = '<span class="t-orange">' + F(ad.a, ad.d) + '</span> + <span class="t-purple">' + F(ad.b, ad.d) + '</span> = ' +
+      Kit.fx('{' + ad.a + ' + ' + ad.b + '/' + ad.d + '}') + ' = ' + nice(ad.a + ad.b, ad.d);
+  }
+  document.querySelectorAll('[data-ad]').forEach(function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-ad'), v = k[0], up = k[1] === '+';
+      if (v === 'd') ad.d = Math.max(3, Math.min(12, ad.d + (up ? 1 : -1)));
+      else ad[v] = Math.max(1, Math.min(ad.d - 1, ad[v] + (up ? 1 : -1)));
+      if (v === 'a' && ad.a + ad.b > ad.d) ad.b = Math.max(1, ad.d - ad.a);
+      Kit.sound.tap(); drawAd();
+    };
+  });
+  drawAd();
+  wsStart();
+};
+</script>
+</body>
+</html>

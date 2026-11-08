@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>ภารกิจนักช้อปฉลาดคิด (ใบงานบัญญัติไตรยางศ์)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#1ABC9C;--main-deep:#10947A}
+.ninput.wide{width:4.4em}
+.pack{border:3px solid var(--c);background:#fff;border-radius:22px;box-shadow:0 5px 0 var(--c);padding:14px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:clamp(1.05rem,2.8vw,1.2rem);font-weight:700;min-height:180px}
+.pack>b{background:var(--c);color:#fff;border-radius:999px;padding:2px 14px}
+.pack .pic{font-size:1.6rem;line-height:1.25;text-align:center;word-break:break-all}
+.pack .price{font-size:1.6rem;color:var(--main-deep)}
+.pack.ok{background:#DDF7E7;border-color:var(--good)}
+.pack.no{background:#FFE1E4;border-color:var(--bad);animation:shake .4s}
+.paper{background:#fff;border:2px solid #ddd;border-radius:12px;padding:20px 24px;line-height:1.8;font-size:clamp(1rem,2.4vw,1.1rem)}
+.paper h3{margin-bottom:8px}
+.ws-list li{margin-bottom:6px;padding-bottom:120px;border-bottom:1px dashed #ccc}
+.ws-list li:last-child{border-bottom:0}
+details summary{cursor:pointer}
+@media print{
+  body.printws .slide:not(#printSheet){display:none !important}
+  .paper{border:0;padding:0}
+  .ws-list li{padding-bottom:100px;page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🛒</span>
+  <div class="ttl"><b>ภารกิจนักช้อปฉลาดคิด (ใบงานบัญญัติไตรยางศ์)</b><small>คณิตศาสตร์ ป.5 · บทที่ 4 บัญญัติไตรยางศ์ · สื่อที่ 2</small></div>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge" style="background:var(--orange)">คณิตศาสตร์ ป.5 · บทที่ 4 บัญญัติไตรยางศ์</span>
+  <div class="emoji-xl">🛒🧾💰</div>
+  <h1 style="color:var(--main-deep);text-shadow:0 4px 0 #C8F3E8">ภารกิจนักช้อป<br>ฉลาดคิด</h1>
+  <div class="card c-yellow goals">
+    <h3>🗺️ ภารกิจของหนู</h3>
+    <ul>
+      <li>🧾 <b>ภารกิจ 1</b> เติมบัญญัติไตรยางศ์ให้ครบ 3 บรรทัด (8 ข้อ)</li>
+      <li>🏷️ <b>ภารกิจ 2</b> เลือกซื้อแบบไหนคุ้มกว่า (4 ข้อ)</li>
+      <li>🖨️ <b>ใบงานกระดาษ</b> สำหรับพิมพ์ให้นักเรียนเขียนแสดงวิธีทำ</li>
+    </ul>
+  </div>
+  <button class="btn" onclick="Kit.go(1)">รับภารกิจ ▶</button>
+</div></section>
+
+<section class="slide" data-title="ทบทวนวิธีคิด"><div class="inner">
+  <h2 class="h"><span class="e">🧠</span>ทบทวนก่อนลุย</h2>
+  <div class="key">บัญญัติไตรยางศ์ = <b>หาค่าของ 1 หน่วยก่อน</b> แล้วหาค่าของหลายหน่วย<br>⭐ สิ่งที่โจทย์ถาม เขียนไว้ <b>ท้ายประโยค</b> ทุกบรรทัด</div>
+  <div class="grid" style="--min:300px">
+    <div class="card c-blue"><h3>แบบที่ 1: หาราคา</h3>
+      <div class="line3"><div>ขนม 2 ห่อ ราคา 30 บาท</div><div>ขนม 1 ห่อ ราคา {30/2} = 15 บาท</div><div>ขนม 6 ห่อ ราคา 15 × 6 = <b class="t-purple">90</b> บาท</div></div></div>
+    <div class="card c-orange"><h3>แบบที่ 2: หาจำนวนสิ่งของ</h3>
+      <div class="line3"><div>เงิน 30 บาท ซื้อขนมได้ 2 ห่อ</div><div>เงิน 1 บาท ซื้อขนมได้ {2/30} ห่อ</div><div>เงิน 90 บาท ซื้อขนมได้ {2 × 90/30} = <b class="t-purple">6</b> ห่อ</div></div></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ภารกิจ 1"><div class="inner">
+  <h2 class="h"><span class="e">🧾</span>ภารกิจ 1: เติมให้ครบ 3 บรรทัด</h2>
+  <p class="sub">พิมพ์ตัวเลขในช่องว่าง แล้วกด “ตรวจคำตอบ”</p>
+  <div class="card c-teal noswipe" id="m1"></div>
+</div></section>
+
+<section class="slide" data-title="ภารกิจ 2"><div class="inner">
+  <h2 class="h"><span class="e">🏷️</span>ภารกิจ 2: ซื้อแบบไหนคุ้มกว่า?</h2>
+  <p class="sub">หาราคาของ <b>1 ชิ้น</b> ของแต่ละแบบ แบบที่ราคาต่อชิ้น <b>ถูกกว่า</b> คือแบบที่คุ้มกว่า</p>
+  <div id="m2"></div>
+</div></section>
+
+<section class="slide" data-title="ใบงานสำหรับพิมพ์" id="printSheet"><div class="inner">
+  <div class="row noprint" style="justify-content:space-between">
+    <h2 class="h"><span class="e">🖨️</span>ใบงานสำหรับพิมพ์</h2>
+    <button class="btn" id="printBtn">🖨️ พิมพ์ใบงาน</button>
+  </div>
+  <div class="paper">
+    <h3 class="center">ใบงาน เรื่อง บัญญัติไตรยางศ์ &nbsp;·&nbsp; คณิตศาสตร์ ป.5</h3>
+    <p>ชื่อ ........................................................ ชั้น ป.5/...... เลขที่ ...... &nbsp; คะแนน ........ / 5</p>
+    <p><b>คำชี้แจง</b> แสดงวิธีหาคำตอบโดยใช้บัญญัติไตรยางศ์ (เขียนข้อความ 3 บรรทัด) แล้วเขียนคำตอบ</p>
+    <ol class="ws-list">
+      <li>ไอศกรีม 4 แท่ง ราคา 60 บาท ถ้าซื้อไอศกรีม 7 แท่ง ต้องจ่ายเงินกี่บาท</li>
+      <li>เสื้อนักเรียน 3 ตัว ราคา 450 บาท ถ้าซื้อ 5 ตัว ต้องจ่ายเงินกี่บาท</li>
+      <li>เงิน 36 บาท ซื้อดินสอได้ 6 แท่ง ถ้ามีเงิน 54 บาท จะซื้อดินสอได้กี่แท่ง</li>
+      <li>รถยนต์ใช้น้ำมัน 5 ลิตร แล่นได้ทาง 60 กิโลเมตร ถ้าใช้น้ำมัน 8 ลิตร จะแล่นได้ทางกี่กิโลเมตร</li>
+      <li>นมจืดแพ็ก 3 กล่อง ราคา 36 บาท และแพ็ก 5 กล่อง ราคา 55 บาท ซื้อแพ็กใดคุ้มกว่า เพราะเหตุใด</li>
+    </ol>
+  </div>
+  <details class="card c-green noprint"><summary><b>🔑 เฉลยสำหรับครู (แตะเพื่อเปิด)</b></summary>
+    <p>1) 105 บาท &nbsp; 2) 750 บาท &nbsp; 3) 9 แท่ง &nbsp; 4) 96 กิโลเมตร &nbsp; 5) แพ็ก 5 กล่อง คุ้มกว่า (กล่องละ 11 บาท ถูกกว่าแพ็ก 3 กล่อง ซึ่งกล่องละ 12 บาท)</p>
+  </details>
+</div></section>
+
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🏆</span>สรุปภารกิจ</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class="key">✅ หาค่าของ 1 ก่อน → แล้วคูณหาค่าที่ต้องการ<br>✅ เปรียบเทียบความคุ้มค่า ด้วย <b>ราคาต่อ 1 ชิ้น</b> — ยิ่งถูก ยิ่งคุ้ม<br>✅ ตรวจคำตอบว่าสมเหตุสมผลเสมอ</div>
+  <div class="note">💬 ชวนคิดต่อ: ซื้อแพ็กใหญ่ราคาต่อชิ้นถูกกว่า แต่ถ้าใช้ไม่หมดจนของเสีย ยังคุ้มอยู่หรือเปล่านะ? 🤔</div>
+  <div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 ทำภารกิจอีกครั้ง</button><a class="btn ghost" href="../m5-rule-of-three/" style="text-decoration:none">📖 กลับไปบทเรียน</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+/* แต่ละข้อ: l = 3 บรรทัด, ช่องกรอกเขียนเป็น [[ตัวเลข]] */
+var P1 = [
+  { q: 'ไอศกรีม 4 แท่ง ราคา 60 บาท ถ้าซื้อ 7 แท่ง ต้องจ่ายเงินกี่บาท', e: '🍦',
+    l: ['ไอศกรีม 4 แท่ง ราคา 60 บาท', 'ไอศกรีม 1 แท่ง ราคา {60/4} = [[15]] บาท', 'ไอศกรีม 7 แท่ง ราคา 15 × 7 = [[105]] บาท'] },
+  { q: 'เสื้อนักเรียน 3 ตัว ราคา 450 บาท ถ้าซื้อ 5 ตัว ต้องจ่ายเงินกี่บาท', e: '👕',
+    l: ['เสื้อ 3 ตัว ราคา 450 บาท', 'เสื้อ 1 ตัว ราคา {450/3} = [[150]] บาท', 'เสื้อ 5 ตัว ราคา 150 × 5 = [[750]] บาท'] },
+  { q: 'เงิน 36 บาท ซื้อดินสอได้ 6 แท่ง ถ้ามีเงิน 54 บาท จะซื้อดินสอได้กี่แท่ง', e: '✏️',
+    l: ['เงิน 36 บาท ซื้อดินสอได้ 6 แท่ง', 'เงิน 1 บาท ซื้อดินสอได้ {6/36} แท่ง', 'เงิน 54 บาท ซื้อดินสอได้ {6 × 54/36} = [[9]] แท่ง'] },
+  { q: 'รถยนต์ใช้น้ำมัน 5 ลิตร แล่นได้ทาง 60 กิโลเมตร ถ้าใช้น้ำมัน 8 ลิตร จะแล่นได้ทางกี่กิโลเมตร', e: '🚗',
+    l: ['น้ำมัน 5 ลิตร แล่นได้ทาง 60 กิโลเมตร', 'น้ำมัน 1 ลิตร แล่นได้ทาง {60/5} = [[12]] กิโลเมตร', 'น้ำมัน 8 ลิตร แล่นได้ทาง 12 × 8 = [[96]] กิโลเมตร'] },
+  { q: 'ชาวสวนเก็บมะม่วง 3 วัน ได้ 135 ผล ถ้าเก็บได้วันละเท่า ๆ กัน 8 วัน จะเก็บได้กี่ผล', e: '🥭',
+    l: ['เก็บ 3 วัน ได้มะม่วง 135 ผล', 'เก็บ 1 วัน ได้มะม่วง {135/3} = [[45]] ผล', 'เก็บ 8 วัน ได้มะม่วง 45 × 8 = [[360]] ผล'] },
+  { q: 'ข้าวสาร 5 กิโลกรัม ราคา 175 บาท ถ้ามีเงิน 280 บาท จะซื้อข้าวสารได้กี่กิโลกรัม', e: '🍚',
+    l: ['เงิน 175 บาท ซื้อข้าวสารได้ 5 กิโลกรัม', 'เงิน 1 บาท ซื้อข้าวสารได้ {5/175} กิโลกรัม', 'เงิน 280 บาท ซื้อข้าวสารได้ {5 × 280/175} = [[8]] กิโลกรัม'] },
+  { q: 'เครื่องถ่ายเอกสารถ่ายได้ 90 แผ่น ใน 3 นาที ถ้าถ่ายด้วยอัตราเดิม 10 นาที จะได้กี่แผ่น', e: '🖨️',
+    l: ['เวลา 3 นาที ถ่ายได้ 90 แผ่น', 'เวลา 1 นาที ถ่ายได้ {90/3} = [[30]] แผ่น', 'เวลา 10 นาที ถ่ายได้ 30 × 10 = [[300]] แผ่น'] },
+  { q: 'แม่ใช้น้ำตาล 4 ช้อน ทำน้ำมะนาวได้ 2 เหยือก ถ้าจะทำน้ำมะนาว 5 เหยือก ต้องใช้น้ำตาลกี่ช้อน', e: '🍋',
+    l: ['น้ำมะนาว 2 เหยือก ใช้น้ำตาล 4 ช้อน', 'น้ำมะนาว 1 เหยือก ใช้น้ำตาล {4/2} = [[2]] ช้อน', 'น้ำมะนาว 5 เหยือก ใช้น้ำตาล 2 × 5 = [[10]] ช้อน'] }
+];
+var P2 = [
+  { t: 'นมจืด', u: 'กล่อง', e: '🥛', a: [3, 36], b: [5, 55] },
+  { t: 'ไข่ไก่', u: 'ฟอง', e: '🥚', a: [6, 30], b: [30, 120] },
+  { t: 'ดินสอสี', u: 'แท่ง', e: '🖍️', a: [4, 28], b: [6, 48] },
+  { t: 'น้ำดื่ม', u: 'ขวด', e: '💧', a: [6, 42], b: [12, 84] }
+];
+
+var S1 = { i: 0, good: 0, first: true };
+function m1Show() {
+  var p = P1[S1.i], box = document.getElementById('m1');
+  S1.first = true;
+  var lines = p.l.map(function (l, k) {
+    return '<div><span class="pill" style="--c:' + ['var(--blue)', 'var(--orange)', 'var(--green)'][k] + '">' + (k + 1) + '</span> ' +
+      Kit.fx(l).replace(/\[\[(\d+)\]\]/g, '<input class="ninput wide" inputmode="numeric" pattern="[0-9]*" autocomplete="off" data-ans="$1" aria-label="ช่องว่าง">') + '</div>';
+  }).join('');
+  box.innerHTML = '<div class="qhead"><span>ข้อ ' + (S1.i + 1) + ' / ' + P1.length + '</span><span>✅ ' + S1.good + '</span></div>' +
+    '<div class="qq" style="border-color:var(--teal);box-shadow:0 5px 0 var(--teal)">' + p.e + ' ' + p.q + '</div>' +
+    '<div class="line3" style="margin-top:12px">' + lines + '</div>' +
+    '<div class="row center" style="margin-top:12px"><button class="btn" id="m1Check">✔️ ตรวจคำตอบ</button><button class="btn ghost" id="m1Hint">💡 คำใบ้</button></div>' +
+    '<div class="feedback center" id="m1Fb" style="margin-top:8px"></div>' +
+    '<div class="row center hidden" id="m1Next"><button class="btn" style="--c:var(--green)">' + (S1.i + 1 < P1.length ? 'ข้อต่อไป ➜' : 'ไปภารกิจ 2 ➜') + '</button></div>';
+  var ins = box.querySelectorAll('input');
+  ins.forEach(function (inp, k) {
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { if (ins[k + 1]) ins[k + 1].focus(); else check(); } });
+  });
+  document.getElementById('m1Check').onclick = check;
+  document.getElementById('m1Hint').onclick = function () {
+    S1.first = false;
+    document.getElementById('m1Fb').innerHTML = '💡 บรรทัด 2: <b>หาร</b> เพื่อหาค่าของ 1 &nbsp; บรรทัด 3: <b>คูณ</b> ด้วยจำนวนที่โจทย์ถาม';
+  };
+  document.querySelector('#m1Next button').onclick = function () {
+    S1.i++;
+    if (S1.i < P1.length) m1Show();
+    else { Kit.score.m1 = [S1.good, P1.length]; m1Done(); }
+  };
+  function check() {
+    var all = true, empty = false;
+    ins.forEach(function (inp) {
+      var v = inp.value.replace(/[, ]/g, '');
+      if (v === '') { empty = true; return; }
+      var ok = +v === +inp.getAttribute('data-ans');
+      inp.classList.toggle('ok', ok); inp.classList.toggle('no', !ok);
+      if (!ok) all = false;
+    });
+    var fb = document.getElementById('m1Fb');
+    if (empty) { fb.innerHTML = '<span class="t-red">กรอกให้ครบทุกช่องก่อนนะ ✏️</span>'; return; }
+    if (all) {
+      if (S1.first) S1.good++;
+      Kit.sound.good();
+      fb.innerHTML = '<span class="t-green">🎉 ถูกต้องทุกช่อง!</span>';
+      document.getElementById('m1Next').classList.remove('hidden');
+      box.querySelector('.qhead span:last-child').textContent = '✅ ' + S1.good;
+    } else {
+      S1.first = false; Kit.sound.bad();
+      fb.innerHTML = '<span class="t-red">ช่องสีแดงยังไม่ถูก ลองคิดใหม่อีกครั้งนะ</span>';
+    }
+  }
+}
+function m1Done() {
+  var box = document.getElementById('m1'), s = Kit.starsFor(S1.good, P1.length);
+  box.innerHTML = '<div class="result pop"><div class="stars">' + Kit.starText(s) + '</div><div class="big">ถูกในครั้งแรก ' + S1.good + ' / ' + P1.length + ' ข้อ</div>' +
+    '<div class="row center"><button class="btn ghost" id="m1Again">🔁 ทำอีกครั้ง</button><button class="btn" onclick="Kit.go(Kit.cur+1)">ไปภารกิจ 2 ➜</button></div></div>';
+  document.getElementById('m1Again').onclick = function () { S1 = { i: 0, good: 0, first: true }; m1Show(); };
+  if (s >= 2) { Kit.sound.win(); Kit.confetti(); }
+}
+
+var S2 = { i: 0, good: 0 };
+function m2Show() {
+  var p = P2[S2.i], box = document.getElementById('m2');
+  var ua = p.a[1] / p.a[0], ub = p.b[1] / p.b[0], ans = ua < ub ? 'a' : ub < ua ? 'b' : 'eq';
+  function pack(k, d, c) {
+    var pic = ''; for (var i = 0; i < Math.min(d[0], 12); i++) pic += p.e;
+    if (d[0] > 12) pic += ' …';
+    return '<button class="pack" data-c="' + k + '" style="--c:' + c + '"><b>แบบ ' + (k === 'a' ? 'ก' : 'ข') + '</b><span class="pic">' + pic + '</span>' +
+      '<span>' + p.t + ' ' + d[0] + ' ' + p.u + '</span><span class="price">' + d[1] + ' บาท</span></button>';
+  }
+  box.innerHTML = '<div class="qhead"><span>ข้อ ' + (S2.i + 1) + ' / ' + P2.length + '</span><span>✅ ' + S2.good + '</span></div>' +
+    '<div class="grid" style="--min:240px">' + pack('a', p.a, 'var(--blue)') + pack('b', p.b, 'var(--pink)') + '</div>' +
+    '<div class="row center" style="margin-top:12px"><button class="btn ghost" data-c="eq">⚖️ คุ้มเท่ากัน</button></div>' +
+    '<div id="m2Sol" class="hidden" style="margin-top:12px"></div>';
+  box.querySelectorAll('[data-c]').forEach(function (b) {
+    b.onclick = function () {
+      if (box.dataset.done === '1') return;
+      box.dataset.done = '1';
+      var ok = b.getAttribute('data-c') === ans;
+      if (ok) { S2.good++; Kit.sound.good(); } else Kit.sound.bad();
+      b.classList.add(ok ? 'ok' : 'no');
+      var right = box.querySelector('[data-c="' + ans + '"]'); if (right) right.classList.add('ok');
+      var sol = document.getElementById('m2Sol');
+      sol.className = 'card ' + (ok ? 'c-green' : 'c-orange') + ' pop';
+      sol.innerHTML = '<p class="big">' + (ok ? '🎉 ถูกต้อง!' : '💡 มาดูวิธีคิดกัน') + '</p>' +
+        '<div class="grid" style="--min:240px;margin-top:6px"><div class="line3"><div><b>แบบ ก</b> ' + p.t + ' ' + p.a[0] + ' ' + p.u + ' ราคา ' + p.a[1] + ' บาท</div><div>' + p.t + ' 1 ' + p.u + ' ราคา ' + Kit.fx('{' + p.a[1] + '/' + p.a[0] + '}') + ' = <b>' + ua + '</b> บาท</div></div>' +
+        '<div class="line3"><div><b>แบบ ข</b> ' + p.t + ' ' + p.b[0] + ' ' + p.u + ' ราคา ' + p.b[1] + ' บาท</div><div>' + p.t + ' 1 ' + p.u + ' ราคา ' + Kit.fx('{' + p.b[1] + '/' + p.b[0] + '}') + ' = <b>' + ub + '</b> บาท</div></div></div>' +
+        '<p style="margin-top:8px"><b>สรุป</b> ' + (ans === 'eq' ? 'ราคาต่อ' + p.u + 'เท่ากัน จึงคุ้มเท่ากัน' : 'แบบ ' + (ans === 'a' ? 'ก' : 'ข') + ' ราคาต่อ' + p.u + 'ถูกกว่า จึงคุ้มกว่า') + '</p>' +
+        '<div class="row center" style="margin-top:8px"><button class="btn" id="m2Next">' + (S2.i + 1 < P2.length ? 'ข้อต่อไป ➜' : 'ดูผล 🏁') + '</button></div>';
+      box.querySelector('.qhead span:last-child').textContent = '✅ ' + S2.good;
+      document.getElementById('m2Next').onclick = function () {
+        S2.i++; box.dataset.done = '';
+        if (S2.i < P2.length) m2Show(); else m2Done();
+      };
+    };
+  });
+}
+function m2Done() {
+  Kit.score.m2 = [S2.good, P2.length];
+  var box = document.getElementById('m2'), s = Kit.starsFor(S2.good, P2.length);
+  box.innerHTML = '<div class="result card c-yellow pop"><div class="stars">' + Kit.starText(s) + '</div><div class="big">ได้ ' + S2.good + ' / ' + P2.length + ' ข้อ</div>' +
+    '<div class="row center"><button class="btn ghost" id="m2Again">🔁 ทำอีกครั้ง</button><button class="btn" onclick="Kit.go(Kit.cur+1)">ไปต่อ ➜</button></div></div>';
+  document.getElementById('m2Again').onclick = function () { S2 = { i: 0, good: 0 }; box.dataset.done = ''; m2Show(); };
+  if (s >= 2) { Kit.sound.win(); Kit.confetti(); }
+}
+
+Kit.setup = function () {
+  m1Show(); m2Show();
+  document.getElementById('printBtn').onclick = function () {
+    document.body.classList.add('printws');
+    setTimeout(function () { window.print(); }, 50);
+  };
+  window.addEventListener('afterprint', function () { document.body.classList.remove('printws'); });
+};
+</script>
+</body>
+</html>

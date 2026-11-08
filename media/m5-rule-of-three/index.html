@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บัญญัติไตรยางศ์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#9B6CF0;--main-deep:#7343D6}
+#calcItems .chip{font-size:1rem;padding:6px 12px;min-height:44px}
+.line3 .pill{margin-right:6px}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🧮</span>
+  <div class="ttl"><b>บัญญัติไตรยางศ์</b><small>คณิตศาสตร์ ป.5 · บทที่ 4 บัญญัติไตรยางศ์ · สื่อที่ 1</small></div>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge" style="background:var(--orange)">คณิตศาสตร์ ป.5 · บทที่ 4</span>
+  <div class="emoji-xl">📒🥚🚌</div>
+  <h1 style="color:var(--main-deep);text-shadow:0 4px 0 #E6DAFF">บัญญัติไตรยางศ์<br><small style="font-size:.5em">หาค่าของ 1 ก่อน แล้วค่อยหาหลาย ๆ</small></h1>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul>
+      <li>อธิบายได้ว่า <b>บัญญัติไตรยางศ์</b> คืออะไร</li>
+      <li>เขียน <b>ข้อความ 3 บรรทัด</b> เพื่อหาคำตอบได้ โดย <b>หาค่าของ 1 หน่วยก่อน</b></li>
+      <li>แสดงวิธีหาคำตอบของ <b>โจทย์ปัญหา</b> เรื่องราคา จำนวนสิ่งของ ระยะทาง และอื่น ๆ ได้</li>
+    </ul>
+  </div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button>
+</div></section>
+
+<section class="slide" data-title="ชวนคิด"><div class="inner">
+  <h2 class="h"><span class="e">🤔</span>ชวนคิด: ร้านเครื่องเขียนของป้าแดง</h2>
+  <div class="card c-orange center">
+    <div class="emoji-xl">📒📒📒</div>
+    <p class="big">สมุด 3 เล่ม ราคา 45 บาท</p>
+    <p class="big t-purple">ถ้าซื้อสมุด 5 เล่ม ต้องจ่ายกี่บาท? 🤔</p>
+  </div>
+  <div class="steps" id="think">
+    <div class="step"><div class="card c-blue"><p>💭 ถ้ารู้ว่า <b>สมุด 1 เล่ม</b> ราคากี่บาท ก็จะหาราคาของ 5 เล่มได้ง่าย ๆ</p></div></div>
+    <div class="step"><div class="card c-blue"><p>➗ สมุด 1 เล่ม ราคา 45 ÷ 3 = <b>15 บาท</b></p></div></div>
+    <div class="step"><div class="card c-green"><p>✖️ สมุด 5 เล่ม ราคา 15 × 5 = <b>75 บาท</b> 🎉</p><p>วิธีคิดแบบนี้ เรียกว่า <span class="hl">บัญญัติไตรยางศ์</span></p></div></div>
+  </div>
+  <div class="row center"><button class="btn" data-reveal="think">คิดไปด้วยกัน 👇</button></div>
+</div></section>
+
+<section class="slide" data-title="ความหมาย"><div class="inner">
+  <h2 class="h"><span class="e">📖</span>บัญญัติไตรยางศ์ คืออะไร</h2>
+  <div class="key"><b>บัญญัติไตรยางศ์</b> คือ วิธีหาคำตอบ โดย <b>หาค่าของ 1 หน่วยก่อน</b> แล้วจึงนำไปหา <b>ค่าของหลายหน่วย</b> ที่ต้องการ<br>
+    🔤 “ไตร” แปลว่า สาม — เพราะเราเขียนเป็น <b>ข้อความ 3 บรรทัด</b></div>
+  <div class="card c-purple">
+    <h3>✏️ เขียนแบบ 3 บรรทัด: สมุด 3 เล่ม ราคา 45 บาท ซื้อ 5 เล่ม ราคากี่บาท</h3>
+    <div class="steps line3" id="l3">
+      <div class="step"><span class="pill" style="--c:var(--blue)">บรรทัด 1</span> สิ่งที่รู้ &nbsp; สมุด <b>3</b> เล่ม ราคา <b>45</b> บาท</div>
+      <div class="step"><span class="pill" style="--c:var(--orange)">บรรทัด 2</span> หาค่าของ 1 &nbsp; สมุด <b>1</b> เล่ม ราคา {45/3} บาท &nbsp;<small class="sub">(หารด้วย 3)</small></div>
+      <div class="step"><span class="pill" style="--c:var(--green)">บรรทัด 3</span> หาสิ่งที่ถาม &nbsp; สมุด <b>5</b> เล่ม ราคา {45 × 5/3} = <b class="t-purple">75</b> บาท &nbsp;<small class="sub">(คูณด้วย 5)</small></div>
+      <div class="step"><p class="big center t-green">ตอบ ซื้อสมุด 5 เล่ม ต้องจ่าย 75 บาท</p></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="l3">ดูบรรทัดต่อไป 👇</button></div>
+  </div>
+  <div class="note">📌 สังเกต: <b>สิ่งที่โจทย์ถาม (ราคา) อยู่ท้ายประโยคทุกบรรทัด</b> และสิ่งของชนิดเดียวกันอยู่ตรงกัน</div>
+</div></section>
+
+<section class="slide" data-title="เครื่องคิดไตรยางศ์" data-id="calc"><div class="inner">
+  <h2 class="h"><span class="e">🤖</span>เครื่องคิดบัญญัติไตรยางศ์</h2>
+  <p class="sub">เลือกสินค้า แล้วกด + / − ดูว่าทั้ง 3 บรรทัดเปลี่ยนไปอย่างไร</p>
+  <div class="card c-teal">
+    <div class="row center" id="calcItems"></div>
+    <div class="row" style="justify-content:space-around;margin-top:10px">
+      <div class="ctrl">ร้านขาย <button class="step-btn" data-cl="q-">−</button><span class="val" id="clQ">3</span><button class="step-btn" data-cl="q+">+</button><span id="clU1"></span></div>
+      <div class="ctrl">ฉันจะซื้อ <button class="step-btn" data-cl="t-">−</button><span class="val" id="clT">5</span><button class="step-btn" data-cl="t+">+</button><span id="clU2"></span></div>
+    </div>
+    <div id="clPic" class="center" style="font-size:2rem;margin:10px 0;line-height:1.3"></div>
+    <div class="line3" id="clLines"></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="หาจำนวนสิ่งของ"><div class="inner">
+  <h2 class="h"><span class="e">🥚</span>หาจำนวนสิ่งของ เมื่อรู้จำนวนเงิน</h2>
+  <div class="card c-yellow">
+    <p class="big" style="font-size:clamp(1.1rem,3vw,1.4rem)">ไข่ไก่ 10 ฟอง ราคา 35 บาท ถ้ามีเงิน 70 บาท จะซื้อไข่ไก่ได้กี่ฟอง</p>
+    <div class="note" style="margin:10px 0">🔍 โจทย์ถาม <b>“จำนวนไข่ (ฟอง)”</b> → ต้องเขียน <b>ฟอง ไว้ท้ายประโยค</b> และเริ่มต้นประโยคด้วย <b>เงิน</b></div>
+    <div class="steps line3" id="eg">
+      <div class="step">① เงิน <b>35</b> บาท ซื้อไข่ได้ <b>10</b> ฟอง</div>
+      <div class="step">② เงิน <b>1</b> บาท ซื้อไข่ได้ {10/35} ฟอง</div>
+      <div class="step">③ เงิน <b>70</b> บาท ซื้อไข่ได้ {10 × 70/35} = <b class="t-purple">20</b> ฟอง</div>
+      <div class="step"><p class="big center t-green">ตอบ ซื้อไข่ไก่ได้ 20 ฟอง</p></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="eg" style="--c:var(--orange)">ดูบรรทัดต่อไป 👇</button></div>
+  </div>
+  <div class="note">💡 บรรทัด ② ยังไม่ต้องหารให้เสร็จก็ได้ เขียนเป็นเศษส่วนไว้ก่อน แล้วไปคูณ–หารรวดเดียวในบรรทัด ③ จะคิดง่ายกว่า</div>
+</div></section>
+
+<section class="slide" data-title="ระยะทาง เวลา และอื่น ๆ"><div class="inner">
+  <h2 class="h"><span class="e">🚌</span>ใช้ได้กับเรื่องอื่น ๆ ด้วย</h2>
+  <div class="grid" style="--min:310px">
+    <div class="card c-blue">
+      <h3>🚌 ระยะทาง–เวลา</h3>
+      <p>รถโดยสารแล่นได้ทาง 180 กิโลเมตร ใช้เวลา 3 ชั่วโมง ถ้าแล่นด้วยอัตราเร็วเท่าเดิม 5 ชั่วโมง จะได้ทางกี่กิโลเมตร</p>
+      <div class="steps line3" id="bus" style="margin-top:8px">
+        <div class="step">เวลา 3 ชั่วโมง แล่นได้ทาง 180 กิโลเมตร</div>
+        <div class="step">เวลา 1 ชั่วโมง แล่นได้ทาง {180/3} กิโลเมตร</div>
+        <div class="step">เวลา 5 ชั่วโมง แล่นได้ทาง {180 × 5/3} = <b class="t-purple">300</b> กิโลเมตร</div>
+      </div>
+      <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="bus" style="--c:var(--blue)">ดูวิธีทำ 👇</button></div>
+    </div>
+    <div class="card c-pink">
+      <h3>🧃 ปริมาณ–จำนวน</h3>
+      <p>น้ำผลไม้ 4 ขวด มีปริมาตรรวม 1,000 มิลลิลิตร น้ำผลไม้ 6 ขวด มีปริมาตรกี่มิลลิลิตร</p>
+      <div class="steps line3" id="juice" style="margin-top:8px">
+        <div class="step">น้ำผลไม้ 4 ขวด มีปริมาตร 1,000 มิลลิลิตร</div>
+        <div class="step">น้ำผลไม้ 1 ขวด มีปริมาตร {1,000/4} มิลลิลิตร</div>
+        <div class="step">น้ำผลไม้ 6 ขวด มีปริมาตร {1,000 × 6/4} = <b class="t-purple">1,500</b> มิลลิลิตร</div>
+      </div>
+      <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="juice" style="--c:var(--pink)">ดูวิธีทำ 👇</button></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เคล็ดลับ"><div class="inner">
+  <h2 class="h"><span class="e">🗝️</span>5 เคล็ดลับเขียนบัญญัติไตรยางศ์</h2>
+  <div class="grid" style="--min:260px">
+    <button class="flip c-blue" style="--fh:160px"><div class="fi"><div class="fa"><span class="e">1️⃣</span>อ่านโจทย์ หาสิ่งที่ถาม<small>แตะเพื่อพลิก</small></div><div class="fb">สิ่งที่โจทย์ถาม เช่น ราคา, จำนวนฟอง, ระยะทาง ต้องอยู่ <b>ท้ายประโยค</b> ทุกบรรทัด</div></div></button>
+    <button class="flip c-orange" style="--fh:160px"><div class="fi"><div class="fa"><span class="e">2️⃣</span>บรรทัดแรก = สิ่งที่รู้<small>แตะเพื่อพลิก</small></div><div class="fb">เขียนข้อมูลที่โจทย์บอกมาครบทั้งคู่ เช่น “สมุด 3 เล่ม ราคา 45 บาท”</div></div></button>
+    <button class="flip c-green" style="--fh:160px"><div class="fi"><div class="fa"><span class="e">3️⃣</span>บรรทัดสอง = ค่าของ 1<small>แตะเพื่อพลิก</small></div><div class="fb">เปลี่ยนตัวหน้าเป็น 1 แล้ว <b>หาร</b> ตัวท้ายด้วยจำนวนเดิม</div></div></button>
+    <button class="flip c-purple" style="--fh:160px"><div class="fi"><div class="fa"><span class="e">4️⃣</span>บรรทัดสาม = สิ่งที่ถาม<small>แตะเพื่อพลิก</small></div><div class="fb">เปลี่ยน 1 เป็นจำนวนที่ต้องการ แล้ว <b>คูณ</b> เข้าไป</div></div></button>
+    <button class="flip c-pink" style="--fh:160px"><div class="fi"><div class="fa"><span class="e">5️⃣</span>ตรวจความสมเหตุสมผล<small>แตะเพื่อพลิก</small></div><div class="fb">ซื้อของ <b>มากขึ้น</b> ต้องจ่าย <b>มากขึ้น</b> ถ้าคำตอบน้อยลง แปลว่าเขียนสลับที่แล้ว!</div></div></button>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เรียงบรรทัด"><div class="inner">
+  <h2 class="h"><span class="e">🧩</span>กิจกรรม: เรียงบรรทัดให้ถูกต้อง</h2>
+  <div class="card c-orange"><p class="big" style="font-size:clamp(1.05rem,3vw,1.3rem)">🍊 ส้ม 4 กิโลกรัม ราคา 120 บาท ถ้าซื้อส้ม 7 กิโลกรัม ต้องจ่ายเงินกี่บาท</p></div>
+  <div data-order="lines"></div>
+</div></section>
+
+<section class="slide" data-title="แบบทดสอบ"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบ (8 ข้อ)</h2>
+  <div data-quiz="main"></div>
+</div></section>
+
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปบทเรียน</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class="key">
+    <b>บัญญัติไตรยางศ์</b> = หาค่าของ 1 หน่วยก่อน แล้วหาค่าของหลายหน่วย<br>
+    ① สิ่งที่รู้ &nbsp;→&nbsp; ② ค่าของ 1 (หาร) &nbsp;→&nbsp; ③ ค่าที่ต้องการ (คูณ)<br>
+    ⭐ สิ่งที่โจทย์ถาม อยู่ <b>ท้ายประโยค</b> เสมอ
+  </div>
+  <div class="card c-purple">
+    <h3>ตัวอย่างสรุป</h3>
+    <div class="line3"><div>สมุด 3 เล่ม ราคา 45 บาท</div><div>สมุด 1 เล่ม ราคา {45/3} บาท</div><div>สมุด 5 เล่ม ราคา {45 × 5/3} = 75 บาท</div></div>
+  </div>
+  <div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button><a class="btn ghost" href="../m5-rule-of-three-practice/" style="text-decoration:none">➡️ ไปใบงานภารกิจนักช้อป</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var ITEMS = [
+  { n: 'สมุด', u: 'เล่ม', e: '📒', p: 15 },
+  { n: 'ไข่ไก่', u: 'ฟอง', e: '🥚', p: 4 },
+  { n: 'ดินสอ', u: 'แท่ง', e: '✏️', p: 6 },
+  { n: 'นมกล่อง', u: 'กล่อง', e: '🥛', p: 12 },
+  { n: 'แตงโม', u: 'ลูก', e: '🍉', p: 35 }
+];
+Kit.orders.lines = {
+  hint: '👆 แตะข้อความเรียงจาก <b>บรรทัดแรก</b> ไป <b>บรรทัดสุดท้าย</b>', unit: 'บรรทัดที่',
+  items: ['ส้ม 4 กิโลกรัม ราคา 120 บาท', 'ส้ม 1 กิโลกรัม ราคา {120/4} บาท', 'ส้ม 7 กิโลกรัม ราคา {120 × 7/4} บาท', '= 210 บาท ตอบ ต้องจ่ายเงิน 210 บาท']
+};
+Kit.quizzes.main = [
+  { q: 'บัญญัติไตรยางศ์ คือการหาคำตอบโดยวิธีใด', c: ['หาค่าของ 1 หน่วยก่อน แล้วหาค่าของหลายหน่วย', 'บวกจำนวนทั้งหมดเข้าด้วยกัน', 'ลบจำนวนที่มากด้วยจำนวนที่น้อย', 'เดาคำตอบแล้วตรวจสอบ'], a: 0, w: 'หัวใจของบัญญัติไตรยางศ์ คือ หาค่าของ 1 ก่อน' },
+  { q: 'ปากกา 4 ด้าม ราคา 48 บาท ปากกา 1 ด้ามราคากี่บาท', c: ['12 บาท', '44 บาท', '52 บาท', '192 บาท'], a: 0, w: 'ปากกา 1 ด้าม ราคา {48/4} = 12 บาท' },
+  { q: 'ปากกา 4 ด้าม ราคา 48 บาท ปากกา 9 ด้ามราคากี่บาท', c: ['108 บาท', '96 บาท', '53 บาท', '120 บาท'], a: 0, w: '{48 × 9/4} = 108 บาท' },
+  { q: 'ขนมปัง 3 ถุง ราคา 60 บาท บรรทัดที่ 2 ควรเขียนว่าอย่างไร', c: ['ขนมปัง 1 ถุง ราคา {60/3} บาท', 'ขนมปัง 1 ถุง ราคา 60 × 3 บาท', 'เงิน 1 บาท ซื้อขนมปังได้ 3 ถุง', 'ขนมปัง 3 ถุง ราคา {3/60} บาท'], a: 0, w: 'บรรทัดที่ 2 คือหาค่าของ 1 ถุง โดยนำ 60 หารด้วย 3' },
+  { q: 'แตงโม 2 ลูก ราคา 70 บาท มีเงิน 175 บาท ซื้อแตงโมได้กี่ลูก', c: ['5 ลูก', '4 ลูก', '3 ลูก', '7 ลูก'], a: 0, w: 'เงิน 70 บาท ได้ 2 ลูก → 1 บาท ได้ {2/70} ลูก → 175 บาท ได้ {2 × 175/70} = 5 ลูก' },
+  { q: 'จักรยานปั่นได้ 12 กิโลเมตร ใน 2 ชั่วโมง ถ้าปั่นด้วยอัตราเร็วเท่าเดิม 5 ชั่วโมง จะได้ทางกี่กิโลเมตร', c: ['30 กิโลเมตร', '24 กิโลเมตร', '60 กิโลเมตร', '17 กิโลเมตร'], a: 0, w: '1 ชั่วโมง ได้ {12/2} = 6 กม. → 5 ชั่วโมง ได้ 6 × 5 = 30 กม.' },
+  { q: 'โจทย์ “เงิน 50 บาท ซื้อลูกอมได้ 10 เม็ด ถ้ามีเงิน 80 บาท ซื้อได้กี่เม็ด” สิ่งใดต้องอยู่ <u>ท้ายประโยค</u>', c: ['จำนวนลูกอม (เม็ด)', 'จำนวนเงิน (บาท)', 'จำนวนคน', 'อยู่ตรงไหนก็ได้'], a: 0, w: 'โจทย์ถามจำนวนเม็ด จึงเขียน “เม็ด” ไว้ท้ายประโยค แล้วเริ่มด้วย “เงิน”' },
+  { q: 'แม่ใช้ไข่ 6 ฟอง ทำขนมได้ 3 ถาด ถ้าจะทำขนม 5 ถาด ต้องใช้ไข่กี่ฟอง', c: ['10 ฟอง', '8 ฟอง', '15 ฟอง', '30 ฟอง'], a: 0, w: 'ขนม 1 ถาด ใช้ไข่ {6/3} = 2 ฟอง → 5 ถาด ใช้ 2 × 5 = 10 ฟอง' }
+];
+
+Kit.setup = function () {
+  var st = { i: 0, q: 3, t: 5 };
+  var row = document.getElementById('calcItems');
+  ITEMS.forEach(function (it, k) {
+    var b = document.createElement('button');
+    b.className = 'chip'; b.innerHTML = it.e + ' ' + it.n; b.style.boxShadow = 'none';
+    b.onclick = function () { st.i = k; Kit.sound.tap(); draw(); };
+    row.appendChild(b);
+  });
+  function draw() {
+    var it = ITEMS[st.i], P = it.p * st.q, T = it.p * st.t;
+    Array.prototype.forEach.call(row.children, function (b, k) { b.classList.toggle('sel', k === st.i); });
+    document.getElementById('clQ').textContent = st.q;
+    document.getElementById('clT').textContent = st.t;
+    document.getElementById('clU1').textContent = it.u + ' ราคา ' + P + ' บาท';
+    document.getElementById('clU2').textContent = it.u;
+    var pic = '';
+    for (var k = 0; k < st.t; k++) pic += it.e;
+    document.getElementById('clPic').innerHTML = pic + '<div class="sub" style="font-size:1rem">' + it.n + ' ' + st.t + ' ' + it.u + ' ราคาเท่าไรนะ?</div>';
+    document.getElementById('clLines').innerHTML =
+      '<div><span class="pill" style="--c:var(--blue)">1</span> ' + it.n + ' <b>' + st.q + '</b> ' + it.u + ' ราคา <b>' + P + '</b> บาท</div>' +
+      '<div><span class="pill" style="--c:var(--orange)">2</span> ' + it.n + ' <b>1</b> ' + it.u + ' ราคา ' + Kit.fx('{' + P + '/' + st.q + '}') + ' = ' + it.p + ' บาท</div>' +
+      '<div><span class="pill" style="--c:var(--green)">3</span> ' + it.n + ' <b>' + st.t + '</b> ' + it.u + ' ราคา ' + Kit.fx('{' + P + ' × ' + st.t + '/' + st.q + '}') + ' = <b class="t-purple">' + T + '</b> บาท</div>';
+  }
+  document.querySelectorAll('[data-cl]').forEach(function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-cl'), up = k[1] === '+';
+      if (k[0] === 'q') st.q = Math.max(2, Math.min(10, st.q + (up ? 1 : -1)));
+      else st.t = Math.max(1, Math.min(12, st.t + (up ? 1 : -1)));
+      Kit.sound.tap(); draw();
+    };
+  });
+  draw();
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>รู้จักเศษส่วน เศษเกิน จำนวนคละ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#FF7A45;--main-deep:#E0561F}
+.pies svg{flex:none}
+#cvPies svg{margin:2px}
+.fbar{height:40px}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🍕</span>
+  <div class="ttl"><b>รู้จักเศษส่วน เศษเกิน จำนวนคละ</b><small>คณิตศาสตร์ ป.4 · บทที่ 6 เศษส่วน · สื่อที่ 1</small></div>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">คณิตศาสตร์ ป.4 · บทที่ 6 เศษส่วน</span>
+  <div class="emoji-xl">🍕🍫🍉</div>
+  <h1>รู้จักเศษส่วน<br>เศษเกิน และจำนวนคละ</h1>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul>
+      <li>บอกได้ว่าเศษส่วนใดเป็น <b>เศษส่วนแท้</b> <b>เศษเกิน</b> หรือ <b>จำนวนคละ</b></li>
+      <li>เขียน <b>จำนวนคละเป็นเศษเกิน</b> และ <b>เศษเกินเป็นจำนวนคละ</b> ได้</li>
+      <li>หา <b>เศษส่วนที่เท่ากัน</b> และ <b>เศษส่วนอย่างต่ำ</b> ได้</li>
+      <li><b>เปรียบเทียบและเรียงลำดับ</b> เศษส่วนที่ตัวส่วนตัวหนึ่งเป็นพหุคูณของอีกตัวหนึ่งได้</li>
+    </ul>
+  </div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button>
+</div></section>
+
+<section class="slide" data-title="ทบทวนเศษส่วน" data-id="maker"><div class="inner">
+  <h2 class="h"><span class="e">🧩</span>ทบทวน: เศษส่วนคืออะไร</h2>
+  <div class="grid" style="--min:300px">
+    <div class="card c-blue">
+      <h3>เศษส่วน มี 2 ส่วน</h3>
+      <div class="row" style="gap:18px">
+        <span class="big" style="font-size:3.2rem">{3/4}</span>
+        <div>
+          <p>⬆️ <b class="t-orange">ตัวเศษ</b> บอกจำนวนส่วนที่ <b>สนใจ</b> (ระบายสี)</p>
+          <p>⬇️ <b class="t-blue">ตัวส่วน</b> บอกว่าแบ่งเป็น <b>กี่ส่วนเท่า ๆ กัน</b></p>
+        </div>
+      </div>
+      <p class="note" style="margin-top:10px">⚠️ ต้องแบ่ง <b>เท่า ๆ กัน</b> ทุกส่วน จึงจะเขียนเป็นเศษส่วนได้</p>
+    </div>
+    <div class="card c-orange">
+      <h3>🎛️ ลองสร้างเศษส่วนเอง</h3>
+      <div class="ctrl">ตัวส่วน (แบ่งกี่ส่วน)
+        <button class="step-btn" data-mk="d-">−</button><span class="val" id="mkD">4</span><button class="step-btn" data-mk="d+">+</button></div>
+      <div class="ctrl">ตัวเศษ (ระบายกี่ส่วน)
+        <button class="step-btn" data-mk="n-">−</button><span class="val" id="mkN">3</span><button class="step-btn" data-mk="n+">+</button></div>
+      <div id="mkBar" style="margin:12px 0"></div>
+      <p class="big center" id="mkTxt"></p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เศษส่วนแท้ เศษเกิน"><div class="inner">
+  <h2 class="h"><span class="e">⚖️</span>เศษส่วนแท้ และ เศษเกิน</h2>
+  <div class="grid" style="--min:300px">
+    <div class="card c-green">
+      <h3 class="t-green">✅ เศษส่วนแท้</h3>
+      <p>เศษส่วนที่ <span class="hl">ตัวเศษน้อยกว่าตัวส่วน</span> มีค่า <b>น้อยกว่า 1</b></p>
+      <p class="big center" style="margin:8px 0">{1/4} &nbsp; {3/5} &nbsp; {7/10}</p>
+      <div class="pbars" data-bars="3/5" style="--c:var(--green)"></div>
+    </div>
+    <div class="card c-red">
+      <h3 class="t-red">🔺 เศษเกิน</h3>
+      <p>เศษส่วนที่ <span class="hl">ตัวเศษมากกว่าหรือเท่ากับตัวส่วน</span> มีค่า <b>เท่ากับ 1 หรือมากกว่า 1</b></p>
+      <p class="big center" style="margin:8px 0">{5/5} &nbsp; {7/5} &nbsp; {9/4}</p>
+      <div class="pbars" data-bars="7/5" style="--c:var(--red)"></div>
+    </div>
+  </div>
+  <div class="key">🧠 <b>จำง่าย ๆ</b> ดูที่ตัวเศษกับตัวส่วน<br>
+    ตัวเศษ <b>&lt;</b> ตัวส่วน → <b>เศษส่วนแท้</b> &nbsp;|&nbsp; ตัวเศษ <b>≥</b> ตัวส่วน → <b>เศษเกิน</b><br>
+    เช่น {5/5} = 1 เป็นเศษเกิน เพราะตัวเศษ <b>เท่ากับ</b> ตัวส่วน</div>
+</div></section>
+
+<section class="slide" data-title="จำนวนคละ"><div class="inner">
+  <h2 class="h"><span class="e">🍕</span>จำนวนคละ</h2>
+  <div class="card c-purple">
+    <p><b>จำนวนคละ</b> คือ จำนวนที่ประกอบด้วย <span class="hl">จำนวนนับ</span> กับ <span class="hl">เศษส่วนแท้</span></p>
+    <div class="row center" style="gap:24px;margin:12px 0">
+      <div class="center"><div class="pies" data-pies="7/4"></div><p class="sub">พิซซ่า 1 ถาดเต็ม กับอีก 3 ชิ้น จาก 4 ชิ้น</p></div>
+    </div>
+    <p class="big center">{1 3/4} &nbsp;อ่านว่า&nbsp; <span class="t-purple">หนึ่งเศษสามส่วนสี่</span></p>
+  </div>
+  <div class="grid">
+    <div class="card c-yellow center"><p class="big">{2 1/2}</p><p>สองเศษหนึ่งส่วนสอง</p></div>
+    <div class="card c-yellow center"><p class="big">{3 2/5}</p><p>สามเศษสองส่วนห้า</p></div>
+    <div class="card c-yellow center"><p class="big">{4 5/6}</p><p>สี่เศษห้าส่วนหก</p></div>
+  </div>
+  <div class="note">💡 พิซซ่า {7/4} ถาด (เศษเกิน) กับ {1 3/4} ถาด (จำนวนคละ) คือพิซซ่า <b>จำนวนเท่ากัน</b> แค่เขียนคนละแบบ</div>
+</div></section>
+
+<section class="slide" data-title="วิธีแปลง"><div class="inner">
+  <h2 class="h"><span class="e">🔄</span>เขียนจำนวนคละ ↔ เศษเกิน</h2>
+  <div class="grid" style="--min:310px">
+    <div class="card c-blue">
+      <h3>① จำนวนคละ → เศษเกิน</h3>
+      <p class="big center">{2 3/4} = ?</p>
+      <div class="steps" id="cv1">
+        <div class="step"><p>1️⃣ <b>คูณ</b> จำนวนนับกับตัวส่วน: 2 × 4 = <b>8</b></p></div>
+        <div class="step"><p>2️⃣ <b>บวก</b> ตัวเศษ: 8 + 3 = <b>11</b> → ได้ตัวเศษใหม่</p></div>
+        <div class="step"><p>3️⃣ ตัวส่วน <b>คงเดิม</b> คือ 4</p><p class="big center t-blue">{2 3/4} = {11/4}</p></div>
+      </div>
+      <div class="row center"><button class="btn c-blue" style="--c:var(--blue)" data-reveal="cv1">ดูขั้นต่อไป 👇</button></div>
+    </div>
+    <div class="card c-pink">
+      <h3>② เศษเกิน → จำนวนคละ</h3>
+      <p class="big center">{11/4} = ?</p>
+      <div class="steps" id="cv2">
+        <div class="step"><p>1️⃣ นำตัวเศษ <b>หารด้วย</b> ตัวส่วน: 11 ÷ 4 = <b>2 เศษ 3</b></p></div>
+        <div class="step"><p>2️⃣ <b>ผลหาร 2</b> เป็นจำนวนนับ</p></div>
+        <div class="step"><p>3️⃣ <b>เศษ 3</b> เป็นตัวเศษ ตัวส่วนคงเดิม คือ 4</p><p class="big center t-red">{11/4} = {2 3/4}</p></div>
+      </div>
+      <div class="row center"><button class="btn" style="--c:var(--pink)" data-reveal="cv2">ดูขั้นต่อไป 👇</button></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เครื่องแปลงเศษเกิน"><div class="inner">
+  <h2 class="h"><span class="e">🤖</span>เครื่องแปลงเศษเกิน</h2>
+  <p class="sub">กด + / − เปลี่ยนตัวเศษ ตัวส่วน แล้วดูว่าเป็นจำนวนคละได้เท่าไร</p>
+  <div class="card c-teal">
+    <div class="row" style="justify-content:space-around">
+      <div class="ctrl">ตัวเศษ <button class="step-btn" data-cv="n-">−</button><span class="val" id="cvN">11</span><button class="step-btn" data-cv="n+">+</button></div>
+      <div class="ctrl">ตัวส่วน <button class="step-btn" data-cv="d-">−</button><span class="val" id="cvD">4</span><button class="step-btn" data-cv="d+">+</button></div>
+    </div>
+    <div id="cvPies" class="row center" style="margin:12px 0"></div>
+    <div id="cvOut" class="line3"></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="กิจกรรมคัดแยก"><div class="inner">
+  <h2 class="h"><span class="e">🗂️</span>กิจกรรม: คัดแยกเศษส่วน</h2>
+  <div data-sorter="kind"></div>
+</div></section>
+
+<section class="slide" data-title="เศษส่วนที่เท่ากัน" data-id="eq"><div class="inner">
+  <h2 class="h"><span class="e">🟰</span>เศษส่วนที่เท่ากัน</h2>
+  <div class="key">เศษส่วนที่เท่ากัน หาได้โดย <b>นำจำนวนเดียวกัน</b> (ที่ไม่ใช่ 0) มา<b>คูณ</b> หรือ <b>หาร</b> ทั้งตัวเศษและตัวส่วน</div>
+  <div class="card c-orange">
+    <div class="row" style="justify-content:space-around">
+      <div class="ctrl">เศษส่วนตั้งต้น
+        <select id="eqBase" class="ninput" style="width:auto;padding:0 8px">
+          <option value="1/2">1/2</option><option value="1/3">1/3</option><option value="2/3">2/3</option><option value="3/4">3/4</option><option value="2/5">2/5</option>
+        </select></div>
+      <div class="ctrl">คูณด้วย <button class="step-btn" data-eq="-">−</button><span class="val" id="eqK">2</span><button class="step-btn" data-eq="+">+</button></div>
+    </div>
+    <div style="display:grid;gap:10px;margin-top:12px">
+      <div class="row" style="flex-wrap:nowrap"><span class="big" id="eqA" style="min-width:3.5em"></span><div id="eqBarA" style="flex:1"></div></div>
+      <div class="row" style="flex-wrap:nowrap"><span class="big t-purple" id="eqB" style="min-width:3.5em"></span><div id="eqBarB" style="flex:1"></div></div>
+    </div>
+    <p class="big center" id="eqTxt" style="margin-top:10px"></p>
+  </div>
+  <div class="note">👀 สังเกต: ส่วนที่ระบายสียาวเท่ากันพอดี แปลว่าเศษส่วนสองตัวนี้ <b>มีค่าเท่ากัน</b></div>
+</div></section>
+
+<section class="slide" data-title="เศษส่วนอย่างต่ำ"><div class="inner">
+  <h2 class="h"><span class="e">⬇️</span>เศษส่วนอย่างต่ำ</h2>
+  <div class="key"><b>เศษส่วนอย่างต่ำ</b> คือ เศษส่วนที่ <b>ไม่มีจำนวนนับใดนอกจาก 1</b> ไปหารทั้งตัวเศษและตัวส่วนได้ลงตัว<br>
+    วิธีทำ: นำจำนวนที่หารทั้งตัวเศษและตัวส่วนลงตัวมาหาร ไปเรื่อย ๆ จนหารต่อไม่ได้</div>
+  <div class="grid" style="--min:300px">
+    <div class="card c-green">
+      <h3>ตัวอย่าง: ทำ {12/18} ให้เป็นเศษส่วนอย่างต่ำ</h3>
+      <div class="steps" id="lt1">
+        <div class="step"><p>1️⃣ 2 หาร 12 และ 18 ลงตัว → {12 ÷ 2/18 ÷ 2} = {6/9}</p></div>
+        <div class="step"><p>2️⃣ 3 หาร 6 และ 9 ลงตัว → {6 ÷ 3/9 ÷ 3} = {2/3}</p></div>
+        <div class="step"><p>3️⃣ ไม่มีจำนวนใด (นอกจาก 1) หาร 2 และ 3 ลงตัวแล้ว</p><p class="big center t-green">เศษส่วนอย่างต่ำของ {12/18} คือ {2/3}</p></div>
+      </div>
+      <div class="row center"><button class="btn" style="--c:var(--green)" data-reveal="lt1">ดูขั้นต่อไป 👇</button></div>
+    </div>
+    <div class="card c-blue">
+      <h3>💡 ทางลัด</h3>
+      <p>ถ้าหาจำนวนที่ <b>มากที่สุด</b> ที่หารทั้งสองตัวลงตัวได้ ทำครั้งเดียวก็เสร็จ</p>
+      <p class="big center">{12 ÷ 6/18 ÷ 6} = {2/3}</p>
+      <h3 style="margin-top:12px">🔢 เศษส่วนที่เท่ากับจำนวนนับ</h3>
+      <p>ถ้าตัวส่วนหารตัวเศษลงตัว เศษส่วนนั้นเท่ากับจำนวนนับ</p>
+      <p class="big center">{6/3} = 2 &nbsp; {8/8} = 1 &nbsp; {15/5} = 3</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เปรียบเทียบเศษส่วน"><div class="inner">
+  <h2 class="h"><span class="e">🐊</span>เปรียบเทียบเศษส่วน</h2>
+  <div class="grid" style="--min:260px">
+    <div class="card c-blue"><h3>① ตัวส่วนเท่ากัน</h3><p>ดู <b>ตัวเศษ</b> ตัวเศษมากกว่า มีค่ามากกว่า</p><p class="big center">{5/8} &gt; {3/8}</p></div>
+    <div class="card c-pink"><h3>② ตัวเศษเท่ากัน</h3><p>ดู <b>ตัวส่วน</b> ตัวส่วนน้อยกว่า (ชิ้นใหญ่กว่า) มีค่ามากกว่า</p><p class="big center">{1/3} &gt; {1/6}</p></div>
+  </div>
+  <div class="card c-purple">
+    <h3>③ ตัวส่วนตัวหนึ่งเป็นพหุคูณของอีกตัว — ทำตัวส่วนให้เท่ากันก่อน</h3>
+    <p class="big center">{2/3} ☐ {5/6}</p>
+    <div class="steps" id="cp1">
+      <div class="step"><p>1️⃣ 6 เป็นพหุคูณของ 3 (3 × 2 = 6) จึงทำ {2/3} ให้มีตัวส่วนเป็น 6</p><p class="big center">{2 × 2/3 × 2} = {4/6}</p></div>
+      <div class="step"><p>2️⃣ เปรียบเทียบ {4/6} กับ {5/6} ตัวส่วนเท่ากัน ดูตัวเศษ 4 &lt; 5</p>
+        <div class="pbars" data-bars="4/6" style="--c:var(--orange)"></div><div style="height:6px"></div><div class="pbars" data-bars="5/6" style="--c:var(--purple)"></div></div>
+      <div class="step"><p class="big center t-purple">ดังนั้น {2/3} &lt; {5/6}</p></div>
+    </div>
+    <div class="row center"><button class="btn" style="--c:var(--purple)" data-reveal="cp1">ดูขั้นต่อไป 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เรียงลำดับเศษส่วน"><div class="inner">
+  <h2 class="h"><span class="e">📶</span>เรียงลำดับเศษส่วน</h2>
+  <div class="card c-orange">
+    <h3>ตัวอย่าง: เรียง {1/2}, {3/8}, {3/4} จากน้อยไปมาก</h3>
+    <p>ทำตัวส่วนให้เป็น 8 ทั้งหมด → {1/2} = {4/8}, &nbsp;{3/8}, &nbsp;{3/4} = {6/8}</p>
+    <p>เปรียบเทียบตัวเศษ 3 &lt; 4 &lt; 6 → <b class="t-orange big">{3/8}, {1/2}, {3/4}</b></p>
+  </div>
+  <div class="card c-teal">
+    <h3>🎮 ลองเอง: แตะเศษส่วนจาก <u>น้อยไปมาก</u></h3>
+    <div data-order="sort1"></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="แบบทดสอบ"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบทเรียน (10 ข้อ)</h2>
+  <div data-quiz="main"></div>
+</div></section>
+
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปบทเรียน</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class="grid" style="--min:260px">
+    <div class="card c-green"><h3>เศษส่วนแท้</h3><p>ตัวเศษ &lt; ตัวส่วน เช่น {3/5}</p></div>
+    <div class="card c-red"><h3>เศษเกิน</h3><p>ตัวเศษ ≥ ตัวส่วน เช่น {7/5}, {5/5}</p></div>
+    <div class="card c-purple"><h3>จำนวนคละ</h3><p>จำนวนนับ + เศษส่วนแท้ เช่น {1 2/5}</p></div>
+    <div class="card c-blue"><h3>แปลงไป–มา</h3><p>{2 3/4} → (2×4)+3 = {11/4}<br>{11/4} → 11÷4 = 2 เศษ 3 → {2 3/4}</p></div>
+    <div class="card c-orange"><h3>เศษส่วนที่เท่ากัน</h3><p>คูณ/หาร ทั้งตัวเศษและตัวส่วนด้วยจำนวนเดียวกัน</p></div>
+    <div class="card c-teal"><h3>เปรียบเทียบ</h3><p>ทำตัวส่วนให้เท่ากัน แล้วดูตัวเศษ</p></div>
+  </div>
+  <div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+/* ---------- ตัวช่วยวาด ---------- */
+function bar(n, d, color) {
+  var h = '<div class="fbar"' + (color ? ' style="--c:' + color + '"' : '') + '>';
+  for (var i = 0; i < d; i++) h += '<i class="' + (i < n ? 'on' : '') + '"></i>';
+  return h + '</div>';
+}
+function bars(n, d, color) {
+  var out = '', left = n;
+  do { out += bar(Math.min(left, d), d, color); left -= d; } while (left > 0);
+  return '<div style="display:grid;gap:6px">' + out + '</div>';
+}
+function pie(n, d, size, color) {
+  size = size || 110;
+  var r = 46, cx = 50, cy = 50, s = '<svg viewBox="0 0 100 100" width="' + size + '" height="' + size + '" role="img" aria-label="' + n + ' ส่วนจาก ' + d + ' ส่วน">';
+  s += '<circle cx="50" cy="50" r="' + r + '" fill="#FFF3DA" stroke="#C47A2C" stroke-width="3"/>';
+  for (var i = 0; i < d; i++) {
+    var a1 = (i / d) * 2 * Math.PI - Math.PI / 2, a2 = ((i + 1) / d) * 2 * Math.PI - Math.PI / 2;
+    var x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1), x2 = cx + r * Math.cos(a2), y2 = cy + r * Math.sin(a2);
+    var p = d === 1 ? '<circle cx="50" cy="50" r="' + r + '"' : '<path d="M50 50 L' + x1.toFixed(2) + ' ' + y1.toFixed(2) + ' A' + r + ' ' + r + ' 0 ' + (1 / d > 0.5 ? 1 : 0) + ' 1 ' + x2.toFixed(2) + ' ' + y2.toFixed(2) + ' Z"';
+    s += p + ' fill="' + (i < n ? (color || '#FF9F43') : 'transparent') + '" stroke="#C47A2C" stroke-width="2"/>';
+    if (i < n) s += '<circle cx="' + (50 + 26 * Math.cos((a1 + a2) / 2)).toFixed(1) + '" cy="' + (50 + 26 * Math.sin((a1 + a2) / 2)).toFixed(1) + '" r="4" fill="#E0412F"/>';
+  }
+  return s + '</svg>';
+}
+function pies(n, d, size) {
+  var out = '', left = n;
+  do { out += pie(Math.min(left, d), d, size); left -= d; } while (left > 0);
+  return out;
+}
+var TH = ['ศูนย์', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'];
+function thai(n) {
+  if (n < 10) return TH[n];
+  var t = Math.floor(n / 10), u = n % 10;
+  return (t === 1 ? '' : t === 2 ? 'ยี่' : TH[t]) + 'สิบ' + (u === 0 ? '' : u === 1 ? 'เอ็ด' : TH[u]);
+}
+function F(a, b) { return Kit.fx('{' + a + '/' + b + '}'); }
+function MX(w, a, b) { return Kit.fx('{' + w + ' ' + a + '/' + b + '}'); }
+function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+
+/* ---------- ข้อมูลกิจกรรม ---------- */
+Kit.sorters.kind = {
+  bins: [{ k: 'p', t: '✅ เศษส่วนแท้', c: 'var(--green)' }, { k: 'i', t: '🔺 เศษเกิน', c: 'var(--red)' }, { k: 'm', t: '🍕 จำนวนคละ', c: 'var(--purple)' }],
+  items: [
+    { t: '{2/7}', k: 'p', w: 'ตัวเศษ 2 น้อยกว่าตัวส่วน 7' }, { t: '{5/9}', k: 'p', w: 'ตัวเศษน้อยกว่าตัวส่วน' }, { t: '{1/10}', k: 'p', w: 'ตัวเศษน้อยกว่าตัวส่วน' },
+    { t: '{8/8}', k: 'i', w: 'ตัวเศษเท่ากับตัวส่วน ก็เป็นเศษเกิน' }, { t: '{9/4}', k: 'i', w: 'ตัวเศษ 9 มากกว่าตัวส่วน 4' }, { t: '{11/6}', k: 'i', w: 'ตัวเศษมากกว่าตัวส่วน' }, { t: '{6/5}', k: 'i', w: 'ตัวเศษมากกว่าตัวส่วน' },
+    { t: '{1 2/3}', k: 'm', w: 'มีจำนวนนับอยู่ข้างหน้า' }, { t: '{3 1/2}', k: 'm', w: 'มีจำนวนนับกับเศษส่วนแท้' }, { t: '{2 4/5}', k: 'm', w: 'มีจำนวนนับกับเศษส่วนแท้' }
+  ]
+};
+Kit.orders.sort1 = { hint: '👆 แตะจากค่า <b>น้อยที่สุด</b> ไปค่า <b>มากที่สุด</b> (ใบ้: ทำตัวส่วนให้เป็น 10)', unit: 'ลำดับที่', items: ['{3/10}', '{2/5}', '{1/2}', '{4/5}'] };
+
+Kit.quizzes.main = [
+  { q: '{5/3} เป็นเศษส่วนชนิดใด', c: ['เศษเกิน', 'เศษส่วนแท้', 'จำนวนคละ', 'จำนวนนับ'], a: 0, w: 'ตัวเศษ 5 มากกว่าตัวส่วน 3 จึงเป็นเศษเกิน' },
+  { q: 'ข้อใดเป็น <u>จำนวนคละ</u>', c: ['{2 1/3}', '{7/7}', '{3/8}', '{9/4}'], a: 0, w: '{2 1/3} ประกอบด้วยจำนวนนับ 2 กับเศษส่วนแท้ {1/3}' },
+  { q: '{2 3/5} เขียนเป็นเศษเกินได้เท่าใด', c: ['{13/5}', '{10/5}', '{6/5}', '{23/5}'], a: 0, w: '(2 × 5) + 3 = 13 ตัวส่วนคงเดิม 5 จึงได้ {13/5}' },
+  { q: '{17/4} เขียนเป็นจำนวนคละได้เท่าใด', c: ['{4 1/4}', '{3 1/4}', '{4 3/4}', '{1 4/7}'], a: 0, w: '17 ÷ 4 = 4 เศษ 1 จึงได้ {4 1/4}' },
+  { q: 'ข้อใด <u>เท่ากับ</u> {2/3}', c: ['{8/12}', '{4/9}', '{3/4}', '{6/8}'], a: 0, w: '{2 × 4/3 × 4} = {8/12} คูณทั้งตัวเศษและตัวส่วนด้วย 4' },
+  { q: 'เศษส่วนอย่างต่ำของ {12/16} คือข้อใด', c: ['{3/4}', '{6/8}', '{4/6}', '{2/3}'], a: 0, w: 'นำ 4 หารทั้งตัวเศษและตัวส่วน {12 ÷ 4/16 ÷ 4} = {3/4} (ส่วน {6/8} ยังหารด้วย 2 ได้อีก)' },
+  { q: 'ข้อใดถูกต้อง', c: ['{3/4} &gt; {5/8}', '{3/4} &lt; {5/8}', '{3/4} = {5/8}'], a: 0, fixed: true, w: '{3/4} = {6/8} และ {6/8} &gt; {5/8} เพราะ 6 &gt; 5' },
+  { q: 'เรียงจาก <u>น้อยไปมาก</u> ข้อใดถูกต้อง', c: ['{3/8}, {1/2}, {5/8}', '{1/2}, {3/8}, {5/8}', '{5/8}, {1/2}, {3/8}', '{3/8}, {5/8}, {1/2}'], a: 0, w: '{1/2} = {4/8} เทียบตัวเศษ 3 &lt; 4 &lt; 5' },
+  { q: 'แม่ซื้อพิซซ่ามา 2 ถาด แต่ละถาดแบ่งเป็น 4 ชิ้นเท่า ๆ กัน ครอบครัวกินไป 5 ชิ้น กินไปทั้งหมดกี่ถาด', c: ['{1 1/4} ถาด', '{5/8} ถาด', '{2 1/4} ถาด', '{1 1/5} ถาด'], a: 0, w: 'ชิ้นละ {1/4} ถาด กิน 5 ชิ้น = {5/4} = {1 1/4} ถาด' },
+  { q: '{12/4} เท่ากับจำนวนนับใด', c: ['3', '4', '8', '12'], a: 0, w: '12 ÷ 4 = 3 ลงตัว ดังนั้น {12/4} = 3' }
+];
+
+/* ---------- ของเล่นโต้ตอบ ---------- */
+Kit.setup = function () {
+  document.querySelectorAll('[data-bars]').forEach(function (el) {
+    var p = el.getAttribute('data-bars').split('/'); el.innerHTML = bars(+p[0], +p[1]);
+  });
+  document.querySelectorAll('[data-pies]').forEach(function (el) {
+    var p = el.getAttribute('data-pies').split('/'); el.innerHTML = '<div class="row center">' + pies(+p[0], +p[1], 120) + '</div>';
+  });
+
+  /* สร้างเศษส่วน */
+  var mk = { n: 3, d: 4 };
+  function drawMk() {
+    document.getElementById('mkD').textContent = mk.d;
+    document.getElementById('mkN').textContent = mk.n;
+    document.getElementById('mkBar').innerHTML = bar(mk.n, mk.d);
+    document.getElementById('mkTxt').innerHTML = F(mk.n, mk.d) + ' อ่านว่า <span class="t-orange">เศษ' + thai(mk.n) + 'ส่วน' + thai(mk.d) + '</span>';
+  }
+  document.querySelectorAll('[data-mk]').forEach(function (b) {
+    b.onclick = function () {
+      var a = b.getAttribute('data-mk');
+      if (a === 'd+') mk.d = Math.min(12, mk.d + 1);
+      if (a === 'd-') mk.d = Math.max(2, mk.d - 1);
+      if (a === 'n+') mk.n = Math.min(mk.d, mk.n + 1);
+      if (a === 'n-') mk.n = Math.max(0, mk.n - 1);
+      mk.n = Math.min(mk.n, mk.d);
+      Kit.sound.tap(); drawMk();
+    };
+  });
+  drawMk();
+
+  /* เครื่องแปลง */
+  var cv = { n: 11, d: 4 };
+  function drawCv() {
+    document.getElementById('cvN').textContent = cv.n;
+    document.getElementById('cvD').textContent = cv.d;
+    document.getElementById('cvPies').innerHTML = pies(cv.n, cv.d, 96);
+    var w = Math.floor(cv.n / cv.d), r = cv.n % cv.d, out = document.getElementById('cvOut');
+    var kind = cv.n < cv.d ? '<span class="t-green">เศษส่วนแท้</span> (น้อยกว่า 1 ยังเป็นจำนวนคละไม่ได้)' : '<span class="t-red">เศษเกิน</span>';
+    var html = '<div>' + F(cv.n, cv.d) + ' เป็น ' + kind + '</div>';
+    if (cv.n >= cv.d) {
+      html += '<div>✏️ ' + cv.n + ' ÷ ' + cv.d + ' = <b>' + w + '</b> เศษ <b>' + r + '</b></div>';
+      html += '<div class="big center">' + F(cv.n, cv.d) + ' = ' + (r ? MX(w, r, cv.d) : '<b class="t-blue">' + w + '</b> (หารลงตัว เท่ากับจำนวนนับ)') + '</div>';
+    }
+    out.innerHTML = html;
+  }
+  document.querySelectorAll('[data-cv]').forEach(function (b) {
+    b.onclick = function () {
+      var a = b.getAttribute('data-cv');
+      if (a === 'n+') cv.n = Math.min(30, cv.n + 1);
+      if (a === 'n-') cv.n = Math.max(1, cv.n - 1);
+      if (a === 'd+') cv.d = Math.min(10, cv.d + 1);
+      if (a === 'd-') cv.d = Math.max(2, cv.d - 1);
+      if (cv.n > cv.d * 4) cv.n = cv.d * 4;
+      Kit.sound.tap(); drawCv();
+    };
+  });
+  drawCv();
+
+  /* เศษส่วนที่เท่ากัน */
+  var eq = { k: 2 }, sel = document.getElementById('eqBase');
+  function drawEq() {
+    var p = sel.value.split('/'), a = +p[0], b = +p[1];
+    document.getElementById('eqK').textContent = eq.k;
+    document.getElementById('eqA').innerHTML = F(a, b);
+    document.getElementById('eqB').innerHTML = F(a * eq.k, b * eq.k);
+    document.getElementById('eqBarA').innerHTML = bar(a, b, 'var(--orange)');
+    document.getElementById('eqBarB').innerHTML = bar(a * eq.k, b * eq.k, 'var(--purple)');
+    document.getElementById('eqTxt').innerHTML = Kit.fx('{' + a + ' × ' + eq.k + '/' + b + ' × ' + eq.k + '}') + ' = ' + F(a * eq.k, b * eq.k);
+  }
+  sel.onchange = drawEq;
+  document.querySelectorAll('[data-eq]').forEach(function (b) {
+    b.onclick = function () { eq.k = Math.max(1, Math.min(5, eq.k + (b.getAttribute('data-eq') === '+' ? 1 : -1))); Kit.sound.tap(); drawEq(); };
+  });
+  drawEq();
+};
+</script>
+</body>
+</html>

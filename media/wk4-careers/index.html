@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>รู้จักอาชีพ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#FF9F43;--main-deep:#E57B12}
+#likes .chip{font-size:1rem}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">👩‍🌾</span>
+  <div class="ttl"><b>รู้จักอาชีพ</b><small>การงานอาชีพ ป.4 · หน่วยที่ 4 อาชีพ</small></div>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge" style="background:var(--teal)">การงานอาชีพ ป.4 · หน่วยที่ 4</span>
+  <div class="emoji-xl">👩‍🌾👨‍🍳👩‍⚕️👷</div>
+  <h1>รู้จักอาชีพ</h1>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul>
+      <li>อธิบาย <b>ความหมาย</b> และ <b>ความสำคัญ</b> ของอาชีพได้</li>
+      <li>บอก <b>ประเภทของอาชีพ</b> และ <b>อาชีพในชุมชน</b> ได้</li>
+      <li>บอก <b>ลักษณะนิสัยที่ดี</b> ของผู้ประกอบอาชีพได้</li>
+      <li>รู้จัก <b>การเลือกอาชีพ</b> ให้เหมาะกับตนเอง</li>
+    </ul>
+  </div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button>
+</div></section>
+
+<section class="slide" data-title="อาชีพคืออะไร"><div class="inner">
+  <h2 class="h"><span class="e">💼</span>อาชีพ คืออะไร</h2>
+  <div class="key"><b>อาชีพ</b> คือ <span class="hl">การทำงานที่สุจริต</span> เพื่อให้ได้ <b>เงินหรือผลตอบแทน</b> มาใช้เลี้ยงชีพตนเองและครอบครัว</div>
+  <div class="grid" style="--min:200px">
+    <div class="card c-green center"><div class="emoji-xl">🌾</div><b>ชาวนา</b><p>ปลูกข้าวขาย</p></div>
+    <div class="card c-blue center"><div class="emoji-xl">👩‍🏫</div><b>ครู</b><p>สอนนักเรียน ได้รับเงินเดือน</p></div>
+    <div class="card c-pink center"><div class="emoji-xl">🍜</div><b>แม่ค้าก๋วยเตี๋ยว</b><p>ขายอาหาร ได้กำไร</p></div>
+    <div class="card c-purple center"><div class="emoji-xl">💇</div><b>ช่างตัดผม</b><p>ให้บริการ ได้ค่าบริการ</p></div>
+  </div>
+  <div class="note">⚠️ งานที่ <b>ผิดกฎหมาย</b> หรือ <b>ไม่สุจริต</b> เช่น ขโมย หลอกลวง โกงผู้อื่น <b>ไม่ใช่อาชีพ</b> แม้จะได้เงินก็ตาม</div>
+</div></section>
+
+<section class="slide" data-title="ความสำคัญของอาชีพ"><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>อาชีพสำคัญอย่างไร</h2>
+  <p class="sub">👆 แตะการ์ดเพื่อพลิกดูคำตอบ</p>
+  <div class="grid" style="--min:220px">
+    <button class="flip c-orange" style="--fh:190px"><div class="fi"><div class="fa"><span class="e">🙋</span>ต่อตนเอง<small>แตะเพื่อพลิก</small></div><div class="fb">มีรายได้ไว้ใช้จ่าย <b>พึ่งพาตนเองได้</b> มีความภาคภูมิใจในตนเอง</div></div></button>
+    <button class="flip c-pink" style="--fh:190px"><div class="fi"><div class="fa"><span class="e">👨‍👩‍👧</span>ต่อครอบครัว<small>แตะเพื่อพลิก</small></div><div class="fb">นำรายได้มา <b>ดูแลครอบครัว</b> ให้มีอาหาร ที่อยู่อาศัย และความเป็นอยู่ที่ดี</div></div></button>
+    <button class="flip c-green" style="--fh:190px"><div class="fi"><div class="fa"><span class="e">🏘️</span>ต่อชุมชนและสังคม<small>แตะเพื่อพลิก</small></div><div class="fb">ผลิต <b>สินค้าและบริการ</b> ให้คนในชุมชนใช้ ช่วยให้ชุมชนน่าอยู่ ลดปัญหาสังคม</div></div></button>
+    <button class="flip c-blue" style="--fh:190px"><div class="fi"><div class="fa"><span class="e">🇹🇭</span>ต่อประเทศชาติ<small>แตะเพื่อพลิก</small></div><div class="fb">ช่วยให้ <b>เศรษฐกิจของประเทศ</b> เติบโต และเสียภาษีไปพัฒนาประเทศ</div></div></button>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ประเภทของอาชีพ"><div class="inner">
+  <h2 class="h"><span class="e">🗂️</span>ประเภทของอาชีพ (แบ่งตามลักษณะการทำงาน)</h2>
+  <div class="grid" style="--min:300px">
+    <div class="card c-green">
+      <h3 class="t-green">🧑‍🌾 อาชีพอิสระ</h3>
+      <p>ทำงาน <b>เป็นเจ้าของกิจการเอง</b> ตัดสินใจเอง ลงทุนเอง รายได้ขึ้นอยู่กับความขยันและความสามารถ</p>
+      <p style="margin-top:6px">ตัวอย่าง: 🛒 ค้าขาย &nbsp;🌾 เกษตรกร &nbsp;💇 ช่างตัดผม &nbsp;🧵 ช่างตัดเสื้อ &nbsp;🎨 รับทำงานศิลปะ</p>
+      <div class="note" style="margin-top:8px">👍 มีอิสระ เลือกเวลาทำงานได้ &nbsp; 👎 รายได้ไม่แน่นอน ต้องรับความเสี่ยงเอง</div>
+    </div>
+    <div class="card c-blue">
+      <h3 class="t-blue">🧑‍💼 อาชีพรับจ้าง</h3>
+      <p>ทำงาน <b>ให้ผู้อื่นหรือหน่วยงาน</b> โดยได้รับค่าจ้าง หรือเงินเดือนเป็นผลตอบแทน ต้องทำตามกฎระเบียบของที่ทำงาน</p>
+      <p style="margin-top:6px">ตัวอย่าง: 🏭 พนักงานบริษัท &nbsp;👷 ลูกจ้างก่อสร้าง &nbsp;👮 ข้าราชการ (ทำงานให้รัฐ) &nbsp;🚚 พนักงานขับรถ</p>
+      <div class="note" style="margin-top:8px">👍 รายได้แน่นอน &nbsp; 👎 ต้องทำตามเวลาและคำสั่งของผู้จ้าง</div>
+    </div>
+  </div>
+  <div class="card c-purple">
+    <h3>🧭 แบ่งตามลักษณะงานที่ทำ</h3>
+    <div class="grid" style="--min:140px">
+      <div class="center"><div class="emoji-xl" style="font-size:2.6rem">🌾</div><b>เกษตรกรรม</b><p>ปลูกพืช เลี้ยงสัตว์ ประมง</p></div>
+      <div class="center"><div class="emoji-xl" style="font-size:2.6rem">🏭</div><b>อุตสาหกรรม/งานช่าง</b><p>ผลิตสินค้า ซ่อม สร้าง</p></div>
+      <div class="center"><div class="emoji-xl" style="font-size:2.6rem">🏪</div><b>ค้าขาย</b><p>ซื้อมา–ขายไป</p></div>
+      <div class="center"><div class="emoji-xl" style="font-size:2.6rem">🧑‍⚕️</div><b>บริการ</b><p>ช่วยเหลือ ดูแลผู้อื่น</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="กิจกรรมคัดแยกอาชีพ"><div class="inner">
+  <h2 class="h"><span class="e">🧺</span>กิจกรรม: อาชีพนี้อยู่กลุ่มไหน?</h2>
+  <div data-sorter="group"></div>
+</div></section>
+
+<section class="slide" data-title="อาชีพในชุมชน"><div class="inner">
+  <h2 class="h"><span class="e">🏘️</span>อาชีพในชุมชนของเรา</h2>
+  <p class="sub">อาชีพในชุมชนขึ้นอยู่กับ <b>สภาพแวดล้อม ทรัพยากร และภูมิปัญญา</b> ของแต่ละท้องถิ่น</p>
+  <div class="grid" style="--min:230px">
+    <div class="card c-green"><h3>🌾 ชุมชนเกษตร</h3><p>ที่ราบ ดินดี มีน้ำ → ทำนา ทำสวนผลไม้ ปลูกผัก เลี้ยงสัตว์</p></div>
+    <div class="card c-blue"><h3>🐟 ชุมชนริมทะเล</h3><p>มีทะเล → ประมง ทำน้ำปลา กะปิ ปลาแห้ง ท่องเที่ยว</p></div>
+    <div class="card c-orange"><h3>🏙️ ชุมชนเมือง</h3><p>คนอยู่มาก → ค้าขาย พนักงานบริษัท ร้านอาหาร งานบริการ</p></div>
+    <div class="card c-purple"><h3>🧺 ชุมชนหัตถกรรม</h3><p>มีภูมิปัญญาท้องถิ่น → จักสาน ทอผ้า ปั้นหม้อ งานใบตอง</p></div>
+  </div>
+  <div class="note">🗣️ ชวนคุย: ในชุมชนของนักเรียนมีอาชีพอะไรบ้าง? ผู้ปกครองของนักเรียนประกอบอาชีพอะไร?</div>
+</div></section>
+
+<section class="slide" data-title="ลักษณะนิสัยที่ดี"><div class="inner">
+  <h2 class="h"><span class="e">💖</span>ลักษณะนิสัยที่ดีของผู้ประกอบอาชีพ</h2>
+  <div class="grid" style="--min:200px">
+    <div class="card c-orange center"><div class="emoji-xl" style="font-size:2.6rem">💪</div><b>ขยัน อดทน</b><p>ตั้งใจทำงาน ไม่ย่อท้อ</p></div>
+    <div class="card c-green center"><div class="emoji-xl" style="font-size:2.6rem">🤝</div><b>ซื่อสัตย์</b><p>ไม่โกง ไม่เอาเปรียบลูกค้า</p></div>
+    <div class="card c-blue center"><div class="emoji-xl" style="font-size:2.6rem">✅</div><b>รับผิดชอบ</b><p>ทำงานเสร็จ ตรงต่อเวลา</p></div>
+    <div class="card c-pink center"><div class="emoji-xl" style="font-size:2.6rem">😊</div><b>มีมนุษยสัมพันธ์</b><p>ยิ้มแย้ม สุภาพ ช่วยเหลือกัน</p></div>
+    <div class="card c-purple center"><div class="emoji-xl" style="font-size:2.6rem">🐷</div><b>ประหยัด อดออม</b><p>ใช้จ่ายพอดี เก็บออม</p></div>
+    <div class="card c-teal center"><div class="emoji-xl" style="font-size:2.6rem">📚</div><b>ใฝ่เรียนรู้</b><p>พัฒนางานให้ดีขึ้นเสมอ</p></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="สถานการณ์"><div class="inner">
+  <h2 class="h"><span class="e">🎬</span>สถานการณ์: ถ้าเป็นหนู จะทำอย่างไร?</h2>
+  <div data-quiz="situ" data-nonext></div>
+</div></section>
+
+<section class="slide" data-title="การเลือกอาชีพ"><div class="inner">
+  <h2 class="h"><span class="e">🧭</span>เลือกอาชีพอย่างไรดี</h2>
+  <div class="grid" style="--min:230px">
+    <div class="card c-orange"><h3>❤️ ความสนใจ</h3><p>ชอบทำอะไร ทำแล้วมีความสุข</p></div>
+    <div class="card c-blue"><h3>🌟 ความถนัด</h3><p>ทำสิ่งใดได้ดี เช่น วาดรูป คำนวณ พูดเก่ง</p></div>
+    <div class="card c-green"><h3>📚 ความรู้และทักษะ</h3><p>ต้องเรียนรู้หรือฝึกฝนอะไรเพิ่ม</p></div>
+    <div class="card c-purple"><h3>💰 ทุนและอุปกรณ์</h3><p>ต้องใช้เงินทุน เครื่องมือ สถานที่หรือไม่</p></div>
+    <div class="card c-pink"><h3>🏘️ ความต้องการของตลาด</h3><p>คนในชุมชนต้องการสินค้าหรือบริการนี้ไหม</p></div>
+    <div class="card c-teal"><h3>🤝 สุจริต ปลอดภัย</h3><p>ไม่ผิดกฎหมาย ไม่ทำให้ผู้อื่นเดือดร้อน</p></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="อาชีพในฝัน" data-id="dream"><div class="inner">
+  <h2 class="h"><span class="e">🌈</span>ค้นหาอาชีพที่เหมาะกับหนู</h2>
+  <p class="sub">แตะเลือกสิ่งที่หนู <b>ชอบ</b> (เลือกได้หลายข้อ) แล้วดูอาชีพที่น่าสนใจ</p>
+  <div class="row center" id="likes"></div>
+  <div id="dreamOut" style="margin-top:12px"></div>
+  <div class="note">✍️ กิจกรรม: วาดภาพอาชีพในฝันของฉัน พร้อมเขียนบอกเหตุผลว่าทำไมจึงอยากประกอบอาชีพนี้ และต้องฝึกฝนอะไรบ้าง</div>
+</div></section>
+
+<section class="slide" data-title="แบบทดสอบ"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบ (10 ข้อ)</h2>
+  <div data-quiz="main"></div>
+</div></section>
+
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปบทเรียน</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class="grid" style="--min:260px">
+    <div class="card c-orange"><h3>💼 อาชีพ</h3><p>การทำงานที่สุจริต เพื่อให้ได้เงินหรือผลตอบแทนมาเลี้ยงชีพ</p></div>
+    <div class="card c-pink"><h3>🌟 ความสำคัญ</h3><p>ต่อตนเอง ครอบครัว ชุมชน และประเทศชาติ</p></div>
+    <div class="card c-blue"><h3>🗂️ ประเภท</h3><p>อาชีพอิสระ / อาชีพรับจ้าง<br>เกษตรกรรม · อุตสาหกรรม · ค้าขาย · บริการ</p></div>
+    <div class="card c-green"><h3>💖 นิสัยที่ดี</h3><p>ขยัน อดทน ซื่อสัตย์ รับผิดชอบ มีมนุษยสัมพันธ์ ประหยัด</p></div>
+  </div>
+  <div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+Kit.sorters.group = {
+  bins: [{ k: 'a', t: '🌾 เกษตรกรรม', c: 'var(--green)' }, { k: 'i', t: '🏭 อุตสาหกรรม/ช่าง', c: 'var(--blue)' }, { k: 't', t: '🏪 ค้าขาย', c: 'var(--orange)' }, { k: 's', t: '🧑‍⚕️ บริการ', c: 'var(--purple)' }],
+  items: [
+    { t: '🌾 ชาวนา', k: 'a', w: 'ปลูกข้าว เป็นงานเกษตรกรรม' }, { t: '🐔 เลี้ยงไก่', k: 'a', w: 'เลี้ยงสัตว์ เป็นงานเกษตรกรรม' }, { t: '🎣 ชาวประมง', k: 'a', w: 'จับสัตว์น้ำ จัดอยู่ในกลุ่มเกษตรกรรม' },
+    { t: '🔧 ช่างซ่อมรถ', k: 'i', w: 'ใช้ทักษะช่างซ่อมสิ่งของ' }, { t: '🪚 ช่างไม้', k: 'i', w: 'ผลิตและสร้างสิ่งของ' }, { t: '🏭 พนักงานโรงงาน', k: 'i', w: 'ทำงานผลิตสินค้าในโรงงาน' },
+    { t: '🛒 แม่ค้าขายผลไม้', k: 't', w: 'ซื้อมาขายไป เป็นงานค้าขาย' }, { t: '🏪 เจ้าของร้านขายของชำ', k: 't', w: 'ขายสินค้า เป็นงานค้าขาย' },
+    { t: '🧑‍⚕️ พยาบาล', k: 's', w: 'ดูแลผู้ป่วย เป็นงานบริการ' }, { t: '💇 ช่างตัดผม', k: 's', w: 'ให้บริการตัดผม' }, { t: '🚌 คนขับรถโดยสาร', k: 's', w: 'ให้บริการรับส่งผู้โดยสาร' }
+  ]
+};
+Kit.quizzes.situ = [
+  { q: '🍊 ป้าขายส้ม มีส้มบางลูกเน่าเล็กน้อย ป้าควรทำอย่างไร', c: ['แยกส้มเน่าออก ไม่นำมาขายปนกับส้มดี', 'ซ่อนส้มเน่าไว้ใต้ส้มดีให้ลูกค้าไม่เห็น', 'ขายส้มเน่าในราคาเท่ากับส้มดี', 'ทิ้งส้มทั้งหมด'], a: 0, w: 'ผู้ประกอบอาชีพที่ดีต้อง <b>ซื่อสัตย์</b> ไม่เอาเปรียบลูกค้า' },
+  { q: '🔧 ลุงช่างรับปากลูกค้าว่าจะซ่อมพัดลมเสร็จวันพรุ่งนี้ ลุงควรทำอย่างไร', c: ['ตั้งใจซ่อมให้เสร็จตามเวลาที่นัดไว้', 'ไปซ่อมงานอื่นที่ได้เงินมากกว่าก่อน', 'ปล่อยไว้ก่อน รอให้ลูกค้ามาทวง', 'คืนพัดลมโดยไม่ซ่อม'], a: 0, w: 'แสดงถึง <b>ความรับผิดชอบ</b> และ <b>ตรงต่อเวลา</b>' },
+  { q: '🍜 ร้านก๋วยเตี๋ยวขายไม่ค่อยดี เจ้าของร้านควรทำอย่างไร', c: ['ปรับปรุงรสชาติ รักษาความสะอาด และบริการด้วยรอยยิ้ม', 'เลิกขายทันที', 'ต่อว่าร้านข้าง ๆ ที่ขายดีกว่า', 'ขึ้นราคาให้แพงขึ้นมาก ๆ'], a: 0, w: 'ต้อง <b>ขยัน อดทน ใฝ่เรียนรู้</b> และ <b>มีมนุษยสัมพันธ์</b> ที่ดีกับลูกค้า' },
+  { q: '💰 พ่อขายผักได้เงินมากในเดือนนี้ พ่อควรทำอย่างไร', c: ['แบ่งเงินไว้ใช้จ่ายที่จำเป็น และเก็บออมไว้ส่วนหนึ่ง', 'ใช้เงินซื้อของที่ไม่จำเป็นจนหมด', 'ให้คนอื่นยืมทั้งหมด', 'หยุดทำงานไปเที่ยวทั้งเดือน'], a: 0, w: 'แสดงถึงการ <b>ประหยัด อดออม</b>' }
+];
+Kit.quizzes.main = [
+  { q: '“อาชีพ” หมายถึงข้อใด', c: ['การทำงานที่สุจริตเพื่อให้ได้เงินหรือผลตอบแทนมาเลี้ยงชีพ', 'การทำงานอะไรก็ได้ที่ได้เงินมาก', 'การทำงานบ้านช่วยพ่อแม่', 'การเล่นกีฬาเพื่อออกกำลังกาย'], a: 0, w: 'อาชีพต้องเป็นงาน <b>สุจริต</b> และได้ผลตอบแทน' },
+  { q: 'ข้อใด <u>ไม่ใช่</u> ความสำคัญของอาชีพต่อตนเอง', c: ['ทำให้ได้เปรียบผู้อื่นทุกเรื่อง', 'มีรายได้ไว้ใช้จ่าย', 'พึ่งพาตนเองได้', 'มีความภาคภูมิใจในตนเอง'], a: 0, w: 'อาชีพไม่ได้มีไว้เพื่อเอาเปรียบผู้อื่น' },
+  { q: 'อาชีพใดเป็น <u>อาชีพอิสระ</u>', c: ['เจ้าของร้านขายข้าวมันไก่', 'พนักงานโรงงาน', 'ข้าราชการครู', 'ลูกจ้างร้านสะดวกซื้อ'], a: 0, w: 'เจ้าของร้านเป็นเจ้าของกิจการเอง จึงเป็นอาชีพอิสระ' },
+  { q: 'อาชีพใดเป็น <u>อาชีพรับจ้าง</u>', c: ['พนักงานขับรถของบริษัท', 'ชาวสวนที่ปลูกผักขายเอง', 'แม่ค้าขายขนมหน้าบ้าน', 'ช่างตัดผมที่เปิดร้านเอง'], a: 0, w: 'ทำงานให้บริษัท และได้รับค่าจ้าง/เงินเดือน' },
+  { q: 'ชาวประมง จัดอยู่ในกลุ่มอาชีพใด', c: ['เกษตรกรรม', 'อุตสาหกรรม', 'ค้าขาย', 'บริการ'], a: 0, w: 'ประมงเป็นการหาสัตว์น้ำ จัดอยู่ในกลุ่มเกษตรกรรม' },
+  { q: 'พยาบาลและช่างตัดผม จัดอยู่ในกลุ่มอาชีพใด', c: ['บริการ', 'เกษตรกรรม', 'อุตสาหกรรม', 'ค้าขาย'], a: 0, w: 'ทั้งสองอาชีพช่วยเหลือและให้บริการผู้อื่น' },
+  { q: 'ชุมชนริมทะเล มักประกอบอาชีพใด', c: ['ประมงและทำน้ำปลา', 'ทำนาขั้นบันได', 'ทำเหมืองแร่', 'ปลูกชาบนดอย'], a: 0, w: 'อาชีพในชุมชนขึ้นอยู่กับสภาพแวดล้อมและทรัพยากรในท้องถิ่น' },
+  { q: 'ลักษณะนิสัยใดสำคัญที่สุด ที่ทำให้ลูกค้าไว้วางใจ', c: ['ความซื่อสัตย์', 'การพูดเก่ง', 'การแต่งตัวสวย', 'การขายของถูกที่สุด'], a: 0, w: 'ความซื่อสัตย์ทำให้ลูกค้าเชื่อใจและกลับมาใช้บริการอีก' },
+  { q: 'ข้อใดเป็นการเลือกอาชีพที่เหมาะสม', c: ['เลือกตามความสนใจ ความถนัด และความต้องการของตลาด', 'เลือกตามเพื่อนสนิท', 'เลือกอาชีพที่ได้เงินเร็วแม้ผิดกฎหมาย', 'เลือกอาชีพที่ไม่ต้องทำอะไรเลย'], a: 0, w: 'ควรพิจารณาความสนใจ ความถนัด ความรู้ ทุน และตลาด' },
+  { q: 'ข้อใดเป็นงานที่ <u>ไม่ใช่</u> อาชีพ', c: ['การหลอกขายสินค้าปลอมทางออนไลน์', 'การรับจ้างทำความสะอาดบ้าน', 'การขายผักปลอดสารพิษ', 'การรับซ่อมโทรศัพท์'], a: 0, w: 'การหลอกลวงผิดกฎหมายและไม่สุจริต จึงไม่ใช่อาชีพ' }
+];
+
+var LIKES = [
+  { k: 'plant', t: '🌱 ปลูกต้นไม้/สัตว์', j: [['👩‍🌾', 'เกษตรกร'], ['🧑‍⚕️', 'สัตวแพทย์'], ['🌸', 'คนจัดสวน']] },
+  { k: 'cook', t: '🍳 ทำอาหาร', j: [['👨‍🍳', 'พ่อครัว/แม่ครัว'], ['🧁', 'คนทำขนม'], ['🍜', 'เจ้าของร้านอาหาร']] },
+  { k: 'art', t: '🎨 วาดรูป/ประดิษฐ์', j: [['🎨', 'นักออกแบบ'], ['🧺', 'ช่างหัตถกรรม'], ['🍃', 'ช่างงานใบตอง']] },
+  { k: 'fix', t: '🔧 ซ่อม/สร้างของ', j: [['🔧', 'ช่างซ่อม'], ['🏗️', 'วิศวกร'], ['🪚', 'ช่างไม้']] },
+  { k: 'help', t: '🤝 ช่วยเหลือผู้อื่น', j: [['👩‍⚕️', 'พยาบาล/หมอ'], ['👮', 'ตำรวจ'], ['🚒', 'นักดับเพลิง']] },
+  { k: 'teach', t: '📚 อ่าน/อธิบายให้เพื่อนฟัง', j: [['👩‍🏫', 'ครู'], ['📰', 'นักข่าว'], ['📖', 'บรรณารักษ์']] },
+  { k: 'sell', t: '🛒 ขายของ/พูดคุย', j: [['🛒', 'พ่อค้าแม่ค้า'], ['📱', 'ขายของออนไลน์'], ['🏪', 'เจ้าของร้านค้า']] },
+  { k: 'tech', t: '💻 คอมพิวเตอร์', j: [['👩‍💻', 'โปรแกรมเมอร์'], ['🎮', 'นักสร้างเกม'], ['🎬', 'คนตัดต่อวิดีโอ']] }
+];
+Kit.setup = function () {
+  var box = document.getElementById('likes'), out = document.getElementById('dreamOut'), on = {};
+  LIKES.forEach(function (l) {
+    var b = document.createElement('button');
+    b.className = 'chip'; b.textContent = l.t;
+    b.onclick = function () { on[l.k] = !on[l.k]; b.classList.toggle('sel', on[l.k]); Kit.sound.tap(); draw(); };
+    box.appendChild(b);
+  });
+  function draw() {
+    var picks = LIKES.filter(function (l) { return on[l.k]; });
+    if (!picks.length) { out.innerHTML = '<p class="center sub">ยังไม่ได้เลือก ลองแตะสิ่งที่ชอบด้านบนดูนะ 👆</p>'; return; }
+    out.innerHTML = '<div class="grid" style="--min:150px">' + picks.map(function (l) {
+      return l.j.map(function (j) { return '<div class="card c-yellow center pop"><div style="font-size:2.4rem">' + j[0] + '</div><b>' + j[1] + '</b></div>'; }).join('');
+    }).join('') + '</div>';
+  }
+  draw();
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>ประดิษฐ์กระทงใบตองใส่ขนม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#2EAE5F;--main-deep:#1E8A47}
+.stepview{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:center;margin-top:10px}
+.stepview .pic{background:#F2FBF5;border-radius:18px;border:3px dashed var(--green);padding:8px}
+.stepview .pic svg{width:100%;height:auto;display:block;font-family:Mali,sans-serif}
+@media (max-width:700px){.stepview{grid-template-columns:1fr}}
+.sdots{display:flex;gap:6px}
+.sdots button{width:16px;height:16px;border-radius:50%;border:0;background:#D8EEDF;padding:0}
+.sdots button.on{background:var(--main);transform:scale(1.25)}
+.rate{display:flex;gap:6px}
+.rate button{width:46px;height:46px;border-radius:12px;border:3px solid var(--line);background:#fff;font-weight:700;font-size:1.15rem}
+.rate button.on{background:var(--yellow);border-color:var(--orange)}
+#heroTray svg{font-family:Mali,sans-serif}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🪷</span>
+  <div class="ttl"><b>ประดิษฐ์กระทงใบตองใส่ขนม</b><small>การงานอาชีพ ป.4 · หน่วยที่ 5 งานประดิษฐ์จากใบตอง · สื่อที่ 2</small></div>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge" style="background:var(--orange)">การงานอาชีพ ป.4 · หน่วยที่ 5</span>
+  <div id="heroTray"></div>
+  <h1 style="color:var(--main-deep);text-shadow:0 4px 0 #CFF3DB">ประดิษฐ์กระทงใบตอง<br><small style="font-size:.55em">กระทงสี่มุมใส่ขนม</small></h1>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul>
+      <li>บอก <b>วัสดุอุปกรณ์</b> และ <b>ขั้นตอน</b> การทำกระทงใบตองได้</li>
+      <li><b>ลงมือทำ</b> กระทงใบตองสี่มุมได้อย่างปลอดภัย</li>
+      <li><b>ประเมินผลงาน</b> ของตนเองได้</li>
+      <li>บอกแนวทางนำงานใบตองไป <b>ต่อยอดเป็นอาชีพ</b> ได้</li>
+    </ul>
+  </div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button>
+</div></section>
+
+<section class="slide" data-title="รู้จักกระทงใบตอง"><div class="inner">
+  <h2 class="h"><span class="e">🪷</span>รู้จักกระทงใบตอง</h2>
+  <div class="key"><b>กระทงใบตอง</b> คือ ภาชนะที่ทำจากใบตอง ใช้ใส่ขนม อาหาร หรือใช้ในงานประเพณี เป็นภาชนะ <b>ธรรมชาติ ย่อยสลายได้</b> แทนกล่องโฟมและพลาสติก</div>
+  <div class="grid" style="--min:200px">
+    <div class="card c-green center"><div class="emoji-xl" style="font-size:2.6rem">🍡</div><b>กระทงสี่มุม</b><p>ใส่ขนมไทย เช่น ขนมชั้น ขนมถ้วย</p></div>
+    <div class="card c-orange center"><div class="emoji-xl" style="font-size:2.6rem">🍛</div><b>กระทงใส่อาหาร</b><p>ใส่ห่อหมก ข้าว หรือกับข้าว</p></div>
+    <div class="card c-blue center"><div class="emoji-xl" style="font-size:2.6rem">🪷</div><b>กระทงลอย</b><p>ใช้ในประเพณีลอยกระทง</p></div>
+  </div>
+  <div class="note">🎯 วันนี้เราจะทำ <b>“กระทงสี่มุม”</b> ซึ่งเป็นงานใบตองพื้นฐาน ทำง่าย ใช้ได้จริง</div>
+</div></section>
+
+<section class="slide" data-title="วัสดุอุปกรณ์"><div class="inner">
+  <h2 class="h"><span class="e">🧰</span>วัสดุอุปกรณ์</h2>
+  <div class="grid" style="--min:220px">
+    <div class="card c-green"><h3>🍃 ใบตอง</h3><p>เช็ดสะอาดแล้ว ขนาดใหญ่กว่าแบบวงกลม</p></div>
+    <div class="card c-purple"><h3>⭕ แบบวงกลม</h3><p>ถ้วยหรือจานเล็ก เส้นผ่านศูนย์กลางประมาณ 10–12 เซนติเมตร</p></div>
+    <div class="card c-red"><h3>✂️ กรรไกร</h3><p>ใช้ตัดใบตองตามแบบ</p></div>
+    <div class="card c-orange"><h3>🥢 ไม้กลัด</h3><p>หรือใช้เครื่องเย็บกระดาษแทน</p></div>
+    <div class="card c-blue"><h3>✏️ ดินสอ</h3><p>วาดเส้นตามแบบวงกลม</p></div>
+    <div class="card c-teal"><h3>🧽 ผ้าชุบน้ำหมาด ๆ</h3><p>เช็ดใบตอง และห่อเก็บใบตองให้สด</p></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ขั้นตอนการทำ"><div class="inner">
+  <h2 class="h"><span class="e">🪜</span>ขั้นตอนการทำกระทงสี่มุม</h2>
+  <div class="card c-green noswipe">
+    <div class="row" style="justify-content:space-between">
+      <span class="pill" id="stNo" style="--c:var(--main)">ขั้นที่ 1 / 6</span>
+      <div class="sdots" id="stDots"></div>
+    </div>
+    <div class="stepview">
+      <div class="pic" id="stPic"></div>
+      <div>
+        <h3 id="stTitle" style="font-size:clamp(1.25rem,3.4vw,1.6rem)"></h3>
+        <p id="stText" style="font-size:clamp(1.05rem,2.7vw,1.25rem)"></p>
+        <div class="note" id="stTip" style="margin-top:10px"></div>
+      </div>
+    </div>
+    <div class="row center" style="margin-top:12px">
+      <button class="btn ghost" id="stPrev">◀ ขั้นก่อน</button>
+      <button class="btn" id="stNext">ขั้นต่อไป ▶</button>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เคล็ดลับ"><div class="inner">
+  <h2 class="h"><span class="e">💡</span>เคล็ดลับให้กระทงสวยและแข็งแรง</h2>
+  <div class="grid" style="--min:250px">
+    <div class="card c-green"><h3>✖️ เส้นใบสวนทางกัน</h3><p>ซ้อนใบตอง 2 แผ่นให้แนวเส้นใบตั้งฉากกัน กระทงจะไม่ฉีกตามเส้นใบ</p></div>
+    <div class="card c-blue"><h3>✨ หันด้านมันออก</h3><p>ให้ด้านมันอยู่ด้านนอกทั้งด้านในและด้านล่าง กระทงจะดูสวยเป็นเงา</p></div>
+    <div class="card c-orange"><h3>📐 มุมห่างเท่ากัน</h3><p>จีบมุมแรกกับมุมที่สองให้อยู่ตรงข้ามกัน แล้วจึงทำอีกสองมุม จะได้กระทงสี่เหลี่ยมสวย</p></div>
+    <div class="card c-purple"><h3>📌 กลัดให้แน่น</h3><p>กลัดไม้กลัดให้แน่น แล้วตัดปลายส่วนที่ยาวเกินออก ไม่ให้ทิ่มมือ</p></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เรียงขั้นตอน"><div class="inner">
+  <h2 class="h"><span class="e">🧩</span>กิจกรรม: เรียงขั้นตอนการทำกระทง</h2>
+  <div data-order="steps"></div>
+</div></section>
+
+<section class="slide" data-title="ประเมินผลงาน"><div class="inner">
+  <h2 class="h"><span class="e">📋</span>ประเมินผลงานของฉัน</h2>
+  <p class="sub">ทำกระทงเสร็จแล้ว แตะให้คะแนนตัวเองตามความจริง (3 = ดีมาก, 2 = ดี, 1 = ควรปรับปรุง)</p>
+  <div class="card c-yellow noswipe" id="rubric"></div>
+  <div id="rubricOut"></div>
+</div></section>
+
+<section class="slide" data-title="ต่อยอดสู่อาชีพ"><div class="inner">
+  <h2 class="h"><span class="e">💰</span>ต่อยอดงานใบตองสู่อาชีพ</h2>
+  <div class="grid" style="--min:230px">
+    <div class="card c-green center"><div class="emoji-xl" style="font-size:2.6rem">🍡</div><b>ทำกระทงใส่ขนมส่งร้าน</b><p>ร้านขนมไทยและแม่ค้าในตลาดต้องใช้ทุกวัน</p></div>
+    <div class="card c-blue center"><div class="emoji-xl" style="font-size:2.6rem">🪷</div><b>ขายกระทงลอย</b><p>ขายดีช่วงเทศกาลลอยกระทง</p></div>
+    <div class="card c-pink center"><div class="emoji-xl" style="font-size:2.6rem">🌸</div><b>รับทำบายศรี พานพุ่ม</b><p>ใช้ในงานบวช งานแต่ง งานประเพณี</p></div>
+  </div>
+  <div class="card c-orange">
+    <h3>🧮 ลองคิด: ขายกระทงได้กำไรเท่าไร</h3>
+    <p>ทำกระทง 20 ใบ ใช้ต้นทุน (ใบตอง ไม้กลัด) ทั้งหมด 30 บาท ขายใบละ 3 บาท</p>
+    <div class="steps line3" id="profit" style="margin-top:8px">
+      <div class="step">รายรับ = 20 × 3 = <b>60</b> บาท</div>
+      <div class="step">กำไร = รายรับ − ต้นทุน = 60 − 30 = <b class="t-green">30</b> บาท 🎉</div>
+      <div class="step">💡 ถ้าอยากขายได้ดี ต้อง <b>ทำให้สวย สะอาด แข็งแรง</b> และ <b>ซื่อสัตย์ต่อลูกค้า</b></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="profit" style="--c:var(--orange)">คิดไปด้วยกัน 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="แบบทดสอบ"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบ (8 ข้อ)</h2>
+  <div data-quiz="main"></div>
+</div></section>
+
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปบทเรียน</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class="card c-green">
+    <h3>🪜 ขั้นตอนทำกระทงสี่มุม</h3>
+    <ol>
+      <li>เตรียมใบตอง แบบวงกลม กรรไกร ไม้กลัด</li>
+      <li>ทาบแบบ ตัดใบตองเป็นวงกลม 2 แผ่น</li>
+      <li>ซ้อน 2 แผ่น ด้านมันอยู่นอก เส้นใบสวนทางกัน</li>
+      <li>จับจีบมุมที่ 1 แล้วกลัด</li>
+      <li>จีบมุมตรงข้าม แล้วทำให้ครบ 4 มุม</li>
+      <li>ตัดปลายไม้กลัด ตกแต่ง ใส่ขนม</li>
+    </ol>
+  </div>
+  <div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button><a class="btn ghost" href="../wk4-banana-leaf/" style="text-decoration:none">📖 ทบทวน: รู้จักใบตอง</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+/* ---------- ภาพประกอบขั้นตอน (SVG) ---------- */
+var G = '#3DBE6A', GD = '#1E7A3E', GL = '#7EDB9C';
+function veins(cx, cy, r, dir, col) {
+  var s = '';
+  for (var k = -r + 8; k < r; k += 9) {
+    var h = Math.sqrt(r * r - k * k);
+    s += dir === 'h' ? '<line x1="' + (cx - h) + '" y1="' + (cy + k) + '" x2="' + (cx + h) + '" y2="' + (cy + k) + '" stroke="' + col + '" stroke-width="1.5"/>'
+                     : '<line x1="' + (cx + k) + '" y1="' + (cy - h) + '" x2="' + (cx + k) + '" y2="' + (cy + h) + '" stroke="' + col + '" stroke-width="1.5"/>';
+  }
+  return s;
+}
+function pin(x, y, a) {
+  return '<g transform="translate(' + x + ' ' + y + ') rotate(' + (a || 0) + ')"><rect x="-3" y="-16" width="6" height="32" rx="3" fill="#C98A3E" stroke="#8A5A2E" stroke-width="1.5"/></g>';
+}
+var PICS = [
+  /* 1 วัสดุ */
+  '<rect x="20" y="40" width="150" height="110" rx="14" fill="' + G + '" stroke="' + GD + '" stroke-width="3"/>' + veins(95, 95, 52, 'h', GD).replace(/stroke-width="1.5"/g, 'stroke-width="1" opacity=".35"') +
+  '<ellipse cx="225" cy="70" rx="45" ry="16" fill="#fff" stroke="#9B6CF0" stroke-width="4"/><path d="M182 72 Q225 130 268 72" fill="#EFE7FF" stroke="#9B6CF0" stroke-width="4"/>' +
+  '<text x="225" y="160" text-anchor="middle" font-size="40">✂️</text>' + pin(170, 175, 70) + pin(185, 180, 80),
+  /* 2 ตัดวงกลม */
+  '<rect x="30" y="20" width="240" height="160" rx="14" fill="' + G + '" stroke="' + GD + '" stroke-width="3"/>' +
+  '<circle cx="110" cy="100" r="58" fill="' + GL + '" stroke="#fff" stroke-width="4" stroke-dasharray="10 8"/>' +
+  '<circle cx="225" cy="100" r="42" fill="' + GL + '" stroke="' + GD + '" stroke-width="3"/>' +
+  '<text x="170" y="60" font-size="34">✂️</text><text x="110" y="108" text-anchor="middle" font-size="16" font-weight="700" fill="#1E5A2E">แผ่นที่ 1</text><text x="225" y="106" text-anchor="middle" font-size="14" font-weight="700" fill="#1E5A2E">แผ่นที่ 2</text>',
+  /* 3 ซ้อนเส้นใบสวนกัน */
+  '<circle cx="120" cy="100" r="68" fill="' + G + '" stroke="' + GD + '" stroke-width="3"/>' + veins(120, 100, 68, 'h', GD) +
+  '<circle cx="185" cy="100" r="68" fill="' + GL + '" stroke="' + GD + '" stroke-width="3" opacity=".92"/>' + veins(185, 100, 68, 'v', '#2A8F4F') +
+  '<text x="75" y="192" text-anchor="middle" font-size="13" font-weight="700" fill="#3B2E5A">แผ่น 1: เส้นใบแนวนอน</text><text x="228" y="192" text-anchor="middle" font-size="13" font-weight="700" fill="#3B2E5A">แผ่น 2: เส้นใบแนวตั้ง</text>',
+  /* 4 จีบมุมแรก */
+  '<path d="M99 60 A75 75 0 1 0 201 60 Z" fill="' + G + '" stroke="' + GD + '" stroke-width="3"/>' +
+  '<path d="M99 60 L201 60 L150 96 Z" fill="' + GL + '" stroke="' + GD + '" stroke-width="2.5"/>' +
+  '<line x1="150" y1="60" x2="150" y2="96" stroke="' + GD + '" stroke-width="2" stroke-dasharray="4 4"/>' +
+  pin(150, 68, 90) +
+  '<text x="150" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#E0561F">พับขอบเข้าหากันเป็นมุม แล้วกลัด ⬇</text>' +
+  '<text x="150" y="150" text-anchor="middle" font-size="13" font-weight="700" fill="#1E5A2E">มองจากด้านบน</text>',
+  /* 5 ครบ 4 มุม */
+  '<path d="M80 50 L220 50 L220 170 L80 170 Z" fill="' + G + '" stroke="' + GD + '" stroke-width="3" rx="20"/>' +
+  '<rect x="98" y="66" width="104" height="88" rx="14" fill="' + GL + '" stroke="' + GD + '" stroke-width="2"/>' +
+  '<path d="M80 50 l26 4 l-22 22 Z" fill="' + GD + '"/><path d="M220 50 l-26 4 l22 22 Z" fill="' + GD + '"/><path d="M80 170 l26 -4 l-22 -22 Z" fill="' + GD + '"/><path d="M220 170 l-26 -4 l22 -22 Z" fill="' + GD + '"/>' +
+  pin(92, 62, 45) + pin(208, 62, -45) + pin(92, 158, -45) + pin(208, 158, 45) +
+  '<text x="150" y="196" text-anchor="middle" font-size="14" font-weight="700" fill="#3B2E5A">มองจากด้านบน: ครบ 4 มุม</text>',
+  /* 6 เสร็จ */
+  '<path d="M60 90 L240 90 L215 160 L85 160 Z" fill="' + G + '" stroke="' + GD + '" stroke-width="3"/>' +
+  '<path d="M60 90 L70 62 L90 92 Z" fill="' + GL + '" stroke="' + GD + '" stroke-width="2"/><path d="M240 90 L230 62 L210 92 Z" fill="' + GL + '" stroke="' + GD + '" stroke-width="2"/>' +
+  '<text x="150" y="98" text-anchor="middle" font-size="46">🍡🍮</text><text x="150" y="190" text-anchor="middle" font-size="16" font-weight="700" fill="#1E8A47">เสร็จแล้ว! พร้อมใส่ขนม ✨</text>'
+];
+var STEPS = [
+  { t: 'เตรียมวัสดุอุปกรณ์', x: 'เตรียมใบตองที่เช็ดสะอาดแล้ว แบบวงกลม (ถ้วยหรือจานเล็ก) กรรไกร และไม้กลัดหรือเครื่องเย็บกระดาษ', tip: '🧼 ล้างมือให้สะอาดก่อน เพราะกระทงนี้ใช้ใส่อาหาร' },
+  { t: 'ตัดใบตองเป็นวงกลม 2 แผ่น', x: 'วางแบบวงกลมบนใบตอง ใช้ดินสอวาดตามขอบ แล้วตัดเป็นวงกลม 2 แผ่น ขนาดเท่ากัน', tip: '✂️ ตัดช้า ๆ ให้ขอบเรียบ และระวังกรรไกรบาดมือ' },
+  { t: 'ซ้อนใบตอง 2 แผ่น', x: 'หันด้านหลังใบ (ด้านด้าน) ประกบกัน ให้ด้านมันอยู่ด้านนอก และวางให้แนวเส้นใบของสองแผ่นสวนทางกัน (ตั้งฉากกัน)', tip: '💪 เส้นใบสวนทางกัน ช่วยให้กระทงแข็งแรง ไม่ฉีกขาดง่าย' },
+  { t: 'จับจีบมุมที่ 1 แล้วกลัด', x: 'จับขอบใบตองด้านหนึ่ง พับจีบเข้าหากันให้เป็นมุม สูงประมาณ 2–3 เซนติเมตร แล้วกลัดด้วยไม้กลัด', tip: '📌 กดจีบให้แน่นก่อนกลัด มุมจะคมสวย' },
+  { t: 'ทำมุมที่ 2, 3 และ 4', x: 'หมุนไปด้านตรงข้าม จีบมุมที่ 2 แล้วกลัด จากนั้นทำมุมที่ 3 และ 4 ให้ห่างเท่า ๆ กัน จะได้กระทงสี่มุม', tip: '📐 ทำมุมตรงข้ามกันก่อน จะได้ทรงสี่เหลี่ยมที่สมดุล' },
+  { t: 'ตกแต่งและตรวจผลงาน', x: 'ตัดปลายไม้กลัดที่ยาวเกินออก ตรวจความแข็งแรงและความเรียบร้อย แล้วนำไปใส่ขนมได้เลย', tip: '🧹 เก็บเศษใบตองและอุปกรณ์ให้เรียบร้อยหลังทำเสร็จ' }
+];
+Kit.orders.steps = STEPS.map(function (s, k) { return s.t; });
+
+Kit.quizzes.main = [
+  { q: 'กระทงใบตองมีข้อดีต่อสิ่งแวดล้อมอย่างไร', c: ['ย่อยสลายได้ตามธรรมชาติ ลดขยะโฟมและพลาสติก', 'ใช้ได้หลายปีไม่เสีย', 'กันน้ำได้ดีกว่าพลาสติก', 'ราคาแพงจึงมีคุณค่า'], a: 0, w: 'ใบตองเป็นวัสดุธรรมชาติ ย่อยสลายได้' },
+  { q: 'แบบวงกลมที่ใช้ทาบตัดใบตอง ควรใช้สิ่งใด', c: ['ถ้วยหรือจานเล็ก', 'ไม้กลัด', 'ผ้าเช็ดใบตอง', 'ไม้บรรทัด'], a: 0, w: 'ถ้วยหรือจานเล็กช่วยให้ได้วงกลมขนาดเท่ากัน' },
+  { q: 'กระทงสี่มุม 1 ใบ ต้องตัดใบตองวงกลมกี่แผ่น', c: ['2 แผ่น', '1 แผ่น', '4 แผ่น', '6 แผ่น'], a: 0, w: 'ซ้อนใบตอง 2 แผ่นให้แข็งแรง' },
+  { q: 'การซ้อนใบตอง 2 แผ่น ควรวางแนวเส้นใบอย่างไร', c: ['ให้เส้นใบสวนทางกัน (ตั้งฉากกัน)', 'ให้เส้นใบไปทางเดียวกัน', 'วางอย่างไรก็ได้', 'ให้เส้นใบอยู่ด้านนอกทั้งหมด'], a: 0, w: 'เส้นใบสวนทางกันช่วยไม่ให้กระทงฉีกตามแนวเส้นใบ' },
+  { q: 'ควรหันด้านใดของใบตองไว้ด้านนอก', c: ['ด้านมัน', 'ด้านด้าน', 'ด้านที่มีรอยช้ำ', 'ด้านที่มีฝุ่น'], a: 0, w: 'ด้านมันสวยงาม เป็นเงา' },
+  { q: 'หลังจับจีบมุมที่ 1 แล้ว ควรทำมุมที่ 2 ตรงไหน', c: ['ด้านตรงข้ามกับมุมที่ 1', 'ติดกับมุมที่ 1', 'ตรงกลางกระทง', 'ที่ใดก็ได้'], a: 0, w: 'ทำมุมตรงข้ามก่อนจะได้ทรงที่สมดุล' },
+  { q: 'หลังกลัดไม้กลัดแล้ว ส่วนที่ยาวเกินควรทำอย่างไร', c: ['ตัดออกให้เรียบร้อย', 'ปล่อยไว้ให้ยาว', 'หักทิ้งไว้ในกระทง', 'ทาสีตกแต่ง'], a: 0, w: 'ตัดปลายเกินเพื่อความเรียบร้อยและไม่ทิ่มมือ' },
+  { q: 'ข้อใดเป็นการ <u>ต่อยอดงานใบตองเป็นอาชีพ</u> ได้', c: ['ทำกระทงใส่ขนมส่งขายร้านขนมไทย', 'ทิ้งใบตองที่เหลือทั้งหมด', 'เก็บกระทงไว้ไม่ให้ใครเห็น', 'ใช้กระทงเป็นของเล่นแล้วทิ้ง'], a: 0, w: 'งานใบตองสร้างรายได้ได้ เช่น ขายกระทง บายศรี' }
+];
+
+var RUB = ['ทำตามขั้นตอนได้ถูกต้อง', 'ผลงานประณีต เรียบร้อย สวยงาม', 'กระทงแข็งแรง ใช้งานได้จริง', 'รักษาความสะอาด', 'ใช้อุปกรณ์อย่างปลอดภัย และเก็บเข้าที่', 'ทำงานเสร็จทันเวลา'];
+Kit.setup = function () {
+  document.getElementById('heroTray').innerHTML = '<svg viewBox="0 0 300 200" style="width:min(260px,70vw);height:auto" role="img" aria-label="กระทงใบตอง">' + PICS[5] + '</svg>';
+  var cur = 0, dots = document.getElementById('stDots');
+  STEPS.forEach(function (_, k) {
+    var b = document.createElement('button'); b.setAttribute('aria-label', 'ขั้นที่ ' + (k + 1));
+    b.onclick = function () { cur = k; draw(); }; dots.appendChild(b);
+  });
+  function draw() {
+    var s = STEPS[cur];
+    document.getElementById('stNo').textContent = 'ขั้นที่ ' + (cur + 1) + ' / ' + STEPS.length;
+    document.getElementById('stPic').innerHTML = '<svg viewBox="0 0 300 200" role="img" aria-label="' + s.t + '">' + PICS[cur] + '</svg>';
+    document.getElementById('stTitle').textContent = (cur + 1) + '. ' + s.t;
+    document.getElementById('stText').textContent = s.x;
+    document.getElementById('stTip').textContent = s.tip;
+    document.getElementById('stPrev').disabled = cur === 0;
+    document.getElementById('stNext').textContent = cur === STEPS.length - 1 ? '🔁 ดูตั้งแต่ขั้นแรก' : 'ขั้นต่อไป ▶';
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.classList.toggle('on', k === cur); });
+  }
+  document.getElementById('stPrev').onclick = function () { if (cur > 0) { cur--; Kit.sound.tap(); draw(); } };
+  document.getElementById('stNext').onclick = function () { cur = cur === STEPS.length - 1 ? 0 : cur + 1; Kit.sound.tap(); draw(); };
+  draw();
+
+  /* ประเมินตนเอง */
+  var rb = document.getElementById('rubric'), val = {};
+  rb.innerHTML = '<table class="tbl" style="--c:var(--orange)"><tr><th>หัวข้อ</th><th style="width:1%;white-space:nowrap">คะแนน</th></tr>' + RUB.map(function (r, k) {
+    return '<tr><td>' + (k + 1) + '. ' + r + '</td><td><div class="rate" data-r="' + k + '">' +
+      [3, 2, 1].map(function (v) { return '<button data-v="' + v + '">' + v + '</button>'; }).join('') + '</div></td></tr>';
+  }).join('') + '</table>';
+  rb.querySelectorAll('.rate').forEach(function (g) {
+    g.querySelectorAll('button').forEach(function (b) {
+      b.onclick = function () {
+        val[g.getAttribute('data-r')] = +b.getAttribute('data-v');
+        g.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x === b); });
+        Kit.sound.tap(); sum();
+      };
+    });
+  });
+  function sum() {
+    var ks = Object.keys(val), out = document.getElementById('rubricOut');
+    if (ks.length < RUB.length) { out.innerHTML = '<p class="center sub">ให้คะแนนครบ ' + RUB.length + ' ข้อ แล้วจะเห็นผลรวม (' + ks.length + '/' + RUB.length + ')</p>'; return; }
+    var t = ks.reduce(function (a, k) { return a + val[k]; }, 0), max = RUB.length * 3;
+    var lv = t >= 16 ? ['ดีมาก', '🏆', 'c-green'] : t >= 12 ? ['ดี', '👍', 'c-blue'] : ['ควรปรับปรุง', '🌱', 'c-orange'];
+    out.innerHTML = '<div class="card ' + lv[2] + ' center pop"><div class="big">' + lv[1] + ' ได้ ' + t + ' / ' + max + ' คะแนน — ระดับ “' + lv[0] + '”</div>' +
+      '<p>' + (t >= 16 ? 'เยี่ยมมาก! ลองทำกระทงแบบอื่นหรือสอนเพื่อนต่อได้เลย' : 'ดูหัวข้อที่ได้ 1–2 คะแนน แล้วลองปรับปรุงในผลงานชิ้นต่อไปนะ') + '</p></div>';
+    if (t >= 16) Kit.confetti();
+  }
+  sum();
+};
+</script>
+</body>
+</html>
