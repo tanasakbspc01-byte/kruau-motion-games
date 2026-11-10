@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>โจทย์ปัญหาน้ำหนัก · ติว O-NET ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#E67E22;--main-deep:#C0610D;--glow:#FBE1C8}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">⚖️</span>
+  <div class="ttl"><b>โจทย์ปัญหาน้ำหนัก</b><small>คณิตศาสตร์ ป.6 · ติว O-NET · ค2.1 ป.5/2 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m6-onet-hub/" aria-label="หน้ารวมติว O-NET" title="หน้ารวมติว O-NET">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">ติว O-NET ป.6 · ตัวชี้วัด ค2.1 ป.5/2</span>
+  <div class="emoji-xl">⚖️🍉🚚</div>
+  <h1>โจทย์ปัญหาน้ำหนัก<br><small style="font-size:.48em">กรัม ขีด กิโลกรัม เมตริกตัน</small></h1>
+  <div class="ind"><b>📌 ตัวชี้วัด ค2.1 ป.5/2</b> แสดงวิธีหาคำตอบของโจทย์ปัญหาเกี่ยวกับน้ำหนักที่มีการเปลี่ยนหน่วยและเขียนในรูปทศนิยม</div>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul><li><b>เปลี่ยนหน่วย</b> น้ำหนัก กรัม ขีด กิโลกรัม เมตริกตัน ได้</li><li>เขียนน้ำหนักในรูป <b>ทศนิยม</b> ได้</li><li>แก้ <b>โจทย์ปัญหาน้ำหนัก</b> เรื่องราคาและการบรรทุกได้</li></ul>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนติว</b>ไปตลาดนัดกับครูอู๋กัน! แม่ค้าชั่งของเป็น <b>ขีด</b> เป็น <b>กิโล</b> ถ้าแปลงหน่วยเป็น เราจะไม่โดนโกงแน่นอน 🛒</div></div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มติวกันเลย ▶</button>
+  <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก</p>
+</div></section>
+
+<section class="slide" data-title="หน่วยน้ำหนัก"><div class="inner">
+  <h2 class="h"><span class="e">🪜</span>บันไดหน่วยน้ำหนัก</h2>
+  <div class="grid" style="--min:270px">
+    <div class="svgbox"><svg viewBox="0 0 360 250" role="img" aria-label="บันไดหน่วยน้ำหนัก ตัน กิโลกรัม ขีด กรัม">
+      <g font-weight="700" font-size="19" text-anchor="middle">
+        <rect x="10" y="20" width="90" height="46" rx="10" fill="#E67E22"/><text x="55" y="50" fill="#fff">ตัน</text>
+        <rect x="90" y="80" width="90" height="46" rx="10" fill="#3FA9F5"/><text x="135" y="110" fill="#fff">กก.</text>
+        <rect x="170" y="140" width="90" height="46" rx="10" fill="#2ECC71"/><text x="215" y="170" fill="#fff">ขีด</text>
+        <rect x="250" y="200" width="90" height="46" rx="10" fill="#9B6CF0"/><text x="295" y="230" fill="#fff">กรัม</text>
+      </g>
+      <g font-size="15" font-weight="700" fill="#C0610D"><text x="150" y="58">× 1,000 ↘</text><text x="235" y="118">× 10 ↘</text><text x="300" y="178">× 100 ↘</text></g>
+    </svg></div>
+    <div class="card c-orange">
+      <h3>🧠 จำง่ายแบบครูอู๋</h3>
+      <ul>
+        <li>🍬 ลูกอม 1 เม็ด ≈ <b>1 กรัม</b></li>
+        <li>🥚 ไข่ 2 ฟอง ≈ <b>1 ขีด</b> (100 กรัม)</li>
+        <li>🍚 ข้าวสาร 1 ถุงเล็ก = <b>1 กิโลกรัม</b> = 10 ขีด</li>
+        <li>🚗 รถเก๋ง 1 คัน ≈ <b>1 เมตริกตัน</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="trap"><b class="t">⚠️ กับดักข้อสอบ</b> กก. → ขีด คูณ <b>10</b> แต่ ขีด → กรัม คูณ <b>100</b> อย่าสลับกัน!</div>
+</div></section>
+
+<section class="slide" data-title="ตลาดนัดครูอู๋" data-id="mkt"><div class="inner">
+  <h2 class="h"><span class="e">🛒</span>ตลาดนัดครูอู๋: ชั่งแล้วคิดเงิน</h2>
+  <p class="sub">แตะสินค้าใส่ตะกร้า ดูน้ำหนักรวมเป็นกรัมและกิโลกรัม (แตะในตะกร้าเพื่อนำออก)</p>
+  <div class="card c-orange"><div class="row center" id="shop"></div></div>
+  <div class="card c-blue"><h3>🧺 ตะกร้า</h3><div class="row" id="basket" style="min-height:52px"></div><div class="calc" id="bout" style="margin-top:8px"></div></div>
+</div></section>
+
+<section class="slide" data-title="โจทย์ปัญหา"><div class="inner">
+  <h2 class="h"><span class="e">🚚</span>โจทย์ปัญหาน้ำหนัก</h2>
+  <div class="card c-green">
+    <p class="big" style="font-size:clamp(1.05rem,3vw,1.3rem)">รถบรรทุกรับน้ำหนักได้ 3 เมตริกตัน บรรทุกข้าว 45 กระสอบ กระสอบละ 50 กิโลกรัม รถคันนี้รับน้ำหนักได้อีกกี่กิโลกรัม</p>
+    <div class="steps calc" id="tr">
+      <div class="step"><span class="pill" style="--c:var(--green)">ขั้นที่ 1</span> ข้าวทั้งหมด 45 × 50 = <b>2,250 กก.</b></div>
+      <div class="step"><span class="pill" style="--c:var(--orange)">ทำหน่วยให้เหมือนกัน</span> 3 เมตริกตัน = 3 × 1,000 = <b>3,000 กก.</b></div>
+      <div class="step"><span class="pill" style="--c:var(--blue)">ขั้นที่ 2</span> รับได้อีก 3,000 − 2,250 = <b class="t-purple">750 กก.</b></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="tr" style="--c:var(--green)">คิดตามครูอู๋ 👇</button></div>
+  </div>
+  <div class="card c-purple">
+    <p class="big" style="font-size:clamp(1.05rem,3vw,1.3rem)">ส้ม 2.5 กก. ราคา 175 บาท ถ้าซื้อส้ม 8 ขีด ต้องจ่ายกี่บาท</p>
+    <div class="steps calc" id="or">
+      <div class="step">8 ขีด = 0.8 กก. &nbsp; ส้ม 1 กก. ราคา 175 ÷ 2.5 = <b>70 บาท</b></div>
+      <div class="step">ส้ม 0.8 กก. ราคา 70 × 0.8 = <b class="t-purple">56 บาท</b></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="or" style="--c:var(--purple)">คิดตามครูอู๋ 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="คัดแยก"><div class="inner">
+  <h2 class="h"><span class="e">🧺</span>กิจกรรม: น้ำหนักเท่ากัน อยู่กล่องเดียวกัน</h2>
+  <div data-sorter="w"></div>
+</div></section>
+
+<section class="slide" data-title="ฝึกคิดไม่รู้จบ"><div class="inner">
+  <h2 class="h"><span class="e">🎲</span>ฝึกคิดไม่รู้จบ</h2>
+  <div class="card c-teal"><div class="drill" data-drill="w"></div></div>
+</div></section>
+<section class="slide" data-title="ตะลุยข้อสอบ O-NET"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>ตะลุยข้อสอบแนว O-NET (10 ข้อ)</h2>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เตือน</b>อ่านโจทย์ให้จบ ขีดเส้นใต้ <b>สิ่งที่โจทย์ถาม</b> แล้วค่อยเลือกคำตอบนะ ตอบผิดได้ ดูเหตุผลแล้วจำไว้ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปให้จำขึ้นใจ</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class='chant'>100 กรัม = 1 ขีด · 1,000 กรัม = 1 กิโลกรัม · 1,000 กิโลกรัม = 1 เมตริกตัน<small>1 กิโลกรัม = 10 ขีด · ใหญ่ → เล็ก คูณ · เล็ก → ใหญ่ หาร</small></div><div class='trap'><b class='t'>⚠️ กับดัก</b> 2 กก. 5 ขีด = 2.5 กก. (ขีดอยู่ตำแหน่งที่ 1) แต่ 2 กก. 5 กรัม = 2.005 กก. (กรัมต้องครบ 3 ตำแหน่ง)</div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(0)">🔁 ติวอีกครั้ง</button></div>
+  <div class="row center"><a class="btn ghost" href="../m6-onet-08-length/">◀ 📏 ความยาว</a><a class="btn" style="--c:var(--purple)" href="../m6-onet-hub/">🏠 หน้ารวมติว O-NET</a><a class="btn ghost" href="../m6-onet-10-volume/">📦 ปริมาตร ▶</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m6-onet-09-weight";
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = 'kruau-onet6-' + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+Kit.quizzes.main = [
+{
+"q": "3.46 กิโลกรัม เท่ากับกี่กรัม",
+"c": [
+"3,460 กรัม",
+"346 กรัม",
+"34.6 กรัม",
+"34,600 กรัม"
+],
+"a": 0,
+"w": "1 กก. = 1,000 ก. → 3.46 × 1,000 = 3,460 กรัม"
+},
+{
+"q": "2 กิโลกรัม 5 ขีด เขียนเป็นกิโลกรัมได้เท่าใด",
+"c": [
+"2.5 กก.",
+"2.05 กก.",
+"25 กก.",
+"2.005 กก."
+],
+"a": 0,
+"w": "10 ขีด = 1 กก. → 5 ขีด = 0.5 กก. รวม 2.5 กก."
+},
+{
+"q": "750 กรัม เท่ากับกี่ขีด",
+"c": [
+"7.5 ขีด",
+"75 ขีด",
+"0.75 ขีด",
+"7,500 ขีด"
+],
+"a": 0,
+"w": "100 ก. = 1 ขีด → 750 ÷ 100 = 7.5 ขีด"
+},
+{
+"q": "4.2 เมตริกตัน เท่ากับกี่กิโลกรัม",
+"c": [
+"4,200 กก.",
+"420 กก.",
+"42 กก.",
+"42,000 กก."
+],
+"a": 0,
+"w": "1 ตัน = 1,000 กก. → 4.2 × 1,000 = 4,200 กก."
+},
+{
+"q": "ลุงจับปลาได้ 3 ตัว หนัก 0.85 กก. 1.45 กก. และ 1.7 กก. ขายกิโลกรัมละ 90 บาท ได้เงินกี่บาท",
+"c": [
+"360 บาท",
+"4 บาท",
+"270 บาท",
+"3,600 บาท"
+],
+"a": 0,
+"w": "รวม 0.85 + 1.45 + 1.7 = 4 กก. → 4 × 90 = 360 บาท"
+},
+{
+"q": "แม่ซื้อหมู 1.5 กก. และไก่ 800 กรัม รวมหนักกี่กิโลกรัม",
+"c": [
+"2.3 กก.",
+"801.5 กก.",
+"9.5 กก.",
+"2.03 กก."
+],
+"a": 0,
+"w": "800 ก. = 0.8 กก. → 1.5 + 0.8 = 2.3 กก."
+},
+{
+"q": "ข้าวสาร 50 กก. แบ่งใส่ถุง ถุงละ 2.5 กก. ขายถุงละ 85 บาท ขายหมดได้เงินกี่บาท",
+"c": [
+"1,700 บาท",
+"4,250 บาท",
+"2,000 บาท",
+"170 บาท"
+],
+"a": 0,
+"w": "จำนวนถุง 50 ÷ 2.5 = 20 ถุง → 20 × 85 = 1,700 บาท"
+},
+{
+"q": "รถบรรทุกรับน้ำหนักได้ 3 เมตริกตัน บรรทุกข้าว 45 กระสอบ กระสอบละ 50 กก. รับน้ำหนักได้อีกกี่กิโลกรัม",
+"c": [
+"750 กก.",
+"2,250 กก.",
+"7.5 กก.",
+"2,955 กก."
+],
+"a": 0,
+"w": "ข้าว 45 × 50 = 2,250 กก. ส่วน 3 ตัน = 3,000 กก. → 3,000 − 2,250 = 750 กก."
+},
+{
+"q": "ทุเรียน 4 ลูก หนัก 2.6 กก. 3.15 กก. 2.85 กก. และ 3.4 กก. หนักเฉลี่ยลูกละกี่กิโลกรัม",
+"c": [
+"3 กก.",
+"12 กก.",
+"3.15 กก.",
+"2.85 กก."
+],
+"a": 0,
+"w": "รวม 12 กก. เฉลี่ย 12 ÷ 4 = 3 กก."
+},
+{
+"q": "ข้อใดหนักที่สุด",
+"c": [
+"1.5 กก.",
+"14 ขีด",
+"1,450 กรัม",
+"1 กก. 45 กรัม"
+],
+"a": 0,
+"w": "ทำเป็นกรัม: 1,500 / 1,400 / 1,450 / 1,045 → 1.5 กก. หนักที่สุด"
+}
+];
+Kit.sorters.w = {
+  bins: [{ k: 'a', t: '= 1.5 กก.', c: 'var(--orange)' }, { k: 'b', t: '= 250 กรัม', c: 'var(--blue)' }, { k: 'c', t: '= 2 เมตริกตัน', c: 'var(--green)' }],
+  items: [
+    { t: '1,500 กรัม', k: 'a', w: '1,500 ÷ 1,000 = 1.5 กก.' }, { t: '15 ขีด', k: 'a', w: '15 ÷ 10 = 1.5 กก.' }, { t: '1 กก. 5 ขีด', k: 'a', w: '5 ขีด = 0.5 กก.' },
+    { t: '2.5 ขีด', k: 'b', w: '2.5 × 100 = 250 กรัม' }, { t: '0.25 กก.', k: 'b', w: '0.25 × 1,000 = 250 กรัม' },
+    { t: '2,000 กก.', k: 'c', w: '2,000 ÷ 1,000 = 2 ตัน' }, { t: '2,000,000 กรัม', k: 'c', w: '= 2,000 กก. = 2 ตัน' }
+  ]
+};
+DRILLS.w = [
+  function () { var v = R(105, 9950) / 1000; return { q: C(v) + ' กิโลกรัม เท่ากับกี่กรัม', u: 'กรัม', a: Math.round(v * 1000), h: C(v) + ' × 1,000 = <b>' + C(Math.round(v * 1000)) + ' กรัม</b>' }; },
+  function () { var g = R(12, 999) * 10; return { q: C(g) + ' กรัม เท่ากับกี่ขีด', u: 'ขีด', a: g / 100, h: '100 กรัม = 1 ขีด<br>' + C(g) + ' ÷ 100 = <b>' + C(g / 100) + ' ขีด</b>' }; },
+  function () { var k = R(1, 9), x = R(1, 9); return { q: k + ' กิโลกรัม ' + x + ' ขีด เขียนเป็นกิโลกรัมได้เท่าใด', u: 'กก.', a: k + x / 10, h: x + ' ขีด = ' + (x / 10) + ' กก.<br>รวม <b>' + (k + x / 10) + ' กก.</b>' }; },
+  function () { var p = R(4, 20) * 5, k = pick([1.5, 2.5, 0.5, 2, 3]), b = R(2, 9); var price = p * k; return { q: 'มะม่วง ' + k + ' กก. ราคา ' + C(price) + ' บาท ถ้าซื้อ ' + b + ' ขีด ต้องจ่ายกี่บาท', u: 'บาท', a: p * b / 10, h: '1 กก. ราคา ' + C(price) + ' ÷ ' + k + ' = ' + p + ' บาท<br>' + b + ' ขีด = ' + (b / 10) + ' กก. → ' + p + ' × ' + (b / 10) + ' = <b>' + C(p * b / 10) + ' บาท</b>' }; },
+  function () { var cap = R(2, 6), w = pick([25, 40, 50, 60]), n = R(10, Math.floor(cap * 1000 / w) - 1); return { q: 'รถรับน้ำหนักได้ ' + cap + ' ตัน บรรทุกกระสอบ ' + n + ' ใบ ใบละ ' + w + ' กก. รับได้อีกกี่กิโลกรัม', u: 'กก.', a: cap * 1000 - n * w, h: cap + ' ตัน = ' + C(cap * 1000) + ' กก.<br>บรรทุกแล้ว ' + n + ' × ' + w + ' = ' + C(n * w) + ' กก.<br>รับได้อีก <b>' + C(cap * 1000 - n * w) + ' กก.</b>' }; }
+];
+SETUP = function () {
+  var G = [{ e: '🍉', n: 'แตงโม', g: 2400 }, { e: '🍌', n: 'กล้วย', g: 650 }, { e: '🥚', n: 'ไข่ 10 ฟอง', g: 550 }, { e: '🍚', n: 'ข้าวสาร', g: 5000 }, { e: '🧅', n: 'หอมแดง', g: 300 }, { e: '🍊', n: 'ส้ม', g: 1250 }], bag = [];
+  var shop = document.getElementById('shop'), bk = document.getElementById('basket');
+  G.forEach(function (it, k) { var b = document.createElement('button'); b.className = 'chip'; b.innerHTML = it.e + ' ' + it.n + ' <small>' + C(it.g) + ' ก.</small>'; b.style.boxShadow = 'none'; b.onclick = function () { if (bag.length >= 8) { Kit.toast('ตะกร้าเต็มแล้ว 🧺'); return; } bag.push(k); Kit.sound.tap(); draw(); }; shop.appendChild(b); });
+  function draw() {
+    bk.innerHTML = bag.length ? '' : '<span class="sub">ยังว่างอยู่ แตะสินค้าด้านบนได้เลย</span>';
+    bag.forEach(function (k, i) { var b = document.createElement('button'); b.className = 'chip'; b.style.boxShadow = 'none'; b.innerHTML = G[k].e + ' ' + C(G[k].g); b.onclick = function () { bag.splice(i, 1); Kit.sound.tap(); draw(); }; bk.appendChild(b); });
+    var t = bag.reduce(function (s, k) { return s + G[k].g; }, 0);
+    document.getElementById('bout').innerHTML = '<div>น้ำหนักรวม <b>' + C(t) + ' กรัม</b></div><div>= ' + C(t) + ' ÷ 100 = <b>' + C(t / 100) + ' ขีด</b></div><div>= ' + C(t) + ' ÷ 1,000 = <b class="t-purple">' + C(t / 1000) + ' กิโลกรัม</b></div>';
+  }
+  draw();
+};
+</script>
+</body>
+</html>

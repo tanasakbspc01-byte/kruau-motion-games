@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>โจทย์ปัญหาอัตราส่วน · ติว O-NET ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#3FA9F5;--main-deep:#1F86D1;--glow:#D4ECFF}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">⚖️</span>
+  <div class="ttl"><b>โจทย์ปัญหาอัตราส่วน</b><small>คณิตศาสตร์ ป.6 · ติว O-NET · ค1.1 ป.6/11 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m6-onet-hub/" aria-label="หน้ารวมติว O-NET" title="หน้ารวมติว O-NET">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">ติว O-NET ป.6 · ตัวชี้วัด ค1.1 ป.6/11</span>
+  <div class="emoji-xl">🥤🗺️⚖️</div>
+  <h1>โจทย์ปัญหาอัตราส่วน<br><small style="font-size:.48em">เปรียบเทียบปริมาณ ด้วยตารางอัตราส่วน</small></h1>
+  <div class="ind"><b>📌 ตัวชี้วัด ค1.1 ป.6/11</b> แสดงวิธีหาคำตอบของโจทย์ปัญหาอัตราส่วน 2 ขั้นตอน</div>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul><li>เขียน <b>อัตราส่วน</b> และอัตราส่วนที่เท่ากันได้</li><li>ใช้ <b>มาตราส่วน</b> หาความยาวจริงได้</li><li>แก้โจทย์อัตราส่วน <b>2 ขั้นตอน</b> ด้วยตารางได้</li></ul>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนติว</b>อัตราส่วนคือการ <b>เปรียบเทียบ</b> ครูอู๋มีอาวุธลับคือ <b>ตารางอัตราส่วน</b> ใช้แล้วโจทย์ยากแค่ไหนก็ง่าย 🛡️</div></div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มติวกันเลย ▶</button>
+  <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก</p>
+</div></section>
+
+<section class="slide" data-title="อัตราส่วนคืออะไร"><div class="inner">
+  <h2 class="h"><span class="e">📖</span>อัตราส่วน คืออะไร</h2>
+  <div class="key"><b>อัตราส่วน</b> คือ การเปรียบเทียบปริมาณตั้งแต่ 2 ปริมาณ อาจหน่วยเดียวกันหรือต่างกันก็ได้<br>เขียน <b>a : b</b> อ่านว่า “a ต่อ b”</div>
+  <div class="card c-blue center">
+    <div class="emoji-xl">🥚🥚🥚🥚🥚🥚 → 💵</div>
+    <p class="big">ไข่ 6 ฟอง ราคา 30 บาท</p>
+    <div class="grid" style="--min:240px;margin-top:8px">
+      <div class="card c-green"><p>จำนวนไข่ ต่อ ราคา<br><b class="eq">6 : 30</b></p></div>
+      <div class="card c-orange"><p>ราคา ต่อ จำนวนไข่<br><b class="eq">30 : 6</b></p></div>
+    </div>
+  </div>
+  <div class="trap"><b class="t">⚠️ กับดักข้อสอบ</b> ลำดับสำคัญมาก! โจทย์ถาม “A ต่อ B” ต้องเขียน A ไว้หน้าเสมอ ข้อสอบชอบสลับให้หลงตา</div>
+</div></section>
+
+<section class="slide" data-title="อัตราส่วนที่เท่ากัน"><div class="inner">
+  <h2 class="h"><span class="e">🟰</span>อัตราส่วนที่เท่ากัน</h2>
+  <div class="grid" style="--min:260px">
+    <div class="card c-green"><h3>✖️ คูณทั้งคู่</h3><p>ด้วยจำนวนเดียวกัน</p><p class="eq">20 : 30 = (20 × 2) : (30 × 2) = 40 : 60</p></div>
+    <div class="card c-purple"><h3>➗ หารทั้งคู่</h3><p>ด้วยจำนวนเดียวกันที่หารลงตัว</p><p class="eq">20 : 30 = (20 ÷ 10) : (30 ÷ 10) = 2 : 3</p></div>
+  </div>
+  <div class="card c-orange">
+    <h3>🔍 ตรวจด้วยการคูณไขว้</h3>
+    <p class="eq center">2 : 3 กับ 40 : 60 → 2 × 60 = 120 และ 3 × 40 = 120 ✅ เท่ากัน</p>
+  </div>
+  <div data-sorter="eq"></div>
+</div></section>
+
+<section class="slide" data-title="มาตราส่วน"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>มาตราส่วน</h2>
+  <div class="key"><b>มาตราส่วน</b> คือ อัตราส่วนของ <b>ความยาวในแผนที่/ภาพ</b> ต่อ <b>ความยาวจริง</b></div>
+  <div class="card c-teal">
+    <div class="svgbox"><svg viewBox="0 0 420 170" role="img" aria-label="แผนผังบ้านไปโรงเรียนผ่านร้านค้า">
+      <circle cx="40" cy="130" r="18" fill="#FFC93C"/><text x="40" y="137" font-size="20" text-anchor="middle">🏠</text>
+      <circle cx="230" cy="130" r="18" fill="#FF9F43"/><text x="230" y="137" font-size="20" text-anchor="middle">🏪</text>
+      <circle cx="380" cy="35" r="18" fill="#3FA9F5"/><text x="380" y="42" font-size="20" text-anchor="middle">🏫</text>
+      <line x1="60" y1="130" x2="210" y2="130" stroke="#3B2E5A" stroke-width="4" stroke-dasharray="8 6"/>
+      <line x1="245" y1="117" x2="364" y2="47" stroke="#3B2E5A" stroke-width="4" stroke-dasharray="8 6"/>
+      <text x="135" y="118" font-size="17" text-anchor="middle" font-weight="700" fill="#E85D25">5 ซม.</text>
+      <text x="335" y="98" font-size="17" text-anchor="middle" font-weight="700" fill="#E85D25">3 ซม.</text>
+      <text x="300" y="160" font-size="15" text-anchor="middle" fill="#6E6390">มาตราส่วน 1 ซม. : 400 ม.</text>
+    </svg></div>
+    <p style="margin-top:8px">ภูผาเดินจากบ้าน ผ่านร้านค้า ไปโรงเรียน ระยะทางจริงกี่เมตร</p>
+    <div class="steps calc" id="map">
+      <div class="step"><span class="pill" style="--c:var(--teal)">ขั้นที่ 1</span> ระยะบนแผนที่ 5 + 3 = <b>8 ซม.</b></div>
+      <div class="step"><span class="pill" style="--c:var(--blue)">ขั้นที่ 2</span> 1 ซม. : 400 ม. = (8 × 1) ซม. : (8 × 400) ม. = 8 ซม. : <b class="t-purple">3,200 ม.</b></div>
+      <div class="step"><p class="big center t-green">ตอบ 3,200 เมตร หรือ 3.2 กิโลเมตร</p></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="map" style="--c:var(--teal)">คิดตามครูอู๋ 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ตารางอัตราส่วน"><div class="inner">
+  <h2 class="h"><span class="e">🛡️</span>อาวุธลับครูอู๋: ตารางอัตราส่วน</h2>
+  <div class="card c-purple">
+    <p class="big" style="font-size:clamp(1.05rem,3vw,1.3rem)">ค่ายลูกเสือ จำนวนผู้กำกับ ต่อ จำนวนลูกเสือ เป็น 1 : 8 มีลูกเสือ 120 คน ถ้าแบ่งผู้กำกับเป็น 5 หมู่เท่า ๆ กัน หมู่ละกี่คน</p>
+    <div class="wide" style="margin-top:8px"><table class="tbl mini" style="--c:var(--purple)">
+      <tr><th></th><th>อัตราส่วน</th><th>จริง</th></tr>
+      <tr><td><b>ผู้กำกับ</b></td><td>1</td><td id="tA">?</td></tr>
+      <tr><td><b>ลูกเสือ</b></td><td>8</td><td>120</td></tr>
+    </table></div>
+    <div class="steps calc" id="tb" style="margin-top:8px">
+      <div class="step">🔎 ช่องที่รู้ทั้งคู่: ลูกเสือ 8 → 120 คือ <b>× 15</b> (120 ÷ 8 = 15)</div>
+      <div class="step"><span class="pill" style="--c:var(--purple)">ขั้นที่ 1</span> ผู้กำกับ 1 × 15 = <b>15 คน</b></div>
+      <div class="step"><span class="pill" style="--c:var(--blue)">ขั้นที่ 2</span> แบ่ง 5 หมู่ 15 ÷ 5 = <b class="t-purple">3 คน</b></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="tb" style="--c:var(--purple)">ใช้ตารางคิด 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ส่วนรวม"><div class="inner">
+  <h2 class="h"><span class="e">🥤</span>โจทย์ “ส่วนรวม” ออกบ่อย!</h2>
+  <div class="card c-orange">
+    <p class="big" style="font-size:clamp(1.05rem,3vw,1.3rem)">ผสมน้ำหวาน ต่อ น้ำเปล่า เป็น 2 : 7 ต้องการน้ำหวานผสมทั้งหมด 4.5 ลิตร ต้องใช้น้ำหวานกี่ลิตร</p>
+    <div class="row center" id="cups" style="font-size:2rem;margin:8px 0"></div>
+    <div class="steps calc" id="pw">
+      <div class="step"><span class="pill" style="--c:var(--orange)">ขั้นที่ 1</span> ทั้งหมด 2 + 7 = <b>9 ส่วน</b> เท่ากับ 4.5 ลิตร → 1 ส่วน = 4.5 ÷ 9 = <b>0.5 ลิตร</b></div>
+      <div class="step"><span class="pill" style="--c:var(--blue)">ขั้นที่ 2</span> น้ำหวาน 2 ส่วน = 2 × 0.5 = <b class="t-purple">1 ลิตร</b></div>
+      <div class="step">✅ ตรวจ: น้ำเปล่า 7 × 0.5 = 3.5 ลิตร รวม 1 + 3.5 = 4.5 ลิตร ✔</div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="pw" style="--c:var(--orange)">คิดตามครูอู๋ 👇</button></div>
+  </div>
+  <div class="trap"><b class="t">⚠️ กับดักข้อสอบ</b> ถ้าโจทย์บอก “ทั้งหมด” ต้อง <b>บวกส่วนก่อน</b> อย่าเอา 4.5 ไปเทียบกับ 7 โดยตรง</div>
+</div></section>
+
+<section class="slide" data-title="ฝึกคิดไม่รู้จบ"><div class="inner">
+  <h2 class="h"><span class="e">🎲</span>ฝึกคิดไม่รู้จบ</h2>
+  <div class="card c-teal"><div class="drill" data-drill="ratio"></div></div>
+</div></section>
+<section class="slide" data-title="ตะลุยข้อสอบ O-NET"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>ตะลุยข้อสอบแนว O-NET (10 ข้อ)</h2>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เตือน</b>อ่านโจทย์ให้จบ ขีดเส้นใต้ <b>สิ่งที่โจทย์ถาม</b> แล้วค่อยเลือกคำตอบนะ ตอบผิดได้ ดูเหตุผลแล้วจำไว้ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปให้จำขึ้นใจ</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class='chant'>อัตราส่วน a : b — ลำดับสำคัญ!<small>อัตราส่วนเท่ากัน = คูณหรือหารทั้งคู่ด้วยจำนวนเดียวกัน · ตรวจด้วยคูณไขว้</small></div><div class='key'><b>ตารางอัตราส่วน</b> หาว่า “คูณด้วยเท่าไร” จากช่องที่รู้ทั้งคู่ แล้วคูณช่องที่เหลือด้วยจำนวนเดียวกัน<br><b>ส่วนรวม</b> 3 : 4 → ทั้งหมด 7 ส่วน</div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(0)">🔁 ติวอีกครั้ง</button></div>
+  <div class="row center"><a class="btn ghost" href="../m6-onet-03-decimals/">◀ 💰 ทศนิยม</a><a class="btn" style="--c:var(--purple)" href="../m6-onet-hub/">🏠 หน้ารวมติว O-NET</a><a class="btn ghost" href="../m6-onet-05-percent/">🏷️ ร้อยละ ▶</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m6-onet-04-ratio";
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = 'kruau-onet6-' + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+Kit.quizzes.main = [
+{
+"q": "อัตราส่วนใดเท่ากับ 12 : 18",
+"c": [
+"2 : 3",
+"3 : 2",
+"4 : 9",
+"6 : 8"
+],
+"a": 0,
+"w": "หารทั้งคู่ด้วย 6: 12 ÷ 6 = 2, 18 ÷ 6 = 3 → 2 : 3"
+},
+{
+"q": "ส้ม 5 ผล ราคา 40 บาท อัตราส่วนของ ราคา (บาท) ต่อ จำนวนส้ม (ผล) คือข้อใด",
+"c": [
+"40 : 5",
+"5 : 40",
+"1 : 8",
+"8 : 40"
+],
+"a": 0,
+"w": "โจทย์ถาม ราคา ต่อ จำนวนส้ม ต้องเขียนราคาก่อน → 40 : 5"
+},
+{
+"q": "3 : 5 = □ : 45 จำนวนใดแทน □ ได้",
+"c": [
+"27",
+"15",
+"9",
+"43"
+],
+"a": 0,
+"w": "5 × 9 = 45 จึงต้องคูณ 3 ด้วย 9 ด้วย → 27"
+},
+{
+"q": "แผนที่ใช้มาตราส่วน 1 ซม. : 5 กม. ระยะทางบนแผนที่ 7.5 ซม. ระยะทางจริงกี่กิโลเมตร",
+"c": [
+"37.5 กม.",
+"12.5 กม.",
+"375 กม.",
+"35 กม."
+],
+"a": 0,
+"w": "1 ซม. แทน 5 กม. → 7.5 ซม. แทน 7.5 × 5 = 37.5 กม."
+},
+{
+"q": "แบบบ้านใช้มาตราส่วน 1 : 100 ห้องนอนในแบบยาว 4 ซม. ห้องนอนจริงยาวเท่าใด",
+"c": [
+"4 เมตร",
+"40 เมตร",
+"400 เมตร",
+"0.4 เมตร"
+],
+"a": 0,
+"w": "ยาวจริง 4 × 100 = 400 ซม. = 4 เมตร"
+},
+{
+"q": "นักเรียนชาย ต่อ นักเรียนหญิง เป็น 4 : 5 มีนักเรียนหญิง 35 คน มีนักเรียนชายกี่คน",
+"c": [
+"28 คน",
+"63 คน",
+"44 คน",
+"32 คน"
+],
+"a": 0,
+"w": "5 × 7 = 35 จึงคูณ 4 ด้วย 7 → ชาย 28 คน"
+},
+{
+"q": "ห้องหนึ่งมีนักเรียนชาย ต่อ หญิง เป็น 3 : 4 รวมทั้งห้อง 42 คน มีนักเรียนหญิงกี่คน",
+"c": [
+"24 คน",
+"18 คน",
+"28 คน",
+"32 คน"
+],
+"a": 0,
+"w": "ทั้งหมด 3 + 4 = 7 ส่วน = 42 คน → 1 ส่วน = 6 คน → หญิง 4 × 6 = 24 คน"
+},
+{
+"q": "ผสมปูน ต่อ ทราย เป็น 1 : 3 ใช้ทราย 360 กก. ปูนบรรจุถุงละ 40 กก. ต้องซื้อปูนกี่ถุง",
+"c": [
+"3 ถุง",
+"9 ถุง",
+"12 ถุง",
+"4 ถุง"
+],
+"a": 0,
+"w": "ปูน 360 ÷ 3 = 120 กก. → 120 ÷ 40 = 3 ถุง"
+},
+{
+"q": "ราคาสมุด ต่อ ราคาปากกา เป็น 5 : 2 สมุดเล่มละ 35 บาท ซื้อปากกา 6 ด้าม ต้องจ่ายกี่บาท",
+"c": [
+"84 บาท",
+"210 บาท",
+"42 บาท",
+"70 บาท"
+],
+"a": 0,
+"w": "5 × 7 = 35 → ปากกา 2 × 7 = 14 บาท → 6 ด้าม 6 × 14 = 84 บาท"
+},
+{
+"q": "ข้อใด <u>ไม่ใช่</u> อัตราส่วนที่เท่ากับ 4 : 6",
+"c": [
+"8 : 10",
+"2 : 3",
+"10 : 15",
+"6 : 9"
+],
+"a": 0,
+"w": "4 : 6 = 2 : 3 = 6 : 9 = 10 : 15 แต่ 8 : 10 = 4 : 5"
+}
+];
+Kit.sorters.eq = {
+  bins: [{ k: 'y', t: 'เท่ากับ 3 : 4 ✅', c: 'var(--green)' }, { k: 'n', t: 'ไม่เท่ากับ 3 : 4 ❌', c: 'var(--red)' }],
+  items: [
+    { t: '6 : 8', k: 'y', w: 'คูณทั้งคู่ด้วย 2' }, { t: '15 : 20', k: 'y', w: 'คูณทั้งคู่ด้วย 5' }, { t: '30 : 40', k: 'y', w: 'คูณทั้งคู่ด้วย 10' }, { t: '9 : 12', k: 'y', w: 'คูณทั้งคู่ด้วย 3' },
+    { t: '4 : 3', k: 'n', w: 'สลับลำดับแล้ว' }, { t: '6 : 7', k: 'n', w: 'บวก 3 ทั้งคู่ ไม่ใช่คูณ' }, { t: '12 : 15', k: 'n', w: '12 × 4 = 48 แต่ 15 × 3 = 45' }
+  ]
+};
+DRILLS.ratio = [
+  function () { var a = R(2, 9), b = R(2, 9); while (b === a) b = R(2, 9); var k = R(3, 12); return { q: a + ' : ' + b + ' = □ : ' + (b * k) + ' &nbsp; □ คือจำนวนใด', a: a * k, h: b + ' × ' + k + ' = ' + (b * k) + ' จึงคูณ ' + a + ' ด้วย ' + k + ' เช่นกัน = <b>' + (a * k) + '</b>' }; },
+  function () { var s = pick([200, 250, 400, 500, 800]), d = R(3, 15); return { q: 'แผนผังใช้มาตราส่วน 1 ซม. : ' + s + ' ม. ระยะบนแผนผัง ' + d + ' ซม. ระยะทางจริงกี่เมตร', u: 'เมตร', a: s * d, h: d + ' × ' + s + ' = <b>' + C(s * d) + ' เมตร</b>' }; },
+  function () { var a = R(1, 5), b = R(2, 7), k = R(3, 12), t = (a + b) * k; return { q: 'นักเรียนชาย ต่อ หญิง เป็น ' + a + ' : ' + b + ' รวมทั้งหมด ' + t + ' คน มีนักเรียนหญิงกี่คน', u: 'คน', a: b * k, h: 'ทั้งหมด ' + a + ' + ' + b + ' = ' + (a + b) + ' ส่วน<br>1 ส่วน = ' + t + ' ÷ ' + (a + b) + ' = ' + k + ' คน<br>หญิง ' + b + ' × ' + k + ' = <b>' + (b * k) + ' คน</b>' }; },
+  function () { var a = R(1, 4), b = R(2, 6), g = R(2, 6), k = R(2, 8) * g, big = b * k; return { q: 'ผู้ดูแล ต่อ เด็ก เป็น ' + a + ' : ' + b + ' มีเด็ก ' + big + ' คน แบ่งผู้ดูแลเป็น ' + g + ' กลุ่มเท่า ๆ กัน กลุ่มละกี่คน', u: 'คน', a: a * k / g, h: 'เด็ก ' + b + ' → ' + big + ' คือ × ' + k + '<br>ผู้ดูแล ' + a + ' × ' + k + ' = ' + (a * k) + ' คน<br>แบ่ง ' + g + ' กลุ่ม = <b>' + (a * k / g) + ' คน</b>' }; }
+];
+SETUP = function () {
+  document.getElementById('cups').innerHTML = '🍯🍯 <span style="font-size:1.2rem">:</span> 💧💧💧💧💧💧💧';
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บวก ลบ คูณ หารระคน · ติว O-NET ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#FF7A45;--main-deep:#E0561C;--glow:#FFE1CC}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🧮</span>
+  <div class="ttl"><b>บวก ลบ คูณ หารระคน</b><small>คณิตศาสตร์ ป.6 · ติว O-NET · ค1.1 ป.4/10 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m6-onet-hub/" aria-label="หน้ารวมติว O-NET" title="หน้ารวมติว O-NET">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">ติว O-NET ป.6 · ตัวชี้วัด ค1.1 ป.4/10</span>
+  <div class="emoji-xl">➕➖✖️➗</div>
+  <h1>บวก ลบ คูณ หารระคน<br><small style="font-size:.48em">ทำอะไรก่อน–หลัง ไม่มีพลาด</small></h1>
+  <div class="ind"><b>📌 ตัวชี้วัด ค1.1 ป.4/10</b> หาผลลัพธ์ของการบวก ลบ คูณ หารระคนของจำนวนนับและ 0</div>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul><li>บอก <b>ลำดับการคำนวณ</b> ได้ เมื่อมีและไม่มีวงเล็บ</li><li>หาผลลัพธ์ของโจทย์ระคนได้ถูกต้อง</li><li>เขียน <b>ประโยคสัญลักษณ์</b> จากโจทย์ปัญหาได้</li></ul>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนติว</b>เรื่องนี้ออกข้อสอบแทบทุกปีเลยนะ! ถ้าจำ <b>ลำดับการคำนวณ</b> ได้ ข้อนี้คะแนนเราแน่นอน ✌️</div></div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มติวกันเลย ▶</button>
+  <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก</p>
+</div></section>
+
+<section class="slide" data-title="ชวนคิด"><div class="inner">
+  <h2 class="h"><span class="e">🤔</span>ครูอู๋ชวนคิด: คิดแบบไหนถูก?</h2>
+  <div class="card c-orange center">
+    <p class="big">8 + 2 × 5 = ?</p>
+    <div class="grid" style="--min:220px;margin-top:8px">
+      <div class="card c-red"><h3>🧒 น้องเอ</h3><p>8 + 2 = 10 แล้ว 10 × 5 = <b>50</b></p></div>
+      <div class="card c-blue"><h3>👧 น้องบี</h3><p>2 × 5 = 10 แล้ว 8 + 10 = <b>18</b></p></div>
+    </div>
+  </div>
+  <div class="steps" id="think">
+    <div class="step"><div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เฉลย</b>น้องบีถูก! เพราะคณิตศาสตร์มี <span class="hl">ข้อตกลงลำดับการคำนวณ</span> ต้อง <b>คูณ–หาร ก่อน บวก–ลบ</b> ทุกคนในโลกจะได้คำตอบเดียวกัน 🌏</div></div></div>
+  </div>
+  <div class="row center"><button class="btn" data-reveal="think">ใครถูก? แตะดูเลย 👇</button></div>
+</div></section>
+
+<section class="slide" data-title="ลำดับการคำนวณ"><div class="inner">
+  <h2 class="h"><span class="e">🪜</span>บันได 3 ขั้น ของการคำนวณ</h2>
+  <div class="grid" style="--min:230px">
+    <div class="card c-purple center"><div class="emoji-xl">( )</div><h3>ขั้นที่ 1 วงเล็บ</h3><p>มีวงเล็บ ทำในวงเล็บก่อนเสมอ</p></div>
+    <div class="card c-blue center"><div class="emoji-xl">✖️➗</div><h3>ขั้นที่ 2 คูณ–หาร</h3><p>เจอทั้งคู่ คิดจาก <b>ซ้ายไปขวา</b></p></div>
+    <div class="card c-green center"><div class="emoji-xl">➕➖</div><h3>ขั้นที่ 3 บวก–ลบ</h3><p>เจอทั้งคู่ คิดจาก <b>ซ้ายไปขวา</b></p></div>
+  </div>
+  <div class="chant">“วงเล็บนำหน้า คูณหารตามมา บวกลบปิดท้าย ซ้ายไปขวาเสมอ”<small>🎵 ท่องจำแบบครูอู๋ ท่องพร้อมกันทั้งห้อง 3 รอบ</small></div>
+</div></section>
+
+<section class="slide" data-title="ตัวอย่าง มีวงเล็บ"><div class="inner">
+  <h2 class="h"><span class="e">✏️</span>ตัวอย่างที่ 1: มีวงเล็บ</h2>
+  <div class="card c-purple">
+    <p class="eq center">(2,450 + 1,550) × 12 − 6,000 = ?</p>
+    <div class="steps calc" id="ex1">
+      <div class="step"><span class="pill" style="--c:var(--purple)">ขั้น 1</span> วงเล็บ: 2,450 + 1,550 = <b>4,000</b></div>
+      <div class="step"><span class="pill" style="--c:var(--blue)">ขั้น 2</span> คูณ: 4,000 × 12 = <b>48,000</b></div>
+      <div class="step"><span class="pill" style="--c:var(--green)">ขั้น 3</span> ลบ: 48,000 − 6,000 = <b class="t-purple">42,000</b></div>
+      <div class="step"><p class="big center t-green">ตอบ 42,000</p></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="ex1" style="--c:var(--purple)">ดูทีละขั้น 👇</button></div>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">เทคนิคครูอู๋</b>เขียน <b>เส้นโยง</b> ใต้โจทย์ ว่าส่วนไหนทำก่อน แล้วเขียนผลลัพธ์ไว้ใต้เส้น จะไม่หลงเลย</div></div>
+</div></section>
+
+<section class="slide" data-title="ตัวอย่าง ไม่มีวงเล็บ"><div class="inner">
+  <h2 class="h"><span class="e">✏️</span>ตัวอย่างที่ 2: ไม่มีวงเล็บ</h2>
+  <div class="card c-blue">
+    <p class="eq center">9,000 − 125 × 24 + 3,600 ÷ 15 = ?</p>
+    <div class="steps calc" id="ex2">
+      <div class="step"><span class="pill" style="--c:var(--blue)">คูณ</span> 125 × 24 = <b>3,000</b></div>
+      <div class="step"><span class="pill" style="--c:var(--blue)">หาร</span> 3,600 ÷ 15 = <b>240</b></div>
+      <div class="step"><span class="pill" style="--c:var(--green)">ลบ (ซ้ายก่อน)</span> 9,000 − 3,000 = <b>6,000</b></div>
+      <div class="step"><span class="pill" style="--c:var(--green)">บวก</span> 6,000 + 240 = <b class="t-purple">6,240</b></div>
+      <div class="step"><p class="big center t-green">ตอบ 6,240</p></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="ex2" style="--c:var(--blue)">ดูทีละขั้น 👇</button></div>
+  </div>
+  <div class="trap"><b class="t">⚠️ กับดักข้อสอบ</b> 48 ÷ 6 × 2 หลายคนรีบคูณ 6 × 2 ก่อน ได้ 4 ❌<br>ที่ถูก: ÷ อยู่ซ้าย ทำก่อน → 48 ÷ 6 = 8 → 8 × 2 = <b>16</b> ✅</div>
+</div></section>
+
+<section class="slide" data-title="โจทย์ปัญหา"><div class="inner">
+  <h2 class="h"><span class="e">🛒</span>จากโจทย์ปัญหา → ประโยคสัญลักษณ์</h2>
+  <div class="card c-orange">
+    <p class="big" style="font-size:clamp(1.08rem,3vw,1.35rem)">ครูอู๋ซื้อสมุด 12 โหล โหลละ 240 บาท จ่ายธนบัตร 1,000 บาท 3 ใบ จะได้เงินทอนกี่บาท</p>
+    <div class="steps calc" id="ex3" style="margin-top:8px">
+      <div class="step">🔍 <b>สิ่งที่โจทย์ถาม:</b> เงินทอน</div>
+      <div class="step">💰 <b>จ่ายไป:</b> 1,000 × 3 = 3,000 บาท &nbsp; 📒 <b>ค่าสมุด:</b> 12 × 240 บาท</div>
+      <div class="step">🧾 <b>ประโยคสัญลักษณ์:</b> (1,000 × 3) − (12 × 240) = □</div>
+      <div class="step">🧮 3,000 − 2,880 = <b class="t-purple">120</b></div>
+      <div class="step"><p class="big center t-green">ตอบ ได้เงินทอน 120 บาท</p></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="ex3" style="--c:var(--orange)">คิดตามครูอู๋ 👇</button></div>
+  </div>
+  <div class="note">📌 คำที่บอกใบ้: <b>ทั้งหมด / รวม</b> → บวกหรือคูณ &nbsp;·&nbsp; <b>เหลือ / ทอน / ต่างกัน</b> → ลบ &nbsp;·&nbsp; <b>แบ่งเท่า ๆ กัน / ละ</b> → หาร</div>
+</div></section>
+
+<section class="slide" data-title="เรียงขั้นตอน"><div class="inner">
+  <h2 class="h"><span class="e">🧩</span>กิจกรรม: เรียงขั้นตอนการคิด</h2>
+  <div class="card c-yellow center"><p class="eq">500 − (36 + 14) × 8 ÷ 4 = ?</p></div>
+  <div data-order="steps"></div>
+</div></section>
+
+<section class="slide" data-title="ฝึกคิดไม่รู้จบ"><div class="inner">
+  <h2 class="h"><span class="e">🎲</span>ฝึกคิดไม่รู้จบ</h2>
+  <p class="sub">สุ่มโจทย์ใหม่ได้เรื่อย ๆ ลองทำให้ถูกติดกัน 5 ข้อ 🔥</p>
+  <div class="card c-teal"><div class="drill" data-drill="ops"></div></div>
+</div></section>
+<section class="slide" data-title="ตะลุยข้อสอบ O-NET"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>ตะลุยข้อสอบแนว O-NET (10 ข้อ)</h2>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เตือน</b>อ่านโจทย์ให้จบ ขีดเส้นใต้ <b>สิ่งที่โจทย์ถาม</b> แล้วค่อยเลือกคำตอบนะ ตอบผิดได้ ดูเหตุผลแล้วจำไว้ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปให้จำขึ้นใจ</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class='chant'>① วงเล็บ ② คูณ–หาร ③ บวก–ลบ<small>ระดับเดียวกัน คิดจาก ซ้าย ➜ ขวา เสมอ</small></div><div class='trap'><b class='t'>⚠️ กับดัก</b> 48 ÷ 6 × 2 ต้องทำ ÷ ก่อน (อยู่ซ้าย) = 8 × 2 = 16 ไม่ใช่ 4</div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(0)">🔁 ติวอีกครั้ง</button></div>
+  <div class="row center"><a class="btn" style="--c:var(--purple)" href="../m6-onet-hub/">🏠 หน้ารวมติว O-NET</a><a class="btn ghost" href="../m6-onet-02-fractions/">🍕 เศษส่วน ▶</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m6-onet-01-mixed-ops";
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = 'kruau-onet6-' + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+Kit.quizzes.main = [
+{
+"q": "35 + 15 × 4 = ?",
+"c": [
+"95",
+"200",
+"140",
+"54"
+],
+"a": 0,
+"w": "ทำ × ก่อน: 15 × 4 = 60 แล้ว 35 + 60 = 95"
+},
+{
+"q": "(35 + 15) × 4 = ?",
+"c": [
+"200",
+"95",
+"140",
+"75"
+],
+"a": 0,
+"w": "ทำในวงเล็บก่อน: 35 + 15 = 50 แล้ว 50 × 4 = 200"
+},
+{
+"q": "72 ÷ 8 × 3 = ?",
+"c": [
+"27",
+"3",
+"24",
+"216"
+],
+"a": 0,
+"w": "÷ กับ × ระดับเดียวกัน คิดซ้ายไปขวา: 72 ÷ 8 = 9 แล้ว 9 × 3 = 27"
+},
+{
+"q": "1,000 − 250 × 3 + 50 = ?",
+"c": [
+"300",
+"2,300",
+"200",
+"2,200"
+],
+"a": 0,
+"w": "250 × 3 = 750 → 1,000 − 750 = 250 → 250 + 50 = 300"
+},
+{
+"q": "4,800 ÷ (12 × 25) = ?",
+"c": [
+"16",
+"10,000",
+"160",
+"400"
+],
+"a": 0,
+"w": "วงเล็บก่อน: 12 × 25 = 300 แล้ว 4,800 ÷ 300 = 16"
+},
+{
+"q": "แม่ซื้อไข่ 6 แผง แผงละ 120 บาท และนม 1 แพ็ก 45 บาท จ่ายธนบัตร 1,000 บาท จะได้เงินทอนกี่บาท",
+"c": [
+"235 บาท",
+"280 บาท",
+"325 บาท",
+"765 บาท"
+],
+"a": 0,
+"w": "ค่าของ 6 × 120 + 45 = 765 บาท เงินทอน 1,000 − 765 = 235 บาท"
+},
+{
+"q": "“มีเงิน 500 บาท ซื้อดินสอ 8 แท่ง แท่งละ 15 บาท เหลือเงินกี่บาท” เขียนประโยคสัญลักษณ์ได้ตรงกับข้อใด",
+"c": [
+"500 − 8 × 15 = □",
+"(500 − 8) × 15 = □",
+"500 ÷ 8 − 15 = □",
+"500 + 8 × 15 = □"
+],
+"a": 0,
+"w": "ค่าดินสอ = 8 × 15 แล้วนำไปลบออกจาก 500 (ทำ × ก่อน − อยู่แล้ว)"
+},
+{
+"q": "23,456 + 4,544 − 9,000 ÷ 30 = ?",
+"c": [
+"27,700",
+"28,300",
+"19,000",
+"300"
+],
+"a": 0,
+"w": "÷ ก่อน: 9,000 ÷ 30 = 300 → 23,456 + 4,544 = 28,000 → 28,000 − 300 = 27,700"
+},
+{
+"q": "6 × (250 − 175) ÷ 9 = ?",
+"c": [
+"50",
+"450",
+"75",
+"1,471"
+],
+"a": 0,
+"w": "250 − 175 = 75 → 6 × 75 = 450 → 450 ÷ 9 = 50"
+},
+{
+"q": "นักเรียน 1,260 คน ไปทัศนศึกษาด้วยรถบัส คันละ 45 คน ค่าเช่ารถคันละ 3,500 บาท ค่าเช่ารถทั้งหมดกี่บาท",
+"c": [
+"98,000 บาท",
+"9,800 บาท",
+"157,500 บาท",
+"94,500 บาท"
+],
+"a": 0,
+"w": "จำนวนรถ 1,260 ÷ 45 = 28 คัน → ค่าเช่า 28 × 3,500 = 98,000 บาท"
+}
+];
+Kit.orders.steps = {
+  hint: '👆 แตะขั้นตอน เรียงจากทำก่อน ไปทำทีหลัง',
+  items: ['วงเล็บ: 36 + 14 = 50', 'คูณ: 50 × 8 = 400', 'หาร: 400 ÷ 4 = 100', 'ลบ: 500 − 100 = 400 ตอบ 400']
+};
+DRILLS.ops = [
+  function () { var a = R(12, 90) * 10, b = R(11, 60) * 10, c = R(3, 15); return { q: '(' + C(a) + ' + ' + C(b) + ') × ' + c + ' = ?', a: (a + b) * c, h: 'วงเล็บก่อน: ' + C(a) + ' + ' + C(b) + ' = ' + C(a + b) + '<br>แล้วคูณ: ' + C(a + b) + ' × ' + c + ' = <b>' + C((a + b) * c) + '</b>' }; },
+  function () { var b = R(12, 60), c = R(3, 12), a = b * c + R(100, 900); return { q: C(a) + ' − ' + b + ' × ' + c + ' = ?', a: a - b * c, h: 'คูณก่อน: ' + b + ' × ' + c + ' = ' + C(b * c) + '<br>แล้วลบ: ' + C(a) + ' − ' + C(b * c) + ' = <b>' + C(a - b * c) + '</b>' }; },
+  function () { var c = R(3, 9), q = R(12, 99), a = c * q, d = R(2, 9); return { q: C(a) + ' ÷ ' + c + ' × ' + d + ' = ?', a: q * d, h: '÷ กับ × ระดับเดียวกัน คิดจากซ้ายไปขวา<br>' + C(a) + ' ÷ ' + c + ' = ' + q + '<br>' + q + ' × ' + d + ' = <b>' + C(q * d) + '</b>' }; },
+  function () { var b = R(4, 12), c = R(10, 40), a = b * c * R(2, 9), m = a / (b * c); return { q: C(a) + ' ÷ (' + b + ' × ' + c + ') = ?', a: m, h: 'วงเล็บก่อน: ' + b + ' × ' + c + ' = ' + (b * c) + '<br>แล้วหาร: ' + C(a) + ' ÷ ' + (b * c) + ' = <b>' + m + '</b>' }; },
+  function () { var a = R(5, 40) * 100, b = R(15, 60), c = R(2, 9), d = R(5, 25), e = d * R(4, 30); return { q: C(a) + ' + ' + b + ' × ' + c + ' − ' + e + ' ÷ ' + d + ' = ?', a: a + b * c - e / d, h: 'คูณ: ' + b + ' × ' + c + ' = ' + (b * c) + ' &nbsp; หาร: ' + e + ' ÷ ' + d + ' = ' + (e / d) + '<br>บวกลบซ้ายไปขวา: ' + C(a) + ' + ' + (b * c) + ' − ' + (e / d) + ' = <b>' + C(a + b * c - e / d) + '</b>' }; },
+  function () { var n = R(3, 9), p = R(15, 95), x = R(10, 60), pay = Math.ceil((n * p + x) / 100) * 100 + pick([0, 100, 500]); return { q: 'ซื้อขนม ' + n + ' ชิ้น ชิ้นละ ' + p + ' บาท และน้ำ 1 ขวด ' + x + ' บาท จ่ายเงิน ' + C(pay) + ' บาท ได้เงินทอนกี่บาท', u: 'บาท', a: pay - (n * p + x), h: C(pay) + ' − (' + n + ' × ' + p + ' + ' + x + ')<br>= ' + C(pay) + ' − ' + C(n * p + x) + ' = <b>' + C(pay - n * p - x) + ' บาท</b>' }; }
+];
+</script>
+</body>
+</html>

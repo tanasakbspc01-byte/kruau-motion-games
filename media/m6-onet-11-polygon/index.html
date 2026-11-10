@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>ความยาวรอบรูปและพื้นที่รูปหลายเหลี่ยม · ติว O-NET ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#9B6CF0;--main-deep:#7343D6;--glow:#E6DAFF}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🔷</span>
+  <div class="ttl"><b>ความยาวรอบรูปและพื้นที่รูปหลายเหลี่ยม</b><small>คณิตศาสตร์ ป.6 · ติว O-NET · ค2.1 ป.6/2 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m6-onet-hub/" aria-label="หน้ารวมติว O-NET" title="หน้ารวมติว O-NET">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">ติว O-NET ป.6 · ตัวชี้วัด ค2.1 ป.6/2</span>
+  <div class="emoji-xl">🔺🟦🔷</div>
+  <h1>ความยาวรอบรูปและพื้นที่รูปหลายเหลี่ยม<br><small style="font-size:.48em">สูตรพื้นที่ครบทุกรูป + รูปประกอบ</small></h1>
+  <div class="ind"><b>📌 ตัวชี้วัด ค2.1 ป.6/2</b> แสดงวิธีหาคำตอบของโจทย์ปัญหาเกี่ยวกับความยาวรอบรูปและพื้นที่ของรูปหลายเหลี่ยม</div>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul><li>หา <b>ความยาวรอบรูป</b> ของรูปหลายเหลี่ยมได้</li><li>ใช้ <b>สูตรพื้นที่</b> สามเหลี่ยมและสี่เหลี่ยมชนิดต่าง ๆ ได้</li><li>หาพื้นที่ <b>รูปหลายเหลี่ยมที่ประกอบกัน</b> ได้</li></ul>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนติว</b>รูปหลายเหลี่ยมหน้าตายากแค่ไหน ครูอู๋สอนให้ <b>“หั่น”</b> เป็นสามเหลี่ยมกับสี่เหลี่ยมก่อน แล้วค่อยใช้สูตร ✂️</div></div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มติวกันเลย ▶</button>
+  <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก</p>
+</div></section>
+
+<section class="slide" data-title="ความยาวรอบรูป"><div class="inner">
+  <h2 class="h"><span class="e">🐜</span>ความยาวรอบรูป = มดเดินรอบ 1 รอบ</h2>
+  <div class="grid" style="--min:280px">
+    <div class="svgbox"><svg viewBox="0 0 300 220" role="img" aria-label="รูปหลายเหลี่ยมมุมฉากรูปบันได">
+      <polygon points="30,190 270,190 270,110 190,110 190,60 110,60 110,20 30,20" fill="#E6DAFF" stroke="#7343D6" stroke-width="4"/>
+      <polygon id="moved" points="30,190 270,190 270,20 30,20" fill="none" stroke="#FF5C7A" stroke-width="3" stroke-dasharray="8 6" opacity="0"/>
+      <g font-size="15" font-weight="700" fill="#3B2E5A" text-anchor="middle"><text x="150" y="212">24 ซม.</text><text x="16" y="110" transform="rotate(-90 16 110)">17 ซม.</text></g>
+    </svg></div>
+    <div class="card c-purple">
+      <h3>🪄 เทคนิคเลื่อนด้าน</h3>
+      <p>รูปที่ <b>ทุกมุมเป็นมุมฉาก</b> ให้เลื่อนด้านที่หักเป็นขั้นบันไดออกไป จะได้สี่เหลี่ยมผืนผ้าที่มีความยาวรอบรูปเท่าเดิม</p>
+      <div class="steps calc" id="mv">
+        <div class="step">ด้านแนวตั้งที่หัก รวมกัน = 17 ซม. · ด้านแนวนอนที่หัก รวมกัน = 24 ซม.</div>
+        <div class="step">ความยาวรอบรูป = 2 × (24 + 17) = <b class="t-purple">82 ซม.</b></div>
+      </div>
+      <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="mv" id="mvBtn" style="--c:var(--purple)">เลื่อนด้าน 🪄</button></div>
+    </div>
+  </div>
+  <div class="trap"><b class="t">⚠️ กับดักข้อสอบ</b> เทคนิคเลื่อนด้านใช้ได้กับ <b>ความยาวรอบรูป</b> ของรูปมุมฉากเท่านั้น <b>ใช้หาพื้นที่ไม่ได้!</b></div>
+</div></section>
+
+<section class="slide" data-title="สูตรพื้นที่"><div class="inner">
+  <h2 class="h"><span class="e">📐</span>สูตรพื้นที่ (แตะพลิกการ์ด)</h2>
+  <div class="grid" style="--min:230px">
+    <button class="flip c-red" style="--fh:170px"><div class="fi"><div class="fa"><span class="e">🔺</span>สามเหลี่ยม<small>แตะเพื่อพลิก</small></div><div class="fb"><b>{1/2} × ฐาน × สูง</b><br>เพราะเป็นครึ่งหนึ่งของสี่เหลี่ยมด้านขนาน</div></div></button>
+    <button class="flip c-blue" style="--fh:170px"><div class="fi"><div class="fa"><span class="e">▭</span>ผืนผ้า / จัตุรัส<small>แตะเพื่อพลิก</small></div><div class="fb"><b>กว้าง × ยาว</b><br>จัตุรัส: <b>ด้าน × ด้าน</b></div></div></button>
+    <button class="flip c-green" style="--fh:170px"><div class="fi"><div class="fa"><span class="e">▱</span>ด้านขนาน<small>แตะเพื่อพลิก</small></div><div class="fb"><b>ฐาน × สูง</b><br>ตัดสามเหลี่ยมข้างไปต่ออีกข้าง ได้สี่เหลี่ยมผืนผ้า</div></div></button>
+    <button class="flip c-orange" style="--fh:170px"><div class="fi"><div class="fa"><span class="e">⏢</span>คางหมู<small>แตะเพื่อพลิก</small></div><div class="fb"><b>{1/2} × (ผลบวกด้านคู่ขนาน) × สูง</b></div></div></button>
+    <button class="flip c-pink" style="--fh:170px"><div class="fi"><div class="fa"><span class="e">◆</span>ขนมเปียกปูน / ว่าว<small>แตะเพื่อพลิก</small></div><div class="fb"><b>{1/2} × เส้นทแยงมุม × เส้นทแยงมุม</b></div></div></button>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ย้ำ</b>“<b>สูง</b>” ต้องเป็นเส้นที่ <b>ตั้งฉาก</b> กับฐานเสมอ ไม่ใช่ด้านเอียง ข้อสอบชอบใส่ความยาวด้านเอียงมาหลอก 👀</div></div>
+</div></section>
+
+<section class="slide" data-title="เครื่องคิดพื้นที่" data-id="ar"><div class="inner">
+  <h2 class="h"><span class="e">🧮</span>เครื่องคิดพื้นที่ของครูอู๋</h2>
+  <div class="row center" id="shapes"></div>
+  <div class="grid" style="--min:280px">
+    <div class="svgbox"><svg id="shp" viewBox="0 0 320 220" role="img" aria-label="รูปที่เลือก"></svg></div>
+    <div class="card c-purple"><div id="sctl"></div><div class="calc" id="sout" style="margin-top:10px"></div></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="รูปประกอบ"><div class="inner">
+  <h2 class="h"><span class="e">✂️</span>พื้นที่รูปประกอบ: หั่นก่อนคิด</h2>
+  <div class="grid" style="--min:280px">
+    <div class="svgbox"><svg viewBox="0 0 320 230" role="img" aria-label="รูปห้าเหลี่ยมคล้ายบ้าน">
+      <polygon points="40,210 280,210 280,110 160,30 40,110" fill="#E6DAFF" stroke="#7343D6" stroke-width="4"/>
+      <line x1="40" y1="110" x2="280" y2="110" stroke="#FF5C7A" stroke-width="3" stroke-dasharray="8 6"/>
+      <line x1="160" y1="30" x2="160" y2="110" stroke="#3B2E5A" stroke-width="2" stroke-dasharray="4 4"/>
+      <g font-size="15" font-weight="700" fill="#3B2E5A" text-anchor="middle"><text x="160" y="226">12 ม.</text><text x="300" y="165">5 ม.</text><text x="182" y="80">4 ม.</text></g>
+    </svg></div>
+    <div class="card c-orange">
+      <h3>🏠 พื้นที่ผนังหน้าบ้าน</h3>
+      <div class="steps calc" id="hs">
+        <div class="step">หั่นเป็น สี่เหลี่ยมผืนผ้า + สามเหลี่ยม</div>
+        <div class="step">สี่เหลี่ยมผืนผ้า 12 × 5 = <b>60 ตร.ม.</b></div>
+        <div class="step">สามเหลี่ยม {1/2} × 12 × 4 = <b>24 ตร.ม.</b></div>
+        <div class="step">รวม 60 + 24 = <b class="t-purple">84 ตร.ม.</b></div>
+        <div class="step">ถ้าทาสีตารางเมตรละ 35 บาท ค่าสี 84 × 35 = <b class="t-purple">2,940 บาท</b></div>
+      </div>
+      <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="hs" style="--c:var(--orange)">หั่นตามครูอู๋ 👇</button></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ฝึกคิดไม่รู้จบ"><div class="inner">
+  <h2 class="h"><span class="e">🎲</span>ฝึกคิดไม่รู้จบ</h2>
+  <div class="card c-teal"><div class="drill" data-drill="poly"></div></div>
+</div></section>
+<section class="slide" data-title="ตะลุยข้อสอบ O-NET"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>ตะลุยข้อสอบแนว O-NET (10 ข้อ)</h2>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เตือน</b>อ่านโจทย์ให้จบ ขีดเส้นใต้ <b>สิ่งที่โจทย์ถาม</b> แล้วค่อยเลือกคำตอบนะ ตอบผิดได้ ดูเหตุผลแล้วจำไว้ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปให้จำขึ้นใจ</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class='chant'>ความยาวรอบรูป = ผลบวกความยาวทุกด้าน<small>รูปมุมฉากทุกมุม: เลื่อนด้านออก = 2 × (กว้างสุด + ยาวสุด)</small></div><div class='wide'><table class='tbl mini' style='--c:var(--purple)'><tr><th>รูป</th><th>พื้นที่</th></tr><tr><td>สามเหลี่ยม</td><td>{1/2} × ฐาน × สูง</td></tr><tr><td>สี่เหลี่ยมผืนผ้า / จัตุรัส</td><td>กว้าง × ยาว / ด้าน × ด้าน</td></tr><tr><td>สี่เหลี่ยมด้านขนาน</td><td>ฐาน × สูง</td></tr><tr><td>สี่เหลี่ยมคางหมู</td><td>{1/2} × ผลบวกด้านคู่ขนาน × สูง</td></tr><tr><td>ขนมเปียกปูน / รูปว่าว</td><td>{1/2} × เส้นทแยงมุม × เส้นทแยงมุม</td></tr></table></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(0)">🔁 ติวอีกครั้ง</button></div>
+  <div class="row center"><a class="btn ghost" href="../m6-onet-10-volume/">◀ 📦 ปริมาตร</a><a class="btn" style="--c:var(--purple)" href="../m6-onet-hub/">🏠 หน้ารวมติว O-NET</a><a class="btn ghost" href="../m6-onet-12-circle/">⭕ วงกลม ▶</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m6-onet-11-polygon";
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = 'kruau-onet6-' + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+Kit.quizzes.main = [
+{
+"q": "รูปหลายเหลี่ยมที่ทุกมุมเป็นมุมฉาก วัดความกว้างที่สุดได้ 18 ซม. ความยาวที่สุดได้ 25 ซม. มีความยาวรอบรูปเท่าใด",
+"c": [
+"86 ซม.",
+"43 ซม.",
+"450 ซม.",
+"72 ซม."
+],
+"a": 0,
+"w": "เลื่อนด้านออกจะได้สี่เหลี่ยมผืนผ้า 2 × (18 + 25) = 86 ซม."
+},
+{
+"q": "สามเหลี่ยมมีฐาน 8 ซม. สูง 7 ซม. มีพื้นที่เท่าใด",
+"c": [
+"28 ตร.ซม.",
+"56 ตร.ซม.",
+"15 ตร.ซม.",
+"30 ตร.ซม."
+],
+"a": 0,
+"w": "{1/2} × 8 × 7 = 28 ตร.ซม."
+},
+{
+"q": "สี่เหลี่ยมจัตุรัสยาวด้านละ 7 ซม. มีพื้นที่เท่าใด",
+"c": [
+"49 ตร.ซม.",
+"28 ตร.ซม.",
+"14 ตร.ซม.",
+"21 ตร.ซม."
+],
+"a": 0,
+"w": "ด้าน × ด้าน = 7 × 7 = 49 ตร.ซม. (28 คือความยาวรอบรูป)"
+},
+{
+"q": "สี่เหลี่ยมด้านขนานมีฐาน 12 ซม. สูง 5 ซม. มีพื้นที่เท่าใด",
+"c": [
+"60 ตร.ซม.",
+"30 ตร.ซม.",
+"34 ตร.ซม.",
+"17 ตร.ซม."
+],
+"a": 0,
+"w": "ฐาน × สูง = 12 × 5 = 60 ตร.ซม."
+},
+{
+"q": "สี่เหลี่ยมคางหมูมีด้านคู่ขนานยาว 6 ซม. และ 10 ซม. สูง 4 ซม. มีพื้นที่เท่าใด",
+"c": [
+"32 ตร.ซม.",
+"64 ตร.ซม.",
+"240 ตร.ซม.",
+"20 ตร.ซม."
+],
+"a": 0,
+"w": "{1/2} × (6 + 10) × 4 = {1/2} × 16 × 4 = 32 ตร.ซม."
+},
+{
+"q": "รูปสี่เหลี่ยมขนมเปียกปูนมีเส้นทแยงมุมยาว 10 ซม. และ 16 ซม. มีพื้นที่เท่าใด",
+"c": [
+"80 ตร.ซม.",
+"160 ตร.ซม.",
+"26 ตร.ซม.",
+"52 ตร.ซม."
+],
+"a": 0,
+"w": "{1/2} × 10 × 16 = 80 ตร.ซม."
+},
+{
+"q": "สี่เหลี่ยมผืนผ้ามีพื้นที่ 72 ตร.ซม. กว้าง 6 ซม. มีความยาวรอบรูปเท่าใด",
+"c": [
+"36 ซม.",
+"24 ซม.",
+"78 ซม.",
+"18 ซม."
+],
+"a": 0,
+"w": "ยาว = 72 ÷ 6 = 12 ซม. → ความยาวรอบรูป 2 × (6 + 12) = 36 ซม."
+},
+{
+"q": "แผ่นไม้สี่เหลี่ยมผืนผ้า 12 × 8 ซม. ตัดมุมออกเป็นรูปสามเหลี่ยมมุมฉาก ฐาน 4 ซม. สูง 3 ซม. เหลือพื้นที่เท่าใด",
+"c": [
+"90 ตร.ซม.",
+"84 ตร.ซม.",
+"96 ตร.ซม.",
+"93 ตร.ซม."
+],
+"a": 0,
+"w": "96 − ({1/2} × 4 × 3) = 96 − 6 = 90 ตร.ซม."
+},
+{
+"q": "สนามกว้าง 20 ม. ยาว 35 ม. ปูหญ้าตารางเมตรละ 45 บาท ค่าหญ้าทั้งหมดกี่บาท",
+"c": [
+"31,500 บาท",
+"4,950 บาท",
+"700 บาท",
+"15,750 บาท"
+],
+"a": 0,
+"w": "พื้นที่ 20 × 35 = 700 ตร.ม. × 45 = 31,500 บาท"
+},
+{
+"q": "รูปห้าเหลี่ยมมีด้านยาว 8, 5, 6, 4 และ 7 ซม. มีความยาวรอบรูปเท่าใด",
+"c": [
+"30 ซม.",
+"25 ซม.",
+"40 ซม.",
+"35 ซม."
+],
+"a": 0,
+"w": "8 + 5 + 6 + 4 + 7 = 30 ซม."
+}
+];
+DRILLS.poly = [
+  function () { var b = R(3, 20) * 2, h = R(3, 15); return { q: 'สามเหลี่ยมฐาน ' + b + ' ซม. สูง ' + h + ' ซม. มีพื้นที่กี่ตารางเซนติเมตร', u: 'ตร.ซม.', a: b * h / 2, h: '{1/2} × ' + b + ' × ' + h + ' = <b>' + (b * h / 2) + ' ตร.ซม.</b>' }; },
+  function () { var a = R(3, 12), b = a + R(2, 10), h = R(2, 10) * 2; return { q: 'สี่เหลี่ยมคางหมู ด้านคู่ขนานยาว ' + a + ' ซม. และ ' + b + ' ซม. สูง ' + h + ' ซม. มีพื้นที่เท่าใด', u: 'ตร.ซม.', a: (a + b) * h / 2, h: '{1/2} × (' + a + ' + ' + b + ') × ' + h + ' = {1/2} × ' + (a + b) + ' × ' + h + ' = <b>' + ((a + b) * h / 2) + ' ตร.ซม.</b>' }; },
+  function () { var d1 = R(3, 12) * 2, d2 = R(4, 15); return { q: 'รูปว่าวมีเส้นทแยงมุมยาว ' + d1 + ' ซม. และ ' + d2 + ' ซม. มีพื้นที่เท่าใด', u: 'ตร.ซม.', a: d1 * d2 / 2, h: '{1/2} × ' + d1 + ' × ' + d2 + ' = <b>' + (d1 * d2 / 2) + ' ตร.ซม.</b>' }; },
+  function () { var w = R(5, 30), l = R(w + 1, 45); return { q: 'รูปหลายเหลี่ยมที่ทุกมุมเป็นมุมฉาก กว้างที่สุด ' + w + ' ซม. ยาวที่สุด ' + l + ' ซม. มีความยาวรอบรูปเท่าใด', u: 'ซม.', a: 2 * (w + l), h: 'เลื่อนด้านได้สี่เหลี่ยมผืนผ้า<br>2 × (' + w + ' + ' + l + ') = <b>' + 2 * (w + l) + ' ซม.</b>' }; },
+  function () { var w = R(4, 12), A = w * R(4, 15), l = A / w; return { q: 'สี่เหลี่ยมผืนผ้าพื้นที่ ' + A + ' ตร.ซม. กว้าง ' + w + ' ซม. มีความยาวรอบรูปเท่าใด', u: 'ซม.', a: 2 * (w + l), h: 'ยาว = ' + A + ' ÷ ' + w + ' = ' + l + ' ซม.<br>รอบรูป 2 × (' + w + ' + ' + l + ') = <b>' + 2 * (w + l) + ' ซม.</b>' }; },
+  function () { var w = R(10, 40), l = R(10, 50), p = R(3, 12) * 5; return { q: 'สนามกว้าง ' + w + ' ม. ยาว ' + l + ' ม. ปูหญ้าตารางเมตรละ ' + p + ' บาท เสียเงินกี่บาท', u: 'บาท', a: w * l * p, h: 'พื้นที่ ' + w + ' × ' + l + ' = ' + C(w * l) + ' ตร.ม.<br>× ' + p + ' = <b>' + C(w * l * p) + ' บาท</b>' }; }
+];
+SETUP = function () {
+  document.getElementById('mvBtn').addEventListener('click', function () { document.getElementById('moved').setAttribute('opacity', '1'); });
+  var S = [
+    { n: '🔺 สามเหลี่ยม', v: { 'ฐาน': 8, 'สูง': 6 }, f: function (v) { return ['{1/2} × ฐาน × สูง', '{1/2} × ' + v['ฐาน'] + ' × ' + v['สูง'], v['ฐาน'] * v['สูง'] / 2]; },
+      d: function (v, k) { var b = v['ฐาน'] * k, h = v['สูง'] * k; return '<polygon points="' + (40) + ',' + (200) + ' ' + (40 + b) + ',200 ' + (40 + b * 0.35) + ',' + (200 - h) + '" fill="#FFD6DF" stroke="#D63A5B" stroke-width="3"/><line x1="' + (40 + b * 0.35) + '" y1="' + (200 - h) + '" x2="' + (40 + b * 0.35) + '" y2="200" stroke="#3B2E5A" stroke-dasharray="5 4" stroke-width="2"/>'; } },
+    { n: '▱ ด้านขนาน', v: { 'ฐาน': 9, 'สูง': 5 }, f: function (v) { return ['ฐาน × สูง', v['ฐาน'] + ' × ' + v['สูง'], v['ฐาน'] * v['สูง']]; },
+      d: function (v, k) { var b = v['ฐาน'] * k, h = v['สูง'] * k, o = 30; return '<polygon points="40,200 ' + (40 + b) + ',200 ' + (40 + b + o) + ',' + (200 - h) + ' ' + (40 + o) + ',' + (200 - h) + '" fill="#D3F6E1" stroke="#1FA75A" stroke-width="3"/><line x1="' + (40 + o) + '" y1="' + (200 - h) + '" x2="' + (40 + o) + '" y2="200" stroke="#3B2E5A" stroke-dasharray="5 4" stroke-width="2"/>'; } },
+    { n: '⏢ คางหมู', v: { 'ด้านบน': 5, 'ด้านล่าง': 10, 'สูง': 6 }, f: function (v) { return ['{1/2} × (บน + ล่าง) × สูง', '{1/2} × (' + v['ด้านบน'] + ' + ' + v['ด้านล่าง'] + ') × ' + v['สูง'], (v['ด้านบน'] + v['ด้านล่าง']) * v['สูง'] / 2]; },
+      d: function (v, k) { var a = v['ด้านบน'] * k, b = v['ด้านล่าง'] * k, h = v['สูง'] * k, o = (b - a) / 3; return '<polygon points="40,200 ' + (40 + b) + ',200 ' + (40 + o + a) + ',' + (200 - h) + ' ' + (40 + o) + ',' + (200 - h) + '" fill="#FFE6C7" stroke="#E07B14" stroke-width="3"/><line x1="' + (40 + o) + '" y1="' + (200 - h) + '" x2="' + (40 + o) + '" y2="200" stroke="#3B2E5A" stroke-dasharray="5 4" stroke-width="2"/>'; } },
+    { n: '◆ ขนมเปียกปูน', v: { 'ทแยง 1': 10, 'ทแยง 2': 6 }, f: function (v) { return ['{1/2} × ทแยง × ทแยง', '{1/2} × ' + v['ทแยง 1'] + ' × ' + v['ทแยง 2'], v['ทแยง 1'] * v['ทแยง 2'] / 2]; },
+      d: function (v, k) { var a = v['ทแยง 1'] * k / 2, b = v['ทแยง 2'] * k / 2, cx = 160, cy = 110; return '<polygon points="' + (cx - a) + ',' + cy + ' ' + cx + ',' + (cy - b) + ' ' + (cx + a) + ',' + cy + ' ' + cx + ',' + (cy + b) + '" fill="#FFD6EC" stroke="#E0569A" stroke-width="3"/><line x1="' + (cx - a) + '" y1="' + cy + '" x2="' + (cx + a) + '" y2="' + cy + '" stroke="#3B2E5A" stroke-dasharray="5 4"/><line x1="' + cx + '" y1="' + (cy - b) + '" x2="' + cx + '" y2="' + (cy + b) + '" stroke="#3B2E5A" stroke-dasharray="5 4"/>'; } }
+  ], cur = 0, row = document.getElementById('shapes');
+  S.forEach(function (s, i) { var b = document.createElement('button'); b.className = 'chip'; b.style.boxShadow = 'none'; b.textContent = s.n; b.onclick = function () { cur = i; Kit.sound.tap(); build(); }; row.appendChild(b); });
+  function build() {
+    Array.prototype.forEach.call(row.children, function (b, k) { b.classList.toggle('sel', k === cur); });
+    var s = S[cur], ctl = document.getElementById('sctl');
+    ctl.innerHTML = Object.keys(s.v).map(function (k) { return '<div class="ctrl" style="margin:4px 0">' + k + ' <button class="step-btn" data-k="' + k + '" data-d="-1">−</button><span class="val">' + s.v[k] + '</span><button class="step-btn" data-k="' + k + '" data-d="1">+</button> ซม.</div>'; }).join('');
+    Array.prototype.forEach.call(ctl.querySelectorAll('button'), function (b) { b.onclick = function () { var k = b.getAttribute('data-k'); s.v[k] = Math.max(2, Math.min(14, s.v[k] + +b.getAttribute('data-d'))); Kit.sound.tap(); build(); }; });
+    var mx = Math.max.apply(null, Object.keys(s.v).map(function (k) { return s.v[k]; })), sc = Math.min(22, 175 / mx);
+    document.getElementById('shp').innerHTML = s.d(s.v, sc);
+    var r = s.f(s.v);
+    document.getElementById('sout').innerHTML = '<div>สูตร ' + Kit.fx(r[0]) + '</div><div>= ' + Kit.fx(r[1]) + '</div><div>= <b class="t-purple">' + r[2] + '</b> ตร.ซม.</div>';
+  }
+  build();
+};
+</script>
+</body>
+</html>

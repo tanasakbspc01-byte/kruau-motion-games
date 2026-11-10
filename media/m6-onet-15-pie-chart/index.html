@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>อ่านแผนภูมิรูปวงกลม · ติว O-NET ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#FF6B6B;--main-deep:#D64545;--glow:#FFD8D8}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🥧</span>
+  <div class="ttl"><b>อ่านแผนภูมิรูปวงกลม</b><small>คณิตศาสตร์ ป.6 · ติว O-NET · ค3.1 ป.6/1 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m6-onet-hub/" aria-label="หน้ารวมติว O-NET" title="หน้ารวมติว O-NET">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">ติว O-NET ป.6 · ตัวชี้วัด ค3.1 ป.6/1</span>
+  <div class="emoji-xl">🥧📊💸</div>
+  <h1>อ่านแผนภูมิรูปวงกลม<br><small style="font-size:.48em">ทั้งวง = 100% = 360°</small></h1>
+  <div class="ind"><b>📌 ตัวชี้วัด ค3.1 ป.6/1</b> ใช้ข้อมูลจากแผนภูมิรูปวงกลมในการหาคำตอบของโจทย์ปัญหา</div>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul><li>รู้ว่า <b>ทั้งวง = 100% = 360°</b> และหาส่วนที่หายไปได้</li><li>เปลี่ยน <b>ร้อยละในแผนภูมิ</b> เป็นจำนวนจริงได้</li><li>เปรียบเทียบข้อมูลและแก้ <b>โจทย์ปัญหา</b> จากแผนภูมิได้</li></ul>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนติว</b>แผนภูมิรูปวงกลมเหมือน <b>พิซซ่า 1 ถาด</b> 🍕 ทุกชิ้นรวมกันได้เต็มถาดพอดี ต้องได้ 100% เสมอ!</div></div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มติวกันเลย ▶</button>
+  <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก</p>
+</div></section>
+
+<section class="slide" data-title="แผนภูมิวงกลมคืออะไร"><div class="inner">
+  <h2 class="h"><span class="e">🍕</span>แผนภูมิรูปวงกลม = พิซซ่า 1 ถาด</h2>
+  <div class="grid" style="--min:280px">
+    <div class="svgbox noswipe" id="pie1"></div>
+    <div class="card c-red">
+      <h3>💸 รายได้ครอบครัวมะปราง เดือนละ 40,000 บาท</h3>
+      <div class="calc" id="pinfo"><div>👆 แตะชิ้นพิซซ่าเพื่อดูรายละเอียด</div></div>
+    </div>
+  </div>
+  <div class="chant">ทุกชิ้นรวมกัน = 100% = 360°<small>ชิ้นใหญ่ = ข้อมูลมาก · ชิ้นเล็ก = ข้อมูลน้อย</small></div>
+</div></section>
+
+<section class="slide" data-title="หาส่วนที่หายไป"><div class="inner">
+  <h2 class="h"><span class="e">🧩</span>หาส่วนที่หายไป → เปลี่ยนเป็นเงิน</h2>
+  <div class="card c-orange">
+    <h3>✏️ ครอบครัวมะปรางเก็บเงินออมเดือนละกี่บาท</h3>
+    <div class="steps calc" id="miss">
+      <div class="step"><span class="pill" style="--c:var(--orange)">ขั้นที่ 1</span> รวมส่วนที่รู้ 35% + 15% + 20% + 10% = <b>80%</b></div>
+      <div class="step"><span class="pill" style="--c:var(--blue)">ขั้นที่ 2</span> เงินออม 100% − 80% = <b>20%</b></div>
+      <div class="step"><span class="pill" style="--c:var(--green)">ขั้นที่ 3</span> {20/100} × 40,000 = <b class="t-purple">8,000 บาท</b></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="miss" style="--c:var(--orange)">คิดตามครูอู๋ 👇</button></div>
+  </div>
+  <div class="card c-blue">
+    <h3>⚡ เปรียบเทียบ 2 ส่วนแบบเร็ว: ค่าอาหารมากกว่าค่าเดินทางกี่บาท</h3>
+    <div class="steps calc" id="fast">
+      <div class="step">ลบร้อยละก่อน 35% − 15% = <b>20%</b></div>
+      <div class="step">เปลี่ยนเป็นเงินครั้งเดียว {20/100} × 40,000 = <b class="t-purple">8,000 บาท</b></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="fast" style="--c:var(--blue)">ดูทางลัด 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="องศา ↔ ร้อยละ"><div class="inner">
+  <h2 class="h"><span class="e">📐</span>องศา ↔ ร้อยละ</h2>
+  <div class="grid" style="--min:200px">
+    <div class="card c-purple center"><p class="eq">100% = 360°</p></div>
+    <div class="card c-green center"><p class="eq">50% = 180°</p><p class="sub">ครึ่งวง</p></div>
+    <div class="card c-blue center"><p class="eq">25% = 90°</p><p class="sub">มุมฉาก</p></div>
+    <div class="card c-orange center"><p class="eq">1% = 3.6°</p></div>
+  </div>
+  <div class="card c-pink">
+    <h3>✏️ นักเรียน 180 คน ชิ้นของบาสเกตบอลมีมุม 90° มีกี่คน</h3>
+    <div class="steps calc" id="deg">
+      <div class="step">90° จาก 360° = {90/360} = <b>{1/4}</b> ของวง</div>
+      <div class="step">{1/4} × 180 = <b class="t-purple">45 คน</b></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="deg" style="--c:var(--pink)">คิดตามครูอู๋ 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="สร้างแผนภูมิ" data-id="mk"><div class="inner">
+  <h2 class="h"><span class="e">🎨</span>ลองแบ่งเงินค่าขนมของหนู</h2>
+  <p class="sub">กด + / − แบ่งเงินค่าขนมเดือนละ 1,200 บาท (ปุ่มละ 5%) ให้ครบ 100%</p>
+  <div class="grid" style="--min:280px">
+    <div class="svgbox" id="pie2"></div>
+    <div class="card c-red"><div id="mkctl"></div><div class="feedback center" id="mkmsg"></div></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ฝึกคิดไม่รู้จบ"><div class="inner">
+  <h2 class="h"><span class="e">🎲</span>ฝึกอ่านแผนภูมิไม่รู้จบ</h2>
+  <div class="card c-teal"><div class="drill" data-drill="pie"></div></div>
+</div></section>
+<section class="slide" data-title="ตะลุยข้อสอบ O-NET"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>ตะลุยข้อสอบแนว O-NET (10 ข้อ)</h2>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เตือน</b>อ่านโจทย์ให้จบ ขีดเส้นใต้ <b>สิ่งที่โจทย์ถาม</b> แล้วค่อยเลือกคำตอบนะ ตอบผิดได้ ดูเหตุผลแล้วจำไว้ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปให้จำขึ้นใจ</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class='chant'>ทั้งวง = 100% = 360°<small>1% = 3.6° · 25% = 90° (มุมฉาก) · 50% = 180° (ครึ่งวง)</small></div><div class='key'><b>จำนวนจริง</b> = {ร้อยละ/100} × จำนวนทั้งหมด<br><b>เปรียบเทียบ 2 ส่วน</b> ลบร้อยละก่อน แล้วค่อยเปลี่ยนเป็นจำนวนจริงครั้งเดียว (คิดเร็วกว่า)</div><div class='trap'><b class='t'>⚠️ กับดัก</b> ส่วนที่ไม่บอกตัวเลข หาได้จาก 100% − ผลรวมส่วนที่รู้</div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(0)">🔁 ติวอีกครั้ง</button></div>
+  <div class="row center"><a class="btn ghost" href="../m6-onet-14-line-graph/">◀ 📈 กราฟเส้น</a><a class="btn" style="--c:var(--purple)" href="../m6-onet-hub/">🏠 หน้ารวมติว O-NET</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m6-onet-15-pie-chart";
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = 'kruau-onet6-' + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+Kit.quizzes.main = [
+{
+"q": "[[P]]ครอบครัวนี้เก็บเงินออมกี่เปอร์เซ็นต์ของรายได้",
+"c": [
+"20%",
+"10%",
+"25%",
+"30%"
+],
+"a": 0,
+"w": "100% − (35% + 15% + 20% + 10%) = 100% − 80% = 20%"
+},
+{
+"q": "[[P]]ค่าอาหารคิดเป็นเงินกี่บาท",
+"c": [
+"14,000 บาท",
+"3,500 บาท",
+"35,000 บาท",
+"12,000 บาท"
+],
+"a": 0,
+"w": "{35/100} × 40,000 = 14,000 บาท"
+},
+{
+"q": "[[P]]ค่าการศึกษามากกว่าค่าเดินทางกี่บาท",
+"c": [
+"2,000 บาท",
+"5,000 บาท",
+"8,000 บาท",
+"6,000 บาท"
+],
+"a": 0,
+"w": "ต่างกัน 20% − 15% = 5% → {5/100} × 40,000 = 2,000 บาท"
+},
+{
+"q": "[[P]]รายการใดใช้เงินเท่ากับเงินออม",
+"c": [
+"ค่าการศึกษา",
+"ค่าเดินทาง",
+"ค่าอาหาร",
+"อื่น ๆ"
+],
+"a": 0,
+"w": "ค่าการศึกษา 20% เท่ากับเงินออม 20%"
+},
+{
+"q": "[[P]]ค่าอาหารเป็นกี่เท่าของค่าใช้จ่ายอื่น ๆ",
+"c": [
+"3.5 เท่า",
+"3 เท่า",
+"25 เท่า",
+"4 เท่า"
+],
+"a": 0,
+"w": "35% ÷ 10% = 3.5 เท่า"
+},
+{
+"q": "[[P]]ถ้ารายได้เพิ่มเป็น 50,000 บาท แต่แบ่งสัดส่วนเหมือนเดิม ค่าเดินทางเป็นเงินกี่บาท",
+"c": [
+"7,500 บาท",
+"6,000 บาท",
+"15,000 บาท",
+"10,000 บาท"
+],
+"a": 0,
+"w": "{15/100} × 50,000 = 7,500 บาท"
+},
+{
+"q": "[[P]]ส่วนของค่าอาหารมีมุมที่จุดศูนย์กลางกี่องศา",
+"c": [
+"126 องศา",
+"35 องศา",
+"90 องศา",
+"140 องศา"
+],
+"a": 0,
+"w": "1% = 3.6 องศา → 35 × 3.6 = 126 องศา"
+},
+{
+"q": "นักเรียน 180 คน แสดงกีฬาที่ชอบด้วยแผนภูมิรูปวงกลม ส่วนของบาสเกตบอลมีมุม 90 องศา มีนักเรียนชอบบาสเกตบอลกี่คน",
+"c": [
+"45 คน",
+"90 คน",
+"60 คน",
+"25 คน"
+],
+"a": 0,
+"w": "90 องศา = {90/360} = {1/4} ของวง → {1/4} × 180 = 45 คน"
+},
+{
+"q": "ข้อใดถูกต้องเกี่ยวกับแผนภูมิรูปวงกลม",
+"c": [
+"ทุกส่วนรวมกันได้ 100% หรือ 360 องศา",
+"ทุกส่วนรวมกันได้ 180 องศา",
+"ส่วนที่ใหญ่ที่สุดต้องเป็น 50%",
+"ทุกส่วนต้องมีขนาดเท่ากัน"
+],
+"a": 0,
+"w": "แผนภูมิรูปวงกลมแทนข้อมูลทั้งหมด 100% ซึ่งเท่ากับมุมรอบจุด 360 องศา"
+},
+{
+"q": "นักเรียน 600 คน ชอบสีฟ้า 25% ชอบสีแดง 15% นักเรียนที่ชอบสีฟ้ามากกว่าสีแดงกี่คน",
+"c": [
+"60 คน",
+"150 คน",
+"90 คน",
+"10 คน"
+],
+"a": 0,
+"w": "ต่างกัน 10% → {10/100} × 600 = 60 คน"
+}
+];
+var COLS = ['#FF6B6B', '#3FA9F5', '#FFC93C', '#2ECC71', '#9B6CF0', '#FF9F43'];
+var FAM = [['ค่าอาหาร', 35], ['ค่าเดินทาง', 15], ['ค่าการศึกษา', 20], ['เงินออม', 20], ['อื่น ๆ', 10]];
+function pieSVG(items, title, hide) {
+  var cx = 150, cy = 150, r = 120, a = -Math.PI / 2, s = '<svg viewBox="0 0 300 ' + (title ? 330 : 300) + '" role="img" aria-label="' + (title || 'แผนภูมิรูปวงกลม') + '" style="max-width:340px">';
+  items.forEach(function (it, i) {
+    var p = it[1]; if (p <= 0) return;
+    var b = a + p / 100 * Math.PI * 2, mid = (a + b) / 2, big = p > 50 ? 1 : 0;
+    var x1 = cx + r * Math.cos(a), y1 = cy + r * Math.sin(a), x2 = cx + r * Math.cos(b), y2 = cy + r * Math.sin(b);
+    var d = p >= 100 ? 'M' + (cx - r) + ',' + cy + ' a' + r + ',' + r + ' 0 1,0 ' + 2 * r + ',0 a' + r + ',' + r + ' 0 1,0 ' + (-2 * r) + ',0' : 'M' + cx + ',' + cy + ' L' + x1.toFixed(1) + ',' + y1.toFixed(1) + ' A' + r + ',' + r + ' 0 ' + big + ',1 ' + x2.toFixed(1) + ',' + y2.toFixed(1) + ' Z';
+    var tx = cx + r * 0.62 * Math.cos(mid), ty = cy + r * 0.62 * Math.sin(mid);
+    s += '<g class="sl" data-i="' + i + '" style="cursor:pointer"><path d="' + d + '" fill="' + COLS[i % COLS.length] + '" stroke="#fff" stroke-width="3"/>' +
+      '<text x="' + tx.toFixed(1) + '" y="' + (ty - 3).toFixed(1) + '" text-anchor="middle" font-size="' + (p < 10 ? 11 : 13) + '" font-weight="700" fill="#3B2E5A">' + it[0] + '</text>' +
+      '<text x="' + tx.toFixed(1) + '" y="' + (ty + 14).toFixed(1) + '" text-anchor="middle" font-size="13" font-weight="700" fill="#3B2E5A">' + (hide === i ? '?' : p + '%') + '</text></g>';
+    a = b;
+  });
+  if (title) s += '<text x="150" y="322" text-anchor="middle" font-size="14" font-weight="700" fill="#3B2E5A">' + title + '</text>';
+  return s + '</svg>';
+}
+var PQ = '<div class="svgbox" style="margin-bottom:8px;font-weight:400">' + pieSVG(FAM, 'รายได้ครอบครัวมะปราง เดือนละ 40,000 บาท', 3) + '</div>';
+Kit.quizzes.main.forEach(function (q) { q.q = q.q.replace('[[P]]', PQ); });
+DRILLS.pie = [
+  function () {
+    var names = Kit.shuffle(['ฟุตบอล', 'ว่ายน้ำ', 'แบดมินตัน', 'วอลเลย์บอล', 'ปิงปอง']).slice(0, 4), ps = [], left = 100;
+    for (var i = 0; i < 3; i++) { var p = R(2, Math.min(8, left / 5 - (3 - i))) * 5; ps.push(p); left -= p; }
+    ps.push(left);
+    var tot = pick([200, 400, 600, 800, 1000, 1200]), items = names.map(function (n, i) { return [n, ps[i]]; }), kind = R(0, 2), k = R(0, 3), q, a, h;
+    var hide = kind === 0 ? 3 : -1;
+    var g = '<div class="svgbox" style="font-weight:400">' + pieSVG(items, 'กีฬาที่นักเรียน ' + C(tot) + ' คนชอบ', hide) + '</div>';
+    if (kind === 0) { q = 'นักเรียนที่ชอบ' + names[3] + 'มีกี่คน'; a = ps[3] * tot / 100; h = 'ร้อยละ = 100 − (' + ps.slice(0, 3).join(' + ') + ') = ' + ps[3] + '%<br>{' + ps[3] + '/100} × ' + C(tot) + ' = <b>' + C(a) + ' คน</b>'; }
+    else if (kind === 1) { q = 'นักเรียนที่ชอบ' + names[k] + 'มีกี่คน'; a = ps[k] * tot / 100; h = '{' + ps[k] + '/100} × ' + C(tot) + ' = <b>' + C(a) + ' คน</b>'; }
+    else { var i1 = 0, i2 = 1; if (ps[i1] === ps[i2]) return DRILLS.pie[0](); var hi = ps[i1] > ps[i2] ? i1 : i2, lo = hi === i1 ? i2 : i1; q = 'นักเรียนที่ชอบ' + names[hi] + 'มากกว่าที่ชอบ' + names[lo] + 'กี่คน'; a = (ps[hi] - ps[lo]) * tot / 100; h = 'ต่างกัน ' + ps[hi] + '% − ' + ps[lo] + '% = ' + (ps[hi] - ps[lo]) + '%<br>{' + (ps[hi] - ps[lo]) + '/100} × ' + C(tot) + ' = <b>' + C(a) + ' คน</b>'; }
+    return { q: g + q, a: a, u: 'คน', h: h };
+  }
+];
+SETUP = function () {
+  var b1 = document.getElementById('pie1');
+  b1.innerHTML = pieSVG(FAM);
+  Array.prototype.forEach.call(b1.querySelectorAll('.sl'), function (g) {
+    g.addEventListener('click', function () {
+      var it = FAM[+g.getAttribute('data-i')]; Kit.sound.tap();
+      document.getElementById('pinfo').innerHTML = '<div><b>' + it[0] + '</b> ' + it[1] + '%</div><div>เป็นเงิน ' + Kit.fx('{' + it[1] + '/100}') + ' × 40,000 = <b class="t-purple">' + C(it[1] * 400) + ' บาท</b></div><div>มุม ' + it[1] + ' × 3.6 = <b>' + C(it[1] * 3.6) + '°</b></div>';
+    });
+  });
+  var MY = [['ขนม', 30], ['ของเล่น', 20], ['หนังสือ', 20], ['ออม', 30]], ctl = document.getElementById('mkctl');
+  function draw() {
+    var tot = MY.reduce(function (s, x) { return s + x[1]; }, 0);
+    document.getElementById('pie2').innerHTML = pieSVG(MY.concat(tot < 100 ? [['ยังไม่แบ่ง', 100 - tot]] : []));
+    ctl.innerHTML = MY.map(function (x, i) { return '<div class="ctrl" style="margin:4px 0"><span style="min-width:4.5em">' + x[0] + '</span><button class="step-btn" data-m="' + i + '" data-d="-5">−</button><span class="val">' + x[1] + '%</span><button class="step-btn" data-m="' + i + '" data-d="5">+</button><span>= ' + C(x[1] * 12) + ' บาท</span></div>'; }).join('');
+    Array.prototype.forEach.call(ctl.querySelectorAll('button'), function (b) { b.onclick = function () { var i = +b.getAttribute('data-m'), d = +b.getAttribute('data-d'), t = MY.reduce(function (s, x) { return s + x[1]; }, 0); if (d > 0 && t >= 100) { Kit.toast('ครบ 100% แล้ว ลดส่วนอื่นก่อนนะ'); return; } MY[i][1] = Math.max(0, MY[i][1] + d); Kit.sound.tap(); draw(); }; });
+    document.getElementById('mkmsg').innerHTML = tot === 100 ? '<span class="t-green">✅ ครบ 100% = 360° พอดี!</span>' : '<span class="t-orange">ยังแบ่งได้อีก ' + (100 - tot) + '%</span>';
+  }
+  draw();
+};
+</script>
+</body>
+</html>

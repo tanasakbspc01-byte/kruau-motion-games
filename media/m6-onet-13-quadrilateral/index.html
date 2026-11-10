@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>จำแนกรูปสี่เหลี่ยม · ติว O-NET ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#F39C12;--main-deep:#C77C02;--glow:#FDEBC4}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🔶</span>
+  <div class="ttl"><b>จำแนกรูปสี่เหลี่ยม</b><small>คณิตศาสตร์ ป.6 · ติว O-NET · ค2.2 ป.5/2 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m6-onet-hub/" aria-label="หน้ารวมติว O-NET" title="หน้ารวมติว O-NET">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">ติว O-NET ป.6 · ตัวชี้วัด ค2.2 ป.5/2</span>
+  <div class="emoji-xl">🟥🔷🪁</div>
+  <h1>จำแนกรูปสี่เหลี่ยม<br><small style="font-size:.48em">ด้าน มุม เส้นขนาน เส้นทแยงมุม</small></h1>
+  <div class="ind"><b>📌 ตัวชี้วัด ค2.2 ป.5/2</b> จำแนกรูปสี่เหลี่ยมโดยพิจารณาจากสมบัติของรูป</div>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul><li>บอก <b>สมบัติ</b> ของรูปสี่เหลี่ยม 6 ชนิดได้</li><li>จำแนกรูปสี่เหลี่ยมจาก <b>ด้าน มุม เส้นขนาน</b> ได้</li><li>จำแนกรูปสี่เหลี่ยมจาก <b>เส้นทแยงมุม</b> ได้</li></ul>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนติว</b>รูปสี่เหลี่ยมก็มี <b>ครอบครัว</b> นะ! จัตุรัสเป็นลูกคนเก่งที่ได้สมบัติจากทุกคน มาสืบดูกัน 👨‍👩‍👧‍👦</div></div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มติวกันเลย ▶</button>
+  <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก</p>
+</div></section>
+
+<section class="slide" data-title="รู้จัก 6 รูป"><div class="inner">
+  <h2 class="h"><span class="e">👨‍👩‍👧‍👦</span>ครอบครัวรูปสี่เหลี่ยม</h2>
+  <div class="grid" style="--min:150px" id="family"></div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนสังเกต</b>ดู 3 เรื่อง: <b>ด้าน</b> (ยาวเท่ากัน? ขนานกัน?) <b>มุม</b> (มุมฉาก?) และ <b>เส้นทแยงมุม</b> (ยาวเท่ากัน? แบ่งครึ่ง? ตั้งฉาก?)</div></div>
+</div></section>
+
+<section class="slide" data-title="ตารางสมบัติ"><div class="inner">
+  <h2 class="h"><span class="e">📋</span>ตารางสมบัติ (✔ = มีสมบัตินี้)</h2>
+  <div class="wide"><table class="tbl mini" style="--c:var(--orange)" id="ptab"></table></div>
+  <div class="note">📌 จัตุรัส ✔ ครบทุกข้อ (ยกเว้นข้อของคางหมูและว่าว) · ยิ่งรูปมี ✔ มาก ยิ่ง “พิเศษ”</div>
+</div></section>
+
+<section class="slide" data-title="นักสืบรูปสี่เหลี่ยม" data-id="det"><div class="inner">
+  <h2 class="h"><span class="e">🕵️</span>นักสืบรูปสี่เหลี่ยม</h2>
+  <p class="sub">แตะเลือกสมบัติที่รู้ ครูอู๋จะบอกว่าเป็นรูปอะไรได้บ้าง</p>
+  <div class="card c-orange"><div class="row" id="props"></div></div>
+  <div class="card c-yellow center"><p class="big" id="ans"></p></div>
+</div></section>
+
+<section class="slide" data-title="จริงหรือไม่"><div class="inner">
+  <h2 class="h"><span class="e">🧺</span>กิจกรรม: จริง หรือ ไม่จริง</h2>
+  <div data-sorter="tf"></div>
+</div></section>
+
+<section class="slide" data-title="ฝึกคิดไม่รู้จบ"><div class="inner">
+  <h2 class="h"><span class="e">🎲</span>ฝึกทายรูปไม่รู้จบ</h2>
+  <div class="card c-teal"><div class="drill" data-drill="q"></div></div>
+</div></section>
+<section class="slide" data-title="ตะลุยข้อสอบ O-NET"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>ตะลุยข้อสอบแนว O-NET (10 ข้อ)</h2>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เตือน</b>อ่านโจทย์ให้จบ ขีดเส้นใต้ <b>สิ่งที่โจทย์ถาม</b> แล้วค่อยเลือกคำตอบนะ ตอบผิดได้ ดูเหตุผลแล้วจำไว้ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปให้จำขึ้นใจ</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class='chant'>จัตุรัส = ผืนผ้า + ขนมเปียกปูน<small>จัตุรัสมีครบทุกสมบัติ: มุมฉากทุกมุม ด้านเท่ากันทุกด้าน ด้านขนาน 2 คู่ ทแยงยาวเท่า แบ่งครึ่ง ตั้งฉาก</small></div><div class='key'><b>ด้านขนาน 2 คู่</b> จัตุรัส ผืนผ้า ขนมเปียกปูน ด้านขนาน · <b>1 คู่</b> คางหมู · <b>ไม่มี</b> รูปว่าว<br><b>ทแยงตั้งฉาก</b> จัตุรัส ขนมเปียกปูน รูปว่าว · <b>ทแยงยาวเท่ากัน</b> จัตุรัส ผืนผ้า</div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(0)">🔁 ติวอีกครั้ง</button></div>
+  <div class="row center"><a class="btn ghost" href="../m6-onet-12-circle/">◀ ⭕ วงกลม</a><a class="btn" style="--c:var(--purple)" href="../m6-onet-hub/">🏠 หน้ารวมติว O-NET</a><a class="btn ghost" href="../m6-onet-14-line-graph/">📈 กราฟเส้น ▶</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m6-onet-13-quadrilateral";
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = 'kruau-onet6-' + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+Kit.quizzes.main = [
+{
+"q": "รูปสี่เหลี่ยมที่มีมุมทุกมุมเป็นมุมฉาก และด้านทุกด้านยาวเท่ากัน คือรูปใด",
+"c": [
+"สี่เหลี่ยมจัตุรัส",
+"สี่เหลี่ยมผืนผ้า",
+"สี่เหลี่ยมขนมเปียกปูน",
+"สี่เหลี่ยมด้านขนาน"
+],
+"a": 0,
+"w": "ต้องมีทั้งมุมฉาก (แบบผืนผ้า) และด้านเท่ากันทุกด้าน (แบบขนมเปียกปูน) จึงเป็นจัตุรัส"
+},
+{
+"q": "รูปสี่เหลี่ยมที่มีด้านตรงข้ามขนานกันเพียง 1 คู่ คือรูปใด",
+"c": [
+"สี่เหลี่ยมคางหมู",
+"สี่เหลี่ยมด้านขนาน",
+"รูปว่าว",
+"สี่เหลี่ยมผืนผ้า"
+],
+"a": 0,
+"w": "คางหมูเป็นรูปเดียวที่มีด้านขนาน 1 คู่พอดี"
+},
+{
+"q": "เส้นทแยงมุมตัดกันเป็นมุมฉาก แบ่งครึ่งซึ่งกันและกัน แต่ยาวไม่เท่ากัน คือรูปใด",
+"c": [
+"สี่เหลี่ยมขนมเปียกปูน",
+"สี่เหลี่ยมจัตุรัส",
+"สี่เหลี่ยมผืนผ้า",
+"สี่เหลี่ยมคางหมู"
+],
+"a": 0,
+"w": "ตั้งฉาก + แบ่งครึ่ง = ขนมเปียกปูนหรือจัตุรัส แต่ยาวไม่เท่ากัน จึงไม่ใช่จัตุรัส"
+},
+{
+"q": "เส้นทแยงมุมยาวเท่ากันและแบ่งครึ่งซึ่งกันและกัน แต่ไม่ตั้งฉากกัน คือรูปใด",
+"c": [
+"สี่เหลี่ยมผืนผ้า",
+"สี่เหลี่ยมจัตุรัส",
+"สี่เหลี่ยมขนมเปียกปูน",
+"รูปว่าว"
+],
+"a": 0,
+"w": "ยาวเท่ากัน + แบ่งครึ่ง = ผืนผ้าหรือจัตุรัส แต่ไม่ตั้งฉาก จึงเป็นผืนผ้า"
+},
+{
+"q": "ข้อใดถูกต้อง",
+"c": [
+"รูปสี่เหลี่ยมจัตุรัสเป็นรูปสี่เหลี่ยมผืนผ้าชนิดหนึ่ง",
+"รูปสี่เหลี่ยมผืนผ้าทุกรูปเป็นรูปสี่เหลี่ยมจัตุรัส",
+"รูปสี่เหลี่ยมคางหมูมีด้านขนาน 2 คู่",
+"รูปสี่เหลี่ยมขนมเปียกปูนทุกมุมเป็นมุมฉาก"
+],
+"a": 0,
+"w": "จัตุรัสมีสมบัติของผืนผ้าครบ (มุมฉากทุกมุม ด้านตรงข้ามเท่ากันและขนาน) จึงเป็นผืนผ้าชนิดพิเศษ"
+},
+{
+"q": "มีด้านที่อยู่ติดกันยาวเท่ากัน 2 คู่ เส้นทแยงมุมตั้งฉากกัน และมีเส้นทแยงมุมเพียงเส้นเดียวที่ถูกแบ่งครึ่ง คือรูปใด",
+"c": [
+"รูปว่าว",
+"สี่เหลี่ยมขนมเปียกปูน",
+"สี่เหลี่ยมด้านขนาน",
+"สี่เหลี่ยมคางหมู"
+],
+"a": 0,
+"w": "นี่คือสมบัติเฉพาะของรูปว่าว"
+},
+{
+"q": "กลุ่มใดมีด้านตรงข้ามขนานกัน 2 คู่ทุกรูป",
+"c": [
+"จัตุรัส ผืนผ้า ขนมเปียกปูน ด้านขนาน",
+"จัตุรัส ผืนผ้า คางหมู รูปว่าว",
+"ผืนผ้า คางหมู ด้านขนาน",
+"ขนมเปียกปูน รูปว่าว คางหมู"
+],
+"a": 0,
+"w": "คางหมูมีด้านขนาน 1 คู่ และรูปว่าวไม่มีด้านขนาน"
+},
+{
+"q": "ผลบวกของขนาดของมุมภายในรูปสี่เหลี่ยมใด ๆ เท่ากับเท่าใด",
+"c": [
+"360 องศา",
+"180 องศา",
+"90 องศา",
+"540 องศา"
+],
+"a": 0,
+"w": "แบ่งรูปสี่เหลี่ยมด้วยเส้นทแยงมุมได้สามเหลี่ยม 2 รูป → 2 × 180 = 360 องศา"
+},
+{
+"q": "รูปสี่เหลี่ยมด้านขนานมีมุมหนึ่งกาง 70 องศา มุมที่อยู่ติดกันกางกี่องศา",
+"c": [
+"110 องศา",
+"70 องศา",
+"90 องศา",
+"290 องศา"
+],
+"a": 0,
+"w": "มุมที่อยู่ติดกันในสี่เหลี่ยมด้านขนานรวมกันได้ 180 องศา → 180 − 70 = 110 องศา"
+},
+{
+"q": "รูปสี่เหลี่ยมใดที่เส้นทแยงมุม <u>ไม่</u> แบ่งครึ่งซึ่งกันและกัน",
+"c": [
+"รูปว่าว",
+"สี่เหลี่ยมผืนผ้า",
+"สี่เหลี่ยมด้านขนาน",
+"สี่เหลี่ยมจัตุรัส"
+],
+"a": 0,
+"w": "รูปว่าวมีเส้นทแยงมุมเพียงเส้นเดียวที่ถูกแบ่งครึ่ง ส่วนอีก 3 รูปแบ่งครึ่งซึ่งกันและกัน"
+}
+];
+var SH = [
+  { n: 'จัตุรัส', c: '#FF5C7A', pts: '20,20 100,20 100,100 20,100' },
+  { n: 'ผืนผ้า', c: '#3FA9F5', pts: '5,30 115,30 115,90 5,90' },
+  { n: 'ขนมเปียกปูน', c: '#9B6CF0', pts: '60,5 110,60 60,115 10,60' },
+  { n: 'ด้านขนาน', c: '#2ECC71', pts: '30,30 115,30 90,95 5,95' },
+  { n: 'คางหมู', c: '#FF9F43', pts: '35,25 85,25 115,95 5,95' },
+  { n: 'รูปว่าว', c: '#E84393', pts: '60,5 100,40 60,115 20,40' }
+];
+var P = [
+  ['มุมทุกมุมเป็นมุมฉาก', [1, 1, 0, 0, 0, 0]],
+  ['ด้านทุกด้านยาวเท่ากัน', [1, 0, 1, 0, 0, 0]],
+  ['ด้านตรงข้ามยาวเท่ากัน', [1, 1, 1, 1, 0, 0]],
+  ['ด้านตรงข้ามขนานกัน 2 คู่', [1, 1, 1, 1, 0, 0]],
+  ['ด้านตรงข้ามขนานกันเพียง 1 คู่', [0, 0, 0, 0, 1, 0]],
+  ['ด้านที่อยู่ติดกันยาวเท่ากัน 2 คู่', [1, 0, 1, 0, 0, 1]],
+  ['เส้นทแยงมุมยาวเท่ากัน', [1, 1, 0, 0, 0, 0]],
+  ['เส้นทแยงมุมแบ่งครึ่งซึ่งกันและกัน', [1, 1, 1, 1, 0, 0]],
+  ['เส้นทแยงมุมตั้งฉากกัน', [1, 0, 1, 0, 0, 1]],
+  ['เส้นทแยงมุมเพียงเส้นเดียวถูกแบ่งครึ่ง', [0, 0, 0, 0, 0, 1]]
+];
+Kit.sorters.tf = {
+  bins: [{ k: 't', t: '✅ จริง', c: 'var(--green)' }, { k: 'f', t: '❌ ไม่จริง', c: 'var(--red)' }],
+  items: [
+    { t: 'จัตุรัสทุกรูปเป็นผืนผ้า', k: 't', w: 'จัตุรัสมีมุมฉากทุกมุม ด้านตรงข้ามเท่ากันและขนาน' }, { t: 'จัตุรัสทุกรูปเป็นขนมเปียกปูน', k: 't', w: 'จัตุรัสมีด้านเท่ากันทุกด้าน' },
+    { t: 'ผืนผ้าทุกรูปเป็นด้านขนาน', k: 't', w: 'ผืนผ้ามีด้านตรงข้ามขนานกัน 2 คู่' },
+    { t: 'ผืนผ้าทุกรูปเป็นจัตุรัส', k: 'f', w: 'ผืนผ้าด้านกว้างกับยาวไม่จำเป็นต้องเท่ากัน' }, { t: 'คางหมูมีด้านขนาน 2 คู่', k: 'f', w: 'คางหมูมีด้านขนานเพียง 1 คู่' },
+    { t: 'เส้นทแยงมุมของผืนผ้าตั้งฉากกันเสมอ', k: 'f', w: 'ผืนผ้าเส้นทแยงยาวเท่ากันแต่ไม่ตั้งฉาก (ยกเว้นจัตุรัส)' }, { t: 'รูปว่าวมีด้านขนาน', k: 'f', w: 'รูปว่าวไม่มีด้านคู่ใดขนานกัน' }
+  ]
+};
+DRILLS.q = [
+  function () {
+    var k = R(0, 5), my = [];
+    P.forEach(function (p) { if (p[1][k]) my.push(p[0]); });
+    var picks = Kit.shuffle(my).slice(0, Math.min(3, my.length));
+    var ok = SH.map(function (s, i) { return picks.every(function (t) { return P.filter(function (p) { return p[0] === t; })[0][1][i]; }); });
+    if (ok.filter(Boolean).length !== 1) return DRILLS.q[0]();
+    var opts = Kit.shuffle([0, 1, 2, 3, 4, 5].filter(function (i) { return i !== k; })).slice(0, 3).concat([k]);
+    opts = Kit.shuffle(opts);
+    return { q: 'รูปสี่เหลี่ยมที่มีสมบัติ: ' + picks.map(function (t) { return '“' + t + '”'; }).join(' และ ') + ' คือรูปใด', c: opts.map(function (i) { return SH[i].n; }), a: opts.indexOf(k), h: 'มีเพียง <b>' + SH[k].n + '</b> ที่มีสมบัติครบทุกข้อที่กำหนด' };
+  },
+  function () {
+    var p = pick(P), opts = [0, 1, 2, 3, 4, 5], yes = opts.filter(function (i) { return p[1][i]; }), no = opts.filter(function (i) { return !p[1][i]; });
+    if (!no.length || !yes.length) return DRILLS.q[1]();
+    var k = pick(no);
+    var ch = Kit.shuffle(Kit.shuffle(yes).slice(0, 3).concat([k]));
+    return { q: 'รูปใด <u>ไม่มี</u> สมบัติ “' + p[0] + '”', c: ch.map(function (i) { return SH[i].n; }), a: ch.indexOf(k), h: 'รูปที่มีสมบัตินี้: ' + yes.map(function (i) { return SH[i].n; }).join(', ') + '<br>จึงตอบ <b>' + SH[k].n + '</b>' };
+  }
+];
+SETUP = function () {
+  document.getElementById('family').innerHTML = SH.map(function (s) {
+    return '<div class="card center" style="--c:' + s.c + ';padding:10px"><svg viewBox="0 0 120 120" style="width:100%;max-width:120px"><polygon points="' + s.pts + '" fill="' + s.c + '" fill-opacity=".25" stroke="' + s.c + '" stroke-width="4"/></svg><b>' + s.n + '</b></div>';
+  }).join('');
+  document.getElementById('ptab').innerHTML = '<tr><th style="text-align:left">สมบัติ</th>' + SH.map(function (s) { return '<th>' + s.n + '</th>'; }).join('') + '</tr>' +
+    P.map(function (p) { return '<tr><td style="text-align:left">' + p[0] + '</td>' + p[1].map(function (v) { return '<td>' + (v ? '<b class="t-green">✔</b>' : '') + '</td>'; }).join('') + '</tr>'; }).join('');
+  var on = {}, box = document.getElementById('props');
+  P.forEach(function (p, i) { var b = document.createElement('button'); b.className = 'chip'; b.style.boxShadow = 'none'; b.style.fontSize = '1rem'; b.textContent = p[0]; b.onclick = function () { on[i] = !on[i]; b.classList.toggle('sel', on[i]); Kit.sound.tap(); judge(); }; box.appendChild(b); });
+  function judge() {
+    var sel = Object.keys(on).filter(function (k) { return on[k]; });
+    var fit = SH.filter(function (s, i) { return sel.every(function (k) { return P[k][1][i]; }); }).map(function (s) { return s.n; });
+    document.getElementById('ans').innerHTML = !sel.length ? 'แตะเลือกสมบัติก่อนนะ 👆' : fit.length ? '🔎 เป็นได้: <span class="t-purple">' + fit.join(', ') + '</span>' + (fit.length === 1 ? ' 🎉' : '') : '😮 ไม่มีรูปสี่เหลี่ยมใดมีสมบัติครบทุกข้อนี้';
+  }
+  judge();
+};
+</script>
+</body>
+</html>

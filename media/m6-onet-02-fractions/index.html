@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>เปรียบเทียบ เรียงลำดับเศษส่วน · ติว O-NET ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#FF5C7A;--main-deep:#D63A5B;--glow:#FFD6DF}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🍕</span>
+  <div class="ttl"><b>เปรียบเทียบ เรียงลำดับเศษส่วน</b><small>คณิตศาสตร์ ป.6 · ติว O-NET · ค1.1 ป.6/1 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m6-onet-hub/" aria-label="หน้ารวมติว O-NET" title="หน้ารวมติว O-NET">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">ติว O-NET ป.6 · ตัวชี้วัด ค1.1 ป.6/1</span>
+  <div class="emoji-xl">🍕🍰🥧</div>
+  <h1>เปรียบเทียบ เรียงลำดับเศษส่วน<br><small style="font-size:.48em">ทำส่วนให้เท่ากัน แล้วค่อยเทียบ</small></h1>
+  <div class="ind"><b>📌 ตัวชี้วัด ค1.1 ป.6/1</b> เปรียบเทียบ เรียงลำดับเศษส่วนและจำนวนคละจากสถานการณ์ต่าง ๆ</div>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul><li>เปรียบเทียบเศษส่วนที่ <b>ตัวส่วนไม่เท่ากัน</b> ได้</li><li>เปรียบเทียบ <b>จำนวนคละ</b> กับเศษเกินได้</li><li>เรียงลำดับเศษส่วนจาก <b>สถานการณ์จริง</b> ได้</li></ul>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนติว</b>เศษส่วนไม่ยากเลย ขอแค่จำคาถาเดียว <b>“ส่วนเท่ากันก่อน แล้วค่อยเทียบเศษ”</b> 🍕</div></div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มติวกันเลย ▶</button>
+  <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก</p>
+</div></section>
+
+<section class="slide" data-title="ชวนคิด"><div class="inner">
+  <h2 class="h"><span class="e">🤔</span>ครูอู๋ชวนคิด: ใครกินพิซซ่ามากกว่า?</h2>
+  <div class="grid" style="--min:260px">
+    <div class="card c-red center"><h3>🧒 ต้นกิน {3/4} ถาด</h3><div class="fbar" style="--c:var(--red)"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+    <div class="card c-blue center"><h3>👧 ฝนกิน {5/6} ถาด</h3><div class="fbar" style="--c:var(--blue)"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+  </div>
+  <div class="steps" id="think">
+    <div class="step"><div class="card c-yellow"><p>💭 ชิ้นไม่เท่ากัน (ตัดเป็น 4 ชิ้น กับ 6 ชิ้น) เทียบตรง ๆ ไม่ได้ ➜ ต้อง <b>ตัดให้ชิ้นเท่ากันก่อน</b></p></div></div>
+    <div class="step"><div class="card c-yellow"><p>✂️ ค.ร.น. ของ 4 และ 6 คือ 12 ➜ {3/4} = {9/12} &nbsp; และ &nbsp; {5/6} = {10/12}</p></div></div>
+    <div class="step"><div class="card c-green"><p class="big center">{10/12} > {9/12} ➜ <b>ฝนกินมากกว่า</b> 🎉</p></div></div>
+  </div>
+  <div class="row center"><button class="btn" data-reveal="think">คิดไปด้วยกัน 👇</button></div>
+</div></section>
+
+<section class="slide" data-title="3 กรณี"><div class="inner">
+  <h2 class="h"><span class="e">🗂️</span>เปรียบเทียบเศษส่วน 3 กรณี</h2>
+  <div class="grid" style="--min:260px">
+    <div class="card c-green"><h3>① ตัวส่วนเท่ากัน</h3><p>ดู <b>ตัวเศษ</b> เศษมากกว่า มีค่ามากกว่า</p><p class="eq center">{5/9} > {4/9}</p></div>
+    <div class="card c-orange"><h3>② ตัวเศษเท่ากัน</h3><p>ตัวส่วน <b>น้อยกว่า</b> มีค่า <b>มากกว่า</b> (ชิ้นใหญ่กว่า)</p><p class="eq center">{3/5} > {3/8}</p></div>
+    <div class="card c-purple"><h3>③ ต่างกันทั้งคู่</h3><p>ทำตัวส่วนให้เท่ากันด้วย <b>ค.ร.น.</b> แล้วเทียบตัวเศษ</p><p class="eq center">{5/6} กับ {9/14}</p></div>
+  </div>
+  <div class="card c-purple">
+    <h3>✏️ ตัวอย่างกรณี ③ : {5/6} กับ {9/14}</h3>
+    <div class="steps calc" id="c3">
+      <div class="step">ค.ร.น. ของ 6 และ 14 คือ <b>42</b></div>
+      <div class="step">{5/6} = {5 × 7/6 × 7} = {35/42} &nbsp;&nbsp; {9/14} = {9 × 3/14 × 3} = {27/42}</div>
+      <div class="step">35 > 27 ดังนั้น <b class="t-purple">{5/6} > {9/14}</b></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="c3" style="--c:var(--purple)">ดูทีละขั้น 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เคล็ดลับครูอู๋"><div class="inner">
+  <h2 class="h"><span class="e">🗝️</span>เคล็ดลับครูอู๋ ทำข้อสอบไว</h2>
+  <div class="grid" style="--min:260px">
+    <button class="flip c-blue" style="--fh:190px"><div class="fi"><div class="fa"><span class="e">✖️</span>คูณไขว้<small>แตะเพื่อพลิก</small></div><div class="fb">เทียบ {a/b} กับ {c/d}<br>คูณ <b>a × d</b> กับ <b>c × b</b><br>ฝั่งไหนมากกว่า เศษส่วนนั้นมากกว่า<br>{5/6} กับ {9/14}: 5×14 = 70, 9×6 = 54 → {5/6} มากกว่า</div></div></button>
+    <button class="flip c-orange" style="--fh:190px"><div class="fi"><div class="fa"><span class="e">½</span>เทียบกับครึ่ง<small>แตะเพื่อพลิก</small></div><div class="fb">ดูว่าตัวเศษ มากหรือน้อยกว่า <b>ครึ่งหนึ่งของตัวส่วน</b><br>{4/9}: ครึ่งของ 9 คือ 4.5 → 4 น้อยกว่า → <b>{4/9} &lt; {1/2}</b></div></div></button>
+    <button class="flip c-green" style="--fh:190px"><div class="fi"><div class="fa"><span class="e">🧩</span>ขาดอีกเท่าไรถึง 1<small>แตะเพื่อพลิก</small></div><div class="fb">{7/8} ขาดอีก {1/8} &nbsp; {5/6} ขาดอีก {1/6}<br>ขาดน้อยกว่า = ใกล้ 1 กว่า<br>{1/8} &lt; {1/6} จึง <b>{7/8} > {5/6}</b></div></div></button>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋แนะ</b>ในห้องสอบเวลาจำกัด ลองใช้ <b>เทียบกับครึ่ง</b> ตัดตัวเลือกก่อน แล้วค่อยคูณไขว้ข้อที่เหลือ เร็วมาก ⚡</div></div>
+</div></section>
+
+<section class="slide" data-title="จำนวนคละ"><div class="inner">
+  <h2 class="h"><span class="e">🔢</span>เปรียบเทียบจำนวนคละ</h2>
+  <div class="key">ดู <b>จำนวนเต็ม</b> ก่อน ➜ ถ้าเท่ากัน ค่อยเทียบ <b>ส่วนที่เป็นเศษส่วน</b><br>ถ้าเจอ <b>เศษเกิน</b> ให้เปลี่ยนเป็นจำนวนคละ (หรือเปลี่ยนจำนวนคละเป็นเศษเกิน) ให้เหมือนกันก่อน</div>
+  <div class="card c-orange">
+    <h3>✏️ เปรียบเทียบ {4 3/7} กับ {26/5}</h3>
+    <div class="steps calc" id="mx">
+      <div class="step">{26/5} = 26 ÷ 5 = 5 เศษ 1 = <b>{5 1/5}</b></div>
+      <div class="step">จำนวนเต็ม 4 กับ 5 ➜ 4 น้อยกว่า 5</div>
+      <div class="step"><p class="big center t-purple">{4 3/7} &lt; {26/5}</p></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="mx" style="--c:var(--orange)">ดูทีละขั้น 👇</button></div>
+  </div>
+  <div class="note">🔁 จำนวนคละ ➜ เศษเกิน : {2 3/4} = {(2 × 4) + 3/4} = {11/4} &nbsp;(คูณจำนวนเต็มกับส่วน แล้วบวกเศษ)</div>
+</div></section>
+
+<section class="slide" data-title="เรียงลำดับจากสถานการณ์"><div class="inner">
+  <h2 class="h"><span class="e">📚</span>เรียงลำดับจากสถานการณ์</h2>
+  <div class="card c-blue">
+    <p class="big" style="font-size:clamp(1.05rem,3vw,1.3rem)">มะลิอ่านหนังสือวันจันทร์ {3/4} ชั่วโมง วันอังคาร {1 1/6} ชั่วโมง วันพุธ {2/3} ชั่วโมง วันพฤหัสบดี {1 1/4} ชั่วโมง<br>วันไหนอ่านนานที่สุด และวันไหนอ่านน้อยที่สุด</p>
+    <div class="steps calc" id="sit" style="margin-top:8px">
+      <div class="step">แยกกลุ่ม: <b>น้อยกว่า 1 ชม.</b> → จันทร์ {3/4}, พุธ {2/3} &nbsp; <b>มากกว่า 1 ชม.</b> → อังคาร {1 1/6}, พฤหัสฯ {1 1/4}</div>
+      <div class="step">ค.ร.น. ของ 3, 4, 6 คือ 12 → {3/4} = {9/12}, {2/3} = {8/12}, {1/6} = {2/12}, {1/4} = {3/12}</div>
+      <div class="step">เรียงจากมากไปน้อย: พฤหัสฯ {1 3/12} > อังคาร {1 2/12} > จันทร์ {9/12} > พุธ {8/12}</div>
+      <div class="step"><p class="big center t-green">อ่านนานที่สุด วันพฤหัสบดี · น้อยที่สุด วันพุธ</p></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="sit" style="--c:var(--blue)">คิดตามครูอู๋ 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เครื่องเทียบเศษส่วน" data-id="cmp"><div class="inner">
+  <h2 class="h"><span class="e">⚖️</span>เครื่องเทียบเศษส่วน</h2>
+  <p class="sub">กด + / − เปลี่ยนเศษและส่วน ดูแถบเศษส่วนกับเครื่องหมาย</p>
+  <div class="grid" style="--min:280px">
+    <div class="card c-red"><div class="row center"><span class="ctrl">เศษ <button class="step-btn" data-f="an-">−</button><span class="val" id="an"></span><button class="step-btn" data-f="an+">+</button></span><span class="ctrl">ส่วน <button class="step-btn" data-f="ad-">−</button><span class="val" id="ad"></span><button class="step-btn" data-f="ad+">+</button></span></div><div class="fbar" id="ba" style="--c:var(--red);margin-top:10px"></div></div>
+    <div class="card c-blue"><div class="row center"><span class="ctrl">เศษ <button class="step-btn" data-f="bn-">−</button><span class="val" id="bn"></span><button class="step-btn" data-f="bn+">+</button></span><span class="ctrl">ส่วน <button class="step-btn" data-f="bd-">−</button><span class="val" id="bd"></span><button class="step-btn" data-f="bd+">+</button></span></div><div class="fbar" id="bb" style="--c:var(--blue);margin-top:10px"></div></div>
+  </div>
+  <div class="card c-yellow center"><p class="big" id="cmpOut"></p><p id="cmpHow"></p></div>
+</div></section>
+
+<section class="slide" data-title="คัดแยก"><div class="inner">
+  <h2 class="h"><span class="e">🧺</span>กิจกรรม: เทียบกับครึ่ง</h2>
+  <div data-sorter="half"></div>
+</div></section>
+
+<section class="slide" data-title="ฝึกคิดไม่รู้จบ"><div class="inner">
+  <h2 class="h"><span class="e">🎲</span>ฝึกคิดไม่รู้จบ: เลือกเครื่องหมาย</h2>
+  <div class="card c-teal"><div class="drill" data-drill="cmp"></div></div>
+</div></section>
+<section class="slide" data-title="ตะลุยข้อสอบ O-NET"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>ตะลุยข้อสอบแนว O-NET (10 ข้อ)</h2>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เตือน</b>อ่านโจทย์ให้จบ ขีดเส้นใต้ <b>สิ่งที่โจทย์ถาม</b> แล้วค่อยเลือกคำตอบนะ ตอบผิดได้ ดูเหตุผลแล้วจำไว้ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปให้จำขึ้นใจ</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class='chant'>ส่วนเท่ากันก่อน แล้วค่อยเทียบเศษ<small>ใช้ ค.ร.น. ของตัวส่วน · หรือคูณไขว้ · จำนวนคละดูจำนวนเต็มก่อน</small></div><div class='trap'><b class='t'>⚠️ กับดัก</b> ตัวเศษเท่ากัน ตัวส่วน <b>มาก</b> กลับมีค่า <b>น้อย</b> เช่น {1/8} &lt; {1/3} (แบ่งหลายชิ้น ชิ้นเล็กลง)</div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(0)">🔁 ติวอีกครั้ง</button></div>
+  <div class="row center"><a class="btn ghost" href="../m6-onet-01-mixed-ops/">◀ 🧮 ระคน</a><a class="btn" style="--c:var(--purple)" href="../m6-onet-hub/">🏠 หน้ารวมติว O-NET</a><a class="btn ghost" href="../m6-onet-03-decimals/">💰 ทศนิยม ▶</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m6-onet-02-fractions";
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = 'kruau-onet6-' + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+Kit.quizzes.main = [
+{
+"q": "ข้อใดถูกต้อง",
+"c": [
+"{3/4} > {5/8}",
+"{2/5} > {1/2}",
+"{5/6} < {4/5}",
+"{7/9} = {3/4}"
+],
+"a": 0,
+"w": "{3/4} = {6/8} ซึ่งมากกว่า {5/8} ส่วนข้ออื่น: {2/5} < {1/2}, {5/6} = {25/30} > {4/5} = {24/30}, {7/9} ≠ {3/4}"
+},
+{
+"q": "เรียง {2/3}, {3/4}, {5/8} จากน้อยไปมาก",
+"c": [
+"{5/8}, {2/3}, {3/4}",
+"{2/3}, {3/4}, {5/8}",
+"{3/4}, {2/3}, {5/8}",
+"{5/8}, {3/4}, {2/3}"
+],
+"a": 0,
+"w": "ค.ร.น. ของ 3, 4, 8 คือ 24 → {16/24}, {18/24}, {15/24} เรียงน้อยไปมาก = {5/8}, {2/3}, {3/4}"
+},
+{
+"q": "ข้อใดมีค่ามากที่สุด",
+"c": [
+"{2/3}",
+"{7/12}",
+"{5/8}",
+"{3/5}"
+],
+"a": 0,
+"w": "ค.ร.น. 120: {2/3} = {80/120}, {7/12} = {70/120}, {5/8} = {75/120}, {3/5} = {72/120}"
+},
+{
+"q": "{3 2/5} กับ {17/5} มีความสัมพันธ์อย่างไร",
+"c": [
+"เท่ากัน",
+"{3 2/5} มากกว่า",
+"{17/5} มากกว่า",
+"เปรียบเทียบไม่ได้"
+],
+"a": 0,
+"w": "{3 2/5} = {(3 × 5) + 2/5} = {17/5} จึงเท่ากัน"
+},
+{
+"q": "นักเรียนวิ่งรอบสนาม ต้นวิ่งได้ {3/4} กม. ฝน {5/6} กม. ภูมิ {2/3} กม. ใบเตย {7/12} กม. ใครวิ่งได้ไกลที่สุด",
+"c": [
+"ฝน",
+"ต้น",
+"ภูมิ",
+"ใบเตย"
+],
+"a": 0,
+"w": "ทำส่วนเป็น 12: ต้น {9/12} ฝน {10/12} ภูมิ {8/12} ใบเตย {7/12} → ฝนไกลที่สุด"
+},
+{
+"q": "{□/6} > {2/3} จำนวนใดเติมใน □ ได้ (เป็นเศษส่วนแท้)",
+"c": [
+"5",
+"4",
+"3",
+"2"
+],
+"a": 0,
+"w": "{2/3} = {4/6} ต้องการเศษมากกว่า 4 แต่ไม่เกิน 6 (เศษส่วนแท้) จึงเป็น 5"
+},
+{
+"q": "ข้อใดมีค่าน้อยกว่า {1/2}",
+"c": [
+"{3/7}",
+"{4/7}",
+"{5/9}",
+"{6/11}"
+],
+"a": 0,
+"w": "เทคนิคเทียบครึ่ง: ครึ่งหนึ่งของ 7 คือ 3.5 ตัวเศษ 3 น้อยกว่า 3.5 จึงน้อยกว่า {1/2}"
+},
+{
+"q": "ถ้าจะเปรียบเทียบ {3/4}, {5/6}, {7/9} ควรทำตัวส่วนให้เป็นจำนวนใดน้อยที่สุด",
+"c": [
+"36",
+"72",
+"24",
+"216"
+],
+"a": 0,
+"w": "ค.ร.น. ของ 4, 6 และ 9 คือ 36"
+},
+{
+"q": "แม่ซื้อเนื้อวัว {1 3/5} กก. เนื้อหมู {1 2/3} กก. และเนื้อไก่ {8/5} กก. ข้อใดถูกต้อง",
+"c": [
+"เนื้อหมูหนักที่สุด",
+"เนื้อวัวหนักที่สุด",
+"เนื้อไก่หนักกว่าเนื้อวัว",
+"เนื้อวัวหนักกว่าเนื้อไก่"
+],
+"a": 0,
+"w": "{8/5} = {1 3/5} เนื้อวัวกับไก่หนักเท่ากัน และ {2/3} = {10/15} > {3/5} = {9/15} เนื้อหมูจึงหนักที่สุด"
+},
+{
+"q": "{2 3/4} กับ {11/5} ข้อใดถูกต้อง",
+"c": [
+"{2 3/4} > {11/5}",
+"{2 3/4} < {11/5}",
+"{2 3/4} = {11/5}",
+"{11/5} มากกว่า 3"
+],
+"a": 0,
+"w": "{11/5} = {2 1/5} จำนวนเต็มเท่ากัน (2) เทียบ {3/4} กับ {1/5} → {3/4} มากกว่า"
+}
+];
+Kit.sorters.half = {
+  bins: [{ k: 'lt', t: 'น้อยกว่า {1/2}', c: 'var(--blue)' }, { k: 'eq', t: 'เท่ากับ {1/2}', c: 'var(--green)' }, { k: 'gt', t: 'มากกว่า {1/2}', c: 'var(--red)' }],
+  items: [
+    { t: '{3/7}', k: 'lt', w: 'ครึ่งของ 7 คือ 3.5 เศษ 3 น้อยกว่า' }, { t: '{4/9}', k: 'lt', w: 'ครึ่งของ 9 คือ 4.5' }, { t: '{5/12}', k: 'lt', w: 'ครึ่งของ 12 คือ 6' },
+    { t: '{6/12}', k: 'eq', w: 'ครึ่งของ 12 คือ 6 พอดี' }, { t: '{7/14}', k: 'eq', w: 'ครึ่งของ 14 คือ 7 พอดี' }, { t: '{4/8}', k: 'eq', w: 'ครึ่งของ 8 คือ 4 พอดี' },
+    { t: '{5/8}', k: 'gt', w: 'ครึ่งของ 8 คือ 4 เศษ 5 มากกว่า' }, { t: '{6/11}', k: 'gt', w: 'ครึ่งของ 11 คือ 5.5' }, { t: '{2/3}', k: 'gt', w: 'ครึ่งของ 3 คือ 1.5' }
+  ]
+};
+function fr(n, d) { return '{' + n + '/' + d + '}'; }
+DRILLS.cmp = [
+  function () {
+    var b = R(3, 12), d = R(3, 12); while (d === b) d = R(3, 12);
+    var a = R(1, b - 1), c = R(1, d - 1), x = a * d, y = c * b, s = x > y ? 0 : x < y ? 1 : 2, l = lcm(b, d);
+    return { q: fr(a, b) + ' ◻ ' + fr(c, d), c: ['>', '<', '='], a: s,
+      h: 'ค.ร.น. ของ ' + b + ' และ ' + d + ' คือ ' + l + '<br>' + fr(a, b) + ' = ' + fr(a * l / b, l) + ' &nbsp; ' + fr(c, d) + ' = ' + fr(c * l / d, l) + '<br>ดังนั้น ' + fr(a, b) + ' <b>' + ['>', '<', '='][s] + '</b> ' + fr(c, d) };
+  },
+  function () {
+    var w = R(1, 5), b = R(2, 9), a = R(1, b - 1), d = R(2, 9), imp = (w + R(0, 1)) * d + R(1, d - 1);
+    var x = (w * b + a) * d, y = imp * b, s = x > y ? 0 : x < y ? 1 : 2, iw = Math.floor(imp / d), ir = imp % d;
+    return { q: '{' + w + ' ' + a + '/' + b + '} ◻ ' + fr(imp, d), c: ['>', '<', '='], a: s,
+      h: fr(imp, d) + ' = {' + iw + ' ' + ir + '/' + d + '}<br>' + (iw !== w ? 'จำนวนเต็มต่างกัน (' + w + ' กับ ' + iw + ') ดูจำนวนเต็มได้เลย' : 'จำนวนเต็มเท่ากัน เทียบ ' + fr(a, b) + ' กับ ' + fr(ir, d) + ' โดยคูณไขว้ ' + (a * d) + ' กับ ' + (ir * b)) + '<br>ดังนั้น <b>' + ['>', '<', '='][s] + '</b>' };
+  },
+  function () {
+    var n = R(2, 9), m = R(n + 1, 12), k = R(1, 2) * 2 + 1;
+    return { q: fr(k, n) + ' ◻ ' + fr(k, m) + ' (ตัวเศษเท่ากัน)', c: ['>', '<', '='], a: 0, h: 'ตัวเศษเท่ากัน ตัวส่วนน้อยกว่ามีค่ามากกว่า ' + n + ' &lt; ' + m + ' จึง ' + fr(k, n) + ' <b>></b> ' + fr(k, m) };
+  }
+];
+SETUP = function () {
+  var st = { an: 3, ad: 4, bn: 5, bd: 6 };
+  function bar(el, n, d) { var h = ''; for (var i = 0; i < d; i++) h += '<i class="' + (i < n ? 'on' : '') + '"></i>'; el.innerHTML = h; }
+  function draw() {
+    ['an', 'ad', 'bn', 'bd'].forEach(function (k) { document.getElementById(k).textContent = st[k]; });
+    bar(document.getElementById('ba'), st.an, st.ad); bar(document.getElementById('bb'), st.bn, st.bd);
+    var x = st.an * st.bd, y = st.bn * st.ad, s = x > y ? '>' : x < y ? '&lt;' : '=', l = lcm(st.ad, st.bd);
+    document.getElementById('cmpOut').innerHTML = Kit.fx(fr(st.an, st.ad)) + ' <span class="t-purple">' + s + '</span> ' + Kit.fx(fr(st.bn, st.bd));
+    document.getElementById('cmpHow').innerHTML = Kit.fx('ทำส่วนเป็น ' + l + ': ' + fr(st.an * l / st.ad, l) + ' กับ ' + fr(st.bn * l / st.bd, l));
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-f]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-f'), key = k.slice(0, 2), up = k[2] === '+', side = key[0];
+      st[key] += up ? 1 : -1;
+      if (key[1] === 'd') st[key] = Math.max(2, Math.min(12, st[key]));
+      st[side + 'n'] = Math.max(1, Math.min(st[side + 'd'], st[side + 'n']));
+      Kit.sound.tap(); draw();
+    };
+  });
+  draw();
+};
+</script>
+</body>
+</html>

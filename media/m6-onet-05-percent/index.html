@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>โจทย์ปัญหาร้อยละ · ติว O-NET ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#9B6CF0;--main-deep:#7343D6;--glow:#E6DAFF}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🏷️</span>
+  <div class="ttl"><b>โจทย์ปัญหาร้อยละ</b><small>คณิตศาสตร์ ป.6 · ติว O-NET · ค1.1 ป.6/12 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m6-onet-hub/" aria-label="หน้ารวมติว O-NET" title="หน้ารวมติว O-NET">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">ติว O-NET ป.6 · ตัวชี้วัด ค1.1 ป.6/12</span>
+  <div class="emoji-xl">🏷️🛍️💯</div>
+  <h1>โจทย์ปัญหาร้อยละ<br><small style="font-size:.48em">กำไร ขาดทุน ลดราคา คิดจาก 100</small></h1>
+  <div class="ind"><b>📌 ตัวชี้วัด ค1.1 ป.6/12</b> แสดงวิธีหาคำตอบของโจทย์ปัญหาร้อยละ 2–3 ขั้นตอน</div>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul><li>เขียนเศษส่วนเป็น <b>ร้อยละ</b> และหาร้อยละของจำนวนได้</li><li>หา <b>กำไร ขาดทุน ราคาขาย ลดราคา</b> ได้</li><li>แก้โจทย์ร้อยละ <b>2–3 ขั้นตอน</b> ได้</li></ul>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนติว</b>ร้อยละมีทุกที่ในชีวิต ป้ายลดราคาในห้าง ดอกเบี้ยธนาคาร คาถาของครูอู๋คือ <b>“คิดจาก 100”</b> 💯</div></div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มติวกันเลย ▶</button>
+  <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก</p>
+</div></section>
+
+<section class="slide" data-title="ร้อยละคืออะไร"><div class="inner">
+  <h2 class="h"><span class="e">💯</span>ร้อยละ = ส่วนที่มีตัวส่วนเป็น 100</h2>
+  <div class="grid" style="--min:270px">
+    <div class="card c-purple center"><div id="grid100" style="display:grid;grid-template-columns:repeat(10,1fr);gap:3px;max-width:260px;margin:0 auto"></div>
+      <div class="ctrl" style="justify-content:center;margin-top:10px"><button class="step-btn" data-p="-">−</button><span class="val" id="pv"></span><button class="step-btn" data-p="+">+</button></div></div>
+    <div class="card c-blue"><p class="big center" id="pText"></p><p class="center sub">ร้อยละ = เปอร์เซ็นต์ = %</p>
+      <div class="note" style="margin-top:8px">🔁 เศษส่วน ➜ ร้อยละ : ทำตัวส่วนให้เป็น 100<br>{3/4} = {75/100} = 75% &nbsp; {2/5} = {40/100} = 40%</div></div>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เล่า</b>“เปอร์เซ็นต์” มาจากภาษาละติน <b>per centum</b> แปลว่า “ต่อหนึ่งร้อย” เวลาเห็น % ให้นึกถึง “ทุก ๆ 100” ทันที</div></div>
+</div></section>
+
+<section class="slide" data-title="หาร้อยละของจำนวน"><div class="inner">
+  <h2 class="h"><span class="e">⚡</span>หาร้อยละของจำนวน แบบเร็ว</h2>
+  <div class="grid" style="--min:250px">
+    <div class="card c-green"><h3>วิธีที่ 1 สูตรตรง</h3><p class="eq">30% ของ 250 = {30/100} × 250 = 75</p></div>
+    <div class="card c-orange"><h3>วิธีที่ 2 ทางลัด 10%</h3><p>10% = เลื่อนจุด 1 ตำแหน่ง<br>10% ของ 250 = 25<br>30% = 25 × 3 = <b>75</b></p></div>
+    <div class="card c-blue"><h3>วิธีที่ 3 ทางลัดเศษส่วน</h3><p>50% = ครึ่งหนึ่ง · 25% = {1/4} · 20% = {1/5}<br>25% ของ 360 = 360 ÷ 4 = <b>90</b></p></div>
+  </div>
+  <div class="card c-pink">
+    <h3>✏️ หาว่า “คิดเป็นร้อยละเท่าใด”</h3>
+    <p>ค่าไฟเดือนก่อน 1,500 บาท เดือนนี้ 1,200 บาท เดือนนี้คิดเป็นกี่ % ของเดือนก่อน</p>
+    <div class="steps calc" id="pc">
+      <div class="step">ถ้าเดือนก่อน 1,500 บาท → เดือนนี้ 1,200 บาท</div>
+      <div class="step">ถ้าเดือนก่อน 100 บาท → เดือนนี้ {1,200 × 100/1,500} = <b class="t-purple">80</b> บาท</div>
+      <div class="step"><p class="big center t-green">ตอบ ร้อยละ 80</p></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="pc" style="--c:var(--pink)">คิดจาก 100 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="กำไร ขาดทุน ลดราคา"><div class="inner">
+  <h2 class="h"><span class="e">🛍️</span>คิดจาก 100 : กำไร ขาดทุน ลดราคา</h2>
+  <div class="wide"><table class="tbl" style="--c:var(--purple)">
+    <tr><th>คำในโจทย์</th><th>ความหมายแบบครูอู๋</th><th>ราคาขาย/จ่าย</th></tr>
+    <tr><td>💚 กำไร 20%</td><td>ทุน 100 บาท ได้กำไร 20 บาท</td><td>ขาย <b>120</b> บาท</td></tr>
+    <tr><td>❤️ ขาดทุน 20%</td><td>ทุน 100 บาท ขาดทุน 20 บาท</td><td>ขาย <b>80</b> บาท</td></tr>
+    <tr><td>🏷️ ลดราคา 20%</td><td>ติดราคา 100 บาท ลด 20 บาท</td><td>จ่าย <b>80</b> บาท</td></tr>
+  </table></div>
+  <div class="card c-green">
+    <h3>✏️ ทุนผลิตกระเป๋าใบละ 1,450 บาท ต้องการกำไร 40% ต้องขายราคาเท่าใด</h3>
+    <div class="steps calc" id="pf">
+      <div class="step"><span class="pill" style="--c:var(--green)">วิธีที่ 1</span> กำไร {40/100} × 1,450 = 580 บาท → ขาย 1,450 + 580 = <b>2,030</b> บาท</div>
+      <div class="step"><span class="pill" style="--c:var(--purple)">วิธีที่ 2</span> ทุน 100 ขาย 140 → ขาย {140/100} × 1,450 = <b>2,030</b> บาท (ขั้นตอนเดียว!)</div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="pf" style="--c:var(--green)">ดู 2 วิธี 👇</button></div>
+  </div>
+  <div class="trap"><b class="t">⚠️ กับดักข้อสอบ</b> กำไร/ขาดทุนร้อยละ ต้องเทียบกับ <b>ทุน</b> ไม่ใช่ราคาขาย</div>
+</div></section>
+
+<section class="slide" data-title="ป้ายลดราคา" data-id="sale"><div class="inner">
+  <h2 class="h"><span class="e">🏷️</span>ห้างครูอู๋ ลดกระหน่ำ!</h2>
+  <p class="sub">เลือกสินค้าและเปอร์เซ็นต์ส่วนลด ดูวิธีคิดเปลี่ยนตาม</p>
+  <div class="card c-orange">
+    <div class="row center" id="items"></div>
+    <div class="ctrl" style="justify-content:center;margin-top:10px">ลดราคา <button class="step-btn" data-d="-">−</button><span class="val" id="dv"></span><span>%</span><button class="step-btn" data-d="+">+</button></div>
+    <div class="calc" id="saleOut" style="margin-top:10px"></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="โจทย์ 3 ขั้นตอน"><div class="inner">
+  <h2 class="h"><span class="e">🧗</span>โจทย์ 3 ขั้นตอน (ข้อสอบชอบ!)</h2>
+  <div class="card c-blue">
+    <p class="big" style="font-size:clamp(1.05rem,3vw,1.3rem)">แม่ค้าซื้อทุเรียนมา 4,000 บาท ขายไป 60% ของทั้งหมดได้กำไร 25% ส่วนที่เหลือขายขาดทุน 10% แม่ค้ากำไรหรือขาดทุนกี่บาท</p>
+    <div class="steps calc" id="s3" style="margin-top:8px">
+      <div class="step"><span class="pill" style="--c:var(--blue)">ขั้นที่ 1</span> ทุนส่วนแรก {60/100} × 4,000 = 2,400 บาท ส่วนที่เหลือ 1,600 บาท</div>
+      <div class="step"><span class="pill" style="--c:var(--green)">ขั้นที่ 2</span> ส่วนแรกกำไร {25/100} × 2,400 = <b>600</b> บาท</div>
+      <div class="step"><span class="pill" style="--c:var(--red)">ขั้นที่ 3</span> ส่วนที่เหลือขาดทุน {10/100} × 1,600 = <b>160</b> บาท</div>
+      <div class="step"><p class="big center t-green">กำไรสุทธิ 600 − 160 = 440 บาท</p></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="s3" style="--c:var(--blue)">คิดตามครูอู๋ 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ฝึกคิดไม่รู้จบ"><div class="inner">
+  <h2 class="h"><span class="e">🎲</span>ฝึกคิดไม่รู้จบ</h2>
+  <div class="card c-teal"><div class="drill" data-drill="pct"></div></div>
+</div></section>
+<section class="slide" data-title="ตะลุยข้อสอบ O-NET"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>ตะลุยข้อสอบแนว O-NET (10 ข้อ)</h2>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เตือน</b>อ่านโจทย์ให้จบ ขีดเส้นใต้ <b>สิ่งที่โจทย์ถาม</b> แล้วค่อยเลือกคำตอบนะ ตอบผิดได้ ดูเหตุผลแล้วจำไว้ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปให้จำขึ้นใจ</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class='chant'>คิดจาก 100 เสมอ<small>กำไร 20% = ทุน 100 ขาย 120 · ขาดทุน 20% = ทุน 100 ขาย 80 · ลด 20% = ติด 100 จ่าย 80</small></div><div class='key'><b>ร้อยละ a ของ N</b> = {a/100} × N · <b>10%</b> = เลื่อนจุด 1 ตำแหน่ง<br><b>กำไร/ขาดทุนร้อยละ</b> เทียบกับ <b>ทุน</b> เสมอ</div><div class='trap'><b class='t'>⚠️ กับดัก</b> ลด 10% แล้วลดอีก 10% ไม่ใช่ลด 20% (ครั้งที่ 2 ลดจากราคาใหม่)</div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(0)">🔁 ติวอีกครั้ง</button></div>
+  <div class="row center"><a class="btn ghost" href="../m6-onet-04-ratio/">◀ ⚖️ อัตราส่วน</a><a class="btn" style="--c:var(--purple)" href="../m6-onet-hub/">🏠 หน้ารวมติว O-NET</a><a class="btn ghost" href="../m6-onet-06-patterns/">🔢 แบบรูป ▶</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m6-onet-05-percent";
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = 'kruau-onet6-' + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+Kit.quizzes.main = [
+{
+"q": "{3/4} เขียนเป็นร้อยละได้เท่าใด",
+"c": [
+"ร้อยละ 75",
+"ร้อยละ 34",
+"ร้อยละ 7.5",
+"ร้อยละ 43"
+],
+"a": 0,
+"w": "{3/4} = {3 × 25/4 × 25} = {75/100} = ร้อยละ 75"
+},
+{
+"q": "20% ของ 450 คือเท่าใด",
+"c": [
+"90",
+"22.5",
+"900",
+"430"
+],
+"a": 0,
+"w": "10% ของ 450 = 45 ดังนั้น 20% = 45 × 2 = 90"
+},
+{
+"q": "สอบได้ 34 คะแนน จากคะแนนเต็ม 40 คิดเป็นร้อยละเท่าใด",
+"c": [
+"85",
+"34",
+"6",
+"80"
+],
+"a": 0,
+"w": "{34/40} = {85/100} = ร้อยละ 85"
+},
+{
+"q": "ทุน 1,200 บาท ต้องการกำไร 25% ต้องขายราคาเท่าใด",
+"c": [
+"1,500 บาท",
+"300 บาท",
+"1,225 บาท",
+"900 บาท"
+],
+"a": 0,
+"w": "กำไร 25% ของ 1,200 = 300 บาท ราคาขาย 1,200 + 300 = 1,500 บาท"
+},
+{
+"q": "ซื้อจักรยานมา 2,400 บาท ขายต่อขาดทุน 15% ขายไปราคาเท่าใด",
+"c": [
+"2,040 บาท",
+"360 บาท",
+"2,760 บาท",
+"2,385 บาท"
+],
+"a": 0,
+"w": "ขาดทุน {15/100} × 2,400 = 360 บาท ขาย 2,400 − 360 = 2,040 บาท"
+},
+{
+"q": "เสื้อติดราคา 850 บาท ลดราคา 20% ต้องจ่ายเงินกี่บาท",
+"c": [
+"680 บาท",
+"170 บาท",
+"830 บาท",
+"1,020 บาท"
+],
+"a": 0,
+"w": "ลด 20% เหลือจ่าย 80% → {80/100} × 850 = 680 บาท"
+},
+{
+"q": "ซื้อของมา 500 บาท ขายไป 650 บาท ได้กำไรร้อยละเท่าใด",
+"c": [
+"30",
+"150",
+"23",
+"130"
+],
+"a": 0,
+"w": "กำไร 150 บาท เทียบกับทุน: {150/500} = {30/100} = ร้อยละ 30"
+},
+{
+"q": "กระเป๋าติดราคา 1,000 บาท ลด 10% แล้วลดอีก 10% จากราคาที่ลดแล้ว ต้องจ่ายกี่บาท",
+"c": [
+"810 บาท",
+"800 บาท",
+"820 บาท",
+"900 บาท"
+],
+"a": 0,
+"w": "ครั้งแรกเหลือ 900 บาท ครั้งที่สองลด 10% ของ 900 = 90 เหลือ 810 บาท"
+},
+{
+"q": "นักเรียน 240 คน ชอบฟุตบอล 35% ที่เหลือชอบวอลเลย์บอล ชอบวอลเลย์บอลกี่คน",
+"c": [
+"156 คน",
+"84 คน",
+"205 คน",
+"165 คน"
+],
+"a": 0,
+"w": "ชอบวอลเลย์บอล 100% − 35% = 65% → {65/100} × 240 = 156 คน"
+},
+{
+"q": "ซื้อปากกาโหลละ 96 บาท ขายด้ามละ 10 บาท ขายหมดได้กำไรร้อยละเท่าใด",
+"c": [
+"25",
+"24",
+"20",
+"4"
+],
+"a": 0,
+"w": "ขาย 12 × 10 = 120 บาท กำไร 24 บาท → {24/96} = {25/100} = ร้อยละ 25"
+}
+];
+DRILLS.pct = [
+  function () { var p = pick([10, 20, 25, 30, 40, 50, 15, 75]), n = R(4, 40) * 20; return { q: p + '% ของ ' + C(n) + ' เท่ากับเท่าใด', a: p * n / 100, h: '{' + p + '/100} × ' + C(n) + ' = <b>' + C(p * n / 100) + '</b>' }; },
+  function () { var t = pick([20, 25, 40, 50]), g = R(1, t - 1), p = g * 100 / t; if (p % 1) return DRILLS.pct[1](); return { q: 'สอบได้ ' + g + ' คะแนน จากคะแนนเต็ม ' + t + ' คิดเป็นร้อยละเท่าใด', a: p, h: 'คะแนนเต็ม ' + t + ' ได้ ' + g + '<br>คะแนนเต็ม 100 ได้ {' + g + ' × 100/' + t + '} = <b>' + p + '</b>' }; },
+  function () { var c = R(6, 60) * 50, p = pick([10, 20, 25, 30, 40]); return { q: 'ทุน ' + C(c) + ' บาท ต้องการกำไร ' + p + '% ต้องขายราคากี่บาท', u: 'บาท', a: c * (100 + p) / 100, h: 'ทุน 100 ขาย ' + (100 + p) + '<br>ทุน ' + C(c) + ' ขาย {' + (100 + p) + '/100} × ' + C(c) + ' = <b>' + C(c * (100 + p) / 100) + ' บาท</b>' }; },
+  function () { var c = R(6, 60) * 50, p = pick([10, 20, 25, 30, 15]); return { q: 'ซื้อของมา ' + C(c) + ' บาท ขายขาดทุน ' + p + '% ขายไปกี่บาท', u: 'บาท', a: c * (100 - p) / 100, h: 'ทุน 100 ขาย ' + (100 - p) + '<br>ทุน ' + C(c) + ' ขาย {' + (100 - p) + '/100} × ' + C(c) + ' = <b>' + C(c * (100 - p) / 100) + ' บาท</b>' }; },
+  function () { var c = R(4, 50) * 100, p = pick([10, 20, 25, 30, 40]); return { q: 'ซื้อมา ' + C(c) + ' บาท ขายไป ' + C(c * (100 + p) / 100) + ' บาท ได้กำไรร้อยละเท่าใด', a: p, h: 'กำไร ' + C(c * p / 100) + ' บาท<br>เทียบทุน 100: {' + C(c * p / 100) + ' × 100/' + C(c) + '} = <b>' + p + '</b>' }; }
+];
+SETUP = function () {
+  var pv = 35, g = document.getElementById('grid100');
+  for (var i = 0; i < 100; i++) { var c = document.createElement('i'); c.style.cssText = 'aspect-ratio:1;border-radius:3px;background:#EEE;display:block'; g.appendChild(c); }
+  function dp() { Array.prototype.forEach.call(g.children, function (c, k) { c.style.background = k < pv ? 'var(--purple)' : '#EEE'; }); document.getElementById('pv').textContent = pv; document.getElementById('pText').innerHTML = Kit.fx('{' + pv + '/100}') + ' = ร้อยละ ' + pv + ' = ' + pv + '%'; }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-p]'), function (b) { b.onclick = function () { pv = Math.max(0, Math.min(100, pv + (b.getAttribute('data-p') === '+' ? 5 : -5))); Kit.sound.tap(); dp(); }; });
+  dp();
+  var IT = [{ e: '👟', n: 'รองเท้า', p: 1290 }, { e: '🎒', n: 'กระเป๋า', p: 850 }, { e: '🧸', n: 'ตุ๊กตา', p: 460 }, { e: '🎧', n: 'หูฟัง', p: 2500 }], st = { i: 0, d: 20 }, row = document.getElementById('items');
+  IT.forEach(function (it, k) { var b = document.createElement('button'); b.className = 'chip'; b.innerHTML = it.e + ' ' + it.n + ' ' + C(it.p); b.style.boxShadow = 'none'; b.onclick = function () { st.i = k; Kit.sound.tap(); ds(); }; row.appendChild(b); });
+  function ds() {
+    var it = IT[st.i], off = it.p * st.d / 100, pay = it.p - off;
+    Array.prototype.forEach.call(row.children, function (b, k) { b.classList.toggle('sel', k === st.i); });
+    document.getElementById('dv').textContent = st.d;
+    document.getElementById('saleOut').innerHTML =
+      '<div><span class="pill" style="--c:var(--orange)">ติดราคา 100</span> ลด ' + st.d + ' → จ่าย ' + (100 - st.d) + '</div>' +
+      '<div><span class="pill" style="--c:var(--blue)">ส่วนลด</span> ' + Kit.fx('{' + st.d + '/100}') + ' × ' + C(it.p) + ' = <b>' + C(off) + '</b> บาท</div>' +
+      '<div><span class="pill" style="--c:var(--green)">ต้องจ่าย</span> ' + C(it.p) + ' − ' + C(off) + ' = <b class="t-purple">' + C(pay) + '</b> บาท</div>';
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-d]'), function (b) { b.onclick = function () { st.d = Math.max(5, Math.min(90, st.d + (b.getAttribute('data-d') === '+' ? 5 : -5))); Kit.sound.tap(); ds(); }; });
+  ds();
+};
+</script>
+</body>
+</html>

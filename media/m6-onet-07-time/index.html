@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>โจทย์ปัญหาเวลา · ติว O-NET ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#FF9F43;--main-deep:#E07B14;--glow:#FFE6C7}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">⏰</span>
+  <div class="ttl"><b>โจทย์ปัญหาเวลา</b><small>คณิตศาสตร์ ป.6 · ติว O-NET · ค2.1 ป.4/1 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m6-onet-hub/" aria-label="หน้ารวมติว O-NET" title="หน้ารวมติว O-NET">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">ติว O-NET ป.6 · ตัวชี้วัด ค2.1 ป.4/1</span>
+  <div class="emoji-xl">⏰📅⏳</div>
+  <h1>โจทย์ปัญหาเวลา<br><small style="font-size:.48em">บอกเวลา ระยะเวลา แปลงหน่วย</small></h1>
+  <div class="ind"><b>📌 ตัวชี้วัด ค2.1 ป.4/1</b> แสดงวิธีหาคำตอบของโจทย์ปัญหาเกี่ยวกับเวลา</div>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul><li>เขียนและอ่าน <b>เวลา</b> และ <b>ระยะเวลา</b> ได้</li><li><b>แปลงหน่วยเวลา</b> วินาที นาที ชั่วโมง วัน สัปดาห์ เดือน ปี ได้</li><li>หา <b>ระยะเวลา</b> จากเวลาเริ่มต้น–สิ้นสุดได้</li></ul>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนติว</b>เรื่องเวลาเป็นเรื่องใกล้ตัว! ตัวเลขสำคัญที่ต้องจำคือ <b>60</b> (ไม่ใช่ 100) ครูอู๋จะพาคิดแบบไม่พลาด ⏰</div></div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มติวกันเลย ▶</button>
+  <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก</p>
+</div></section>
+
+<section class="slide" data-title="เวลา vs ระยะเวลา"><div class="inner">
+  <h2 class="h"><span class="e">🕰️</span>เวลา กับ ระยะเวลา ต่างกันนะ!</h2>
+  <div class="grid" style="--min:260px">
+    <div class="card c-orange"><h3>⏰ เวลา (บอกว่ากี่โมง)</h3><p>ใช้ <b>จุด ( . )</b> คั่นชั่วโมงกับนาที</p><p class="eq center">10.30 น.</p><p class="center">อ่านว่า สิบนาฬิกาสามสิบนาที</p></div>
+    <div class="card c-blue"><h3>⏳ ระยะเวลา (นานเท่าใด)</h3><p>ใช้ <b>ทวิภาค ( : )</b> คั่นนาทีกับวินาที</p><p class="eq center">3 : 18</p><p class="center">อ่านว่า สามนาทีสิบแปดวินาที</p></div>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ถาม</b>“เพลงนี้ยาว 3 : 45” หมายถึงอะไร? 🎵 ใช่แล้ว! ยาว <b>3 นาที 45 วินาที</b> ไม่ใช่ตีสามสี่สิบห้านาทีนะ</div></div>
+</div></section>
+
+<section class="slide" data-title="ตารางแปลงหน่วย"><div class="inner">
+  <h2 class="h"><span class="e">🔁</span>ตารางแปลงหน่วยเวลา</h2>
+  <div class="wide"><table class="tbl" style="--c:var(--orange)">
+    <tr><th>หน่วยเล็ก</th><th>เท่ากับ</th><th>หน่วยใหญ่</th></tr>
+    <tr><td>60 วินาที</td><td>=</td><td>1 นาที</td></tr>
+    <tr><td>60 นาที</td><td>=</td><td>1 ชั่วโมง</td></tr>
+    <tr><td>24 ชั่วโมง</td><td>=</td><td>1 วัน</td></tr>
+    <tr><td>7 วัน</td><td>=</td><td>1 สัปดาห์</td></tr>
+    <tr><td>12 เดือน</td><td>=</td><td>1 ปี</td></tr>
+    <tr><td>365 วัน (366 ปีอธิกสุรทิน)</td><td>=</td><td>1 ปี</td></tr>
+  </table></div>
+  <div class="chant">หน่วยใหญ่ → เล็ก ใช้ <b>คูณ</b> · หน่วยเล็ก → ใหญ่ ใช้ <b>หาร</b><small>เศษที่เหลือคือหน่วยเล็ก เช่น 460 วินาที = 7 นาที 40 วินาที</small></div>
+  <div class="note">📌 ถ้าโจทย์ <b>ไม่ระบุ</b> เดือนหรือปี ให้ใช้ 1 เดือน = 30 วัน, 1 ปี = 365 วัน, 1 ปี = 52 สัปดาห์</div>
+</div></section>
+
+<section class="slide" data-title="หาระยะเวลา" data-id="dur"><div class="inner">
+  <h2 class="h"><span class="e">🚌</span>เครื่องหาระยะเวลา</h2>
+  <p class="sub">ตั้งเวลาออกเดินทางและเวลาถึง ครูอู๋จะนับ “เต็มชั่วโมงก่อน แล้วนับนาทีที่เหลือ”</p>
+  <div class="grid" style="--min:260px">
+    <div class="card c-green center"><h3>🟢 เวลาออก</h3><div class="ctrl" style="justify-content:center"><button class="step-btn" data-t="a-">−</button><span class="val" id="ta" style="min-width:4.2em"></span><button class="step-btn" data-t="a+">+</button></div><small class="sub">ปุ่มละ 5 นาที</small></div>
+    <div class="card c-red center"><h3>🔴 เวลาถึง</h3><div class="ctrl" style="justify-content:center"><button class="step-btn" data-t="b-">−</button><span class="val" id="tb" style="min-width:4.2em"></span><button class="step-btn" data-t="b+">+</button></div><small class="sub">ปุ่มละ 5 นาที</small></div>
+  </div>
+  <div class="calc" id="durOut"></div>
+</div></section>
+
+<section class="slide" data-title="บวกเวลา"><div class="inner">
+  <h2 class="h"><span class="e">➕</span>บวก–ลบเวลา ต้องทด 60</h2>
+  <div class="card c-purple">
+    <p class="big" style="font-size:clamp(1.05rem,3vw,1.3rem)">ภาพยนตร์เริ่มเวลา 19.30 น. ยาว 2 ชั่วโมง 45 นาที จบเวลาใด</p>
+    <div class="steps calc" id="add">
+      <div class="step">ชั่วโมงบวกชั่วโมง: 19 + 2 = 21 &nbsp; นาทีบวกนาที: 30 + 45 = <b>75 นาที</b></div>
+      <div class="step">75 นาที เกิน 60 → 75 นาที = <b>1 ชั่วโมง 15 นาที</b> ทดไปที่ชั่วโมง</div>
+      <div class="step">21 + 1 = 22 ชั่วโมง 15 นาที → <b class="t-purple">22.15 น.</b></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="add" style="--c:var(--purple)">คิดตามครูอู๋ 👇</button></div>
+  </div>
+  <div class="trap"><b class="t">⚠️ กับดักข้อสอบ</b> 19.30 + 2.45 ห้ามบวกแบบทศนิยมได้ 21.75 ❌ เพราะ 1 ชั่วโมงมี <b>60 นาที</b> ไม่ใช่ 100</div>
+</div></section>
+
+<section class="slide" data-title="จับคู่เท่ากัน"><div class="inner">
+  <h2 class="h"><span class="e">🧺</span>กิจกรรม: คัดแยกให้ถูกกล่อง</h2>
+  <div data-sorter="eqt"></div>
+</div></section>
+
+<section class="slide" data-title="ฝึกคิดไม่รู้จบ"><div class="inner">
+  <h2 class="h"><span class="e">🎲</span>ฝึกคิดไม่รู้จบ</h2>
+  <div class="card c-teal"><div class="drill" data-drill="time"></div></div>
+</div></section>
+<section class="slide" data-title="ตะลุยข้อสอบ O-NET"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>ตะลุยข้อสอบแนว O-NET (10 ข้อ)</h2>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เตือน</b>อ่านโจทย์ให้จบ ขีดเส้นใต้ <b>สิ่งที่โจทย์ถาม</b> แล้วค่อยเลือกคำตอบนะ ตอบผิดได้ ดูเหตุผลแล้วจำไว้ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปให้จำขึ้นใจ</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class='chant'>60 วินาที = 1 นาที · 60 นาที = 1 ชั่วโมง · 24 ชั่วโมง = 1 วัน<small>7 วัน = 1 สัปดาห์ · 12 เดือน = 1 ปี · ไม่ระบุ: 1 เดือน = 30 วัน, 1 ปี = 365 วัน</small></div><div class='key'><b>เวลา</b> ใช้จุด 10.30 น. · <b>ระยะเวลา</b> ใช้ทวิภาค 3 : 18 (3 นาที 18 วินาที)<br><b>หาระยะเวลา</b> นับเต็มชั่วโมงก่อน แล้วนับนาทีที่เหลือ</div><div class='trap'><b class='t'>⚠️ กับดัก</b> นาทีเกิน 60 ต้องทด 1 ชั่วโมง เช่น 2 ชม. 70 นาที = 3 ชม. 10 นาที</div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(0)">🔁 ติวอีกครั้ง</button></div>
+  <div class="row center"><a class="btn ghost" href="../m6-onet-06-patterns/">◀ 🔢 แบบรูป</a><a class="btn" style="--c:var(--purple)" href="../m6-onet-hub/">🏠 หน้ารวมติว O-NET</a><a class="btn ghost" href="../m6-onet-08-length/">📏 ความยาว ▶</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m6-onet-07-time";
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = 'kruau-onet6-' + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+Kit.quizzes.main = [
+{
+"q": "5 นาที เท่ากับกี่วินาที",
+"c": [
+"300 วินาที",
+"500 วินาที",
+"65 วินาที",
+"50 วินาที"
+],
+"a": 0,
+"w": "1 นาที = 60 วินาที → 5 × 60 = 300 วินาที"
+},
+{
+"q": "460 วินาที เท่ากับเท่าใด",
+"c": [
+"7 นาที 40 วินาที",
+"4 นาที 60 วินาที",
+"7 นาที 6 วินาที",
+"46 นาที"
+],
+"a": 0,
+"w": "460 ÷ 60 = 7 เศษ 40 → 7 นาที 40 วินาที"
+},
+{
+"q": "9 สัปดาห์ 5 วัน เท่ากับกี่วัน",
+"c": [
+"68 วัน",
+"59 วัน",
+"63 วัน",
+"95 วัน"
+],
+"a": 0,
+"w": "9 × 7 = 63 วัน บวกอีก 5 วัน = 68 วัน"
+},
+{
+"q": "28 เดือน เท่ากับเท่าใด",
+"c": [
+"2 ปี 4 เดือน",
+"2 ปี 8 เดือน",
+"3 ปี 4 เดือน",
+"2 ปี 2 เดือน"
+],
+"a": 0,
+"w": "28 ÷ 12 = 2 เศษ 4 → 2 ปี 4 เดือน"
+},
+{
+"q": "รถออกจากสถานีเวลา 08.45 น. ถึงปลายทางเวลา 13.20 น. ใช้เวลาเดินทางเท่าใด",
+"c": [
+"4 ชั่วโมง 35 นาที",
+"5 ชั่วโมง 35 นาที",
+"4 ชั่วโมง 25 นาที",
+"5 ชั่วโมง 25 นาที"
+],
+"a": 0,
+"w": "08.45 → 12.45 น. = 4 ชั่วโมง แล้ว 12.45 → 13.20 น. = 35 นาที"
+},
+{
+"q": "ภาพยนตร์เริ่มฉายเวลา 19.30 น. ยาว 2 ชั่วโมง 45 นาที จะจบเวลาใด",
+"c": [
+"22.15 น.",
+"21.15 น.",
+"22.45 น.",
+"21.75 น."
+],
+"a": 0,
+"w": "19.30 + 2 ชม. = 21.30 น. แล้ว + 45 นาที = 22.15 น. (30 + 45 = 75 นาที = 1 ชม. 15 นาที)"
+},
+{
+"q": "ข้อใดถูกต้อง",
+"c": [
+"2 นาที 17 วินาที น้อยกว่า 140 วินาที",
+"2 นาที 17 วินาที มากกว่า 140 วินาที",
+"2 นาที 17 วินาที เท่ากับ 140 วินาที",
+"เปรียบเทียบไม่ได้เพราะหน่วยต่างกัน"
+],
+"a": 0,
+"w": "2 นาที 17 วินาที = 120 + 17 = 137 วินาที ซึ่งน้อยกว่า 140 วินาที"
+},
+{
+"q": "แพรวซ้อมเปียโนวันละ 45 นาที ทุกวันเป็นเวลา 6 วัน รวมเป็นเวลาเท่าใด",
+"c": [
+"4 ชั่วโมง 30 นาที",
+"2 ชั่วโมง 70 นาที",
+"5 ชั่วโมง",
+"3 ชั่วโมง 45 นาที"
+],
+"a": 0,
+"w": "45 × 6 = 270 นาที = 4 ชั่วโมง 30 นาที (270 ÷ 60 = 4 เศษ 30)"
+},
+{
+"q": "ถ้า 1 เดือนมี 30 วัน ข้อใดถูกต้อง",
+"c": [
+"3 เดือน 20 วัน มากกว่า 100 วัน",
+"3 เดือน 20 วัน น้อยกว่า 100 วัน",
+"3 เดือน 20 วัน เท่ากับ 100 วัน",
+"100 วัน เท่ากับ 4 เดือน"
+],
+"a": 0,
+"w": "3 เดือน 20 วัน = 90 + 20 = 110 วัน ซึ่งมากกว่า 100 วัน"
+},
+{
+"q": "2 ชั่วโมง 15 นาที + 1 ชั่วโมง 50 นาที เท่ากับเท่าใด",
+"c": [
+"4 ชั่วโมง 5 นาที",
+"3 ชั่วโมง 65 นาที",
+"3 ชั่วโมง 5 นาที",
+"4 ชั่วโมง 15 นาที"
+],
+"a": 0,
+"w": "3 ชั่วโมง 65 นาที แต่ 65 นาที = 1 ชม. 5 นาที → 4 ชั่วโมง 5 นาที"
+}
+];
+Kit.sorters.eqt = {
+  bins: [{ k: 'a', t: '= 150 นาที', c: 'var(--orange)' }, { k: 'b', t: '= 2 วัน', c: 'var(--blue)' }, { k: 'c', t: '= 90 วินาที', c: 'var(--green)' }],
+  items: [
+    { t: '2 ชั่วโมง 30 นาที', k: 'a', w: '2 × 60 + 30 = 150 นาที' }, { t: '2.5 ชั่วโมง', k: 'a', w: 'ครึ่งชั่วโมง = 30 นาที' },
+    { t: '48 ชั่วโมง', k: 'b', w: '48 ÷ 24 = 2 วัน' }, { t: '2,880 นาที', k: 'b', w: '2,880 ÷ 60 = 48 ชั่วโมง = 2 วัน' },
+    { t: '1 นาที 30 วินาที', k: 'c', w: '60 + 30 = 90 วินาที' }, { t: '1 : 30', k: 'c', w: 'ระยะเวลา 1 นาที 30 วินาที' }
+  ]
+};
+function hm(m) { var h = Math.floor(m / 60), x = m % 60; return (h < 10 ? '0' : '') + h + '.' + (x < 10 ? '0' : '') + x + ' น.'; }
+function dur(m) { var h = Math.floor(m / 60), x = m % 60; return (h ? h + ' ชั่วโมง ' : '') + (x || !h ? x + ' นาที' : ''); }
+DRILLS.time = [
+  function () { var m = R(2, 15), s = R(1, 59); return { q: m + ' นาที ' + s + ' วินาที เท่ากับกี่วินาที', u: 'วินาที', a: m * 60 + s, h: m + ' × 60 = ' + m * 60 + ' วินาที<br>รวม ' + m * 60 + ' + ' + s + ' = <b>' + (m * 60 + s) + ' วินาที</b>' }; },
+  function () { var h = R(1, 9), m = R(5, 55); return { q: h + ' ชั่วโมง ' + m + ' นาที เท่ากับกี่นาที', u: 'นาที', a: h * 60 + m, h: h + ' × 60 + ' + m + ' = <b>' + (h * 60 + m) + ' นาที</b>' }; },
+  function () { var w = R(2, 15), d = R(1, 6); return { q: w + ' สัปดาห์ ' + d + ' วัน เท่ากับกี่วัน', u: 'วัน', a: w * 7 + d, h: w + ' × 7 + ' + d + ' = <b>' + (w * 7 + d) + ' วัน</b>' }; },
+  function () { var a = R(6 * 12, 14 * 12) * 5, b = a + R(9, 60) * 5; return { q: 'ออกเดินทาง ' + hm(a) + ' ถึง ' + hm(b) + ' ใช้เวลากี่นาที', u: 'นาที', a: b - a, h: 'นับจาก ' + hm(a) + ' ถึง ' + hm(b) + ' = ' + dur(b - a) + '<br>= <b>' + (b - a) + ' นาที</b>' }; },
+  function () { var a = R(6 * 12, 18 * 12) * 5, d = R(6, 40) * 5; return { q: 'เริ่มเวลา ' + hm(a) + ' ใช้เวลา ' + dur(d) + ' จะเสร็จเวลาใด (ตอบเป็นชั่วโมง.นาที เช่น 14.05)', a: Math.floor((a + d) / 60) + (((a + d) % 60) / 100), h: hm(a) + ' + ' + dur(d) + ' = <b>' + hm(a + d) + '</b>' }; }
+];
+SETUP = function () {
+  var a = 8 * 60 + 45, b = 13 * 60 + 20;
+  function draw() {
+    if (b <= a) b = a + 5;
+    document.getElementById('ta').textContent = hm(a); document.getElementById('tb').textContent = hm(b);
+    var full = Math.floor((b - a) / 60), mid = a + full * 60, rest = b - mid;
+    document.getElementById('durOut').innerHTML =
+      '<div><span class="pill" style="--c:var(--green)">ขั้นที่ 1</span> นับเต็มชั่วโมง ' + hm(a) + ' → ' + hm(mid) + ' = <b>' + full + ' ชั่วโมง</b></div>' +
+      '<div><span class="pill" style="--c:var(--blue)">ขั้นที่ 2</span> นับนาทีที่เหลือ ' + hm(mid) + ' → ' + hm(b) + ' = <b>' + rest + ' นาที</b></div>' +
+      '<div><span class="pill" style="--c:var(--purple)">ตอบ</span> ใช้เวลา <b class="t-purple">' + dur(b - a) + '</b> (' + (b - a) + ' นาที)</div>';
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-t]'), function (btn) {
+    btn.onclick = function () { var k = btn.getAttribute('data-t'), d = k[1] === '+' ? 5 : -5; if (k[0] === 'a') a = Math.max(0, Math.min(23 * 60 + 50, a + d)); else b = Math.max(a + 5, Math.min(23 * 60 + 55, b + d)); Kit.sound.tap(); draw(); };
+  });
+  draw();
+};
+</script>
+</body>
+</html>

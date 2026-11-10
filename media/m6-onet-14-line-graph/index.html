@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>อ่านกราฟเส้น · ติว O-NET ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#00A8A8;--main-deep:#008080;--glow:#C8F1F1}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">📈</span>
+  <div class="ttl"><b>อ่านกราฟเส้น</b><small>คณิตศาสตร์ ป.6 · ติว O-NET · ค3.1 ป.5/1 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m6-onet-hub/" aria-label="หน้ารวมติว O-NET" title="หน้ารวมติว O-NET">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">ติว O-NET ป.6 · ตัวชี้วัด ค3.1 ป.5/1</span>
+  <div class="emoji-xl">📈🥥🌡️</div>
+  <h1>อ่านกราฟเส้น<br><small style="font-size:.48em">อ่านค่า หาเพิ่ม–ลด หาค่าเฉลี่ย</small></h1>
+  <div class="ind"><b>📌 ตัวชี้วัด ค3.1 ป.5/1</b> ใช้ข้อมูลจากกราฟเส้นในการหาคำตอบของโจทย์ปัญหา</div>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul><li>บอก <b>ส่วนประกอบ</b> ของกราฟเส้น และอ่านค่าแต่ละจุดได้</li><li>หาช่วงที่ <b>เพิ่มขึ้น–ลดลงมากที่สุด</b> ได้</li><li>ใช้ข้อมูลจากกราฟหา <b>ผลรวม ผลต่าง ค่าเฉลี่ย</b> ได้</li></ul>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนติว</b>กราฟเส้นบอกเรื่องราวการ <b>เปลี่ยนแปลง</b> เส้นชันขึ้น = เพิ่มเร็ว เส้นดิ่งลง = ลดเร็ว อ่านเป็นแล้วสนุกมาก 🎢</div></div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มติวกันเลย ▶</button>
+  <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก</p>
+</div></section>
+
+<section class="slide" data-title="ส่วนประกอบ" data-id="parts"><div class="inner">
+  <h2 class="h"><span class="e">🔍</span>ส่วนประกอบของกราฟเส้น</h2>
+  <div class="svgbox noswipe" id="g1"></div>
+  <p class="sub center">👆 แตะจุดบนกราฟเพื่อดูค่า</p>
+  <div class="grid" style="--min:200px">
+    <div class="card c-teal"><h3>① ชื่อกราฟ</h3><p>บอกว่ากราฟนี้เรื่องอะไร</p></div>
+    <div class="card c-blue"><h3>② แกนนอน</h3><p>มักเป็น <b>เวลา</b> (วัน เดือน ชั่วโมง)</p></div>
+    <div class="card c-purple"><h3>③ แกนตั้ง</h3><p>บอก <b>ปริมาณ</b> และ <b>มาตราส่วน</b></p></div>
+    <div class="card c-orange"><h3>④ จุดและเส้น</h3><p>จุด = ข้อมูล · เส้น = การเปลี่ยนแปลง</p></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="อ่านการเปลี่ยนแปลง"><div class="inner">
+  <h2 class="h"><span class="e">🎢</span>อ่านการเปลี่ยนแปลง</h2>
+  <div class="grid" style="--min:200px">
+    <div class="card c-green center"><div class="emoji-xl">↗️</div><h3>เส้นขึ้น</h3><p>ข้อมูล <b>เพิ่มขึ้น</b></p></div>
+    <div class="card c-red center"><div class="emoji-xl">↘️</div><h3>เส้นลง</h3><p>ข้อมูล <b>ลดลง</b></p></div>
+    <div class="card c-blue center"><div class="emoji-xl">➡️</div><h3>เส้นแนวนอน</h3><p>ข้อมูล <b>คงที่</b></p></div>
+    <div class="card c-purple center"><div class="emoji-xl">⛰️</div><h3>เส้นชันมาก</h3><p>เปลี่ยนแปลง <b>มาก</b></p></div>
+  </div>
+  <div class="card c-teal">
+    <h3>✏️ จากกราฟน้ำมะพร้าว: ช่วงไหนเพิ่มขึ้นมากที่สุด</h3>
+    <div class="steps calc" id="ch">
+      <div class="step">หาผลต่างทุกช่วงที่เส้นขึ้น: อังคาร→พุธ +20 · พฤหัสฯ→ศุกร์ +15 · ศุกร์→เสาร์ <b>+30</b></div>
+      <div class="step">ช่วง <b class="t-purple">ศุกร์ → เสาร์</b> เพิ่มขึ้นมากที่สุด (เส้นชันที่สุด) แม้วันเสาร์จะไม่ใช่คำตอบเรื่อง “ช่วง”</div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="ch" style="--c:var(--teal)">คิดตามครูอู๋ 👇</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ค่าเฉลี่ย"><div class="inner">
+  <h2 class="h"><span class="e">⚖️</span>ค่าเฉลี่ย จากกราฟ</h2>
+  <div class="chant">ค่าเฉลี่ย = ผลรวมของข้อมูล ÷ จำนวนข้อมูล</div>
+  <div class="card c-orange">
+    <h3>✏️ น้ำมะพร้าว 7 วัน เฉลี่ยวันละกี่ขวด</h3>
+    <div class="steps calc" id="av">
+      <div class="step"><span class="pill" style="--c:var(--orange)">ขั้นที่ 1</span> อ่านค่าทุกจุด 40, 30, 50, 45, 60, 90, 70</div>
+      <div class="step"><span class="pill" style="--c:var(--blue)">ขั้นที่ 2</span> ผลรวม = <b>385</b> ขวด</div>
+      <div class="step"><span class="pill" style="--c:var(--green)">ขั้นที่ 3</span> เฉลี่ย 385 ÷ 7 = <b class="t-purple">55 ขวด</b></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="av" style="--c:var(--orange)">คิดตามครูอู๋ 👇</button></div>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เคล็ดลับ</b>ลากเส้นแนวนอนที่ค่าเฉลี่ย 55 บนกราฟ จุดที่อยู่ <b>เหนือเส้น</b> คือวันที่ขายได้มากกว่าค่าเฉลี่ย นับง่ายมาก!</div></div>
+</div></section>
+
+<section class="slide" data-title="ฝึกอ่านกราฟ"><div class="inner">
+  <h2 class="h"><span class="e">🎲</span>ฝึกอ่านกราฟไม่รู้จบ</h2>
+  <p class="sub">สุ่มกราฟใหม่ทุกข้อ ดูมาตราส่วนให้ดีนะ</p>
+  <div class="card c-teal"><div class="drill" data-drill="g"></div></div>
+</div></section>
+<section class="slide" data-title="ตะลุยข้อสอบ O-NET"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>ตะลุยข้อสอบแนว O-NET (10 ข้อ)</h2>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เตือน</b>อ่านโจทย์ให้จบ ขีดเส้นใต้ <b>สิ่งที่โจทย์ถาม</b> แล้วค่อยเลือกคำตอบนะ ตอบผิดได้ ดูเหตุผลแล้วจำไว้ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปให้จำขึ้นใจ</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class='chant'>อ่านชื่อกราฟ → แกนนอน → แกนตั้ง (มาตราส่วน!) → อ่านจุด<small>เส้นชันมาก = เปลี่ยนแปลงมาก · ค่าเฉลี่ย = ผลรวม ÷ จำนวนข้อมูล</small></div><div class='trap'><b class='t'>⚠️ กับดัก</b> ดู <b>มาตราส่วน</b> แกนตั้งก่อนเสมอ 1 ช่องอาจแทน 5 หรือ 10 ไม่ใช่ 1 · “เพิ่มขึ้นมากที่สุด” ดูช่วงที่เส้น <b>ชันขึ้น</b> มากที่สุด ไม่ใช่จุดที่สูงที่สุด</div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(0)">🔁 ติวอีกครั้ง</button></div>
+  <div class="row center"><a class="btn ghost" href="../m6-onet-13-quadrilateral/">◀ 🔶 รูปสี่เหลี่ยม</a><a class="btn" style="--c:var(--purple)" href="../m6-onet-hub/">🏠 หน้ารวมติว O-NET</a><a class="btn ghost" href="../m6-onet-15-pie-chart/">🥧 แผนภูมิวงกลม ▶</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m6-onet-14-line-graph";
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = 'kruau-onet6-' + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+Kit.quizzes.main = [
+{
+"q": "[[G]]จากกราฟ วันใดขายน้ำมะพร้าวได้มากที่สุด",
+"c": [
+"วันเสาร์",
+"วันอาทิตย์",
+"วันศุกร์",
+"วันพุธ"
+],
+"a": 0,
+"w": "จุดสูงที่สุดอยู่ที่วันเสาร์ 90 ขวด"
+},
+{
+"q": "[[G]]จากกราฟ วันใดขายได้น้อยที่สุด",
+"c": [
+"วันอังคาร",
+"วันจันทร์",
+"วันพฤหัสบดี",
+"วันอาทิตย์"
+],
+"a": 0,
+"w": "จุดต่ำที่สุดอยู่ที่วันอังคาร 30 ขวด"
+},
+{
+"q": "[[G]]วันศุกร์ขายได้มากกว่าวันจันทร์กี่ขวด",
+"c": [
+"20 ขวด",
+"100 ขวด",
+"10 ขวด",
+"30 ขวด"
+],
+"a": 0,
+"w": "ศุกร์ 60 − จันทร์ 40 = 20 ขวด"
+},
+{
+"q": "[[G]]ยอดขายเพิ่มขึ้นมากที่สุดระหว่างวันใดกับวันใด",
+"c": [
+"ศุกร์ → เสาร์",
+"อังคาร → พุธ",
+"พฤหัสบดี → ศุกร์",
+"เสาร์ → อาทิตย์"
+],
+"a": 0,
+"w": "ศุกร์ → เสาร์ เพิ่ม 30 ขวด (60 → 90) เส้นชันขึ้นมากที่สุด"
+},
+{
+"q": "[[G]]ในสัปดาห์นี้ มีกี่ช่วงที่ยอดขายลดลงจากวันก่อนหน้า",
+"c": [
+"3 ช่วง",
+"2 ช่วง",
+"4 ช่วง",
+"1 ช่วง"
+],
+"a": 0,
+"w": "จันทร์ → อังคาร, พุธ → พฤหัสบดี, เสาร์ → อาทิตย์ รวม 3 ช่วง"
+},
+{
+"q": "[[G]]ทั้งสัปดาห์ขายน้ำมะพร้าวได้กี่ขวด",
+"c": [
+"385 ขวด",
+"360 ขวด",
+"395 ขวด",
+"90 ขวด"
+],
+"a": 0,
+"w": "40 + 30 + 50 + 45 + 60 + 90 + 70 = 385 ขวด"
+},
+{
+"q": "[[G]]เฉลี่ยขายได้วันละกี่ขวด",
+"c": [
+"55 ขวด",
+"50 ขวด",
+"60 ขวด",
+"45 ขวด"
+],
+"a": 0,
+"w": "385 ÷ 7 = 55 ขวด"
+},
+{
+"q": "[[G]]ขายขวดละ 25 บาท วันเสาร์ได้เงินกี่บาท",
+"c": [
+"2,250 บาท",
+"1,750 บาท",
+"1,500 บาท",
+"2,500 บาท"
+],
+"a": 0,
+"w": "90 × 25 = 2,250 บาท"
+},
+{
+"q": "[[G]]ยอดขายวันเสาร์เป็นกี่เท่าของวันอังคาร",
+"c": [
+"3 เท่า",
+"2 เท่า",
+"60 เท่า",
+"4 เท่า"
+],
+"a": 0,
+"w": "90 ÷ 30 = 3 เท่า"
+},
+{
+"q": "[[G]]มีกี่วันที่ขายได้มากกว่าค่าเฉลี่ย (55 ขวด)",
+"c": [
+"3 วัน",
+"4 วัน",
+"2 วัน",
+"5 วัน"
+],
+"a": 0,
+"w": "วันศุกร์ 60, เสาร์ 90, อาทิตย์ 70 มากกว่า 55 รวม 3 วัน"
+}
+];
+var DAYS = ['จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.', 'อา.'], DAYN = ['วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัสบดี', 'วันศุกร์', 'วันเสาร์', 'วันอาทิตย์'];
+var COCO = [40, 30, 50, 45, 60, 90, 70];
+function lineSVG(title, labels, data, max, step, unit, id) {
+  var W = 560, H = 300, L = 56, T = 40, B = 46, Rr = 20, w = W - L - Rr, h = H - T - B, n = data.length, s = '';
+  s += '<svg ' + (id ? 'id="' + id + '" ' : '') + 'viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + title + '" style="max-width:560px">';
+  s += '<text x="' + (W / 2) + '" y="24" text-anchor="middle" font-weight="700" font-size="17" fill="#3B2E5A">' + title + '</text>';
+  for (var v = 0; v <= max; v += step) { var y = T + h - v / max * h; s += '<line x1="' + L + '" y1="' + y + '" x2="' + (L + w) + '" y2="' + y + '" stroke="#EEE6D8"/><text x="' + (L - 8) + '" y="' + (y + 5) + '" text-anchor="end" font-size="13" fill="#6E6390">' + v + '</text>'; }
+  s += '<text x="14" y="' + (T + h / 2) + '" font-size="13" fill="#6E6390" transform="rotate(-90 14 ' + (T + h / 2) + ')" text-anchor="middle">' + unit + '</text>';
+  var pts = data.map(function (d, i) { return [L + (i + 0.5) * w / n, T + h - d / max * h]; });
+  s += '<polyline points="' + pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '" fill="none" stroke="#00A8A8" stroke-width="4" stroke-linejoin="round"/>';
+  pts.forEach(function (p, i) {
+    s += '<text x="' + p[0] + '" y="' + (T + h + 22) + '" text-anchor="middle" font-size="14" fill="#3B2E5A">' + labels[i] + '</text>';
+    s += '<g class="pt" data-i="' + i + '" style="cursor:pointer"><circle cx="' + p[0] + '" cy="' + p[1] + '" r="16" fill="transparent"/><circle cx="' + p[0] + '" cy="' + p[1] + '" r="7" fill="#fff" stroke="#008080" stroke-width="3"/><text class="lbl" x="' + p[0] + '" y="' + (p[1] - 14) + '" text-anchor="middle" font-size="14" font-weight="700" fill="#C21F72" opacity="0">' + data[i] + '</text></g>';
+  });
+  return s + '<line x1="' + L + '" y1="' + (T + h) + '" x2="' + (L + w) + '" y2="' + (T + h) + '" stroke="#3B2E5A" stroke-width="2"/><line x1="' + L + '" y1="' + T + '" x2="' + L + '" y2="' + (T + h) + '" stroke="#3B2E5A" stroke-width="2"/></svg>';
+}
+var GQ = '<div class="svgbox" style="margin-bottom:8px;font-weight:400">' + lineSVG('ยอดขายน้ำมะพร้าวร้านป้าแก้ว 1 สัปดาห์', DAYS, COCO, 100, 10, 'จำนวน (ขวด)') + '</div>';
+Kit.quizzes.main.forEach(function (q) { q.q = q.q.replace('[[G]]', GQ); });
+DRILLS.g = [
+  function () {
+    var step = pick([5, 10, 20]), max = step * 10, d = DAYS.slice(0, 5).map(function () { return R(1, 10) * step; }), k = R(0, 4), kind = R(0, 3), q, a, h;
+    var g = '<div class="svgbox" style="font-weight:400">' + lineSVG('จำนวนหนังสือที่ยืมจากห้องสมุด', DAYS.slice(0, 5), d, max, step * 2, 'จำนวน (เล่ม)') + '</div>';
+    var sum = d.reduce(function (x, y) { return x + y; }, 0);
+    if (kind === 0) { q = 'ยืมหนังสือ' + DAYN[k] + 'กี่เล่ม'; a = d[k]; h = 'อ่านจุดเหนือ ' + DAYS[k] + ' ได้ <b>' + d[k] + ' เล่ม</b> (แกนตั้งช่องละ ' + step + ')'; }
+    else if (kind === 1) { var i = R(0, 3); q = DAYN[i] + 'กับ' + DAYN[i + 1] + ' ยืมต่างกันกี่เล่ม'; a = Math.abs(d[i] - d[i + 1]); h = '|' + d[i] + ' − ' + d[i + 1] + '| = <b>' + a + ' เล่ม</b>'; }
+    else if (kind === 2) { q = '5 วันนี้ยืมหนังสือรวมกี่เล่ม'; a = sum; h = d.join(' + ') + ' = <b>' + sum + ' เล่ม</b>'; }
+    else { if (sum % 5) return DRILLS.g[0](); q = 'เฉลี่ยยืมวันละกี่เล่ม'; a = sum / 5; h = 'ผลรวม ' + sum + ' ÷ 5 = <b>' + a + ' เล่ม</b>'; }
+    return { q: g + q, a: a, u: 'เล่ม', h: h };
+  }
+];
+SETUP = function () {
+  var box = document.getElementById('g1');
+  box.innerHTML = lineSVG('ยอดขายน้ำมะพร้าวร้านป้าแก้ว 1 สัปดาห์', DAYS, COCO, 100, 10, 'จำนวน (ขวด)');
+  Array.prototype.forEach.call(box.querySelectorAll('.pt'), function (g) {
+    g.addEventListener('click', function () { var t = g.querySelector('.lbl'); t.setAttribute('opacity', t.getAttribute('opacity') === '1' ? '0' : '1'); Kit.sound.tap(); Kit.toast(DAYN[+g.getAttribute('data-i')] + ' ขายได้ ' + COCO[+g.getAttribute('data-i')] + ' ขวด'); });
+  });
+};
+</script>
+</body>
+</html>

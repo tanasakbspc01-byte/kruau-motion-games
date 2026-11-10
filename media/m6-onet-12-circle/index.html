@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>ความยาวรอบรูปและพื้นที่วงกลม · ติว O-NET ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#E84393;--main-deep:#C21F72;--glow:#FFD9EB}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">⭕</span>
+  <div class="ttl"><b>ความยาวรอบรูปและพื้นที่วงกลม</b><small>คณิตศาสตร์ ป.6 · ติว O-NET · ค2.1 ป.6/3 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m6-onet-hub/" aria-label="หน้ารวมติว O-NET" title="หน้ารวมติว O-NET">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">ติว O-NET ป.6 · ตัวชี้วัด ค2.1 ป.6/3</span>
+  <div class="emoji-xl">⭕🍕🎡</div>
+  <h1>ความยาวรอบรูปและพื้นที่วงกลม<br><small style="font-size:.48em">2πr และ πr² ใช้ให้ถูกที่</small></h1>
+  <div class="ind"><b>📌 ตัวชี้วัด ค2.1 ป.6/3</b> แสดงวิธีหาคำตอบของโจทย์ปัญหาเกี่ยวกับความยาวรอบรูปและพื้นที่ของวงกลม</div>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul><li>บอก <b>ส่วนประกอบ</b> ของวงกลม รัศมี เส้นผ่านศูนย์กลาง ได้</li><li>หา <b>ความยาวรอบวง</b> และ <b>พื้นที่</b> ของวงกลมได้</li><li>แก้โจทย์ <b>ครึ่งวงกลม วงแหวน ส่วนที่แรเงา</b> ได้</li></ul>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนติว</b>วงกลมมีตัวเลขวิเศษชื่อ <b>π (พาย)</b> ประมาณ {22/7} หรือ 3.14 จำสูตรแค่ 2 ตัว ก็ทำข้อสอบได้ทุกข้อ 🥧</div></div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มติวกันเลย ▶</button>
+  <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก</p>
+</div></section>
+
+<section class="slide" data-title="ส่วนประกอบวงกลม"><div class="inner">
+  <h2 class="h"><span class="e">🎯</span>ส่วนประกอบของวงกลม</h2>
+  <div class="grid" style="--min:280px">
+    <div class="svgbox"><svg viewBox="0 0 300 260" role="img" aria-label="วงกลมแสดงจุดศูนย์กลาง รัศมี และเส้นผ่านศูนย์กลาง">
+      <circle cx="150" cy="130" r="105" fill="#FFD9EB" stroke="#C21F72" stroke-width="5"/>
+      <line x1="45" y1="130" x2="255" y2="130" stroke="#3F7FF5" stroke-width="4"/>
+      <line x1="150" y1="130" x2="224" y2="56" stroke="#2ECC71" stroke-width="4"/>
+      <circle cx="150" cy="130" r="6" fill="#3B2E5A"/>
+      <g font-size="16" font-weight="700"><text x="150" y="155" text-anchor="middle" fill="#3B2E5A">จุดศูนย์กลาง</text><text x="80" y="122" fill="#2459D1">เส้นผ่านศูนย์กลาง (d)</text><text x="196" y="105" fill="#1FA75A">รัศมี (r)</text><text x="150" y="22" text-anchor="middle" fill="#C21F72">เส้นรอบวง</text></g>
+    </svg></div>
+    <div class="card c-pink">
+      <ul>
+        <li><b>รัศมี (r)</b> จากจุดศูนย์กลางถึงเส้นรอบวง</li>
+        <li><b>เส้นผ่านศูนย์กลาง (d)</b> ผ่านจุดศูนย์กลาง ยาวเป็น <b>2 เท่า</b> ของรัศมี</li>
+        <li><b>เส้นรอบวง</b> คือความยาวรอบรูปของวงกลม</li>
+      </ul>
+      <p class="eq center" style="margin-top:8px">d = 2 × r &nbsp;&nbsp; r = d ÷ 2</p>
+    </div>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนทดลอง</b>เอาเชือกพันรอบฝากระป๋อง แล้ววัดเทียบกับเส้นผ่านศูนย์กลาง จะยาวประมาณ <b>3 เท่ากว่า ๆ</b> เสมอ ตัวเลข 3.14… นี้แหละคือ <b>π</b></div></div>
+</div></section>
+
+<section class="slide" data-title="สูตร 2 ตัว"><div class="inner">
+  <h2 class="h"><span class="e">🥧</span>จำแค่ 2 สูตร</h2>
+  <div class="grid" style="--min:270px">
+    <div class="card c-blue center"><h3>📏 ความยาวรอบวง</h3><p class="eq">2 × π × r<br>หรือ π × d</p><p class="sub">หน่วยความยาว เช่น ซม.</p></div>
+    <div class="card c-pink center"><h3>🟣 พื้นที่วงกลม</h3><p class="eq">π × r × r</p><p class="sub">หน่วยตาราง เช่น ตร.ซม.</p></div>
+  </div>
+  <div class="grid" style="--min:270px">
+    <div class="card c-green"><h3>เลือก π ให้ฉลาด</h3><p>รัศมีหรือเส้นผ่านศูนย์กลาง <b>หาร 7 ลงตัว</b> → ใช้ {22/7} (ตัด 7 ได้ คิดง่าย)<br>ไม่ลงตัว หรือโจทย์บอก → ใช้ <b>3.14</b></p></div>
+    <div class="card c-orange"><h3>✏️ ตัวอย่าง</h3><p>r = 28 ซม. พื้นที่ = {22/7} × 28 × 28<br>= 22 × 4 × 28 = <b>2,464 ตร.ซม.</b></p></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เครื่องวงกลม" data-id="circ"><div class="inner">
+  <h2 class="h"><span class="e">🎡</span>เครื่องคิดวงกลมของครูอู๋</h2>
+  <div class="grid" style="--min:280px">
+    <div class="svgbox"><svg id="cv" viewBox="0 0 260 260" role="img" aria-label="วงกลมตามรัศมีที่เลือก"></svg></div>
+    <div class="card c-pink">
+      <div class="ctrl">รัศมี <button class="step-btn" data-r="-">−</button><span class="val" id="rv"></span>ซม.<button class="step-btn" data-r="+">+</button></div>
+      <div class="row" style="margin-top:8px"><button class="chip" data-pi="0" style="box-shadow:none">π ≈ 22/7</button><button class="chip" data-pi="1" style="box-shadow:none">π ≈ 3.14</button></div>
+      <div class="calc" id="cout" style="margin-top:10px"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ครึ่งวงกลมและแรเงา"><div class="inner">
+  <h2 class="h"><span class="e">🌓</span>ครึ่งวงกลม และพื้นที่แรเงา</h2>
+  <div class="grid" style="--min:280px">
+    <div class="card c-orange">
+      <div class="svgbox"><svg viewBox="0 0 240 140" role="img" aria-label="ครึ่งวงกลม"><path d="M20,120 A100,100 0 0 1 220,120 Z" fill="#FFE6C7" stroke="#E07B14" stroke-width="4"/><text x="120" y="136" text-anchor="middle" font-weight="700" font-size="15">14 ซม.</text></svg></div>
+      <h3>🌓 ความยาวรอบรูปครึ่งวงกลม (d = 14)</h3>
+      <div class="steps calc" id="sm">
+        <div class="step">เส้นโค้ง = {1/2} × {22/7} × 14 = <b>22 ซม.</b></div>
+        <div class="step">อย่าลืม <b>เส้นตรง</b> (เส้นผ่านศูนย์กลาง) 14 ซม.</div>
+        <div class="step">รวม 22 + 14 = <b class="t-purple">36 ซม.</b></div>
+      </div>
+      <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="sm" style="--c:var(--orange)">ดูวิธีคิด 👇</button></div>
+    </div>
+    <div class="card c-purple">
+      <div class="svgbox"><svg viewBox="0 0 160 160" role="img" aria-label="สี่เหลี่ยมจัตุรัสที่มีวงกลมอยู่ข้างใน มุมทั้งสี่แรเงา"><rect x="10" y="10" width="140" height="140" fill="#9B6CF0"/><circle cx="80" cy="80" r="70" fill="#fff" stroke="#7343D6" stroke-width="3"/><text x="80" y="86" text-anchor="middle" font-weight="700" font-size="15">14 ซม.</text></svg></div>
+      <h3>⬛ พื้นที่ส่วนที่แรเงา (มุมทั้ง 4)</h3>
+      <div class="steps calc" id="sh">
+        <div class="step">จัตุรัส 14 × 14 = <b>196 ตร.ซม.</b></div>
+        <div class="step">วงกลม r = 7: {22/7} × 7 × 7 = <b>154 ตร.ซม.</b></div>
+        <div class="step">แรเงา 196 − 154 = <b class="t-purple">42 ตร.ซม.</b></div>
+      </div>
+      <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="sh" style="--c:var(--purple)">ดูวิธีคิด 👇</button></div>
+    </div>
+  </div>
+  <div class="chant">พื้นที่แรเงา = รูปใหญ่ − รูปที่ไม่แรเงา<small>วงแหวน = วงนอก − วงใน</small></div>
+</div></section>
+
+<section class="slide" data-title="คัดแยกสูตร"><div class="inner">
+  <h2 class="h"><span class="e">🧺</span>กิจกรรม: โจทย์นี้ใช้สูตรไหน</h2>
+  <div data-sorter="f"></div>
+</div></section>
+
+<section class="slide" data-title="ฝึกคิดไม่รู้จบ"><div class="inner">
+  <h2 class="h"><span class="e">🎲</span>ฝึกคิดไม่รู้จบ</h2>
+  <div class="card c-teal"><div class="drill" data-drill="circ"></div></div>
+</div></section>
+<section class="slide" data-title="ตะลุยข้อสอบ O-NET"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>ตะลุยข้อสอบแนว O-NET (10 ข้อ)</h2>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เตือน</b>อ่านโจทย์ให้จบ ขีดเส้นใต้ <b>สิ่งที่โจทย์ถาม</b> แล้วค่อยเลือกคำตอบนะ ตอบผิดได้ ดูเหตุผลแล้วจำไว้ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปให้จำขึ้นใจ</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class='chant'>ความยาวรอบวง = 2πr = πd · พื้นที่ = πr²<small>π ≈ {22/7} (ใช้เมื่อรัศมีหาร 7 ลงตัว) หรือ 3.14 · d = 2r</small></div><div class='trap'><b class='t'>⚠️ กับดัก</b> ความยาวรอบรูป <b>ครึ่งวงกลม</b> = ครึ่งหนึ่งของเส้นรอบวง <b>+ เส้นผ่านศูนย์กลาง</b> · โจทย์ให้เส้นผ่านศูนย์กลาง ต้องหารครึ่งก่อนเข้าสูตรพื้นที่</div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(0)">🔁 ติวอีกครั้ง</button></div>
+  <div class="row center"><a class="btn ghost" href="../m6-onet-11-polygon/">◀ 🔷 รูปหลายเหลี่ยม</a><a class="btn" style="--c:var(--purple)" href="../m6-onet-hub/">🏠 หน้ารวมติว O-NET</a><a class="btn ghost" href="../m6-onet-13-quadrilateral/">🔶 รูปสี่เหลี่ยม ▶</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m6-onet-12-circle";
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = 'kruau-onet6-' + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+Kit.quizzes.main = [
+{
+"q": "วงกลมรัศมี 14 ซม. มีความยาวรอบวงเท่าใด (π ≈ {22/7})",
+"c": [
+"88 ซม.",
+"44 ซม.",
+"616 ซม.",
+"176 ซม."
+],
+"a": 0,
+"w": "2 × {22/7} × 14 = 88 ซม."
+},
+{
+"q": "วงกลมเส้นผ่านศูนย์กลาง 20 ซม. มีความยาวรอบวงเท่าใด (π ≈ 3.14)",
+"c": [
+"62.8 ซม.",
+"125.6 ซม.",
+"314 ซม.",
+"31.4 ซม."
+],
+"a": 0,
+"w": "πd = 3.14 × 20 = 62.8 ซม."
+},
+{
+"q": "วงกลมมีความยาวรอบวง 15.7 เมตร มีรัศมีเท่าใด (π ≈ 3.14)",
+"c": [
+"2.5 ม.",
+"5 ม.",
+"7.85 ม.",
+"1.25 ม."
+],
+"a": 0,
+"w": "15.7 = 2 × 3.14 × r = 6.28 × r → r = 15.7 ÷ 6.28 = 2.5 ม."
+},
+{
+"q": "วงกลมรัศมี 28 ซม. มีพื้นที่เท่าใด (π ≈ {22/7})",
+"c": [
+"2,464 ตร.ซม.",
+"176 ตร.ซม.",
+"616 ตร.ซม.",
+"1,232 ตร.ซม."
+],
+"a": 0,
+"w": "{22/7} × 28 × 28 = 22 × 4 × 28 = 2,464 ตร.ซม."
+},
+{
+"q": "วงกลมเส้นผ่านศูนย์กลาง 14 ซม. มีพื้นที่เท่าใด (π ≈ {22/7})",
+"c": [
+"154 ตร.ซม.",
+"616 ตร.ซม.",
+"44 ตร.ซม.",
+"308 ตร.ซม."
+],
+"a": 0,
+"w": "รัศมี 14 ÷ 2 = 7 ซม. → {22/7} × 7 × 7 = 154 ตร.ซม."
+},
+{
+"q": "ครึ่งวงกลมมีเส้นผ่านศูนย์กลาง 14 ซม. มีความยาวรอบรูปเท่าใด (π ≈ {22/7})",
+"c": [
+"36 ซม.",
+"22 ซม.",
+"44 ซม.",
+"77 ซม."
+],
+"a": 0,
+"w": "เส้นโค้ง = {1/2} × {22/7} × 14 = 22 ซม. บวกเส้นตรง 14 ซม. = 36 ซม."
+},
+{
+"q": "วงแหวนมีรัศมีวงนอก 14 ซม. รัศมีวงใน 7 ซม. มีพื้นที่เท่าใด (π ≈ {22/7})",
+"c": [
+"462 ตร.ซม.",
+"154 ตร.ซม.",
+"616 ตร.ซม.",
+"308 ตร.ซม."
+],
+"a": 0,
+"w": "วงนอก 616 − วงใน 154 = 462 ตร.ซม."
+},
+{
+"q": "รูปสี่เหลี่ยมจัตุรัสยาวด้านละ 14 ซม. มีวงกลมใหญ่ที่สุดอยู่ข้างใน พื้นที่ส่วนที่อยู่นอกวงกลมเท่าใด (π ≈ {22/7})",
+"c": [
+"42 ตร.ซม.",
+"154 ตร.ซม.",
+"196 ตร.ซม.",
+"58 ตร.ซม."
+],
+"a": 0,
+"w": "จัตุรัส 196 − วงกลมรัศมี 7 ซม. 154 = 42 ตร.ซม."
+},
+{
+"q": "ล้อจักรยานเส้นผ่านศูนย์กลาง 70 ซม. หมุน 100 รอบ เคลื่อนที่ได้กี่เมตร (π ≈ {22/7})",
+"c": [
+"220 ม.",
+"110 ม.",
+"22 ม.",
+"440 ม."
+],
+"a": 0,
+"w": "1 รอบ = {22/7} × 70 = 220 ซม. → 100 รอบ = 22,000 ซม. = 220 ม."
+},
+{
+"q": "ถ้ารัศมีของวงกลมยาวขึ้นเป็น 2 เท่า พื้นที่จะเป็นกี่เท่าของเดิม",
+"c": [
+"4 เท่า",
+"2 เท่า",
+"3 เท่า",
+"8 เท่า"
+],
+"a": 0,
+"w": "พื้นที่ = π × r × r เมื่อ r เป็น 2 เท่า จะได้ 2 × 2 = 4 เท่า"
+}
+];
+Kit.sorters.f = {
+  bins: [{ k: 'c', t: 'ความยาวรอบวง 2πr', c: 'var(--blue)' }, { k: 'a', t: 'พื้นที่ πr²', c: 'var(--pink)' }],
+  items: [
+    { t: '🚲 ล้อหมุน 1 รอบ ไปได้ไกลเท่าใด', k: 'c', w: 'ระยะทางที่ล้อหมุน = เส้นรอบวง' }, { t: '🧵 ลวดดัดเป็นวงกลมใช้ลวดยาวเท่าใด', k: 'c', w: 'ความยาวลวด = เส้นรอบวง' }, { t: '🏃 วิ่งรอบสระกลม 1 รอบ', k: 'c', w: 'ระยะวิ่งรอบ = เส้นรอบวง' },
+    { t: '🌱 ปูหญ้าในสนามวงกลม', k: 'a', w: 'ปูทั้งผืน = พื้นที่' }, { t: '🍕 ขนาดพิซซ่าทั้งถาด', k: 'a', w: 'ขนาดแผ่น = พื้นที่' }, { t: '🎨 ทาสีโต๊ะกลม', k: 'a', w: 'ทาทั่วหน้าโต๊ะ = พื้นที่' }
+  ]
+};
+DRILLS.circ = [
+  function () { var r = R(1, 6) * 7; return { q: 'วงกลมรัศมี ' + r + ' ซม. ยาวรอบวงเท่าใด (π ≈ {22/7})', u: 'ซม.', a: 2 * 22 * r / 7, h: '2 × {22/7} × ' + r + ' = 2 × 22 × ' + (r / 7) + ' = <b>' + C(2 * 22 * r / 7) + ' ซม.</b>' }; },
+  function () { var r = R(1, 5) * 7; return { q: 'วงกลมรัศมี ' + r + ' ซม. มีพื้นที่เท่าใด (π ≈ {22/7})', u: 'ตร.ซม.', a: 22 * r * r / 7, h: '{22/7} × ' + r + ' × ' + r + ' = 22 × ' + (r / 7) + ' × ' + r + ' = <b>' + C(22 * r * r / 7) + ' ตร.ซม.</b>' }; },
+  function () { var d = R(1, 6) * 14; return { q: 'วงกลมเส้นผ่านศูนย์กลาง ' + d + ' ซม. มีพื้นที่เท่าใด (π ≈ {22/7})', u: 'ตร.ซม.', a: 22 * (d / 2) * (d / 2) / 7, h: 'รัศมี = ' + d + ' ÷ 2 = ' + (d / 2) + ' ซม.<br>{22/7} × ' + (d / 2) + ' × ' + (d / 2) + ' = <b>' + C(22 * (d / 2) * (d / 2) / 7) + ' ตร.ซม.</b>' }; },
+  function () { var r = R(1, 10); return { q: 'วงกลมรัศมี ' + r + ' ม. ยาวรอบวงกี่เมตร (π ≈ 3.14)', u: 'ม.', a: Math.round(2 * 3.14 * r * 100) / 100, h: '2 × 3.14 × ' + r + ' = <b>' + Math.round(2 * 3.14 * r * 100) / 100 + ' ม.</b>' }; },
+  function () { var r = R(1, 10); return { q: 'วงกลมรัศมี ' + r + ' ม. มีพื้นที่กี่ตารางเมตร (π ≈ 3.14)', u: 'ตร.ม.', a: Math.round(3.14 * r * r * 100) / 100, h: '3.14 × ' + r + ' × ' + r + ' = <b>' + Math.round(3.14 * r * r * 100) / 100 + ' ตร.ม.</b>' }; },
+  function () { var d = R(1, 4) * 14; return { q: 'ครึ่งวงกลมเส้นผ่านศูนย์กลาง ' + d + ' ซม. มีความยาวรอบรูปเท่าใด (π ≈ {22/7})', u: 'ซม.', a: 11 * d / 7 + d, h: 'เส้นโค้ง {1/2} × {22/7} × ' + d + ' = ' + (11 * d / 7) + ' ซม.<br>บวกเส้นตรง ' + d + ' = <b>' + (11 * d / 7 + d) + ' ซม.</b>' }; }
+];
+SETUP = function () {
+  var r = 7, pi = 0, svg = document.getElementById('cv');
+  function draw() {
+    var px = 20 + r * 3.6;
+    svg.innerHTML = '<circle cx="130" cy="130" r="' + px + '" fill="#FFD9EB" stroke="#C21F72" stroke-width="4"/><line x1="130" y1="130" x2="' + (130 + px) + '" y2="130" stroke="#2ECC71" stroke-width="4"/><circle cx="130" cy="130" r="4" fill="#3B2E5A"/><text x="' + (130 + px / 2) + '" y="122" text-anchor="middle" font-weight="700" font-size="15">r = ' + r + '</text>';
+    document.getElementById('rv').textContent = r;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-pi]'), function (b) { b.classList.toggle('sel', +b.getAttribute('data-pi') === pi); });
+    var P = pi ? '3.14' : '{22/7}', pv = pi ? 3.14 : 22 / 7, cc = Math.round(2 * pv * r * 100) / 100, aa = Math.round(pv * r * r * 100) / 100;
+    document.getElementById('cout').innerHTML = Kit.fx('<div>📏 รอบวง = 2 × ' + P + ' × ' + r + ' = <b class="t-purple">' + C(cc) + '</b> ซม.</div><div>🟣 พื้นที่ = ' + P + ' × ' + r + ' × ' + r + ' = <b class="t-purple">' + C(aa) + '</b> ตร.ซม.</div>' + (!pi && r % 7 ? '<div class="sub">💡 ' + r + ' หาร 7 ไม่ลงตัว ลองใช้ π ≈ 3.14 จะง่ายกว่า (ค่านี้ปัดทศนิยม 2 ตำแหน่ง)</div>' : ''));
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-r]'), function (b) { b.onclick = function () { r = Math.max(1, Math.min(28, r + (b.getAttribute('data-r') === '+' ? 1 : -1))); Kit.sound.tap(); draw(); }; });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-pi]'), function (b) { b.onclick = function () { pi = +b.getAttribute('data-pi'); Kit.sound.tap(); draw(); }; });
+  draw();
+};
+</script>
+</body>
+</html>

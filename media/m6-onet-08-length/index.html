@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>โจทย์ปัญหาความยาว · ติว O-NET ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#1ABC9C;--main-deep:#11967C;--glow:#CFF5EC}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">📏</span>
+  <div class="ttl"><b>โจทย์ปัญหาความยาว</b><small>คณิตศาสตร์ ป.6 · ติว O-NET · ค2.1 ป.5/1 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m6-onet-hub/" aria-label="หน้ารวมติว O-NET" title="หน้ารวมติว O-NET">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge">ติว O-NET ป.6 · ตัวชี้วัด ค2.1 ป.5/1</span>
+  <div class="emoji-xl">📏🏃🧵</div>
+  <h1>โจทย์ปัญหาความยาว<br><small style="font-size:.48em">มม. ซม. ม. กม. ด้วยบันไดหน่วย</small></h1>
+  <div class="ind"><b>📌 ตัวชี้วัด ค2.1 ป.5/1</b> แสดงวิธีหาคำตอบของโจทย์ปัญหาเกี่ยวกับความยาวที่มีการเปลี่ยนหน่วยและเขียนในรูปทศนิยม</div>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul><li><b>เปลี่ยนหน่วย</b> ความยาว มม. ซม. ม. กม. ได้</li><li>เขียนความยาวในรูป <b>ทศนิยม</b> ได้</li><li>แก้ <b>โจทย์ปัญหาความยาว</b> ได้</li></ul>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋ชวนติว</b>ครูอู๋มี <b>บันไดหน่วย</b> วิเศษ ลงบันไดคูณ ขึ้นบันไดหาร แค่นี้แปลงหน่วยได้ทุกข้อ 🪜</div></div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มติวกันเลย ▶</button>
+  <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก</p>
+</div></section>
+
+<section class="slide" data-title="บันไดหน่วย" data-id="stair"><div class="inner">
+  <h2 class="h"><span class="e">🪜</span>บันไดหน่วยความยาวของครูอู๋</h2>
+  <div class="grid" style="--min:280px">
+    <div class="svgbox"><svg viewBox="0 0 360 250" role="img" aria-label="บันไดหน่วย กม. ม. ซม. มม.">
+      <g font-weight="700" font-size="20" text-anchor="middle">
+        <rect x="10" y="20" width="90" height="46" rx="10" fill="#1ABC9C"/><text x="55" y="50" fill="#fff">กม.</text>
+        <rect x="90" y="80" width="90" height="46" rx="10" fill="#3FA9F5"/><text x="135" y="110" fill="#fff">ม.</text>
+        <rect x="170" y="140" width="90" height="46" rx="10" fill="#9B6CF0"/><text x="215" y="170" fill="#fff">ซม.</text>
+        <rect x="250" y="200" width="90" height="46" rx="10" fill="#FF7EB6"/><text x="295" y="230" fill="#fff">มม.</text>
+      </g>
+      <g font-size="15" font-weight="700" fill="#E85D25">
+        <text x="150" y="58">× 1,000 ↘</text><text x="232" y="118">× 100 ↘</text><text x="300" y="178">× 10 ↘</text>
+      </g>
+    </svg></div>
+    <div class="card c-teal">
+      <h3>🔁 เครื่องแปลงหน่วย</h3>
+      <div class="ctrl"><button class="step-btn" data-v="-">−</button><span class="val" id="lv" style="min-width:3.5em"></span><button class="step-btn" data-v="+">+</button></div>
+      <div class="row" id="lu" style="margin-top:8px"></div>
+      <div class="calc" id="lout" style="margin-top:8px"></div>
+    </div>
+  </div>
+  <div class="chant">ลงบันได ➜ คูณ · ขึ้นบันได ➜ หาร<small>หน่วยใหญ่เป็นเล็ก ตัวเลขมากขึ้น · หน่วยเล็กเป็นใหญ่ ตัวเลขน้อยลง</small></div>
+</div></section>
+
+<section class="slide" data-title="เขียนเป็นทศนิยม"><div class="inner">
+  <h2 class="h"><span class="e">🔢</span>เขียนความยาวเป็นทศนิยม</h2>
+  <div class="grid" style="--min:250px">
+    <div class="card c-blue"><h3>ม. กับ ซม.</h3><p>100 ซม. = 1 ม. → ซม. อยู่ <b>2 ตำแหน่ง</b></p><p class="eq">3 ม. 8 ซม. = 3.08 ม.<br>5 ม. 45 ซม. = 5.45 ม.</p></div>
+    <div class="card c-purple"><h3>ซม. กับ มม.</h3><p>10 มม. = 1 ซม. → มม. อยู่ <b>1 ตำแหน่ง</b></p><p class="eq">12 ซม. 7 มม. = 12.7 ซม.</p></div>
+    <div class="card c-green"><h3>กม. กับ ม.</h3><p>1,000 ม. = 1 กม. → ม. อยู่ <b>3 ตำแหน่ง</b></p><p class="eq">2 กม. 50 ม. = 2.050 กม.<br>= 2.05 กม.</p></div>
+  </div>
+  <div class="trap"><b class="t">⚠️ กับดักข้อสอบ</b> 2 กม. 50 ม. ไม่ใช่ 2.5 กม. (นั่นคือ 2 กม. 500 ม.) ต้องเติม 0 ให้ครบ <b>3 ตำแหน่ง</b></div>
+</div></section>
+
+<section class="slide" data-title="โจทย์ปัญหา"><div class="inner">
+  <h2 class="h"><span class="e">🧵</span>โจทย์ปัญหาความยาว</h2>
+  <div class="grid" style="--min:300px">
+    <div class="card c-orange">
+      <h3>✂️ ตัดลวด</h3>
+      <p>ลวดยาว 12.6 เมตร ตัดเป็นเส้นละ 45 เซนติเมตร ได้กี่เส้น</p>
+      <div class="steps calc" id="w1">
+        <div class="step"><span class="pill" style="--c:var(--orange)">ขั้นที่ 1</span> ทำหน่วยให้เหมือนกัน 12.6 ม. = 12.6 × 100 = <b>1,260 ซม.</b></div>
+        <div class="step"><span class="pill" style="--c:var(--blue)">ขั้นที่ 2</span> 1,260 ÷ 45 = <b class="t-purple">28 เส้น</b></div>
+      </div>
+      <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="w1" style="--c:var(--orange)">ดูวิธีคิด 👇</button></div>
+    </div>
+    <div class="card c-blue">
+      <h3>🏃 ระยะทางเฉลี่ย</h3>
+      <p>นักปั่นจักรยานปั่น 3 ช่วง ยาว 8.25 กม., 6,500 ม. และ 7.75 กม. เฉลี่ยช่วงละกี่กิโลเมตร</p>
+      <div class="steps calc" id="w2">
+        <div class="step"><span class="pill" style="--c:var(--blue)">ขั้นที่ 1</span> 6,500 ม. = 6.5 กม. รวม 8.25 + 6.5 + 7.75 = <b>22.5 กม.</b></div>
+        <div class="step"><span class="pill" style="--c:var(--green)">ขั้นที่ 2</span> เฉลี่ย 22.5 ÷ 3 = <b class="t-purple">7.5 กม.</b></div>
+      </div>
+      <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="w2" style="--c:var(--blue)">ดูวิธีคิด 👇</button></div>
+    </div>
+  </div>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เตือน</b>เห็นหน่วยต่างกันในโจทย์เมื่อไร <b>วงกลมหน่วย</b> ไว้ แล้วเปลี่ยนให้เหมือนกันก่อนคิด ✍️</div></div>
+</div></section>
+
+<section class="slide" data-title="เรียงความยาว"><div class="inner">
+  <h2 class="h"><span class="e">🧩</span>กิจกรรม: เรียงจากสั้นไปยาว</h2>
+  <div data-order="len"></div>
+</div></section>
+
+<section class="slide" data-title="ฝึกคิดไม่รู้จบ"><div class="inner">
+  <h2 class="h"><span class="e">🎲</span>ฝึกคิดไม่รู้จบ</h2>
+  <div class="card c-teal"><div class="drill" data-drill="len"></div></div>
+</div></section>
+<section class="slide" data-title="ตะลุยข้อสอบ O-NET"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>ตะลุยข้อสอบแนว O-NET (10 ข้อ)</h2>
+  <div class="kru"><span class="av">👨‍🏫</span><div class="bub"><b class="nm">ครูอู๋เตือน</b>อ่านโจทย์ให้จบ ขีดเส้นใต้ <b>สิ่งที่โจทย์ถาม</b> แล้วค่อยเลือกคำตอบนะ ตอบผิดได้ ดูเหตุผลแล้วจำไว้ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปให้จำขึ้นใจ</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class='chant'>10 มม. = 1 ซม. · 100 ซม. = 1 ม. · 1,000 ม. = 1 กม.<small>ใหญ่ → เล็ก คูณ (ลงบันได) · เล็ก → ใหญ่ หาร (ขึ้นบันได)</small></div><div class='trap'><b class='t'>⚠️ กับดัก</b> ก่อนบวก ลบ หรือหาร ต้องทำ <b>หน่วยให้เหมือนกัน</b> ก่อนเสมอ · 3 ม. 8 ซม. = 3.08 ม. ไม่ใช่ 3.8 ม.</div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(0)">🔁 ติวอีกครั้ง</button></div>
+  <div class="row center"><a class="btn ghost" href="../m6-onet-07-time/">◀ ⏰ เวลา</a><a class="btn" style="--c:var(--purple)" href="../m6-onet-hub/">🏠 หน้ารวมติว O-NET</a><a class="btn ghost" href="../m6-onet-09-weight/">⚖️ น้ำหนัก ▶</a></div>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m6-onet-08-length";
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = 'kruau-onet6-' + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+Kit.quizzes.main = [
+{
+"q": "4.5 เซนติเมตร เท่ากับกี่มิลลิเมตร",
+"c": [
+"45 มม.",
+"450 มม.",
+"0.45 มม.",
+"4.5 มม."
+],
+"a": 0,
+"w": "1 ซม. = 10 มม. → 4.5 × 10 = 45 มม."
+},
+{
+"q": "2.35 กิโลเมตร เท่ากับกี่เมตร",
+"c": [
+"2,350 ม.",
+"235 ม.",
+"23.5 ม.",
+"23,500 ม."
+],
+"a": 0,
+"w": "1 กม. = 1,000 ม. → 2.35 × 1,000 = 2,350 ม."
+},
+{
+"q": "3 เมตร 8 เซนติเมตร เขียนเป็นเมตรได้เท่าใด",
+"c": [
+"3.08 ม.",
+"3.8 ม.",
+"38 ม.",
+"308 ม."
+],
+"a": 0,
+"w": "8 ซม. = {8/100} ม. = 0.08 ม. → 3.08 ม."
+},
+{
+"q": "1,250 เซนติเมตร เท่ากับกี่เมตร",
+"c": [
+"12.5 ม.",
+"125 ม.",
+"1.25 ม.",
+"0.125 ม."
+],
+"a": 0,
+"w": "100 ซม. = 1 ม. → 1,250 ÷ 100 = 12.5 ม."
+},
+{
+"q": "ลวดยาว 12.6 เมตร ตัดเป็นเส้น ยาวเส้นละ 45 เซนติเมตร ได้กี่เส้น",
+"c": [
+"28 เส้น",
+"2.8 เส้น",
+"280 เส้น",
+"26 เส้น"
+],
+"a": 0,
+"w": "เปลี่ยนเป็น ซม. ก่อน: 12.6 ม. = 1,260 ซม. → 1,260 ÷ 45 = 28 เส้น"
+},
+{
+"q": "ต้นวิ่งรอบสนามยาวรอบละ 400 เมตร วันละ 5 รอบ เป็นเวลา 6 วัน รวมวิ่งได้กี่กิโลเมตร",
+"c": [
+"12 กม.",
+"2 กม.",
+"1.2 กม.",
+"120 กม."
+],
+"a": 0,
+"w": "400 × 5 × 6 = 12,000 ม. = 12 กม."
+},
+{
+"q": "บ้านถึงโรงเรียนห่าง 1.8 กม. ฝนเดินไปและกลับทุกวัน 5 วัน รวมระยะทางกี่กิโลเมตร",
+"c": [
+"18 กม.",
+"9 กม.",
+"3.6 กม.",
+"10 กม."
+],
+"a": 0,
+"w": "ไป–กลับ 1 วัน = 1.8 × 2 = 3.6 กม. → 5 วัน = 3.6 × 5 = 18 กม."
+},
+{
+"q": "ผ้ายาว 3 เมตร ตัดไปใช้ 85 ซม. และ 1.2 ม. เหลือผ้ากี่เซนติเมตร",
+"c": [
+"95 ซม.",
+"215 ซม.",
+"105 ซม.",
+"180 ซม."
+],
+"a": 0,
+"w": "เปลี่ยนเป็น ซม.: 300 − 85 − 120 = 95 ซม."
+},
+{
+"q": "มดเดินป่าระยะทาง 5.4 กม. ใช้เวลา 1.5 ชั่วโมง เฉลี่ยเดินได้ชั่วโมงละกี่กิโลเมตร",
+"c": [
+"3.6 กม.",
+"8.1 กม.",
+"3.9 กม.",
+"6.9 กม."
+],
+"a": 0,
+"w": "5.4 ÷ 1.5 = 54 ÷ 15 = 3.6 กม."
+},
+{
+"q": "ข้อใดยาวที่สุด",
+"c": [
+"1.2 กม.",
+"1,050 ม.",
+"98,000 ซม.",
+"1 กม. 150 ม."
+],
+"a": 0,
+"w": "ทำเป็นเมตร: 1,200 ม. / 1,050 ม. / 980 ม. / 1,150 ม. → 1.2 กม. ยาวที่สุด"
+}
+];
+Kit.orders.len = { hint: '👆 แตะเรียงจาก <b>สั้นที่สุด</b> ไป <b>ยาวที่สุด</b> (ลองเปลี่ยนเป็นเมตรในใจ)', unit: 'ลำดับที่', items: ['85 ซม.', '1.2 ม.', '1 ม. 35 ซม.', '1,500 มม.', '0.002 กม. (2 ม.)'] };
+var U = [{ n: 'กม.', f: 1000000 }, { n: 'ม.', f: 1000 }, { n: 'ซม.', f: 10 }, { n: 'มม.', f: 1 }];
+function cv(v, from, to) { return Math.round(v * U[from].f / U[to].f * 1e6) / 1e6; }
+DRILLS.len = [
+  function () { var a = R(0, 2), b = a + 1, v = R(11, 999) / pick([10, 100]); return { q: C(v) + ' ' + U[a].n + ' เท่ากับกี่ ' + U[b].n, u: U[b].n, a: cv(v, a, b), h: 'ใหญ่ → เล็ก ลงบันได คูณด้วย ' + C(U[a].f / U[b].f) + '<br>' + C(v) + ' × ' + C(U[a].f / U[b].f) + ' = <b>' + C(cv(v, a, b)) + '</b>' }; },
+  function () { var b = R(0, 2), a = b + 1, v = R(25, 9999); return { q: C(v) + ' ' + U[a].n + ' เท่ากับกี่ ' + U[b].n, u: U[b].n, a: cv(v, a, b), h: 'เล็ก → ใหญ่ ขึ้นบันได หารด้วย ' + C(U[b].f / U[a].f) + '<br>' + C(v) + ' ÷ ' + C(U[b].f / U[a].f) + ' = <b>' + C(cv(v, a, b)) + '</b>' }; },
+  function () { var m = R(1, 9), c = R(1, 99); return { q: m + ' ม. ' + c + ' ซม. เขียนเป็นเมตรได้เท่าใด', u: 'ม.', a: m + c / 100, h: c + ' ซม. = {' + c + '/100} ม. = ' + (c / 100) + ' ม.<br>รวม <b>' + (m + c / 100) + ' ม.</b>' }; },
+  function () { var l = pick([20, 25, 30, 40, 45, 50, 60, 75]), n = R(6, 40), tot = l * n; return { q: 'ลวดยาว ' + C(tot / 100) + ' เมตร ตัดเป็นเส้นละ ' + l + ' ซม. ได้กี่เส้น', u: 'เส้น', a: n, h: C(tot / 100) + ' ม. = ' + C(tot) + ' ซม.<br>' + C(tot) + ' ÷ ' + l + ' = <b>' + n + ' เส้น</b>' }; },
+  function () { var lap = pick([200, 250, 400, 500]), r = R(2, 8), d = R(2, 7); return { q: 'วิ่งรอบสนามรอบละ ' + lap + ' ม. วันละ ' + r + ' รอบ ' + d + ' วัน รวมกี่กิโลเมตร', u: 'กม.', a: lap * r * d / 1000, h: lap + ' × ' + r + ' × ' + d + ' = ' + C(lap * r * d) + ' ม.<br>÷ 1,000 = <b>' + C(lap * r * d / 1000) + ' กม.</b>' }; }
+];
+SETUP = function () {
+  var st = { v: 2.5, u: 1 }, row = document.getElementById('lu');
+  U.forEach(function (u, k) { var b = document.createElement('button'); b.className = 'chip'; b.textContent = u.n; b.style.boxShadow = 'none'; b.onclick = function () { st.u = k; Kit.sound.tap(); draw(); }; row.appendChild(b); });
+  function draw() {
+    Array.prototype.forEach.call(row.children, function (b, k) { b.classList.toggle('sel', k === st.u); });
+    document.getElementById('lv').textContent = C(st.v) + ' ' + U[st.u].n;
+    document.getElementById('lout').innerHTML = U.map(function (u, k) { return k === st.u ? '' : '<div>= <b>' + C(cv(st.v, st.u, k)) + '</b> ' + u.n + (k > st.u ? ' <small class="sub">(ลงบันได คูณ)</small>' : ' <small class="sub">(ขึ้นบันได หาร)</small>') + '</div>'; }).join('');
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-v]'), function (b) { b.onclick = function () { st.v = Math.max(0.5, Math.round((st.v + (b.getAttribute('data-v') === '+' ? 0.5 : -0.5)) * 10) / 10); Kit.sound.tap(); draw(); }; });
+  draw();
+};
+</script>
+</body>
+</html>
