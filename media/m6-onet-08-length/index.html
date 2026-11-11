@@ -54,6 +54,17 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-conten
 .bar a.tb{text-decoration:none}
 .drill .qq{text-align:center}
 .qq .svgbox svg{max-height:250px}
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
 
 </style>
 </head>
@@ -394,6 +405,76 @@ SETUP = function () {
   Array.prototype.forEach.call(document.querySelectorAll('[data-v]'), function (b) { b.onclick = function () { st.v = Math.max(0.5, Math.round((st.v + (b.getAttribute('data-v') === '+' ? 0.5 : -0.5)) * 10) / 10); Kit.sound.tap(); draw(); }; });
   draw();
 };
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast('✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil ได้ วางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    if (e.pointerType === 'pen') penSeen = true;
+    else if (e.pointerType === 'touch' && penSeen) return; /* มีปากกาแล้ว ไม่นับฝ่ามือ */
+    e.preventDefault(); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
+    cur = { c: color, p: [pt(e)], id: e.pointerId }; list().push(cur); draw();
+  });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
 </script>
 </body>
 </html>

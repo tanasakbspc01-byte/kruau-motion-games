@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>คณิตศาสตร์ ป.5 สไตล์ครูอู๋</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#FF7A45;--main-deep:#E0561C;--glow:#FFE1CC}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+
+body{overflow:auto}
+.wrap{max-width:1100px;margin:0 auto;padding:18px clamp(12px,3vw,28px) 40px;display:flex;flex-direction:column;gap:16px}
+.hero{background:linear-gradient(120deg,#FF7A45,#9B6CF0);color:#fff;border-radius:26px;padding:18px clamp(16px,4vw,32px) 0;box-shadow:0 6px 0 #7343D6;display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap;overflow:hidden}
+.hero .t{flex:1;min-width:240px;padding-bottom:18px}
+.hero h1{font-size:clamp(1.6rem,5vw,2.6rem)}
+.hero p{font-size:clamp(1rem,2.6vw,1.2rem)}
+.hero img{height:clamp(170px,30vw,250px);width:auto;display:block}
+.cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+.lc{background:#fff;border:3px solid var(--c);border-radius:22px;box-shadow:0 5px 0 var(--c);padding:14px 16px;display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--ink)}
+.lc .le{font-size:2.4rem;line-height:1}
+.lc .tag{align-self:flex-start;background:var(--c);color:#fff;border-radius:999px;padding:2px 10px;font-size:.85rem;font-weight:700}
+.lc h3{font-size:1.25rem}
+.lc p{color:var(--ink-soft);font-size:.95rem;line-height:1.5;flex:1}
+.lc .st{font-weight:700;color:var(--ink-soft)}
+.lc.done .st{color:#E8A400}
+.credit{text-align:center;color:var(--ink-soft);font-size:.92rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero"><div class="t"><h1>คณิตศาสตร์ ป.5 สไตล์ครูอู๋</h1><p>สไลด์ตามหนังสือเรียน สสวท. · แตะดูเฉลยทีละขั้น เขียนบนสไลด์ได้ ทำแบบทดสอบท้ายบทสะสมดาว</p><p id="prog" style="font-weight:700;margin-top:6px">⭐ สะสมดาวแล้ว 0 / 24 ดวง</p></div><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"></section>
+  <div class="cards"><a class="lc" href="../m5-ch1-fractions/" data-id="m5-ch1-fractions" style="--c:#9B6CF0"><span class="le">🍕</span><span class="tag">บทที่ 1</span><h3>เศษส่วน</h3><p>1.1 การเปรียบเทียบและเรียงลำดับ · 1.2 การบวก การลบเศษส่วน · 1.3 การคูณเศษส่วน · 1.4 การหารเศษส่วน · 1.5 โจทย์ปัญหา · 1.6 การบวก ลบ คูณ หารระคน · 1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m5-ch2-decimals/" data-id="m5-ch2-decimals" style="--c:#22A6F2"><span class="le">🔟</span><span class="tag">บทที่ 2</span><h3>ทศนิยม</h3><p>2.1 เศษส่วนในรูปทศนิยม · 2.2 การหาค่าประมาณ · 2.3 การคูณ · 2.4 การหาร · 2.5 ทศนิยมกับการวัด · 2.6 โจทย์ปัญหา</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m5-ch3-data/" data-id="m5-ch3-data" style="--c:#21B573"><span class="le">📊</span><span class="tag">บทที่ 3</span><h3>การนำเสนอข้อมูล</h3><p>3.1 แผนภูมิแท่ง · 3.2 กราฟเส้น · 3.3 โจทย์ปัญหา</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m5-ch4-rule-of-three/" data-id="m5-ch4-rule-of-three" style="--c:#FF7A45"><span class="le">🧮</span><span class="tag">บทที่ 4</span><h3>บัญญัติไตรยางศ์</h3><p>4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m5-ch5-percent/" data-id="m5-ch5-percent" style="--c:#F25C9A"><span class="le">💯</span><span class="tag">บทที่ 5</span><h3>ร้อยละ</h3><p>5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · 5.2 ร้อยละของจำนวนนับ · 5.3 โจทย์ปัญหา</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m5-ch6-parallel-lines/" data-id="m5-ch6-parallel-lines" style="--c:#3B82F6"><span class="le">🛤️</span><span class="tag">บทที่ 6</span><h3>เส้นขนาน</h3><p>6.1 เส้นตั้งฉากและเส้นขนาน · 6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · 6.3 สมบัติของเส้นขนาน · 6.4 การสร้างเส้นขนาน</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m5-ch7-quadrilaterals/" data-id="m5-ch7-quadrilaterals" style="--c:#14B8A6"><span class="le">🔷</span><span class="tag">บทที่ 7</span><h3>รูปสี่เหลี่ยม</h3><p>7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · 7.2 การสร้างรูปสี่เหลี่ยม · 7.3 พื้นที่ของรูปสี่เหลี่ยม · 7.4 โจทย์ปัญหา</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m5-ch8-volume/" data-id="m5-ch8-volume" style="--c:#F59E0B"><span class="le">📦</span><span class="tag">บทที่ 8</span><h3>ปริมาตรและความจุของทรงสี่เหลี่ยมมุมฉาก</h3><p>8.1 ปริซึม · 8.2 ปริมาตรและความจุ · 8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ · 8.4 โจทย์ปัญหา</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a></div>
+  <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · ใช้บน iPad และโน้ตบุ๊กได้</p>
+</div>
+<script>
+(function () {
+  var got = 0;
+  Array.prototype.forEach.call(document.querySelectorAll('.lc'), function (a) {
+    try { var r = JSON.parse(localStorage.getItem('kruau-p5-' + a.getAttribute('data-id')) || 'null');
+      if (r) { got += r.s; a.classList.add('done'); a.querySelector('.st').textContent = '⭐'.repeat(r.s) + '☆'.repeat(3 - r.s) + ' ได้ ' + r.g + '/' + r.n; } } catch (e) {}
+  });
+  document.getElementById('prog').textContent = '⭐ สะสมดาวแล้ว ' + got + ' / 24 ดวง';
+})();
+</script>
+</body>
+</html>

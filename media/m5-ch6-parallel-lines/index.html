@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 6 เส้นขนาน · คณิตศาสตร์ ป.5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#3B82F6;--main-deep:#1F5FCC;--glow:#DCE8FF}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+
+
+.nav .dots{display:none}
+.nav{justify-content:space-between}
+.pslide{padding:8px clamp(8px,2vw,24px) 8px}
+.pslide .inner.pp{max-width:none;height:100%;gap:6px}
+.pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
+.ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.ppbox{position:relative;width:min(100cqw,calc(100cqh * 16 / 9));aspect-ratio:16/9;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08);overflow:hidden;box-sizing:border-box}
+.ppz{position:absolute;inset:0;transition:transform .35s ease;transform-origin:50% 50%}
+.ppz img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ppz img.ghost{transition:opacity .35s ease;pointer-events:none}
+.ppbox.can{cursor:pointer}
+.pslide.zoom .ppbox{cursor:zoom-out}
+.pslide.zoom .ppz{transform:scale(2.2)}
+.ppbox .done{position:absolute;right:10px;bottom:8px;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:kpop .5s ease-out both}
+.ppbox .done img{height:clamp(60px,14cqh,110px);width:auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.ppbox .done span{background:#fff;border:3px solid var(--main);border-radius:14px 14px 4px 14px;padding:2px 10px;font-weight:700;color:var(--main-deep);margin-bottom:30px;white-space:nowrap;font-size:clamp(.8rem,2.2vw,1rem)}
+.tools{display:flex;align-items:center;gap:6px}
+.tl{width:40px;height:40px;border-radius:12px;border:2px solid var(--main);background:#fff;font-size:1.15rem;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--glow)}
+.tl.on{background:var(--main);box-shadow:0 3px 0 var(--main-deep)}
+.timer{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:6px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:4px 6px 4px 12px;font-weight:700;box-shadow:0 4px 0 var(--main-deep);font-size:1.15rem}
+.timer.show{display:flex}
+.timer .opts{display:flex;gap:4px}
+.timer .opts button,.timer .x{border:2px solid var(--main);background:var(--glow);border-radius:999px;padding:2px 10px;font-weight:700;min-height:36px}
+.timer .t{font-variant-numeric:tabular-nums;min-width:3.2em;text-align:center;color:var(--main-deep)}
+.timer.end{animation:tshake .5s 3;background:#FFE3E3}
+@keyframes tshake{25%{transform:translateX(-50%) rotate(-4deg)}75%{transform:translateX(-50%) rotate(4deg)}}
+@media (max-width:620px){.tl{width:34px;height:34px;font-size:1rem}.pphead .secbadge{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.board{position:relative;width:min(100%,720px);container-type:inline-size;animation:kpop .55s ease-out both}
+.board img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15))}
+.chalk{position:absolute;left:56%;top:12%;width:39%;height:62%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqw;color:#fff;text-align:center;text-shadow:0 0 2px rgba(255,255,255,.5)}
+.chalk .cn{font-size:4.2cqw;color:#FFE97A;border-bottom:.4cqw dashed #FFE97A;padding:0 2cqw}
+.chalk b{font-size:4.6cqw;line-height:1.3;font-weight:700}
+.secslide .ready{font-weight:700;color:var(--ink-soft)}
+.ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
+.ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
+.ppctl .btn{min-height:44px;padding:6px 18px}
+.secslide{min-height:100%;justify-content:center;align-items:center;text-align:center}
+.secnum{display:grid;place-items:center;width:clamp(110px,18vw,150px);aspect-ratio:1;border-radius:50%;background:var(--main);color:#fff;font-weight:700;font-size:clamp(2.2rem,6vw,3.2rem);box-shadow:0 8px 0 var(--main-deep)}
+.secslide h1{color:var(--main-deep);font-size:clamp(1.7rem,5vw,2.8rem);text-shadow:0 4px 0 var(--glow)}
+.subs{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:620px;width:100%}
+.subs div{background:#fff;border:3px solid var(--main);border-radius:16px;padding:8px 14px;font-weight:700;text-align:left;font-size:clamp(1rem,2.6vw,1.2rem)}
+.subs b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--main);color:#fff;margin-right:8px}
+.secslide .kru{max-width:680px;width:100%;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🛤️</span>
+  <div class="ttl"><b>บทที่ 6 เส้นขนาน</b><small>คณิตศาสตร์ ป.5 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m5-math-hub/" aria-label="หน้ารวม ป.5" title="หน้ารวม ป.5">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.5 · บทที่ 6</span>
+    <h1>เส้นขนาน</h1>
+    <p class="sub">เส้นตั้งฉาก เส้นขนาน มุมที่เกิดจากเส้นตัดขวาง สมบัติและการสร้างเส้นขนาน</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>6.1 เส้นตั้งฉากและเส้นขนาน</li><li>6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</li><li>6.3 สมบัติของเส้นขนาน</li><li>6.4 การสร้างเส้นขนาน</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 6</h2>
+  <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เป้าหมาย & เตรียมความพร้อม</span></button><button data-jump="6.1"><span class="e">⊥</span><span>6.1 เส้นตั้งฉากและเส้นขนาน</span></button><button data-jump="6.2"><span class="e">✂️</span><span>6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span></button><button data-jump="6.3"><span class="e">🛤️</span><span>6.3 สมบัติของเส้นขนาน</span></button><button data-jump="6.4"><span class="e">📐</span><span>6.4 การสร้างเส้นขนาน</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="0" data-src="img/s003" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เป้าหมาย &amp; เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เรียนจบบทนี้แล้ว นักเรียนสามารถ ระบุเส้นตรงคู่ที่ขนานกัน โดยพิจารณาจากระยะห่างระหว่างเส้นตรงตรวจสอบเส้นขนาน โดยพิจารณาจากมุมแย้งตรวจสอบเส้นขนาน โดยพิจารณาจากผลบวกของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางสร้างเส้นขนานตามข้อกำหนด"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s004" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 4"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เป้าหมาย &amp; เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เตรียมความพร้อม 1 วัดและบอกขนาด พร้อมระบุชนิดของมุมที่กำหนด 1) BC m(BC) = 55˚, มุมแหลม 2) FC m(FC) = 125˚, มุมป้าน 3) BD m(BD) = 100˚, มุมป้าน 4) BF m(BF) = 180˚, มุมตรง 5) CE m(CE) = 90˚, มุมฉาก 6) ED m(ED) = 45˚, มุมแหลม"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s005" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 5"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เป้าหมาย &amp; เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 เขียนรูปตามข้อกำหนด 1) ตัด ที่จุด K 2) m(TP) = 45˚ 3) PR เป็นมุมฉาก 4) m(BK) = 130˚ m(AC) หมายถึง ขนาดของ AC"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s006" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 6"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เป้าหมาย &amp; เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 สร้างรูปสี่เหลี่ยมมุมฉาก ABCD โดยให้ เป็นเส้นทแยงมุม พร้อมทั้งวัดและบอกขนาดของ DC และ AB ตัวอย่าง m(DC) = 34˚m(AB) = 34˚"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="6.1" data-title="6.1 เส้นตั้งฉากและเส้นขนาน"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 6.1</span><b>⊥ เส้นตั้งฉากและเส้นขนาน</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s008" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 8"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="⊥ เป็นสัญลักษณ์แสดงการตั้งฉาก และ ก็เป็นมุมฉาก เส้นตั้งฉาก และ ตัดกันที่จุด O และ เป็นมุมฉาก แสดงว่า ตั้งฉากกับ หรือ ตั้งฉากกับ เขียนแทนด้วย ⊥ หรือ ⊥"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s009" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 9"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="และ ก็ไม่เป็นมุมฉาก และ ตัดกันที่จุด L และ ไม่เป็นมุมฉาก แสดงว่า ไม่ตั้งฉากกับ หรือ ไม่ตั้งฉากกับ ถ้าเส้นตรง 2 เส้นที่อยู่บนระนาบเดียวกัน ตัดกันเป็นมุมฉากแล้วเส้นตรงทั้งสองเส้นจะตั้งฉากกัน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s010" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 10"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ถ้าเส้นตรง 2 เส้นที่อยู่บนระนาบเดียวกัน ตัดกันเป็นมุมฉากแล้ว เส้นตรงทั้งสองเส้นนั้นจะตั้งฉากกัน ดังนั้นเราจึงสามารถสร้างเส้นตั้งฉากได้โดยสร้างเส้นตรงให้ตัดกันเป็นมุมฉาก กิจกรรมสร้างเส้นตั้งฉาก สร้างเส้นตั้งฉากตามข้อกำหนด 1 2 สร้าง ⊥ สร้าง ⊥"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s011" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 11"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 4 สร้าง ⊥ สร้าง ⊥ 5 6 สร้าง ⊥ สร้าง ⊥"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s012" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 12"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 55 ตรวจสอบเส้นตรง รังสี หรือส่วนของเส้นตรงที่กำหนดให้ว่าตั้งฉากกันหรือไม่ เพราะเหตุใด ถ้าตั้งฉากกัน ให้เขียนสัญลักษณ์แสดงการตั้งฉาก 1 2 3 4 ⊥ เพราะ ตัด ที่จุด I เป็นมุมฉาก ⊥ เพราะ ตัด ที่จุด K เป็นมุมฉาก ไม่ตั้งฉากกับ เพราะ ตัด ไม่เป็นมุมฉาก ⊥ เพราะ ตัด ที่จุด O เป็นมุมฉาก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s013" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 13"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจ 1 2 สร้าง ⊥ ที่จุด O ⊥ ที่จุด O ทำให้ m(PM) = 128˚ เส้นตรง 2 เส้นนี้ตั้งฉากกันหรือไม่ เพราะเหตุใด ตัวอย่าง ตัวอย่าง ไม่ตั้งฉากกับ เพราะ ตัด ที่จุด O ไม่เป็นมุมฉาก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s014" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 14"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ 1 2 เส้นตรง 2 เส้นจะตั้งฉากกันเมื่อใด สร้างเส้นตรง 2 เส้นให้ตั้งฉากกัน พร้อมกำหนดชื่อและเขียนสัญลักษณ์แสดงการตั้งฉาก ตัวอย่าง เมื่อเส้นตรง 2 เส้นนั้นอยู่บนระนาบเดียวกัน และตัดกัน ทำให้มุมที่จุดตัดมีขนาด 90 องศา ⊥"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s015" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 15"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เส้นขนาน ระยะห่างระหว่างจุดกับเส้นตรง ระยะห่างระหว่างจุดกับเส้นตรง วัดได้จากระยะทางที่สั้นที่สุดจากจุดไปยังเส้นตรง รังสี หรือส่วนของเส้นตรงนั้น กิจกรรมสำรวจระยะห่างระหว่างจุดกับเส้นตรง วัดความยาวของส่วนของเส้นตรง แล้วตอบคำถาม 1 (ความยาวที่วัดได้ คลาดเคลื่อนได้ไม่เกิน 1 มิลลิเมตร) 1) ยาวเท่าใด2) ยาวเ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s016" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 16"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 1) ยาวเท่าใด2) ยาวเท่าใด3) ยาวเท่าใด4) ยาวเท่าใด5) จุด V อยู่ห่างจาก เท่าใด 2.7 เซนติเมตร 2.4 เซนติเมตร 2.3 เซนติเมตร 2.8 เซนติเมตร 2.3 เซนติเมตร จากกิจกรรม จะพบว่า เส้นตั้งฉากเป็นส่วนของเส้นตรงที่สั้นที่สุดดังนั้น ระยะห่างระหว่างจุดกับเส้นตรงคือ ความยาวของส่วนของเส้นตรงที่ลากจากจุดไปตั้งฉากกับเส้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s017" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 17"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เส้นตรง 2 เส้นที่อยู่บนระนาบเดียวกันจะขนานกันก็ต่อเมื่อมีระยะห่างเท่ากันเสมอ ใช้สัญลักษณ์ // แสดงการขนาน ระยะห่างระหว่างจุด E กับ และจุด F กับ เป็น 2 เซนติเมตรดังนั้น ขนานกับ หรือ ขนานกับ และ เขียนแทนด้วย // หรือ //"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s018" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 18"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ระยะห่างระหว่างจุด บ กับ เป็น 1.7 เซนติเมตรและระยะห่างระหว่างจุด ม กับ เป็น 1.5 เซนติเมตรดังนั้น ไม่ขนานกับ หรือ ไม่ขนานกับ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s019" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 19"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จากรูป // และ // ในการเขียนรูป อาจใช้สัญลักษณ์แสดงการขนานกันของเส้นตรง ดังนี้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s020" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 20"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 24 ปฏิบัติกิจกรรม ตรวจสอบว่าเส้นตรง หรือส่วนของเส้นตรงคู่ใดขนานกัน แล้วระบุชื่อเส้นตรงหรือส่วนของเส้นตรงที่ขนานกันโดยใช้สัญลักษณ์แสดงการขนาน 1 1) 2) 3) 4) // // // , // และ // // , // และ //"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s021" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 21"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5) 6) // , // และ // // , // , // และ // ให้นักเรียนยกตัวอย่างสิ่งของในห้องเรียนที่มีส่วนที่ขนานกันเป็นส่วนประกอบในสิ่งของนั้นมา 2 ตัวอย่าง 2 ตัวอย่าง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s022" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 22"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจ จากรูป ให้เขียนชื่อส่วนของเส้นตรงที่ขนานกัน โดยใช้สัญลักษณ์แสดงการขนาน // , // และ //"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s023" data-title="6.1 เส้นตั้งฉากและเส้นขนาน · หน้า 23"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.1 เส้นตั้งฉากและเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ เมื่อเส้นตรง 2 เส้นนั้นอยู่บนระนาบเดียวกัน และมีระยะห่างเท่ากันเสมอ การตรวจสอบว่า เส้นตรง 2 เส้นขนานกันหรือไม่ มีวิธีการอย่างไร กำหนดจุด 2 จุด บนเส้นตรงเส้นหนึ่ง แล้ววัดระยะห่างระหว่างจุดแต่ละจุดกับเส้นตรงอีกเส้นหนึ่งถ้าระยะห่างเท่ากัน แสดงว่าเส้นตรง 2 เส้นนั้น ขนานกันถ้าระยะห่างไ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="6.2" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 6.2</span><b>✂️ มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s025" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 25"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตัด และ ดังรูป เรียก ว่าเส้นตัดขวาง เส้นตัดขวาง เส้นตัดขวาง เป็นเส้นตรงที่ตัดเส้นตรงตั้งแต่ 2 เส้นขึ้นไป ซึ่งอยู่บนระนาบเดียวกัน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s026" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 26"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รังสีและส่วนของเส้นตรง เป็นส่วนหนึ่งของเส้นตรง ตัด และ แสดงว่า เป็นเส้นตัดขวาง ตัด และ แสดงว่า เป็นเส้นตัดขวาง ตัด และ แสดงว่า เป็นเส้นตัดขวาง ตัด และ แสดงว่า เป็นเส้นตัดขวาง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s027" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 27"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 61 พิจารณารูปต่อไปนี้ว่ามีเส้นตัดขวางหรือไม่ ถ้ามี ให้ระบุ 1 2 3 4 ไม่มี"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s028" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 28"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 6 7 8 ไม่มี , , และ , , และ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s029" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 29"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="มุมที่เกิดจากเส้นตัดขวาง เป็นเส้นตัดขวาง ตัด และ ที่จุด A และจุด B ตามลำดับมุมที่เกิดจากเส้นตัดขวาง ได้แก่ คือ และ และ เป็น มุมที่อยู่บนข้างเดียวกันของเส้นตัดขวาง และ เป็น มุมที่อยู่บนข้างเดียวกันของเส้นตัดขวางแต่ และ กับ และ เป็นมุมที่อยู่คนละข้างของเส้นตัดขวาง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s030" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 30"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เป็นเส้นตัดขวาง ตัด กับ ที่จุด ม และ จุด ย ตามลำดับมุมที่เกิดจากเส้นตัดขวาง ได้แก่ และ และ เป็น มุมที่อยู่บนข้างเดียวกันของเส้นตัดขวาง และ เป็น มุมที่อยู่บนข้างเดียวกันของเส้นตัดขวางแต่ และ กับ และ เป็นมุมที่อยู่คนละข้างของเส้นตัดขวาง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s031" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 31"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 63 มุมใดบ้างเป็นมุมที่อยู่บนข้างเดียวกันของเส้นตัดขวาง 1 2 3 4 และ กับ และ และ กับ และ และ กับ และ และ กับ และ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s032" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 32"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 6 7 8 และ กับ และ และ กับ และ และ กับ และ และ กับ และ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s033" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 33"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เป็นเส้นตัดขวาง ตัด และ ที่จุด Q และจุด R ตามลำดับ และ เป็น มุมภายใน และ และ เป็น มุมภายนอก กับ และ กับ เป็น มุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวาง กับ และ กับ เป็น มุมภายในที่อยู่คนละข้างของเส้นตัดขวาง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s034" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 34"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เป็นเส้นตัดขวาง ตัด กับ ที่จุด ค และ จุด ต ตามลำดับ และ เป็น มุมภายใน และ และ เป็น มุมภายนอก กับ และ กับ เป็น มุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวาง กับ และ กับ เป็น มุมภายในที่อยู่คนละข้างของเส้นตัดขวาง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s035" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 35"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 65 ปฏิบัติกิจกรรม มุมใดบ้างเป็นมุมภายใน มุมใดบ้างเป็นมุมภายนอก 1 1) 2) 3) 4) และ เป็นมุมภายใน และ เป็นมุมภายนอก และ เป็นมุมภายใน และ เป็นมุมภายนอก และ เป็นมุมภายใน และ เป็นมุมภายนอก และ เป็นมุมภายใน และ เป็นมุมภายนอก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s036" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 36"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1) 2) 3) 4) มุมใดบ้างเป็นมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวาง มุมใดบ้างเป็นมุมภายในที่อยู่คนละข้างของเส้นตัดขวาง 2 กับ และ กับ เป็นมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวาง กับ และ กับ เป็นมุมภายในที่อยู่คนละข้างของเส้นตัดขวาง กับ และ กับ เป็นมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวาง กับ "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s037" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 37"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เป็นเส้นตัดขวาง ตัด และ ที่จุด A และจุด B ตามลำดับ และ เป็นมุมภายใน และ เป็นมุมภายนอกมุมภายในที่อยู่คนละข้างของเส้นตัดขวางซึ่งจุดยอดมุมไม่ใช่จุดเดียวกัน เรียกว่า มุมแย้งภายในมุมภายนอกที่อยู่คนละข้างของเส้นตัดขวางซึ่งจุดยอดมุมไม่ใช่จุดเดียวกัน เรียกว่า มุมแย้งภายนอก กับ และ กับ เป็นมุมแย้งภายใน กับ แ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s038" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 38"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เป็นเส้นตัดขวาง ตัด กับ ที่จุด ด และ จุด ต ตามลำดับ และ เป็นมุมภายใน และ และ เป็นมุมภายนอก กับ และ กับ เป็นมุมแย้งภายใน กับ และ กับ เป็นมุมแย้งภายนอก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s039" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 39"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 67 มุมใดบ้างเป็นมุมแย้งภายใน และมุมใดบ้างเป็นมุมแย้งภายนอก 1 2 3 4 กับ และ กับ เป็นมุมแย้งภายใน กับ และ กับ เป็นมุมแย้งภายนอก กับ และ กับ เป็นมุมแย้งภายใน กับ และ กับ เป็นมุมแย้งภายนอก กับ และ กับ เป็นมุมแย้งภายใน กับ และ กับ เป็นมุมแย้งภายนอก กับ และ กับ เป็นมุมแย้งภายใน กับ และ กับ เ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s040" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 40"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 6 7 8 กับ และ กับ เป็นมุมแย้งภายใน กับ และ กับ เป็นมุมแย้งภายนอก กับ และ กับ เป็นมุมแย้งภายใน กับ และ กับ เป็นมุมแย้งภายนอก กับ และ กับ เป็นมุมแย้งภายใน กับ และ กับ เป็นมุมแย้งภายนอก กับ และ กับ เป็นมุมแย้งภายใน กับ และ กับ เป็นมุมแย้งภายนอก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s041" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 41"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจ พิจารณารูป แล้วตอบคำถาม 1 ข้อความต่อไปนี้ถูกหรือผิด 1) กับ เป็นมุมที่อยู่บนข้างเดียวกันของเส้นตัดขวาง2) กับ เป็นมุมภายนอก3) และ เป็นมุมภายใน4) กับ เป็นมุมแย้ง5) กับ เป็นมุมแย้งภายใน ผิด ถูก ถูก ผิด ผิด 2 ระบุชื่อมุมทุกมุม ตามที่กำหนด 1) มุมที่อยู่บนข้างเดียวกันของเส้นตัดขวาง2) มุมภ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s042" data-title="6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง · หน้า 42"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ ตัด ที่จุด P และตัด ที่จุด M โดยมี และ เป็นมุมที่อยู่บนข้างเดียวกันของเส้นตัดขวาง กับ และ กับ เป็นมุมแย้งภายนอก กับ เป็นมุมแย้งภายใน และ และ เป็นมุมภายใน เขียนรูปตามข้อกำหนด ตัวอย่าง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="6.3" data-title="6.3 สมบัติของเส้นขนาน"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 6.3</span><b>🛤️ สมบัติของเส้นขนาน</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s044" data-title="6.3 สมบัติของเส้นขนาน · หน้า 44"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 44 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กำหนด // มี เป็นเส้นตัดขวาง ปฏิบัติตามขั้นตอนต่อไปนี้ วางแถบกระดาษตามแนว แล้วลากเส้นตามแนว 1 ตัดแถบกระดาษตามเส้นที่ลาก จะได้มุมที่มีขนาดเท่ากับ และ 2"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s045" data-title="6.3 สมบัติของเส้นขนาน · หน้า 45"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="นำแถบกระดาษจากข้อ 2 มาตรวจสอบกับขนาดของ และ 3 จะพบว่า = และ = ซึ่ง กับ และ กับ เป็นมุมแย้งภายใน ในระดับชั้นนี้มุมแย้งที่กล่าวถึง จะหมายถึงมุมแย้งภายในเท่านั้น"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s046" data-title="6.3 สมบัติของเส้นขนาน · หน้า 46"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 46 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กิจกรรมตรวจสอบขนาดของมุมแย้ง 1 ใช้แถบกระดาษตรวจสอบว่า มุมแย้งแต่ละคู่มีขนาดเท่ากันหรือไม่ 2 3 4 // = และ = ไม่ขนานกับ ≠ และ ≠ // = และ = ไม่ขนานกับ ≠ และ ≠ จากการตรวจสอบ รูปใดบ้างที่มีมุมแย้งเท่ากัน รูปในข้อ 1 กับข้อ 3"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s047" data-title="6.3 สมบัติของเส้นขนาน · หน้า 47"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 71 ตอบคำถาม 1 2 3 // C มีขนาดเท่าใด 75˚ // K มีขนาดเท่าใด 95˚ // S มีขนาดเท่าใด 90˚ 4 5 6 // E มีขนาดเท่าใด 105˚ // V มีขนาดเท่าใด 70˚ // M มีขนาดเท่าใด 130˚"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s048" data-title="6.3 สมบัติของเส้นขนาน · หน้า 48"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 48 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กิจกรรมตรวจสอบการขนานกันของเส้นตรง 1 ปฏิบัติตามขั้นตอนต่อไปนี้ 2 1. ตรวจสอบขนาดของมุมแย้ง โดยใช้แถบกระดาษหรือโพรแทรกเตอร์2. ตรวจสอบการขนานกันของเส้นตรงจากระยะห่างระหว่างเส้นตรง โดยใช้ไม้ฉาก หรือกระดาษที่พับเป็นมุมฉาก แล้วตอบคำถาม มุมแย้งมีขนาดเท่ากันหรือไม่2) กับ ขนานกันหรือไม่ เพราะเหตุใด // เพราะร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s049" data-title="6.3 สมบัติของเส้นขนาน · หน้า 49"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 49 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 4 มุมแย้งมีขนาดเท่ากันหรือไม่2) กับ ขนานกันหรือไม่ เพราะเหตุใด // เพราะระยะห่างระหว่าง กับ ไม่เท่ากับ ไม่เท่ากัน มุมแย้งมีขนาดเท่ากันหรือไม่2) กับ ขนานกันหรือไม่ เพราะเหตุใด // เพราะระยะห่างระหว่าง กับ ไม่เท่ากับ ไม่เท่ากัน เมื่อเส้นตรงเส้นหนึ่งตัดเส้นตรงคู่หนึ่ง ถ้ามุมแย้งมีขนาดเท่ากันแล้ว เส้นตร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s050" data-title="6.3 สมบัติของเส้นขนาน · หน้า 50"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 50 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 73 เส้นตรงหรือส่วนของเส้นตรงแต่ละคู่ขนานกันหรือไม่ เพราะเหตุใด 1 2 3 4 5 6 // เพราะมุมแย้งมีขนาดเท่ากัน ไม่ขนานกับ เพราะมุมแย้งมีขนาดไม่เท่ากัน ไม่ขนานกับ เพราะมุมแย้งมีขนาดไม่เท่ากัน // เพราะมุมแย้งมีขนาดเท่ากัน ไม่ขนานกับ เพราะมุมแย้งมีขนาดไม่เท่ากัน // เพราะมุมแย้งมีขนาดเท่ากัน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s051" data-title="6.3 สมบัติของเส้นขนาน · หน้า 51"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 51 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กำหนด // มี เป็นเส้นตัดขวาง ปฏิบัติตามขั้นตอนต่อไปนี้ วางแถบกระดาษตามแนว ลากเส้นตามแนว แล้วตัดกระดาษตามแนวเส้นที่ลากจะได้มุมที่มีขนาดเท่ากับ และ 2 วางแถบกระดาษตามแนว แล้วลากเส้นตามแนว แล้วตัดกระดาษตามแนวเส้นที่ลากจะได้มุมขนาดเท่ากับ และ 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s052" data-title="6.3 สมบัติของเส้นขนาน · หน้า 52"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 52 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ลากเส้นตรง 1 เส้น แล้วนำแถบกระดาษที่ตัดเป็นมุมที่มีขนาดเท่ากับ กับ และ กับ มาวางต่อกันบนเส้นตรงโดยไม่ซ้อนทับกัน ดังรูป 3 จากรูป แสดงว่า + = 180˚ และ + = 180˚ ซึ่ง กับ และ กับ เป็นมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวาง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s053" data-title="6.3 สมบัติของเส้นขนาน · หน้า 53"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 53 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กิจกรรมตรวจสอบผลบวกของขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวาง 1 2 ใช้แถบกระดาษตรวจสอบว่า ขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางคู่ใดบ้างที่รวมกันได้ 180˚ 3 4 // มี เป็นเส้นตัดขวาง กับ และ กับ // มี เป็นเส้นตัดขวาง กับ และ กับ ไม่ขนานกับ มี เป็นเส้นตัดขวาง ไม่ขนานกับ มี เป็นเส้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s054" data-title="6.3 สมบัติของเส้นขนาน · หน้า 54"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 54 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จากกิจกรรมตรวจสอบผลบวกของขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางถ้าเส้นตรงขนานกัน ขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันได้ 180˚ถ้าเส้นตรงไม่ขนานกัน ขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันไม่เท่ากับ 180˚ถ้าเส้นตรงเส้นหนึ่งตัดเส้นขนานคู่หนึ่งแล้ว ขนาดของม"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s055" data-title="6.3 สมบัติของเส้นขนาน · หน้า 55"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 55 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จากรูป // และทราบว่า ถ้าเส้นตรงขนานกันขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันได้ 180˚ดังนั้น m() = 180 – 60 = 120˚ จากรูป // แล้ว มีขนาดเท่าใด หาได้อย่างไร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s056" data-title="6.3 สมบัติของเส้นขนาน · หน้า 56"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 56 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 77 ตอบคำถาม 1 2 3 4 5 6 // K มีขนาดเท่าใด 43˚ // L มีขนาดเท่าใด 95˚ // O มีขนาดเท่าใด 90˚ // P มีขนาดเท่าใด 87˚ // K มีขนาดเท่าใด 70˚ // W มีขนาดเท่าใด 78˚"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s057" data-title="6.3 สมบัติของเส้นขนาน · หน้า 57"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 57 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กิจกรรมตรวจสอบการขนานกันของเส้นตรง 1 2 ตรวจสอบการขนานกันของเส้นตรงจากระยะห่างระหว่างเส้นตรง โดยใช้ไม้ฉากหรือกระดาษที่พับเป็นมุมฉากแล้วตอบคำถาม 1) ขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางเป็นเท่าใด2) จากการตรวจสอบ กับ ขนานกันหรือไม่ เพราะเหตุใด 1) ขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้น"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s058" data-title="6.3 สมบัติของเส้นขนาน · หน้า 58"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 58 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 4 1) ขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางเป็นเท่าใด2) จากการตรวจสอบ กับ ขนานกันหรือไม่ เพราะเหตุใด 1) ขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางเป็นเท่าใด2) จากการตรวจสอบ กับ ขนานกันหรือไม่ เพราะเหตุใด 185˚ ไม่ขนานกับ เพราะระยะห่างระหว่าง กับ ไม่เท่ากัน 182˚ ไม่ขนานกับ เพราะร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s059" data-title="6.3 สมบัติของเส้นขนาน · หน้า 59"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 59 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 79 เส้นตรงหรือส่วนของเส้นตรงแต่ละคู่ขนานกันหรือไม่ เพราะเหตุใด 1 2 3 4 // เพราะขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันได้ 180˚ ไม่ขนานกัน เพราะขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันไม่เท่ากับ 180˚ ไม่ขนานกัน เพราะขนาดของมุมภายในที่อยู่บนข้างเดียวกันขอ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s060" data-title="6.3 สมบัติของเส้นขนาน · หน้า 60"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 60 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 6 // เพราะขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันได้ 180˚ ไม่ขนานกับ เพราะขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันไม่เท่ากับ 180˚"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s061" data-title="6.3 สมบัติของเส้นขนาน · หน้า 61"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 61 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เส้นตรงเส้นหนึ่งตัดเส้นตรงคู่หนึ่งแล้ว เส้นตรงคู่นั้นจะขนานกันถ้ามุมแย้งมีขนาดเท่ากันถ้าขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันได้ 180˚ แบบฝึกหัดหน้า 80 เส้นตรงหรือส่วนของเส้นตรงแต่ละคู่ขนานกันหรือไม่ เพราะเหตุใด 1 2 // เพราะมุมแย้งมีขนาดเท่ากัน // เพราะขนาดของมุมภายในที่อยู่บนข้างเ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s062" data-title="6.3 สมบัติของเส้นขนาน · หน้า 62"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 62 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 4 5 6 ไม่ขนานกับ เพราะขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันไม่เท่ากับ 180˚ ไม่ขนานกัน เพราะมุมแย้งมีขนาดไม่เท่ากัน // เพราะมุมแย้งมีขนาดเท่ากัน ไม่ขนานกับ เพราะขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันไม่เท่ากับ 180˚"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s063" data-title="6.3 สมบัติของเส้นขนาน · หน้า 63"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 63 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจ เส้นตรงหรือส่วนของเส้นตรงแต่ละคู่ขนานกันหรือไม่ เพราะเหตุใด 1 2 3 4 // เพราะมุมแย้งมีขนาดเท่ากัน // เพราะขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันได้ 180˚ // เพราะมุมแย้งมีขนาดไม่เท่ากัน ไม่ขนานกัน เพราะขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันไม่เท่าก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s064" data-title="6.3 สมบัติของเส้นขนาน · หน้า 64"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 64 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 6 ไม่ขนานกับ เพราะมุมแย้งมีขนาดไม่เท่ากัน ไม่ขนานกัน เพราะขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันไม่เท่ากับ 180˚"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s065" data-title="6.3 สมบัติของเส้นขนาน · หน้า 65"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.3 สมบัติของเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 65 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ บอกวิธีตรวจสอบการขนานกันของเส้นตรงคู่หนึ่งมา 3 วิธี วิธีที่ 1 ตรวจสอบจากระยะห่างระหว่างเส้นตรงถ้าระยะห่างเท่ากัน แสดงว่าเส้นตรงคู่นั้นขนานกันถ้าระยะห่างไม่เท่ากัน แสดงว่าเส้นตรงคู่นั้นไม่ขนานกันวิธีที่ 2 ตรวจสอบขนาดของมุมแย้งถ้ามุมแย้งมีขนาดเท่ากัน แสดงว่าเส้นตรงคู่นั้นขนานกันถ้าม"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="6.4" data-title="6.4 การสร้างเส้นขนาน"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 6.4</span><b>📐 การสร้างเส้นขนาน</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s067" data-title="6.4 การสร้างเส้นขนาน · หน้า 67"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.4 การสร้างเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 67 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การสร้างเส้นขนานให้มีระยะห่างตามที่กำหนด เส้นตรง 2 เส้นที่อยู่บนระนาบเดียวกันจะขนานกันก็ต่อเมื่อเส้นตรง 2 เส้นนั้นมีระยะห่างเท่ากันเสมอ เราจึงอาศัยระยะห่างในการสร้างเส้นขนานได้ พิจารณาการสร้างเส้นตรงให้ขนานกับ โดยให้มีระยะห่างจาก 5 เซนติเมตร ขั้นที่ 1 เขียน ยาว 5 เซนติเมตร ให้ตั้งฉากกับ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s068" data-title="6.4 การสร้างเส้นขนาน · หน้า 68"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.4 การสร้างเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 68 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 2 เขียน ยาว 5 เซนติเมตร ให้ตั้งฉากกับ การสร้างเส้นตั้งฉากอาจใช้ใช้โพรแทรกเตอร์สร้างมุมฉาก) ขั้นที่ 3 ลากเส้นตรงผ่านจุด ค และ จุด ง จะได้ // และมีระยะห่าง 5 เซนติเมตร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s069" data-title="6.4 การสร้างเส้นขนาน · หน้า 69"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.4 การสร้างเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 69 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การสร้างเส้นขนานให้ผ่านจุดที่กำหนด พิจารณาการสร้างเส้นตรงให้ขนานกับ และผ่านจุด C ขั้นที่ 1 ใช้ขอบไม้ฉากทาบไปบน วัดระยะห่างจาก ถึงจุด C พร้อมทำเครื่องหมายบนไม้ฉาก วิธีที่ 1 สร้างให้มีระยะห่างเท่ากัน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s070" data-title="6.4 การสร้างเส้นขนาน · หน้า 70"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.4 การสร้างเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 70 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 2 เลือกไม้ฉากไปตามแนว และกำหนดจุด D ให้มีระยะห่างจาก ถึงจุด D เท่ากับระยะห่างจาก ถึงจุด C ขั้นที่ 3 เขียน จะได้ // และผ่านจุด C"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s071" data-title="6.4 การสร้างเส้นขนาน · หน้า 71"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.4 การสร้างเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 71 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 1 เขียนส้นตรงผ่านจุด C ตัดกับ ที่จุด D วิธีที่ 2 สร้างมุมแย้งให้มีขนาดเท่ากัน จากสมบัติของเส้นขนาน “เมื่อเส้นตรงเส้นหนึ่งตัดเส้นตรงคู่หนึ่ง ถ้ามุมแย้งมีขนาดเท่ากันแล้วเส้นตรงคู่นั้นจะขนานกัน” เราจึงสามารถสร้างเส้นขนานโดยสร้างมุมแย้งให้มีขนาดเท่ากัน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s072" data-title="6.4 การสร้างเส้นขนาน · หน้า 72"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.4 การสร้างเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 72 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 2 วัดขนาดของ ขั้นที่ 3 ที่จุด C สร้าง ให้มีขนาดเท่ากับ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s073" data-title="6.4 การสร้างเส้นขนาน · หน้า 73"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.4 การสร้างเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 73 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 4 เขียน จะได้ // และผ่านจุด C มุมที่มีขนาดเท่ากัน อาจใช้สัญลักษณ์แสดงดังนี้ จากรูป = และ ="></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s074" data-title="6.4 การสร้างเส้นขนาน · หน้า 74"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.4 การสร้างเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 74 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 1 เขียนเส้นตรงผ่านจุด C ตัดกับ ที่จุด D จากสมบัติของเส้นขนาน “เมื่อเส้นตรงเส้นหนึ่ง ตัดเส้นตรงคู่หนึ่ง ถ้าขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันได้ 180˚ แล้วเส้นตรงคู่นั้นจะขนานกัน” เราจึงสามารถสร้างเส้นขนานโดยสร้างมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางให้รวมกันได้ 180"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s075" data-title="6.4 การสร้างเส้นขนาน · หน้า 75"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.4 การสร้างเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 75 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 2 วัดขนาดของ ขั้นที่ 3 สร้าง ให้มีขนาด 180 – m() องศา ขั้นที่ 4 เขียน ให้ผ่านจุด C ได้ // และผ่านจุด C"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s076" data-title="6.4 การสร้างเส้นขนาน · หน้า 76"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.4 การสร้างเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 76 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เขียนเส้นตรง 2 เส้นให้ขนานกัน และห่างกัน 4 เซนติเมตร ตรวจสอบความเข้าใจ 1 2 เขียนเส้นตรงให้ขนานกับ และผ่านจุด U"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s077" data-title="6.4 การสร้างเส้นขนาน · หน้า 77"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">6.4 การสร้างเส้นขนาน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 77 / 77</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ แสดงวิธีตรวจสอบว่าเส้นตรงคู่ใดขนานกันหรือไม่ขนานกัน พร้อมระบุเหตุผลโดยแต่ละข้อใช้วิธีตรวจสอบที่ต่างกัน 1 2 3 // เพราะระยะห่างระหว่าง // เท่ากัน ไม่ขนานกับ เพราะมุมแย้งมีขนาดไม่เท่ากัน // เพราะขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันได้ 180˚"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
+  <div class="kru fig"><span class="av"><img src="k10.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>จบบทที่ 6 เส้นขนาน</h2>
+  <div class="card c-yellow center endpic"><img src="k9.webp" alt="ครูอู๋ชูถ้วยรางวัล"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="f11.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="toc"><button data-jump="6.1"><span class="e">⊥</span><span>ทบทวน 6.1 เส้นตั้งฉากและเส้นขนาน</span></button><button data-jump="6.2"><span class="e">✂️</span><span>ทบทวน 6.2 มุมที่เกิดจากเส้นตัดขวางตัดเส้นตรงคู่หนึ่ง</span></button><button data-jump="6.3"><span class="e">🛤️</span><span>ทบทวน 6.3 สมบัติของเส้นขนาน</span></button><button data-jump="6.4"><span class="e">📐</span><span>ทบทวน 6.4 การสร้างเส้นขนาน</span></button></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m5-ch5-percent/">◀ บทก่อนหน้า</a><a class="btn" style="--c:var(--purple)" href="../m5-math-hub/">🏠 หน้ารวม ป.5</a><a class="btn ghost" href="../m5-ch7-quadrilaterals/">บทถัดไป ▶</a></div>
+  <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.5 สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m5-ch6-parallel-lines", STORE_PREFIX = 'kruau-p5-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [{"q": "เส้นตรงสองเส้นที่ตัดกันเป็นมุมฉาก เรียกว่าอะไร", "c": ["เส้นตั้งฉาก", "เส้นขนาน", "เส้นตัดขวาง", "เส้นทแยงมุม"], "a": 0, "w": "เส้นตรงที่ตัดกันและทำมุม 90 องศา เป็นเส้นตั้งฉากกัน"}, {"q": "สัญลักษณ์ ⊥ หมายถึงอะไร", "c": ["ตั้งฉากกับ", "ขนานกับ", "เท่ากับ", "มากกว่า"], "a": 0, "w": "⊥ ใช้แสดงการตั้งฉาก ส่วน // ใช้แสดงการขนาน"}, {"q": "เส้นขนานมีลักษณะอย่างไร", "c": ["อยู่ห่างกันเท่ากันตลอด ไม่ตัดกัน", "ตัดกันเป็นมุมฉาก", "ตัดกันที่จุดเดียว", "ยาวเท่ากันเสมอ"], "a": 0, "w": "เส้นตรงสองเส้นที่อยู่บนระนาบเดียวกัน ห่างกันเท่ากันตลอดและไม่ตัดกัน เป็นเส้นขนาน"}, {"q": "ถ้าเส้นตัดขวางตัดเส้นขนานคู่หนึ่ง มุมแย้งมีขนาดเป็นอย่างไร", "c": ["เท่ากัน", "รวมกันได้ 90°", "รวมกันได้ 360°", "ต่างกัน 90°"], "a": 0, "w": "เมื่อเส้นตรงคู่หนึ่งขนานกัน มุมแย้งมีขนาดเท่ากัน"}, {"q": "ถ้าเส้นตัดขวางตัดเส้นขนาน ขนาดของมุมภายในที่อยู่บนข้างเดียวกันของเส้นตัดขวางรวมกันได้เท่าใด", "c": ["180°", "90°", "360°", "270°"], "a": 0, "w": "มุมภายในบนข้างเดียวกันของเส้นตัดขวาง รวมกันได้ 180 องศา"}, {"q": "ถ้ามุมภายในบนข้างเดียวกันของเส้นตัดขวางมุมหนึ่งเท่ากับ 110° อีกมุมหนึ่งเท่ากับเท่าใด (เส้นตรงคู่นั้นขนานกัน)", "c": ["70°", "110°", "90°", "250°"], "a": 0, "w": "180° − 110° = 70°"}, {"q": "ถ้ามุมแย้งคู่หนึ่งมีขนาดเท่ากัน สรุปได้ว่าอย่างไร", "c": ["เส้นตรงคู่นั้นขนานกัน", "เส้นตรงคู่นั้นตั้งฉากกัน", "เส้นตรงคู่นั้นตัดกัน", "สรุปไม่ได้"], "a": 0, "w": "มุมแย้งเท่ากันใช้ตรวจสอบได้ว่าเส้นตรงคู่นั้นขนานกัน"}, {"q": "วิธีตรวจสอบว่าเส้นตรงคู่หนึ่งขนานกันหรือไม่ วิธีหนึ่งคือข้อใด", "c": ["วัดระยะห่างระหว่างเส้นตรงคู่นั้นหลาย ๆ ตำแหน่ง ว่าเท่ากันหรือไม่", "วัดความยาวของเส้นตรงแต่ละเส้น", "นับจำนวนจุดบนเส้นตรง", "ดูว่าเส้นตรงทั้งสองมีสีเดียวกันหรือไม่"], "a": 0, "w": "ถ้าระยะห่างระหว่างเส้นตรงคู่นั้นเท่ากันทุกตำแหน่ง แสดงว่าขนานกัน"}];
+
+/* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
+var PRAISE = [['k11', 'เยี่ยมมาก!'], ['k2', 'สุดยอด!'], ['k6', 'เก่งมาก!'], ['k9', 'แชมป์เลย!'], ['k11', 'ปรบมือให้เลย!'], ['k7', 'เข้าใจแล้วใช่ไหม']];
+function ppPaint(sl, quiet) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, z = sl.querySelector('.ppz'), img = z.querySelector('img:not(.ghost)');
+  var src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (img.getAttribute('src') && img.getAttribute('src') !== src && !quiet) {
+    var g = img.cloneNode(); g.className = 'ghost'; g.removeAttribute('alt'); z.insertBefore(g, img.nextSibling);
+    var fade = function () { g.style.opacity = 0; setTimeout(function () { g.remove(); }, 400); };
+    img.onload = function () { img.onload = null; requestAnimationFrame(fade); };
+    setTimeout(fade, 900);
+  }
+  img.src = src;
+  if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
+  sl.querySelector('.ppbox').classList.toggle('can', k < n);
+  var b = sl.querySelector('[data-pstep]');
+  if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+  var d = sl.querySelector('.ppbox .done');
+  if (d) d.remove();
+  if (n && k >= n) {
+    var p = PRAISE[(+sl.getAttribute('data-src').slice(-3)) % PRAISE.length];
+    d = document.createElement('div'); d.className = 'done';
+    d.innerHTML = '<span>' + p[1] + '</span><img src="' + p[0] + '.webp" alt="">';
+    sl.querySelector('.ppbox').appendChild(d);
+    if (!quiet) { Kit.sound.good(); if (Math.random() < .35) Kit.confetti(); }
+  }
+}
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl, 1); } }
+function ppTools(sl, mode) {
+  ['zoom'].forEach(function (m) {
+    var on = m === mode && !sl.classList.contains(m);
+    sl.classList.toggle(m, on);
+    sl.querySelector('[data-' + m + ']').classList.toggle('on', on);
+  });
+  if (!sl.classList.contains('zoom')) sl.querySelector('.ppz').style.transformOrigin = '50% 50%';
+  sl.querySelector('.ppbox').classList.toggle('noswipe', sl.classList.contains('zoom'));
+}
+/* ---------- จับเวลา ---------- */
+var TM = { el: null, end: 0, iv: 0 };
+function tmShow() {
+  if (!TM.el) {
+    TM.el = document.createElement('div'); TM.el.className = 'timer';
+    document.body.appendChild(TM.el);
+  }
+  clearInterval(TM.iv); TM.el.classList.remove('end');
+  TM.el.innerHTML = '⏱️ <span class="opts"><button data-m="1">1 นาที</button><button data-m="2">2</button><button data-m="3">3</button><button data-m="5">5</button></span><button class="x" aria-label="ปิด">✖</button>';
+  TM.el.classList.add('show');
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show'); };
+  Array.prototype.forEach.call(TM.el.querySelectorAll('[data-m]'), function (b) { b.onclick = function () { tmStart(+b.getAttribute('data-m')); }; });
+}
+function tmStart(m) {
+  TM.end = Date.now() + m * 60000;
+  TM.el.innerHTML = '⏱️ <span class="t"></span><button class="x" aria-label="หยุด">✖</button>';
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show', 'end'); };
+  var t = TM.el.querySelector('.t');
+  function tick() {
+    var r = Math.max(0, Math.ceil((TM.end - Date.now()) / 1000));
+    t.textContent = Math.floor(r / 60) + ':' + ('0' + r % 60).slice(-2);
+    if (!r) { clearInterval(TM.iv); TM.el.classList.add('end'); Kit.sound.win(); Kit.toast('⏰ หมดเวลา! มาดูเฉลยกันนะ'); }
+  }
+  tick(); TM.iv = setInterval(tick, 250); Kit.sound.tap();
+}
+(function () {
+  var go = Kit.go;
+  Kit.go = function (n, instant) {
+    var cur = Kit.slides[Kit.cur];
+    if (!instant && cur && cur.classList.contains('pslide')) {
+      var N = +cur.getAttribute('data-steps'), k = cur._k || 0;
+      if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
+      if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
+    }
+    if (cur && cur.classList.contains('pslide') && n !== Kit.cur) ppTools(cur, null);
+    var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
+    go(n, instant);
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t, 1); }
+    for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+  };
+})();
+SETUP = function () {
+  setupToc();
+  Kit.slides.forEach(function (sl) {
+    if (!sl.classList.contains('pslide')) return;
+    var box = sl.querySelector('.ppbox'), z = sl.querySelector('.ppz'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
+    box.addEventListener('click', function (e) {
+      if (sl.classList.contains('zoom')) {
+        var q = box.getBoundingClientRect();
+        z.style.transformOrigin = ((e.clientX - q.left) / q.width * 100) + '% ' + ((e.clientY - q.top) / q.height * 100) + '%';
+        return;
+      }
+      adv();
+    });
+    if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+    sl.querySelector('[data-zoom]').onclick = function () { ppTools(sl, 'zoom'); Kit.sound.tap(); if (sl.classList.contains('zoom')) Kit.toast('🔎 แตะตรงที่อยากดูใกล้ ๆ'); };
+    sl.querySelector('[data-timer]').onclick = function () { tmShow(); Kit.sound.tap(); };
+  });
+};
+
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast('✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil ได้ วางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    if (e.pointerType === 'pen') penSeen = true;
+    else if (e.pointerType === 'touch' && penSeen) return; /* มีปากกาแล้ว ไม่นับฝ่ามือ */
+    e.preventDefault(); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
+    cur = { c: color, p: [pt(e)], id: e.pointerId }; list().push(cur); draw();
+  });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+</script>
+</body>
+</html>

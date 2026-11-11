@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 1 เศษส่วน · คณิตศาสตร์ ป.5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#9B6CF0;--main-deep:#7343D6;--glow:#E6DAFF}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+
+
+.nav .dots{display:none}
+.nav{justify-content:space-between}
+.pslide{padding:8px clamp(8px,2vw,24px) 8px}
+.pslide .inner.pp{max-width:none;height:100%;gap:6px}
+.pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
+.ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.ppbox{position:relative;width:min(100cqw,calc(100cqh * 16 / 9));aspect-ratio:16/9;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08);overflow:hidden;box-sizing:border-box}
+.ppz{position:absolute;inset:0;transition:transform .35s ease;transform-origin:50% 50%}
+.ppz img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ppz img.ghost{transition:opacity .35s ease;pointer-events:none}
+.ppbox.can{cursor:pointer}
+.pslide.zoom .ppbox{cursor:zoom-out}
+.pslide.zoom .ppz{transform:scale(2.2)}
+.ppbox .done{position:absolute;right:10px;bottom:8px;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:kpop .5s ease-out both}
+.ppbox .done img{height:clamp(60px,14cqh,110px);width:auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.ppbox .done span{background:#fff;border:3px solid var(--main);border-radius:14px 14px 4px 14px;padding:2px 10px;font-weight:700;color:var(--main-deep);margin-bottom:30px;white-space:nowrap;font-size:clamp(.8rem,2.2vw,1rem)}
+.tools{display:flex;align-items:center;gap:6px}
+.tl{width:40px;height:40px;border-radius:12px;border:2px solid var(--main);background:#fff;font-size:1.15rem;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--glow)}
+.tl.on{background:var(--main);box-shadow:0 3px 0 var(--main-deep)}
+.timer{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:6px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:4px 6px 4px 12px;font-weight:700;box-shadow:0 4px 0 var(--main-deep);font-size:1.15rem}
+.timer.show{display:flex}
+.timer .opts{display:flex;gap:4px}
+.timer .opts button,.timer .x{border:2px solid var(--main);background:var(--glow);border-radius:999px;padding:2px 10px;font-weight:700;min-height:36px}
+.timer .t{font-variant-numeric:tabular-nums;min-width:3.2em;text-align:center;color:var(--main-deep)}
+.timer.end{animation:tshake .5s 3;background:#FFE3E3}
+@keyframes tshake{25%{transform:translateX(-50%) rotate(-4deg)}75%{transform:translateX(-50%) rotate(4deg)}}
+@media (max-width:620px){.tl{width:34px;height:34px;font-size:1rem}.pphead .secbadge{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.board{position:relative;width:min(100%,720px);container-type:inline-size;animation:kpop .55s ease-out both}
+.board img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15))}
+.chalk{position:absolute;left:56%;top:12%;width:39%;height:62%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqw;color:#fff;text-align:center;text-shadow:0 0 2px rgba(255,255,255,.5)}
+.chalk .cn{font-size:4.2cqw;color:#FFE97A;border-bottom:.4cqw dashed #FFE97A;padding:0 2cqw}
+.chalk b{font-size:4.6cqw;line-height:1.3;font-weight:700}
+.secslide .ready{font-weight:700;color:var(--ink-soft)}
+.ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
+.ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
+.ppctl .btn{min-height:44px;padding:6px 18px}
+.secslide{min-height:100%;justify-content:center;align-items:center;text-align:center}
+.secnum{display:grid;place-items:center;width:clamp(110px,18vw,150px);aspect-ratio:1;border-radius:50%;background:var(--main);color:#fff;font-weight:700;font-size:clamp(2.2rem,6vw,3.2rem);box-shadow:0 8px 0 var(--main-deep)}
+.secslide h1{color:var(--main-deep);font-size:clamp(1.7rem,5vw,2.8rem);text-shadow:0 4px 0 var(--glow)}
+.subs{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:620px;width:100%}
+.subs div{background:#fff;border:3px solid var(--main);border-radius:16px;padding:8px 14px;font-weight:700;text-align:left;font-size:clamp(1rem,2.6vw,1.2rem)}
+.subs b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--main);color:#fff;margin-right:8px}
+.secslide .kru{max-width:680px;width:100%;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🍕</span>
+  <div class="ttl"><b>บทที่ 1 เศษส่วน</b><small>คณิตศาสตร์ ป.5 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m5-math-hub/" aria-label="หน้ารวม ป.5" title="หน้ารวม ป.5">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.5 · บทที่ 1</span>
+    <h1>เศษส่วน</h1>
+    <p class="sub">เปรียบเทียบ เรียงลำดับ บวก ลบ คูณ หารเศษส่วน และโจทย์ปัญหา</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>1.1 การเปรียบเทียบและเรียงลำดับ</li><li>1.2 การบวก การลบเศษส่วน</li><li>1.3 การคูณเศษส่วน</li><li>1.4 การหารเศษส่วน</li><li>1.5 โจทย์ปัญหา</li><li>1.6 การบวก ลบ คูณ หารระคน</li><li>1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 1</h2>
+  <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="toc"><button data-jump="1.1"><span class="e">⚖️</span><span>1.1 การเปรียบเทียบและเรียงลำดับ</span></button><button data-jump="1.2"><span class="e">➕</span><span>1.2 การบวก การลบเศษส่วน</span></button><button data-jump="1.3"><span class="e">✖️</span><span>1.3 การคูณเศษส่วน</span></button><button data-jump="1.4"><span class="e">➗</span><span>1.4 การหารเศษส่วน</span></button><button data-jump="1.5"><span class="e">📝</span><span>1.5 โจทย์ปัญหา</span></button><button data-jump="1.6"><span class="e">🧮</span><span>1.6 การบวก ลบ คูณ หารระคน</span></button><button data-jump="1.7"><span class="e">🧩</span><span>1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
+</div></section>
+<section class="slide" data-sec="1.1" data-title="1.1 การเปรียบเทียบและเรียงลำดับ"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 1.1</span><b>⚖️ การเปรียบเทียบและเรียงลำดับ</b></div></div>
+  <div class="subs"><div><b>1</b>การเปรียบเทียบเศษส่วน</div><div><b>2</b>การเปรียบเทียบจำนวนคละ</div><div><b>3</b>การเรียงลำดับเศษส่วนและจำนวนคละ</div></div>
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s004" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 4"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาเศษส่วนที่เท่ากับ มา 5 จำนวน ได้แก่ พิจารณา พบว่า 6 เป็น 2 เท่าของ 3 หรือ 3 เป็นครึ่งของ 6 พบว่า 10 เป็น 2 เท่าของ 5 หรือ 5 เป็นครึ่งของ 10 พบว่า 16 เป็น 2 เท่าของ 8 หรือ 8 เป็นครึ่งของ 16 พบว่า 24 เป็น 2 เท่าของ 12 หรือ 12 เป็นครึ่งของ 24 พบว่า 40 เป็น 2 เท่าของ 20 หรือ 20 เป็นครึ่งของ 40 จะ"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s005" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 5"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาครึ่งของ 1 3 5 วิธีคิดครึ่งหนึ่งของ 1 มีดังนี้ครึ่งของ 1 คือ คิดได้โดย แบ่ง 1 เป็น 2 กลุ่ม กลุ่มละเท่าๆ กัน ได้กลุ่มละ ดังรูปวิธีคิดครึ่งหนึ่งของ 1 มีดังนี้ 1 วิธีคิดครึ่งหนึ่งของ 3 มีดังนี้ครึ่งของ 3 คือ 1 คิดได้โดย แบ่ง 3 เป็น 2 กลุ่ม กลุ่มละเท่าๆ กัน ได้กลุ่มละ 1 กับ ดังรูปวิธีคิดครึ่งหนึ่"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s006" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 6"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีคิดครึ่งหนึ่งของ 5 มีดังนี้ครึ่งของ 5 คือ 2 คิดได้โดย แบ่ง 3 เป็น 2 กลุ่ม กลุ่มละเท่าๆ กัน ได้กลุ่มละ 2 กับ ดังรูปวิธีคิดครึ่งหนึ่งของ 5 มีดังนี้ 111 11 1111 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s007" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 7"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การเปรียบเทียบเศษส่วนโดยใช้ เป็นเกณฑ์ พิจารณาการใช้ เป็นเกณฑ์ในการเปรียบเทียบเศษส่วน 1. มากกว่า หรือ น้อยกว่า หรือ เท่ากับ &gt; เพราะครึ่งของ 10 คือ 5 ซึ่ง 7 &gt; 5 2. มากกว่า หรือ น้อยกว่า หรือ เท่ากับ = เพราะครึ่งของ 6 คือ 3 ซึ่ง 3 = 3 3. มากกว่า หรือ น้อยกว่า หรือ เท่ากับ &gt; เพราะครึ่งของ 11 คือ 5 ซึ่ง "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s008" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 8"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการเปรียบเทียบ กับ เนื่องจาก &gt; เพราะครึ่งของ 12 คือ 6 ซึ่ง 9 &gt; 6และ &lt; เพราะครึ่งของ 15 คือ 7 ซึ่ง 7 &lt; 7ดังนั้น &gt; พิจารณาการเปรียบเทียบ กับ เนื่องจาก = เพราะครึ่งของ 16 คือ 8 ซึ่ง 8 = 8และ = เพราะครึ่งของ 10 คือ 5 ซึ่ง 5 = 5ดังนั้น = 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s009" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 9"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการเปรียบเทียบ กับ เนื่องจาก &lt; เพราะครึ่งของ 10 คือ 5 ซึ่ง 4 &lt; 5และ &gt; เพราะครึ่งของ 3 คือ 1 ซึ่ง 2 &gt; 1ดังนั้น &lt; พิจารณาการเปรียบเทียบ กับ เนื่องจาก &lt; เพราะครึ่งของ 25 คือ 12 ซึ่ง 11 &lt; 12และ &gt; เพราะครึ่งของ 13 คือ 6 ซึ่ง 10 &gt; 6ดังนั้น &lt; 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s010" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 10"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การเปรียบเทียบเศษส่วนที่มีตัวส่วนไม่เท่ากัน เ กับ พิจารณา เอง 8 คือ 4 ซึ่ง 5 &gt; 4 แสดงว่า &gt; พิจารณา เอง 12 คือ 6 ซึ่ง 7 &gt; 6 แสดงว่า &gt; นั่นคือ และ มากกว่า ซึ่งยังบอกไม่ได้ว่าจำนวนใดมากกว่าจึงอาจใช้รูปแสดงการเปรียบเทียบ ดังนี้ จากรูป จะได้ว่า &gt; หรือ &lt; 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 11"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ดังนั้น &gt; หรือ &lt; นอกจากการแสดงด้วยรูปแล้ว ยังมีวิธีการเปรียบเทียบเศษส่วน ดังนี้ ท และ ให้เป็นเศษส่วนที่มีตัวส่วนเท่ากันก่อน แล้วจึงเปรียบเทียบ = = = = เนื่องจาก &gt; การเปรียบเทียบเศษส่วนที่มีตัวส่วนไม่เท่ากัน อาจทำได้โดยทำตัวส่วนให้เท่ากันก่อน แล้วจึงเปรียบเทียบตัวเศษ เศษส่วนใดมีตัวเศษมากกว่า เศษส่วนน"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s012" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 12"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เ กับ วิธีทำ = = = = เนื่องจาก &gt; ดังนั้น &gt; ตอบ &gt; ×23122436204060448560 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 13"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เ กับ วิธีทำ = = = = เนื่องจาก = ดังนั้น = ตอบ = ×2340801202448724965120 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s014" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 14"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เ กับ วิธีทำ = = = = เนื่องจาก &lt; ดังนั้น &lt; ตอบ &lt; ×23816241224 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s015" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 15"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2. การเปรียบเทียบจำนวนคละ เปรียบเทียบจำนวนนับ พบว่า 3 = 3จึงเปรียบเทียบ กับ โดยทำตัวส่วนของทั้งสองจำนวนให้เท่ากันจะได้ = = และ = = ซึ่ง &gt; แสดงว่า &gt; ดังนั้น 3 ×2361218918 พิจารณาการเปรียบเทียบ 3 กับ 3 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 16"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เขียนเศษเกินในรูปจำนวนคละจะได้ = 1เปรียบเทียบ 1 กับ 1 พบว่า 1 = 1 จึงเปรียบเทียบ กับ = = และ = = ซึ่ง &gt; แสดงว่า &gt; ดังนั้น เปรียบเทียบ กับ 1 วิธีที่ 1 ×231020308162444032540 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s017" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 17"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เขียนจำนวนคละให้อยู่ในรูปเศษเกิน1 = จึงเปรียบเทียบ กับ = = และ = = ซึ่ง &gt; แสดงว่า &gt; ดังนั้น วิธีที่ 2 ×231020308162444032540 ตอบ 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 18"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การเปรียบเทียบจำนวนคละให้เปรียบเทียบ จำนวนนับของจำนวนคละก่อนถ้าจำนวนนับใดมากกว่า จำนวนคละนั้นจะมากกว่าถ้าจำนวนนับเท่ากันให้เปรียบเทียบเศษส่วน เศษส่วนใดมากกว่า จำนวนคละนั้นจะมากกว่า การเปรียบเทียบจำนวนคละ 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s019" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 19"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3. การเรียงลำดับเศษส่วนและจำนวนคละ เนื่องจาก มากกว่า 1 และ น้อยกว่า และ มากกว่า แต่น้อยกว่า 1แสดงว่า มากที่สุด และ น้อยที่สุดจึงเปรียบเทียบ กับ โดยทำตัวส่วนของทั้งสองจำนวนให้เท่ากันจะได้ = = = = ซึ่ง &gt; แสดงว่า &gt; ดังนั้น เรียงลำดับจากมากไปน้อยได้ดังนี้ เรียงลำดับจากน้อยไปมากได้ดังนี้ ×236124812 พิจาร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s020" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 20"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เนื่องจาก = 4 จึงเปรียบเทียบ 5 กับ 5 และ 4 กับ 4เปรียบเทียบ 5 กับ 5 พบว่า 5 = 5 จึงเปรียบเทียบ กับ เนื่องจาก &lt; และ &gt; แสดงว่า &lt; จะได้ 5 &lt; 5เปรียบเทียบ 4 กับ 4 พบว่า 4 = 4 จึงเปรียบเทียบ กับ เนื่องจาก &lt; และ &gt; พิจารณาการเรียงลำดับ 5 4 5 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s021" data-title="1.1 การเปรียบเทียบและเรียงลำดับ · หน้า 21"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จึงเปรียบเทียบ กับ โดยทำตัวส่วนของทั้งสองจำนวนให้เท่ากัน จะได้ = = = = ซึ่ง &gt; แสดงว่า &gt; จะได้ 4 &gt; 4ดังนั้น เรียงลำดับจากมากไปน้อยได้ดังนี้ 4 5 5 เรียงลำดับจากน้อยไปมากได้ดังนี้ 5 5 4 ×234812612 การเรียงลำดับเศษส่วนและจำนวนคละ ใช้วิธีเปรียบเทียบจำนวนทีละคู่แล้วเรียงลำดับจากมากไปน้อย หรือ จากน้อยไปมาก"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="1.2" data-title="1.2 การบวก การลบเศษส่วน"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 1.2</span><b>➕ การบวก การลบเศษส่วน</b></div></div>
+  <div class="subs"><div><b>1</b>การบวก การลบเศษส่วน</div><div><b>2</b>การบวก การลบจำนวนคละ</div></div>
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s023" data-title="1.2 การบวก การลบเศษส่วน · หน้า 23"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 การบวก การลบเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1. การบวก การลบเศษส่วน พิจารณาสถานการณ์ต่อไปนี้ ใบบุญมีขนมชั้นในถาดที่มีขนาดเท่ากัน ถาดแรกเป็นขนมชั้นกลิ่นใบเตย ถาด และอีกถาดหนึ่งเป็นขนมชั้นกลิ่นกาแฟ ถาด ใบบุญนำขนมชั้นทั้งหมดใส่ถาดเดียวกัน จะได้ขนมชั้นทั้งหมดกี่ถาด และขนมชั้นกลิ่นใบเตยมากกว่าขนมชั้นกลิ่นกาแฟกี่ถาด ขนมชั้นกลิ่นใบเตย ถาด ขนมชั้นกลิ่"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s024" data-title="1.2 การบวก การลบเศษส่วน · หน้า 24"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 การบวก การลบเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขนมชั้นกลิ่นใบเตย ถาด ขนมชั้นกลิ่นกาแฟ ถาด ม ถาด สามารถแสดงวิธีหาคำตอบได้ ดังนี้ - = - = - = ดังนั้น มีขนมชั้นกลิ่นใบเตยมากกว่าขนมชั้นกลิ่นกาแฟ ถาด 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-title="1.2 การบวก การลบเศษส่วน · หน้า 25"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 การบวก การลบเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ + = + = = = 1ตอบ 1 หาผลบวกของ + ×2324651048510 คำตอบควรอยู่ในรูปอย่างง่าย ซึ่งเป็นการเขียนในรูปเศษส่วนอย่างต่ำจำนวนคละ จำนวนนับ หรือศูนย์ 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s026" data-title="1.2 การบวก การลบเศษส่วน · หน้า 26"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 การบวก การลบเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ + = + = = = ตอบ หาผลบวกของ + คำตอบควรอยู่ในรูปอย่างง่าย ซึ่งเป็นการเขียนในรูปเศษส่วนอย่างต่ำจำนวนคละ จำนวนนับ หรือศูนย์ ×2348126121841624520624 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s027" data-title="1.2 การบวก การลบเศษส่วน · หน้า 27"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 การบวก การลบเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ - = - = = ตอบ หาผลลบของ - ×236121881624424 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s028" data-title="1.2 การบวก การลบเศษส่วน · หน้า 28"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 การบวก การลบเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ - = - = = = = 1 ตอบ หาผลลบของ - ×23612181530424530 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s029" data-title="1.2 การบวก การลบเศษส่วน · หน้า 29"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 การบวก การลบเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2. การบวก การลบจำนวนคละ การบวกและการลบจำนวนคละ อาจทำได้โดยเขียนจำนวนคละในรูปเศษเกินก่อน แล้วจึงหาผลบวกหรือผลลบ วิธีทำ เนื่องจาก 3 = และ 4 = จะได้ 3 + 4 = + = + = = = 7ตอบ 7 หาผลบวกของ 3 + 4 ×2324651048510 คำตอบควรอยู่ในรูปอย่างง่าย ซึ่งเป็นการเขียนในรูปเศษส่วนอย่างต่ำจำนวนคละ จำนวนนับ หรือศูนย์ 01 0"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s030" data-title="1.2 การบวก การลบเศษส่วน · หน้า 30"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 การบวก การลบเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ 7 + 3 = + = + = = = 10ตอบ 10 หาผลบวกของ 7 + 3 คำตอบควรอยู่ในรูปอย่างง่าย ซึ่งเป็นการเขียนในรูปเศษส่วนอย่างต่ำจำนวนคละ จำนวนนับ หรือศูนย์ ×2348125101541620520 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s031" data-title="1.2 การบวก การลบเศษส่วน · หน้า 31"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 การบวก การลบเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ 5- 1 = - = - = = = 3ตอบ 3 หาผลบวกของ 5 - 1 คำตอบควรอยู่ในรูปอย่างง่าย ซึ่งเป็นการเขียนในรูปเศษส่วนอย่างต่ำจำนวนคละ จำนวนนับ หรือศูนย์ ×234812612 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-title="1.2 การบวก การลบเศษส่วน · หน้า 32"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 การบวก การลบเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ 2- 1 = - = - = = ตอบ หาผลบวกของ 2 - 1 ×2391827122436436 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="1.3" data-title="1.3 การคูณเศษส่วน"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 1.3</span><b>✖️ การคูณเศษส่วน</b></div></div>
+  <div class="subs"><div><b>1</b>เศษส่วนของจำนวนนับ</div><div><b>2</b>การคูณจำนวนนับกับเศษส่วน</div><div><b>3</b>การคูณเศษส่วนกับเศษส่วน</div><div><b>4</b>การคูณจำนวนคละ</div></div>
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-title="1.3 การคูณเศษส่วน · หน้า 34"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1. เศษส่วนของจำนวนนับ มีแอปเปิลทั้งหมด 6 ผล เป็นสีแดง 4 ผล และสีเขียว 2 ผลมีแอปเปิลสีเขียว 2 ผล จากทั้งหมด 6 ผล เขียนแสดงด้วย ของทั้งหมดมีแอปเปิลสีแดง 4 ผล จากทั้งหมด 6 ผล เขียนแสดงด้วย ของทั้งหมดถ้าจัดแอปเปิลสีเดียวกันให้เป็นกลุ่ม กลุ่มละเท่าๆ กันจะจัดได้ 3 กลุ่ม กลุ่มละ 2 ผล ดังนี้ดังนั้น มีแอปเปิ"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-title="1.3 การคูณเศษส่วน · หน้า 35"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2. การคูณจำนวนนับกับเศษส่วน พิจารณาการหาผลคูณของ 3 × 3 × หมายถึง 3 กลุ่มของ 3 × = + + = = = แสดงว่า 3 × = = 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-title="1.3 การคูณเศษส่วน · หน้า 36"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาผลคูณของ 2 × 2 × หมายถึง 2 กลุ่มของ 2 × = + = = = แสดงว่า 2 × = = 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s037" data-title="1.3 การคูณเศษส่วน · หน้า 37"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาผลคูณของ × 6 × 6 หมายถึง ของ 6 แสดงว่า × 6 = 6 × = = แสดงว่า × 6 = เนื่องจาก 6 × = = = 3 ดังนั้น × 6 = 3 ของ 6 เท่ากับ 3 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s038" data-title="1.3 การคูณเศษส่วน · หน้า 38"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาผลคูณของ × 12 × 12 หมายถึง ของ 12 แสดงว่า × 12 = 12 × = = แสดงว่า × 12 = เนื่องจาก 12 × = = = 8 ดังนั้น × 12 = 8 ของ 12 เท่ากับ 8 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s039" data-title="1.3 การคูณเศษส่วน · หน้า 39"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ 5 × = = = 2ตอบ 2 หาผลคูณของ 5 × 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s040" data-title="1.3 การคูณเศษส่วน · หน้า 40"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ 1 × 45 = วิธีทำ 2 × 45 = = = = = 20 = 20ตอบ 20 ตอบ 20 หาผลคูณของ × 45 20 1 5 1 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s041" data-title="1.3 การคูณเศษส่วน · หน้า 41"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน การคูณจำนวนนับกับเศษส่วน ทำได้โดย นำจำนวนนับคูณกับตัวเศษ โดยตัวส่วนยังคงเดิม ผลคูณที่ได้ ควรเขียนเป็นรูปอย่างง่าย ซึ่งอาจอยู่ในรูปเศษส่วนอย่างต่ำ จำนวนคละ หรือ จำนวนนับ 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s042" data-title="1.3 การคูณเศษส่วน · หน้า 42"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3. การคูณเศษส่วนกับเศษส่วน พิจารณาการหาผลคูณของ × จากรูป ของ = แสดงว่า × = นั่นคือ × = = × หมายถึง ของ 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s043" data-title="1.3 การคูณเศษส่วน · หน้า 43"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาผลคูณของ × จากรูป ของ = แสดงว่า × = นั่นคือ × = = × หมายถึง ของ 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s044" data-title="1.3 การคูณเศษส่วน · หน้า 44"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 44 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ × = = = ตอบ หาผลคูณของ × 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s045" data-title="1.3 การคูณเศษส่วน · หน้า 45"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ 1 × = วิธีทำ 2 × = = = = = 1 = 1 ตอบ 1 ตอบ 1 หาผลคูณของ × 6 5 3 5 2 1 การคูณเศษส่วนกับเศษส่วน ทำได้โดย นำตัวเศษคูณกับตัวเศษ และตัวส่วนคูณกับตัวส่วน 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s046" data-title="1.3 การคูณเศษส่วน · หน้า 46"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 46 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4. การคูณจำนวนคละ พิจารณาการหาผลคูณของ 2 × 1 ดังนั้น 2 × 1 = 2 × = = = 2 2 × 1 หมายถึง 1 + 1 หรือ + 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s047" data-title="1.3 การคูณเศษส่วน · หน้า 47"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ 1 2 × 5 = × 5 = = = 14ตอบ 14 หาผลคูณของ 2 × 5 วิธีทำ 2 2 × 5 = × 5 = = 14ตอบ 14 1 1 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s048" data-title="1.3 การคูณเศษส่วน · หน้า 48"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 48 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ 5× 5 = 5 × = = = 26 ตอบ 26 หาผลคูณของ 5 × 5 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s049" data-title="1.3 การคูณเศษส่วน · หน้า 49"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 49 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ × 2 = × = = = 6ตอบ 6 หาผลคูณของ × 2 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s050" data-title="1.3 การคูณเศษส่วน · หน้า 50"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 50 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ 1 2 × 5 = × 5 = = = 14ตอบ 14 หาผลคูณของ 2 × 5 วิธีทำ 2 2 × 5 = × 5 = = 14ตอบ 14 1 1 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s051" data-title="1.3 การคูณเศษส่วน · หน้า 51"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 51 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ 1 × = วิธีทำ 2 × = = = = = 1 = 1 ตอบ 1 ตอบ 1 หาผลคูณของ × 6 5 3 5 2 1 การคูณเศษส่วนกับเศษส่วน ทำได้โดย นำตัวเศษคูณกับตัวเศษ และตัวส่วนคูณกับตัวส่วน 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s052" data-title="1.3 การคูณเศษส่วน · หน้า 52"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 การคูณเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 52 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน วิธีทำ 1 3 × 2 = × = = = 10ตอบ 10 หาผลคูณของ 3 × 2 วิธีทำ 2 3 × 2 = × = = 10ตอบ 10 5 1 1 2 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="1.4" data-title="1.4 การหารเศษส่วน"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 1.4</span><b>➗ การหารเศษส่วน</b></div></div>
+  <div class="subs"><div><b>1</b>ส่วนกลับของเศษส่วน</div><div><b>2</b>การหารจำนวนนับด้วยเศษส่วน</div><div><b>3</b>การหารเศษส่วนด้วยจำนวนนับ</div><div><b>4</b>การหารเศษส่วนด้วยเศษส่วน</div><div><b>5</b>การหารจำนวนคละ</div></div>
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s054" data-title="1.4 การหารเศษส่วน · หน้า 54"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 54 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1. ส่วนกลับของเศษส่วน พิจารณา × = = = 1จาก × = 1เรียก ว่าเป็นส่วนกลับของ เรียก ว่าเป็นส่วนกลับของ พิจารณา 8 × = = = 1จาก 8 × = 1เรียก ว่าเป็นส่วนกลับของ 8เรียก 8 ว่าเป็นส่วนกลับของ 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s055" data-title="1.4 การหารเศษส่วน · หน้า 55"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 55 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน หาส่วนกลับของ เนื่องจาก × = = = 1 คือ 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s056" data-title="1.4 การหารเศษส่วน · หน้า 56"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 56 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หาส่วนกลับของ 9 เนื่องจาก 9 × = = = 1 4 คือ เศษส่วนใดคูณกับส่วนกลับของเศษส่วนนั้น ผลคูณจะเท่ากับ 1 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s057" data-title="1.4 การหารเศษส่วน · หน้า 57"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 57 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2. การหารจำนวนนับด้วยเศษส่วน พิจารณาสถานการณ์ต่อไปนี้ ฝนมีขนมกล้วย 3 ถาด แบ่งเป็นชิ้น ชิ้นละ ถาด ได้กี่ชิ้น หาจำนวนชิ้นของขนมกล้วยที่แบ่งได้อย่างไร 3 ÷ = จากรูป ได้ขนมกล้วยกี่ชิ้น 6 ชิ้น แสดงว่า 3 ÷ = 6 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s058" data-title="1.4 การหารเศษส่วน · หน้า 58"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 58 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เนื่องจาก 3 ÷ = 6 และ 3 × 2 = 6ดังนั้น 3 ÷ = 3 × 2 ซึ่ง 2 เป็นส่วนกลับของ หรือ 3 ÷ = 3 × 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s059" data-title="1.4 การหารเศษส่วน · หน้า 59"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 59 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาสถานการณ์ต่อไปนี้ มีขนมไหว้พระจันทร์ 3 อัน แบ่งใส่จาน จานละ อัน ได้กี่จาน หาจำนวนจานขนมได้อย่างไร 3 ÷ = จากรูป แบ่งได้กี่จาน 4 จาน แสดงว่า 3 ÷ = 4 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s060" data-title="1.4 การหารเศษส่วน · หน้า 60"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 60 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เนื่องจาก 3 ÷ = 4 และ 3 × = = 4ดังนั้น 3 ÷ = 3 × ซึ่ง เป็นส่วนกลับของ 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s061" data-title="1.4 การหารเศษส่วน · หน้า 61"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 61 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน หาผลหารของ 12 ÷ วิธีทำ 12 ÷ = 12 × = = 6 × 3 = 18 ตอบ 18 6 1 เป็นส่วนกลับของ 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s062" data-title="1.4 การหารเศษส่วน · หน้า 62"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 62 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบวกและการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนให้เท่ากัน แล้วจึงนำตัวเศษมาบวกกัน หรือ ลบกัน หาผลหารของ 35 ÷ วิธีทำ 35 ÷ = 35 × = = 7 × 7 = 49 ตอบ 49 การหารจำนวนนับด้วยเศษส่วน ทำได้โดยนำจำนวนนับที่เป็นตัวตั้ง คูณกับส่วนกลับของตัวหาร 7 1 เป็นส่วนกลับของ 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s063" data-title="1.4 การหารเศษส่วน · หน้า 63"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 63 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3. การหารเศษส่วนด้วยจำนวนนับ ยายแบ่งขนมโก๋ แผ่น ให้หลาน 3 คน คนละเท่าๆ กัน หลานจะได้ขนมคนละเท่าใด หาจำนวนขนมโก๋ที่หลานแต่ละคนได้รับอย่างไร ÷ 3 = จากรูป หลานแต่ละคนได้รับขนมเท่าใด แผ่น แสดงว่า ÷ 3 = 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s064" data-title="1.4 การหารเศษส่วน · หน้า 64"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 64 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เนื่องจาก ÷ 3 = และ × = = ดังนั้น ÷ 3 = × ซึ่ง เป็นส่วนกลับของ 3 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s065" data-title="1.4 การหารเศษส่วน · หน้า 65"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 65 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ ÷ 2 = × = = ตอบ หาผลหารของ ÷ 2 เป็นส่วนกลับของ 2 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s066" data-title="1.4 การหารเศษส่วน · หน้า 66"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 66 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หาผลหารของ ÷ 4 วิธีทำ ÷ 4 = × = = ตอบ การหารเศษส่วนด้วยจำนวนนับ ทำได้โดย นำเศษส่วนที่เป็นตัวตั้ง คูณกับส่วนกลับของตัวหาร 2 1 เป็นส่วนกลับของ 2 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s067" data-title="1.4 การหารเศษส่วน · หน้า 67"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 67 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3. การหารเศษส่วนด้วยจำนวนนับ ยายแบ่งขนมโก๋ แผ่น ให้หลาน 3 คน คนละเท่าๆ กัน หลานจะได้ขนมคนละเท่าใด หาจำนวนขนมโก๋ที่หลานแต่ละคนได้รับอย่างไร ÷ 3 = จากรูป หลานแต่ละคนได้รับขนมเท่าใด แผ่น แสดงว่า ÷ 3 = 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s068" data-title="1.4 การหารเศษส่วน · หน้า 68"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 68 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เนื่องจาก ÷ 3 = และ × = = ดังนั้น ÷ 3 = × ซึ่ง เป็นส่วนกลับของ 3 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s069" data-title="1.4 การหารเศษส่วน · หน้า 69"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 69 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ ÷ 2 = × = = ตอบ หาผลหารของ ÷ 2 เป็นส่วนกลับของ 2 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s070" data-title="1.4 การหารเศษส่วน · หน้า 70"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 70 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หาผลหารของ ÷ 4 วิธีทำ ÷ 4 = × = = ตอบ การหารเศษส่วนด้วยจำนวนนับ ทำได้โดย นำเศษส่วนที่เป็นตัวตั้ง คูณกับส่วนกลับของตัวหาร 2 1 เป็นส่วนกลับของ 2 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s071" data-title="1.4 การหารเศษส่วน · หน้า 71"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 71 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4. การหารเศษส่วนด้วยเศษส่วน กิ๊บมีพิซซ่า ถาด แบ่งเป็นชิ้น ชิ้นละ ถาด จะได้กี่ชิ้น จากรูป แบ่งพิซซ่าได้กี่ชิ้น 6 ชิ้นจากสถานการณ์ หาจำนวนชิ้นพิซซ่าโดยใช้วิธีใด ใช้การหารเขียนเป็นประโยคสัญลักษณ์ได้อย่างไร ÷ =  แสดงว่า ÷ = 6 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s072" data-title="1.4 การหารเศษส่วน · หน้า 72"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 72 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เนื่องจาก ÷ = 6 และ × 8 = = = 6ดังนั้น ÷ = × 8 ซึ่ง 8 เป็นส่วนกลับของ หรือ ÷ = × การหารเศษส่วนด้วยเศษส่วน ทำได้โดย นำเศษส่วนที่เป็นตัวตั้ง คูณกับส่วนกลับของตัวหาร 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s073" data-title="1.4 การหารเศษส่วน · หน้า 73"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 73 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ ÷ = × = = = 2ตอบ 2 หาผลหารของ ÷ เป็นส่วนกลับของ 3 1 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s074" data-title="1.4 การหารเศษส่วน · หน้า 74"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 74 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ ÷ = × = = = 7ตอบ 7 หาผลหารของ ÷ เป็นส่วนกลับของ 7 1 1 1 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s075" data-title="1.4 การหารเศษส่วน · หน้า 75"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 75 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5. การหารจำนวนคละ การหารเศษส่วนด้วยเศษส่วน ทำได้โดย นำเศษส่วนที่เป็นตัวตั้งคูณกับส่วนกลับของตัวหาร ดังนั้น การหารจำนวนคละ ให้เขียนจำนวนคละในรูปเศษเกิน แล้วใช้วิธีการเดียวกันกับการหารเศษส่วนด้วยเศษส่วน 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s076" data-title="1.4 การหารเศษส่วน · หน้า 76"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 76 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ 2÷ 2 = 2 ÷ = 2 × = = = ตอบ 2 1 4 หาผลหารของ 2 ÷ 2 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s077" data-title="1.4 การหารเศษส่วน · หน้า 77"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 77 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ 4 ÷ 1 = ÷ = × = = = 2ตอบ 2 หาผลหารของ 4 ÷ 1 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s078" data-title="1.4 การหารเศษส่วน · หน้า 78"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 78 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาผลหาร เมื่อตัวหารเท่ากัน 2 ÷ = 2 × 6 = 123 ÷ = 3 × 6 = 184 ÷ = 4 × 6 = 245 ÷ = 5 × 6 = 306 ÷ = 6 × 6 = 36 เมื่อสังเกตตัวตั้ง ตัวหาร และผลหารแล้วพบข้อสังเกตอะไรบ้าง ถ้าตัวตั้งเพิ่มขึ้น และตัวหารเท่ากัน ผลหารจะเพิ่มขึ้น 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s079" data-title="1.4 การหารเศษส่วน · หน้า 79"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การหารเศษส่วน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 79 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาผลหาร เมื่อตัวตั้งเท่ากัน 5 ÷ = 5 × 2 = 105 ÷ = 5 × 3 = 155 ÷ = 5 × 4 = 205 ÷ = 5 × 5 = 255 ÷ = 5 × 6 = 30 เมื่อสังเกตตัวตั้ง ตัวหาร และผลหารแล้วพบข้อสังเกตอะไรบ้าง ถ้าตัวตั้งเท่ากัน และตัวหารลดลง ผลหารจะเพิ่มขึ้น 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="1.5" data-title="1.5 โจทย์ปัญหา"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 1.5</span><b>📝 โจทย์ปัญหา</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s081" data-title="1.5 โจทย์ปัญหา · หน้า 81"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 81 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="โจทย์ถาม แม่ซื้อน้ำตาลทรายกี่กิโลกรัม โจทย์บอก แม่ซื้อเกลือ กิโลกรัม ซึ่งน้อยกว่าน้ำตาลทราย กิโลกรัม จากโจทย์เขียนแสดงด้วยภาพ พริกขี้หนู พริกชี้ฟ้า กิโลกรัม ตัวอย่างที่ 1 แม่ซื้อเกลือ กิโลกรัม ซึ่งน้อยกว่าน้ำตาลทราย กิโลกรัม แม่ซื้อน้ำตาลทรายกี่กิโลกรัม กิโลกรัม 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s082" data-title="1.5 โจทย์ปัญหา · หน้า 82"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 82 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ประโยคสัญลักษณ์ + =  วิธีหาคำตอบ + = + = กิโลกรัม ตรวจคำตอบ เนื่องจาก &lt; และ &lt; แสดงว่า + &lt; 1 ดังนั้น กิโลกรัม เป็นคำตอบที่สมเหตุสมผล สรุปคำตอบ แม่ซื้อน้ำตาลทราย กิโลกรัม 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s083" data-title="1.5 โจทย์ปัญหา · หน้า 83"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 83 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="โจทย์ถาม ปริมาณของน้ำในถัง โจทย์บอก แม่เทน้ำ 6 ขวด ใส่ถังเปล่าใบหนึ่ง ซึ่งแต่ละขวดมีน้ำ ลิตร หาคำตอบได้อย่างไร ตัวอย่างที่ 2 แม่เทน้ำ 6 ขวด ใส่ถังเปล่าใบหนึ่ง ซึ่งแต่ละขวดมีน้ำ ลิตร ถังใบนี้มีน้ำอยู่เท่าใด นำจำนวนขวดน้ำ คูณกับปริมาณน้ำในแต่ละขวด ประโยคสัญลักษณ์ 6 × =  01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s084" data-title="1.5 โจทย์ปัญหา · หน้า 84"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 84 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีหาคำตอบ 6 × = = = 4 ลิตร ตรวจคำตอบ ถ้า 1 ขวด มีน้ำ ลิตร จะได้ว่า 2 ขวด มีน้ำ 1 ลิตร แสดงว่า 6 ขวด มีน้ำ 3 × 1 = 3 ลิตร สรุปคำตอบ ถังใบนี้มีน้ำ 4 ลิตร ถ้า 1 ขวด มีน้ำ 1 ลิตร แสดงว่า 6 ขวด มีน้ำ 6 ลิตร แต่โจทย์กำหนด 1 ขวด มีน้ำ ลิตร ซึ่ง มากกว่า แต่น้อยกว่า 1 แสดงว่า 6 ขวด จะมีน้ำมากกว่า 3 ลิตร แต"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s085" data-title="1.5 โจทย์ปัญหา · หน้า 85"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 85 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="โจทย์ถาม จำนวนเส้นเชือกที่ตัดได้ โจทย์บอก เชือกยาว 4 เมตร ตัดออกเป็นเส้น ยาวเส้นละ เมตร หาคำตอบได้อย่างไร ตัวอย่างที่ 3 เชือกยาว 4 เมตร ตัดออกเป็นเส้น ยาวเส้นละ เมตร ได้เชือกกี่เส้น นำความยาวเชือกทั้งหมด หารด้วยความยาวเชือกแต่ละเส้นที่ตัด ประโยคสัญลักษณ์ 4 ÷ =  01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s086" data-title="1.5 โจทย์ปัญหา · หน้า 86"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 86 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีหาคำตอบ 4 ÷ = 4 × = = 8 เส้น ตรวจคำตอบ เชือก 1 เมตร ตัดเส้นละ เมตร ได้ 2 เส้น แสดงว่า เชือก 4 เมตร ตัดเส้นละ เมตร ได้ 4 × 2 = 8 เส้น สรุปคำตอบ ตัดเชือกได้ 8 เส้น ดังนั้น 8 เส้น เป็นคำตอบที่สมเหตุสมผล 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s087" data-title="1.5 โจทย์ปัญหา · หน้า 87"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 87 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีคิด ตัวอย่างที่ 4 สายยางเส้นหนึ่งยาว 5 เมตร ตัดไปใช้ เมตร เหลือสายยางกี่เมตร ประโยคสัญลักษณ์ 5 - =  ตัดไปใช้ เมตร 5 เมตร 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s088" data-title="1.5 โจทย์ปัญหา · หน้า 88"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 88 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ สายยางยาว 5 เมตร คำตอบ ตัดไปใช้ เมตร เหลือสายยาง 5- = - เมตร เหลือสายยาง 4 เมตร = - เมตร = เมตร = 4 เมตร 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s089" data-title="1.5 โจทย์ปัญหา · หน้า 89"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 89 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจคำตอบ พิจารณาความสมเหตุสมผลของคำตอบเนื่องจาก 5 อยู่ระหว่าง 5 กับ 6 และ ใกล้เคียง 1ซึ่ง 5 – 1 = 4 และ 6 – 1 = 5แสดงว่า 5 - อยู่ระหว่าง 4 กับ 5ดังนั้น 4 เมตร เป็นคำตอบที่สมเหตุสมผล 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s090" data-title="1.5 โจทย์ปัญหา · หน้า 90"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 90 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีคิด ตัวอย่างที่ 5 ครูซื้อดินสอ 1 กล่อง มี 50 แท่ง นำมาแจกให้นักเรียน ของดินสอที่ซื้อมา ครูแจกดินสอให้นักเรียนกี่แท่ง และเหลือกี่แท่ง ประโยคสัญลักษณ์ × 50 =  แจกให้นักเรียน ของดินสอที่ซื้อมา ดินสอ 50 แท่ง 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s091" data-title="1.5 โจทย์ปัญหา · หน้า 91"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 91 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ ครูซื้อดินสอ 50 แท่ง คำตอบ แจกให้นักเรียน ของดินที่ซื้อมา ดังนั้น ครูแจกดินสอให้นักเรียน × 50 = แท่ง ครูแจกดินสอให้นักเรียน 40 แท่ง เหลือดินสอ 10 แท่ง = 40 แท่ง และเหลือดินสอ 50 – 40 = 10 แท่ง 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s092" data-title="1.5 โจทย์ปัญหา · หน้า 92"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 92 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจคำตอบ พิจารณาความสมเหตุสมผลของคำตอบมีดินสอ 50 แท่ง ถ้าแบ่งเป็น 5 กลุ่ม กลุ่มละๆ กัน จะได้กลุ่มละ 50 ÷ 5 = 10 แท่งนำไปแจก 4 กลุ่ม คิดเป็น 4 × 10 = 40 แท่งแสดงว่า เหลือดินสอ 50 – 40 = 10 แท่งดังนั้น แจก 40 แท่ง เหลือดินสอ 10 แท่ง เป็นคำตอบที่สมเหตุสมผล 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="1.6" data-title="1.6 การบวก ลบ คูณ หารระคน"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 1.6</span><b>🧮 การบวก ลบ คูณ หารระคน</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s094" data-title="1.6 การบวก ลบ คูณ หารระคน · หน้า 94"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 94 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ข้อตกลงเกี่ยวกับลำดับขั้นการคำนวณที่มากกว่า 1 ขั้นตอน ขั้นที่ 3 ขั้นที่ 1 ขั้นที่ 2 บวก หรือ ลบ โดยคำนวณจากซ้ายไปขวา คำนวณในวงเล็บ คูณ หรือ หาร โดยคำนวณจากซ้ายไปขวา 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s095" data-title="1.6 การบวก ลบ คูณ หารระคน · หน้า 95"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 95 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาผลลัพธ์ของ ลำดับขั้นการคำนวณ12 ขั้นที่ 1 หาผลลัพธ์ของ 1 - 1 - = - = - = - = ×2336951015412515 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s096" data-title="1.6 การบวก ลบ คูณ หารระคน · หน้า 96"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 96 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 2 หาผลลัพธ์ของ ÷ ÷ = × = = = 1 ดังนั้น = 1 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s097" data-title="1.6 การบวก ลบ คูณ หารระคน · หน้า 97"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 97 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาผลลัพธ์ของ 1 ลำดับขั้นการคำนวณ12 ขั้นที่ 1 หาผลลัพธ์ของ ÷ ÷ = × = 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s098" data-title="1.6 การบวก ลบ คูณ หารระคน · หน้า 98"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 98 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 2 หาผลลัพธ์ของ 1 - 1 - = - = = - = ดังนั้น = ×2336951015412515 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s099" data-title="1.6 การบวก ลบ คูณ หารระคน · หน้า 99"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 99 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาผลลัพธ์ของ 1 ลำดับขั้นการคำนวณ12 วิธีทำ 1 1 - 1 + = - + = + = - + = + = + = + = = = 1ตอบ 1 ×23918271224364365 6788 4 8 12 16 20 24 28 32 36 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s100" data-title="1.6 การบวก ลบ คูณ หารระคน · หน้า 100"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 100 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ 2 1 - 1 + = - + = + = - + = = = 1ตอบ 1 ×2391827122436436567884812162024283236 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s101" data-title="1.6 การบวก ลบ คูณ หารระคน · หน้า 101"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 101 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาผลลัพธ์ของ ลำดับขั้นการคำนวณ12 วิธีทำ 1 ÷ 9 × 1 = - + = = 1 = = = ตอบ 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s102" data-title="1.6 การบวก ลบ คูณ หารระคน · หน้า 102"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 102 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ 2 ÷ 9 × 1 = × × = = ตอบ 01 02 03 04 05 06 07"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="1.7" data-title="1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 1.7</span><b>🧩 โจทย์ปัญหาการบวก ลบ คูณ หารระคน</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s104" data-title="1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน · หน้า 104"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 104 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="โจทย์ถาม ความยาวของลวดที่เหลือ โจทย์บอก ลวดขดหนึ่งยาว 8 เมตร ตัดเป็นเส้นยาวเส้นละ เมตร จำนวน 30 เส้น หาคำตอบได้อย่างไร ตัวอย่างที่ 1 ลวดขดหนึ่งยาว 8 เมตร ตัดเป็นเส้นยาวเส้นละ เมตร จำนวน 30 เส้น จะเหลือลวดยาวกี่เมตร ต้องรู้ความยาวของลวดที่ตัดไปทั้งหมด หาความยาวของลวดที่ตัดไปทั้งหมด นำจำนวนเส้นลวดที่ต"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s105" data-title="1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน · หน้า 105"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 105 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจคำตอบ พิจารณาความสมเหตุสมผลของคำตอบ เนื่องจากตัดลวดเส้นละ เมตร แสดงว่า ลวด 1 เมตร ตัดได้ 4 เส้น สรุปคำตอบ จะเหลือลวดยาว เมตร ลวด 8 เมตร จะตัดได้ 8 × 4 = 32 เส้น จากโจทย์ตัดลวดเพียง 30 เส้น จะได้ว่า ความยาวของลวดที่เหลือ เท่ากับความยาวของลวด 32 – 30 = 2 เส้น ซึ่งยาวน้อยกว่า 1 เมตร แสดงว่า เมตร เป"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s106" data-title="1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน · หน้า 106"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 106 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีคิด ตัวอย่างที่ 2 แม่ซื้อแตงกวา กิโลกรัม และมะเขือเปราะ กิโลกรัม ถ้าแตงกวาและมะเขือเปราะราคากิโลกรัม 24 บาท แม่ต้องจ่ายเงินทั้งหมดเท่าใด มะเขือเปราะ กก. น้ำหนักรวมทั้งหมด และแม่ซื้อกิโลกรัม 24 บาท แตงกวา กก. 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s107" data-title="1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน · หน้า 107"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 107 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ แม่ซื้อแตงกวา กิโลกรัม คำตอบ ซื้อมะเขือเปราะ กิโลกรัม แม่ซื้อแตงกวาและมะเขือเปราะ + = + กิโลกรัม แม่ต้องจ่ายเงินทั้งหมด 30 บาท = กิโลกรัม ดังนั้น แม่ต้องจ่ายเงินทั้งหมด × 24 = 30 บาท 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s108" data-title="1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน · หน้า 108"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 108 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจคำตอบ พิจารณาความสมเหตุสมผลของคำตอบเนื่องจาก แม่ซื้อมะเขือเปราะ กก. ซึ่ง มากกว่า แต่น้อยกว่า 1และซื้อแตงกวา กก. ซึ่ง น้อยกว่า 1แสดงว่า แม่ซื้อแตงกวาและมะเขือเปราะมากกว่า 1 กก. แต่น้อยกว่า 2 กก.ถ้าซื้อแตงกวาและมะเขือเปราะ 1 กก. จ่ายเงิน 24 บาทถ้าซื้อแตงกวาและมะเขือเปราะ 2 กก. จ่ายเงิน 2 × 24 = 48"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s109" data-title="1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน · หน้า 109"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 109 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีคิด ตัวอย่างที่ 3 บริษัทรับเหมา สร้างถนน 2 กิโลเมตร สร้างไปแล้ว กิโลเมตร ถ้าบริษัทสร้างถนนส่วนที่เหลือเฉลี่ยวันละ กิโลเมตร จะสร้างส่วนที่เหลือเสร็จในเวลากี่วัน สร้างส่วนที่เหลือเฉลี่ยวันละ กม. ถนน 2 กม. สร้างแล้ว กม. 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s110" data-title="1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน · หน้า 110"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 110 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ บริษัทสร้างถนนยาว 2 กิโลเมตร คำตอบ สร้างไปแล้ว กิโลเมตร เหลือถนนที่ต้องสร้างอีก 2- = - กิโลเมตร จะสร้างส่วนที่เหลือเสร็จใน 7 วัน = - กิโลเมตร บริษัทสร้างถนนส่วนที่เหลือเฉลี่ยวันละ กิโลเมตร = กิโลเมตร ดังนั้น จะสร้างส่วนที่เหลือเสร็จในเวลา ÷ = × กิโลเมตร = 7 วัน 01 02 03 04 05 06 07"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s111" data-title="1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน · หน้า 111"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 111 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจคำตอบ พิจารณาความสมเหตุสมผลของคำตอบถนนยาว 2 กม. ซึ่งยาวประมาณ 3 กม. สร้างไปแล้ว กม. ซึ่งยาวประมาณ 1 กม.เหลือประมาณ 3 – 1 = 2 กม. สร้างวันละ กม. ซึ่งยาวประมาณ = กม.จะได้ว่า ถนน กม. สร้าง 1 วัน แสดงว่า ถนน 1 กม. สร้าง 4 วัน ถนน 2 กม. สร้าง 2 × 4 = 8 วันดังนั้น 7 วัน เป็นคำตอบที่สมเหตุสมผล 01 02 03"></div></div></div>
+  
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
+  <div class="kru fig"><span class="av"><img src="k10.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>จบบทที่ 1 เศษส่วน</h2>
+  <div class="card c-yellow center endpic"><img src="k9.webp" alt="ครูอู๋ชูถ้วยรางวัล"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="f11.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="toc"><button data-jump="1.1"><span class="e">⚖️</span><span>ทบทวน 1.1 การเปรียบเทียบและเรียงลำดับ</span></button><button data-jump="1.2"><span class="e">➕</span><span>ทบทวน 1.2 การบวก การลบเศษส่วน</span></button><button data-jump="1.3"><span class="e">✖️</span><span>ทบทวน 1.3 การคูณเศษส่วน</span></button><button data-jump="1.4"><span class="e">➗</span><span>ทบทวน 1.4 การหารเศษส่วน</span></button><button data-jump="1.5"><span class="e">📝</span><span>ทบทวน 1.5 โจทย์ปัญหา</span></button><button data-jump="1.6"><span class="e">🧮</span><span>ทบทวน 1.6 การบวก ลบ คูณ หารระคน</span></button><button data-jump="1.7"><span class="e">🧩</span><span>ทบทวน 1.7 โจทย์ปัญหาการบวก ลบ คูณ หารระคน</span></button></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn" style="--c:var(--purple)" href="../m5-math-hub/">🏠 หน้ารวม ป.5</a><a class="btn ghost" href="../m5-ch2-decimals/">บทถัดไป ▶</a></div>
+  <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.5 สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m5-ch1-fractions", STORE_PREFIX = 'kruau-p5-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [{"q": "ข้อใดถูกต้อง", "c": ["{3/4} > {2/3}", "{3/4} < {2/3}", "{3/4} = {2/3}", "เปรียบเทียบไม่ได้"], "a": 0, "w": "ทำตัวส่วนเป็น 12: {9/12} กับ {8/12} จึงได้ {3/4} > {2/3}"}, {"q": "{2/5} + {1/3} = ?", "c": ["{11/15}", "{3/8}", "{3/15}", "{2/15}"], "a": 0, "w": "{6/15} + {5/15} = {11/15}"}, {"q": "{2 1/2} − {1 3/4} = ?", "c": ["{3/4}", "{1 1/4}", "{1 3/4}", "{1/4}"], "a": 0, "w": "{10/4} − {7/4} = {3/4}"}, {"q": "{3/4} ของ 20 เท่ากับเท่าใด", "c": ["15", "12", "16", "5"], "a": 0, "w": "20 ÷ 4 = 5 แล้ว 5 × 3 = 15"}, {"q": "{2/3} × {9/10} = ?", "c": ["{3/5}", "{18/13}", "{11/13}", "{2/5}"], "a": 0, "w": "{18/30} = {3/5}"}, {"q": "ส่วนกลับของ {4/7} คือข้อใด", "c": ["{7/4}", "{4/7}", "{1/7}", "{3/7}"], "a": 0, "w": "{4/7} × {7/4} = 1 ส่วนกลับจึงเป็น {7/4}"}, {"q": "6 ÷ {3/4} = ?", "c": ["8", "{9/2}", "{1/8}", "18"], "a": 0, "w": "6 × {4/3} = 8"}, {"q": "{1/2} + {3/4} × 2 = ?", "c": ["2", "{5/2}", "{3/2}", "{5/4}"], "a": 0, "w": "คูณก่อน: {3/4} × 2 = {3/2} แล้ว {1/2} + {3/2} = 2"}];
+
+/* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
+var PRAISE = [['k11', 'เยี่ยมมาก!'], ['k2', 'สุดยอด!'], ['k6', 'เก่งมาก!'], ['k9', 'แชมป์เลย!'], ['k11', 'ปรบมือให้เลย!'], ['k7', 'เข้าใจแล้วใช่ไหม']];
+function ppPaint(sl, quiet) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, z = sl.querySelector('.ppz'), img = z.querySelector('img:not(.ghost)');
+  var src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (img.getAttribute('src') && img.getAttribute('src') !== src && !quiet) {
+    var g = img.cloneNode(); g.className = 'ghost'; g.removeAttribute('alt'); z.insertBefore(g, img.nextSibling);
+    var fade = function () { g.style.opacity = 0; setTimeout(function () { g.remove(); }, 400); };
+    img.onload = function () { img.onload = null; requestAnimationFrame(fade); };
+    setTimeout(fade, 900);
+  }
+  img.src = src;
+  if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
+  sl.querySelector('.ppbox').classList.toggle('can', k < n);
+  var b = sl.querySelector('[data-pstep]');
+  if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+  var d = sl.querySelector('.ppbox .done');
+  if (d) d.remove();
+  if (n && k >= n) {
+    var p = PRAISE[(+sl.getAttribute('data-src').slice(-3)) % PRAISE.length];
+    d = document.createElement('div'); d.className = 'done';
+    d.innerHTML = '<span>' + p[1] + '</span><img src="' + p[0] + '.webp" alt="">';
+    sl.querySelector('.ppbox').appendChild(d);
+    if (!quiet) { Kit.sound.good(); if (Math.random() < .35) Kit.confetti(); }
+  }
+}
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl, 1); } }
+function ppTools(sl, mode) {
+  ['zoom'].forEach(function (m) {
+    var on = m === mode && !sl.classList.contains(m);
+    sl.classList.toggle(m, on);
+    sl.querySelector('[data-' + m + ']').classList.toggle('on', on);
+  });
+  if (!sl.classList.contains('zoom')) sl.querySelector('.ppz').style.transformOrigin = '50% 50%';
+  sl.querySelector('.ppbox').classList.toggle('noswipe', sl.classList.contains('zoom'));
+}
+/* ---------- จับเวลา ---------- */
+var TM = { el: null, end: 0, iv: 0 };
+function tmShow() {
+  if (!TM.el) {
+    TM.el = document.createElement('div'); TM.el.className = 'timer';
+    document.body.appendChild(TM.el);
+  }
+  clearInterval(TM.iv); TM.el.classList.remove('end');
+  TM.el.innerHTML = '⏱️ <span class="opts"><button data-m="1">1 นาที</button><button data-m="2">2</button><button data-m="3">3</button><button data-m="5">5</button></span><button class="x" aria-label="ปิด">✖</button>';
+  TM.el.classList.add('show');
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show'); };
+  Array.prototype.forEach.call(TM.el.querySelectorAll('[data-m]'), function (b) { b.onclick = function () { tmStart(+b.getAttribute('data-m')); }; });
+}
+function tmStart(m) {
+  TM.end = Date.now() + m * 60000;
+  TM.el.innerHTML = '⏱️ <span class="t"></span><button class="x" aria-label="หยุด">✖</button>';
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show', 'end'); };
+  var t = TM.el.querySelector('.t');
+  function tick() {
+    var r = Math.max(0, Math.ceil((TM.end - Date.now()) / 1000));
+    t.textContent = Math.floor(r / 60) + ':' + ('0' + r % 60).slice(-2);
+    if (!r) { clearInterval(TM.iv); TM.el.classList.add('end'); Kit.sound.win(); Kit.toast('⏰ หมดเวลา! มาดูเฉลยกันนะ'); }
+  }
+  tick(); TM.iv = setInterval(tick, 250); Kit.sound.tap();
+}
+(function () {
+  var go = Kit.go;
+  Kit.go = function (n, instant) {
+    var cur = Kit.slides[Kit.cur];
+    if (!instant && cur && cur.classList.contains('pslide')) {
+      var N = +cur.getAttribute('data-steps'), k = cur._k || 0;
+      if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
+      if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
+    }
+    if (cur && cur.classList.contains('pslide') && n !== Kit.cur) ppTools(cur, null);
+    var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
+    go(n, instant);
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t, 1); }
+    for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+  };
+})();
+SETUP = function () {
+  setupToc();
+  Kit.slides.forEach(function (sl) {
+    if (!sl.classList.contains('pslide')) return;
+    var box = sl.querySelector('.ppbox'), z = sl.querySelector('.ppz'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
+    box.addEventListener('click', function (e) {
+      if (sl.classList.contains('zoom')) {
+        var q = box.getBoundingClientRect();
+        z.style.transformOrigin = ((e.clientX - q.left) / q.width * 100) + '% ' + ((e.clientY - q.top) / q.height * 100) + '%';
+        return;
+      }
+      adv();
+    });
+    if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+    sl.querySelector('[data-zoom]').onclick = function () { ppTools(sl, 'zoom'); Kit.sound.tap(); if (sl.classList.contains('zoom')) Kit.toast('🔎 แตะตรงที่อยากดูใกล้ ๆ'); };
+    sl.querySelector('[data-timer]').onclick = function () { tmShow(); Kit.sound.tap(); };
+  });
+};
+
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast('✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil ได้ วางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    if (e.pointerType === 'pen') penSeen = true;
+    else if (e.pointerType === 'touch' && penSeen) return; /* มีปากกาแล้ว ไม่นับฝ่ามือ */
+    e.preventDefault(); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
+    cur = { c: color, p: [pt(e)], id: e.pointerId }; list().push(cur); draw();
+  });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+</script>
+</body>
+</html>

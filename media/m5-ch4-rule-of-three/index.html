@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 4 บัญญัติไตรยางศ์ · คณิตศาสตร์ ป.5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#FF7A45;--main-deep:#E0561C;--glow:#FFE1CC}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+
+
+.nav .dots{display:none}
+.nav{justify-content:space-between}
+.pslide{padding:8px clamp(8px,2vw,24px) 8px}
+.pslide .inner.pp{max-width:none;height:100%;gap:6px}
+.pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
+.ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.ppbox{position:relative;width:min(100cqw,calc(100cqh * 16 / 9));aspect-ratio:16/9;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08);overflow:hidden;box-sizing:border-box}
+.ppz{position:absolute;inset:0;transition:transform .35s ease;transform-origin:50% 50%}
+.ppz img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ppz img.ghost{transition:opacity .35s ease;pointer-events:none}
+.ppbox.can{cursor:pointer}
+.pslide.zoom .ppbox{cursor:zoom-out}
+.pslide.zoom .ppz{transform:scale(2.2)}
+.ppbox .done{position:absolute;right:10px;bottom:8px;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:kpop .5s ease-out both}
+.ppbox .done img{height:clamp(60px,14cqh,110px);width:auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.ppbox .done span{background:#fff;border:3px solid var(--main);border-radius:14px 14px 4px 14px;padding:2px 10px;font-weight:700;color:var(--main-deep);margin-bottom:30px;white-space:nowrap;font-size:clamp(.8rem,2.2vw,1rem)}
+.tools{display:flex;align-items:center;gap:6px}
+.tl{width:40px;height:40px;border-radius:12px;border:2px solid var(--main);background:#fff;font-size:1.15rem;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--glow)}
+.tl.on{background:var(--main);box-shadow:0 3px 0 var(--main-deep)}
+.timer{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:6px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:4px 6px 4px 12px;font-weight:700;box-shadow:0 4px 0 var(--main-deep);font-size:1.15rem}
+.timer.show{display:flex}
+.timer .opts{display:flex;gap:4px}
+.timer .opts button,.timer .x{border:2px solid var(--main);background:var(--glow);border-radius:999px;padding:2px 10px;font-weight:700;min-height:36px}
+.timer .t{font-variant-numeric:tabular-nums;min-width:3.2em;text-align:center;color:var(--main-deep)}
+.timer.end{animation:tshake .5s 3;background:#FFE3E3}
+@keyframes tshake{25%{transform:translateX(-50%) rotate(-4deg)}75%{transform:translateX(-50%) rotate(4deg)}}
+@media (max-width:620px){.tl{width:34px;height:34px;font-size:1rem}.pphead .secbadge{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.board{position:relative;width:min(100%,720px);container-type:inline-size;animation:kpop .55s ease-out both}
+.board img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15))}
+.chalk{position:absolute;left:56%;top:12%;width:39%;height:62%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqw;color:#fff;text-align:center;text-shadow:0 0 2px rgba(255,255,255,.5)}
+.chalk .cn{font-size:4.2cqw;color:#FFE97A;border-bottom:.4cqw dashed #FFE97A;padding:0 2cqw}
+.chalk b{font-size:4.6cqw;line-height:1.3;font-weight:700}
+.secslide .ready{font-weight:700;color:var(--ink-soft)}
+.ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
+.ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
+.ppctl .btn{min-height:44px;padding:6px 18px}
+.secslide{min-height:100%;justify-content:center;align-items:center;text-align:center}
+.secnum{display:grid;place-items:center;width:clamp(110px,18vw,150px);aspect-ratio:1;border-radius:50%;background:var(--main);color:#fff;font-weight:700;font-size:clamp(2.2rem,6vw,3.2rem);box-shadow:0 8px 0 var(--main-deep)}
+.secslide h1{color:var(--main-deep);font-size:clamp(1.7rem,5vw,2.8rem);text-shadow:0 4px 0 var(--glow)}
+.subs{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:620px;width:100%}
+.subs div{background:#fff;border:3px solid var(--main);border-radius:16px;padding:8px 14px;font-weight:700;text-align:left;font-size:clamp(1rem,2.6vw,1.2rem)}
+.subs b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--main);color:#fff;margin-right:8px}
+.secslide .kru{max-width:680px;width:100%;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🧮</span>
+  <div class="ttl"><b>บทที่ 4 บัญญัติไตรยางศ์</b><small>คณิตศาสตร์ ป.5 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m5-math-hub/" aria-label="หน้ารวม ป.5" title="หน้ารวม ป.5">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.5 · บทที่ 4</span>
+    <h1>บัญญัติไตรยางศ์</h1>
+    <p class="sub">แก้โจทย์ปัญหาการคูณและการหารด้วยบัญญัติไตรยางศ์</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 4</h2>
+  <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เตรียมความพร้อม</span></button><button data-jump="4.1"><span class="e">🧮</span><span>4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="5" data-src="img/s003" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เตรียมความพร้อม 1 จับคู่โจทย์ทางซ้ายกับโจทย์ทางขวาที่มีผลลัพธ์เท่ากัน 1) 48 × 3 ÷ 12 1) 48 × 3 ÷ 12 1) 48 × 3 ÷ 12 1) 48 × 3 ÷ 12 1) 48 × 3 ÷ 12 A) 260 ÷ 25 × 10 B) 10 × 240 ÷ 3 C) 260 ÷ 10 × 25 D) 48 × E) 240 × 3 ÷ 10 F) 260 × 3 ÷ 10 G) 12 × 01"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s004" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 หาผลคูณ 1) × 2002) 300 × 3) × 48 4) 56 × 5) × 1053) 51 × 48 200 20 32 147 68 01"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s005" data-title="เตรียมความพร้อม · หน้า 5"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 หาคำตอบ 1) ดารณีซื้อดินสอ 3 แท่ง จ่ายเงิน 24 บาท ดินสอราคาแท่งละเท่าใดระยะทาง 33 กิโลเมตร จินดาใช้เวลาเดินทาง 4 ชั่วโมง เฉลี่ยแล้วจินดาใช้เวลาเดินทางชั่วโมงละกี่กิโลเมตรไข่ราคาฟองละ 4.75 บาท โกวิทซื้อไข่ 6 ฟอง จ่ายเงินเท่าใดน้ำผลไม้ 1.25 ลิตร อุษณีย์แบ่งใส่แก้ว 5 ใบ ใบละเท่าๆ กัน แก้วแต่ละใบมีน้ำผ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s006" data-title="เตรียมความพร้อม · หน้า 6"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4 แสดงวิธีหาคำตอบ 1) นิดมีส้มโอ 54 ผล ขายไป ของส้มโอทั้งหมด นิดขายส้มโอกี่ผล วิธีทำ นิดมีส้มโอ 54 ผล ขายไป ของส้มโอทั้งหมด นิดขายส้มโอไป × 54 = 9 ผลตอบ ๙ ผล 2) ลุงอำนวยมีพื้นที่ปลูกข้าว 3,600 ตารางวา เป็นพื้นที่ปลูกข้าวเหนียว ของพื้นที่ทั้งหมด ที่เหลือเป็นพื้นที่ปลูกข้าวเจ้า ลุงอำนวยปลูกข้าวเจ้าคิดเ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s007" data-title="เตรียมความพร้อม · หน้า 7"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3) นักเรียนชั้น ป.5 มี 72 คน เป็นนักเรียนชาย ของนักเรียนทั้งหมด ชั้น ป.5 มีนักเรียนหญิงกับนักเรียนชายต่างกันกี่คน วิธีทำ นักเรียนชั้น ป.5 มี 72 คน เป็นนักเรียนชาย ของนักเรียนทั้งหมด ชั้น ป.5 มีนักเรียนชาย × 72 = 30 คน จะได้ว่าชั้น ป.5 มีนักเรียนหญิง 72 – 30 = 40 คน ดังนั้น ชั้น ป.5 มีนักเรียนหญิงกับ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s008" data-title="เตรียมความพร้อม · หน้า 8"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5) นักเรียนชั้น ป.5 มี 72 คน เป็นนักเรียนชาย ของนักเรียนทั้งหมด ชั้น ป.5 มีนักเรียนหญิงกับนักเรียนชายต่างกันกี่คน วิธีทำ บริษัทรับเหมาทำสัญญาสร้างถนน 20 กิโลเมตร ช่วงแรกสร้างไปแล้ว ของทั้งหมด และช่วงที่สองสร้างอีก ของทั้งหมด บริษัทสร้างถนนไปแล้ว + = + ของทั้งหมด = + ของทั้งหมด = ของทั้งหมด หรือ คิดเ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="4.1" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 4.1</span><b>🧮 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s010" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 10"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 น้ำปลา 3 ลิตร นำมาบรรจุขวดปริมาณเท่ากัน ได้ 6 ขวด น้ำปลา 1 ลิตร บรรจุขวดได้กี่ขวด สิ่งที่โจทย์ถาม จำนวนขวดที่ใช้สำหรับบรรจุน้ำปลา 1 ลิตร สิ่งที่โจทย์บอก น้ำปลา 3 ลิตร นำมาบรรจุขวดปริมาณเท่ากันได้ 6 ขวด นำจำนวนขวดทั้งหมดหารด้วยปริมาณน้ำปลาที่ใช้บรรจุขวด ซึ่งจะได้ว่า 6 ÷ 3 = 2 ขวด เพราะน้ำปลา 3 ลิต"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s011" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 11"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 น้ำดื่ม 1 ขวด ราคา 8 บาท อ้อยซื้อน้ำดื่ม 5 ขวด จ่ายเงินเท่าใด สิ่งที่โจทย์ถาม จำนวนเงินที่อ้อยต้องจ่ายเมื่อซื้อน้ำดื่ม 5 ขวด สิ่งที่โจทย์บอก น้ำดื่ม 1 ขวด ราคา 8 บาท นำจำนวนน้ำดื่มที่ซื้อ คูณกับ ราคาน้ำดื่ม 1 ขวดจะได้ 5 × 8 = 40 บาท เพราะจำนวนเงินที่ต้องจ่ายเพิ่มขึ้นครั้งละ 8 บาท จะหาจำนวนเงินที่"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s012" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 12"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 วิธีทำ ข้าวสาร 5 กิโลกรัม นิดหุงรับประทานมื้อละเท่าๆ กันได้ 20 มื้อ ข้าวสาร 1 กิโลกรัม นิดหุงรับประทานได้กี่มื้อ ตอบ ๔ มื้อ นิดหุงได้20มื้อ ข้าวสาร 1 กิโลกรัม นิดหุงได้20 ÷ 5 =4มื้อ ดังนั้น ข้าวสาร 1 กิโลกรัม นิดหุงรับประทานได้ 4 มื้อ ข้าวสาร5กิโลกรัม"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s013" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 13"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 วิธีทำ เก่งมีสี 4 กระป๋อง แต่ละกระป๋องใช้ทาผนังได้ 50 ตารางเมตร เก่งใช้สีทั้งหมดทาผนังได้กี่ตารางเมตร ตอบ ๒๐๐ ตารางเมตร สี 1 กระป๋องใช้ทาผนังได้50ตารางเมตร สี 4 กระป๋องใช้ทาผนังได้4 ÷ 50 =200ตารางเมตร ดังนั้น เก่งใช้สีทั้งหมดทาผนังได้ 200 ตารางเมตร เก่งมีสี4กระป๋อง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s014" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 14"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 8 แสดงวิธีหาคำตอบ 1 ปลากะพง 2 กิโลกรัม ราคา 500 บาท ปลากะพง 1 กิโลกรัม ราคาเท่าใด ปลากะพง 2 กิโลกรัม ราคา500บาทปลากะพง 1 กิโลกรัม ราคา500 ÷ 2 =250บาทดังนั้น ปลากะพง 1 กิโลกรัม ราคา 250 บาท วิธีทำ ตอบ ๒๕๐ บาท 2 จินดานำข้าวหอมมะลิ 2,000 กรัม บรรจุถุง ถุงละเท่าๆ กันได้ 4 ถุง ข้าวหอมมะลิหน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s015" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 15"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 สมบูรณ์ทำงาน 6 วัน ได้รับค่าจ้าง 2,100 บาท สมบูรณ์ได้รับค่าจ้างวันละเท่าใด ได้รับค่าจ้าง2,100บาทสมบูรณ์ทำงาน6วันสมบูรณ์ได้รับค่าจ้างวันละ2,100 ÷ 6 =350บาทดังนั้น สมบูรณ์ได้รับค่าจ้างวันละ 350 บาท วิธีทำ ตอบ ๒๕๐ บาท 4 ในการจัดค่ายคณิตศาสตร์ ครู 8 คน ดูแลนักเรียน 240 คน ถ้าครูแต่ละคนดูแลนักเรียนจำนว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s016" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 16"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 ชุดนักเรียน 1 ชุด ราคา 325 บาท สมเกียรติซื้อชุดนักเรียน 3 ชุด จ่ายเงินเท่าใด ชุดนักเรียน 1 ชุด ราคา325บาทสมเกียรติซื้อชุดนักเรียน3ชุดสมเกียรติจ่ายเงิน3 × 325 =975บาทดังนั้น สมเกียรติซื้อชุดนักเรียน 3 ชุด จ่ายเงิน 975 บาท วิธีทำ ตอบ ๙๗๕ บาท 6 น้ำส้มคั้น 1 ลิตร ใช้ส้ม 45 ผล ถ้าต้องการซื้อส้มคั้น 15 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s017" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 17"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="7 รถยนต์คันหนึ่งใช้น้ำมัน 1 ลิตร แล่นได้ระยะทางประมาณ 13 กิโลเมตร ถ้ารถคันนี้มีน้ำมัน 32 ลิตร จะแล่นได้ระยะทางประมาณกี่กิโลเมตร น้ำมัน 1 ลิตร แล่นได้ระยะทางประมาณ13กิโลเมตรมีน้ำมัน32ลิตรจะแล่นได้ระยะทางประมาณ32 × 13 =416กิโลเมตรดังนั้น ถ้ารถคันนี้มีน้ำมัน 32 ลิตร จะแล่นได้ระยะทางประมาณ 416 กิโลเมตร "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="13" data-src="img/s018" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 18"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 ขนม 4 ห่อ ราคา 24 บาทถ้าป้าซื้อขนม 10 ห่อ จ่ายเงินเท่าใด สิ่งที่โจทย์ถาม จำนวนเงินที่ป้าต้องจ่ายเมื่อซื้อขนม 10 ห่อ สิ่งที่โจทย์บอก ขนม 4 ห่อ จ่ายเงินเป็นราคา 24 บาท รู้ราคาของขนม 1 ห่อ นำจำนวนเงินที่ซื้อขนม หารด้วย จำนวนขนม 4 ห่อจะได้ขนม 1 ห่อ ราคา 24 ÷ 4 = 6 บาท จะหาจำนวนเงินที่ซื้อขนม 10 ห่อ จ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/13)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s019" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 19"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 โจทย์ปัญหาการคูณและการหารที่แสดงความสัมพันธ์ระหว่างปริมาณของสิ่ง 2 สิ่ง สิ่งละ 2 จำนวน โดยโจทย์กำหนดปริมาณของสิ่ง 2 สิ่ง ให้ 3 จำนวน เป็นปริมาณของสิ่งเดียวกัน 2 จำนวน และเป็นปริมาณของอีกสิ่งหนึ่ง 1 จำนวน อาจหาปริมาณของอีกสิ่งหนึ่ง อีก 1 จำนวนได้ โดยใช้ บัญญัติไตรยางศ์ การเขียนแสดงวิธีหาคำตอบโดยใช"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s020" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 20"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 ขนม 4 ห่อ ราคา 24 บาทถ้าป้าซื้อขนม 10 ห่อ จ่ายเงินเท่าใด เขียนแสดงวิธีหาคำตอบได้ ดังนี้ ถ้าป้าซื้อขนม1ห่อต้องจ่ายเงิน24 ÷ 4=บาทถ้าป้าซื้อขนม1ห่อต้องจ่ายเงิน24 ÷ 4=บาท ถ้าป้าซื้อขนม4ห่อต้องจ่ายเงิน24บาท ถ้าป้าซื้อขนม10ห่อต้องจ่ายเงิน4 × =60บาทถ้าป้าซื้อขนม10ห่อต้องจ่ายเงิน=60บาท ดังนั้น ถ้าป้าซื้อ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s021" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 21"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 ส้ม 8 ถุง ถุงละเท่าๆ กัน นับรวมได้ 40 ผล ถ้าอุดรซื้อส้ม 6 ถุง จะได้ส้มทั้งหมดกี่ผล วิธีทำส้ม8ถุงมี40ผล ส้ม1ถุงมี40 ÷ 8=ผลส้ม1ถุงมี40 ÷ 8=ผล ส้ม6ถุงมี6 × =30ผลส้ม6ถุงมี=30ผล ดังนั้น ถ้าอุดรซื้อส้ม 6 ถุง จะได้ส้มทั้งหมด 30 ผล ตอบ๓๐ ผล โจทย์ถามจำนวนผลส้มจึงเขียนจำนวนผลส้มไว้ทางขวา 30 ผล เป็นคำตอบที่"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s022" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 22"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 ร้านค้าจัดรายการส่งเสริมการขาย โดยแจ้งว่าถ้าซื้อสมุด 3 เล่ม จะแถมดินสอ 2 แท่ง หลินซื้อสมุด 1 โหล หลินได้แถมดินสอกี่แท่ง วิธีทำซื้อสมุด3เล่มแถมดินสอ2แท่ง ซื้อสมุด1เล่มแถมดินสอ2 ÷ 3=แท่งซื้อสมุด1เล่มแถมดินสอ2 ÷ 3=แท่ง ซื้อสมุด6เล่มแถมดินสอ12 × =8แท่งซื้อสมุด6เล่มแถมดินสอ=8แท่ง ดังนั้น หลินซื้อสมุด "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s023" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 23"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 หน่อยมีน้ำ 12 ถัง ถังละเท่าๆ กัน คิดเป็นปริมาณน้ำทั้งหมด 222 ลิตร เมื่อใช้น้ำไปจำนวนหนึ่ง ปรากฏว่ายังเหลือน้ำอีก 8 ถัง หน่อยเหลือน้ำกี่ลิตร วิธีทำน้ำ12ถังคิดเป็น222ลิตร น้ำ1ถังคิดเป็นลิตรน้ำ1ถังคิดเป็นลิตร น้ำ8ถังคิดเป็น8 × =148ลิตรน้ำ8ถังคิดเป็น=148ลิตร ดังนั้น หน่อยเหลือน้ำ 148 ลิตร ตอบ๑๔๘ ลิตร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s024" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 24"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 12 แสดงวิธีหาคำตอบ 1 กิ๊บรินน้ำส้ม 4 ขวด ใส่แก้ว แก้วละเท่าๆ กันได้ 8 แก้ว ถ้ากิ๊บมีน้ำส้ม 10 ขวด จะรินได้กี่แก้ว 01 วิธีทำน้ำ4ขวดรินใส่แก้ว แก้วละเท่าๆ กันได้8แก้วน้ำส้ม1ขวดรินใส่แก้ว แก้วละเท่าๆ กันได้แก้วน้ำส้ม10ขวดรินใส่แก้ว แก้วละเท่าๆ กันได้10 × =20แก้วดังนั้น ถ้ากิ๊บมีน้ำส้ม 10 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s025" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 25"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 น้ำยาซักผ้า 6 ถุง ใช้ซักผ้าครั้งละเท่าๆ กันได้ 90 ครั้ง ถ้าอั๋นมีน้ำยาซักผ้า 10 ถุง จะใช้ซักผ้าได้กี่ครั้ง 01 วิธีทำน้ำยาซักผ้า6ถุงใช้ซักผ้าครั้งละเท่าๆ กันได้90ครั้งน้ำยาซักผ้า1ถุงใช้ซักผ้าครั้งละเท่าๆ กันได้ครั้งน้ำยาซักผ้า10ถุงใช้ซักผ้าครั้งละเท่าๆ กันได้10 × =150ครั้งดังนั้น ถ้าอั๋นมีน้ำยาซักผ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s026" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 26"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 กชพรมีกุหลาบ 100 ดอก นำมาจัดเป็นห่อ ห่อละเท่าๆ กันได้ 4 ห่อ ถ้ากชพรมีกุหลาบ 2,500 ดอก จะจัดได้ทั้งหมดกี่ห่อ 01 วิธีทำกุหลาบ100ดอกจัดเป็นห่อ ห่อละเท่าๆ กันได้4ห่อกุหลาบ1ดอกจัดเป็นห่อ ห่อละเท่าๆ กันได้ห่อกุหลาบ2,500ดอกจัดเป็นห่อ ห่อละเท่าๆ กันได้2,500 × =150ห่อดังนั้น ถ้ากชพรมีกุหลาบ 2,500 ดอก จะจัด"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s027" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 27"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4 การสอบคัดเลือกครั้งหนึ่งคะแนนเต็ม 400 คะแนน หยกสอบได้ 360 คะแนน ถ้าคิดคะแนนเต็ม 100 คะแนน หยกจะได้กี่คะแนน 01 วิธีทำคะแนนเต็ม400คะแนนหยกสอบได้360คะแนนคะแนนเต็ม1คะแนนหยกสอบได้คะแนนคะแนนเต็ม100คะแนนหยกสอบได้100 × =90คะแนนดังนั้น ถ้าคิดคะแนนเต็ม 100 คะแนน หยกจะได้ 90 คะแนนตอบ๑๐๐ ห่อวิธีทำคะแนนเต็ม400"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s028" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 28"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 ข้าวสาร 75 กิโลกรัม แตนนำมาบรรจุถุง ถุงละเท่าๆ กันได้ 6 ถุง ถ้าแตนมีข้าวสาร 50 กิโลกรัม จะบรรจุได้กี่ถุง 01 วิธีทำข้าวสาร75กิโลกรัมบรรจุถุง ถุงละเท่าๆ กันได้6ถุงข้าวสาร1กิโลกรัมบรรจุถุง ถุงละเท่าๆ กันได้ถุงข้าวสาร50กิโลกรัมบรรจุถุง ถุงละเท่าๆ กันได้50 × =4ถุงดังนั้น ถ้าแตนมีข้าวสาร 50 กิโลกรัม จะบ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s029" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 29"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="6 สมพรทำขนมบ้าปิ่น 42 ถาด ใช้มะพร้าวอ่อน 3 กิโลกรัม ถ้าลูกค้าสั่งขนมบ้าบิ่น 112 ถาด ต้องใช้มะพร้าวอ่อนกี่กิโลกรัม 01 วิธีทำขนมบ้าบิ่น42ถาดใช้มะพร้าวอ่อน3กิโลกรัมขนมบ้าบิ่น1ถาดใช้มะพร้าวอ่อน กิโลกรัมขนมบ้าบิ่น112ถาดใช้มะพร้าวอ่อน112 × =8กิโลกรัมดังนั้น ถ้าลูกค้าสั่งขนมบ้าบิ่น 112 ถาด ต้องใช้มะพร้าวอ่"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="13" data-src="img/s030" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 30"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 แม่ค้าขายขนม 6 ชิ้น ราคา 21 บาทแดงซื้อขนม 35 บาท จะได้กี่ชิ้น สิ่งที่โจทย์ถาม จำนวนขนมที่ได้ เมื่อซื้อ 35 บาท สิ่งที่โจทย์บอก ขนม 6 ชิ้น ราคา 21 บาท แดงซื้อ 35 บาท จะหาว่า เงิน 35 บาท ซื้อขนมได้กี่ชิ้น จะต้องรู้อะไรก่อน ต้องรู้ว่าเงิน 1 บาท ซื้อขนมได้กี่ชิ้น เงิน 1 บาท ซื้อขนมได้กี่ชิ้น จะหาได้อย"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/13)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s031" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 31"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 แม่ค้าขายขนม 6 ชิ้น ราคา 21 บาท แดงซื้อ 35 บาท จะได้ขนมกี่ชิ้น ถ้าแก้โจทย์ปัญหานี้ โดยใช้บัญญัติไตรยางศ์ จะต้องเขียนความสัมพันธ์ระหว่างปริมาณของสิ่ง 2 สิ่งตามโจทย์กำหนด โดยให้จำนวนของสิ่งที่ต้องการหาไว้ทางขวา ซึ่งเรียบเรียงใหม่ได้ ดังนี้ เงิน 21 บาท ซื้อขนมได้ 6 ชิ้น เงิน 35 บาท ซื้อขนมได้กี่ชิ้น"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s032" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 32"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 ต้อยเดินออกกำลังกายนาน 30 นาที ได้ระยะทาง 2 กิโลเมตร ถ้าต้อยต้องการเดินออกกำลังกายระยะทาง 5 กิโลเมตร ต้องใช้เวลาอย่างน้อยกี่นาที วิธีทำระยะทาง2กิโลเมตรต้อยใช้เวลาเดิน30นาที ซื้อสมุด1กิโลเมตรต้อยใช้เวลาเดิน2 ÷ 3=นาทีซื้อสมุด1กิโลเมตรต้อยใช้เวลาเดิน2 ÷ 3=นาที ซื้อสมุด5กิโลเมตรต้อยใช้เวลาเดิน5 × =75"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s033" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 33"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 15 แสดงวิธีหาคำตอบ 1 เชิดขับรถยนต์ระยะทาง 80 กิโลเมตร ใช้เวลา 50 นาที ถ้าเชิดขับรถด้วยอัตราเร็วเดียวกันนี้ 110 นาที จะได้ระยะทางเท่าใด 01 วิธีทำเวลา50นาทีเชิดขับรถยนต์ได้ระยะทาง80กิโลเมตรเวลา1นาทีเชิดขับรถยนต์ได้ระยะทาง กิโลเมตรเวลา110นาทีเชิดขับรถยนต์ได้ระยะทาง110 × =176กิโลเมตรดังนั้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s034" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 34"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 อาหารสุนัข 30 กิโลกรัม บอยใช้เลี้ยงสุนัขตัวหนึ่งได้ 12 วัน ในเดือนเมษายนบอยต้องซื้ออาหารให้สุนัขตัวนี้อย่างน้อยกี่กิโลกรัม 01 วิธีทำเวลา12วันบอยใช้อาหารเลี้ยงสุนัข30กิโลกรัมเวลา1วันบอยใช้อาหารเลี้ยงสุนัข กิโลกรัมเดือนเมษายนมี 30 วัน ใช้อาหารสุนัข1วันบอยใช้อาหารเลี้ยงสุนัข30 × =75กิโลกรัมดังนั้น ใน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s035" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 35"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 การใส่ปุ๋ยในนาข้าว ปุ๋ย 1 ตัน ใส่นาข้าวได้ 30 ไร่ ถ้าลุงสมมีนาข้าว 9 ไร่ ลุงสมต้องซื้อปุ๋ยอย่างน้อยกี่กิโลกรัม 01 วิธีทำ1 ตัน เท่ากับ 1,000 กิโลกรัมนาข้าว30ไร่ใช้ปุ๋ย1,000กิโลกรัมนาข้าว1ไร่ใช้ปุ๋ย กิโลกรัมนาข้าว1ไร่ใช้ปุ๋ย9 × =300กิโลกรัมดังนั้น ถ้าลุงสมมีนาข้าว 9 ไร่ ต้องซื้อปุ๋ยอย่างน้อย 300 กิโ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s036" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 36"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4 มาลินจ่ายค่าจ้างปูกระบื้องในห้องครัว 16 ตารางเมตร เป็นเงิน 5,120 บาท และจ่ายค่าปูกระเบื้องห้องเก็บของ 1,920 บาท ห้องเก็บของของมาลินมีพื้นที่เท่าใด 01 วิธีทำจ่ายเงินค่าจ้าง5,120บาทปูกระเบื้องได้พื้นที่16ตารางเมตรจ่ายเงินค่าจ้าง1บาทปูกระเบื้องได้พื้นที่ ตารางเมตรจ่ายเงินค่าจ้าง1,920บาทปูกระเบื้องได้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s037" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 37"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจ แสดงวิธีหาคำตอบ 1 น้ำดื่ม 5 ขวด ราคา 35 บาท เพชรซื้อน้ำดื่ม 20 ขวด ต้องจ่ายเงินเท่าใด 01 วิธีทำน้ำดื่ม5ขวดราคา35บาทน้ำดื่ม1ขวดราคา บาทน้ำดื่ม20ขวดราคา20 × =140บาทดังนั้น เพชรซื้อน้ำดื่ม 20 ขวด ต้องจ่ายเงิน 140 บาทตอบ๑๔๐ บาทวิธีทำน้ำดื่ม5ขวดราคา35บาทน้ำดื่ม1ขวดราคาบาทน้ำดื่ม20ขวดราค"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s038" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 38"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 ป้าภาขายมะม่วงโดยบรรจุมะม่วงใส่กล่อง 8 กล่อง กล่องละเท่าๆ กัน ใช้มะม่วง 96 ผลถ้าลูกค้าซื้อมะม่วง 3 กล่อง จะได้มะม่วงกี่ผล 01 วิธีทำบรรจุมะม่วง8กล่องกล่องละเท่าๆ กัน ใช้มะม่วง96ผลบรรจุมะม่วง1กล่องกล่องละเท่าๆ กัน ใช้มะม่วง ผลบรรจุมะม่วง3กล่องกล่องละเท่าๆ กัน ใช้มะม่วง3 × =36ผลดังนั้น ถ้าลูกค้าซื้อม"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s039" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 39"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 ก้องขับรถยนต์ระยะทาง 25 กิโลเมตร ใช้น้ำมัน 2 ลิตร ถ้าก้องใช้น้ำมันไป 40 ลิตร รถจะแล่นได้ระยะทางกี่กิโลเมตร 01 วิธีทำน้ำมัน2ลิตรรถยนต์แล่นได้ระยะทาง25กิโลเมตรน้ำมัน1ลิตรรถยนต์แล่นได้ระยะทาง กิโลเมตรน้ำมัน40ลิตรรถยนต์แล่นได้ระยะทาง40 × =500กิโลเมตรดังนั้น ถ้าก้องใช้น้ำมันไป 40 ลิตร รถจะแล่นได้ระยะทา"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s040" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 40"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4 สมุด 5 เล่ม ราคา 75 บาท โมจ่ายเงินซื้อสมุด 120 บาท จะได้กี่เล่ม 01 วิธีทำเงิน75บาทซื้อสมุดได้25กิโลเมตรเงิน1บาทซื้อสมุดได้ กิโลเมตรเงิน120บาทซื้อสมุดได้120 × =8เล่มดังนั้น โมต้องจ่ายเงินซื้อสมุด 120 บาท จะได้ 8 เล่มตอบ๘ เล่มวิธีทำเงิน75บาทซื้อสมุดได้25กิโลเมตรเงิน1บาทซื้อสมุดได้กิโลเมตรเงิน120บาทซ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s041" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 41"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 ข้าวสาร 15 กิโลกรัม ลักษณ์ใช้หุงได้ 6 สัปดาห์ สัปดาห์ละเท่าๆ กัน ถ้าลักษณ์มีข้าวสารเหลืออยู่ 20 กิโลกรัม จะใช้หุงได้กี่สัปดาห์ 01 วิธีทำข้าวสาร15กิโลกรัมหุงสัปดาห์ละเท่าๆ กันได้6สัปดาห์ข้าวสาร1กิโลกรัมหุงสัปดาห์ละเท่าๆ กันได้ สัปดาห์ข้าวสาร20กิโลกรัมหุงสัปดาห์ละเท่าๆ กันได้20 × =8สัปดาห์ดังนั้น ถ้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s042" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 42"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ มีวิธีแก้โจทย์ปัญหาต่อไปนี้ โดยใช้บัญญัติไตรยางศ์ได้อย่างไร 1 ออมสินซื้อข้าวโพดสด 4 ถุง ถุงละเท่าๆ กัน ได้ข้าวโพด 60 ฝัก ถ้าใบบัวซื้อข้าวโพดชนิดเดียวกันนี้ 5 ถุง จะได้ข้าวโพดกี่ฝัก 01 ตัวอย่างบรรทัดที่ 1 เขียนความสัมพันธ์ระหว่างจำนวนข้าวโพดเป็นถุง กับจำนวนข้าวโพดเป็นฝัก โดยให้จำนว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s043" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 43"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 43</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 หลินตัดเสื้อ 6 ตัว ใช้ผ้า 8 เมตร ถ้าหลินมีผ้า 100 เมตร จะใช้ตัดเสื้อแบบเดียวกันนี้ได้มากที่สุดกี่ตัว 01 ตัวอย่างบรรทัดที่ 1 เขียนความสัมพันธ์ระหว่างจำนวนเสื้อเป็นตัว กับความยาวของผ้าเป็นเมตร โดยให้ความยาวของผ้าเป็นเมตรอยู่ทางซ้าย และจำนวนเสื้อเป็นตัวอยู่ทางขวา จะได้ว่า ผ้ายาว 8 เมตร ใช้ตัดเย็บเสื้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
+  <div class="kru fig"><span class="av"><img src="k10.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>จบบทที่ 4 บัญญัติไตรยางศ์</h2>
+  <div class="card c-yellow center endpic"><img src="k9.webp" alt="ครูอู๋ชูถ้วยรางวัล"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="f11.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="toc"><button data-jump="4.1"><span class="e">🧮</span><span>ทบทวน 4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span></button></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m5-ch3-data/">◀ บทก่อนหน้า</a><a class="btn" style="--c:var(--purple)" href="../m5-math-hub/">🏠 หน้ารวม ป.5</a><a class="btn ghost" href="../m5-ch5-percent/">บทถัดไป ▶</a></div>
+  <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.5 สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m5-ch4-rule-of-three", STORE_PREFIX = 'kruau-p5-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [{"q": "ปากกา 3 ด้าม ราคา 45 บาท ปากกา 1 ด้ามราคาเท่าใด", "c": ["15 บาท", "135 บาท", "42 บาท", "48 บาท"], "a": 0, "w": "45 ÷ 3 = 15 บาท"}, {"q": "สมุด 4 เล่ม ราคา 60 บาท ถ้าซื้อ 7 เล่ม ต้องจ่ายเงินเท่าใด", "c": ["105 บาท", "84 บาท", "420 บาท", "67 บาท"], "a": 0, "w": "1 เล่ม 60 ÷ 4 = 15 บาท ดังนั้น 7 เล่ม 15 × 7 = 105 บาท"}, {"q": "รถวิ่ง 2 ชั่วโมง ได้ระยะทาง 150 กิโลเมตร ถ้าวิ่ง 5 ชั่วโมงด้วยอัตราเดิม จะได้ระยะทางเท่าใด", "c": ["375 กิโลเมตร", "300 กิโลเมตร", "750 กิโลเมตร", "155 กิโลเมตร"], "a": 0, "w": "150 ÷ 2 × 5 = 375 กิโลเมตร"}, {"q": "ขนม 5 ชิ้น ราคา 20 บาท มีเงิน 36 บาท ซื้อขนมได้กี่ชิ้น", "c": ["9 ชิ้น", "7 ชิ้น", "180 ชิ้น", "8 ชิ้น"], "a": 0, "w": "เงิน 20 บาทได้ 5 ชิ้น เงิน 36 บาทได้ 5 × 36 ÷ 20 = 9 ชิ้น"}, {"q": "ข้อใดเขียนแสดงวิธีหาคำตอบได้ถูกต้อง: ส้ม 6 ผล ราคา 30 บาท ส้ม 10 ผลราคาเท่าใด", "c": ["30 × 10 ÷ 6", "30 × 6 ÷ 10", "6 × 10 ÷ 30", "30 ÷ 6 ÷ 10"], "a": 0, "w": "ส้ม 1 ผลราคา 30 ÷ 6 บาท ส้ม 10 ผลจึงเป็น 30 × 10 ÷ 6 = 50 บาท"}, {"q": "ซื้อสมุด 3 เล่ม แถมดินสอ 2 แท่ง ถ้าซื้อสมุด 12 เล่ม จะได้ดินสอกี่แท่ง", "c": ["8 แท่ง", "6 แท่ง", "24 แท่ง", "18 แท่ง"], "a": 0, "w": "12 เล่ม เป็น 4 เท่าของ 3 เล่ม ได้ดินสอ 2 × 4 = 8 แท่ง"}, {"q": "เดิน 20 นาที ได้ระยะทาง 1 กิโลเมตร เดิน 3 กิโลเมตรต้องใช้เวลากี่นาที", "c": ["60 นาที", "23 นาที", "40 นาที", "80 นาที"], "a": 0, "w": "1 กิโลเมตรใช้ 20 นาที 3 กิโลเมตรใช้ 20 × 3 = 60 นาที"}, {"q": "ผ้า 8 เมตร ตัดเสื้อได้ 4 ตัว มีผ้า 30 เมตร ตัดเสื้อแบบเดียวกันได้มากที่สุดกี่ตัว", "c": ["15 ตัว", "16 ตัว", "60 ตัว", "7 ตัว"], "a": 0, "w": "เสื้อ 1 ตัวใช้ผ้า 8 ÷ 4 = 2 เมตร ผ้า 30 เมตรตัดได้ 30 ÷ 2 = 15 ตัว"}];
+
+/* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
+var PRAISE = [['k11', 'เยี่ยมมาก!'], ['k2', 'สุดยอด!'], ['k6', 'เก่งมาก!'], ['k9', 'แชมป์เลย!'], ['k11', 'ปรบมือให้เลย!'], ['k7', 'เข้าใจแล้วใช่ไหม']];
+function ppPaint(sl, quiet) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, z = sl.querySelector('.ppz'), img = z.querySelector('img:not(.ghost)');
+  var src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (img.getAttribute('src') && img.getAttribute('src') !== src && !quiet) {
+    var g = img.cloneNode(); g.className = 'ghost'; g.removeAttribute('alt'); z.insertBefore(g, img.nextSibling);
+    var fade = function () { g.style.opacity = 0; setTimeout(function () { g.remove(); }, 400); };
+    img.onload = function () { img.onload = null; requestAnimationFrame(fade); };
+    setTimeout(fade, 900);
+  }
+  img.src = src;
+  if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
+  sl.querySelector('.ppbox').classList.toggle('can', k < n);
+  var b = sl.querySelector('[data-pstep]');
+  if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+  var d = sl.querySelector('.ppbox .done');
+  if (d) d.remove();
+  if (n && k >= n) {
+    var p = PRAISE[(+sl.getAttribute('data-src').slice(-3)) % PRAISE.length];
+    d = document.createElement('div'); d.className = 'done';
+    d.innerHTML = '<span>' + p[1] + '</span><img src="' + p[0] + '.webp" alt="">';
+    sl.querySelector('.ppbox').appendChild(d);
+    if (!quiet) { Kit.sound.good(); if (Math.random() < .35) Kit.confetti(); }
+  }
+}
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl, 1); } }
+function ppTools(sl, mode) {
+  ['zoom'].forEach(function (m) {
+    var on = m === mode && !sl.classList.contains(m);
+    sl.classList.toggle(m, on);
+    sl.querySelector('[data-' + m + ']').classList.toggle('on', on);
+  });
+  if (!sl.classList.contains('zoom')) sl.querySelector('.ppz').style.transformOrigin = '50% 50%';
+  sl.querySelector('.ppbox').classList.toggle('noswipe', sl.classList.contains('zoom'));
+}
+/* ---------- จับเวลา ---------- */
+var TM = { el: null, end: 0, iv: 0 };
+function tmShow() {
+  if (!TM.el) {
+    TM.el = document.createElement('div'); TM.el.className = 'timer';
+    document.body.appendChild(TM.el);
+  }
+  clearInterval(TM.iv); TM.el.classList.remove('end');
+  TM.el.innerHTML = '⏱️ <span class="opts"><button data-m="1">1 นาที</button><button data-m="2">2</button><button data-m="3">3</button><button data-m="5">5</button></span><button class="x" aria-label="ปิด">✖</button>';
+  TM.el.classList.add('show');
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show'); };
+  Array.prototype.forEach.call(TM.el.querySelectorAll('[data-m]'), function (b) { b.onclick = function () { tmStart(+b.getAttribute('data-m')); }; });
+}
+function tmStart(m) {
+  TM.end = Date.now() + m * 60000;
+  TM.el.innerHTML = '⏱️ <span class="t"></span><button class="x" aria-label="หยุด">✖</button>';
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show', 'end'); };
+  var t = TM.el.querySelector('.t');
+  function tick() {
+    var r = Math.max(0, Math.ceil((TM.end - Date.now()) / 1000));
+    t.textContent = Math.floor(r / 60) + ':' + ('0' + r % 60).slice(-2);
+    if (!r) { clearInterval(TM.iv); TM.el.classList.add('end'); Kit.sound.win(); Kit.toast('⏰ หมดเวลา! มาดูเฉลยกันนะ'); }
+  }
+  tick(); TM.iv = setInterval(tick, 250); Kit.sound.tap();
+}
+(function () {
+  var go = Kit.go;
+  Kit.go = function (n, instant) {
+    var cur = Kit.slides[Kit.cur];
+    if (!instant && cur && cur.classList.contains('pslide')) {
+      var N = +cur.getAttribute('data-steps'), k = cur._k || 0;
+      if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
+      if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
+    }
+    if (cur && cur.classList.contains('pslide') && n !== Kit.cur) ppTools(cur, null);
+    var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
+    go(n, instant);
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t, 1); }
+    for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+  };
+})();
+SETUP = function () {
+  setupToc();
+  Kit.slides.forEach(function (sl) {
+    if (!sl.classList.contains('pslide')) return;
+    var box = sl.querySelector('.ppbox'), z = sl.querySelector('.ppz'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
+    box.addEventListener('click', function (e) {
+      if (sl.classList.contains('zoom')) {
+        var q = box.getBoundingClientRect();
+        z.style.transformOrigin = ((e.clientX - q.left) / q.width * 100) + '% ' + ((e.clientY - q.top) / q.height * 100) + '%';
+        return;
+      }
+      adv();
+    });
+    if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+    sl.querySelector('[data-zoom]').onclick = function () { ppTools(sl, 'zoom'); Kit.sound.tap(); if (sl.classList.contains('zoom')) Kit.toast('🔎 แตะตรงที่อยากดูใกล้ ๆ'); };
+    sl.querySelector('[data-timer]').onclick = function () { tmShow(); Kit.sound.tap(); };
+  });
+};
+
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast('✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil ได้ วางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    if (e.pointerType === 'pen') penSeen = true;
+    else if (e.pointerType === 'touch' && penSeen) return; /* มีปากกาแล้ว ไม่นับฝ่ามือ */
+    e.preventDefault(); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
+    cur = { c: color, p: [pt(e)], id: e.pointerId }; list().push(cur); draw();
+  });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+</script>
+</body>
+</html>
