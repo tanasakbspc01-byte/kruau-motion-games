@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 5 เวลา · คณิตศาสตร์ ป.4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#FF9F43;--main-deep:#E07B14;--glow:#FFE6C7}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:4px solid var(--main);background:var(--glow)}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+
+.nav .dots{display:none}
+.nav{justify-content:space-between}
+.pslide{padding:8px clamp(8px,2vw,24px) 8px}
+.pslide .inner.pp{max-width:none;height:100%;gap:6px}
+.pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
+.ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.ppframe img{display:block;max-width:100%;max-height:100%;width:min(100cqw,calc(100cqh * 16 / 9));height:auto;aspect-ratio:16/9;object-fit:contain;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08)}
+.ppframe img.can{cursor:pointer}
+.ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
+.ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
+.ppctl .btn{min-height:44px;padding:6px 18px}
+.secslide{min-height:100%;justify-content:center;align-items:center;text-align:center}
+.secnum{display:grid;place-items:center;width:clamp(110px,18vw,150px);aspect-ratio:1;border-radius:50%;background:var(--main);color:#fff;font-weight:700;font-size:clamp(2.2rem,6vw,3.2rem);box-shadow:0 8px 0 var(--main-deep)}
+.secslide h1{color:var(--main-deep);font-size:clamp(1.7rem,5vw,2.8rem);text-shadow:0 4px 0 var(--glow)}
+.subs{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:620px;width:100%}
+.subs div{background:#fff;border:3px solid var(--main);border-radius:16px;padding:8px 14px;font-weight:700;text-align:left;font-size:clamp(1rem,2.6vw,1.2rem)}
+.subs b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--main);color:#fff;margin-right:8px}
+.secslide .kru{max-width:680px;width:100%;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">⏰</span>
+  <div class="ttl"><b>บทที่ 5 เวลา</b><small>คณิตศาสตร์ ป.4 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m4-math-hub/" aria-label="หน้ารวม ป.4" title="หน้ารวม ป.4">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.4 · บทที่ 5</span>
+    <h1>เวลา</h1>
+    <p class="sub">บอกระยะเวลา เปรียบเทียบ อ่านตารางเวลา และโจทย์ปัญหา</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>5.1 การบอกระยะเวลา</li><li>5.2 การเปรียบเทียบระยะเวลา</li><li>5.3 การอ่านตารางเวลา</li><li>5.4 โจทย์ปัญหา</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="full-p8.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 5</h2>
+  <div class="kru fig"><span class="av"><img src="full-p6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="toc"><button data-jump="5.1"><span class="e">⏳</span><span>5.1 การบอกระยะเวลา</span></button><button data-jump="5.2"><span class="e">⚖️</span><span>5.2 การเปรียบเทียบระยะเวลา</span></button><button data-jump="5.3"><span class="e">🗓️</span><span>5.3 การอ่านตารางเวลา</span></button><button data-jump="5.4"><span class="e">📝</span><span>5.4 โจทย์ปัญหา</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
+</div></section>
+<section class="slide" data-sec="5.1" data-title="5.1 การบอกระยะเวลา"><div class="inner secslide">
+  <div class="secnum">5.1</div><h1>⏳ การบอกระยะเวลา</h1>
+  
+  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 5.1 <b>การบอกระยะเวลา</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s003" data-title="5.1 การบอกระยะเวลา · หน้า 3"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 3 / 47</span></div>
+  <div class="ppframe"><img alt="การใช้เครื่องหมายวรรคตอน เพื่อบอกเวลาและบอกระยะเวลาตามหลักเกณฑ์ของราชบัณฑิตยสถาน การบอกเวลา การบอกเวลาเป็นนาฬิกาและนาที ใช้ มหัพภาค ( . ) หรือ ทวิภาค ( : ) เช่น 13.50 น. หรือ 13 : 50 น. อ่านว่า สิบสามนาฬิกา ห้าสิบนาที การบอกระยะเวลา ระยะเวลา หมายถึง ช่วงเวลาที่ต่อเนื่องจากเวลาหนึ่งถึงอีกเวลาหนึ่ง เค"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s004" data-title="5.1 การบอกระยะเวลา · หน้า 4"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 4 / 47</span></div>
+  <div class="ppframe"><img alt="การบอกระยะเวลาเป็นนาที วินาที"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s005" data-title="5.1 การบอกระยะเวลา · หน้า 5"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 5 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s006" data-title="5.1 การบอกระยะเวลา · หน้า 6"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 6 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s007" data-title="5.1 การบอกระยะเวลา · หน้า 7"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 7 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s008" data-title="5.1 การบอกระยะเวลา · หน้า 8"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 8 / 47</span></div>
+  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 222 1 5 นาที คิดเป็นกี่วินาที 2 8 นาที 25 วินาที คิดเป็นกี่วินาที 3 น้ำผึ้งเดินจากอาคารเรียนไปสนามกีฬาใช้เวลา 340 วินาที น้ำผึ้งใช้เวลาเดินกี่นาที กี่วินาที"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s009" data-title="5.1 การบอกระยะเวลา · หน้า 9"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 9 / 47</span></div>
+  <div class="ppframe"><img alt="การบอกระยะเวลาเป็นนาที ชั่วโมง วัน"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s010" data-title="5.1 การบอกระยะเวลา · หน้า 10"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 10 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-title="5.1 การบอกระยะเวลา · หน้า 11"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 11 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s012" data-title="5.1 การบอกระยะเวลา · หน้า 12"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 12 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-title="5.1 การบอกระยะเวลา · หน้า 13"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 13 / 47</span></div>
+  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 224 1 3 วัน 12 ชั่วโมง คิดเป็น.......................ชั่วโมง 2 348 นาที คิดเป็น.......................ชั่วโมง.......................นาที 3 บั้งไฟบั้งหนึ่งถูกจุดเมื่อเวลา 10 นาฬิกา 20 นาที และเริ่มตกเมื่อเวลา 10 นาฬิกา 23 นาที 40 วินาทีตั้งแต่บั้งไฟเริ่มขึ้นจนถึงจุดสูงสุดใช้เวลา........"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s014" data-title="5.1 การบอกระยะเวลา · หน้า 14"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 14 / 47</span></div>
+  <div class="ppframe"><img alt="การบอกระยะเวลาเป็นวินาที นาที ชั่วโมง วัน สัปดาห์ เดือน ปี"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s015" data-title="5.1 การบอกระยะเวลา · หน้า 15"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 15 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-title="5.1 การบอกระยะเวลา · หน้า 16"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 16 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s017" data-title="5.1 การบอกระยะเวลา · หน้า 17"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 17 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-title="5.1 การบอกระยะเวลา · หน้า 18"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 18 / 47</span></div>
+  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 226 1 2 ปี 28 สัปดาห์ คิดเป็น.......................สัปดาห์ 2 180 ชั่วโมง คิดเป็น.......................วัน.......................ชั่วโมง 3 ยาชนิดหนึ่งผลิตวันที่ 12 กันยายน พ.ศ. 2560 และหมดอายุวันที่ 12 มีนาคม พ.ศ. 2563ยาชนิดนี้มีอายุนาน.......................ปี.......................เ"></div>
+  
+</div></section>
+<section class="slide" data-sec="5.2" data-title="5.2 การเปรียบเทียบระยะเวลา"><div class="inner secslide">
+  <div class="secnum">5.2</div><h1>⚖️ การเปรียบเทียบระยะเวลา</h1>
+  
+  <div class="kru fig"><span class="av"><img src="full-p6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 5.2 <b>การเปรียบเทียบระยะเวลา</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s020" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 20"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 20 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s021" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 21"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 21 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s022" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 22"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 22 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 23"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 23 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 24"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 24 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 25"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 25 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s026" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 26"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 26 / 47</span></div>
+  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 232 1 ในการว่ายน้ำ 100 เมตร บอสใช้เวลา 1 นาที 48 นาที นิคใช้เวลา 118 วินาที ใครว่ายน้ำเร็วกว่า 2 แหวนและอรไปทำงานที่ประเทศสิงคโปร์ โดยแหวนทำงานเป็นเวลา 1 เดือน 3 วัน ส่วนอรทำงานเป็นเวลา 4 สัปดาห์ 5 วัน ใครทำงานเป็นเวลานานกว่ากัน"></div>
+  
+</div></section>
+<section class="slide" data-sec="5.3" data-title="5.3 การอ่านตารางเวลา"><div class="inner secslide">
+  <div class="secnum">5.3</div><h1>🗓️ การอ่านตารางเวลา</h1>
+  
+  <div class="kru fig"><span class="av"><img src="full-p8.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 5.3 <b>การอ่านตารางเวลา</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s028" data-title="5.3 การอ่านตารางเวลา · หน้า 28"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.3 การอ่านตารางเวลา</span><span class="ppno">หน้า 28 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s029" data-title="5.3 การอ่านตารางเวลา · หน้า 29"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.3 การอ่านตารางเวลา</span><span class="ppno">หน้า 29 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s030" data-title="5.3 การอ่านตารางเวลา · หน้า 30"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.3 การอ่านตารางเวลา</span><span class="ppno">หน้า 30 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s031" data-title="5.3 การอ่านตารางเวลา · หน้า 31"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.3 การอ่านตารางเวลา</span><span class="ppno">หน้า 31 / 47</span></div>
+  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 238 1 รถโดยสารจากกรุงเทพฯ (จตุจักร) ไปจันทบุรี มีวันละ..................เที่ยว โดยเที่ยวแรกออกเวลา..................น. และเที่ยวสุดท้ายออกเวลา..................น. 2 ถ้าฝนขึ้นรถเที่ยวแรกของกรุงเทพฯ (จตุจักร) ไปจันทบุรี และจอมขึ้นรถจากกรุงเทพฯ (เอกมัย) ไปตราด คนที่ไปถึงจุดหมายปลายทางก่อน"></div>
+  
+</div></section>
+<section class="slide" data-sec="5.4" data-title="5.4 โจทย์ปัญหา"><div class="inner secslide">
+  <div class="secnum">5.4</div><h1>📝 โจทย์ปัญหา</h1>
+  
+  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 5.4 <b>โจทย์ปัญหา</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-title="5.4 โจทย์ปัญหา · หน้า 33"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 33 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-title="5.4 โจทย์ปัญหา · หน้า 34"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 34 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-title="5.4 โจทย์ปัญหา · หน้า 35"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 35 / 47</span></div>
+  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 232 1 ก้อยใช้เวลาดูภาพยนตร์ 2 ชั่วโมง 30 นาที ถ้าดูจบเวลา 15.20 น. ก้อยเริ่มดูภาพยนตร์เวลาใด 2 ลุงฉีดยาป้องกันแมลงในแปลงผัก วันที่ 28 มกราคม หลังฉีดยาแล้วอีก 14 วัน จึงเก็บผักขายได้ ลุงเก็บผักขายได้อย่างเร็วที่สุดเมื่อใด 3 ถนนสายหนึ่งใช้เวลาสร้างไปแล้ว 1 ปี 9 เดือน ถ้ากำหนดแล้วเสร็จรวม"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-title="5.4 โจทย์ปัญหา · หน้า 36"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 36 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s037" data-title="5.4 โจทย์ปัญหา · หน้า 37"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 37 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s038" data-title="5.4 โจทย์ปัญหา · หน้า 38"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 38 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s039" data-title="5.4 โจทย์ปัญหา · หน้า 39"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 39 / 47</span></div>
+  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 244 1 37 นาที 26 วินาที รวมกับ 15 นาที 42 วินาที เป็นกี่นาที กี่วินาที 2 6 เดือน 24 วัน น้อยกว่า 8 เดือน 10 วัน อยู่กี่เดือน กี่วัน 3 10 ปี 9 เดือน รวมกับ 7 ปี 6 เดือน เป็นกี่ปี กี่เดือน 4 6 ชั่วโมง 10 นาที มากกว่า 3 ชั่วโมง 40 นาที อยู่กี่ชั่วโมง กี่นาที"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s040" data-title="5.4 โจทย์ปัญหา · หน้า 40"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 40 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s041" data-title="5.4 โจทย์ปัญหา · หน้า 41"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 41 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s042" data-title="5.4 โจทย์ปัญหา · หน้า 42"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 42 / 47</span></div>
+  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 246 1 ปัจจุบันจอยมีอายุ 9 ปี 4 เดือน อีกนานเท่าใด จอยจะมีอายุ 15 ปี 2 วีระใช้เวลาทำการบ้าน 2 ชั่วโมง 25 นาที ซึ่งใช้เวลาน้อยกว่ามานะ 45 นาที มานะใช้เวลาทำการบ้านนานเท่าใด"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s043" data-title="5.4 โจทย์ปัญหา · หน้า 43"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 43 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s044" data-title="5.4 โจทย์ปัญหา · หน้า 44"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 44 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s045" data-title="5.4 โจทย์ปัญหา · หน้า 45"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 45 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s046" data-title="5.4 โจทย์ปัญหา · หน้า 46"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 46 / 47</span></div>
+  <div class="ppframe"><img alt=""></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s047" data-title="5.4 โจทย์ปัญหา · หน้า 47"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 47 / 47</span></div>
+  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 249 1 วารีเดินทางจากกรุงเทพฯ ถึงหาดใหญ่ใช้เวลา 15 ชั่วโมง 53 นาที ถ้าวารีเดินทางไปและกลับใช้เวลาเท่ากันวารีใช้เวลาเดินทางทั้งหมดกี่ชั่วโมง กี่นาที 2 ในเวลา 5 สัปดาห์ นิดใช้เวลาออกกำลังกาย 17 ชั่วโมง 20 นาที เฉลี่ยแล้วในเวลา 1 สัปดาห์ นิดใช้เวลาออกกำลังกายกี่ชั่วโมง กี่นาที"></div>
+  
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
+  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>จบบทที่ 5 เวลา</h2>
+  <div class="card c-yellow center endpic"><img src="av-p3.webp" alt="ครูอู๋"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="av-p4.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="toc"><button data-jump="5.1"><span class="e">⏳</span><span>ทบทวน 5.1 การบอกระยะเวลา</span></button><button data-jump="5.2"><span class="e">⚖️</span><span>ทบทวน 5.2 การเปรียบเทียบระยะเวลา</span></button><button data-jump="5.3"><span class="e">🗓️</span><span>ทบทวน 5.3 การอ่านตารางเวลา</span></button><button data-jump="5.4"><span class="e">📝</span><span>ทบทวน 5.4 โจทย์ปัญหา</span></button></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m4-ch4-mixed-ops/">◀ บทก่อนหน้า</a><a class="btn" style="--c:var(--purple)" href="../m4-math-hub/">🏠 หน้ารวม ป.4</a><a class="btn ghost" href="../m4-ch6-fractions/">บทถัดไป ▶</a></div>
+  <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.4 สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m4-ch5-time", STORE_PREFIX = 'kruau-p4-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [{"q": "3 นาที 25 วินาที เท่ากับกี่วินาที", "c": ["205 วินาที", "325 วินาที", "185 วินาที", "235 วินาที"], "a": 0, "w": "3 × 60 = 180 วินาที รวมกับ 25 วินาที เป็น 205 วินาที"}, {"q": "4 วัน 6 ชั่วโมง เท่ากับกี่ชั่วโมง", "c": ["102 ชั่วโมง", "46 ชั่วโมง", "30 ชั่วโมง", "106 ชั่วโมง"], "a": 0, "w": "4 × 24 = 96 ชั่วโมง รวมกับ 6 ชั่วโมง เป็น 102 ชั่วโมง"}, {"q": "150 นาที เท่ากับเท่าใด", "c": ["2 ชั่วโมง 30 นาที", "1 ชั่วโมง 50 นาที", "15 ชั่วโมง", "2 ชั่วโมง 50 นาที"], "a": 0, "w": "150 ÷ 60 = 2 เศษ 30 จึงเป็น 2 ชั่วโมง 30 นาที"}, {"q": "3 สัปดาห์ 4 วัน เท่ากับกี่วัน", "c": ["25 วัน", "34 วัน", "21 วัน", "28 วัน"], "a": 0, "w": "3 × 7 = 21 วัน รวมกับ 4 วัน เป็น 25 วัน"}, {"q": "2 ปี 5 เดือน เท่ากับกี่เดือน", "c": ["29 เดือน", "25 เดือน", "17 เดือน", "24 เดือน"], "a": 0, "w": "2 × 12 = 24 เดือน รวมกับ 5 เดือน เป็น 29 เดือน"}, {"q": "ข้อใดใช้เวลานานที่สุด", "c": ["200 วินาที", "3 นาที 10 วินาที", "3 นาที", "1 นาที 50 วินาที"], "a": 0, "w": "เปลี่ยนเป็นวินาที: 200, 190, 180 และ 110 วินาที จึงเป็น 200 วินาที"}, {"q": "รถไฟออกจากสถานีเวลา 08.40 น. ถึงปลายทางเวลา 11.15 น. ใช้เวลาเดินทางเท่าใด", "c": ["2 ชั่วโมง 35 นาที", "3 ชั่วโมง 35 นาที", "2 ชั่วโมง 25 นาที", "3 ชั่วโมง 15 นาที"], "a": 0, "w": "08.40 → 10.40 น. = 2 ชั่วโมง และ 10.40 → 11.15 น. = 35 นาที"}, {"q": "ระยะเวลา 2 : 45 อ่านว่าอย่างไร", "c": ["สองนาทีสี่สิบห้าวินาที", "สองนาฬิกาสี่สิบห้านาที", "สองชั่วโมงสี่สิบห้านาที", "สองจุดสี่ห้า"], "a": 0, "w": "ระยะเวลาใช้ทวิภาค ( : ) คั่นนาทีกับวินาที"}];
+
+/* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
+function ppPaint(sl) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, img = sl.querySelector('.ppframe img');
+  img.src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
+  img.classList.toggle('can', k < n);
+  var b = sl.querySelector('[data-pstep]');
+  if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+}
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl); } }
+(function () {
+  var go = Kit.go;
+  Kit.go = function (n, instant) {
+    var cur = Kit.slides[Kit.cur];
+    if (!instant && cur && cur.classList.contains('pslide')) {
+      var N = +cur.getAttribute('data-steps'), k = cur._k || 0;
+      if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
+      if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
+    }
+    var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
+    go(n, instant);
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t); }
+    for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+  };
+})();
+SETUP = function () {
+  setupToc();
+  Kit.slides.forEach(function (sl) {
+    if (!sl.classList.contains('pslide')) return;
+    var img = sl.querySelector('.ppframe img'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
+    img.onclick = adv; if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+  });
+};
+
+</script>
+</body>
+</html>

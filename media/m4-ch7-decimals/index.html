@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 7 ทศนิยม · คณิตศาสตร์ ป.4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#2FB8A6;--main-deep:#178F80;--glow:#CDF3EC}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:4px solid var(--main);background:var(--glow)}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+
+.nav .dots{display:none}
+.nav{justify-content:space-between}
+.pslide{padding:8px clamp(8px,2vw,24px) 8px}
+.pslide .inner.pp{max-width:none;height:100%;gap:6px}
+.pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
+.ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.ppframe img{display:block;max-width:100%;max-height:100%;width:min(100cqw,calc(100cqh * 16 / 9));height:auto;aspect-ratio:16/9;object-fit:contain;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08)}
+.ppframe img.can{cursor:pointer}
+.ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
+.ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
+.ppctl .btn{min-height:44px;padding:6px 18px}
+.secslide{min-height:100%;justify-content:center;align-items:center;text-align:center}
+.secnum{display:grid;place-items:center;width:clamp(110px,18vw,150px);aspect-ratio:1;border-radius:50%;background:var(--main);color:#fff;font-weight:700;font-size:clamp(2.2rem,6vw,3.2rem);box-shadow:0 8px 0 var(--main-deep)}
+.secslide h1{color:var(--main-deep);font-size:clamp(1.7rem,5vw,2.8rem);text-shadow:0 4px 0 var(--glow)}
+.subs{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:620px;width:100%}
+.subs div{background:#fff;border:3px solid var(--main);border-radius:16px;padding:8px 14px;font-weight:700;text-align:left;font-size:clamp(1rem,2.6vw,1.2rem)}
+.subs b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--main);color:#fff;margin-right:8px}
+.secslide .kru{max-width:680px;width:100%;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🔟</span>
+  <div class="ttl"><b>บทที่ 7 ทศนิยม</b><small>คณิตศาสตร์ ป.4 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m4-math-hub/" aria-label="หน้ารวม ป.4" title="หน้ารวม ป.4">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.4 · บทที่ 7</span>
+    <h1>ทศนิยม</h1>
+    <p class="sub">อ่าน เขียน ค่าประจำหลัก เปรียบเทียบ บวก ลบทศนิยมไม่เกิน 3 ตำแหน่ง</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</li><li>7.2 การเปรียบเทียบและเรียงลำดับ</li><li>7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</li><li>7.4 โจทย์ปัญหา</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="full-p8.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 7</h2>
+  <div class="kru fig"><span class="av"><img src="full-p6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เตรียมความพร้อม</span></button><button data-jump="7.1"><span class="e">📖</span><span>7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span></button><button data-jump="7.2"><span class="e">⚖️</span><span>7.2 การเปรียบเทียบและเรียงลำดับ</span></button><button data-jump="7.3"><span class="e">➕</span><span>7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span></button><button data-jump="7.4"><span class="e">📝</span><span>7.4 โจทย์ปัญหา</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="3" data-src="img/s003" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="ppno">หน้า 3 / 96</span></div>
+  <div class="ppframe"><img alt="เตรียมความพร้อม 1 เขียนเศษส่วนแสดงส่วนที่ระบายสี 3 2 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="13" data-src="img/s004" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="ppno">หน้า 4 / 96</span></div>
+  <div class="ppframe"><img alt="เติมตัวเลขแสดงจำนวนใน 1) = = = 4 40 400 2) = = = 1 10 100 3) = = = 400 มีหลายคำตอบ 4) = = = 20 มีหลายคำตอบ 5) = = = 3 300 30 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/13)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="7.1" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง"><div class="inner secslide">
+  <div class="secnum">7.1</div><h1>📖 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</h1>
+  <div class="subs"><div><b>1</b>ทศนิยม 1 ตำแหน่ง</div><div><b>2</b>ทศนิยม 2 ตำแหน่ง</div><div><b>3</b>ทศนิยม 3 ตำแหน่ง</div></div>
+  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 7.1 <b>การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s006" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 6"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 6 / 96</span></div>
+  <div class="ppframe"><img alt="การแสดงปริมาณของสิ่งต่างๆ ในชีวิตประจำวัน นอกจากจะใช้จำนวนนับและเศษส่วนแล้ว ยังพบว่ามีการแสดงปริมาณด้วยทศนิยม ทศนิยมมี . เป็นจุดทศนิยม ตัวเลขหน้าจุดทศนิยมแสดงจำนวนนับหรือศูนย์ ตัวเลขหลังจุดทศนิยมแสดงจำนวนที่น้อยกว่า 1 การอ่านทศนิยม ตัวเลขที่อยู่หน้าจุดทศนิยมอ่านเช่นเดียวกันกับจำนวนนับหรือศูนย์ ตัวเล"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s007" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 7"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 7 / 96</span></div>
+  <div class="ppframe"><img alt="ทศนิยม 1 ตำแหน่ง 1 มีส่วนที่ระบายสี 1 ส่วน ใน 10 ส่วน หรือ แสดงด้วย 0.10.1 เขียนเป็นตัวหนังสือ ศูนย์จุดหนึ่ง พิจารณาส่วนที่ระบายสี มีส่วนที่ระบายสี 2 ส่วน ใน 10 ส่วน หรือ แสดงด้วย 0.20.2 เขียนเป็นตัวหนังสือ ศูนย์จุดสอง 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s008" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 8"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 8 / 96</span></div>
+  <div class="ppframe"><img alt="มีส่วนที่ระบายสี 3 ส่วน ใน 10 ส่วน หรือ แสดงด้วย 0.30.3 เขียนเป็นตัวหนังสือ ศูนย์จุดสาม มีส่วนที่ระบายสี 9 ส่วน ใน 10 ส่วน หรือ แสดงด้วย 0.90.9 เขียนเป็นตัวหนังสือ ศูนย์จุดเก้า 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s009" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 9"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 9 / 96</span></div>
+  <div class="ppframe"><img alt="ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 55 1 เขียนทศนิยมแสดงส่วนที่ระบายสี ตัวเลข ตัวหนังสือ 1) 0.7 ศูนย์จุดเจ็ด ตัวเลข ตัวหนังสือ 2) 0.6 ศูนย์จุดหก 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s010" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 10"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 10 / 96</span></div>
+  <div class="ppframe"><img alt="2 ระบายสีแสดงทศนิยม 1) 0.8 2) 0.4 3 เขียนในรูปทศนิยม 1) = 2) = 0.5 0.8 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 11"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 11 / 96</span></div>
+  <div class="ppframe"><img alt="มีส่วนที่ระบายสี 10 ส่วน ใน 10 ส่วน หรือ แสดงด้วย 1 หรือ 1.01.0 เขียนเป็นตัวหนังสือ หนึ่งจุดศูนย์ พิจารณาส่วนที่ระบายสี ทั้งสองรูปมีส่วนที่ระบายสีเท่ากัน ดังนั้น แต่ละรูปแสดง 1 หรือ 1.0 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s012" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 12"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 12 / 96</span></div>
+  <div class="ppframe"><img alt="มีส่วนที่ระบายสี หรือ 1 แสดงด้วย 1.11.1 เขียนเป็นตัวหนังสือ หนึ่งจุดหนึ่ง มีส่วนที่ระบายสี หรือ 1 แสดงด้วย 1.61.6 เขียนเป็นตัวหนังสือ หนึ่งจุดหก ทศนิยม 1 ตำแหน่ง มีเลขโดดหลังจุดทศนิยม 1 ตัว เลขโดดหลังจุดทศนิยม แสดงจำนวนว่าเป็นกี่ส่วนใน 10 ส่วนเท่าๆ กัน 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s013" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 13"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 13 / 96</span></div>
+  <div class="ppframe"><img alt="ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 55 1 เขียนทศนิยมแสดงส่วนที่ระบายสี ตัวเลข ตัวหนังสือ 1) 1.2 หนึ่งจุดสอง 2 ระบายสีแสดงทศนิยม 1) 2.8 2) 3.4 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s014" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 14"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 14 / 96</span></div>
+  <div class="ppframe"><img alt="3 เติมคำตอบ เศษส่วนจำนวนคละทศนิยมตัวหนังสือ1) 2) 3) 5) เศษส่วนจำนวนคละทศนิยมตัวหนังสือ 22.4สองจุดสี่2.4สองจุดสี่ 2020.3ยี่สิบจุดสาม20.3ยี่สิบจุดสาม 4848.9สี่สิบแปดจุดเก้า48.9สี่สิบแปดจุดเก้า 101101.8หนึ่งร้อยเอ็ดจุดแปด101.8หนึ่งร้อยเอ็ดจุดแปด 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s015" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 15"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 15 / 96</span></div>
+  <div class="ppframe"><img alt="ทศนิยม 2 ตำแหน่ง 2 มีส่วนที่ระบายสี 1 ส่วน ใน 100 ส่วน หรือ แสดงด้วย 0.010.01 เขียนเป็นตัวหนังสือ ศูนย์จุดศูนย์หนึ่ง พิจารณาส่วนที่ระบายสี มีส่วนที่ระบายสี 5 ส่วน ใน 100 ส่วน หรือ แสดงด้วย 0.050.05 เขียนเป็นตัวหนังสือ ศูนย์จุดศูนย์ห้า 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 16"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 16 / 96</span></div>
+  <div class="ppframe"><img alt="มีส่วนที่ระบายสี 8 ส่วน ใน 100 ส่วน หรือ แสดงด้วย 0.080.08 เขียนเป็นตัวหนังสือ ศูนย์จุดศูนย์แปด มีส่วนที่ระบายสี 9 ส่วน ใน 10 ส่วน หรือ แสดงด้วย 0.090.09 เขียนเป็นตัวหนังสือ ศูนย์จุดศูนย์เก้า 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s017" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 17"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 17 / 96</span></div>
+  <div class="ppframe"><img alt="จากรูป มีส่วนที่ระบายสีมากกว่า 0.3 แต่น้อยกว่า 0.4 ซึ่งไม่สามารถบอกได้ว่าส่วนที่ระบายสีแสดงด้วยจำนวนใด จึงแบ่งรูปเป็น 100 ส่วนเท่าๆ กัน ดังรูป พิจารณาส่วนที่ระบายสี จากรูป มีส่วนที่ระบายสี 0.3 กับ 0.06 แสดงด้วย 0.36 0.36 เขียนเป็นตัวหนังสือ ศูนย์จุดสามหก 0.36 มีเลขโดดหลังจุดทศนิยม 2 ตัว 0.36 เป็นทศน"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 18"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 18 / 96</span></div>
+  <div class="ppframe"><img alt="0.36 มีส่วนที่ระบายสี กับ ดังนั้น 0.36 = + = + = แสดงว่า 0.36 = 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s019" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 19"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 19 / 96</span></div>
+  <div class="ppframe"><img alt="เติมคำตอบ แบบฝึกหัดหน้า 60 1 เขียนทศนิยมแสดงส่วนที่ระบายสี ตัวเลข ตัวหนังสือ 1) 0.14 ศูนย์จุดหนึ่งสี่ ตัวเลข ตัวหนังสือ 2) 0.58 ศูนย์จุดห้าแปด 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s020" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 20"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 20 / 96</span></div>
+  <div class="ppframe"><img alt="2 เขียนในรูปทศนิยม 1) = 3) = 0.04 0.89 5) = 2) = 4) = 0.62 0.21 6) = 0.07 0.30 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s021" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 21"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 21 / 96</span></div>
+  <div class="ppframe"><img alt="ขั้นที่ 1 ระบายสี 7 ส่วน ใน 10 ส่วน หรือ จะได้ส่วนที่ระบายสีแสดง 0.7 พิจารณาการระบายสีแสดง 0.72เนื่องจาก 0.72 ได้จาก 0.7 กับ 0.02 ขั้นที่ 2 แบ่งรูปสี่เหลี่ยมเป็น 100 ส่วนเท่าๆ กัน แล้วระบายสีเพิ่มอีก 2 ส่วนจาก 100 ส่วนหรือ จะได้ส่วนที่ระบายสีทั้งหมดเป็น กับ ซึ่งเท่ากับ 0.72 เนื่องจาก = ดังนั้น 0.72 "></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s022" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 22"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 22 / 96</span></div>
+  <div class="ppframe"><img alt="ลากเส้นแบ่งรูปสี่เหลี่ยม แล้วระบายสีแสดงทศนิยม แบบฝึกหัดหน้า 61 1 0.48 2 0.95 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 23"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 23 / 96</span></div>
+  <div class="ppframe"><img alt="ส่วนที่ระบายสีแสดง 2 พิจารณาส่วนที่ระบายสี ส่วนที่ระบายสีแสดง แสดงด้วย 2.0 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 24"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 24 / 96</span></div>
+  <div class="ppframe"><img alt="ส่วนที่ระบายสีแสดง แสดงด้วย 2.00 จากรูปพบว่า มีส่วนที่ระบายสีเท่ากัน แสดงว่า 2 = 2.0 = 2.00ในทำนองเดียวกัน 15 = 15.0 = 15.00 จำนวนนับ สามารถเขียนเป็นทศนิยม 1 ตำแหน่ง หรือ 2 ตำแหน่ง โดยเติมจุดทศนิยม แล้วเติม 0 ต่อท้าย 1 ตัว หรือ 2 ตัว ตามลำดับ 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 25"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 25 / 96</span></div>
+  <div class="ppframe"><img alt="ส่วนที่ระบายสีแสดง 3 หรือ แสดงด้วย 3.73.7 เขียนเป็นตัวหนังสือ สามจุดเจ็ด พิจารณาส่วนที่ระบายสี ส่วนที่ระบายสีแสดง 3 หรือ แสดงด้วย 3.703.70 เขียนเป็นตัวหนังสือ สามจุดเจ็ดศูนย์ จากรูปพบว่า มีส่วนที่ระบายสีเท่ากัน แสดงว่า 3.7 = 37.0ในทำนองเดียวกัน 26.5 = 26.50 ทศนิยม 1 ตำแหน่ง สามารถเขียนเป็นทศนิยม 2 ต"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s026" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 26"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 26 / 96</span></div>
+  <div class="ppframe"><img alt="พิจารณาส่วนที่ระบายสีส่วนที่ระบายสีแสดง หรือ 1 แสดงด้วย 1.291.29 เขียนเป็นตัวหนังสือ หนึ่งจุดสองเก้า ในทำนองเดียวกัน หรือ 34 แสดงด้วย 34.1934.19 เขียนเป็นตัวหนังสือ สามสิบสี่จุดหนึ่งเก้า 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s027" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 27"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 27 / 96</span></div>
+  <div class="ppframe"><img alt="1 เติมตัวเลขแสดงจำนวนในตาราง จำนวนนับทศนิยม 1 ตำแหน่งทศนิยม 2 ตำแหน่ง610.012.0055.0701 ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 64 1) 2) 3) 4) 5) 6.26.00 1010.00 1212.0 5555.00 701.0701.00 2 เขียนวงล้อมรอบทศนิยมที่เท่ากับทศนิยมทางซ้าย 0.20.020.204.34.034.3012.512.5012.15 1) 2) 3) 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s028" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 28"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 28 / 96</span></div>
+  <div class="ppframe"><img alt="3 เติมคำตอบในตาราง เศษส่วนจำนวนคละทศนิยมตัวหนังสือ เศษส่วนจำนวนคละทศนิยมตัวหนังสือ 55.12ห้าจุดหนึ่งสอง5.12ห้าจุดหนึ่งสอง 3434.96สามสิบสี่จุดเก้าหก34.96สามสิบสี่จุดเก้าหก 1010.25สิบจุดสองห้า10.25สิบจุดสองห้า 700700.05เจ็ดร้อยจุดศูนย์ห้า700.05เจ็ดร้อยจุดศูนย์ห้า 1) 2) 3) 4) 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s029" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 29"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 29 / 96</span></div>
+  <div class="ppframe"><img alt="ทศนิยม 3 ตำแหน่ง 3 มีส่วนที่ระบายสี 1 ส่วน ใน 1,000 ส่วน หรือ แสดงด้วย 0.0010.001 เขียนเป็นตัวหนังสือ ศูนย์จุดศูนย์ศูนย์หนึ่ง พิจารณาส่วนที่ระบายสี มีส่วนที่ระบายสี 5 ส่วน ใน 1,000 ส่วน หรือ แสดงด้วย 0.0050.005 เขียนเป็นตัวหนังสือ ศูนย์จุดศูนย์ศูนย์ห้า 1 ช่อง แบ่งเป็น 10 ส่วนเท่าๆ กันจะได้ 100 ช่อง "></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s030" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 30"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 30 / 96</span></div>
+  <div class="ppframe"><img alt="มีส่วนที่ระบายสี 9 ส่วน ใน 1,000 ส่วน หรือ แสดงด้วย 0.0090.009 เขียนเป็นตัวหนังสือ ศูนย์จุดศูนย์ศูนย์เก้า จากรูป มีส่วนที่ระบายสีมากกว่า 0.62 แต่น้อยกว่า 0.63 ซึ่งไม่สามารถบอกได้ว่าส่วนที่ระบายสี แสดงด้วยจำนวนใด จึงแบ่งรูปเป็น 1,000 ส่วนเท่าๆ กัน พิจารณาส่วนที่ระบายสี 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s031" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 31"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 31 / 96</span></div>
+  <div class="ppframe"><img alt="จากรูป มีส่วนที่ระบายสี 0.6 กับ 0.02 กับ 0.007 แสดงด้วย 0.627 0.627 เขียนเป็นตัวหนังสือ ศูนย์จุดหกสองเจ็ด 0.627 มีเลขโดดหลังจุดทศนิยม 3 ตัว 0.627 เป็นทศนิยม 3 ตำแหน่ง 1 ช่อง แบ่งเป็น 10 ส่วนเท่าๆ กันจะได้ 100 ช่อง แบ่งเป็น100 × 10 = 1,000 ส่วนเท่าๆ กัน ทศนิยม 3 ตำแหน่ง มีเลขโดดหลังจุดทศนิยม 3 ตัวเลข"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 32"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 32 / 96</span></div>
+  <div class="ppframe"><img alt="0.67 มีส่วนที่ระบายสี กับ กับ ดังนั้น 0.627 = + + = + + = แสดงว่า 0.627 = 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s033" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 33"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 33 / 96</span></div>
+  <div class="ppframe"><img alt="ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 67 1 เขียนเป็นตัวหนังสือ 1) 5.842 2) 81.293 3) 403.017 2 เขียนเป็นตัวเลข 1) ศูนย์จุดห้าหกสอง 2) สี่สิบสองจุดสามสี่เจ็ด 3) หกร้อยจุดศูนย์ศูนย์เก้า ห้าจุดแปดสี่สอง แปดสิบเอ็ดจุดสองเก้าสาม สี่ร้อยสามจุดศูนย์หนึ่งเจ็ด 0.562 42.347 600.009 3 เขียนในรูปทศนิยม 1) = 2) = 0.007 0"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 34"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 34 / 96</span></div>
+  <div class="ppframe"><img alt="เนื่องจาก จำนวนนับสามารถเขียนเป็นทศนิยม 1 ตำแหน่ง หรือ 2 ตำแหน่ง โดยเติมจุดทศนิยม แล้วเติม 0 ต่อท้าย 1 ตัว หรือ 2 ตัว ตามลำดับดังนั้น จำนวนนับสามารถเขียนเป็นทศนิยม 3 ตำแหน่ง โดยเติมจุดทศนิยม แล้วเติม 0 ต่อท้าย 3 ตัว ซึ่งทศนิยมที่ได้จะเท่ากับจำนวนนับเดิม เนื่องจาก ทศนิยม 1 ตำแหน่ง สามารถเขียนเป็นทศนิ"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s035" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 35"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 35 / 96</span></div>
+  <div class="ppframe"><img alt="เติมตัวเลขแสดงจำนวนในตาราง แบบฝึกหัดหน้า 68 ทศนิยม 1 ตำแหน่งทศนิยม 2 ตำแหน่งทศนิยม 3 ตำแหน่ง17.625.90100.30066.90055.0647.203,719.6010.000 1) 2) 3) 4) 5) 17.6017.600 25.925.900 100.3100.30 66.966.90 55.0055.000 647.2647.200 3,719.63,719.600 10.010.00 6) 7) 8) 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s036" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 36"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 36 / 96</span></div>
+  <div class="ppframe"><img alt="ตรวจสอบความเข้าใจ 1 เขียนเป็นตัวหนังสือ 1) 18.6 2) 25.30 3) 0.071 4) 501.489 2 เขียนเป็นตัวเลข 1) สามร้อยสองจุดสี่ 2) หกจุดห้าสองแปด 3) ศูนย์จุดศูนย์เก้าหก สิบแปดจุดหก ยี่สิบห้าจุดสามศูนย์ ศูนย์จุดศูนย์เจ็ดหนึ่ง 302.4 6.528 0.096 ห้าร้อยเอ็ดจุดสี่แปดเก้า 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s037" data-title="7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 37"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 37 / 96</span></div>
+  <div class="ppframe"><img alt="เขียน  ทับจำนวนที่เท่ากัน 3 สิ่งที่ได้เรียนรู้ 10.7 กับ 0.07 เท่ากันหรือไม่ เพราะเหตุใด 0.70 กับ 0.700 เท่ากันหรือไม่ เพราะเหตุใด ไม่เท่ากัน เพราะ 0.7 = 0.70 = และ 0.70 = เท่ากัน เพราะ ทศนิยม 2 ตำแหน่ง สามารถเขียนเป็นทศนิยม 3 ตำแหน่ง โดยเติม 0 ต่อท้าย 1 ตัว ซึ่งทศนิยมที่ได้จะเท่ากับทศนิยมเดิม 1) 1 "></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="7.2" data-title="7.2 การเปรียบเทียบและเรียงลำดับ"><div class="inner secslide">
+  <div class="secnum">7.2</div><h1>⚖️ การเปรียบเทียบและเรียงลำดับ</h1>
+  <div class="subs"><div><b>1</b>หลัก ค่าประจำหลัก และการเขียนในรูปกระจาย</div><div><b>2</b>การเปรียบเทียบทศนิยม</div><div><b>3</b>การเรียงลำดับทศนิยม</div></div>
+  <div class="kru fig"><span class="av"><img src="full-p6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 7.2 <b>การเปรียบเทียบและเรียงลำดับ</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s039" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 39"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 39 / 96</span></div>
+  <div class="ppframe"><img alt="หลัก ค่าประจำหลัก และการเขียนในรูปกระจาย 1 เลขโดดหลังจุดที่ทศนิยมตัวที่ 1 เป็นทศนิยมตำแหน่งที่ 1 อยู่ในหลักส่วนสิบ แสดงจำนวนว่าเป็นกี่ส่วนใน 10 ส่วนเท่าๆ กัน เลขโดดหลังจุดที่ทศนิยมตัวที่ 2 เป็นทศนิยมตำแหน่งที่ 2 อยู่ในหลักส่วนร้อย แสดงจำนวนว่าเป็นกี่ส่วนใน 100 ส่วนเท่าๆ กัน เลขโดดหลังจุดที่ทศนิยมตัว"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s040" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 40"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 40 / 96</span></div>
+  <div class="ppframe"><img alt="7 3 2 . 5 0 4 พิจารณา 732.504 732.504 คือ 7 ร้อย กับ 3 สิบ กับ 2 หน่วย กับ 5 ส่วนสิบ กับ 0 ส่วนร้อย กับ 4 ส่วนพัน 7 อยู่ในหลักร้อย มีค่า 700 3 อยู่ในหลักสิบ มีค่า 30 2 อยู่ในหลักหน่วย มีค่า 2 5 อยู่ในหลักส่วนสิบ มีค่า หรือ 0.5 0 อยู่ในหลักส่วนร้อย มีค่า 0.5 4 อยู่ในหลักส่วนพัน มีค่า หรือ 0.004 7.1 7"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s041" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 41"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 41 / 96</span></div>
+  <div class="ppframe"><img alt="ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 71 1 เติมคำตอบในช่องว่าง 6 4 . 0 8 9 6 อยู่ในหลัก มีค่า 4 อยู่ในหลัก มีค่า 0 อยู่ในหลัก มีค่า 8 อยู่ในหลัก มีค่า 9 อยู่ในหลัก มีค่า สิบ 60 หน่วย 4 ส่วนสิบ 0 ส่วนร้อย ส่วนพัน หรือ 0.08 หรือ 0.009 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s042" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 42"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 42 / 96</span></div>
+  <div class="ppframe"><img alt="2 เลขโดดที่ขีดเส้นใต้อยู่ในหลักใด มีค่าเท่าใด 1) 4.309 2) 23.347 3) 8.888 4) 5.059 3 อยู่ในหลักส่วนสิบ มีค่า หรือ 0.3 7 อยู่ในหลักส่วนพัน มีค่า หรือ 0.007 8 อยู่ในหลักส่วนร้อย มีค่า หรือ 0.08 0 อยู่ในหลักส่วนสิบ มีค่า 0 3 เขียนในรูปทศนิยม 1) 5 ร้อย กับ 3 สิบ กับ 6 หน่วย กับ 8 ส่วนสิบ กับ 6 ส่วนพัน 2"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s043" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 43"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 43 / 96</span></div>
+  <div class="ppframe"><img alt="8 1 . 2 3 9 พิจารณา 732.504 8 ในหลักสิบมีค่า 80 1 ในหลักหน่วยมีค่า 1 2 ในหลักส่วนสิบมีค่า หรือ 0.2 3 ในหลักส่วนร้อยมีค่า หรือ 0.03 9 ในหลักส่วนพันมีค่า หรือ 0.009 ดังนั้น 81.239 เขียนในรูปกระจายได้ ดังนี้ 81.239 = 80 + 1 + + + หรือ 81.239 = 80 + 1 + 0.2 + 0.03 + 0.009 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s044" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 44"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 44 / 96</span></div>
+  <div class="ppframe"><img alt="ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 73 1 เขียนในรูปกระจาย 1) 60.98 = 2) 316.392 = 3) 146.263 = 60 + + 300 + 10 + 6 + + + 100 + 40 + 6 + + + 2 เติม = หรือ ≠ ใน 1) 101.01 100 + 1 + 0.1 + 0.01 + 0.001 2) 227.94 200 + 20 + 7 + 0.09 + 0.0043) 1,000 + 30 + 4 + 0.4 + 0.05 1,034.0454) 500 + 50 + 5 + 0.5 + 0.005 55"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s045" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 45"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 45 / 96</span></div>
+  <div class="ppframe"><img alt="การเปรียบเทียบทศนิยม 2 ส่วนที่ระบายสี แสดงด้วย 0.4 พิจารณาเปรียบเทียบ 0.4 กับ 0.7 ส่วนที่ระบายสี แสดงด้วย 0.7 จากรูป 0.4 น้อยกว่า 0.7 เขียนแทนด้วย 0.4 &lt; 0.7หรือ 0.7 มากกว่า 0.4 เขียนแทนด้วย 0.7 &gt; 0.4 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s046" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 46"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 46 / 96</span></div>
+  <div class="ppframe"><img alt="ส่วนที่ระบายสี แสดงด้วย 1.5 พิจารณาเปรียบเทียบ 0.4 กับ 0.7 ส่วนที่ระบายสี แสดงด้วย 1.72 จากรูป 1.75 มากกว่า 1.72 เขียนแทนด้วย 1.75 &gt; 1.72หรือ 1.72 น้อยกว่า 1.75 เขียนแทนด้วย 1.72 &lt; 1.75 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s047" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 47"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 47 / 96</span></div>
+  <div class="ppframe"><img alt="การเปรียบเทียบทศนิยม ให้เปรียบเทียบจำนวนทีละหลักเช่นเดียวกับการเปรียบเทียบจำนวนนับ โดยเปรียบเทียบจำนวนหน้าจุดทศนิยมก่อน ถ้าจำนวนหน้าจุดทศนิยมเท่ากัน ให้เปรียบเทียบจำนวนหลังจุดทศนิยมในหลักเดียวกัน โดยเริ่มจากหลักส่วนสิบ ถ้าจำนวนในหลักส่วนสิบเท่ากัน ให้เปรียบเทียบจำนวนในหลักส่วนร้อย หลักส่วนพัน ตามลำด"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s048" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 48"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 48 / 96</span></div>
+  <div class="ppframe"><img alt="จำนวนหน้าจุดทศนิยมคือ 6 เท่ากัน จึงเปรียบเทียบจำนวนในหลักส่วนสิบพบว่า 5 ส่วนสิบ มากกว่า 3 ส่วนสิบดังนั้น 6.5 &gt; 6.3 เปรียบเทียบทศนิยม 1 6.5 กับ 6.3 เนื่องจาก 2.13 = 2.130 จึงเปรียบเทียบ 2.130 กับ 2.134จำนวนหน้าจุดทศนิยม จำนวนในหลักส่วนสิบ และจำนวนในหลักส่วนร้อย เท่ากันจึงเปรียบเทียบจำนวนในหลักส่วนพัน"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s049" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 49"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 49 / 96</span></div>
+  <div class="ppframe"><img alt="ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 75 1 เติม &gt; หรือ &lt; ใน 1)10.3710.733)25.64125.6145)50.5507)121.4121.38 2)3.4753.4794)6.336.3336)9.259.528)8.88.08 &gt; &gt; &gt; &lt; &lt; &lt; &gt; &lt; 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s050" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 50"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 50 / 96</span></div>
+  <div class="ppframe"><img alt="2 เขียนวงล้อมรอบทศนิยมที่มากกว่า 2)45.0045.104)72.6172.166)7.0257.0528)100.001100.01 1)201.40201.393)52.0952.905)35.83235.8577)0.6450.65 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s051" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 51"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 51 / 96</span></div>
+  <div class="ppframe"><img alt="การเรียงลำดับทศนิยม 3 พิจารณาการเรียงลำดับความสูงต่อไปนี้ เบญสูง 1.41 เมตร หยกสูง 1.34 เมตร ชายสูง 1.4 เมตร 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s052" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 52"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 52 / 96</span></div>
+  <div class="ppframe"><img alt="จำนวนหน้าจุดทศนิยมเลขโดดในหลักส่วนสิบเลขโดดในหลักส่วนร้อยเบญสูง 1.41 ม.141หยกสูง 1.34 ม.134ชายสูง 1.4 ม.140 เนื่องจาก 1.41 &gt; 1.34 แสดงว่า เบญสูงกว่าหยก 1.41 &gt; 1.4 แสดงว่า เบญสูงกว่าชายจะได้ เบญสูงกว่าหยกและชาย แสดงว่า เบญสูงที่สุดเนื่องจาก 1.34 &lt; 1.4 แสดงว่า หยกเตี้ยกว่าชาย จะได้ หยกเตี้ยที่สุดเมื่อ"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s053" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 53"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 53 / 96</span></div>
+  <div class="ppframe"><img alt="ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 77 1 เรียงลำดับทศนิยมจากน้อยไปมาก 1) 0.46 0.64 0.5 2) 8.596 8.96 8.9 2 เรียงลำดับทศนิยมจากมากไปน้อย 1) 100.902 100.029 100.9 2) 0.46 0.64 0.66 3) 210.7 210.701 210.017 210.71 0.46 0.5 0.64 8.596 8.9 8.96 100.902 100.9 100.029 0.66 0.64 0.46 210.71 210.701 210.7 210.017 7"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s054" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 54"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 54 / 96</span></div>
+  <div class="ppframe"><img alt="3 เติมทศนิยมใน เพื่อเรียงลำดับทศนิยมจากน้อยไปมาก 1) 14.567 14.607 14.802 2) 0.56 0.85 0.95 3) 3.2 3.3 มีหลายคำตอบ 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s055" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 55"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 55 / 96</span></div>
+  <div class="ppframe"><img alt="เติมคำตอบโดยใช้ข้อมูลจากตาราง ตรวจสอบความเข้าใจ ยอดเขาที่สูงที่สุดของแต่ละประเทศ ประเทศยอดเขาความสูง (กิโลเมตร)ไทยดอยอินทนนท์2.6อินโดนีเซียปุนจักจายา5.03ลาวภูเบี้ย2.82พม่าข่ากาโบราซี5.881มาเลเซียคินาบาลู4.095เวียดนามฟานสิปัน3.143 1) ยอดเขาที่สูงที่สุด คือ อยู่ในประเทศ 2) ยอดเขาที่เตี้ยที่สุด คือ อยู"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s056" data-title="7.2 การเปรียบเทียบและเรียงลำดับ · หน้า 56"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การเปรียบเทียบและเรียงลำดับ</span><span class="ppno">หน้า 56 / 96</span></div>
+  <div class="ppframe"><img alt="สิ่งที่ได้เรียนรู้ การเรียงลำดับ 1.1 1.01 1.001 1.101 จากน้อยไปมาก มีวิธีพิจารณาอย่างไร เขียนทศนิยมในแนวตั้งโดยให้จำนวนที่อยู่ในหลักเดียวกันอยู่ตรงกัน แล้วเปรียบเทียบโดยใช้วิธีการเดียวกันกับการเปรียบเทียบจำนวนนับ โดยเปรียบเทียบจำนวนที่อยู่หน้าจุดทศนิยมก่อน ถ้าพบว่าเท่ากัน จึงเปรียบเทียบจำนวนในหลักส่"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="7.3" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง"><div class="inner secslide">
+  <div class="secnum">7.3</div><h1>➕ การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</h1>
+  <div class="subs"><div><b>1</b>การบวกทศนิยมที่ไม่มีการทด</div><div><b>2</b>การบวกทศนิยมที่มีการทด</div><div><b>3</b>การลบทศนิยมที่ไม่มีการกระจาย</div><div><b>4</b>การลบทศนิยมที่มีการกระจาย</div><div><b>5</b>การบวก การลบทศนิยม 2 ขั้นตอน</div></div>
+  <div class="kru fig"><span class="av"><img src="full-p8.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 7.3 <b>การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s058" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 58"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 58 / 96</span></div>
+  <div class="ppframe"><img alt="พิจารณาการหาผลบวกของ 1.1 + 2.7 การบวกทศนิยมที่ไม่มีการทด 1 1.1 = 1 + 0.1 2.7 = 2 + 0.7 3 0.8 จากรูปจะได้ 1.1 + 2.7 = 3.8สังเกตได้ว่า 0.8 หรือ 8 ส่วนสิบ ได้จาก 1 ส่วนสิบ รวมกับ 7 ส่วนสิบและ 3 ได้จาก 1 รวมกับ 2 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s059" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 59"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 59 / 96</span></div>
+  <div class="ppframe"><img alt="พิจารณาการหาผลบวกของ 0.24 + 0.35 0.24 = 0.2 + 0.04 0.5 0.09 จากรูปจะได้ 0.24 + 0.35 = 0.59สังเกตได้ว่า 0.09 หรือ 9 ส่วนร้อย ได้จาก 4 ส่วนร้อย รวมกับ 5 ส่วนร้อยและ 0.5 หรือ 5 ส่วนสิบ ได้จาก 2 ส่วนสิบ รวมกับ 3 ส่วนสิบ 0.35 = 0.3 + 0.05 การบวกทศนิยมที่ไม่มีการทด ใช้หลักการเดียวกันกับการบวกจำนวนนับ โดยน"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s060" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 60"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 60 / 96</span></div>
+  <div class="ppframe"><img alt="หาผลบวก 1 84.32 + 13.51 3 8 7 9 วิธีทำ ตอบ ๙๗.๘๓ 2 74.61 + 2.259 วิธีทำ ตอบ ๗๖.๘๖๙ 6 8 6 7 9 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s061" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 61"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 61 / 96</span></div>
+  <div class="ppframe"><img alt="1 หาผลบวก 1) 0.307 + 0.29 2) 10 + 8.546 ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 81 วิธีทำ วิธีทำ ตอบ ตอบ 7030+09207950 ๐.๕๙๗ ๑๘.๕๔๖ 1645850000+6481 2 เติมคำตอบ 1) 0.6 + 0.2 = 3) 2.17 + 1.5 = 5) 18.34 + 31.62 = 2) 5.091 + 0.8 = 4) 0.228 + 0.571 = 6) 6.145 + 31.44 = 0.8 5.891 3.67 0.799 49.96 37.585 7.1 7.2 7.3 "></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s062" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 62"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 62 / 96</span></div>
+  <div class="ppframe"><img alt="การบวกทศนิยมที่มีการทด 2 พิจารณาการหาผลบวกของ 0.36 + 0.48 จากรูปจะได้ 0.36 + 0.48 = 0.84สังเกตได้ว่า 0.04 หรือ 4 ส่วนร้อย ได้จาก 6 ส่วนร้อย รวมกับ 8 ส่วนร้อย ได้ 14 ส่วนร้อย หรือ 1 ส่วนสิบ กับ 4 ส่วนร้อย ทด 1 ในหลักส่วนสิบ เหลือ 4 ส่วนร้อยและ 0.8 หรือ 8 ส่วนสิบ ได้จาก 3 ส่วนสิบ รวมกับ 4 ส่วนสิบ ได้ "></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s063" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 63"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 63 / 96</span></div>
+  <div class="ppframe"><img alt="หาผลบวก 1 5.9 + 0.6 5 6 วิธีทำ ตอบ ๖.๕ 1 บวกในหลักส่วนสิบ9 ส่วนสิบ รวมกับ 6 ส่วนสิบ ได้ 15 ส่วนสิบหรือ 1 หน่วย กับ 5 ส่วนสิบ ทด 1 ในหลักหน่วย บวกในหลักหน่วย5 หน่วย รวมกับ 0 หน่วย ได้ 5 หน่วยรวมกับตัวทดอีก 1 หน่วย ได้ 6 หน่วย 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s064" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 64"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 64 / 96</span></div>
+  <div class="ppframe"><img alt="2 61.64 + 17.58 วิธีทำ ตอบ ๗๙.๒๒ 2 2 9 7 1 1 บวกในหลักส่วนร้อย4 ส่วนร้อย รวมกับ 8 ส่วนร้อย ได้ 12 ส่วนร้อยหรือ 1 ส่วนสิบ กับ 2 ส่วนร้อย ทด 1 ในหลักส่วนสิบเหลือ 2 ส่วนร้อยบวกในหลักส่วนสิบ6 ส่วนสิบ รวมกับ 5 ส่วนสิบ ได้ 11 ส่วนสิบรวมกับตัวทดอีก 1 ส่วนสิบ ได้ 12 ส่วนสิบทด 1 ในหลักหน่วย เหลือ 2 ส่วนสิบบว"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s065" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 65"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 65 / 96</span></div>
+  <div class="ppframe"><img alt="1 หาผลบวก 1) 68.2 + 14.9 2) 4.72 + 3.8 ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 84 วิธีทำ วิธีทำ ตอบ ตอบ 286+941138 ๘๓.๑ ๘.๕๒ 0838274+25 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s066" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 66"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 66 / 96</span></div>
+  <div class="ppframe"><img alt="3) 70.46 + 54.39 4) 2.955 + 97.486 วิธีทำ วิธีทำ ตอบ ตอบ ๑๒๔.๘๕ ๑๐๐.๔๔๑ 56407+93458421 14068475592+4091 5) 25.91 + 0.724 วิธีทำ ตอบ ๒๖.๖๓๔ 46242700195+362 6) 7.965 + 8.3 วิธีทำ ตอบ ๑๖.๒๖๕ 52100385697+66 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s067" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 67"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 67 / 96</span></div>
+  <div class="ppframe"><img alt="วิธีทำ ตอบ 8637 12171 วิธีทำ ตอบ 2 เติมคำตอบ 1) 0.9 + 0.5 = 3) 5.382 + 0.68 = 2) 12.497 + 9.604 = 4) 45.8 + 7.572 = 1.4 22.101 6.062 53.372 หาผลบวก ตรวจสอบความเข้าใจ 1) 3.534 + 8.637 ๑๒.๑๗๑ + 3534 065 2855 2) 27.9 + 0.65 ๒๘.๕๕ + 2790 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s068" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 68"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 68 / 96</span></div>
+  <div class="ppframe"><img alt="3085 วิธีทำ ตอบ + วิธีทำ ตอบ 5087 24447 3) 19.36 + 5.087 ๒๔.๔๔๗ 19360 26915 30000 4) 30.85 + 269.15 ๓๐๐.๐๐ หรือ ๓๐๐ + สิ่งที่ได้เรียนรู้ มีวิธีหาผลบวกของ 45.12 + 9.089 อย่างไร ทำ 45.12 ให้เป็นทศนิยม 3 ตำแหน่ง โดยเติม 0 ในหลักส่วนพัน แล้วนำจำนวนที่อยู่ในหลักเดียวกันมาบวกกัน โดยเริ่มจากหลักส่วนพันได้ "></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s069" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 69"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 69 / 96</span></div>
+  <div class="ppframe"><img alt="พิจารณาการหาผลลบของ 0.6 – 0.40.6 – 0.4 แสดงได้ดังนี้ การลบทศนิยมที่ไม่มีการกระจาย 3 จากรูปจะได้ 0.6 – 0.4 = 0.2สังเกตได้ว่า 0.2 หรือ 2 ส่วนสิบ ได้จาก 6 ส่วนสิบ เอาออก 4 ส่วนสิบ เหลือ 2 ส่วนสิบ 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s070" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 70"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 70 / 96</span></div>
+  <div class="ppframe"><img alt="พิจารณาการหาผลลบของ 0.78 – 0.32 จากรูปจะได้ 0.78 – 0.32 = 0.46สังเกตได้ว่า 0.06 หรือ 6 ส่วนร้อย ได้จาก 8 ส่วนร้อย เอาออก 2 ส่วนร้อย เหลือ 6 ส่วนร้อยและ 0.4 หรือ 4 ส่วนสิบ ได้จาก 7 ส่วนสิบ เอาออก 3 ส่วนสิบ เหลือ 4 ส่วนสิบ การลบทศนิยมที่ไม่มีการกระจาย ใช้หลักการเดียวกันกับการลบจำนวนนับ โดยนำจำนวนที่อย"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s071" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 71"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 71 / 96</span></div>
+  <div class="ppframe"><img alt="หาผลบวก 1 5.368 – 1.245 3 2 1 4 วิธีทำ ตอบ ๔.๑๒๓ 2 3.75 – 0.6 วิธีทำ ตอบ ๓.๑๕ 5 1 3 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s072" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 72"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 72 / 96</span></div>
+  <div class="ppframe"><img alt="1 หาผลลบ 1) 15.472 – 3.051 2) 10 + 8.546 ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 87 วิธีทำ วิธีทำ ตอบ ตอบ ๑๒.๔๒๑ ๐.๑๒๗ 008017290+710 2 เติมคำตอบ 1) 0.7 – 0.5 = 3) 6.38 – 2.06 = 5) 12.753 – 2.71 = 2) 5.4 – 2.1 = 4) 8.965 – 3.3 = 6) 15.894 – 2.722 = 0.2 3.3 4.32 5.665 10.043 13.172 150312745-24211 7.1 7.2 7.3 7."></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s073" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 73"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 73 / 96</span></div>
+  <div class="ppframe"><img alt="การลบทศนิยมที่มีการกระจาย 4 พิจารณาการหาผลลบของ 0.53 – 0.18 จากรูปจะได้ 0.53 – 0.18 = 0.35สังเกตได้ว่า 0.05 หรือ 5 ส่วนร้อย ได้จาก 3 ส่วนร้อย เอาออก 8 ส่วนร้อย ซึ่งไม่พอจึงกระจาย 5 ส่วนสิบ มา 1 ส่วนสิบ ซึ่ง 1 ส่วนสิบ เท่ากับ 10 ส่วนร้อย 10 ส่วนร้อย รวมกับ 3 ส่วนร้อย ได้ 13 ส่วนร้อย แล้วเอาออก 8 ส่วน"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s074" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 74"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 74 / 96</span></div>
+  <div class="ppframe"><img alt="หาผลลบของ 4.83 – 1.751 วิธีทำ ตอบ ๓๐.๗๙ 9 7 0 3 10 12 ลบในหลักส่วนพัน0 ส่วนพัน เอาออก 1 ส่วนพัน ซึ่งไม่พอ จึงกระจาย 3 ส่วนร้อย มา 1 ส่วนร้อย ซึ่ง 1 ส่วนร้อย เท่ากับ 10 ส่วนพันแล้วเอาออก 1 ส่วนพัน เหลือ 9 ส่วนพัน 4.83 = 4.830 7 ลบในหลักส่วนร้อย3 ส่วนร้อย กระจายไป 1 ส่วนร้อย เหลือ 2 ส่วนร้อย เอาออก 5 "></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s075" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 75"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 75 / 96</span></div>
+  <div class="ppframe"><img alt="1 หาผลบวก 1) 34.51 – 9.92 2) 8.246 – 5.35 ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 89 วิธีทำ วิธีทำ ตอบ ตอบ 1543-2999542 ๒๔.๕๙ ๒.๘๙๖ 053586428-692 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s076" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 76"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 76 / 96</span></div>
+  <div class="ppframe"><img alt="วิธีทำ ตอบ 3) 96.7 – 20.584 4) 21.853 – 12.946 วิธีทำ วิธีทำ ตอบ ตอบ ๗๖.๑๑๖ ๘.๙๐๗ 7964923581-0821 460076-850116729 วิธีทำ ตอบ 307 1252 หาผลลบ ตรวจสอบความเข้าใจ 1) 15.59 – 3.07 ๑๒.๕๒ - 1559 19804 61919 2) 81.723 – 19.804 ๖๑.๙๑๙ + 81723 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s077" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 77"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 77 / 96</span></div>
+  <div class="ppframe"><img alt="วิธีทำ ตอบ 4010 วิธีทำ ตอบ - 2168 5032 3) 7.2 – 2.168 ๕.๐๓๒ 7200 4009 0001 4) 4.01 – 4.009 ๐.๐๐๑ - สิ่งที่ได้เรียนรู้ มีวิธีหาผลลบของ 45.12 - 9.089 อย่างไร ทำ 45.12 ให้เป็นทศนิยม 3 ตำแหน่ง โดยเติม 0 ในหลักส่วนพัน แล้วนำจำนวนที่อยู่ในหลักเดียวกันมาลบกัน โดยเริ่มจากหลักส่วนพัน พบว่า ตัวตั้งในหลักส่วนพ"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s078" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 78"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 78 / 96</span></div>
+  <div class="ppframe"><img alt="การบวก การลบทศนิยม 2 ขั้นตอน 5 หาผลลัพธ์ของ 5.2 – (1.63 – 0.8) การบวก การลบทศนิยม 2 ขั้นตอน ถ้ามีวงเล็บให้คำนวณในวงเล็บก่อน ถ้าไม่มีวงเล็บให้คำนวณจากซ้ายไปขวา วิธีทำ หาผลลัพธ์ของ 1.63 – 0.8 ตอบ ๔.๓๗ 3 8 0 0.8 = 0.80 หาผลลัพธ์ของ 5.2 – 0.83 7 3 4 5.2 = 5.20 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s079" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 79"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 79 / 96</span></div>
+  <div class="ppframe"><img alt="- 9480 0 7 หาผลลัพธ์ของ 2.5 – 1.63 + 0.849 วิธีทำ ตอบ ๑.๗๑๙ 8 0 2.5 = 2.50 0.87 = 0.870 + 9 1 7 1 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s080" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 80"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 80 / 96</span></div>
+  <div class="ppframe"><img alt="วิธีทำ ตอบ 1 25 – (3.56 + 14.7) หาผลลัพธ์ แบบฝึกหัดหน้า 91 หาผลลัพธ์ของ 3.56 + 14.7 2500 + 1470 1826 356 1826 674 - หาผลลัพธ์ของ 25 – 18.26 ๖.๗๔ 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s081" data-title="7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · หน้า 81"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span><span class="ppno">หน้า 81 / 96</span></div>
+  <div class="ppframe"><img alt="วิธีทำ ตอบ 0357 วิธีทำ ตอบ 0783 024 2 0.9 + 0.24 – 0.783 1140 090 ๐.๓๕๗ + - 54146 11056 889 3 34.2 + 8.89 + 11.056 43090 3420 ๕๔.๑๔๖ + + วิธีทำ ตอบ 4 12.36 – (5 – 0.813) หาผลลัพธ์ของ 5 – 0.813 12360 - 0813 4187 5000 4187 8173 - หาผลลัพธ์ของ 12.36 – 4.187 ๘.๑๗๓ 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="7.4" data-title="7.4 โจทย์ปัญหา"><div class="inner secslide">
+  <div class="secnum">7.4</div><h1>📝 โจทย์ปัญหา</h1>
+  
+  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 7.4 <b>โจทย์ปัญหา</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s083" data-title="7.4 โจทย์ปัญหา · หน้า 83"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 83 / 96</span></div>
+  <div class="ppframe"><img alt="สิ่งที่โจทย์ถาม ระยะทางทั้งหมดที่ฝนวิ่งได้ สิ่งที่โจทย์บอก วิ่งที่ 1 ฝนวิ่งได้ 5.2 กิโลเมตร วันที่ 2 วิ่งได้ 3.7 กิโลเมตร จากสิ่งที่โจทย์ถาม และสิ่งที่โจทย์บอก เขียนเป็นแผนภาพได้อย่างไร จากภาพ จะหาคำตอบได้อย่างไร และได้คำตอบเท่าใด 5.2 + 3.7 = 8.9 กิโลเมตร สรุปคำตอบอย่างไร ฝนวิ่งได้ระยะทางทั้งหมด 8.9"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s084" data-title="7.4 โจทย์ปัญหา · หน้า 84"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 84 / 96</span></div>
+  <div class="ppframe"><img alt="วิธีคิด ดังนั้น แจ๊คสูงกว่าแบงค์ 1.41 – 1.25 = 0.16 เมตรตอบ ๐.๑๖ เมตร แจ๊คสูง 1.41 เมตร แบงค์สูง 1.25 เมตร แจ๊คสูงกว่าแบงค์เท่าใด ลองคิดดู1 เมตร เท่ากับ 100 เซนติเมตร0.16 เมตรเท่ากับกี่เซนติเมตร 16 เซนติเมตร 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s085" data-title="7.4 โจทย์ปัญหา · หน้า 85"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 85 / 96</span></div>
+  <div class="ppframe"><img alt="วิธีคิด ดังนั้น ออมซื้อเงาะ 1.5 + 2 = 3.5 กิโลกรัมตอบ ๓.๕ กิโลกรัม ออมซื้อมังคุด 1.5 กิโลกรัม ซื้อเงาะมากกว่ามังคุด 2 กิโลกรัม ออมซื้อเงาะกี่กิโลกรัม 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s086" data-title="7.4 โจทย์ปัญหา · หน้า 86"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 86 / 96</span></div>
+  <div class="ppframe"><img alt="แสดงวิธีคิดและหาคำตอบ แบบฝึกหัดหน้า 94 1 กระดาษขนาด A5 ยาว 21 เซนติเมตร กระดาษขนาด A5 สั้นกว่า A4 อยู่ 8.7 เซนติเมตร กระดาษขนาด A4 ยาวเท่าใด วิธีคิด ตอบ ดังนั้น กระดาษขนาด A4 ยาว 21 + 8.7 = 29.7 เซนติเมตร ๒๙.๗ เซนติเมตร 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s087" data-title="7.4 โจทย์ปัญหา · หน้า 87"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 87 / 96</span></div>
+  <div class="ppframe"><img alt="2 ตึกใบหยก 1 สูง 151 เมตร ตึกใบหยก 2 สูง 328.4 เมตร ตึกใดสูงกว่ากัน และสูงกว่ากันเท่าใด วิธีคิด ตอบ ดังนั้น ตึกใบหยก 2 สูงกว่า ตึกใบหยก 1และสูงกว่า 328.4 – 151 = 177.4 เมตร ตึกใบหยก ๒ สูงกว่า ตึกใบหยก ๑ และสูงกว่า ๑๗๗.๔ เมตร 3 พ่อต้องการที่ดินปลูกส้ม 8 ไร่ แต่มีที่ดินอยู่แล้ว 6.25 ไร่ พ่อต้องซื้อเพิ"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s088" data-title="7.4 โจทย์ปัญหา · หน้า 88"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 88 / 96</span></div>
+  <div class="ppframe"><img alt="สิ่งที่โจทย์ถาม เงินทอนที่จูนได้รับ สิ่งที่โจทย์บอก จูนซื้อขนม 5.75 บาท และนม 11.50 บาท จูนจ่ายเงินด้วยธนบัตรยี่สิบบาท 1 ฉบับ จากสิ่งที่โจทย์ถาม และสิ่งที่โจทย์บอก เขียนเป็นแผนภาพได้อย่างไร จะหาเงินทอน จะต้องรู้อะไรก่อน จำนวนเงินที่ซื้อของทั้งหมด หาเงินทอนได้อย่างไร และเป็นเงินเท่าใด 20 – 17.25 = 2."></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s089" data-title="7.4 โจทย์ปัญหา · หน้า 89"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 89 / 96</span></div>
+  <div class="ppframe"><img alt="วิธีคิด เดือนที่ 1 และเดือนที่ 2 สร้างถนนได้ 1.25 + 1.756 = 3.006 กิโลเมตร ดังนั้น เดือนที่ 3 สร้างถนนได้ 5 – 3.006 = 1.994 กิโลเมตรตอบ ๑.๙๙๔ กิโลเมตร ถนนยาว 5 กิโลเมตร ใช้เวลาสร้าง 3 เดือน เดือนที่ 1 สร้างได้ 1.25 กิโลเมตรเดือนที่ 2 สร้างได้ 1.756 กิโลเมตร เดือนที่ 3 สร้างถนนได้เท่าใด 7.1 7.2 7.3 7"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s090" data-title="7.4 โจทย์ปัญหา · หน้า 90"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 90 / 96</span></div>
+  <div class="ppframe"><img alt="วิธีคิด ดังนั้น ออมซื้อเงาะ 1.5 + 2 = 3.5 กิโลกรัมตอบ ๓.๕ กิโลกรัม ออมซื้อมังคุด 1.5 กิโลกรัม ซื้อเงาะมากกว่ามังคุด 2 กิโลกรัม ออมซื้อเงาะกี่กิโลกรัม 7.1 7.2 7.3 7.4"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s091" data-title="7.4 โจทย์ปัญหา · หน้า 91"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 91 / 96</span></div>
+  <div class="ppframe"><img alt="แสดงวิธีคิดและหาคำตอบ แบบฝึกหัดหน้า 96 1 ร้านค้ามีเชือกไนลอนยาว 50 เมตร ครั้งที่ 1 ตัดขายไป 5.25 เมตร ครั้งที่ 2 ตัดขายไป 3.5 เมตร ร้านค้าเหลือเชือกไนลอนกี่เมตร วิธีคิด ตอบ ครั้งที่ 1 และครั้งที่ 2 ตัดขายไป 5.25 + 3.5 = 8.75 เมตรดังนั้น ร้านค้าเหลือเชือกไนลอน 50 – 8.75 = 41.25 เมตร ๔๑.๒๕ เมตร 7.1 7."></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s092" data-title="7.4 โจทย์ปัญหา · หน้า 92"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 92 / 96</span></div>
+  <div class="ppframe"><img alt="2 เบญขับรถจากกรุงเทพฯ ไปจังหวัดตรัง ช่วงที่ 1 ขับได้ 347.5 กิโลเมตร ช่วงที่ 2 ขับได้ 408.7 กิโลเมตร และช่วงที่ 3 ขับอีก 93.8 กิโลเมตร ถึงจังหวัดตรังพอดี เบญขับรถจากกรุงเทพฯ ถึงจังหวัดตรังเป็นระยะทางเท่าใด วิธีคิด ตอบ ดังนั้น เบญขับรถจากกรุงเทพฯ ถึงจังหวัดตรังเป็นระยะทาง 347.5 + 408.7 + 93.8 = 850 กิ"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s093" data-title="7.4 โจทย์ปัญหา · หน้า 93"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 93 / 96</span></div>
+  <div class="ppframe"><img alt="แสดงวิธีคิดและหาคำตอบ ตรวจสอบความเข้าใจ 1 เขื่อนรัชชประภา ชื่อเดิม เขื่อนเชี่ยวหลาน อยู่ในจังหวัดสุราษฎร์ธานี มีความจุ 5,638.8 ล้านลูกบาศก์เมตร ถ้าเดือนมกราคมระบายน้ำออก 152.73 ล้านลูกบาศก์เมตร เดือนกุมภาพันธ์ระบายน้ำออกมากกว่าเดือนมกราคม 6.4 ล้านลูกบาศก์เมตร 2 เดือนนี้ เขื่อนรัชชประภาระบายน้ำออกกี่"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s094" data-title="7.4 โจทย์ปัญหา · หน้า 94"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 94 / 96</span></div>
+  <div class="ppframe"><img alt="2 นักเรียนกลุ่มหนึ่งรวบรวมเงินเพื่อทำงานประดิษฐ์ได้ 60 บาท ซื้อกรรไกร 17.50 บาท ซื้อเทปใส12.75 บาท เงินที่เหลือทั้งหมดนำไปซื้อกระดาษสี ซื้อกระดาษสีเป็นเงินเท่าใด วิธีคิด ตอบ ดังนั้น ซื้อกระดาษสี 60 – (17.50 + 12.75) = 65 – 30.25 = 29.75 บาท ๒๙.๗๕ บาท 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s095" data-title="7.4 โจทย์ปัญหา · หน้า 95"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 95 / 96</span></div>
+  <div class="ppframe"><img alt="3 เชือกเส้นที่ 1 ยาว 2.75 เมตร เชือกเส้นที่ 2 ยาว 1.5 เมตร เมื่อนำเชือกทั้งสองเส้นมาผูกกัน แล้ววัดความยาวใหม่ได้ 3.185 เมตร ส่วนที่ผูกเป็นปมมีความยาวกี่เมตร วิธีคิด ตอบ ดังนั้น ส่วนที่ผูกเป็นปมมีความยาว (2.75 + 1.5) – 3.185 = 4.25 – 3.185 = 1.065 เมตร ๑.๐๖๕ เมตร 7.1 7.2 7.3 7.4"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s096" data-title="7.4 โจทย์ปัญหา · หน้า 96"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="ppno">หน้า 96 / 96</span></div>
+  <div class="ppframe"><img alt="สิ่งที่ได้เรียนรู้ “ท่อน้ำท่อหนึ่ง นำมาตัดเป็น 2 ท่อน ท่อนแรกยาว 2.25 เมตร ท่อนที่ 2 สั้นกว่าท่อนแรก 0.5 เมตร เดิมท่อน้ำนี้ยาวเท่าใด” ขั้นที่ 1 หาความยาวของท่อน้ำท่อนที่ 2 ได้ 2.25 – 0.5 = 1.75 เมตรขั้นที่ 2 หาความยาวของท่อน้ำ โดยนำความยาวของท่อนแรก รวมกับความยาวท่อนที่ 2 ได้ 2.25 + 1.75 = 4 เมตร 7."></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
+  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>จบบทที่ 7 ทศนิยม</h2>
+  <div class="card c-yellow center endpic"><img src="av-p3.webp" alt="ครูอู๋"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="av-p4.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="toc"><button data-jump="7.1"><span class="e">📖</span><span>ทบทวน 7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง</span></button><button data-jump="7.2"><span class="e">⚖️</span><span>ทบทวน 7.2 การเปรียบเทียบและเรียงลำดับ</span></button><button data-jump="7.3"><span class="e">➕</span><span>ทบทวน 7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง</span></button><button data-jump="7.4"><span class="e">📝</span><span>ทบทวน 7.4 โจทย์ปัญหา</span></button></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m4-ch6-fractions/">◀ บทก่อนหน้า</a><a class="btn" style="--c:var(--purple)" href="../m4-math-hub/">🏠 หน้ารวม ป.4</a><a class="btn ghost" href="../m4-ch8-angles/">บทถัดไป ▶</a></div>
+  <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.4 สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m4-ch7-decimals", STORE_PREFIX = 'kruau-p4-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [{"q": "0.36 อ่านว่าอย่างไร", "c": ["ศูนย์จุดสามหก", "ศูนย์จุดสามสิบหก", "สามสิบหก", "ศูนย์จุดสามหกร้อย"], "a": 0, "w": "ตัวเลขหลังจุดทศนิยม อ่านเรียงทีละตัว"}, {"q": "{7/100} เขียนในรูปทศนิยมได้อย่างไร", "c": ["0.07", "0.7", "7.100", "0.007"], "a": 0, "w": "ตัวส่วนเป็น 100 จึงเป็นทศนิยม 2 ตำแหน่ง ได้ 0.07"}, {"q": "ใน 4.528 เลขโดด 2 มีค่าเท่าใด", "c": ["0.02", "0.2", "2", "0.002"], "a": 0, "w": "2 อยู่ในตำแหน่งที่สองหลังจุดทศนิยม (ส่วนร้อย) จึงมีค่า 0.02"}, {"q": "6.205 เขียนในรูปกระจายได้อย่างไร", "c": ["6 + 0.2 + 0.005", "6 + 0.2 + 0.05", "6 + 2 + 5", "6 + 0.02 + 0.005"], "a": 0, "w": "6 หน่วย กับ 2 ส่วนสิบ กับ 5 ส่วนพัน"}, {"q": "ข้อใดมีค่ามากที่สุด", "c": ["1.401", "1.4", "1.39", "1.04"], "a": 0, "w": "เติม 0 ให้ทศนิยมเท่ากัน: 1.401, 1.400, 1.390, 1.040"}, {"q": "3.75 + 2.6 = ?", "c": ["6.35", "4.01", "6.81", "5.35"], "a": 0, "w": "ตั้งจุดทศนิยมให้ตรงกัน 3.75 + 2.60 = 6.35"}, {"q": "5.2 − 1.47 = ?", "c": ["3.73", "4.27", "3.83", "4.73"], "a": 0, "w": "เติม 0 เป็น 5.20 − 1.47 = 3.73"}, {"q": "แม่ซื้อผ้า 2.5 เมตร และ 1.75 เมตร นำไปใช้ 3.4 เมตร เหลือผ้ากี่เมตร", "c": ["0.85 เมตร", "4.25 เมตร", "0.95 เมตร", "1.85 เมตร"], "a": 0, "w": "2.5 + 1.75 = 4.25 เมตร แล้ว 4.25 − 3.4 = 0.85 เมตร"}];
+
+/* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
+function ppPaint(sl) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, img = sl.querySelector('.ppframe img');
+  img.src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
+  img.classList.toggle('can', k < n);
+  var b = sl.querySelector('[data-pstep]');
+  if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+}
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl); } }
+(function () {
+  var go = Kit.go;
+  Kit.go = function (n, instant) {
+    var cur = Kit.slides[Kit.cur];
+    if (!instant && cur && cur.classList.contains('pslide')) {
+      var N = +cur.getAttribute('data-steps'), k = cur._k || 0;
+      if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
+      if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
+    }
+    var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
+    go(n, instant);
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t); }
+    for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+  };
+})();
+SETUP = function () {
+  setupToc();
+  Kit.slides.forEach(function (sl) {
+    if (!sl.classList.contains('pslide')) return;
+    var img = sl.querySelector('.ppframe img'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
+    img.onclick = adv; if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+  });
+};
+
+</script>
+</body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 8 มุม · คณิตศาสตร์ ป.4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#FF5C7A;--main-deep:#D63A5B;--glow:#FFD6DF}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:4px solid var(--main);background:var(--glow)}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+
+.nav .dots{display:none}
+.nav{justify-content:space-between}
+.pslide{padding:8px clamp(8px,2vw,24px) 8px}
+.pslide .inner.pp{max-width:none;height:100%;gap:6px}
+.pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
+.ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.ppframe img{display:block;max-width:100%;max-height:100%;width:min(100cqw,calc(100cqh * 16 / 9));height:auto;aspect-ratio:16/9;object-fit:contain;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08)}
+.ppframe img.can{cursor:pointer}
+.ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
+.ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
+.ppctl .btn{min-height:44px;padding:6px 18px}
+.secslide{min-height:100%;justify-content:center;align-items:center;text-align:center}
+.secnum{display:grid;place-items:center;width:clamp(110px,18vw,150px);aspect-ratio:1;border-radius:50%;background:var(--main);color:#fff;font-weight:700;font-size:clamp(2.2rem,6vw,3.2rem);box-shadow:0 8px 0 var(--main-deep)}
+.secslide h1{color:var(--main-deep);font-size:clamp(1.7rem,5vw,2.8rem);text-shadow:0 4px 0 var(--glow)}
+.subs{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:620px;width:100%}
+.subs div{background:#fff;border:3px solid var(--main);border-radius:16px;padding:8px 14px;font-weight:700;text-align:left;font-size:clamp(1rem,2.6vw,1.2rem)}
+.subs b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--main);color:#fff;margin-right:8px}
+.secslide .kru{max-width:680px;width:100%;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">📐</span>
+  <div class="ttl"><b>บทที่ 8 มุม</b><small>คณิตศาสตร์ ป.4 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m4-math-hub/" aria-label="หน้ารวม ป.4" title="หน้ารวม ป.4">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.4 · บทที่ 8</span>
+    <h1>มุม</h1>
+    <p class="sub">จุด เส้นตรง รังสี ชนิดของมุม วัดและสร้างมุมด้วยโพรแทรกเตอร์</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</li><li>8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม</li><li>8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน</li><li>8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</li><li>8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="full-p8.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 8</h2>
+  <div class="kru fig"><span class="av"><img src="full-p6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="toc"><button data-jump="8.1"><span class="e">📍</span><span>8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span></button><button data-jump="8.2"><span class="e">∠</span><span>8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม</span></button><button data-jump="8.3"><span class="e">📐</span><span>8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน</span></button><button data-jump="8.4"><span class="e">🧭</span><span>8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span></button><button data-jump="8.5"><span class="e">✏️</span><span>8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
+</div></section>
+<section class="slide" data-sec="8.1" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง"><div class="inner secslide">
+  <div class="secnum">8.1</div><h1>📍 จุด เส้นตรง รังสี และส่วนของเส้นตรง</h1>
+  
+  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 8.1 <b>จุด เส้นตรง รังสี และส่วนของเส้นตรง</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s004" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 4"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 4 / 62</span></div>
+  <div class="ppframe"><img alt="ตำแหน่งจุดโทษบนสนามฟุตบอล เราเคยเห็น จุด จากที่ใดบ้าง จุดเหล่านี้มีไว้เพื่ออะไร 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s005" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 5"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 5 / 62</span></div>
+  <div class="ppframe"><img alt="เส้นที่ลากตามแนวขอบไม้บรรทัด เราเคยเห็นสิ่งต่างๆ ที่มีลักษณะเป็นเส้นในแนวตรงจากที่ใดบ้าง ลวดสลิงที่ขึงสะพานแขวน ลำแสงเลเซอร์ แนวทุ่นลู่กั้นคลื่นสระว่ายน้ำ 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s006" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 6"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 6 / 62</span></div>
+  <div class="ppframe"><img alt="รูปเรขาคณิตบางอย่าง เช่น จุด เส้นตรง รูปสามเหลี่ยม วงกลม สามารถเขียนบนระนาบได้ เราใช้ จุด เพื่อบอกตำแหน่ง โดยใช้  เขียนแทนจุดบนระนาบ และเมื่อต้องการระบุชื่อจุด นิยมใช้ตัวอักษรอังกฤษตัวพิมพ์ใหญ่ หรือพยัญชนะไทย เขียนกำกับไว้ เช่น จุด A จุด B จุด ก จุด ข สิ่งที่มีลักษณะแบนราบ เรียบ และมีอาณาบริเวณไม่จ"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s007" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 7"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 7 / 62</span></div>
+  <div class="ppframe"><img alt="เขียน T H K S และ G กำกับจุด ตามเงื่อนไขที่กำหนด แบบฝึกหัดหน้า 104 จุด T แสดงตำแหน่งวัดจุด H แสดงตำแหน่งโรงพยาบาลจุด K แสดงตำแหน่งบ้านกิ่งแก้วจุด S แสดงตำแหน่งโรงเรียนจุด G แสดงตำแหน่งบ้านคุณยาย K T H S G 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s008" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 8"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 8 / 62</span></div>
+  <div class="ppframe"><img alt="เส้นในแนวตรงที่มีความยาวไม่จำกัด เรียกว่า เส้นตรง การลากเส้นตรงบนระนาบอาจใช้ไม้บรรทัดเป็นเครื่องมือในการลากเส้นในแนวตรง แล้วใส่หัวลูกศรที่ปลายทั้งสองข้าง เพื่อแสดงว่าเส้นตรงมีความยาวไม่จำกัด นั่นคือ เราสามารถต่อเส้นในแนวตรงนี้ออกไปในทิศทางของหัวลูกศรทั้งสองข้างโดยไม่มีที่สิ้นสุด หรือ AB เมื่อกำหนดจุ"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s009" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 9"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 9 / 62</span></div>
+  <div class="ppframe"><img alt="ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 105 1 ปฏิบัติตามข้อกำหนด และเติมคำตอบ 1) กำหนดจุด P บนระนาบ ลากเส้นตรงให้ผ่านจุด P จะลากได้ เส้น2) กำหนดจุด M และจุด N บนระนาบ ลากเส้นตรงให้ผ่านจุด M และจุด N จะลากได้ เส้น M N P ตัวอย่าง หลายเส้น 1 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s010" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 10"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 10 / 62</span></div>
+  <div class="ppframe"><img alt="3) กำหนดจุด X จุด Y และจุด Z บนระนาบ ลาก และ จุด อยู่บน และ X X จุด K อยู่บน และ Y Z เรียกจุด K ว่าเป็น จุดตัด ของ และ หรือกล่าวว่า และ ตัดกันที่จุด K 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s011" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 11"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 11 / 62</span></div>
+  <div class="ppframe"><img alt="2 เขียนรูปตามข้อกำหนด 1) จุด ม อยู่บน แต่จุด ต ไม่อยู่บน A B ตัวอย่าง บย ม ต 2) จุด F ไม่อยู่บน และ ตัด ที่จุด K ตัวอย่าง K F U 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s012" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 12"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 12 / 62</span></div>
+  <div class="ppframe"><img alt="เส้นตรง มีความยาวไม่จำกัด ดังนั้น เมื่อลากเส้นตรงบนระนาบ จึงต้องเขียนหัวลูกศรที่ปลายทั้งสองข้าง เพื่อแสดงว่าสามารถลากเส้นในแนวตรงต่อออกไปในทิศทางตามหัวลูกศรได้ไม่สิ้นสุด แต่เส้นตรงไม่มีจุดปลาย นอกจาก เส้นตรง แล้ว ยังมี รังสี และ ส่วนของเส้นตรง ดังนี้ รังสี เป็นส่วนหนึ่งของเส้นตรงที่มีจุดปลาย 1 จุด จ"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 13"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 13 / 62</span></div>
+  <div class="ppframe"><img alt="จากรูป จุด P เป็นจุดปลายของรังสี และจุด Q เป็นอีกจุดหนึ่งบนรังสีนี้ เรียกรังสีนี้ว่า รังสี PQเขียนแทนด้วยสัญลักษณ์ จากรูป จุด Y เป็นจุดปลายของรังสี และจุด X เป็นอีกจุดหนึ่งบนรังสีนี้ เรียกรังสีนี้ว่า รังสี YXเขียนแทนด้วยสัญลักษณ์ รังสีทุกเส้น สามารถลากเส้นในแนวตรงต่อออกไปในทิศทางตามหัวลูกศรได้ไม่สิ้"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s014" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 14"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 14 / 62</span></div>
+  <div class="ppframe"><img alt="ส่วนของเส้นตรง เป็นส่วนหนึ่งของเส้นตรงที่มีจุดปลาย 2 จุด จุดปลาย จุดปลาย จากรูป จุด A และจุด B เป็นจุดปลายของส่วนของเส้นตรงเรียกส่วนของเส้นตรงนี้ว่า ส่วนของเส้นตรง ABหรือ ส่วนของเส้นตรง BAเขียนแทนด้วยสัญลักษณ์ หรือ 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s015" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 15"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 15 / 62</span></div>
+  <div class="ppframe"><img alt="ส่วนของเส้นตรงมีจุดปลาย 2 จุด จึงมีความยาวจำกัด ทำให้สามารถวัดความยาวได้ ในที่นี้กำหนดเป็นข้อตกลงว่า ใช้ m แทนความยาวของส่วนของเส้นตรงเช่น ความยาวของ เขียนแทนด้วย m() อ่านว่า ความยาวของส่วนของเส้นตรง AB A B จากรูป ส่วนของเส้นตรง AB ยาว 7 เซนติเมตร หรือ ความยาวของส่วนของเส้นตรง AB เท่ากับ 7 เซนติเมตร"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s016" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 16"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 16 / 62</span></div>
+  <div class="ppframe"><img alt="ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 109 1 เติมคำตอบ 1) เส้นตรง ได้แก่ 2) ส่วนของเส้นตรง ได้แก่ 3) รังสี ได้แก่ 2 ยาวกี่เซนติเมตร m() = 4 เซนติเมตร 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s017" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 17"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 17 / 62</span></div>
+  <div class="ppframe"><img alt="2 เขียนรูปตามข้อกำหนด 1) เขียน ให้ยาว 7 เซนติเมตร 8 มิลลิเมตร 2) เขียน และ ให้มีจุดปลายเป็นจุดเดียวกัน ตัวอย่าง G H ตัวอย่าง P R Q 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s018" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 18"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 18 / 62</span></div>
+  <div class="ppframe"><img alt="ถ้ามีจุด 2 จุดบนระนาบ จะลากเส้นตรงให้ผ่าน 2 จุดนี้ได้กี่เส้นได้ เส้น ตรวจสอบความเข้าใจ 1 ถ้ามีจุด 1 จุดบนระนาบ จะลากเส้นตรงให้ผ่านจุดนี้ได้กี่เส้นได้ เส้น 3 ลากเส้นตรงให้ผ่านจุด 2 จุด ให้ได้จำนวนเส้นมากที่สุดได้ เส้น ได้แก่ หลาย 1 2 ก ข ค ง 6 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s019" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 19"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 19 / 62</span></div>
+  <div class="ppframe"><img alt="สัญลักษณ์ใดบ้าง แทนชื่อเส้นตรงนี้ 4 และ 5 อ่านอย่างไร ส่วนของเส้นตรง LM 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s020" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 20"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 20 / 62</span></div>
+  <div class="ppframe"><img alt="เขียน  ใน และเติมคำตอบ สิ่งที่ได้เรียนรู้ 1 เส้นตรง ความยาว วัดได้ วัดไม่ได้ จุดปลาย มี จุด ไม่มี รังสี ความยาว วัดได้ วัดไม่ได้ จุดปลาย มี จุด ไม่มี ส่วนของเส้นตรง ความยาว วัดได้ วัดไม่ได้ จุดปลาย มี จุด ไม่มี       1 2 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s021" data-title="8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · หน้า 21"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span><span class="ppno">หน้า 21 / 62</span></div>
+  <div class="ppframe"><img alt="เขียนรูป เส้นตรง ส่วนของเส้นตรง หรือ รังสี อย่างละ 1 รูปพร้อมตั้งชื่อ และเขียนสัญลักษณ์ 2 ตัวอย่าง A B E F C D m() = 8 เซนติเมตร หมายความว่าอย่างไร 3 ส่วนของเส้นตรง GO ยาว 8 เซนติเมตรหรือ ความยาวของส่วนของเส้นตรง GO เท่ากับ 8 เซนติเมตร 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="8.2" data-title="8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม"><div class="inner secslide">
+  <div class="secnum">8.2</div><h1>∠ มุม ส่วนประกอบของมุมและการเรียกชื่อมุม</h1>
+  
+  <div class="kru fig"><span class="av"><img src="full-p6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 8.2 <b>มุม ส่วนประกอบของมุมและการเรียกชื่อมุม</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-title="8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม · หน้า 23"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม</span><span class="ppno">หน้า 23 / 62</span></div>
+  <div class="ppframe"><img alt="ให้นักเรียนพับกระดาษ แล้วลากเส้นตามขอบกระดาษที่พับ ทำให้เกิดมุม ดังรูป พับครั้งที่ 1 พับครั้งที่ 2 ขีดเส้นที่ขอบ ได้มุมที่ต้องการ กำหนดจุด A จุด B และจุด C ดังรูปให้ลาก และ เมื่อลากรังสีแล้ว จะพบว่า รังสีทั้งสองนั้นมีจุดปลายจุดเดียวกัน คือ จุด Bรูปที่ได้นี้เรียกว่า มุม A C B 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-title="8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม · หน้า 24"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม</span><span class="ppno">หน้า 24 / 62</span></div>
+  <div class="ppframe"><img alt="รังสี 2 เส้นที่มีจุดปลายเป็นจุดเดียวกัน เรียกว่า มุม รังสี 2 เส้นนี้ เรียกว่า แขนของมุมและจุดปลายที่เป็นจุดเดียวกันนี้ เรียกว่า จุดยอดมุม แขนของมุม จุดยอดมุม แขนของมุม TNO จากรูป จุด O เป็นจุดปลายทางของ และ จะได้ว่า จุด O เป็นจุดยอดของ และ เป็นแขนของมุมเรียกรูปนี้ว่า มุม TON เขียนแทนด้วย เป็น หรือ"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-title="8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม · หน้า 25"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม</span><span class="ppno">หน้า 25 / 62</span></div>
+  <div class="ppframe"><img alt="ในทางปฏิบัติอาจไม่เขียน  บนรังสี TNO และอาจไม่เขียนหัวลูกศร TNO 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s026" data-title="8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม · หน้า 26"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม</span><span class="ppno">หน้า 26 / 62</span></div>
+  <div class="ppframe"><img alt="ในกรณีที่จุดยอดมุมเป็นของมุมเพียงมุมเดียว การเรียกชื่อมุม อาจเรียกตามชื่อจุดยอดมุมนั้น เช่น มีจุด B เป็นจุดยอดมุมอาจเรียกมุมนี้ว่า มุม B เขียนแทนด้วย ACB ในกรณีที่จุดยอดมุมเป็นของมุมหลายมุม การเรียกชื่อมุม อาจใช้ตัวเลขกำกับ เพื่ออ้างถึงมุมที่ต้องการ เช่น จุด B เป็นจุดยอดมุมของ และ ดังนั้น อาจเรียก"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s027" data-title="8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม · หน้า 27"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม</span><span class="ppno">หน้า 27 / 62</span></div>
+  <div class="ppframe"><img alt="ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 114 1 เติมคำตอบ ชื่อมุม ชื่อจุดยอดมุม ชื่อแขนของมุม หรือ จุด E และ FDE 1) ชื่อมุม ชื่อจุดยอดมุม ชื่อแขนของมุม หรือ จุด P และ TNP 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s028" data-title="8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม · หน้า 28"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม</span><span class="ppno">หน้า 28 / 62</span></div>
+  <div class="ppframe"><img alt="ชื่อมุม ชื่อจุดยอดมุม ชื่อแขนของมุม หรือ จุด B และ NZY 3) ชื่อมุม ชื่อจุดยอดมุม ชื่อแขนของมุม หรือ จุด P และ 2) A B C 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s029" data-title="8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม · หน้า 29"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม</span><span class="ppno">หน้า 29 / 62</span></div>
+  <div class="ppframe"><img alt="2 เขียนมุม 2 มุม ที่มีแขนของมุมร่วมกัน 1 แขน พร้อมทั้งตั้งชื่อมุม CBAD ตัวอย่าง เขียน พร้อมเขียนชื่อจุดยอดมุมและแขนของมุม ตรวจสอบความเข้าใจ 1 ตัวอย่าง ชื่อจุดยอดมุม ชื่อแขนของมุม จุด K และ MNK 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s030" data-title="8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม · หน้า 30"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม</span><span class="ppno">หน้า 30 / 62</span></div>
+  <div class="ppframe"><img alt="2 จากรูป เขียนชื่อมุมที่เป็นมุมที่ต่างกันให้ได้มากที่สุด DAXBC สิ่งที่ได้เรียนรู้ 1 มุมและรังสีเกี่ยวข้องกันอย่างไร 2 เขียนมุมที่มี และ เป็นแขนของมุม พร้อมบอกชื่อมุมและจุดยอดมุม ชื่อมุม ชื่อจุดยอดมุม จุด E รังสีเป็นแขนของมุม EST 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="8.3" data-title="8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน"><div class="inner secslide">
+  <div class="secnum">8.3</div><h1>📐 มุมฉาก มุมตรง มุมแหลม มุมป้าน</h1>
+  
+  <div class="kru fig"><span class="av"><img src="full-p8.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 8.3 <b>มุมฉาก มุมตรง มุมแหลม มุมป้าน</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-title="8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน · หน้า 32"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน</span><span class="ppno">หน้า 32 / 62</span></div>
+  <div class="ppframe"><img alt="จากรูป มุมใดมีขนาดใหญ่ที่สุด มุมใดมีขนาดเล็กที่สุด พับกระดาษตามขั้นตอนต่อไปนี้ กระดาษ 1 แผ่น พับครั้งที่ 1 พับครั้งที่ 2 ให้รอยพับเดิมทับกัน มุมที่เกิดจากรอยพับครั้งที่ 2 และมุมอื่นๆ ที่มีขนาดเท่ากับมุมนี้ เรียกว่า มุมฉาก ซึ่งมีขนาด 1 มุมฉาก 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-title="8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน · หน้า 33"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน</span><span class="ppno">หน้า 33 / 62</span></div>
+  <div class="ppframe"><img alt="นอกจากนี้ อาจใช้ ไม้ฉาก เป็นเครื่องมือในการตรวจสอบมุมว่าเป็นมุมฉากหรือไม่ ไม้ฉาก เมื่อต้องการกำหนดว่าเป็นมุมฉาก หรือเป็นมุมที่มีขนาด 1 มุมฉาก นิยมเขียนสัญลักษณ์ ไว้ที่บริเวณใกล้จุดยอดมุม ดังรูป 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-title="8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน · หน้า 34"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน</span><span class="ppno">หน้า 34 / 62</span></div>
+  <div class="ppframe"><img alt="สิ่งต่างๆ ที่อยู่รอบตัวที่มีลักษณะเป็นมุมฉาก ให้นักเรียนใช้กระดาษที่พับเป็นมุมฉากหรือไม้ฉากเป็นเครื่องมือในการสำรวจตรวจสอบว่าสิ่งต่างๆที่อยู่รอบตัวนักเรียน มีสิ่งใดบ้างที่มีลักษณะเป็นมุมฉาก 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-title="8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน · หน้า 35"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน</span><span class="ppno">หน้า 35 / 62</span></div>
+  <div class="ppframe"><img alt="มุมที่มีขนาด 2 มุมฉาก เรียกว่า มุมสองมุมฉาก หรือ มุมตรง เป็นมุมสองมุมฉาก หรือ มุมตรง 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s036" data-title="8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน · หน้า 36"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน</span><span class="ppno">หน้า 36 / 62</span></div>
+  <div class="ppframe"><img alt="1 ตรวจสอบมุมที่กำหนดให้ ว่าเป็นมุมฉากหรือไม่ แบบฝึกหัดหน้า 118 2 3 4 5 6 เป็นมุมฉาก ไม่เป็นมุมฉาก ไม่เป็นมุมฉาก ไม่เป็นมุมฉาก เป็นมุมฉาก เป็นมุมฉาก 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s037" data-title="8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน · หน้า 37"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน</span><span class="ppno">หน้า 37 / 62</span></div>
+  <div class="ppframe"><img alt="1 ปฏิบัติกิจกรรมโดยตรวจสอบมุมต่อไปนี้ พร้อมระบุว่าเป็น มุมฉาก มุมตรง มุมที่เล็กกว่ามุมฉากหรือมุมที่ใหญ่กว่ามุมฉาก แบบฝึกหัดหน้า 119 2 3 มุมที่เล็กกว่ามุมฉาก มุมฉาก มุมที่ใหญ่กว่ามุมฉาก 4 มุมตรง 5 6 7 มุมที่ใหญ่กว่ามุมฉาก มุมที่เล็กกว่ามุมฉาก มุมที่ใหญ่กว่ามุมฉาก 8 มุมที่เล็กกว่ามุมฉาก 8.1 8.2 8.3 8."></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s038" data-title="8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน · หน้า 38"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน</span><span class="ppno">หน้า 38 / 62</span></div>
+  <div class="ppframe"><img alt="1 มุมใดเป็นมุมฉาก มุมตรง มุมแหลม หรือมุมป้าน ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 120 มุมฉาก ได้แก่ มุมตรง ได้แก่ เพราะ มุมแหลม ได้แก่ เพราะ มุมป้าน ได้แก่ เพราะ เป็นมุมที่มีขนาด 2 มุมฉาก เป็นมุมที่มีขนาดเล็กกว่ามุมฉาก เป็นมุมที่มีขนาดใหญ่กว่ามุมฉาก 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s039" data-title="8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน · หน้า 39"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน</span><span class="ppno">หน้า 39 / 62</span></div>
+  <div class="ppframe"><img alt="2 รูปว่าวที่กำหนดให้ มีมุมใดบ้างเป็นมุมแหลม มุมป้าน มุมฉาก และมุมตรง มุมแหลม ได้แก่ มุมป้าน ได้แก่ มุมฉาก ได้แก่ มุมตรง ได้แก่ 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s040" data-title="8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน · หน้า 40"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน</span><span class="ppno">หน้า 40 / 62</span></div>
+  <div class="ppframe"><img alt="ตรวจสอบความเข้าใจ 1 จากรูป บอกชื่อมุมฉาก มุมตรง มุมแหลม และมุมป้านให้ได้มากที่สุด มุมฉาก ได้แก่ มุมตรง ได้แก่ มุมแหลม ได้แก่ มุมป้าน ได้แก่ 2 ยกตัวอย่างสิ่งของที่มีมุมฉาก มุมแหลม มุมป้านเป็นส่วนประกอบมุมละ 1 ตัวอย่าง ตัวอย่าง สิ่งที่มีมุมฉากเป็นส่วนประกอบ เช่น ไม้บรรทัด สิ่งที่มีมุมแหลมเป็นส่วนประกอ"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="8.4" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม"><div class="inner secslide">
+  <div class="secnum">8.4</div><h1>🧭 การวัดขนาดของมุม และการจำแนกชนิดของมุม</h1>
+  
+  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 8.4 <b>การวัดขนาดของมุม และการจำแนกชนิดของมุม</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s042" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 42"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 42 / 62</span></div>
+  <div class="ppframe"><img alt="ขนาดของมุม เป็นปริมาณที่เกิดจากการหมุนแขนของมุมแขนใดแขนหนึ่งไปทับแขนของมุมอีกแขนหนึ่ง โดยมีจุดยอดมุมเป็นจุดหมุน หน่วยที่ใช้บอกขนาดของมุม คือ องศา เขียนด้วยด้วย ˚ เมื่อหมุนแขนของมุมครบ 1 รอบ จะได้มุมที่มีขนาด 4 มุมฉาก ซึ่งกำหนดให้เท่ากับ 360 องศา หรือ 360˚ ส่วนโค้งของวงกลมที่บริเวณใกล้จุดยอดมุม เขียน"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s043" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 43"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 43 / 62</span></div>
+  <div class="ppframe"><img alt="จากรูป เป็นมุมฉากฉะนั้น เมื่อหมุน ซึ่งเป็นแขนของมุมแขนหนึ่งไปทับ ซึ่งเป็นแขนของมุมอีกแขนหนึ่ง โดยให้จุด M เป็นจุดหมุน ขนาดของ จะเป็น 1 ใน 4 ของการหมุนครบ 1 รอบ ซึ่งมีขนาด 360 องศา จะได้ว่า มีขนาด 360 ÷ 4 = 90 องศา ดังนั้น มุมฉากมีขนาด 90 องศา ในที่นี้กำหนดเป็นข้อตกลงว่า ใช้ m แทนขนาดของมุม เช่น ขนาด"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s044" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 44"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 44 / 62</span></div>
+  <div class="ppframe"><img alt="โพรแทรกเตอร์ เป็นเครื่องมือสำหรับวัดขนาดของมุมหรือสร้างมุมให้มีขนาดที่ต้องการ โพรแทรกเตอร์ชนิดครึ่งวงกลม โพรแทรกเตอร์ชนิดรูปสี่เหลี่ยมผืนผ้า แนวศูนย์องศา จุดกึ่งกลาง 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s045" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 45"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 45 / 62</span></div>
+  <div class="ppframe"><img alt="วิธีวัดขนาดของมุม 1. ให้จุดกึ่งกลางของโพรแทรกเตอร์ทับจุดยอดมุมของมุมที่ต้องการวัด 2. ให้แนวศูนย์องศาของโพรแทรกเตอร์ทาบไปบนแขนหนึ่งของมุม 3. อ่านขนาดของมุม โดยนับจาก 0 องศาที่ตรงกับแขนของมุมอีกแขนหนึ่ง ไปจนถึงรอยขีดบอกองศาที่ตรงกับแขนของมุมอีกแขนหนึ่ง รอยขีดนั้นจะบอกขนาดของมุมที่ต้องการวัด มีขนาด 70 "></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s046" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 46"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 46 / 62</span></div>
+  <div class="ppframe"><img alt="เพื่อความสะดวกในการวัดขนาดของมุม เราสามารถต่อแขนของมุมแขนใดแขนหนึ่งหรือทั้งสองแขน ซึ่งมุมที่ต่อแขนออกไปนั้นจะมีขนาดเท่าเดิม จากรูป มีขนาดกี่องศา ต่อ ให้ยาวขึ้น เพื่อให้อ่านขนาดของ ได้จะได้ว่า มีขนาด 58 องศา หรือ m() = 580 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s047" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 47"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 47 / 62</span></div>
+  <div class="ppframe"><img alt="หาขนาดและบอกชนิดของมุม พร้อมอธิบายเหตุผล แบบฝึกหัดหน้า 124 m( = 600 เป็นมุมแหลมเพราะมีขนาดน้อยกว่า 900 m( = 350 เป็นมุมแหลมเพราะมีขนาดน้อยกว่า 900 1 2 m( = 1200 เป็นมุมป้านเพราะมีขนาดมากกว่า 900 แต่น้อยกว่า 1800 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s048" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 48"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 48 / 62</span></div>
+  <div class="ppframe"><img alt="m( = 700เป็นมุมแหลมเพราะมีขนาดน้อยกว่า 900 3 4 m( = 900เป็นมุมฉากเพราะมีขนาดเท่ากับ 900 m( = 1530 เป็นมุมป้านเพราะมีขนาดมากกว่า 900 แต่น้อยกว่า 1800 5 6 m( = 1800 เป็นมุมตรงเพราะมีขนาดเท่ากับ 1800 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s049" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 49"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 49 / 62</span></div>
+  <div class="ppframe"><img alt="มุมต่างๆ จำแนกตามขนาดได้ ดังนี้มุมศูนย์ มีขนาด 00มุมแหลม มีขนาดมากกว่า 00 แต่น้อยกว่า 900มุมฉาก มีขนาด 900มุมป้าน มีขนาดมากกว่า 900 แต่น้อยกว่า 1800มุมตรง มีขนาด 1800มุมกลับ มีขนาดมากกว่า 1800 แต่น้อยกว่า 3600 เป็นมุมศูนย์ เป็นมุมแหลม เป็นมุมฉาก เป็นมุมป้าน เป็นมุมตรง เป็นมุมกลับ 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s050" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 50"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 50 / 62</span></div>
+  <div class="ppframe"><img alt="บอกชนิดของมุม พร้อมอธิบายเหตุผล แบบฝึกหัดหน้า 126 จำนวนนับชนิดของมุมเหตุผล1) m() = 1650 2) m() = 440 3) m() = 1800 4) m() = 1940 5) m() = 900 6) m() = 2700 7) m() = 00 จำนวนนับชนิดของมุมเหตุผล มุมป้านเพราะมีขนาดมากกว่า 900 แต่น้อยกว่า 1800 มุมแหลมเพราะมีขนาดมากกว่า 00 แต่น้อยกว่า 900 มุมตรงเพราะมีขน"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s051" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 51"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 51 / 62</span></div>
+  <div class="ppframe"><img alt="จากรูป เป็นมุมแหลม เป็นมุมฉาก และ เป็นมุมกลับ นิยมเขียน เพื่อแสดงมุมฉาก ส่วนมุมแหลม มุมป้าน และมุมตรง อาจเขียนส่วนโค้งของวงกลมจากแขนหนึ่งไปยังอีกแขนหนึ่ง เพื่อแสดงมุมที่ต้องการ แต่มุมกลับ ต้องเขียนส่วนโค้งของวงกลมเพื่อแสดงมุมกลับ 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s052" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 52"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 52 / 62</span></div>
+  <div class="ppframe"><img alt="จากรูป เป็นมุมกลับ มุมที่เหลือเป็นมุมป้าน วัดขนาดได้ 120˚จะได้ m()= 360 – 120 = 2400 การหาขนาดของมุมกลับ เนื่องจากเมื่อหมุนแขนของมุมครบ 1 รอบ จะได้มุมที่มีขนาด 3600ดังนั้น การหาขนาดของมุมกลับอาจทำได้โดยวัดขนาดของมุมที่เหลือ แล้วนำไปลบออกจาก 3600 จากรูป เป็นมุมกลับ มุมที่เหลือเป็นมุมแหลม วัดขนาดได้ 6"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s053" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 53"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 53 / 62</span></div>
+  <div class="ppframe"><img alt="หาขนาดของมุม แบบฝึกหัดหน้า 127 1 2 m() = องศา m() = องศา 3 4 m() = องศา m() = องศา 315 215 270 300 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s054" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 54"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 54 / 62</span></div>
+  <div class="ppframe"><img alt="ตรวจสอบความเข้าใจ 1 m() = 1020 เป็นมุมป้าน เพราะมีขนาดมากกว่า 900 แต่น้อยกว่า 1800 2 หาขนาดของมุม บอกชนิดของมุม พร้อมระบุเหตุผล m() = 3000 เป็นมุมกลับ เพราะมีขนาดมากกว่า 1800 แต่น้อยกว่า 3600 3 m() = 900 เป็นมุมฉากเพราะมีขนาดเท่ากับ 900 m() = 520 และ m( = 380 และ เป็นมุมแหลม เพราะมีขนาดมากกว่า 00 แต"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s055" data-title="8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · หน้า 55"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span><span class="ppno">หน้า 55 / 62</span></div>
+  <div class="ppframe"><img alt="เขียนตัวเลขแสดงขนาดของมุมที่แตกต่างกันให้ได้มากที่สุด สิ่งที่ได้เรียนรู้ มุมฉากมุมแหลมมุมป้านมุมตรงมุมกลับ 900 มุมทุกมุมที่มีขนาดมากกว่า 00 แต่น้อยกว่า 900 มุมทุกมุมที่มีขนาดมากกว่า 00 แต่น้อยกว่า 1800 1800 มุมทุกมุมที่มีขนาดมากกว่า 1800 แต่น้อยกว่า 3600 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="8.5" data-title="8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์"><div class="inner secslide">
+  <div class="secnum">8.5</div><h1>✏️ การสร้างมุมโดยใช้โพรแทรกเตอร์</h1>
+  
+  <div class="kru fig"><span class="av"><img src="full-p6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 8.5 <b>การสร้างมุมโดยใช้โพรแทรกเตอร์</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s057" data-title="8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์ · หน้า 57"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์</span><span class="ppno">หน้า 57 / 62</span></div>
+  <div class="ppframe"><img alt="พิจารณาการสร้าง ให้มีขนาด 55˚ ดังนี้ ขั้นที่ 1 ลาก ขั้นที่ 2 วางโพรแทรกเตอร์ให้จุดกึ่งกลางของโพรแทรกเตอร์ทับจุด B โดยให้แนวศูนย์องศาทับ นับจำนวนองศาจาก 0˚ ไปถึง 55˚แล้วเขียนจุด A กำกับไว้ ขั้นที่ 3 ลาก จะได้ มีขนาด 55˚ 8.1 8.2 8.3 8.4 8.5"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s058" data-title="8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์ · หน้า 58"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์</span><span class="ppno">หน้า 58 / 62</span></div>
+  <div class="ppframe"><img alt="พิจารณาการสร้าง ให้มีขนาด 245˚ เนื่องจากเมื่อหมุนแขนของมุมครบ 1 รอบ จะได้มุมที่มีขนาด 3600ดังนั้น การสร้างมุมให้มีขนาด 2450 สามารถทำได้โดยสร้างมุมให้มีขนาด 360 – 245 = 1150ซึ่งจะทำให้ได้มุมกลับที่มีขนาด 360 – 115 = 2450 ดังนี้ ขั้นที่ 1 ลาก ขั้นที่ 2 วางโพรแทรกเตอร์ให้จุดกึ่งกลางของโพรแทรกเตอร์ทับจุ"></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s059" data-title="8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์ · หน้า 59"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์</span><span class="ppno">หน้า 59 / 62</span></div>
+  <div class="ppframe"><img alt="สร้างมุม โดยใช้รังสีที่กำหนดให้เป็นแขนหนึ่งของมุม พร้อมระบุชนิดของมุม แบบฝึกหัดหน้า 131 1 เป็นมุม แหลม มีขนาด 200 2 เป็นมุม ฉาก มีขนาด 900 3 เป็นมุม ป้าน มีขนาด 1350 4 เป็นมุม แหลม มีขนาด 780 200 1350 780 A B C F K H G L M N D E 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s060" data-title="8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์ · หน้า 60"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์</span><span class="ppno">หน้า 60 / 62</span></div>
+  <div class="ppframe"><img alt="T 5 เป็นมุม ตรง มีขนาด 1800 6 เป็นมุม กลับ มีขนาด 3400 1800 P U R O S 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s061" data-title="8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์ · หน้า 61"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์</span><span class="ppno">หน้า 61 / 62</span></div>
+  <div class="ppframe"><img alt="สร้าง ให้มีขนาดเป็นครึ่งหนึ่งของ และเติมคำตอบ ตรวจสอบความเข้าใจ m() = เป็นมุม m() = เป็นมุม 2400กลับ 1200ป้าน 8.1 8.2 8.3 8.4 8.5"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s062" data-title="8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์ · หน้า 62"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์</span><span class="ppno">หน้า 62 / 62</span></div>
+  <div class="ppframe"><img alt="สิ่งที่ได้เรียนรู้ ถ้าต้องการสร้าง ให้มีขนาด 1250 จะมีขั้นตอนการสร้างอย่างไร 1. ลาก 2. วางโพรแทรกเตอร์ให้จุดกึ่งกลางของโพรแทรกเตอร์ทับจุด B โดยให้แนวศูนย์องศาทับ นับจำนวนองศาจาก 0˚ ไปถึง 125˚แล้วเขียนจุด A กำกับไว้3. ลาก จะได้ มีขนาด 125˚ 1 สิ่งที่ต้องระมัดระวังในการสร้างมุมด้วยโพรแทรกเตอร์ มีอะไรบ้"></div>
+  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
+  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>จบบทที่ 8 มุม</h2>
+  <div class="card c-yellow center endpic"><img src="av-p3.webp" alt="ครูอู๋"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="av-p4.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="toc"><button data-jump="8.1"><span class="e">📍</span><span>ทบทวน 8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง</span></button><button data-jump="8.2"><span class="e">∠</span><span>ทบทวน 8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม</span></button><button data-jump="8.3"><span class="e">📐</span><span>ทบทวน 8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน</span></button><button data-jump="8.4"><span class="e">🧭</span><span>ทบทวน 8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม</span></button><button data-jump="8.5"><span class="e">✏️</span><span>ทบทวน 8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์</span></button></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m4-ch7-decimals/">◀ บทก่อนหน้า</a><a class="btn" style="--c:var(--purple)" href="../m4-math-hub/">🏠 หน้ารวม ป.4</a><a class="btn ghost" href="../m4-ch9-rectangles/">บทถัดไป ▶</a></div>
+  <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.4 สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m4-ch8-angles", STORE_PREFIX = 'kruau-p4-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [{"q": "เส้นตรงที่มีจุดปลายข้างเดียว และยาวไม่สิ้นสุดอีกข้างหนึ่ง เรียกว่าอะไร", "c": ["รังสี", "เส้นตรง", "ส่วนของเส้นตรง", "จุด"], "a": 0, "w": "รังสีมีจุดปลายเพียงจุดเดียว ส่วนของเส้นตรงมีจุดปลาย 2 จุด"}, {"q": "มุมที่มีขนาด 90 องศา เรียกว่ามุมอะไร", "c": ["มุมฉาก", "มุมแหลม", "มุมป้าน", "มุมตรง"], "a": 0, "w": "มุมฉากมีขนาด 90 องศา"}, {"q": "มุมขนาด 135 องศา เป็นมุมชนิดใด", "c": ["มุมป้าน", "มุมแหลม", "มุมฉาก", "มุมกลับ"], "a": 0, "w": "มุมป้านมีขนาดมากกว่า 90 องศา แต่น้อยกว่า 180 องศา"}, {"q": "มุมขนาด 180 องศา เรียกว่ามุมอะไร", "c": ["มุมตรง", "มุมฉาก", "มุมกลับ", "มุมป้าน"], "a": 0, "w": "มุมตรงมีขนาด 2 มุมฉาก หรือ 180 องศา"}, {"q": "มุมขนาด 250 องศา เป็นมุมชนิดใด", "c": ["มุมกลับ", "มุมป้าน", "มุมตรง", "มุมแหลม"], "a": 0, "w": "มุมกลับมีขนาดมากกว่า 180 องศา แต่น้อยกว่า 360 องศา"}, {"q": "มุม ABC มีจุดยอดมุมคือจุดใด", "c": ["จุด B", "จุด A", "จุด C", "จุด A และ C"], "a": 0, "w": "ตัวอักษรตรงกลางของชื่อมุมคือจุดยอดมุม"}, {"q": "เครื่องมือที่ใช้วัดขนาดของมุมคืออะไร", "c": ["โพรแทรกเตอร์", "ไม้บรรทัด", "วงเวียน", "ตลับเมตร"], "a": 0, "w": "โพรแทรกเตอร์ใช้วัดและสร้างมุมเป็นองศา"}, {"q": "มุมแหลมมีขนาดเท่าใด", "c": ["มากกว่า 0 องศา แต่น้อยกว่า 90 องศา", "เท่ากับ 90 องศา", "มากกว่า 90 องศา แต่น้อยกว่า 180 องศา", "เท่ากับ 180 องศา"], "a": 0, "w": "มุมแหลมมีขนาดน้อยกว่ามุมฉาก"}];
+
+/* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
+function ppPaint(sl) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, img = sl.querySelector('.ppframe img');
+  img.src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
+  img.classList.toggle('can', k < n);
+  var b = sl.querySelector('[data-pstep]');
+  if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+}
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl); } }
+(function () {
+  var go = Kit.go;
+  Kit.go = function (n, instant) {
+    var cur = Kit.slides[Kit.cur];
+    if (!instant && cur && cur.classList.contains('pslide')) {
+      var N = +cur.getAttribute('data-steps'), k = cur._k || 0;
+      if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
+      if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
+    }
+    var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
+    go(n, instant);
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t); }
+    for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+  };
+})();
+SETUP = function () {
+  setupToc();
+  Kit.slides.forEach(function (sl) {
+    if (!sl.classList.contains('pslide')) return;
+    var img = sl.querySelector('.ppframe img'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
+    img.onclick = adv; if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+  });
+};
+
+</script>
+</body>
+</html>
