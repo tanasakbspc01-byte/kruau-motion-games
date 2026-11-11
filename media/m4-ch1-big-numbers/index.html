@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 1 จำนวนนับที่มากกว่า 100,000 · คณิตศาสตร์ ป.4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#FF7A45;--main-deep:#E0561C;--glow:#FFE1CC}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:4px solid var(--main);background:var(--glow)}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🔢</span>
+  <div class="ttl"><b>บทที่ 1 จำนวนนับที่มากกว่า 100,000</b><small>คณิตศาสตร์ ป.4 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m4-math-hub/" aria-label="หน้ารวม ป.4" title="หน้ารวม ป.4">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.4 · บทที่ 1</span>
+    <h1>จำนวนนับที่มากกว่า 100,000</h1>
+    <p class="sub">อ่าน เขียน ค่าประจำหลัก เปรียบเทียบ และประมาณค่า</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>🎯 เรียนจบบทนี้ หนูจะ…</h3><ul><li>อ่านและเขียนจำนวนที่มากกว่า 100,000 ได้ทั้ง <b>ตัวเลขฮินดูอารบิก ตัวเลขไทย และตัวหนังสือ</b></li><li>บอก <b>หลัก ค่าประจำหลัก</b> และเขียน <b>รูปกระจาย</b> ได้</li><li><b>เปรียบเทียบ เรียงลำดับ</b> และ <b>หาค่าประมาณ</b> ได้</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="kru-full.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 1</h2>
+  <div class="kru"><span class="av"><img src="kru-face.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>บทนี้เราจะไปรู้จักจำนวน <b>หลักล้าน สิบล้าน ร้อยล้าน</b> ที่เจอในข่าวทุกวัน เลือกเรียนตามลำดับ หรือแตะไปหัวข้อที่อยากทบทวนได้เลย 👇</div></div>
+  <div class="toc"><button data-jump="1"><span class="e">📖</span><span>1.1 อ่านและเขียนจำนวน</span></button><button data-jump="2"><span class="e">🏠</span><span>1.2 หลัก ค่าประจำหลัก รูปกระจาย</span></button><button data-jump="3"><span class="e">⚖️</span><span>1.3 เปรียบเทียบและเรียงลำดับ</span></button><button data-jump="4"><span class="e">🎯</span><span>1.4 การประมาณ</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (12 ข้อ)</span></button></div>
+</div></section>
+
+<section class="slide" data-title="จำนวนที่ใหญ่ขึ้น" data-sec="1"><div class="inner">
+  <span class="secbadge">1.1 อ่านและเขียนจำนวน</span>
+  <h2 class="h"><span class="e">🪜</span>บันไดจำนวน: ครบ 10 ขึ้นหลักใหม่</h2>
+  <div class="grid" style="--min:200px">
+    <div class="card c-yellow center"><p class="eq">10 หมื่น = 1 แสน</p><p>100,000</p></div>
+    <div class="card c-orange center"><p class="eq">10 แสน = 1 ล้าน</p><p>1,000,000</p></div>
+    <div class="card c-red center"><p class="eq">10 ล้าน = 1 สิบล้าน</p><p>10,000,000</p></div>
+    <div class="card c-purple center"><p class="eq">10 สิบล้าน = 1 ร้อยล้าน</p><p>100,000,000</p></div>
+  </div>
+  <div class="steps" id="more">
+    <div class="step"><div class="card c-blue center"><p>ต่อไปเรื่อย ๆ … ร้อยล้าน → <b>พันล้าน</b> → <b>หมื่นล้าน</b> → <b>แสนล้าน</b> → <b>ล้านล้าน</b> (1,000,000,000,000)</p></div></div>
+  </div>
+  <div class="row center"><button class="btn" data-reveal="more">ยังมีอีกไหม? 👀</button></div>
+  <div class="kru"><span class="av"><img src="kru-face.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนคิด</b>คลิปการ์ตูนเรื่องหนึ่งมีคนดู <b>2,350,000</b> ครั้ง หนูอ่านออกไหม? เรียนบทนี้จบ หนูจะอ่านจำนวนใหญ่แค่ไหนก็ได้ 📺</div></div>
+</div></section>
+
+<section class="slide" data-title="เครื่องอ่านจำนวน" data-id="reader"><div class="inner">
+  <span class="secbadge">1.1 อ่านและเขียนจำนวน</span>
+  <h2 class="h"><span class="e">🎛️</span>เครื่องอ่านจำนวนของครูอู๋</h2>
+  <p class="sub">กด ▲ ▼ เปลี่ยนเลขโดดในแต่ละหลัก แล้วดูว่าเขียนและอ่านอย่างไร</p>
+  <div class="wide"><table class="tbl mini" style="--c:var(--orange)" id="pv"></table></div>
+  <div class="calc" id="pvOut"></div>
+  <div class="row center"><button class="btn ghost" id="pvRand">🎲 สุ่มจำนวน</button><button class="btn ghost" id="pvZero">🔄 ล้างเป็น 0</button></div>
+</div></section>
+
+<section class="slide" data-title="หลักการอ่าน"><div class="inner">
+  <span class="secbadge">1.1 อ่านและเขียนจำนวน</span>
+  <h2 class="h"><span class="e">📖</span>อ่านจำนวนแบบครูอู๋ ใน 3 ขั้น</h2>
+  <div class="card c-orange center"><p class="eq" style="font-size:clamp(1.6rem,5vw,2.4rem)">47,205,031</p></div>
+  <div class="steps calc" id="rd">
+    <div class="step"><span class="pill" style="--c:var(--orange)">ขั้น 1</span> นับจากขวาไปซ้าย 6 หลัก แล้วขีดคั่น → <b>47</b> | <b>205,031</b> ตรงที่ขีดคั่นคือคำว่า <b>“ล้าน”</b></div>
+    <div class="step"><span class="pill" style="--c:var(--blue)">ขั้น 2</span> อ่านกลุ่มซ้าย <b>47</b> = สี่สิบเจ็ด แล้วต่อด้วย <b>ล้าน</b></div>
+    <div class="step"><span class="pill" style="--c:var(--green)">ขั้น 3</span> อ่านกลุ่มขวา <b>205,031</b> = สองแสน ห้าพัน สามสิบเอ็ด (เลข 0 ไม่ต้องอ่าน)</div>
+    <div class="step"><p class="big center t-purple">สี่สิบเจ็ดล้านสองแสนห้าพันสามสิบเอ็ด</p></div>
+  </div>
+  <div class="row center"><button class="btn" data-reveal="rd" style="--c:var(--orange)">อ่านทีละขั้น 👇</button></div>
+  <div class="grid" style="--min:220px">
+    <div class="note">1️⃣ หลักหน่วยเป็น 1 อ่าน <b>“เอ็ด”</b> เช่น 31 สามสิบเอ็ด</div>
+    <div class="note">2️⃣ หลักสิบเป็น 2 อ่าน <b>“ยี่สิบ”</b> · หลักสิบเป็น 1 อ่าน <b>“สิบ”</b></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เขียนได้หลายแบบ"><div class="inner">
+  <span class="secbadge">1.1 อ่านและเขียนจำนวน</span>
+  <h2 class="h"><span class="e">✍️</span>จำนวนเดียว เขียนได้หลายแบบ</h2>
+  <div class="grid" style="--min:230px">
+    <div class="card c-blue center"><h3>ตัวเลขฮินดูอารบิก</h3><p class="eq">5,600,000</p></div>
+    <div class="card c-green center"><h3>ตัวเลขไทย</h3><p class="eq">๕,๖๐๐,๐๐๐</p></div>
+    <div class="card c-purple center"><h3>ตัวหนังสือ</h3><p class="eq">ห้าล้านหกแสน</p></div>
+  </div>
+  <div class="card c-yellow">
+    <h3>🧩 บอกเป็นจำนวน “แสน” หรือ “หมื่น” ก็ได้</h3>
+    <p class="eq center">5,600,000 = 56 แสน = 560 หมื่น</p>
+  </div>
+  <div class="trap"><b class="t">⚠️ ระวังเลข 0!</b> “สองล้านสามหมื่นห้าร้อย” ต้องเติม 0 ในหลักที่ไม่มีค่า → 2,<b>0</b>30,5<b>00</b> (ไม่ใช่ 2,305)</div>
+</div></section>
+
+<section class="slide" data-title="ฝึกอ่าน–เขียน"><div class="inner">
+  <span class="secbadge">1.1 อ่านและเขียนจำนวน</span>
+  <h2 class="h"><span class="e">🎲</span>ฝึกอ่าน–เขียนไม่รู้จบ</h2>
+  <div class="card c-teal"><div class="drill" data-drill="read"></div></div>
+</div></section>
+
+<section class="slide" data-title="หลักและค่าประจำหลัก" data-sec="2"><div class="inner">
+  <span class="secbadge">1.2 หลัก ค่าประจำหลัก รูปกระจาย</span>
+  <h2 class="h"><span class="e">🏠</span>บ้านของเลขโดด: หลักและค่าประจำหลัก</h2>
+  <div class="key">เลขโดดมี 10 ตัว คือ <b>0 1 2 3 4 5 6 7 8 9</b> เอามาเขียนในตำแหน่ง (หลัก) ต่าง ๆ ได้จำนวนนับทุกจำนวน</div>
+  <div class="wide"><table class="tbl mini" style="--c:var(--orange)">
+    <tr><th>หลัก</th><td>ร้อยล้าน</td><td>สิบล้าน</td><td>ล้าน</td><td>แสน</td><td>หมื่น</td><td>พัน</td><td>ร้อย</td><td>สิบ</td><td>หน่วย</td></tr>
+    <tr><th>ค่าประจำหลัก</th><td>100,000,000</td><td>10,000,000</td><td>1,000,000</td><td>100,000</td><td>10,000</td><td>1,000</td><td>100</td><td>10</td><td>1</td></tr>
+  </table></div>
+  <div class="chant">ขยับไปทางซ้าย 1 หลัก ค่าเพิ่มขึ้น 10 เท่า<small>ค่าประจำหลักล้าน = 10 × ค่าประจำหลักแสน</small></div>
+</div></section>
+
+<section class="slide" data-title="ค่าของเลขโดด"><div class="inner">
+  <span class="secbadge">1.2 หลัก ค่าประจำหลัก รูปกระจาย</span>
+  <h2 class="h"><span class="e">👆</span>แตะเลขโดด ดูหลักและค่า</h2>
+  <div class="card c-orange center"><div class="row center" id="tapNum" style="gap:6px"></div></div>
+  <div class="card c-yellow center"><p class="big" id="tapOut">แตะเลขโดดตัวไหนก็ได้ 👆</p></div>
+  <div class="kru"><span class="av"><img src="kru-face.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนสังเกต</b>เลข <b>3</b> เหมือนกัน แต่อยู่คนละบ้าน ค่าก็ต่างกันมาก! 3 ในหลักสิบล้านมีค่า <b>30,000,000</b> แต่ 3 ในหลักร้อยมีค่าแค่ <b>300</b></div></div>
+</div></section>
+
+<section class="slide" data-title="รูปกระจาย"><div class="inner">
+  <span class="secbadge">1.2 หลัก ค่าประจำหลัก รูปกระจาย</span>
+  <h2 class="h"><span class="e">🧨</span>เขียนตัวเลขในรูปกระจาย</h2>
+  <div class="key"><b>รูปกระจาย</b> คือ การเขียนค่าของเลขโดดในแต่ละหลักมาบวกกัน</div>
+  <div class="card c-purple">
+    <p class="eq center">46,208,153 = ?</p>
+    <div class="steps calc" id="ex">
+      <div class="step">4 ในหลักสิบล้าน มีค่า <b>40,000,000</b> · 6 ในหลักล้าน มีค่า <b>6,000,000</b></div>
+      <div class="step">2 ในหลักแสน มีค่า <b>200,000</b> · 0 ในหลักหมื่น มีค่า 0 (ไม่ต้องเขียน) · 8 ในหลักพัน มีค่า <b>8,000</b></div>
+      <div class="step">1 ในหลักร้อย มีค่า <b>100</b> · 5 ในหลักสิบ มีค่า <b>50</b> · 3 ในหลักหน่วย มีค่า <b>3</b></div>
+      <div class="step"><p class="eq center t-purple">46,208,153 = 40,000,000 + 6,000,000 + 200,000 + 8,000 + 100 + 50 + 3</p></div>
+    </div>
+    <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="ex" style="--c:var(--purple)">กระจายทีละหลัก 👇</button></div>
+  </div>
+  <div class="note">🔁 ย้อนกลับก็ได้: 7,000,000 + 30,000 + 500 + 9 = <b>7,030,509</b> (หลักที่ไม่มีให้เติม 0)</div>
+</div></section>
+
+<section class="slide" data-title="ฝึกค่าประจำหลัก"><div class="inner">
+  <span class="secbadge">1.2 หลัก ค่าประจำหลัก รูปกระจาย</span>
+  <h2 class="h"><span class="e">🎲</span>ฝึกค่าประจำหลักไม่รู้จบ</h2>
+  <div class="card c-teal"><div class="drill" data-drill="place"></div></div>
+</div></section>
+
+<section class="slide" data-title="เปรียบเทียบ" data-sec="3"><div class="inner">
+  <span class="secbadge">1.3 เปรียบเทียบและเรียงลำดับ</span>
+  <h2 class="h"><span class="e">⚖️</span>เปรียบเทียบจำนวน 2 ขั้น</h2>
+  <div class="grid" style="--min:280px">
+    <div class="card c-blue">
+      <h3>ขั้นที่ 1 นับจำนวนหลัก</h3>
+      <p>หลักมากกว่า ➜ มากกว่า</p>
+      <p class="eq center">9,875,400 <span class="t-red">&lt;</span> 12,003,500</p>
+      <p class="center sub">7 หลัก กับ 8 หลัก</p>
+    </div>
+    <div class="card c-green">
+      <h3>ขั้นที่ 2 หลักเท่ากัน ดูหลักซ้ายสุด</h3>
+      <p>เทียบทีละหลักจากซ้ายไปขวา จนเจอหลักที่ต่างกัน</p>
+      <p class="eq center">6,4<b class="t-red">8</b>3,920 <span class="t-red">&gt;</span> 6,4<b class="t-red">3</b>9,980</p>
+      <p class="center sub">ล้านเท่ากัน แสนเท่ากัน หมื่น 8 มากกว่า 3</p>
+    </div>
+  </div>
+  <div class="kru"><span class="av"><img src="kru-face.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">เคล็ดลับครูอู๋</b>เครื่องหมาย &gt; &lt; เหมือน <b>ปากจระเข้ 🐊</b> อ้าปากหันไปทางจำนวนที่ <b>มากกว่า</b> เสมอ เพราะจระเข้ชอบกินเยอะ!</div></div>
+</div></section>
+
+<section class="slide" data-title="เรียงลำดับ"><div class="inner">
+  <span class="secbadge">1.3 เปรียบเทียบและเรียงลำดับ</span>
+  <h2 class="h"><span class="e">📊</span>เรียงลำดับ: ยอดผู้เข้าชมสวนสัตว์ 1 ปี</h2>
+  <div class="wide"><table class="tbl mini" style="--c:var(--orange)">
+    <tr><th>สวนสัตว์</th><td>🦒 ก</td><td>🐘 ข</td><td>🐼 ค</td><td>🦁 ง</td><td>🐧 จ</td></tr>
+    <tr><th>ผู้เข้าชม (คน)</th><td>1,245,800</td><td>986,500</td><td>1,254,080</td><td>2,030,410</td><td>1,245,008</td></tr>
+  </table></div>
+  <div data-order="zoo"></div>
+</div></section>
+
+<section class="slide" data-title="ฝึกเปรียบเทียบ"><div class="inner">
+  <span class="secbadge">1.3 เปรียบเทียบและเรียงลำดับ</span>
+  <h2 class="h"><span class="e">🎲</span>ฝึกเปรียบเทียบไม่รู้จบ</h2>
+  <div class="card c-teal"><div class="drill" data-drill="cmp"></div></div>
+</div></section>
+
+<section class="slide" data-title="การประมาณคืออะไร" data-sec="4"><div class="inner">
+  <span class="secbadge">1.4 การประมาณ</span>
+  <h2 class="h"><span class="e">🎯</span>การประมาณ คือ บอกคร่าว ๆ ให้ใกล้เคียง</h2>
+  <div class="grid" style="--min:220px">
+    <div class="card c-green center"><div class="emoji-xl">🍉</div><p>แตงโมหนัก<br><b>ประมาณ 3 กิโลกรัม</b></p></div>
+    <div class="card c-blue center"><div class="emoji-xl">🚌</div><p>นั่งรถไปทะเล<br><b>ประมาณ 200 กิโลเมตร</b></p></div>
+    <div class="card c-orange center"><div class="emoji-xl">🏟️</div><p>คนดูฟุตบอล<br><b>ประมาณ 40,000 คน</b></p></div>
+  </div>
+  <div class="key">ค่าประมาณนิยมบอกเป็น <b>จำนวนเต็มสิบ เต็มร้อย เต็มพัน เต็มหมื่น เต็มแสน เต็มล้าน</b><br>ใช้เครื่องหมาย <b class="eq">≈</b> แทนคำว่า “ประมาณ” เช่น 2,486 ≈ 2,490</div>
+</div></section>
+
+<section class="slide" data-title="เส้นจำนวน" data-id="nl"><div class="inner">
+  <span class="secbadge">1.4 การประมาณ</span>
+  <h2 class="h"><span class="e">📏</span>เส้นจำนวนช่วยประมาณ</h2>
+  <p class="sub">เลือกว่าจะประมาณเป็นจำนวนเต็มอะไร แล้วดูว่าจำนวนนั้นอยู่ใกล้ฝั่งไหนมากกว่า</p>
+  <div class="row center" id="nlPlace"></div>
+  <div class="svgbox"><svg id="nlSvg" viewBox="0 0 640 150" role="img" aria-label="เส้นจำนวนสำหรับหาค่าประมาณ"></svg></div>
+  <div class="card c-yellow center"><p class="big" id="nlOut"></p></div>
+  <div class="row center"><button class="btn ghost" id="nlRand">🎲 สุ่มจำนวนใหม่</button></div>
+</div></section>
+
+<section class="slide" data-title="กฎการปัด"><div class="inner">
+  <span class="secbadge">1.4 การประมาณ</span>
+  <h2 class="h"><span class="e">⬆️</span>กฎการปัดของครูอู๋</h2>
+  <div class="chant">ดูหลัก “ขวามือ 1 หลัก” ของหลักที่จะประมาณ<small>0 1 2 3 4 ➜ ปัดลง (หลักเดิมคงเดิม) · 5 6 7 8 9 ➜ ปัดขึ้น (หลักเดิมเพิ่ม 1) · หลักขวาทั้งหมดเป็น 0</small></div>
+  <div class="wide"><table class="tbl" style="--c:var(--orange)">
+    <tr><th>ประมาณเป็นจำนวนเต็ม</th><th>ดูหลัก</th><th>ตัวอย่าง</th></tr>
+    <tr><td>สิบ</td><td>หน่วย</td><td>2,48<b class="t-red">6</b> ≈ 2,490</td></tr>
+    <tr><td>ร้อย</td><td>สิบ</td><td>38,4<b class="t-red">5</b>2 ≈ 38,500</td></tr>
+    <tr><td>พัน</td><td>ร้อย</td><td>7,<b class="t-red">4</b>09 ≈ 7,000</td></tr>
+    <tr><td>หมื่น</td><td>พัน</td><td>6<b class="t-red">4</b>,930 ≈ 60,000</td></tr>
+    <tr><td>แสน</td><td>หมื่น</td><td>1,4<b class="t-red">5</b>2,800 ≈ 1,500,000</td></tr>
+    <tr><td>ล้าน</td><td>แสน</td><td>8,<b class="t-red">4</b>96,000 ≈ 8,000,000</td></tr>
+  </table></div>
+  <div class="trap"><b class="t">⚠️ กับดัก</b> 9,960 ประมาณเป็นจำนวนเต็มร้อย: หลักสิบเป็น 6 ปัดขึ้น 9 ร้อย → 10 ร้อย จึงทดไปหลักพัน ได้ <b>10,000</b></div>
+</div></section>
+
+<section class="slide" data-title="นำค่าประมาณไปใช้"><div class="inner">
+  <span class="secbadge">1.4 การประมาณ</span>
+  <h2 class="h"><span class="e">🧺</span>ใช้ค่าประมาณได้ไหม?</h2>
+  <div data-sorter="use"></div>
+  <div class="kru"><span class="av"><img src="kru-face.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ย้ำ</b>ค่าประมาณช่วยให้พูดง่าย จำง่าย แต่เรื่อง <b>ยา สารเคมี เงินทอน</b> ต้องใช้ค่าจริงเสมอนะ</div></div>
+</div></section>
+
+<section class="slide" data-title="ฝึกประมาณ"><div class="inner">
+  <span class="secbadge">1.4 การประมาณ</span>
+  <h2 class="h"><span class="e">🎲</span>ฝึกประมาณไม่รู้จบ</h2>
+  <div class="card c-teal"><div class="drill" data-drill="round"></div></div>
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (12 ข้อ)</h2>
+  <div class="kru"><span class="av"><img src="kru-face.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปบทที่ 1</h2>
+  <div class="card c-yellow center endpic"><img src="kru-face.webp" alt="ครูอู๋"><div data-score></div></div>
+  <div class='chant'>อ่านจำนวน: แบ่งจากขวาทีละ 6 หลัก ตรงนั้นคือ “ล้าน”<small>เลข 0 ไม่อ่าน · 1 ที่หลักหน่วยอ่าน “เอ็ด” · 2 ที่หลักสิบอ่าน “ยี่”</small></div><div class='grid' style='--min:240px'><div class='key'><b>ค่าประจำหลัก</b> หลักที่อยู่ทางซ้าย มีค่าเป็น 10 เท่าของหลักทางขวา<br><b>รูปกระจาย</b> เขียนค่าของเลขโดดแต่ละหลักบวกกัน</div><div class='key'><b>เปรียบเทียบ</b> นับจำนวนหลักก่อน ถ้าเท่ากันดูหลักซ้ายสุดทีละหลัก<br><b>ประมาณ</b> ดูหลักทางขวา 1 หลัก: 0–4 ปัดลง 5–9 ปัดขึ้น</div></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn" style="--c:var(--purple)" href="../m4-math-hub/">🏠 หน้ารวม ป.4</a><a class="btn ghost" href="../m4-ch2-add-sub/">บทที่ 2 ▶</a></div>
+  <p class="credit center">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เรียบเรียงตามลำดับเนื้อหาหนังสือเรียน สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m4-ch1-big-numbers", STORE_PREFIX = 'kruau-p4-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [
+{
+"q": "“สามล้านสี่แสนหกพันสิบเอ็ด” เขียนเป็นตัวเลขได้อย่างไร",
+"c": [
+"3,406,011",
+"3,460,011",
+"3,406,110",
+"34,006,011"
+],
+"a": 0,
+"w": "สามล้าน = 3,000,000 · สี่แสน = 400,000 · หกพัน = 6,000 · สิบเอ็ด = 11 รวมเป็น 3,406,011"
+},
+{
+"q": "25,080,400 อ่านว่าอย่างไร",
+"c": [
+"ยี่สิบห้าล้านแปดหมื่นสี่ร้อย",
+"ยี่สิบห้าล้านแปดแสนสี่ร้อย",
+"สองล้านห้าแสนแปดหมื่นสี่ร้อย",
+"ยี่สิบห้าล้านแปดพันสี่ร้อย"
+],
+"a": 0,
+"w": "แบ่งเป็น 25 ล้าน กับ 080,400 → แปดหมื่นสี่ร้อย (0 ไม่อ่าน)"
+},
+{
+"q": "๗,๐๕๒,๓๐๐ เขียนเป็นตัวเลขฮินดูอารบิกได้อย่างไร",
+"c": [
+"7,052,300",
+"7,520,300",
+"7,052,030",
+"705,230"
+],
+"a": 0,
+"w": "เปลี่ยนตัวเลขไทยทีละตัว ๗ = 7, ๐ = 0, ๕ = 5, ๒ = 2, ๓ = 3"
+},
+{
+"q": "ใน 48,316,205 เลขโดด 3 อยู่ในหลักใด และมีค่าเท่าใด",
+"c": [
+"หลักแสน มีค่า 300,000",
+"หลักหมื่น มีค่า 30,000",
+"หลักล้าน มีค่า 3,000,000",
+"หลักแสน มีค่า 3"
+],
+"a": 0,
+"w": "นับจากขวา หน่วย สิบ ร้อย พัน หมื่น แสน → 3 อยู่หลักแสน มีค่า 300,000"
+},
+{
+"q": "6,000,000 + 50,000 + 700 + 8 เขียนเป็นตัวเลขได้เท่าใด",
+"c": [
+"6,050,708",
+"6,500,708",
+"6,057,008",
+"605,708"
+],
+"a": 0,
+"w": "หลักแสนไม่มีค่า จึงเป็น 0 · หลักพันเป็น 0 · หลักสิบเป็น 0 → 6,050,708"
+},
+{
+"q": "15 แสน เท่ากับข้อใด",
+"c": [
+"1,500,000",
+"150,000",
+"15,000,000",
+"1,050,000"
+],
+"a": 0,
+"w": "10 แสน = 1 ล้าน ดังนั้น 15 แสน = 1 ล้าน 5 แสน = 1,500,000"
+},
+{
+"q": "ข้อใดถูกต้อง",
+"c": [
+"9,999,999 < 10,000,000",
+"8,520,316 > 8,530,216",
+"12,405,000 < 9,876,543",
+"7,010,000 = 7,100,000"
+],
+"a": 0,
+"w": "9,999,999 มี 7 หลัก แต่ 10,000,000 มี 8 หลัก จำนวนที่มีหลักมากกว่าจึงมากกว่า"
+},
+{
+"q": "เรียงจากน้อยไปมาก: 4,560,200 / 4,506,200 / 4,650,020",
+"c": [
+"4,506,200 , 4,560,200 , 4,650,020",
+"4,560,200 , 4,506,200 , 4,650,020",
+"4,650,020 , 4,560,200 , 4,506,200",
+"4,506,200 , 4,650,020 , 4,560,200"
+],
+"a": 0,
+"w": "หลักล้านเท่ากัน (4) ดูหลักแสน: 5, 5, 6 → แล้วเทียบหลักหมื่นของ 2 จำนวนแรก 0 กับ 6"
+},
+{
+"q": "ค่าประมาณเป็นจำนวนเต็มร้อยของ 27,348 คือข้อใด",
+"c": [
+"27,300",
+"27,400",
+"27,000",
+"27,350"
+],
+"a": 0,
+"w": "ดูหลักสิบ คือ 4 (น้อยกว่า 5) ปัดลง → 27,300"
+},
+{
+"q": "ค่าประมาณเป็นจำนวนเต็มพันของ 9,650 คือข้อใด",
+"c": [
+"10,000",
+"9,000",
+"9,700",
+"9,600"
+],
+"a": 0,
+"w": "ดูหลักร้อย คือ 6 (5 ขึ้นไป) ปัดขึ้น 9 พัน → 10 พัน = 10,000"
+},
+{
+"q": "จำนวนใดมีค่าประมาณเป็นจำนวนเต็มแสนเท่ากับ 800,000",
+"c": [
+"752,000",
+"850,000",
+"739,000",
+"860,000"
+],
+"a": 0,
+"w": "752,000 ดูหลักหมื่นคือ 5 ปัดขึ้น → 800,000 · ส่วน 850,000 และ 860,000 ปัดเป็น 900,000 · 739,000 ปัดเป็น 700,000"
+},
+{
+"q": "สถานการณ์ใด <u>ไม่ควร</u> ใช้ค่าประมาณ",
+"c": [
+"ตวงยาให้น้องตามที่หมอสั่ง",
+"บอกจำนวนผู้ชมฟุตบอลในสนาม",
+"บอกระยะทางจากบ้านไปทะเล",
+"บอกจำนวนประชากรของจังหวัด"
+],
+"a": 0,
+"w": "การใช้ยาต้องใช้ปริมาณที่ถูกต้องตรงตามคำสั่งแพทย์ ถ้าใช้ค่าประมาณอาจเป็นอันตราย"
+}
+];
+Kit.orders.zoo = { hint: '👆 แตะชื่อสวนสัตว์ เรียงจากผู้เข้าชม <b>มากไปน้อย</b>', items: ['🦁 ง 2,030,410', '🐼 ค 1,254,080', '🦒 ก 1,245,800', '🐧 จ 1,245,008', '🐘 ข 986,500'] };
+Kit.sorters.use = {
+  bins: [{ k: 'y', t: '👍 ใช้ค่าประมาณได้', c: 'var(--green)' }, { k: 'n', t: '🙅 ต้องใช้ค่าจริง', c: 'var(--red)' }],
+  items: [
+    { t: '👥 จำนวนคนในงานวัด', k: 'y', w: 'บอกคร่าว ๆ ก็เข้าใจ' }, { t: '🗺️ ระยะทางจากบ้านไปเชียงใหม่', k: 'y', w: 'บอกประมาณได้' }, { t: '🛒 เตรียมเงินไปซื้อของ', k: 'y', w: 'ประมาณเผื่อไว้ให้พอ' },
+    { t: '💊 ปริมาณยาที่หมอสั่ง', k: 'n', w: 'ใช้ผิดอาจเป็นอันตราย' }, { t: '🧪 ผสมสารเคมี', k: 'n', w: 'ต้องตวงให้ตรงทุกครั้ง' }, { t: '💰 ทอนเงินลูกค้า', k: 'n', w: 'ต้องถูกต้องทุกบาท' }
+  ]
+};
+function rnd(digits) { var s = String(R(1, 9)); for (var i = 1; i < digits; i++) s += Math.random() < 0.3 ? '0' : R(0, 9); return +s; }
+function swapZero(n) { var s = String(n).split(''), i = R(1, s.length - 1), j = R(1, s.length - 1); var t = s[i]; s[i] = s[j]; s[j] = t; return +s.join(''); }
+function choices(n, make) { var c = [n], g = 0; while (c.length < 4 && g++ < 60) { var x = make(); if (x > 0 && c.indexOf(x) < 0) c.push(x); } var k = Kit.shuffle(c); return { c: k, a: k.indexOf(n) }; }
+DRILLS.read = [
+  function () { var n = rnd(R(7, 8)), o = choices(n, function () { return swapZero(n); }); return { q: '“' + thaiWords(n) + '” เขียนเป็นตัวเลขได้อย่างไร', c: o.c.map(C), a: o.a, h: 'แยกเป็นกลุ่ม: ' + thaiWords(n) + '<br>= <b>' + C(n) + '</b>' }; },
+  function () { var n = rnd(R(6, 8)), o = choices(n, function () { return swapZero(n); }); return { q: C(n) + ' อ่านว่าอย่างไร', c: o.c.map(thaiWords), a: o.a, h: 'แบ่ง 6 หลักจากขวาตรงคำว่า “ล้าน” แล้วอ่านทีละกลุ่ม<br><b>' + thaiWords(n) + '</b>' }; },
+  function () { var n = rnd(7), o = choices(n, function () { return swapZero(n); }); return { q: thaiNum(C(n)) + ' เขียนเป็นตัวเลขฮินดูอารบิกได้อย่างไร', c: o.c.map(C), a: o.a, h: 'เปลี่ยนตัวเลขไทยทีละตัว → <b>' + C(n) + '</b>' }; },
+  function () { var k = R(11, 99), u = pick([['แสน', 100000], ['หมื่น', 10000]]); return { q: k + ' ' + u[0] + ' เท่ากับเท่าใด (เขียนเป็นตัวเลข)', a: k * u[1], h: k + ' × ' + C(u[1]) + ' = <b>' + C(k * u[1]) + '</b>' }; }
+];
+DRILLS.place = [
+  function () { var n = rnd(8), s = String(n), i = R(0, s.length - 1); while (s[i] === '0') i = R(0, s.length - 1); var p = s.length - 1 - i, v = +s[i] * Math.pow(10, p); return { q: 'ใน ' + C(n) + ' เลขโดด <u>' + s[i] + '</u> ตัวที่ ' + (i + 1) + ' จากซ้าย มีค่าเท่าใด', a: v, h: s[i] + ' อยู่ในหลัก' + PLACE[p] + ' มีค่า <b>' + C(v) + '</b>' }; },
+  function () { var n = rnd(R(7, 8)), s = String(n), parts = []; for (var i = 0; i < s.length; i++) if (s[i] !== '0') parts.push(C(+s[i] * Math.pow(10, s.length - 1 - i))); return { q: parts.join(' + ') + ' = ?', a: n, h: 'นำค่าของแต่ละหลักมารวมกัน หลักที่ไม่มีเติม 0<br>= <b>' + C(n) + '</b>' }; },
+  function () { var n = rnd(8), s = String(n), i = R(0, 7), p = s.length - 1 - i; var o = Kit.shuffle(PLACE.slice(0, 8)).filter(function (x) { return x !== PLACE[p]; }).slice(0, 3).concat([PLACE[p]]); o = Kit.shuffle(o); return { q: 'ใน ' + C(n) + ' เลขโดดตัวที่ ' + (i + 1) + ' จากซ้าย (' + s[i] + ') อยู่ในหลักใด', c: o, a: o.indexOf(PLACE[p]), h: 'นับจากขวา: หน่วย สิบ ร้อย พัน หมื่น แสน ล้าน สิบล้าน → <b>หลัก' + PLACE[p] + '</b>' }; }
+];
+DRILLS.cmp = [
+  function () { var a = rnd(R(7, 8)), b = pick([swapZero(a), a + pick([1, -1]) * Math.pow(10, R(1, 5)), rnd(R(7, 8)), a]); var s = a > b ? 0 : a < b ? 1 : 2; return { q: C(a) + ' ◻ ' + C(b), c: ['>', '<', '='], a: s, h: (String(a).length !== String(b).length ? 'จำนวนหลักไม่เท่ากัน (' + String(a).length + ' กับ ' + String(b).length + ' หลัก)' : 'จำนวนหลักเท่ากัน เทียบทีละหลักจากซ้าย') + '<br>ดังนั้น ' + C(a) + ' <b>' + ['>', '<', '='][s] + '</b> ' + C(b) }; },
+  function () { var b = rnd(7), arr = [b, swapZero(b), b + R(1, 9) * 10000, b - R(1, 9) * 1000]; arr = arr.filter(function (x, i) { return arr.indexOf(x) === i; }); if (arr.length < 3) return DRILLS.cmp[1](); var mx = Math.max.apply(null, arr), o = Kit.shuffle(arr); return { q: 'จำนวนใดมากที่สุด', c: o.map(C), a: o.indexOf(mx), h: 'ทุกจำนวนมี 7 หลัก เทียบจากหลักซ้ายสุดทีละหลัก → <b>' + C(mx) + '</b>' }; }
+];
+function roundTo(n, p) { var m = Math.pow(10, p); return Math.round(n / m) * m; }
+var RN = ['สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน'];
+DRILLS.round = [
+  function () { var p = R(1, 6), n = R(Math.pow(10, p), Math.pow(10, Math.min(p + 2, 7)) * 9); var r = roundTo(n, p), d = Math.floor(n / Math.pow(10, p - 1)) % 10; return { q: 'ค่าประมาณเป็นจำนวนเต็ม' + RN[p - 1] + 'ของ ' + C(n) + ' คือเท่าใด', a: r, h: 'ดูหลัก' + PLACE[p - 1] + ' คือ <b>' + d + '</b> → ' + (d >= 5 ? 'ปัดขึ้น' : 'ปัดลง') + '<br>' + C(n) + ' ≈ <b>' + C(r) + '</b>' }; }
+];
+function drawNL(n, p) {
+  var m = Math.pow(10, p), lo = Math.floor(n / m) * m, hi = lo + m, r = roundTo(n, p), x = 40 + (n - lo) / m * 560, h = '';
+  h += '<line x1="40" y1="80" x2="600" y2="80" stroke="#3B2E5A" stroke-width="4"/>';
+  for (var i = 0; i <= 10; i++) { var xx = 40 + i * 56; h += '<line x1="' + xx + '" y1="' + (i % 5 ? 72 : 64) + '" x2="' + xx + '" y2="' + (i % 5 ? 88 : 96) + '" stroke="#3B2E5A" stroke-width="' + (i % 5 ? 2 : 3) + '"/>'; }
+  h += '<text x="40" y="120" text-anchor="middle" font-weight="700" font-size="17" fill="' + (r === lo ? '#E0561C' : '#3B2E5A') + '">' + C(lo) + '</text><text x="600" y="120" text-anchor="middle" font-weight="700" font-size="17" fill="' + (r === hi ? '#E0561C' : '#3B2E5A') + '">' + C(hi) + '</text><text x="320" y="120" text-anchor="middle" font-size="14" fill="#6E6390">' + C(lo + m / 2) + ' (กึ่งกลาง)</text>';
+  h += '<circle cx="' + x + '" cy="80" r="10" fill="#9B6CF0"/><text x="' + x + '" y="50" text-anchor="middle" font-weight="700" font-size="17" fill="#7343D6">' + C(n) + '</text>';
+  h += '<path d="M' + x + ',140 L' + (r === lo ? 40 : 600) + ',140" stroke="#FF7A45" stroke-width="4" marker-end="url(#ah)"/><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#FF7A45"/></marker></defs>';
+  return h;
+}
+SETUP = function () {
+  /* เครื่องอ่านจำนวน */
+  var dg = [0, 0, 2, 3, 5, 0, 0, 0, 0], tb = document.getElementById('pv');
+  function drawPV() {
+    var names = PLACE.slice(0, 9).slice().reverse();
+    tb.innerHTML = '<tr>' + names.map(function (n) { return '<th>' + n + '</th>'; }).join('') + '</tr><tr>' + dg.map(function (d, i) { return '<td><button class="step-btn" data-u="' + i + '" aria-label="เพิ่ม">▲</button><div class="val" style="font-size:1.6rem">' + d + '</div><button class="step-btn" data-d="' + i + '" aria-label="ลด">▼</button></td>'; }).join('') + '</tr>';
+    Array.prototype.forEach.call(tb.querySelectorAll('[data-u]'), function (b) { b.onclick = function () { var i = +b.getAttribute('data-u'); dg[i] = (dg[i] + 1) % 10; Kit.sound.tap(); drawPV(); }; });
+    Array.prototype.forEach.call(tb.querySelectorAll('[data-d]'), function (b) { b.onclick = function () { var i = +b.getAttribute('data-d'); dg[i] = (dg[i] + 9) % 10; Kit.sound.tap(); drawPV(); }; });
+    var n = +dg.join('');
+    document.getElementById('pvOut').innerHTML = '<div><span class="pill" style="--c:var(--blue)">ฮินดูอารบิก</span> <b>' + C(n) + '</b></div><div><span class="pill" style="--c:var(--green)">ตัวเลขไทย</span> <b>' + thaiNum(C(n)) + '</b></div><div><span class="pill" style="--c:var(--purple)">ตัวหนังสือ</span> <b class="t-purple">' + thaiWords(n) + '</b></div>';
+  }
+  document.getElementById('pvRand').onclick = function () { dg = String(rnd(R(6, 9))).padStart(9, '0').split('').map(Number); Kit.sound.tap(); drawPV(); };
+  document.getElementById('pvZero').onclick = function () { dg = [0, 0, 0, 0, 0, 0, 0, 0, 0]; Kit.sound.tap(); drawPV(); };
+  drawPV();
+  /* แตะเลขโดด */
+  var num = '63527048', box = document.getElementById('tapNum');
+  num.split('').forEach(function (d, i) {
+    var b = document.createElement('button'); b.className = 'chip'; b.style.cssText = 'font-size:1.8rem;min-width:52px;box-shadow:none'; b.textContent = d;
+    b.onclick = function () { Array.prototype.forEach.call(box.children, function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); var p = num.length - 1 - i; Kit.sound.tap(); document.getElementById('tapOut').innerHTML = d + ' อยู่ในหลัก<b>' + PLACE[p] + '</b> มีค่า <b class="t-purple">' + C(+d * Math.pow(10, p)) + '</b>'; };
+    box.appendChild(b);
+    if (i === 1 || i === 4) { var c = document.createElement('span'); c.textContent = ','; c.style.cssText = 'font-size:1.8rem;font-weight:700;align-self:flex-end'; box.appendChild(c); }
+  });
+  /* เส้นจำนวน */
+  var nl = { n: 2486, p: 1 }, row = document.getElementById('nlPlace');
+  RN.slice(0, 5).forEach(function (t, i) { var b = document.createElement('button'); b.className = 'chip'; b.style.boxShadow = 'none'; b.textContent = 'เต็ม' + t; b.onclick = function () { nl.p = i + 1; if (nl.n < Math.pow(10, nl.p)) nl.n = R(Math.pow(10, nl.p), Math.pow(10, nl.p + 1) * 5); Kit.sound.tap(); dn(); }; row.appendChild(b); });
+  function dn() {
+    Array.prototype.forEach.call(row.children, function (b, k) { b.classList.toggle('sel', k === nl.p - 1); });
+    document.getElementById('nlSvg').innerHTML = drawNL(nl.n, nl.p);
+    var r = roundTo(nl.n, nl.p), d = Math.floor(nl.n / Math.pow(10, nl.p - 1)) % 10;
+    document.getElementById('nlOut').innerHTML = 'ดูหลัก' + PLACE[nl.p - 1] + ' = ' + d + ' → ' + (d >= 5 ? 'ปัดขึ้น ⬆️' : 'ปัดลง ⬇️') + '<br>' + C(nl.n) + ' ≈ <span class="t-purple">' + C(r) + '</span>';
+  }
+  document.getElementById('nlRand').onclick = function () { nl.n = R(Math.pow(10, nl.p), Math.pow(10, nl.p + 1) * 9); Kit.sound.tap(); dn(); };
+  dn();
+};
+(function () { var s = SETUP; SETUP = function () { setupToc(); if (s) s(); }; })();
+</script>
+</body>
+</html>
