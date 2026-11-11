@@ -56,11 +56,11 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-conten
 .qq .svgbox svg{max-height:250px}
 /* ---- ป.4 รูปครูอู๋ ---- */
 .kru .av{overflow:hidden;padding:0;background:var(--glow)}
-.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
 .cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
 .cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
 .cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
-.cover4 .pic::before{content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
 .cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
 .cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
 .cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
@@ -76,7 +76,7 @@ table.vt td.op{width:1.4em;color:var(--main-deep)}
 table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
 table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
 .endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
-.endpic img{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:4px solid var(--main);background:var(--glow)}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
 table.vt tr.sep td{border-top:3px solid var(--ink)}
 .card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
 .kru .av{width:60px;height:60px}
@@ -84,6 +84,13 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 .kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
 .kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
 .kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
 
 
 .nav .dots{display:none}
@@ -93,8 +100,39 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 .pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
 .ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
 .ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
-.ppframe img{display:block;max-width:100%;max-height:100%;width:min(100cqw,calc(100cqh * 16 / 9));height:auto;aspect-ratio:16/9;object-fit:contain;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08)}
-.ppframe img.can{cursor:pointer}
+.ppbox{position:relative;width:min(100cqw,calc(100cqh * 16 / 9));aspect-ratio:16/9;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08);overflow:hidden;box-sizing:border-box}
+.ppz{position:absolute;inset:0;transition:transform .35s ease;transform-origin:50% 50%}
+.ppz img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ppz img.ghost{transition:opacity .35s ease;pointer-events:none}
+.ppz canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;touch-action:none}
+.ppbox.can{cursor:pointer}
+.pslide.pen .ppz canvas{pointer-events:auto;cursor:crosshair}
+.pslide.zoom .ppbox{cursor:zoom-out}
+.pslide.zoom .ppz{transform:scale(2.2)}
+.ppbox .done{position:absolute;right:10px;bottom:8px;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:kpop .5s ease-out both}
+.ppbox .done img{height:clamp(60px,14cqh,110px);width:auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.ppbox .done span{background:#fff;border:3px solid var(--main);border-radius:14px 14px 4px 14px;padding:2px 10px;font-weight:700;color:var(--main-deep);margin-bottom:30px;white-space:nowrap;font-size:clamp(.8rem,2.2vw,1rem)}
+.tools{display:flex;align-items:center;gap:6px}
+.tl{width:40px;height:40px;border-radius:12px;border:2px solid var(--main);background:#fff;font-size:1.15rem;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--glow)}
+.tl.on{background:var(--main);box-shadow:0 3px 0 var(--main-deep)}
+.penbar{display:none;align-items:center;gap:6px;background:#fff;border:2px solid var(--main);border-radius:999px;padding:3px 8px}
+.pslide.pen .penbar{display:flex}
+.penbar button{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1rem;background:#fff}
+.penbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.timer{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:6px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:4px 6px 4px 12px;font-weight:700;box-shadow:0 4px 0 var(--main-deep);font-size:1.15rem}
+.timer.show{display:flex}
+.timer .opts{display:flex;gap:4px}
+.timer .opts button,.timer .x{border:2px solid var(--main);background:var(--glow);border-radius:999px;padding:2px 10px;font-weight:700;min-height:36px}
+.timer .t{font-variant-numeric:tabular-nums;min-width:3.2em;text-align:center;color:var(--main-deep)}
+.timer.end{animation:tshake .5s 3;background:#FFE3E3}
+@keyframes tshake{25%{transform:translateX(-50%) rotate(-4deg)}75%{transform:translateX(-50%) rotate(4deg)}}
+@media (max-width:620px){.tl{width:34px;height:34px;font-size:1rem}.pphead .secbadge{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.board{position:relative;width:min(100%,720px);container-type:inline-size;animation:kpop .55s ease-out both}
+.board img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15))}
+.chalk{position:absolute;left:56%;top:12%;width:39%;height:62%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqw;color:#fff;text-align:center;text-shadow:0 0 2px rgba(255,255,255,.5)}
+.chalk .cn{font-size:4.2cqw;color:#FFE97A;border-bottom:.4cqw dashed #FFE97A;padding:0 2cqw}
+.chalk b{font-size:4.6cqw;line-height:1.3;font-weight:700}
+.secslide .ready{font-weight:700;color:var(--ink-soft)}
 .ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
 .ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
 .ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
@@ -129,252 +167,252 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
     <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>5.1 การบอกระยะเวลา</li><li>5.2 การเปรียบเทียบระยะเวลา</li><li>5.3 การอ่านตารางเวลา</li><li>5.4 โจทย์ปัญหา</li></ul></div>
     <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
   </div>
-  <div class="pic"><img src="full-p8.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+  <div class="pic"><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
 </div></div></section>
 <section class="slide" data-title="สารบัญ"><div class="inner">
   <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 5</h2>
-  <div class="kru fig"><span class="av"><img src="full-p6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
   <div class="toc"><button data-jump="5.1"><span class="e">⏳</span><span>5.1 การบอกระยะเวลา</span></button><button data-jump="5.2"><span class="e">⚖️</span><span>5.2 การเปรียบเทียบระยะเวลา</span></button><button data-jump="5.3"><span class="e">🗓️</span><span>5.3 การอ่านตารางเวลา</span></button><button data-jump="5.4"><span class="e">📝</span><span>5.4 โจทย์ปัญหา</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
 </div></section>
 <section class="slide" data-sec="5.1" data-title="5.1 การบอกระยะเวลา"><div class="inner secslide">
-  <div class="secnum">5.1</div><h1>⏳ การบอกระยะเวลา</h1>
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 5.1</span><b>⏳ การบอกระยะเวลา</b></div></div>
   
-  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 5.1 <b>การบอกระยะเวลา</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s003" data-title="5.1 การบอกระยะเวลา · หน้า 3"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 3 / 47</span></div>
-  <div class="ppframe"><img alt="การใช้เครื่องหมายวรรคตอน เพื่อบอกเวลาและบอกระยะเวลาตามหลักเกณฑ์ของราชบัณฑิตยสถาน การบอกเวลา การบอกเวลาเป็นนาฬิกาและนาที ใช้ มหัพภาค ( . ) หรือ ทวิภาค ( : ) เช่น 13.50 น. หรือ 13 : 50 น. อ่านว่า สิบสามนาฬิกา ห้าสิบนาที การบอกระยะเวลา ระยะเวลา หมายถึง ช่วงเวลาที่ต่อเนื่องจากเวลาหนึ่งถึงอีกเวลาหนึ่ง เค"></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การใช้เครื่องหมายวรรคตอน เพื่อบอกเวลาและบอกระยะเวลาตามหลักเกณฑ์ของราชบัณฑิตยสถาน การบอกเวลา การบอกเวลาเป็นนาฬิกาและนาที ใช้ มหัพภาค ( . ) หรือ ทวิภาค ( : ) เช่น 13.50 น. หรือ 13 : 50 น. อ่านว่า สิบสามนาฬิกา ห้าสิบนาที การบอกระยะเวลา ระยะเวลา หมายถึง ช่วงเวลาที่ต่อเนื่องจากเวลาหนึ่งถึงอีกเวลาหนึ่ง เค"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s004" data-title="5.1 การบอกระยะเวลา · หน้า 4"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 4 / 47</span></div>
-  <div class="ppframe"><img alt="การบอกระยะเวลาเป็นนาที วินาที"></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบอกระยะเวลาเป็นนาที วินาที"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s005" data-title="5.1 การบอกระยะเวลา · หน้า 5"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 5 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s006" data-title="5.1 การบอกระยะเวลา · หน้า 6"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 6 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s007" data-title="5.1 การบอกระยะเวลา · หน้า 7"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 7 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s008" data-title="5.1 การบอกระยะเวลา · หน้า 8"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 8 / 47</span></div>
-  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 222 1 5 นาที คิดเป็นกี่วินาที 2 8 นาที 25 วินาที คิดเป็นกี่วินาที 3 น้ำผึ้งเดินจากอาคารเรียนไปสนามกีฬาใช้เวลา 340 วินาที น้ำผึ้งใช้เวลาเดินกี่นาที กี่วินาที"></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 222 1 5 นาที คิดเป็นกี่วินาที 2 8 นาที 25 วินาที คิดเป็นกี่วินาที 3 น้ำผึ้งเดินจากอาคารเรียนไปสนามกีฬาใช้เวลา 340 วินาที น้ำผึ้งใช้เวลาเดินกี่นาที กี่วินาที"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s009" data-title="5.1 การบอกระยะเวลา · หน้า 9"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 9 / 47</span></div>
-  <div class="ppframe"><img alt="การบอกระยะเวลาเป็นนาที ชั่วโมง วัน"></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบอกระยะเวลาเป็นนาที ชั่วโมง วัน"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s010" data-title="5.1 การบอกระยะเวลา · หน้า 10"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 10 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-title="5.1 การบอกระยะเวลา · หน้า 11"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 11 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s012" data-title="5.1 การบอกระยะเวลา · หน้า 12"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 12 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-title="5.1 การบอกระยะเวลา · หน้า 13"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 13 / 47</span></div>
-  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 224 1 3 วัน 12 ชั่วโมง คิดเป็น.......................ชั่วโมง 2 348 นาที คิดเป็น.......................ชั่วโมง.......................นาที 3 บั้งไฟบั้งหนึ่งถูกจุดเมื่อเวลา 10 นาฬิกา 20 นาที และเริ่มตกเมื่อเวลา 10 นาฬิกา 23 นาที 40 วินาทีตั้งแต่บั้งไฟเริ่มขึ้นจนถึงจุดสูงสุดใช้เวลา........"></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 224 1 3 วัน 12 ชั่วโมง คิดเป็น.......................ชั่วโมง 2 348 นาที คิดเป็น.......................ชั่วโมง.......................นาที 3 บั้งไฟบั้งหนึ่งถูกจุดเมื่อเวลา 10 นาฬิกา 20 นาที และเริ่มตกเมื่อเวลา 10 นาฬิกา 23 นาที 40 วินาทีตั้งแต่บั้งไฟเริ่มขึ้นจนถึงจุดสูงสุดใช้เวลา........"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s014" data-title="5.1 การบอกระยะเวลา · หน้า 14"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 14 / 47</span></div>
-  <div class="ppframe"><img alt="การบอกระยะเวลาเป็นวินาที นาที ชั่วโมง วัน สัปดาห์ เดือน ปี"></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบอกระยะเวลาเป็นวินาที นาที ชั่วโมง วัน สัปดาห์ เดือน ปี"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s015" data-title="5.1 การบอกระยะเวลา · หน้า 15"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 15 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-title="5.1 การบอกระยะเวลา · หน้า 16"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 16 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s017" data-title="5.1 การบอกระยะเวลา · หน้า 17"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 17 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-title="5.1 การบอกระยะเวลา · หน้า 18"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="ppno">หน้า 18 / 47</span></div>
-  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 226 1 2 ปี 28 สัปดาห์ คิดเป็น.......................สัปดาห์ 2 180 ชั่วโมง คิดเป็น.......................วัน.......................ชั่วโมง 3 ยาชนิดหนึ่งผลิตวันที่ 12 กันยายน พ.ศ. 2560 และหมดอายุวันที่ 12 มีนาคม พ.ศ. 2563ยาชนิดนี้มีอายุนาน.......................ปี.......................เ"></div>
+  <div class="pphead"><span class="secbadge">5.1 การบอกระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 226 1 2 ปี 28 สัปดาห์ คิดเป็น.......................สัปดาห์ 2 180 ชั่วโมง คิดเป็น.......................วัน.......................ชั่วโมง 3 ยาชนิดหนึ่งผลิตวันที่ 12 กันยายน พ.ศ. 2560 และหมดอายุวันที่ 12 มีนาคม พ.ศ. 2563ยาชนิดนี้มีอายุนาน.......................ปี.......................เ"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide" data-sec="5.2" data-title="5.2 การเปรียบเทียบระยะเวลา"><div class="inner secslide">
-  <div class="secnum">5.2</div><h1>⚖️ การเปรียบเทียบระยะเวลา</h1>
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 5.2</span><b>⚖️ การเปรียบเทียบระยะเวลา</b></div></div>
   
-  <div class="kru fig"><span class="av"><img src="full-p6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 5.2 <b>การเปรียบเทียบระยะเวลา</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s020" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 20"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 20 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s021" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 21"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 21 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s022" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 22"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 22 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 23"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 23 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 24"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 24 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 25"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 25 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s026" data-title="5.2 การเปรียบเทียบระยะเวลา · หน้า 26"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="ppno">หน้า 26 / 47</span></div>
-  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 232 1 ในการว่ายน้ำ 100 เมตร บอสใช้เวลา 1 นาที 48 นาที นิคใช้เวลา 118 วินาที ใครว่ายน้ำเร็วกว่า 2 แหวนและอรไปทำงานที่ประเทศสิงคโปร์ โดยแหวนทำงานเป็นเวลา 1 เดือน 3 วัน ส่วนอรทำงานเป็นเวลา 4 สัปดาห์ 5 วัน ใครทำงานเป็นเวลานานกว่ากัน"></div>
+  <div class="pphead"><span class="secbadge">5.2 การเปรียบเทียบระยะเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 232 1 ในการว่ายน้ำ 100 เมตร บอสใช้เวลา 1 นาที 48 นาที นิคใช้เวลา 118 วินาที ใครว่ายน้ำเร็วกว่า 2 แหวนและอรไปทำงานที่ประเทศสิงคโปร์ โดยแหวนทำงานเป็นเวลา 1 เดือน 3 วัน ส่วนอรทำงานเป็นเวลา 4 สัปดาห์ 5 วัน ใครทำงานเป็นเวลานานกว่ากัน"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide" data-sec="5.3" data-title="5.3 การอ่านตารางเวลา"><div class="inner secslide">
-  <div class="secnum">5.3</div><h1>🗓️ การอ่านตารางเวลา</h1>
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 5.3</span><b>🗓️ การอ่านตารางเวลา</b></div></div>
   
-  <div class="kru fig"><span class="av"><img src="full-p8.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 5.3 <b>การอ่านตารางเวลา</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s028" data-title="5.3 การอ่านตารางเวลา · หน้า 28"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.3 การอ่านตารางเวลา</span><span class="ppno">หน้า 28 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.3 การอ่านตารางเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s029" data-title="5.3 การอ่านตารางเวลา · หน้า 29"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.3 การอ่านตารางเวลา</span><span class="ppno">หน้า 29 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.3 การอ่านตารางเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s030" data-title="5.3 การอ่านตารางเวลา · หน้า 30"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.3 การอ่านตารางเวลา</span><span class="ppno">หน้า 30 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.3 การอ่านตารางเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s031" data-title="5.3 การอ่านตารางเวลา · หน้า 31"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.3 การอ่านตารางเวลา</span><span class="ppno">หน้า 31 / 47</span></div>
-  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 238 1 รถโดยสารจากกรุงเทพฯ (จตุจักร) ไปจันทบุรี มีวันละ..................เที่ยว โดยเที่ยวแรกออกเวลา..................น. และเที่ยวสุดท้ายออกเวลา..................น. 2 ถ้าฝนขึ้นรถเที่ยวแรกของกรุงเทพฯ (จตุจักร) ไปจันทบุรี และจอมขึ้นรถจากกรุงเทพฯ (เอกมัย) ไปตราด คนที่ไปถึงจุดหมายปลายทางก่อน"></div>
+  <div class="pphead"><span class="secbadge">5.3 การอ่านตารางเวลา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 238 1 รถโดยสารจากกรุงเทพฯ (จตุจักร) ไปจันทบุรี มีวันละ..................เที่ยว โดยเที่ยวแรกออกเวลา..................น. และเที่ยวสุดท้ายออกเวลา..................น. 2 ถ้าฝนขึ้นรถเที่ยวแรกของกรุงเทพฯ (จตุจักร) ไปจันทบุรี และจอมขึ้นรถจากกรุงเทพฯ (เอกมัย) ไปตราด คนที่ไปถึงจุดหมายปลายทางก่อน"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide" data-sec="5.4" data-title="5.4 โจทย์ปัญหา"><div class="inner secslide">
-  <div class="secnum">5.4</div><h1>📝 โจทย์ปัญหา</h1>
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 5.4</span><b>📝 โจทย์ปัญหา</b></div></div>
   
-  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 5.4 <b>โจทย์ปัญหา</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-title="5.4 โจทย์ปัญหา · หน้า 33"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 33 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-title="5.4 โจทย์ปัญหา · หน้า 34"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 34 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-title="5.4 โจทย์ปัญหา · หน้า 35"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 35 / 47</span></div>
-  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 232 1 ก้อยใช้เวลาดูภาพยนตร์ 2 ชั่วโมง 30 นาที ถ้าดูจบเวลา 15.20 น. ก้อยเริ่มดูภาพยนตร์เวลาใด 2 ลุงฉีดยาป้องกันแมลงในแปลงผัก วันที่ 28 มกราคม หลังฉีดยาแล้วอีก 14 วัน จึงเก็บผักขายได้ ลุงเก็บผักขายได้อย่างเร็วที่สุดเมื่อใด 3 ถนนสายหนึ่งใช้เวลาสร้างไปแล้ว 1 ปี 9 เดือน ถ้ากำหนดแล้วเสร็จรวม"></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 232 1 ก้อยใช้เวลาดูภาพยนตร์ 2 ชั่วโมง 30 นาที ถ้าดูจบเวลา 15.20 น. ก้อยเริ่มดูภาพยนตร์เวลาใด 2 ลุงฉีดยาป้องกันแมลงในแปลงผัก วันที่ 28 มกราคม หลังฉีดยาแล้วอีก 14 วัน จึงเก็บผักขายได้ ลุงเก็บผักขายได้อย่างเร็วที่สุดเมื่อใด 3 ถนนสายหนึ่งใช้เวลาสร้างไปแล้ว 1 ปี 9 เดือน ถ้ากำหนดแล้วเสร็จรวม"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-title="5.4 โจทย์ปัญหา · หน้า 36"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 36 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s037" data-title="5.4 โจทย์ปัญหา · หน้า 37"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 37 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s038" data-title="5.4 โจทย์ปัญหา · หน้า 38"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 38 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s039" data-title="5.4 โจทย์ปัญหา · หน้า 39"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 39 / 47</span></div>
-  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 244 1 37 นาที 26 วินาที รวมกับ 15 นาที 42 วินาที เป็นกี่นาที กี่วินาที 2 6 เดือน 24 วัน น้อยกว่า 8 เดือน 10 วัน อยู่กี่เดือน กี่วัน 3 10 ปี 9 เดือน รวมกับ 7 ปี 6 เดือน เป็นกี่ปี กี่เดือน 4 6 ชั่วโมง 10 นาที มากกว่า 3 ชั่วโมง 40 นาที อยู่กี่ชั่วโมง กี่นาที"></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 244 1 37 นาที 26 วินาที รวมกับ 15 นาที 42 วินาที เป็นกี่นาที กี่วินาที 2 6 เดือน 24 วัน น้อยกว่า 8 เดือน 10 วัน อยู่กี่เดือน กี่วัน 3 10 ปี 9 เดือน รวมกับ 7 ปี 6 เดือน เป็นกี่ปี กี่เดือน 4 6 ชั่วโมง 10 นาที มากกว่า 3 ชั่วโมง 40 นาที อยู่กี่ชั่วโมง กี่นาที"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s040" data-title="5.4 โจทย์ปัญหา · หน้า 40"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 40 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s041" data-title="5.4 โจทย์ปัญหา · หน้า 41"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 41 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s042" data-title="5.4 โจทย์ปัญหา · หน้า 42"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 42 / 47</span></div>
-  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 246 1 ปัจจุบันจอยมีอายุ 9 ปี 4 เดือน อีกนานเท่าใด จอยจะมีอายุ 15 ปี 2 วีระใช้เวลาทำการบ้าน 2 ชั่วโมง 25 นาที ซึ่งใช้เวลาน้อยกว่ามานะ 45 นาที มานะใช้เวลาทำการบ้านนานเท่าใด"></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 246 1 ปัจจุบันจอยมีอายุ 9 ปี 4 เดือน อีกนานเท่าใด จอยจะมีอายุ 15 ปี 2 วีระใช้เวลาทำการบ้าน 2 ชั่วโมง 25 นาที ซึ่งใช้เวลาน้อยกว่ามานะ 45 นาที มานะใช้เวลาทำการบ้านนานเท่าใด"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s043" data-title="5.4 โจทย์ปัญหา · หน้า 43"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 43 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s044" data-title="5.4 โจทย์ปัญหา · หน้า 44"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 44 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 44 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s045" data-title="5.4 โจทย์ปัญหา · หน้า 45"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 45 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s046" data-title="5.4 โจทย์ปัญหา · หน้า 46"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 46 / 47</span></div>
-  <div class="ppframe"><img alt=""></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 46 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s047" data-title="5.4 โจทย์ปัญหา · หน้า 47"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="ppno">หน้า 47 / 47</span></div>
-  <div class="ppframe"><img alt="แบบฝึกหัดหน้า 249 1 วารีเดินทางจากกรุงเทพฯ ถึงหาดใหญ่ใช้เวลา 15 ชั่วโมง 53 นาที ถ้าวารีเดินทางไปและกลับใช้เวลาเท่ากันวารีใช้เวลาเดินทางทั้งหมดกี่ชั่วโมง กี่นาที 2 ในเวลา 5 สัปดาห์ นิดใช้เวลาออกกำลังกาย 17 ชั่วโมง 20 นาที เฉลี่ยแล้วในเวลา 1 สัปดาห์ นิดใช้เวลาออกกำลังกายกี่ชั่วโมง กี่นาที"></div>
+  <div class="pphead"><span class="secbadge">5.4 โจทย์ปัญหา</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 47</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 249 1 วารีเดินทางจากกรุงเทพฯ ถึงหาดใหญ่ใช้เวลา 15 ชั่วโมง 53 นาที ถ้าวารีเดินทางไปและกลับใช้เวลาเท่ากันวารีใช้เวลาเดินทางทั้งหมดกี่ชั่วโมง กี่นาที 2 ในเวลา 5 สัปดาห์ นิดใช้เวลาออกกำลังกาย 17 ชั่วโมง 20 นาที เฉลี่ยแล้วในเวลา 1 สัปดาห์ นิดใช้เวลาออกกำลังกายกี่ชั่วโมง กี่นาที"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
   <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
-  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div class="kru fig"><span class="av"><img src="k2.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
   <div data-quiz="main"></div>
 </div></section>
 <section class="slide" data-title="สรุป" data-final><div class="inner">
   <h2 class="h"><span class="e">🌟</span>จบบทที่ 5 เวลา</h2>
-  <div class="card c-yellow center endpic"><img src="av-p3.webp" alt="ครูอู๋"><div data-score></div></div>
-  <div class="kru"><span class="av"><img src="av-p4.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="card c-yellow center endpic"><img src="k6.webp" alt="ครูอู๋"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="f6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
   <div class="toc"><button data-jump="5.1"><span class="e">⏳</span><span>ทบทวน 5.1 การบอกระยะเวลา</span></button><button data-jump="5.2"><span class="e">⚖️</span><span>ทบทวน 5.2 การเปรียบเทียบระยะเวลา</span></button><button data-jump="5.3"><span class="e">🗓️</span><span>ทบทวน 5.3 การอ่านตารางเวลา</span></button><button data-jump="5.4"><span class="e">📝</span><span>ทบทวน 5.4 โจทย์ปัญหา</span></button></div>
   <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m4-ch4-mixed-ops/">◀ บทก่อนหน้า</a><a class="btn" style="--c:var(--purple)" href="../m4-math-hub/">🏠 หน้ารวม ป.4</a><a class="btn ghost" href="../m4-ch6-fractions/">บทถัดไป ▶</a></div>
   <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.4 สสวท.</p>
@@ -537,15 +575,96 @@ function setupToc() {
 Kit.quizzes.main = [{"q": "3 นาที 25 วินาที เท่ากับกี่วินาที", "c": ["205 วินาที", "325 วินาที", "185 วินาที", "235 วินาที"], "a": 0, "w": "3 × 60 = 180 วินาที รวมกับ 25 วินาที เป็น 205 วินาที"}, {"q": "4 วัน 6 ชั่วโมง เท่ากับกี่ชั่วโมง", "c": ["102 ชั่วโมง", "46 ชั่วโมง", "30 ชั่วโมง", "106 ชั่วโมง"], "a": 0, "w": "4 × 24 = 96 ชั่วโมง รวมกับ 6 ชั่วโมง เป็น 102 ชั่วโมง"}, {"q": "150 นาที เท่ากับเท่าใด", "c": ["2 ชั่วโมง 30 นาที", "1 ชั่วโมง 50 นาที", "15 ชั่วโมง", "2 ชั่วโมง 50 นาที"], "a": 0, "w": "150 ÷ 60 = 2 เศษ 30 จึงเป็น 2 ชั่วโมง 30 นาที"}, {"q": "3 สัปดาห์ 4 วัน เท่ากับกี่วัน", "c": ["25 วัน", "34 วัน", "21 วัน", "28 วัน"], "a": 0, "w": "3 × 7 = 21 วัน รวมกับ 4 วัน เป็น 25 วัน"}, {"q": "2 ปี 5 เดือน เท่ากับกี่เดือน", "c": ["29 เดือน", "25 เดือน", "17 เดือน", "24 เดือน"], "a": 0, "w": "2 × 12 = 24 เดือน รวมกับ 5 เดือน เป็น 29 เดือน"}, {"q": "ข้อใดใช้เวลานานที่สุด", "c": ["200 วินาที", "3 นาที 10 วินาที", "3 นาที", "1 นาที 50 วินาที"], "a": 0, "w": "เปลี่ยนเป็นวินาที: 200, 190, 180 และ 110 วินาที จึงเป็น 200 วินาที"}, {"q": "รถไฟออกจากสถานีเวลา 08.40 น. ถึงปลายทางเวลา 11.15 น. ใช้เวลาเดินทางเท่าใด", "c": ["2 ชั่วโมง 35 นาที", "3 ชั่วโมง 35 นาที", "2 ชั่วโมง 25 นาที", "3 ชั่วโมง 15 นาที"], "a": 0, "w": "08.40 → 10.40 น. = 2 ชั่วโมง และ 10.40 → 11.15 น. = 35 นาที"}, {"q": "ระยะเวลา 2 : 45 อ่านว่าอย่างไร", "c": ["สองนาทีสี่สิบห้าวินาที", "สองนาฬิกาสี่สิบห้านาที", "สองชั่วโมงสี่สิบห้านาที", "สองจุดสี่ห้า"], "a": 0, "w": "ระยะเวลาใช้ทวิภาค ( : ) คั่นนาทีกับวินาที"}];
 
 /* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
-function ppPaint(sl) {
-  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, img = sl.querySelector('.ppframe img');
-  img.src = sl.getAttribute('data-src') + '-' + k + '.webp';
+var PRAISE = [['k2', 'เยี่ยมมาก!'], ['k6', 'เก่งมาก!'], ['k7', 'เข้าใจแล้วใช่ไหม'], ['k2', 'สุดยอด!']];
+function ppPaint(sl, quiet) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, z = sl.querySelector('.ppz'), img = z.querySelector('img:not(.ghost)');
+  var src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (img.getAttribute('src') && img.getAttribute('src') !== src && !quiet) {
+    var g = img.cloneNode(); g.className = 'ghost'; g.removeAttribute('alt'); z.insertBefore(g, img.nextSibling);
+    var fade = function () { g.style.opacity = 0; setTimeout(function () { g.remove(); }, 400); };
+    img.onload = function () { img.onload = null; requestAnimationFrame(fade); };
+    setTimeout(fade, 900);
+  }
+  img.src = src;
   if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
-  img.classList.toggle('can', k < n);
+  sl.querySelector('.ppbox').classList.toggle('can', k < n);
   var b = sl.querySelector('[data-pstep]');
   if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+  var d = sl.querySelector('.ppbox .done');
+  if (d) d.remove();
+  if (n && k >= n) {
+    var p = PRAISE[(+sl.getAttribute('data-src').slice(-3)) % PRAISE.length];
+    d = document.createElement('div'); d.className = 'done';
+    d.innerHTML = '<span>' + p[1] + '</span><img src="' + p[0] + '.webp" alt="">';
+    sl.querySelector('.ppbox').appendChild(d);
+    if (!quiet) { Kit.sound.good(); if (Math.random() < .35) Kit.confetti(); }
+  }
 }
-function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl); } }
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl, 1); } }
+function ppTools(sl, mode) {
+  ['pen', 'zoom'].forEach(function (m) {
+    var on = m === mode && !sl.classList.contains(m);
+    sl.classList.toggle(m, on);
+    sl.querySelector('[data-' + m + ']').classList.toggle('on', on);
+  });
+  if (!sl.classList.contains('zoom')) sl.querySelector('.ppz').style.transformOrigin = '50% 50%';
+  sl.querySelector('.ppbox').classList.toggle('noswipe', sl.classList.contains('pen') || sl.classList.contains('zoom'));
+  ppDraw(sl);
+}
+/* ---------- ปากกาเขียนบนสไลด์ (เก็บเส้นแยกแต่ละหน้า) ---------- */
+function ppDraw(sl) {
+  var c = sl.querySelector('canvas'), r = c.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  var w = Math.round(c.offsetWidth * dpr), h = Math.round(c.offsetHeight * dpr);
+  if (!w || !h) return;
+  if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+  var x = c.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+  (sl._strokes || []).forEach(function (st) {
+    x.strokeStyle = st.c; x.lineWidth = st.w * w; x.beginPath();
+    st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+    if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+    x.stroke();
+  });
+}
+function ppPen(sl) {
+  var c = sl.querySelector('canvas'), cur = null, color = '#E53935';
+  function pt(e) { var r = c.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  c.addEventListener('pointerdown', function (e) {
+    if (!sl.classList.contains('pen')) return;
+    e.preventDefault(); c.setPointerCapture && c.setPointerCapture(e.pointerId);
+    cur = { c: color, w: .005, p: [pt(e)] }; (sl._strokes = sl._strokes || []).push(cur); ppDraw(sl);
+  });
+  c.addEventListener('pointermove', function (e) { if (cur) { cur.p.push(pt(e)); ppDraw(sl); } });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) { c.addEventListener(t, function () { cur = null; }); });
+  Array.prototype.forEach.call(sl.querySelectorAll('.penbar [data-c]'), function (b) {
+    b.onclick = function () { color = b.getAttribute('data-c'); Array.prototype.forEach.call(sl.querySelectorAll('.penbar [data-c]'), function (o) { o.classList.toggle('sel', o === b); }); };
+  });
+  sl.querySelector('[data-clear]').onclick = function () { sl._strokes = []; ppDraw(sl); Kit.sound.tap(); };
+}
+/* ---------- จับเวลา ---------- */
+var TM = { el: null, end: 0, iv: 0 };
+function tmShow() {
+  if (!TM.el) {
+    TM.el = document.createElement('div'); TM.el.className = 'timer';
+    document.body.appendChild(TM.el);
+  }
+  clearInterval(TM.iv); TM.el.classList.remove('end');
+  TM.el.innerHTML = '⏱️ <span class="opts"><button data-m="1">1 นาที</button><button data-m="2">2</button><button data-m="3">3</button><button data-m="5">5</button></span><button class="x" aria-label="ปิด">✖</button>';
+  TM.el.classList.add('show');
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show'); };
+  Array.prototype.forEach.call(TM.el.querySelectorAll('[data-m]'), function (b) { b.onclick = function () { tmStart(+b.getAttribute('data-m')); }; });
+}
+function tmStart(m) {
+  TM.end = Date.now() + m * 60000;
+  TM.el.innerHTML = '⏱️ <span class="t"></span><button class="x" aria-label="หยุด">✖</button>';
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show', 'end'); };
+  var t = TM.el.querySelector('.t');
+  function tick() {
+    var r = Math.max(0, Math.ceil((TM.end - Date.now()) / 1000));
+    t.textContent = Math.floor(r / 60) + ':' + ('0' + r % 60).slice(-2);
+    if (!r) { clearInterval(TM.iv); TM.el.classList.add('end'); Kit.sound.win(); Kit.toast('⏰ หมดเวลา! มาดูเฉลยกันนะ'); }
+  }
+  tick(); TM.iv = setInterval(tick, 250); Kit.sound.tap();
+}
 (function () {
   var go = Kit.go;
   Kit.go = function (n, instant) {
@@ -555,20 +674,36 @@ function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('ps
       if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
       if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
     }
+    if (cur && cur.classList.contains('pslide') && n !== Kit.cur) ppTools(cur, null);
     var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
     go(n, instant);
-    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t); }
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t, 1); }
     for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+    if (t && t.classList.contains('pslide')) setTimeout(function () { ppDraw(t); }, 50);
   };
 })();
+window.addEventListener('resize', function () { var t = Kit.slides[Kit.cur]; if (t && t.classList.contains('pslide')) ppDraw(t); });
 SETUP = function () {
   setupToc();
   Kit.slides.forEach(function (sl) {
     if (!sl.classList.contains('pslide')) return;
-    var img = sl.querySelector('.ppframe img'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    var box = sl.querySelector('.ppbox'), z = sl.querySelector('.ppz'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
     function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
-    img.onclick = adv; if (b) b.onclick = adv;
-    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+    box.addEventListener('click', function (e) {
+      if (sl.classList.contains('pen')) return;
+      if (sl.classList.contains('zoom')) {
+        var q = box.getBoundingClientRect();
+        z.style.transformOrigin = ((e.clientX - q.left) / q.width * 100) + '% ' + ((e.clientY - q.top) / q.height * 100) + '%';
+        return;
+      }
+      adv();
+    });
+    if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; sl._strokes = []; ppPaint(sl); ppDraw(sl); Kit.sound.tap(); };
+    sl.querySelector('[data-pen]').onclick = function () { ppTools(sl, 'pen'); Kit.sound.tap(); };
+    sl.querySelector('[data-zoom]').onclick = function () { ppTools(sl, 'zoom'); Kit.sound.tap(); if (sl.classList.contains('zoom')) Kit.toast('🔎 แตะตรงที่อยากดูใกล้ ๆ'); };
+    sl.querySelector('[data-timer]').onclick = function () { tmShow(); Kit.sound.tap(); };
+    ppPen(sl);
   });
 };
 

@@ -56,11 +56,11 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-conten
 .qq .svgbox svg{max-height:250px}
 /* ---- ป.4 รูปครูอู๋ ---- */
 .kru .av{overflow:hidden;padding:0;background:var(--glow)}
-.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
 .cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
 .cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
 .cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
-.cover4 .pic::before{content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
 .cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
 .cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
 .cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
@@ -76,7 +76,7 @@ table.vt td.op{width:1.4em;color:var(--main-deep)}
 table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
 table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
 .endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
-.endpic img{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:4px solid var(--main);background:var(--glow)}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
 table.vt tr.sep td{border-top:3px solid var(--ink)}
 .card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
 .kru .av{width:60px;height:60px}
@@ -84,6 +84,13 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 .kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
 .kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
 .kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
 
 body{overflow:auto}
 .wrap{max-width:1100px;margin:0 auto;padding:18px clamp(12px,3vw,28px) 40px;display:flex;flex-direction:column;gap:16px}
@@ -105,7 +112,7 @@ body{overflow:auto}
 </head>
 <body>
 <div class="wrap">
-  <section class="hero"><div class="t"><h1>คณิตศาสตร์ ป.4 สไตล์ครูอู๋</h1><p>บทเรียนโต้ตอบ เรียงตามหนังสือเรียน สสวท. · แตะดูวิธีคิดทีละขั้น ฝึกไม่รู้จบ ทำแบบทดสอบสะสมดาว</p><p id="prog" style="font-weight:700;margin-top:6px">⭐ สะสมดาวแล้ว 0 / 30 ดวง</p></div><img src="full-p6.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"></section>
+  <section class="hero"><div class="t"><h1>คณิตศาสตร์ ป.4 สไตล์ครูอู๋</h1><p>บทเรียนโต้ตอบ เรียงตามหนังสือเรียน สสวท. · แตะดูวิธีคิดทีละขั้น ฝึกไม่รู้จบ ทำแบบทดสอบสะสมดาว</p><p id="prog" style="font-weight:700;margin-top:6px">⭐ สะสมดาวแล้ว 0 / 30 ดวง</p></div><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"></section>
   <div class="cards"><a class="lc" href="../m4-ch1-big-numbers/" data-id="m4-ch1-big-numbers" style="--c:#FF7A45"><span class="le">🔢</span><span class="tag">บทที่ 1</span><h3>จำนวนนับที่มากกว่า 100,000</h3><p>1.1 อ่านและเขียนจำนวน · 1.2 หลัก ค่าประจำหลัก รูปกระจาย · 1.3 เปรียบเทียบและเรียงลำดับ · 1.4 การประมาณ</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m4-ch2-add-sub/" data-id="m4-ch2-add-sub" style="--c:#3FA9F5"><span class="le">➕</span><span class="tag">บทที่ 2</span><h3>การบวกและการลบ</h3><p>2.1 การบวกและการลบ · 2.2 ใช้เครื่องคิดเลข · 2.3 หาค่าตัวไม่ทราบค่า · 2.4 โจทย์ปัญหา · 2.5 สร้างโจทย์ปัญหา</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m4-ch3-mul-div/" data-id="m4-ch3-mul-div" style="--c:#2ECC71"><span class="le">✖️</span><span class="tag">บทที่ 3</span><h3>การคูณและการหาร</h3><p>3.1 การคูณ · 3.2 การหาร · 3.3 ตัวไม่ทราบค่าและแบบรูป · 3.4 โจทย์ปัญหา · 3.5 สร้างโจทย์ปัญหา</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m4-ch4-mixed-ops/" data-id="m4-ch4-mixed-ops" style="--c:#9B6CF0"><span class="le">🧮</span><span class="tag">บทที่ 4</span><h3>การบวก ลบ คูณ หารระคน</h3><p>4.1 ระคนที่มีวงเล็บ · 4.2 ระคนที่ไม่มีวงเล็บ · 4.3 มีและไม่มีวงเล็บ · 4.4 โจทย์ปัญหาระคน · 4.5 สร้างโจทย์ปัญหา · 4.6 ค่าเฉลี่ย</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m4-ch5-time/" data-id="m4-ch5-time" style="--c:#FF9F43"><span class="le">⏰</span><span class="tag">บทที่ 5</span><h3>เวลา</h3><p>5.1 การบอกระยะเวลา · 5.2 การเปรียบเทียบระยะเวลา · 5.3 การอ่านตารางเวลา · 5.4 โจทย์ปัญหา</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m4-ch6-fractions/" data-id="m4-ch6-fractions" style="--c:#9B6CF0"><span class="le">🍕</span><span class="tag">บทที่ 6</span><h3>เศษส่วน</h3><p>6.1 เศษส่วนแท้ เศษเกิน · 6.2 จำนวนคละ · 6.3 เศษส่วนที่เท่ากับจำนวนนับ · 6.4 เศษส่วนที่เท่ากัน · 6.5 เศษส่วนอย่างต่ำ · 6.6 การเปรียบเทียบและเรียงลำดับ · 6.7 การบวก การลบ · 6.8 โจทย์ปัญหา</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m4-ch7-decimals/" data-id="m4-ch7-decimals" style="--c:#2FB8A6"><span class="le">🔟</span><span class="tag">บทที่ 7</span><h3>ทศนิยม</h3><p>7.1 การอ่าน การเขียนทศนิยมไม่เกิน 3 ตำแหน่ง · 7.2 การเปรียบเทียบและเรียงลำดับ · 7.3 การบวกและการลบทศนิยมไม่เกิน 3 ตำแหน่ง · 7.4 โจทย์ปัญหา</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m4-ch8-angles/" data-id="m4-ch8-angles" style="--c:#FF5C7A"><span class="le">📐</span><span class="tag">บทที่ 8</span><h3>มุม</h3><p>8.1 จุด เส้นตรง รังสี และส่วนของเส้นตรง · 8.2 มุม ส่วนประกอบของมุมและการเรียกชื่อมุม · 8.3 มุมฉาก มุมตรง มุมแหลม มุมป้าน · 8.4 การวัดขนาดของมุม และการจำแนกชนิดของมุม · 8.5 การสร้างมุมโดยใช้โพรแทรกเตอร์</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m4-ch9-rectangles/" data-id="m4-ch9-rectangles" style="--c:#3FA9F5"><span class="le">🟦</span><span class="tag">บทที่ 9</span><h3>รูปสี่เหลี่ยมมุมฉาก</h3><p>9.1 ชนิดและสมบัติของรูปสี่เหลี่ยมมุมฉาก · 9.2 การสร้างรูปสี่เหลี่ยมมุมฉาก · 9.3 ความยาวรอบรูป · 9.4 พื้นที่ของรูปสี่เหลี่ยมมุมฉาก · 9.5 โจทย์ปัญหา</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a><a class="lc" href="../m4-ch10-data/" data-id="m4-ch10-data" style="--c:#2ECC71"><span class="le">📊</span><span class="tag">บทที่ 10</span><h3>การนำเสนอข้อมูล</h3><p>10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล · 10.2 การนำเสนอข้อมูล</p><span class="st">☆☆☆ ยังไม่ได้เรียน</span></a></div>
   <p class="credit">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · ใช้บน iPad และโน้ตบุ๊กได้</p>
 </div>

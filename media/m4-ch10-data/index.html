@@ -56,11 +56,11 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-conten
 .qq .svgbox svg{max-height:250px}
 /* ---- ป.4 รูปครูอู๋ ---- */
 .kru .av{overflow:hidden;padding:0;background:var(--glow)}
-.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
 .cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
 .cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
 .cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
-.cover4 .pic::before{content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
 .cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
 .cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
 .cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
@@ -76,7 +76,7 @@ table.vt td.op{width:1.4em;color:var(--main-deep)}
 table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
 table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
 .endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
-.endpic img{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:4px solid var(--main);background:var(--glow)}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
 table.vt tr.sep td{border-top:3px solid var(--ink)}
 .card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
 .kru .av{width:60px;height:60px}
@@ -84,6 +84,13 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 .kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
 .kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
 .kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
 
 
 .nav .dots{display:none}
@@ -93,8 +100,39 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 .pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
 .ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
 .ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
-.ppframe img{display:block;max-width:100%;max-height:100%;width:min(100cqw,calc(100cqh * 16 / 9));height:auto;aspect-ratio:16/9;object-fit:contain;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08)}
-.ppframe img.can{cursor:pointer}
+.ppbox{position:relative;width:min(100cqw,calc(100cqh * 16 / 9));aspect-ratio:16/9;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08);overflow:hidden;box-sizing:border-box}
+.ppz{position:absolute;inset:0;transition:transform .35s ease;transform-origin:50% 50%}
+.ppz img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ppz img.ghost{transition:opacity .35s ease;pointer-events:none}
+.ppz canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;touch-action:none}
+.ppbox.can{cursor:pointer}
+.pslide.pen .ppz canvas{pointer-events:auto;cursor:crosshair}
+.pslide.zoom .ppbox{cursor:zoom-out}
+.pslide.zoom .ppz{transform:scale(2.2)}
+.ppbox .done{position:absolute;right:10px;bottom:8px;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:kpop .5s ease-out both}
+.ppbox .done img{height:clamp(60px,14cqh,110px);width:auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.ppbox .done span{background:#fff;border:3px solid var(--main);border-radius:14px 14px 4px 14px;padding:2px 10px;font-weight:700;color:var(--main-deep);margin-bottom:30px;white-space:nowrap;font-size:clamp(.8rem,2.2vw,1rem)}
+.tools{display:flex;align-items:center;gap:6px}
+.tl{width:40px;height:40px;border-radius:12px;border:2px solid var(--main);background:#fff;font-size:1.15rem;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--glow)}
+.tl.on{background:var(--main);box-shadow:0 3px 0 var(--main-deep)}
+.penbar{display:none;align-items:center;gap:6px;background:#fff;border:2px solid var(--main);border-radius:999px;padding:3px 8px}
+.pslide.pen .penbar{display:flex}
+.penbar button{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1rem;background:#fff}
+.penbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.timer{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:6px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:4px 6px 4px 12px;font-weight:700;box-shadow:0 4px 0 var(--main-deep);font-size:1.15rem}
+.timer.show{display:flex}
+.timer .opts{display:flex;gap:4px}
+.timer .opts button,.timer .x{border:2px solid var(--main);background:var(--glow);border-radius:999px;padding:2px 10px;font-weight:700;min-height:36px}
+.timer .t{font-variant-numeric:tabular-nums;min-width:3.2em;text-align:center;color:var(--main-deep)}
+.timer.end{animation:tshake .5s 3;background:#FFE3E3}
+@keyframes tshake{25%{transform:translateX(-50%) rotate(-4deg)}75%{transform:translateX(-50%) rotate(4deg)}}
+@media (max-width:620px){.tl{width:34px;height:34px;font-size:1rem}.pphead .secbadge{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.board{position:relative;width:min(100%,720px);container-type:inline-size;animation:kpop .55s ease-out both}
+.board img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15))}
+.chalk{position:absolute;left:56%;top:12%;width:39%;height:62%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqw;color:#fff;text-align:center;text-shadow:0 0 2px rgba(255,255,255,.5)}
+.chalk .cn{font-size:4.2cqw;color:#FFE97A;border-bottom:.4cqw dashed #FFE97A;padding:0 2cqw}
+.chalk b{font-size:4.6cqw;line-height:1.3;font-weight:700}
+.secslide .ready{font-weight:700;color:var(--ink-soft)}
 .ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
 .ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
 .ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
@@ -129,207 +167,207 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
     <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</li><li>10.2 การนำเสนอข้อมูล</li></ul></div>
     <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
   </div>
-  <div class="pic"><img src="full-p8.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+  <div class="pic"><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
 </div></div></section>
 <section class="slide" data-title="สารบัญ"><div class="inner">
   <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 10</h2>
-  <div class="kru fig"><span class="av"><img src="full-p6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
   <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เตรียมความพร้อม</span></button><button data-jump="10.1"><span class="e">🗂️</span><span>10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</span></button><button data-jump="10.2"><span class="e">📊</span><span>10.2 การนำเสนอข้อมูล</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-sec="pre" data-steps="5" data-src="img/s003" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="ppno">หน้า 3 / 39</span></div>
-  <div class="ppframe"><img alt="เตรียมความพร้อม จำนวนหนังสือที่นักเรียนยืมจากห้องสมุดโรงเรียนเปี่ยมรักตั้งแต่วันจันทร์ ถึง วันศุกร์ วันจันทร์วันอังคารวันพุธวันพฤหัสบดีวันศุกร์ จากแผนภูมิรูปภาพ เติมตัวเลขแสดงจำนวนในตาราง พร้อมเติมคำตอบ วันหนังสือ (เล่ม)จันทร์อังคารพุธพฤหัสบดีศุกร์รวม 1) หนังสือที่ถูกยืมจากห้องสมุดมากที่สุดในวัน จำน"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เตรียมความพร้อม จำนวนหนังสือที่นักเรียนยืมจากห้องสมุดโรงเรียนเปี่ยมรักตั้งแต่วันจันทร์ ถึง วันศุกร์ วันจันทร์วันอังคารวันพุธวันพฤหัสบดีวันศุกร์ จากแผนภูมิรูปภาพ เติมตัวเลขแสดงจำนวนในตาราง พร้อมเติมคำตอบ วันหนังสือ (เล่ม)จันทร์อังคารพุธพฤหัสบดีศุกร์รวม 1) หนังสือที่ถูกยืมจากห้องสมุดมากที่สุดในวัน จำน"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide" data-sec="10.1" data-title="10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล"><div class="inner secslide">
-  <div class="secnum">10.1</div><h1>🗂️ การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</h1>
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 10.1</span><b>🗂️ การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</b></div></div>
   
-  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 10.1 <b>การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s005" data-title="10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล · หน้า 5"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</span><span class="ppno">หน้า 5 / 39</span></div>
-  <div class="ppframe"><img alt="ให้เขียนจำนวนนักเรียนที่ชอบสัตว์เลี้ยงแต่ละชนิดในตาราง ให้เลือกภาพสัตว์เลี้ยงต่อไปนี้ ที่นักเรียนชอบคนละ 1 ชนิด มาติดบนกระดาน ข้อมูลจากการสำรวจ 1 จำนวนนักเรียนที่ชอบสัตว์เลี้ยงแต่ละชนิด ชนิดสัตว์เลี้ยงจำนวน (คน)สุนัขปลานกแมวรวม เมื่อนำข้อมูลที่เก็บรวบรวมได้มาจำแนกและนำเสนอในรูปตาราง จะทำให้เห็นภาพรว"></div>
+  <div class="pphead"><span class="secbadge">10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ให้เขียนจำนวนนักเรียนที่ชอบสัตว์เลี้ยงแต่ละชนิดในตาราง ให้เลือกภาพสัตว์เลี้ยงต่อไปนี้ ที่นักเรียนชอบคนละ 1 ชนิด มาติดบนกระดาน ข้อมูลจากการสำรวจ 1 จำนวนนักเรียนที่ชอบสัตว์เลี้ยงแต่ละชนิด ชนิดสัตว์เลี้ยงจำนวน (คน)สุนัขปลานกแมวรวม เมื่อนำข้อมูลที่เก็บรวบรวมได้มาจำแนกและนำเสนอในรูปตาราง จะทำให้เห็นภาพรว"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="2" data-src="img/s006" data-title="10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล · หน้า 6"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</span><span class="ppno">หน้า 6 / 39</span></div>
-  <div class="ppframe"><img alt="นำผลที่ได้มาพิจารณาว่าผลที่ได้เป็นไปตามที่คาดเดาไว้หรือไม่ เพราะเหตุใด ในขวดโหลมีลูกปัดสีแดง 40 เม็ด สีน้ำเงิน 30 เม็ด สีขาว 20 เม็ด และสีดำ 10 เม็ด ให้ตัวแทนนักเรียนสุ่มหยิบลูกปัด 1 กำมือ แล้วให้เพื่อนคาดเดาว่า “จะหยิบได้ลูกปัดสีใดมากที่สุด และสีใดน้อยที่สุด เพราะเหตุใด” จากนั้น นับจำนวนลูกปัดแต่ละ"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="นำผลที่ได้มาพิจารณาว่าผลที่ได้เป็นไปตามที่คาดเดาไว้หรือไม่ เพราะเหตุใด ในขวดโหลมีลูกปัดสีแดง 40 เม็ด สีน้ำเงิน 30 เม็ด สีขาว 20 เม็ด และสีดำ 10 เม็ด ให้ตัวแทนนักเรียนสุ่มหยิบลูกปัด 1 กำมือ แล้วให้เพื่อนคาดเดาว่า “จะหยิบได้ลูกปัดสีใดมากที่สุด และสีใดน้อยที่สุด เพราะเหตุใด” จากนั้น นับจำนวนลูกปัดแต่ละ"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="3" data-src="img/s007" data-title="10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล · หน้า 7"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</span><span class="ppno">หน้า 7 / 39</span></div>
-  <div class="ppframe"><img alt="จำแนกข้อมูล แล้วนำเสนอข้อมูลโดยใช้ตาราง และเติมคำตอบ ตรวจสอบความเข้าใจ แก้วตาและเพื่อนช่วยกันเก็บขยะในบริเวณโรงเรียน ได้ข้อมูลดังภาพ 1) แก้วตาและเพื่อนเก็บ ได้มากที่สุด2) ประโยชน์ของการจำแนกข้อมูล จำนวนขยะในบริเวณโรงเรียน ขยะขวดน้ำเศษดินสอกล่องนมเศษกระดาษถุงพลาสติกรวมจำนวน (ชิ้น)2546734 ถุงพลาสติก ช"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จำแนกข้อมูล แล้วนำเสนอข้อมูลโดยใช้ตาราง และเติมคำตอบ ตรวจสอบความเข้าใจ แก้วตาและเพื่อนช่วยกันเก็บขยะในบริเวณโรงเรียน ได้ข้อมูลดังภาพ 1) แก้วตาและเพื่อนเก็บ ได้มากที่สุด2) ประโยชน์ของการจำแนกข้อมูล จำนวนขยะในบริเวณโรงเรียน ขยะขวดน้ำเศษดินสอกล่องนมเศษกระดาษถุงพลาสติกรวมจำนวน (ชิ้น)2546734 ถุงพลาสติก ช"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="1" data-src="img/s008" data-title="10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล · หน้า 8"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</span><span class="ppno">หน้า 8 / 39</span></div>
-  <div class="ppframe"><img alt="สิ่งที่ได้เรียนรู้ บอกวิธีการเก็บรวบรวมข้อมูลและการจำแนกข้อมูลเกี่ยวกับผลไม้ที่นักเรียนชั้น ป.4 ชอบรับประทานมากที่สุด ใช้วิธีการสอบถามและบันทึกผล แล้วจำแนกและนับจำนวนนักเรียนที่ชอบผลไม้แต่ละชนิด 9.1 9.2"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ บอกวิธีการเก็บรวบรวมข้อมูลและการจำแนกข้อมูลเกี่ยวกับผลไม้ที่นักเรียนชั้น ป.4 ชอบรับประทานมากที่สุด ใช้วิธีการสอบถามและบันทึกผล แล้วจำแนกและนับจำนวนนักเรียนที่ชอบผลไม้แต่ละชนิด 9.1 9.2"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide" data-sec="10.2" data-title="10.2 การนำเสนอข้อมูล"><div class="inner secslide">
-  <div class="secnum">10.2</div><h1>📊 การนำเสนอข้อมูล</h1>
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 10.2</span><b>📊 การนำเสนอข้อมูล</b></div></div>
   
-  <div class="kru fig"><span class="av"><img src="full-p6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>เรื่องที่ 10.2 <b>การนำเสนอข้อมูล</b> พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</div></div>
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s010" data-title="10.2 การนำเสนอข้อมูล · หน้า 10"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 10 / 39</span></div>
-  <div class="ppframe"><img alt="พิจารณาการนำเสนอข้อมูลด้วยตาราง ต่อไปนี้ ตารางสองทาง 1 จำนวนพนักงานชายของโรงงานบางปู แผนกจำนวน (คน)การตลาด11การเงิน3จัดซื้อ4ผลิต319ควบคุมคุณภาพ14บุคลากร5รวม356 จำนวนพนักงานหญิงของโรงงานบางปู แผนกจำนวน (คน)การตลาด8การเงิน15จัดซื้อ12ผลิต456ควบคุมคุณภาพ7บุคลากร10รวม508 9.1 9.2"></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการนำเสนอข้อมูลด้วยตาราง ต่อไปนี้ ตารางสองทาง 1 จำนวนพนักงานชายของโรงงานบางปู แผนกจำนวน (คน)การตลาด11การเงิน3จัดซื้อ4ผลิต319ควบคุมคุณภาพ14บุคลากร5รวม356 จำนวนพนักงานหญิงของโรงงานบางปู แผนกจำนวน (คน)การตลาด8การเงิน15จัดซื้อ12ผลิต456ควบคุมคุณภาพ7บุคลากร10รวม508 9.1 9.2"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-title="10.2 การนำเสนอข้อมูล · หน้า 11"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 11 / 39</span></div>
-  <div class="ppframe"><img alt="ข้อมูลจากตารางทางเดียว 2 ตารางนี้ สามารถนำมาเขียนเป็น ตารางสองทาง ได้ดังนี้ จำนวนพนักงานของโรงงานบางปู แผนกจำนวนพนักงาน (คน)ชายหญิงรวมการตลาด11819การเงิน31518จัดซื้อ41216ผลิต319456775ควบคุมคุณภาพ14721บุคลากร51015รวม356508864 ตารางทางเดียวและตารางสองทางเป็นการนำเสนอข้อมูลรูปแบบหนึ่ง ตารางทางเดียว มีก"></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ข้อมูลจากตารางทางเดียว 2 ตารางนี้ สามารถนำมาเขียนเป็น ตารางสองทาง ได้ดังนี้ จำนวนพนักงานของโรงงานบางปู แผนกจำนวนพนักงาน (คน)ชายหญิงรวมการตลาด11819การเงิน31518จัดซื้อ41216ผลิต319456775ควบคุมคุณภาพ14721บุคลากร51015รวม356508864 ตารางทางเดียวและตารางสองทางเป็นการนำเสนอข้อมูลรูปแบบหนึ่ง ตารางทางเดียว มีก"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="4" data-src="img/s012" data-title="10.2 การนำเสนอข้อมูล · หน้า 12"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 12 / 39</span></div>
-  <div class="ppframe"><img alt="พิจารณาข้อมูลจากตาราง แล้วเติมคำตอบ แบบฝึกหัดหน้า 208 1 จำนวนนักท่องเที่ยวต่างชาติ 10 อันดับแรก ที่เดินทางมาเที่ยวในประเทศไทย พ.ศ. 2557 ถึง พ.ศ. 2559 ประเทศจำนวน (คน)พ.ศ. 2557พ.ศ. 2558พ.ศ. 2559จีน4,636,2987,934,7918,757,466มาเลเซีย*2,613,4183,423,3973,533,826เกาหลีใต้1,122,5661,372,9951,464,218ญี่ปุ"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาข้อมูลจากตาราง แล้วเติมคำตอบ แบบฝึกหัดหน้า 208 1 จำนวนนักท่องเที่ยวต่างชาติ 10 อันดับแรก ที่เดินทางมาเที่ยวในประเทศไทย พ.ศ. 2557 ถึง พ.ศ. 2559 ประเทศจำนวน (คน)พ.ศ. 2557พ.ศ. 2558พ.ศ. 2559จีน4,636,2987,934,7918,757,466มาเลเซีย*2,613,4183,423,3973,533,826เกาหลีใต้1,122,5661,372,9951,464,218ญี่ปุ"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="8" data-src="img/s013" data-title="10.2 การนำเสนอข้อมูล · หน้า 13"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 13 / 39</span></div>
-  <div class="ppframe"><img alt="2 จำนวนนักเรียนที่ชอบกีฬาชนิดต่างๆ ของโรงเรียนแห่งหนึ่ง ชนิดกีฬาจำนวน (คน)ชายหญิงรวมบาสเกตบอล253762ฟุตบอล381654วิ่ง304575ว่ายน้ำ212142ปิงปอง253358เทนนิส162642รวม155178333 1) นักเรียนชายชอบกีฬาฟุตบอล คน2) กีฬา มีนักเรียนชอบมากที่สุด จำนวน คน3) กีฬา มีนักเรียนชายชอบมากที่สุด4) กีฬา มีนักเรียนหญิงชอบมา"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 จำนวนนักเรียนที่ชอบกีฬาชนิดต่างๆ ของโรงเรียนแห่งหนึ่ง ชนิดกีฬาจำนวน (คน)ชายหญิงรวมบาสเกตบอล253762ฟุตบอล381654วิ่ง304575ว่ายน้ำ212142ปิงปอง253358เทนนิส162642รวม155178333 1) นักเรียนชายชอบกีฬาฟุตบอล คน2) กีฬา มีนักเรียนชอบมากที่สุด จำนวน คน3) กีฬา มีนักเรียนชายชอบมากที่สุด4) กีฬา มีนักเรียนหญิงชอบมา"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="5" data-src="img/s014" data-title="10.2 การนำเสนอข้อมูล · หน้า 14"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 14 / 39</span></div>
-  <div class="ppframe"><img alt="ตรวจสอบความเข้าใจ กำหนดเวลาเดินรถไฟระหว่างสถานีกรุงเทพกับสถานีชุมทางบ้านภาชี ประเภทรถขาไปขากลับกรุงเทพ (ออก)ชุมทางบ้านภาชี (ถึง)ชุมทางบ้านภาชี (ออก)กรุงเทพ(ถึง)ชานเมือง04.20 น.06.15 น.05.00 น.07.30 น.เร็ว06.40 น.08.47 น.12.56 น.14.40 น.ธรรมดา09.25 น.11.51 น.08.02 น.10.20 น.ด่วน10.05 น.11.43 น.15.18 "></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจ กำหนดเวลาเดินรถไฟระหว่างสถานีกรุงเทพกับสถานีชุมทางบ้านภาชี ประเภทรถขาไปขากลับกรุงเทพ (ออก)ชุมทางบ้านภาชี (ถึง)ชุมทางบ้านภาชี (ออก)กรุงเทพ(ถึง)ชานเมือง04.20 น.06.15 น.05.00 น.07.30 น.เร็ว06.40 น.08.47 น.12.56 น.14.40 น.ธรรมดา09.25 น.11.51 น.08.02 น.10.20 น.ด่วน10.05 น.11.43 น.15.18 "><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="1" data-src="img/s015" data-title="10.2 การนำเสนอข้อมูล · หน้า 15"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 15 / 39</span></div>
-  <div class="ppframe"><img alt="สิ่งที่ได้เรียนรู้ การอ่านข้อมูลจากตารางสองทางมีวิธีการอย่างไร อ่านชื่อตารางก่อนว่าเป็นการนำเสนอข้อมูลเกี่ยวกับเรื่องใด มาจากแหล่งใด (ถ้ามีการอ้างอิง) การอ่านรายละเอียดของข้อมูลในตารางทำได้โดย พิจารณาข้อมูลในแนวตั้งและแนวนอนที่สัมพันธ์กัน จากนั้นควรนำข้อมูลแต่ละรายการมาเปรียบเทียบหรือเชื่อมโยงกัน 9."></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ การอ่านข้อมูลจากตารางสองทางมีวิธีการอย่างไร อ่านชื่อตารางก่อนว่าเป็นการนำเสนอข้อมูลเกี่ยวกับเรื่องใด มาจากแหล่งใด (ถ้ามีการอ้างอิง) การอ่านรายละเอียดของข้อมูลในตารางทำได้โดย พิจารณาข้อมูลในแนวตั้งและแนวนอนที่สัมพันธ์กัน จากนั้นควรนำข้อมูลแต่ละรายการมาเปรียบเทียบหรือเชื่อมโยงกัน 9."><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-title="10.2 การนำเสนอข้อมูล · หน้า 16"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 16 / 39</span></div>
-  <div class="ppframe"><img alt="พิจารณาการแก้ปัญหาโดยใช้ตารางสองทาง จำนวนนักเรียนโรงเรียนเก่งวิทย์ที่เข้าใช้ห้องสมุดตั้งแต่วันจันทร์ถึงวันศุกร์ วันจำนวน (คน)ชายหญิงรวมจันทร์352257อังคาร384078พุธ4575พฤหัสบดี252247ศุกร์285075รวม171164335 ในวันพุธ มีนักเรียนหญิงเข้าใช้ห้องสมุดกี่คน จะหาจำนวนนักเรียนหญิงที่เข้าใช้ห้องสมุดในวันพุธได้อย"></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการแก้ปัญหาโดยใช้ตารางสองทาง จำนวนนักเรียนโรงเรียนเก่งวิทย์ที่เข้าใช้ห้องสมุดตั้งแต่วันจันทร์ถึงวันศุกร์ วันจำนวน (คน)ชายหญิงรวมจันทร์352257อังคาร384078พุธ4575พฤหัสบดี252247ศุกร์285075รวม171164335 ในวันพุธ มีนักเรียนหญิงเข้าใช้ห้องสมุดกี่คน จะหาจำนวนนักเรียนหญิงที่เข้าใช้ห้องสมุดในวันพุธได้อย"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s017" data-title="10.2 การนำเสนอข้อมูล · หน้า 17"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 17 / 39</span></div>
-  <div class="ppframe"><img alt="จำนวนผู้เข้าชมพิพิธภัณฑ์สัตว์น้ำแห่งหนึ่ง ตั้งแต่วันอังคารถึงวันอาทิตย์ ผู้เข้าชมวันรวมอังคารพุธพฤหัสบดีศุกร์เสาร์อาทิตย์รวมเด็ก (คน)2752221892285024061,822ผู้ใหญ่ (คน)3532972881792611,510รวม6285194773077346673,332 ถ้าเก็บค่าเข้าชมของเด็กคนละ 30 บาท ผู้ใหญ่คนละ 60 บาท วันเสาร์เก็บค่าเข้าชมได้ทั้งหมด"></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จำนวนผู้เข้าชมพิพิธภัณฑ์สัตว์น้ำแห่งหนึ่ง ตั้งแต่วันอังคารถึงวันอาทิตย์ ผู้เข้าชมวันรวมอังคารพุธพฤหัสบดีศุกร์เสาร์อาทิตย์รวมเด็ก (คน)2752221892285024061,822ผู้ใหญ่ (คน)3532972881792611,510รวม6285194773077346673,332 ถ้าเก็บค่าเข้าชมของเด็กคนละ 30 บาท ผู้ใหญ่คนละ 60 บาท วันเสาร์เก็บค่าเข้าชมได้ทั้งหมด"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-title="10.2 การนำเสนอข้อมูล · หน้า 18"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 18 / 39</span></div>
-  <div class="ppframe"><img alt="แสดงวิธีหาคำตอบ แบบฝึกหัดหน้า 213 ค่าโดยสารรถไฟฟ้า MRT (สายสีน้ำเงิน) ประเภทบัตรเติมเงิน จำนวนสถานีค่าโดยสาร (บาท)นักเรียน นักศึกษาบุคคลทั่วไป0 ถึง 11416217193192142123522256252872730829329313510333711353912 ถึง 173842 ที่มา : บริษัททางด่วนและรถไฟฟ้ากรุงเทพ จำกัด (มหาชน)ข้อมูล ณ วันที่ 30 ตุลาคม 256"></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ แบบฝึกหัดหน้า 213 ค่าโดยสารรถไฟฟ้า MRT (สายสีน้ำเงิน) ประเภทบัตรเติมเงิน จำนวนสถานีค่าโดยสาร (บาท)นักเรียน นักศึกษาบุคคลทั่วไป0 ถึง 11416217193192142123522256252872730829329313510333711353912 ถึง 173842 ที่มา : บริษัททางด่วนและรถไฟฟ้ากรุงเทพ จำกัด (มหาชน)ข้อมูล ณ วันที่ 30 ตุลาคม 256"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="4" data-src="img/s019" data-title="10.2 การนำเสนอข้อมูล · หน้า 19"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 19 / 39</span></div>
-  <div class="ppframe"><img alt="ถ้าพ่อและเกดมีเงินในบัตรคนละ 500 บาท แต่ละคนจะเดินทางไป – กลับ ได้มากที่สุดกี่วันวิธีคิด ตอบ พ่อเดินทางไป – กลับ ได้มากที่สุด วัน เกดเดินทางไป – กลับ ได้มากที่สุด วัน พ่อใช้บัตรเติมเงินประเภทบุคคลทั่วไปพ่อเดินทางไป – กลับ วันละ 2 เที่ยว เที่ยวละ 23 บาทพ่อจ่ายค่าโดยสารวันละ 2 × 23 = 46 บาทถ้าพ่อมีเงิ"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ถ้าพ่อและเกดมีเงินในบัตรคนละ 500 บาท แต่ละคนจะเดินทางไป – กลับ ได้มากที่สุดกี่วันวิธีคิด ตอบ พ่อเดินทางไป – กลับ ได้มากที่สุด วัน เกดเดินทางไป – กลับ ได้มากที่สุด วัน พ่อใช้บัตรเติมเงินประเภทบุคคลทั่วไปพ่อเดินทางไป – กลับ วันละ 2 เที่ยว เที่ยวละ 23 บาทพ่อจ่ายค่าโดยสารวันละ 2 × 23 = 46 บาทถ้าพ่อมีเงิ"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="7" data-src="img/s020" data-title="10.2 การนำเสนอข้อมูล · หน้า 20"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 20 / 39</span></div>
-  <div class="ppframe"><img alt="ตรวจสอบความเข้าใจ ชุมนุมภาษาอังกฤษ มีสมาชิกทั้งหมดกี่คนวิธีคิด ตอบ ชุมนุมภาษาอังกฤษ มีสมาชิกทั้งหมด คน โรงเรียนแห่งหนึ่งให้นักเรียนสมัครเป็นสมาชิกของชุมนุมต่างๆ คนละ 1 ชุมนุม ปรากฏผลดังนี้ จำนวนสมาชิกในชุมนุมต่างๆ ของโรงเรียนแห่งหนึ่ง ชุมนุมจำนวน (คน)ชายหญิงรวมดนตรี1435ศิลปะ323264ภาษาอังกฤษ23ปิงปอง2"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจ ชุมนุมภาษาอังกฤษ มีสมาชิกทั้งหมดกี่คนวิธีคิด ตอบ ชุมนุมภาษาอังกฤษ มีสมาชิกทั้งหมด คน โรงเรียนแห่งหนึ่งให้นักเรียนสมัครเป็นสมาชิกของชุมนุมต่างๆ คนละ 1 ชุมนุม ปรากฏผลดังนี้ จำนวนสมาชิกในชุมนุมต่างๆ ของโรงเรียนแห่งหนึ่ง ชุมนุมจำนวน (คน)ชายหญิงรวมดนตรี1435ศิลปะ323264ภาษาอังกฤษ23ปิงปอง2"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="2" data-src="img/s021" data-title="10.2 การนำเสนอข้อมูล · หน้า 21"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 21 / 39</span></div>
-  <div class="ppframe"><img alt="สิ่งที่ได้เรียนรู้ มีวิธีหาจำนวนเหรียญทอง ปี พ.ศ. 2560 ได้อย่างไร จำนวนเหรียญของไทยจากการแข่งขันกีฬาซีเกมส์ ปีจำนวนเหรียญแต่ละชนิด (เหรียญ)ทองเงินทองแดงรวมพ.ศ. 25561079481282พ.ศ. 2558958369247พ.ศ. 25608688246รวม274263238775 ตัวอย่าง นำจำนวนเหรียญทองทั้งหมด ลบด้วยผลรวมของจำนวนเหรียญทอง ปี พ.ศ. 2556 แ"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ มีวิธีหาจำนวนเหรียญทอง ปี พ.ศ. 2560 ได้อย่างไร จำนวนเหรียญของไทยจากการแข่งขันกีฬาซีเกมส์ ปีจำนวนเหรียญแต่ละชนิด (เหรียญ)ทองเงินทองแดงรวมพ.ศ. 25561079481282พ.ศ. 2558958369247พ.ศ. 25608688246รวม274263238775 ตัวอย่าง นำจำนวนเหรียญทองทั้งหมด ลบด้วยผลรวมของจำนวนเหรียญทอง ปี พ.ศ. 2556 แ"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s022" data-title="10.2 การนำเสนอข้อมูล · หน้า 22"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 22 / 39</span></div>
-  <div class="ppframe"><img alt="พิจารณาการนำเสนอข้อมูลต่อไปนี้ แผนภูมิแท่ง 2 จำนวนไอศกรีมที่สหกรณ์โรงเรียนขายได้ ตั้งแต่วันที่ 10 ถึง 14 กรกฎาคม 2560 10 ก.ค.11 ก.ค. 12 ก.ค.13 ก.ค. 14 ก.ค. กำหนดให้ แทนไอศกรีม 5 แท่ง ถ้าใช้ แทน จะได้แผนภูมิรูปภาพ ดังนี้ จำนวนไอศกรีมที่สหกรณ์โรงเรียนขายได้ ตั้งแต่วันที่ 10 ถึง 14 กรกฎาคม 2560 10 ก.ค."></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการนำเสนอข้อมูลต่อไปนี้ แผนภูมิแท่ง 2 จำนวนไอศกรีมที่สหกรณ์โรงเรียนขายได้ ตั้งแต่วันที่ 10 ถึง 14 กรกฎาคม 2560 10 ก.ค.11 ก.ค. 12 ก.ค.13 ก.ค. 14 ก.ค. กำหนดให้ แทนไอศกรีม 5 แท่ง ถ้าใช้ แทน จะได้แผนภูมิรูปภาพ ดังนี้ จำนวนไอศกรีมที่สหกรณ์โรงเรียนขายได้ ตั้งแต่วันที่ 10 ถึง 14 กรกฎาคม 2560 10 ก.ค."><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-title="10.2 การนำเสนอข้อมูล · หน้า 23"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 23 / 39</span></div>
-  <div class="ppframe"><img alt="ถ้าใช้เส้นแนวตั้งแสดงจำนวนไอศกรีมแทนข้อกำหนดและเส้นแนวนอนแสดงวันที่ขายไอศกรีม จะได้ดังนี้ การหาจำนวนไอศกรีมที่ขายได้ในแต่ละวัน สามารถพิจารณาจากส่วนปลายสุดของรูปสี่เหลี่ยมมุมฉากของแต่ละรายการเทียบกับเส้นแสดงจำนวน ดังนั้นรูปสี่เหลี่ยมมุมฉากของแต่ละรายการจึงไม่จำเป็นต้องมีเส้นคั่นระหว่างรูป และไม่จำเป็"></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ถ้าใช้เส้นแนวตั้งแสดงจำนวนไอศกรีมแทนข้อกำหนดและเส้นแนวนอนแสดงวันที่ขายไอศกรีม จะได้ดังนี้ การหาจำนวนไอศกรีมที่ขายได้ในแต่ละวัน สามารถพิจารณาจากส่วนปลายสุดของรูปสี่เหลี่ยมมุมฉากของแต่ละรายการเทียบกับเส้นแสดงจำนวน ดังนั้นรูปสี่เหลี่ยมมุมฉากของแต่ละรายการจึงไม่จำเป็นต้องมีเส้นคั่นระหว่างรูป และไม่จำเป็"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-title="10.2 การนำเสนอข้อมูล · หน้า 24"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 24 / 39</span></div>
-  <div class="ppframe"><img alt="แผนภูมิที่ใช้รูปสี่เหลี่ยมมุมฉากแสดงข้อมูล เรียกว่า แผนภูมิแท่งแผนภูมิแท่งประกอบด้วย ชื่อแผนภูมิและตัวแผนภูมิตัวแผนภูมิ ประกอบด้วย เส้นแสดงจำนวน เส้นแสดงรายการ และรูปสี่เหลี่ยมมุมฉากที่แสดงจำนวนของแต่ละรายการ ซึ่งรูปสี่เหลี่ยมมุมฉากแต่ละรูปต้องมีความกว้างเท่ากัน เริ่มต้นจากระดับเดียวกันที่ 0 และระยะ"></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แผนภูมิที่ใช้รูปสี่เหลี่ยมมุมฉากแสดงข้อมูล เรียกว่า แผนภูมิแท่งแผนภูมิแท่งประกอบด้วย ชื่อแผนภูมิและตัวแผนภูมิตัวแผนภูมิ ประกอบด้วย เส้นแสดงจำนวน เส้นแสดงรายการ และรูปสี่เหลี่ยมมุมฉากที่แสดงจำนวนของแต่ละรายการ ซึ่งรูปสี่เหลี่ยมมุมฉากแต่ละรูปต้องมีความกว้างเท่ากัน เริ่มต้นจากระดับเดียวกันที่ 0 และระยะ"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-title="10.2 การนำเสนอข้อมูล · หน้า 25"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 25 / 39</span></div>
-  <div class="ppframe"><img alt="จากข้อมูลในแผนภูมิแท่ง พบว่าเป็นแผนภูมิเกี่ยวกับ จำนวนไอศกรีมที่สหกรณ์โรงเรียนขายได้ ตั้งแต่วันที่ 10 ถึง 14 กรกฎาคม 2560ตั้งแต่วันที่ 10 ถึง 14 กรกฎาคม สหกรณ์ขายไอศกรีมได้ 25 แท่ง 15 แท่ง 30 แท่ง 20 แท่ง และ 25 แท่ง ตามลำดับวันที่ 12 กรกฎาคม ขายไอศกรีมได้มากที่สุด ขณะที่วันที่ 11 กรกฎาคม ขายไอศกรีม"></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จากข้อมูลในแผนภูมิแท่ง พบว่าเป็นแผนภูมิเกี่ยวกับ จำนวนไอศกรีมที่สหกรณ์โรงเรียนขายได้ ตั้งแต่วันที่ 10 ถึง 14 กรกฎาคม 2560ตั้งแต่วันที่ 10 ถึง 14 กรกฎาคม สหกรณ์ขายไอศกรีมได้ 25 แท่ง 15 แท่ง 30 แท่ง 20 แท่ง และ 25 แท่ง ตามลำดับวันที่ 12 กรกฎาคม ขายไอศกรีมได้มากที่สุด ขณะที่วันที่ 11 กรกฎาคม ขายไอศกรีม"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s026" data-title="10.2 การนำเสนอข้อมูล · หน้า 26"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 26 / 39</span></div>
-  <div class="ppframe"><img alt="การอ่านข้อมูลจากแผนภูมิแท่งที่นำเสนอในแนวตั้งหรือแนวนอน มีวิธีการอ่านเช่นเดียวกัน โดยพิจารณาจากส่วนปลายสุดของรูปสี่เหลี่ยมมุมฉากของแต่ละรายการเทียบกับเส้นแสดงจำนวน จำนวนไอศกรีมที่สหกรณ์โรงเรียนขายได้ ตั้งแต่วันที่ 10 ถึง 14 กรกฎาคม 2560 9.1 9.2"></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การอ่านข้อมูลจากแผนภูมิแท่งที่นำเสนอในแนวตั้งหรือแนวนอน มีวิธีการอ่านเช่นเดียวกัน โดยพิจารณาจากส่วนปลายสุดของรูปสี่เหลี่ยมมุมฉากของแต่ละรายการเทียบกับเส้นแสดงจำนวน จำนวนไอศกรีมที่สหกรณ์โรงเรียนขายได้ ตั้งแต่วันที่ 10 ถึง 14 กรกฎาคม 2560 9.1 9.2"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="7" data-src="img/s027" data-title="10.2 การนำเสนอข้อมูล · หน้า 27"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 27 / 39</span></div>
-  <div class="ppframe"><img alt="เติมคำตอบ โดยใช้ข้อมูลจากแผนภูมิ แบบฝึกหัดหน้า 218 1 จำนวนไม้ดอกที่นักเรียนชั้น ป.4 ปลูกในเรือนเพาะชำ 1) นักเรียนปลูกไม้ดอก ชนิด ได้แก่ 2) นักเรียนปลูกดอกดาวเรือง ต้น3) ไม้ดอกที่ปลูกมากที่สุด คือ มีจำนวน ต้น4) ไม้ดอกที่ปลูกเป็นจำนวนเท่ากัน คือ มีจำนวน ต้น5) นักเรียนปลูกชวนชมมากกว่าชบา ต้น6) นักเรียน"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เติมคำตอบ โดยใช้ข้อมูลจากแผนภูมิ แบบฝึกหัดหน้า 218 1 จำนวนไม้ดอกที่นักเรียนชั้น ป.4 ปลูกในเรือนเพาะชำ 1) นักเรียนปลูกไม้ดอก ชนิด ได้แก่ 2) นักเรียนปลูกดอกดาวเรือง ต้น3) ไม้ดอกที่ปลูกมากที่สุด คือ มีจำนวน ต้น4) ไม้ดอกที่ปลูกเป็นจำนวนเท่ากัน คือ มีจำนวน ต้น5) นักเรียนปลูกชวนชมมากกว่าชบา ต้น6) นักเรียน"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="4" data-src="img/s028" data-title="10.2 การนำเสนอข้อมูล · หน้า 28"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 28 / 39</span></div>
-  <div class="ppframe"><img alt="2 จำนวนรองเท้าประเภทต่างๆ ที่ร้านค้าขายได้ใน 1 สัปดาห์ แผนภูมินี้แสดงข้อมูลเกี่ยวกับ 1) ร้านค้าขายรองเท้าผ้าใบและรองเท้ากีฬาได้ คู่ 2) สัปดาห์นี้ร้านค้าขายรองเท้าได้ทั้งหมด คู่ 3) เรียงลำดับประเภทของรองเท้าที่ร้านค้าขายได้น้อยที่สุดไปมากที่สุด จำนวนรองเท้าประเภทต่างๆ ที่ร้านค้าขายได้ใน 1 สัปดาห์ 230"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 จำนวนรองเท้าประเภทต่างๆ ที่ร้านค้าขายได้ใน 1 สัปดาห์ แผนภูมินี้แสดงข้อมูลเกี่ยวกับ 1) ร้านค้าขายรองเท้าผ้าใบและรองเท้ากีฬาได้ คู่ 2) สัปดาห์นี้ร้านค้าขายรองเท้าได้ทั้งหมด คู่ 3) เรียงลำดับประเภทของรองเท้าที่ร้านค้าขายได้น้อยที่สุดไปมากที่สุด จำนวนรองเท้าประเภทต่างๆ ที่ร้านค้าขายได้ใน 1 สัปดาห์ 230"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s029" data-title="10.2 การนำเสนอข้อมูล · หน้า 29"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 29 / 39</span></div>
-  <div class="ppframe"><img alt="ในกรณีที่แต่ละรายการมีจำนวนใกล้เคียงกันมาก จำนวนที่อ่านจากเส้นแสดงจำนวนอาจไม่ตรงกับข้อมูลที่แท้จริง จึงนิยมเขียนตัวเลขแสดงจำนวนกำกับไว้ที่ปลายสุดของรูปสี่เหลี่ยมมุมฉากแต่ละรูป เช่น มูลค่าการส่งออกสินค้าของบริษัทเงินดี พ.ศ. 2557 ถึง พ.ศ. 2560 9.1 9.2"></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ในกรณีที่แต่ละรายการมีจำนวนใกล้เคียงกันมาก จำนวนที่อ่านจากเส้นแสดงจำนวนอาจไม่ตรงกับข้อมูลที่แท้จริง จึงนิยมเขียนตัวเลขแสดงจำนวนกำกับไว้ที่ปลายสุดของรูปสี่เหลี่ยมมุมฉากแต่ละรูป เช่น มูลค่าการส่งออกสินค้าของบริษัทเงินดี พ.ศ. 2557 ถึง พ.ศ. 2560 9.1 9.2"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="4" data-src="img/s030" data-title="10.2 การนำเสนอข้อมูล · หน้า 30"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 30 / 39</span></div>
-  <div class="ppframe"><img alt="จำนวนนักเรียนชั้น ป.4 ที่ชอบอ่านหนังสือประเภทต่างๆ 1) นักเรียนชอบอ่าน มากที่สุด จำนวน คน2) นักเรียนที่ชอบอ่านการ์ตูนมากกว่านักเรียนที่ชอบอ่านนิตยสาร คน3) นักเรียนที่ชอบอ่าน และ มีจำนวนเท่ากัน3) เรียงลำดับประเภทหนังสือที่มีนักเรียนชอบอ่านจากน้อยไปมาก การ์ตูน 30 นิตยสาร นิตยสาร สารคดี นิทาน การ์ตูน ตร"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จำนวนนักเรียนชั้น ป.4 ที่ชอบอ่านหนังสือประเภทต่างๆ 1) นักเรียนชอบอ่าน มากที่สุด จำนวน คน2) นักเรียนที่ชอบอ่านการ์ตูนมากกว่านักเรียนที่ชอบอ่านนิตยสาร คน3) นักเรียนที่ชอบอ่าน และ มีจำนวนเท่ากัน3) เรียงลำดับประเภทหนังสือที่มีนักเรียนชอบอ่านจากน้อยไปมาก การ์ตูน 30 นิตยสาร นิตยสาร สารคดี นิทาน การ์ตูน ตร"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="1" data-src="img/s031" data-title="10.2 การนำเสนอข้อมูล · หน้า 31"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 31 / 39</span></div>
-  <div class="ppframe"><img alt="สิ่งที่ได้เรียนรู้ การเปรียบเทียบข้อมูลแต่ละรายการจากแผนภูมิแท่ง มีวิธีการอย่างไร ถ้าเป็นแผนภูมิแท่งในแนวตั้ง ให้เปรียบเทียบความสูงของรูปสี่เหลี่ยมมุมฉากแต่ละรายการถ้าเป็นแผนภูมิแท่งในแนวนอน ให้เปรียบเทียบความยาวของรูปสี่เหลี่ยมมุมฉากแต่ละรายการ 9.1 9.2"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ การเปรียบเทียบข้อมูลแต่ละรายการจากแผนภูมิแท่ง มีวิธีการอย่างไร ถ้าเป็นแผนภูมิแท่งในแนวตั้ง ให้เปรียบเทียบความสูงของรูปสี่เหลี่ยมมุมฉากแต่ละรายการถ้าเป็นแผนภูมิแท่งในแนวนอน ให้เปรียบเทียบความยาวของรูปสี่เหลี่ยมมุมฉากแต่ละรายการ 9.1 9.2"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-title="10.2 การนำเสนอข้อมูล · หน้า 32"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 32 / 39</span></div>
-  <div class="ppframe"><img alt="พิจารณาการแก้โจทย์ปัญหาจากแผนภูมิแท่ง จำนวนสบู่แต่ละชนิดที่ร้านค้าขายได้ใน 1 สัปดาห์ ร้านค้าขายสบู่ได้เฉลี่ยวันละกี่ก้อน จะหาจำนวนสบู่โดยเฉลี่ยที่ขายได้ในแต่ละวันได้อย่างไร นำจำนวนสบู่ทั้งหมดที่ขายได้ใน 1 สัปดาห์ หารด้วยจำนวนวันที่ขายสบู่ หาจำนวนสบู่ทั้งหมดได้อย่างไร เป็นจำนวนเท่าใด และขายสบู่กี่วัน"></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการแก้โจทย์ปัญหาจากแผนภูมิแท่ง จำนวนสบู่แต่ละชนิดที่ร้านค้าขายได้ใน 1 สัปดาห์ ร้านค้าขายสบู่ได้เฉลี่ยวันละกี่ก้อน จะหาจำนวนสบู่โดยเฉลี่ยที่ขายได้ในแต่ละวันได้อย่างไร นำจำนวนสบู่ทั้งหมดที่ขายได้ใน 1 สัปดาห์ หารด้วยจำนวนวันที่ขายสบู่ หาจำนวนสบู่ทั้งหมดได้อย่างไร เป็นจำนวนเท่าใด และขายสบู่กี่วัน"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="4" data-src="img/s033" data-title="10.2 การนำเสนอข้อมูล · หน้า 33"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 33 / 39</span></div>
-  <div class="ppframe"><img alt="พื้นที่ป่าไม้ของประเทศไทย พ.ศ. 2516 ถึง พ.ศ. 2559 1) พ.ศ. 2547 พื้นที่ป่าไม้เพิ่มขึ้นจาก พ.ศ. 2541 ตารางกิโลเมตร2) จาก พ.ศ. 2521 มาอีก 20 ปี พื้นที่ป่าไม้ลดลง ตารางกิโลเมตร3) จากข้อมูลในปี พ.ศ. 2559 ถ้ารัฐบาลต้องการเพิ่มพื้นที่ป่าไม้ให้เท่ากับ พ.ศ. 2516 จะต้องปลูกป่าเพิ่ม ตารางกิโลเมตร3) พ.ศ. 2547 ถ"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พื้นที่ป่าไม้ของประเทศไทย พ.ศ. 2516 ถึง พ.ศ. 2559 1) พ.ศ. 2547 พื้นที่ป่าไม้เพิ่มขึ้นจาก พ.ศ. 2541 ตารางกิโลเมตร2) จาก พ.ศ. 2521 มาอีก 20 ปี พื้นที่ป่าไม้ลดลง ตารางกิโลเมตร3) จากข้อมูลในปี พ.ศ. 2559 ถ้ารัฐบาลต้องการเพิ่มพื้นที่ป่าไม้ให้เท่ากับ พ.ศ. 2516 จะต้องปลูกป่าเพิ่ม ตารางกิโลเมตร3) พ.ศ. 2547 ถ"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="3" data-src="img/s034" data-title="10.2 การนำเสนอข้อมูล · หน้า 34"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 34 / 39</span></div>
-  <div class="ppframe"><img alt="จำนวนผู้เข้าชมพิพิธภัณฑ์รถโบราณ ตั้งแต่วันที่ 6 ถึง 10 พฤศจิกายน 2560 1) มีคนเข้าชมพิพิธภัณฑ์รถโบราณ เฉลี่ยวันละ คน2) วันที่ 10 พฤศจิกายน มีเด็กเข้าชม 152 คน ถ้าพิพิธภัณฑ์รถโบราณเก็บค่าเข้าชมของผู้ใหญ่คนละ 70 บาท จะเก็บค่าเข้าชมของผู้ใหญ่ได้ บาท3) วันที่ 7 พฤศจิกายน เก็บค่าเข้าชมได้ 8,295 บาท โดยเก็"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จำนวนผู้เข้าชมพิพิธภัณฑ์รถโบราณ ตั้งแต่วันที่ 6 ถึง 10 พฤศจิกายน 2560 1) มีคนเข้าชมพิพิธภัณฑ์รถโบราณ เฉลี่ยวันละ คน2) วันที่ 10 พฤศจิกายน มีเด็กเข้าชม 152 คน ถ้าพิพิธภัณฑ์รถโบราณเก็บค่าเข้าชมของผู้ใหญ่คนละ 70 บาท จะเก็บค่าเข้าชมของผู้ใหญ่ได้ บาท3) วันที่ 7 พฤศจิกายน เก็บค่าเข้าชมได้ 8,295 บาท โดยเก็"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="1" data-src="img/s035" data-title="10.2 การนำเสนอข้อมูล · หน้า 35"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 35 / 39</span></div>
-  <div class="ppframe"><img alt="สิ่งที่ได้เรียนรู้ จากแผนภูมิข้างต้น ถ้าในวันที่ 6 พฤศจิกายน มีเด็กเข้าชม 50 คน จะมีวิธีหาค่าเข้าชมทั้งหมดในวันนั้นอย่างไร ค่าเข้าชมทั้งหมดในวันที่ 6 หาได้จากค่าเข้าชมของเด็กรวมกับค่าเข้าชมของผู้ใหญ่ค่าเข้าชมของเด็ก คิดจากเด็ก 50 คน คนละ 35 บาท เป็นเงิน 50 × 35 = 1,750 บาทค่าเข้าชมของผู้ใหญ่ คิดจากผ"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ จากแผนภูมิข้างต้น ถ้าในวันที่ 6 พฤศจิกายน มีเด็กเข้าชม 50 คน จะมีวิธีหาค่าเข้าชมทั้งหมดในวันนั้นอย่างไร ค่าเข้าชมทั้งหมดในวันที่ 6 หาได้จากค่าเข้าชมของเด็กรวมกับค่าเข้าชมของผู้ใหญ่ค่าเข้าชมของเด็ก คิดจากเด็ก 50 คน คนละ 35 บาท เป็นเงิน 50 × 35 = 1,750 บาทค่าเข้าชมของผู้ใหญ่ คิดจากผ"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-title="10.2 การนำเสนอข้อมูล · หน้า 36"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 36 / 39</span></div>
-  <div class="ppframe"><img alt="การเขียนแผนภูมิแท่ง 3 แผนภูมิแท่ง เป็นรูปแบบหนึ่งของการนำเสนอข้อมูลที่ใช้รูปสี่เหลี่ยมมุมฉากแสดงจำนวนของแต่ละรายการ แผนภูมิแท่งประกอบด้วย ชื่อแผนภูมิและตัวแผนภูมิชื่อแผนภูมิ เป็นส่วนที่แสดงให้ทราบว่า เป็นข้อมูลเกี่ยวกับเรื่องใด เวลาใดตัวแผนภูมิ ประกอบด้วย เส้นแสดงจำนวน เส้นแสดงรายการ และรูปสี่เหลี่ย"></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การเขียนแผนภูมิแท่ง 3 แผนภูมิแท่ง เป็นรูปแบบหนึ่งของการนำเสนอข้อมูลที่ใช้รูปสี่เหลี่ยมมุมฉากแสดงจำนวนของแต่ละรายการ แผนภูมิแท่งประกอบด้วย ชื่อแผนภูมิและตัวแผนภูมิชื่อแผนภูมิ เป็นส่วนที่แสดงให้ทราบว่า เป็นข้อมูลเกี่ยวกับเรื่องใด เวลาใดตัวแผนภูมิ ประกอบด้วย เส้นแสดงจำนวน เส้นแสดงรายการ และรูปสี่เหลี่ย"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="0" data-src="img/s037" data-title="10.2 การนำเสนอข้อมูล · หน้า 37"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 37 / 39</span></div>
-  <div class="ppframe"><img alt="พิจารณาการนำเสนอข้อมูลด้วยแผนภูมิแท่ง ผลการเลือกตั้งประธานชุมนุมคณิตศาสตร์ของโรงเรียนแห่งหนึ่ง ปีการศึกษา 2561 ผู้สมัครภีมม์จินดากชพรธีระคะแนน1014412 จากข้อมูล สามารถนำเสนอโดยใช้แผนภูมิแท่งได้ดังนี้ ผลการเลือกตั้งประธานชุมนุมคณิตศาสตร์ของโรงเรียนแห่งหนึ่ง ปีการศึกษา 2561 ผลการเลือกตั้งประธานชุมนุมคณ"></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการนำเสนอข้อมูลด้วยแผนภูมิแท่ง ผลการเลือกตั้งประธานชุมนุมคณิตศาสตร์ของโรงเรียนแห่งหนึ่ง ปีการศึกษา 2561 ผู้สมัครภีมม์จินดากชพรธีระคะแนน1014412 จากข้อมูล สามารถนำเสนอโดยใช้แผนภูมิแท่งได้ดังนี้ ผลการเลือกตั้งประธานชุมนุมคณิตศาสตร์ของโรงเรียนแห่งหนึ่ง ปีการศึกษา 2561 ผลการเลือกตั้งประธานชุมนุมคณ"><canvas></canvas></div></div></div>
   
 </div></section>
 <section class="slide pslide" data-nofit data-steps="2" data-src="img/s038" data-title="10.2 การนำเสนอข้อมูล · หน้า 38"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 38 / 39</span></div>
-  <div class="ppframe"><img alt="จำนวนนักเรียนชั้น ป.1 ถึง ป.6 ของโรงเรียนเปี่ยมสุขที่ใช้บริการห้องสมุดใน 1 สัปดาห์ เขียนแผนภูมิแท่ง โดยใช้ข้อมูลที่กำหนด แบบฝึกหัดหน้า 225 1 เขียนแผนภูมิแท่งในแนวตั้ง ชั้นป.1ป.2ป.3ป.4ป.5ป.6จำนวน (คน)153525202040 จำนวนนักเรียนชั้น ป.1 ถึง ป.6 ของโรงเรียนเปี่ยมสุขที่ใช้บริการห้องสมุดใน 1 สัปดาห์ ชั้น "></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จำนวนนักเรียนชั้น ป.1 ถึง ป.6 ของโรงเรียนเปี่ยมสุขที่ใช้บริการห้องสมุดใน 1 สัปดาห์ เขียนแผนภูมิแท่ง โดยใช้ข้อมูลที่กำหนด แบบฝึกหัดหน้า 225 1 เขียนแผนภูมิแท่งในแนวตั้ง ชั้นป.1ป.2ป.3ป.4ป.5ป.6จำนวน (คน)153525202040 จำนวนนักเรียนชั้น ป.1 ถึง ป.6 ของโรงเรียนเปี่ยมสุขที่ใช้บริการห้องสมุดใน 1 สัปดาห์ ชั้น "><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide pslide" data-nofit data-steps="2" data-src="img/s039" data-title="10.2 การนำเสนอข้อมูล · หน้า 39"><div class="inner pp">
-  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="ppno">หน้า 39 / 39</span></div>
-  <div class="ppframe"><img alt="จำนวนสัตว์เลี้ยงของลุงตู่ 2 เขียนแผนภูมิแท่งในแนวนอน ชนิดวัวแพะแกะไก่เป็ดจำนวน (ตัว)1535252020 จำนวนสัตว์เลี้ยงของลุงตู่ เป็ด ไก่ แกะ แพะ วัว 0 5 15 20 25 10 ชนิดสัตว์เลี้ยง 30 35 จำนวน (ตัว) 9.1 9.2"></div>
-  <div class="ppctl"><span class="tip"><img src="av-p8.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+  <div class="pphead"><span class="secbadge">10.2 การนำเสนอข้อมูล</span><span class="tools"><span class="penbar"><button data-c="#E53935" style="background:#E53935" class="sel" aria-label="สีแดง"></button><button data-c="#1E66F5" style="background:#1E66F5" aria-label="สีน้ำเงิน"></button><button data-c="#16A34A" style="background:#16A34A" aria-label="สีเขียว"></button><button data-clear aria-label="ลบทั้งหมด" title="ลบที่เขียน">🧽</button></span><button class="tl" data-pen title="ปากกาเขียนบนสไลด์" aria-label="ปากกา">✏️</button><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 39</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จำนวนสัตว์เลี้ยงของลุงตู่ 2 เขียนแผนภูมิแท่งในแนวนอน ชนิดวัวแพะแกะไก่เป็ดจำนวน (ตัว)1535252020 จำนวนสัตว์เลี้ยงของลุงตู่ เป็ด ไก่ แกะ แพะ วัว 0 5 15 20 25 10 ชนิดสัตว์เลี้ยง 30 35 จำนวน (ตัว) 9.1 9.2"><canvas></canvas></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
 <section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
   <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
-  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div class="kru fig"><span class="av"><img src="k2.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
   <div data-quiz="main"></div>
 </div></section>
 <section class="slide" data-title="สรุป" data-final><div class="inner">
   <h2 class="h"><span class="e">🌟</span>จบบทที่ 10 การนำเสนอข้อมูล</h2>
-  <div class="card c-yellow center endpic"><img src="av-p3.webp" alt="ครูอู๋"><div data-score></div></div>
-  <div class="kru"><span class="av"><img src="av-p4.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="card c-yellow center endpic"><img src="k6.webp" alt="ครูอู๋"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="f6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
   <div class="toc"><button data-jump="10.1"><span class="e">🗂️</span><span>ทบทวน 10.1 การเก็บรวบรวมข้อมูลและการจำแนกข้อมูล</span></button><button data-jump="10.2"><span class="e">📊</span><span>ทบทวน 10.2 การนำเสนอข้อมูล</span></button></div>
   <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m4-ch9-rectangles/">◀ บทก่อนหน้า</a><a class="btn" style="--c:var(--purple)" href="../m4-math-hub/">🏠 หน้ารวม ป.4</a></div>
   <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.4 สสวท.</p>
@@ -492,15 +530,96 @@ function setupToc() {
 Kit.quizzes.main = [{"q": "การจดรอยขีด เมื่อขีดครบ 4 ขีดแล้วขีดทับอีก 1 ขีด รอยขีดชุดนั้นแทนจำนวนเท่าใด", "c": ["5", "4", "1", "10"], "a": 0, "w": "รอยขีด 1 ชุดที่ขีดทับแล้ว แทนจำนวน 5"}, {"q": "ในแผนภูมิแท่ง ความยาวของแท่งแสดงอะไร", "c": ["จำนวนหรือปริมาณของข้อมูล", "สีของข้อมูล", "ชื่อแผนภูมิ", "ลำดับตัวอักษร"], "a": 0, "w": "แท่งยาวมาก แสดงว่าข้อมูลมีจำนวนมาก"}, {"q": "ผลไม้ที่นักเรียนชอบ: มะม่วง 12 คน ส้ม 8 คน กล้วย 15 คน เงาะ 5 คน ผลไม้ใดมีคนชอบมากที่สุด", "c": ["กล้วย", "มะม่วง", "ส้ม", "เงาะ"], "a": 0, "w": "กล้วยมีคนชอบ 15 คน มากที่สุด"}, {"q": "จากข้อมูลผลไม้ข้างต้น นักเรียนชอบมะม่วงมากกว่าชอบเงาะกี่คน", "c": ["7 คน", "17 คน", "3 คน", "5 คน"], "a": 0, "w": "12 − 5 = 7 คน"}, {"q": "จากข้อมูลผลไม้ข้างต้น มีนักเรียนทั้งหมดกี่คน", "c": ["40 คน", "35 คน", "45 คน", "15 คน"], "a": 0, "w": "12 + 8 + 15 + 5 = 40 คน"}, {"q": "แผนภูมิแท่งที่ 1 ช่องแทน 5 คน ถ้าแท่งหนึ่งยาว 6 ช่อง แท่งนั้นแทนกี่คน", "c": ["30 คน", "11 คน", "6 คน", "56 คน"], "a": 0, "w": "6 × 5 = 30 คน"}, {"q": "ป.4/1 มีชาย 15 คน หญิง 17 คน ป.4/2 มีชาย 16 คน หญิง 14 คน นักเรียนหญิงทั้งสองห้องมีกี่คน", "c": ["31 คน", "32 คน", "30 คน", "62 คน"], "a": 0, "w": "17 + 14 = 31 คน"}, {"q": "ในแผนภูมิแท่ง แท่งที่สั้นที่สุดแสดงว่าอย่างไร", "c": ["ข้อมูลนั้นมีจำนวนน้อยที่สุด", "ข้อมูลนั้นมีจำนวนมากที่สุด", "ข้อมูลนั้นผิด", "ข้อมูลนั้นสำคัญที่สุด"], "a": 0, "w": "ความยาวของแท่งเทียบกับจำนวน แท่งสั้นที่สุดคือจำนวนน้อยที่สุด"}];
 
 /* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
-function ppPaint(sl) {
-  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, img = sl.querySelector('.ppframe img');
-  img.src = sl.getAttribute('data-src') + '-' + k + '.webp';
+var PRAISE = [['k2', 'เยี่ยมมาก!'], ['k6', 'เก่งมาก!'], ['k7', 'เข้าใจแล้วใช่ไหม'], ['k2', 'สุดยอด!']];
+function ppPaint(sl, quiet) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, z = sl.querySelector('.ppz'), img = z.querySelector('img:not(.ghost)');
+  var src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (img.getAttribute('src') && img.getAttribute('src') !== src && !quiet) {
+    var g = img.cloneNode(); g.className = 'ghost'; g.removeAttribute('alt'); z.insertBefore(g, img.nextSibling);
+    var fade = function () { g.style.opacity = 0; setTimeout(function () { g.remove(); }, 400); };
+    img.onload = function () { img.onload = null; requestAnimationFrame(fade); };
+    setTimeout(fade, 900);
+  }
+  img.src = src;
   if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
-  img.classList.toggle('can', k < n);
+  sl.querySelector('.ppbox').classList.toggle('can', k < n);
   var b = sl.querySelector('[data-pstep]');
   if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+  var d = sl.querySelector('.ppbox .done');
+  if (d) d.remove();
+  if (n && k >= n) {
+    var p = PRAISE[(+sl.getAttribute('data-src').slice(-3)) % PRAISE.length];
+    d = document.createElement('div'); d.className = 'done';
+    d.innerHTML = '<span>' + p[1] + '</span><img src="' + p[0] + '.webp" alt="">';
+    sl.querySelector('.ppbox').appendChild(d);
+    if (!quiet) { Kit.sound.good(); if (Math.random() < .35) Kit.confetti(); }
+  }
 }
-function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl); } }
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl, 1); } }
+function ppTools(sl, mode) {
+  ['pen', 'zoom'].forEach(function (m) {
+    var on = m === mode && !sl.classList.contains(m);
+    sl.classList.toggle(m, on);
+    sl.querySelector('[data-' + m + ']').classList.toggle('on', on);
+  });
+  if (!sl.classList.contains('zoom')) sl.querySelector('.ppz').style.transformOrigin = '50% 50%';
+  sl.querySelector('.ppbox').classList.toggle('noswipe', sl.classList.contains('pen') || sl.classList.contains('zoom'));
+  ppDraw(sl);
+}
+/* ---------- ปากกาเขียนบนสไลด์ (เก็บเส้นแยกแต่ละหน้า) ---------- */
+function ppDraw(sl) {
+  var c = sl.querySelector('canvas'), r = c.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  var w = Math.round(c.offsetWidth * dpr), h = Math.round(c.offsetHeight * dpr);
+  if (!w || !h) return;
+  if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+  var x = c.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+  (sl._strokes || []).forEach(function (st) {
+    x.strokeStyle = st.c; x.lineWidth = st.w * w; x.beginPath();
+    st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+    if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+    x.stroke();
+  });
+}
+function ppPen(sl) {
+  var c = sl.querySelector('canvas'), cur = null, color = '#E53935';
+  function pt(e) { var r = c.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  c.addEventListener('pointerdown', function (e) {
+    if (!sl.classList.contains('pen')) return;
+    e.preventDefault(); c.setPointerCapture && c.setPointerCapture(e.pointerId);
+    cur = { c: color, w: .005, p: [pt(e)] }; (sl._strokes = sl._strokes || []).push(cur); ppDraw(sl);
+  });
+  c.addEventListener('pointermove', function (e) { if (cur) { cur.p.push(pt(e)); ppDraw(sl); } });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) { c.addEventListener(t, function () { cur = null; }); });
+  Array.prototype.forEach.call(sl.querySelectorAll('.penbar [data-c]'), function (b) {
+    b.onclick = function () { color = b.getAttribute('data-c'); Array.prototype.forEach.call(sl.querySelectorAll('.penbar [data-c]'), function (o) { o.classList.toggle('sel', o === b); }); };
+  });
+  sl.querySelector('[data-clear]').onclick = function () { sl._strokes = []; ppDraw(sl); Kit.sound.tap(); };
+}
+/* ---------- จับเวลา ---------- */
+var TM = { el: null, end: 0, iv: 0 };
+function tmShow() {
+  if (!TM.el) {
+    TM.el = document.createElement('div'); TM.el.className = 'timer';
+    document.body.appendChild(TM.el);
+  }
+  clearInterval(TM.iv); TM.el.classList.remove('end');
+  TM.el.innerHTML = '⏱️ <span class="opts"><button data-m="1">1 นาที</button><button data-m="2">2</button><button data-m="3">3</button><button data-m="5">5</button></span><button class="x" aria-label="ปิด">✖</button>';
+  TM.el.classList.add('show');
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show'); };
+  Array.prototype.forEach.call(TM.el.querySelectorAll('[data-m]'), function (b) { b.onclick = function () { tmStart(+b.getAttribute('data-m')); }; });
+}
+function tmStart(m) {
+  TM.end = Date.now() + m * 60000;
+  TM.el.innerHTML = '⏱️ <span class="t"></span><button class="x" aria-label="หยุด">✖</button>';
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show', 'end'); };
+  var t = TM.el.querySelector('.t');
+  function tick() {
+    var r = Math.max(0, Math.ceil((TM.end - Date.now()) / 1000));
+    t.textContent = Math.floor(r / 60) + ':' + ('0' + r % 60).slice(-2);
+    if (!r) { clearInterval(TM.iv); TM.el.classList.add('end'); Kit.sound.win(); Kit.toast('⏰ หมดเวลา! มาดูเฉลยกันนะ'); }
+  }
+  tick(); TM.iv = setInterval(tick, 250); Kit.sound.tap();
+}
 (function () {
   var go = Kit.go;
   Kit.go = function (n, instant) {
@@ -510,20 +629,36 @@ function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('ps
       if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
       if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
     }
+    if (cur && cur.classList.contains('pslide') && n !== Kit.cur) ppTools(cur, null);
     var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
     go(n, instant);
-    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t); }
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t, 1); }
     for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+    if (t && t.classList.contains('pslide')) setTimeout(function () { ppDraw(t); }, 50);
   };
 })();
+window.addEventListener('resize', function () { var t = Kit.slides[Kit.cur]; if (t && t.classList.contains('pslide')) ppDraw(t); });
 SETUP = function () {
   setupToc();
   Kit.slides.forEach(function (sl) {
     if (!sl.classList.contains('pslide')) return;
-    var img = sl.querySelector('.ppframe img'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    var box = sl.querySelector('.ppbox'), z = sl.querySelector('.ppz'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
     function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
-    img.onclick = adv; if (b) b.onclick = adv;
-    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+    box.addEventListener('click', function (e) {
+      if (sl.classList.contains('pen')) return;
+      if (sl.classList.contains('zoom')) {
+        var q = box.getBoundingClientRect();
+        z.style.transformOrigin = ((e.clientX - q.left) / q.width * 100) + '% ' + ((e.clientY - q.top) / q.height * 100) + '%';
+        return;
+      }
+      adv();
+    });
+    if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; sl._strokes = []; ppPaint(sl); ppDraw(sl); Kit.sound.tap(); };
+    sl.querySelector('[data-pen]').onclick = function () { ppTools(sl, 'pen'); Kit.sound.tap(); };
+    sl.querySelector('[data-zoom]').onclick = function () { ppTools(sl, 'zoom'); Kit.sound.tap(); if (sl.classList.contains('zoom')) Kit.toast('🔎 แตะตรงที่อยากดูใกล้ ๆ'); };
+    sl.querySelector('[data-timer]').onclick = function () { tmShow(); Kit.sound.tap(); };
+    ppPen(sl);
   });
 };
 
