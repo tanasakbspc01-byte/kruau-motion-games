@@ -61,6 +61,20 @@ p{margin:0;line-height:1.65}
 .count{font-weight:700;color:var(--ink-soft);font-size:.95rem;white-space:nowrap}
 @media (max-width:620px){ .dots{display:none} .nav{justify-content:space-between} .nav .nb{padding:0 14px} }
 
+/* จอเตี้ย (iPad แนวนอนในกรอบเว็บ) — ย่อแถบบน/ล่างให้เหลือที่ให้สไลด์มากขึ้น */
+@media (max-height:760px){
+  .bar{padding:4px 10px;gap:8px;box-shadow:0 3px 0 var(--main-deep)}
+  .bar .logo{font-size:1.3rem}
+  .bar .ttl small{display:none}
+  .bar .tb{min-width:40px;height:38px;font-size:1.1rem}
+  .prog{height:5px}
+  .nav{padding:5px 10px calc(5px + env(safe-area-inset-bottom))}
+  .nav .nb{height:44px;font-size:1rem}
+  .slide{padding-top:10px;padding-bottom:12px}
+  .inner{gap:12px}
+}
+.slide.fitted{overflow-x:hidden}
+
 /* ---------- ส่วนประกอบเนื้อหา ---------- */
 .h{font-size:clamp(1.45rem,4vw,2.1rem);color:var(--main-deep);display:flex;align-items:center;gap:10px}
 .h .e{font-size:1.3em}
