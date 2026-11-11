@@ -65,6 +65,24 @@ body.drawing .drawbar{display:flex}
 .drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
 .bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
 @media print{.drawcv,.drawbar{display:none}}
+/* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
+.campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
+.campnl.show{display:flex}
+.campnl button{min-height:44px;border-radius:14px;border:2px solid var(--main);background:var(--glow);font-weight:700;font-size:1rem;color:var(--ink)}
+.campnl button.ghost{background:#fff;min-height:36px}
+.campnl .tip{margin:0;font-size:.88rem;line-height:1.5;color:var(--ink-soft)}
+.cambub{position:fixed;z-index:65;border-radius:50%;overflow:hidden;background:#222;border:4px solid #fff;box-shadow:0 0 0 3px var(--main),0 8px 20px rgba(0,0,0,.3);touch-action:none;cursor:grab}
+.cambub.sq{border-radius:18px}
+.cambub video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;pointer-events:none}
+.cambub .cb{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:4px;opacity:0;transition:opacity .2s}
+.cambub:hover .cb,.cambub:active .cb,.cambub:focus-within .cb{opacity:1}
+@media (hover:none){.cambub .cb{opacity:.85}}
+.cambub .cb button{width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.9);font-size:.9rem;padding:0}
+.recchip{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid #E53935;border-radius:999px;padding:4px 6px 4px 14px;font-weight:700;color:#C62828;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.recchip .dot{width:12px;height:12px;border-radius:50%;background:#E53935;animation:recb 1s infinite}
+.recchip button{border:none;background:#E53935;color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;min-height:36px}
+@keyframes recb{50%{opacity:.25}}
+@media print{.campnl,.cambub,.recchip{display:none}}
 
 </style>
 </head>
@@ -463,6 +481,155 @@ function start() {
   Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
   window.addEventListener('resize', draw);
   draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- กล้องมุมจอ + อัดวิดีโอการสอน ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit) return;
+  var md = navigator.mediaDevices || {};
+  var inFrame = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  var canRec = !!md.getDisplayMedia && !!window.MediaRecorder;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '🎥'; btn.title = 'กล้องมุมจอ / อัดวิดีโอการสอน'; btn.setAttribute('aria-label', 'กล้องและอัดวิดีโอ');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var pnl = document.createElement('div'); pnl.className = 'campnl';
+  pnl.innerHTML = '<b>🎥 สอนออนไลน์ / ทำวิดีโอ</b>' +
+    '<button data-cam>📷 เปิดกล้องมุมจอ</button>' +
+    (canRec ? '<button data-rec>🔴 อัดวิดีโอหน้าจอ + เสียง</button>' : '') +
+    '<p class="tip">' + (canRec
+      ? 'กดอัดแล้วเลือก <b>แท็บนี้</b> ระบบจะอัดสไลด์ กล้อง และเสียงครูไว้ด้วยกัน กดหยุดแล้วจะได้ไฟล์วิดีโอทันที'
+      : 'บน iPad: เปิดกล้องมุมจอ แล้วใช้ <b>การบันทึกหน้าจอ</b> ในศูนย์ควบคุม (กดค้างที่ปุ่ม ⏺ เพื่อเปิดไมโครโฟน)') + '</p>' +
+    '<button data-x class="ghost">ปิด</button>';
+  document.body.appendChild(pnl);
+  btn.onclick = function () { pnl.classList.toggle('show'); Kit.sound.tap(); };
+  pnl.querySelector('[data-x]').onclick = function () { pnl.classList.remove('show'); };
+
+  function newTab(flag) {
+    var w = window.open(location.href.split('#')[0] + '#s=' + Kit.cur + '&' + flag + '=1', '_blank');
+    if (!w) Kit.toast('เปิดแท็บใหม่ไม่ได้ ลองกดปุ่ม "เปิดในแท็บใหม่" ของเว็บครูอู๋');
+  }
+
+  /* ---- กล้อง ---- */
+  var cam = null, stream = null, SIZES = [120, 170, 240], si = 1, round = true;
+  try { var sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); if (sv.si != null) si = sv.si; if (sv.round != null) round = sv.round; } catch (e) {}
+  function save(x, y) { try { localStorage.setItem('kruau-cam', JSON.stringify({ si: si, round: round, x: x, y: y })); } catch (e) {} }
+  function place() {
+    var s = SIZES[si], h = round ? s : Math.round(s * .75);
+    cam.style.width = s + 'px'; cam.style.height = h + 'px';
+    cam.classList.toggle('sq', !round);
+    var r = cam.getBoundingClientRect();
+    var x = Math.min(Math.max(4, r.left), innerWidth - s - 4), y = Math.min(Math.max(4, r.top), innerHeight - h - 4);
+    cam.style.left = x + 'px'; cam.style.top = y + 'px';
+  }
+  function openCam() {
+    if (cam) return;
+    if (!md.getUserMedia) { Kit.toast('อุปกรณ์นี้เปิดกล้องผ่านเว็บไม่ได้'); return; }
+    md.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }).then(function (s) {
+      stream = s;
+      cam = document.createElement('div'); cam.className = 'cambub noswipe';
+      cam.innerHTML = '<video autoplay playsinline muted></video><span class="cb"><button data-sz title="ย่อ/ขยาย">⤢</button><button data-sh title="วงกลม/สี่เหลี่ยม">◐</button><button data-cl title="ปิดกล้อง">✖</button></span>';
+      document.body.appendChild(cam);
+      var v = cam.querySelector('video'); v.srcObject = s; v.play().catch(function () {});
+      var sv = {}; try { sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); } catch (e) {}
+      cam.style.left = (sv.x != null ? sv.x : innerWidth - SIZES[si] - 16) + 'px';
+      cam.style.top = (sv.y != null ? sv.y : innerHeight - SIZES[si] - 90) + 'px';
+      place();
+      cam.querySelector('[data-sz]').onclick = function (e) { e.stopPropagation(); si = (si + 1) % SIZES.length; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-sh]').onclick = function (e) { e.stopPropagation(); round = !round; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-cl]').onclick = function (e) { e.stopPropagation(); closeCam(); };
+      var drag = null;
+      cam.addEventListener('pointerdown', function (e) {
+        if (e.target.closest('button')) return;
+        drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
+        cam.setPointerCapture && cam.setPointerCapture(e.pointerId); e.preventDefault();
+      });
+      cam.addEventListener('pointermove', function (e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        cam.style.left = Math.min(Math.max(4, e.clientX - drag.dx), innerWidth - cam.offsetWidth - 4) + 'px';
+        cam.style.top = Math.min(Math.max(4, e.clientY - drag.dy), innerHeight - cam.offsetHeight - 4) + 'px';
+      });
+      cam.addEventListener('pointerup', function () { if (drag) save(cam.offsetLeft, cam.offsetTop); drag = null; });
+      pnl.querySelector('[data-cam]').textContent = '📷 ปิดกล้องมุมจอ';
+      pnl.classList.remove('show');
+      Kit.toast('📷 ลากกล้องไปวางมุมไหนก็ได้ · ⤢ ย่อ/ขยาย');
+    }).catch(function (err) {
+      if (inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่อใช้กล้อง…'); newTab('cam'); }
+      else Kit.toast('เปิดกล้องไม่ได้ — กรุณาอนุญาตให้เว็บใช้กล้อง');
+    });
+  }
+  function closeCam() {
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    if (cam) cam.remove();
+    cam = stream = null;
+    pnl.querySelector('[data-cam]').textContent = '📷 เปิดกล้องมุมจอ';
+  }
+  pnl.querySelector('[data-cam]').onclick = function () { if (cam) closeCam(); else openCam(); };
+  addEventListener('resize', function () { if (cam) place(); });
+
+  /* ---- อัดวิดีโอ (คอมพิวเตอร์: Chrome / Edge / Firefox) ---- */
+  var rec = null, chip = null, parts = [], t0 = 0, iv = 0, all = [];
+  function pickType() {
+    var c = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    for (var i = 0; i < c.length; i++) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c[i])) return c[i];
+    return '';
+  }
+  function startRec() {
+    md.getDisplayMedia({ video: { frameRate: 30 }, audio: true, preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude' }).then(function (ds) {
+      all = [ds];
+      return md.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }).then(function (mic) { all.push(mic); return [ds, mic]; }, function () { Kit.toast('ไม่ได้เปิดไมโครโฟน จะอัดแต่ภาพ'); return [ds, null]; });
+    }).then(function (r) {
+      var ds = r[0], mic = r[1], tracks = ds.getVideoTracks().slice();
+      var aud = [ds, mic].filter(function (s) { return s && s.getAudioTracks().length; });
+      if (aud.length === 1) tracks = tracks.concat(aud[0].getAudioTracks());
+      else if (aud.length > 1) {
+        var ac = new (window.AudioContext || window.webkitAudioContext)(), dst = ac.createMediaStreamDestination();
+        aud.forEach(function (s) { ac.createMediaStreamSource(s).connect(dst); });
+        tracks = tracks.concat(dst.stream.getAudioTracks());
+      }
+      var type = pickType();
+      rec = new MediaRecorder(new MediaStream(tracks), type ? { mimeType: type, videoBitsPerSecond: 3000000 } : undefined);
+      parts = [];
+      rec.ondataavailable = function (e) { if (e.data && e.data.size) parts.push(e.data); };
+      rec.onstop = finish;
+      ds.getVideoTracks()[0].addEventListener('ended', stopRec);
+      rec.start(1000); t0 = Date.now();
+      chip = document.createElement('div'); chip.className = 'recchip';
+      chip.innerHTML = '<span class="dot"></span> อัดอยู่ <span class="t">0:00</span><button>■ หยุด</button>';
+      document.body.appendChild(chip);
+      chip.querySelector('button').onclick = stopRec;
+      iv = setInterval(function () { var s = Math.floor((Date.now() - t0) / 1000); chip.querySelector('.t').textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }, 500);
+      pnl.classList.remove('show');
+      if (!cam) Kit.toast('🔴 เริ่มอัดแล้ว · เปิดกล้องมุมจอได้ที่ปุ่ม 🎥');
+    }).catch(function (err) {
+      all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+      if (err && err.name === 'NotAllowedError' && inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่ออัดวิดีโอ…'); newTab('rec'); }
+      else if (err && err.name !== 'NotAllowedError') Kit.toast('อัดวิดีโอไม่ได้: ' + err.name);
+    });
+  }
+  function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+  function finish() {
+    clearInterval(iv);
+    all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+    if (chip) chip.remove();
+    var type = (rec && rec.mimeType) || 'video/webm', ext = type.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+    var blob = new Blob(parts, { type: type }), a = document.createElement('a');
+    var d = new Date(), name = (document.title.split('·')[0].trim() || 'บทเรียน').replace(/[\\\/:*?"<>|]/g, '') + ' ' + d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    a.href = URL.createObjectURL(blob); a.download = name + '.' + ext;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+    Kit.sound.win(); Kit.toast('💾 บันทึกวิดีโอแล้ว (' + ext.toUpperCase() + ') ดูได้ในโฟลเดอร์ดาวน์โหลด');
+    rec = null;
+  }
+  var rb = pnl.querySelector('[data-rec]');
+  if (rb) rb.onclick = function () { if (rec) stopRec(); else startRec(); };
+
+  /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
+  if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
+  if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 7 รูปหลายเหลี่ยม · คณิตศาสตร์ ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#14B8A6;--main-deep:#0E8C7E;--glow:#D0F5F0}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+/* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
+.campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
+.campnl.show{display:flex}
+.campnl button{min-height:44px;border-radius:14px;border:2px solid var(--main);background:var(--glow);font-weight:700;font-size:1rem;color:var(--ink)}
+.campnl button.ghost{background:#fff;min-height:36px}
+.campnl .tip{margin:0;font-size:.88rem;line-height:1.5;color:var(--ink-soft)}
+.cambub{position:fixed;z-index:65;border-radius:50%;overflow:hidden;background:#222;border:4px solid #fff;box-shadow:0 0 0 3px var(--main),0 8px 20px rgba(0,0,0,.3);touch-action:none;cursor:grab}
+.cambub.sq{border-radius:18px}
+.cambub video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;pointer-events:none}
+.cambub .cb{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:4px;opacity:0;transition:opacity .2s}
+.cambub:hover .cb,.cambub:active .cb,.cambub:focus-within .cb{opacity:1}
+@media (hover:none){.cambub .cb{opacity:.85}}
+.cambub .cb button{width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.9);font-size:.9rem;padding:0}
+.recchip{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid #E53935;border-radius:999px;padding:4px 6px 4px 14px;font-weight:700;color:#C62828;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.recchip .dot{width:12px;height:12px;border-radius:50%;background:#E53935;animation:recb 1s infinite}
+.recchip button{border:none;background:#E53935;color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;min-height:36px}
+@keyframes recb{50%{opacity:.25}}
+@media print{.campnl,.cambub,.recchip{display:none}}
+
+
+.nav .dots{display:none}
+.nav{justify-content:space-between}
+.pslide{padding:8px clamp(8px,2vw,24px) 8px}
+.pslide .inner.pp{max-width:none;height:100%;gap:6px}
+.pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
+.ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.ppbox{position:relative;width:min(100cqw,calc(100cqh * 16 / 9));aspect-ratio:16/9;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08);overflow:hidden;box-sizing:border-box}
+.ppz{position:absolute;inset:0;transition:transform .35s ease;transform-origin:50% 50%}
+.ppz img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ppz img.ghost{transition:opacity .35s ease;pointer-events:none}
+.ppbox.can{cursor:pointer}
+.pslide.zoom .ppbox{cursor:zoom-out}
+.pslide.zoom .ppz{transform:scale(2.2)}
+.ppbox .done{position:absolute;right:10px;bottom:8px;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:kpop .5s ease-out both}
+.ppbox .done img{height:clamp(60px,14cqh,110px);width:auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.ppbox .done span{background:#fff;border:3px solid var(--main);border-radius:14px 14px 4px 14px;padding:2px 10px;font-weight:700;color:var(--main-deep);margin-bottom:30px;white-space:nowrap;font-size:clamp(.8rem,2.2vw,1rem)}
+.tools{display:flex;align-items:center;gap:6px}
+.tl{width:40px;height:40px;border-radius:12px;border:2px solid var(--main);background:#fff;font-size:1.15rem;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--glow)}
+.tl.on{background:var(--main);box-shadow:0 3px 0 var(--main-deep)}
+.timer{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:6px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:4px 6px 4px 12px;font-weight:700;box-shadow:0 4px 0 var(--main-deep);font-size:1.15rem}
+.timer.show{display:flex}
+.timer .opts{display:flex;gap:4px}
+.timer .opts button,.timer .x{border:2px solid var(--main);background:var(--glow);border-radius:999px;padding:2px 10px;font-weight:700;min-height:36px}
+.timer .t{font-variant-numeric:tabular-nums;min-width:3.2em;text-align:center;color:var(--main-deep)}
+.timer.end{animation:tshake .5s 3;background:#FFE3E3}
+@keyframes tshake{25%{transform:translateX(-50%) rotate(-4deg)}75%{transform:translateX(-50%) rotate(4deg)}}
+@media (max-width:620px){.tl{width:34px;height:34px;font-size:1rem}.pphead .secbadge{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.board{position:relative;width:min(100%,720px);container-type:inline-size;animation:kpop .55s ease-out both}
+.board img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15))}
+.chalk{position:absolute;left:56%;top:12%;width:39%;height:62%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqw;color:#fff;text-align:center;text-shadow:0 0 2px rgba(255,255,255,.5)}
+.chalk .cn{font-size:4.2cqw;color:#FFE97A;border-bottom:.4cqw dashed #FFE97A;padding:0 2cqw}
+.chalk b{font-size:4.6cqw;line-height:1.3;font-weight:700}
+.secslide .ready{font-weight:700;color:var(--ink-soft)}
+.ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
+.ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
+.ppctl .btn{min-height:44px;padding:6px 18px}
+.secslide{min-height:100%;justify-content:center;align-items:center;text-align:center}
+.secnum{display:grid;place-items:center;width:clamp(110px,18vw,150px);aspect-ratio:1;border-radius:50%;background:var(--main);color:#fff;font-weight:700;font-size:clamp(2.2rem,6vw,3.2rem);box-shadow:0 8px 0 var(--main-deep)}
+.secslide h1{color:var(--main-deep);font-size:clamp(1.7rem,5vw,2.8rem);text-shadow:0 4px 0 var(--glow)}
+.subs{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:620px;width:100%}
+.subs div{background:#fff;border:3px solid var(--main);border-radius:16px;padding:8px 14px;font-weight:700;text-align:left;font-size:clamp(1rem,2.6vw,1.2rem)}
+.subs b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--main);color:#fff;margin-right:8px}
+.secslide .kru{max-width:680px;width:100%;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">⬠</span>
+  <div class="ttl"><b>บทที่ 7 รูปหลายเหลี่ยม</b><small>คณิตศาสตร์ ป.6 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m6-math-hub/" aria-label="หน้ารวม ป.6" title="หน้ารวม ป.6">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.6 · บทที่ 7</span>
+    <h1>รูปหลายเหลี่ยม</h1>
+    <p class="sub">ลักษณะ มุมภายใน ความยาวรอบรูป พื้นที่ และโจทย์ปัญหา</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>7.1 ลักษณะของรูปหลายเหลี่ยม</li><li>7.2 มุมภายในของรูปหลายเหลี่ยม</li><li>7.3 ความยาวรอบรูปของรูปหลายเหลี่ยม</li><li>7.4 พื้นที่ของรูปหลายเหลี่ยม</li><li>7.5 โจทย์ปัญหา</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 7</h2>
+  <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="toc"><button data-jump="7.1"><span class="e">⬠</span><span>7.1 ลักษณะของรูปหลายเหลี่ยม</span></button><button data-jump="7.2"><span class="e">📐</span><span>7.2 มุมภายในของรูปหลายเหลี่ยม</span></button><button data-jump="7.3"><span class="e">📏</span><span>7.3 ความยาวรอบรูปของรูปหลายเหลี่ยม</span></button><button data-jump="7.4"><span class="e">🟩</span><span>7.4 พื้นที่ของรูปหลายเหลี่ยม</span></button><button data-jump="7.5"><span class="e">📝</span><span>7.5 โจทย์ปัญหา</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
+</div></section>
+<section class="slide" data-sec="7.1" data-title="7.1 ลักษณะของรูปหลายเหลี่ยม"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 7.1</span><b>⬠ ลักษณะของรูปหลายเหลี่ยม</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s003" data-title="7.1 ลักษณะของรูปหลายเหลี่ยม · หน้า 3"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 ลักษณะของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รูปหลายเหลี่ยม (Polygon) เป็นรูปปิดอยู่บนระนาบ มีด้านทุกด้านเป็นส่วนของเส้นตรง ตัวอย่างของรูปหลายเหลี่ยม"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s004" data-title="7.1 ลักษณะของรูปหลายเหลี่ยม · หน้า 4"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 ลักษณะของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รูปที่กำหนดเป็นรูปหลายเหลี่ยมหรือไม่ เพราะเหตุใด ถ้าเป็นรูปหลายเหลี่ยม ให้ระบุชนิดของรูปหลายเหลี่ยมนั้น แบบฝึกหัดหน้า 49 1 2 3 4 5 6 7 8"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="7.2" data-title="7.2 มุมภายในของรูปหลายเหลี่ยม"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 7.2</span><b>📐 มุมภายในของรูปหลายเหลี่ยม</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s006" data-title="7.2 มุมภายในของรูปหลายเหลี่ยม · หน้า 6"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 มุมภายในของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กิจกรรมหาผลบวกของขนาดของมุมภายในของรูปหลายเหลี่ยม วัดขนาดของมุมภายใน แล้วหาผลบวกของขนาดของมุมภายในแต่ละรูป ผลบวกของขนาดของมุมภายในของรูปสี่เหลี่ยมแต่ละรูปเท่ากับ_____________องศา"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s007" data-title="7.2 มุมภายในของรูปหลายเหลี่ยม · หน้า 7"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 มุมภายในของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กิจกรรมหาผลบวกของขนาดของมุมภายในของรูปหลายเหลี่ยม วัดขนาดของมุมภายใน แล้วหาผลบวกของขนาดของมุมภายในแต่ละรูป ผลบวกของขนาดของมุมภายในของรูปห้าเหลี่ยมแต่ละรูปเท่ากับ_____________องศา การหาผลบวกของขนาดของมุมภายในของรูปหลายเหลี่ยม อาจทำาได้โดยนำขนาดของมุมภายใน ทุกมุมมารวมกัน"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s008" data-title="7.2 มุมภายในของรูปหลายเหลี่ยม · หน้า 8"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 มุมภายในของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาผลบวกของขนาดของมุมภายในของรูปสี่เหลี่ยม โดยใช้ขนาดของมุมภายใน ของรูปสามเหลี่ยม เมื่อลากเส้นทแยงมุมจากจุด A ไปยังจุด C เส้นทแยงมุม AC จะแบ่ง ⬜︎ABCD เป็นรูปสามเหลี่ยม 2 รูป คือ △ABC และ △ACDเนื่องจาก ผลบวกของขนาดของมุมภายในของ △ABC = 2 + 3 + 4 = 180 องศา ผล บวกของขนาดของมุมภายในของ △ACD = "></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s009" data-title="7.2 มุมภายในของรูปหลายเหลี่ยม · หน้า 9"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 มุมภายในของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เมื่อลากเส้นทแยงมุมจากจุด ก ไปยังจุด ค และ จุด ง เส้นทแยงมุม กค และ กง จะแบ่ง รูปห้าเหลี่ยม กขคงจ เป็นรูปสามเหลี่ยม 3 รูป คือ △กขค △กคง และ △กงจเนื่องจาก ผลบวกของขนาดของมุมภายในของ △กขค = 1 + 2 + 3 = 180 องศา ผลบวกของขนาดของมุมภายในของ △กคง = 4 + 5 + 9 = 180 องศา ผลบวกของขนาดของมุมภายในของ △กงจ = 6 "></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s010" data-title="7.2 มุมภายในของรูปหลายเหลี่ยม · หน้า 10"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 มุมภายในของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กิจกรรมหาผลบวกของขนาดของมุมภายในของรูปหลายเหลี่ยม โดยใช้ขนาดของมุมภายในของ รูปสามเหลี่ยม ปฏิบัติตามขั้นตอนต่อไปนี้1. ลากเส้นทแยงมุมจากจุดยอดมุม 1 จุด ไปยังจุดยอดมุมที่เหลือ2. หาผลบวกของขนาดของมุมภายในของรูปหลายเหลี่ยม ถ้าต้องการหาผลบวกของขนาดของมุมภายในของรูปยี่สิบเหลี่ยม ต้องทำาอย่างไร และได้คำาตอบ"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-title="7.2 มุมภายในของรูปหลายเหลี่ยม · หน้า 11"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 มุมภายในของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หาผลบวกของขนาดของมุมภายในของรูปหลายเหลี่ยม โดยใช้ขนาดของมุมภายในของ รูปสามเหลี่ยม แบบฝึกหัดหน้า 53 1 2 3"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="7.3" data-title="7.3 ความยาวรอบรูปของรูปหลายเหลี่ยม"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 7.3</span><b>📏 ความยาวรอบรูปของรูปหลายเหลี่ยม</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-title="7.3 ความยาวรอบรูปของรูปหลายเหลี่ยม · หน้า 13"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 ความยาวรอบรูปของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ความยาวรอบรูปของรูปหลายเหลี่ยม พิจารณาการหาความยาวรอบรูปของรูปหลายเหลี่ยม ความยาวรอบรูปของรูปหกเหลี่ยม สมทรวงหาได้จาก 8 + 6 + 5 + 7 + 3 + 6 = 35 เซนติเมตร ความยาวรอบรูปของรูปหกเหลี่ยมด้านเท่า RADIUS หาได้จาก 5 + 5 + 5 + 5 + 5 + 5 = 30 เซนติเมตร หรือ 6 × 5 = 30 เซนติเมตร ความยาวรอบรูปของรูปสิบเหลี่ยม"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s014" data-title="7.3 ความยาวรอบรูปของรูปหลายเหลี่ยม · หน้า 14"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 ความยาวรอบรูปของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 56 1 หาความยาวรอบรูปของรูปหลายเหลี่ยม"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s015" data-title="7.3 ความยาวรอบรูปของรูปหลายเหลี่ยม · หน้า 15"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 ความยาวรอบรูปของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 56 2 วัดความยาวของด้านทุกด้านของรูปหลายเหลี่ยม แล้วหาความยาวรอบรูป"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-title="7.3 ความยาวรอบรูปของรูปหลายเหลี่ยม · หน้า 16"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 ความยาวรอบรูปของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ปฏิบัติกิจกรรม แบบฝึกหัดหน้า 56 3 ตอบคำาถาม"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="7.4" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 7.4</span><b>🟩 พื้นที่ของรูปหลายเหลี่ยม</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 18"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาพื้นที่ของรูปสี่เหลี่ยมคางหมู พิจารณารูปสี่เหลี่ยมคางหมูต่อไปนี้ ด้านที่อยู่ตรงข้ามกันและขนานกันของรูปสี่เหลี่ยมคางหมูเรียกว่า ด้านคู่ขนาน และระยะห่าง ระหว่างด้านคู่ที่ขนานกันเป็น ส่วนสูง ของรูปสี่เหลี่ยมคางหมู"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s019" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 19"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s020" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 20"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ระบุความสูงและความยาวของด้านคู่ขนาน แบบฝึกหัดหน้า 59 1 2 3 4 5 6"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s021" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 21"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาพื้นที่ของรูปสี่เหลี่ยมคางหมูอพวช ที่มีความสูง 4 เซนติเมตร ด้านคู่ที่ขนานกันยาว 3 เซนติเมตร และ 6 เซนติเมตร นำารูปสี่เหลี่ยมคางหมูพนบว ซึ่งมีรูปร่างและขนาดเดียวกัน กับรูปสี่เหลี่ยมคางหมูอพวช มาวางชิดติดกัน ซึ่งจะได้เป็นรูปสี่เหลี่ยมด้านขนาน อนบช ดังรูป"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s022" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 22"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รูปสี่เหลี่ยมด้านขนาน อนบช มีความสูง 4 เซนติเมตร มีความยาวของฐาน 6 + 3 = 9 เซนติเมตร และมีพื้นที่เป็น 2 เท่าของพื้นที่ของรูปสี่เหลี่ยมคางหมูอพวชหรือ พื้นที่ของรูปสี่เหลี่ยมคางหมูอพวช เป็น ของพื้นที่ของรูปสี่เหลี่ยมด้านขนาน อนบชจะได้ว่า พื้นที่ของรูปสี่เหลี่ยมคางหมูอพวช = ของพื้นที่ของรูปสี่เหลี่ยมด้"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 23"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาพื้นที่ของรูปสี่เหลี่ยมคางหมู DINO"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 24"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาพื้นที่ของรูปสี่เหลี่ยมคางหม แบบฝึกหัดหน้า 61 1 3 2"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 25"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาพื้นที่ของรูปสี่เหลี่ยมจัตุรัส รูปสี่เหลี่ยมขนมเปียกปูน และรูปสี่เหลี่ยมรูปว่าว โดยใช้เส้นทแยงมุม กิจกรรมหาพื้นที่ของรูปสี่เหลี่ยมที่เส้นทแยงมุมตัดกันเป็นมุมฉากพิจารณารูปสี่เหลี่ยมที่เส้นทแยงมุมตัดกันเป็นมุมฉาก"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s026" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 26"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พื้นที่ของรูปสี่เหลี่ยมรูปว่าว= × ผลคูณของความยาวของเส้นทแยงมุม 12"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s027" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 27"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สำาหรับการหาพื้นที่ของรูปสี่เหลี่ยมจัตุรัส และพื้นที่ของรูปสี่เหลี่ยมขนมเปียกปูน ให้ปฏิบัติกิจกรรมทำานองเดียวกับการหาพื้นที่ของรูปสี่เหลี่ยมรูปว่าว"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s028" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 28"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จากการปฏิบัติกิจกรรมจะได้ว่า พื้นที่ของรูปสี่เหลี่ยมจัตุรัส และพื้นที่ของรูปสี่เหลี่ยมขนมเปียกปูน อาจหาได้จาก พื้นที่ของรูปสี่เหลี่ยมจัตุรัส = × ผลคูณของความยาวของเส้นทแยงมุมพื้นที่ของรูปสี่เหลี่ยมขนมเปียกปูน = × ผลคูณของความยาวของเส้นทแยงมุม 12 12 และเนื่องจากรูปสี่เหลี่ยมจัตุรัส รูปสี่เหลี่ยมขนมเป"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s029" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 29"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาพื้นที่ของรูปสี่เหลี่ยมรูปว่าว อดทน ที่เส้นทแยงมุมยาวเส้นละ 1.2 เมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s030" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 30"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาพื้นที่ของรูปสี่เหลี่ยม แบบฝึกหัดหน้า 64 1 2 3 4"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s031" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 31"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาพื้นที่ของรูปสี่เหลี่ยมโดยแบ่งเป็นรูปสามเหลี่ยม พิจารณา □กขคง ที่เส้นทแยงมุม กค แบ่งรูปสี่เหลี่ยมนี้เป็น △กคง และ △กขค ดังรูป ดังนั้น พื้นที่ของ □กขคง อาจหาได้จาก พื้นที่ของ △กคง ซึ่งมี กค เป็นฐาน และ งส เป็นส่วนสูงรวมกับ พื้นที่ของ △กขค ซึ่งมี กค เป็นฐาน และ ขว เป็นส่วนสูง"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 32"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาพื้นที่ของ □ABCD ซึ่ง m(DB) = 6 เซนติเมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 33"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาพื้นที่ของรูปสี่เหลี่ยม แบบฝึกหัดหน้า 66 1 2 3 4 5 6"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 34"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาพื้นที่ของรูปหลายเหลี่ยมที่แบ่งเป็นรูปสามเหลี่ยมหรือรูปสี่เหลี่ยม"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 35"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 36"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาพื้นที่ของรูปหลายเหลี่ยม แบ่งให้เป็นรูปสี่เหลี่ยมคางหมู6 รูปแต่ละรูปมีความสูง 2.6 เซนติเมตรและด้านคู่ที่ขนานกันยาว 3 เซนติเมตร และ 6 เซนติเมตรพื้นที่ของรูปสี่เหลี่ยมคางหมู = × ความสูง × ผลบวกของความยาวของด้านคู่ขนานรูปสี่เหลี่ยมคางหมู1 รูป มีพื้นที่ × 2.6 × (6 + 3) = × × 9 ตารางเซนติเมตร ="></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s037" data-title="7.4 พื้นที่ของรูปหลายเหลี่ยม · หน้า 37"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 พื้นที่ของรูปหลายเหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาพื้นที่ของรูปหลายเหลี่ยม แบบฝึกหัดหน้า 68 1 2"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="7.5" data-title="7.5 โจทย์ปัญหา"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 7.5</span><b>📝 โจทย์ปัญหา</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s039" data-title="7.5 โจทย์ปัญหา · หน้า 39"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="โจทย์ปัญหาเกี่ยวกับความยาวรอบรูปของรูปหลายเหลี่ยม พิจารณาสถานการณ์ต่อไปนี ภีมม์ใช้ผ้ากุ๊นสำาเร็จหุ้มขอบที่รองจานรูปหกเหลี่ยมด้านเท่ามุมเท่า ซึ่งแต่ละด้านยาว 12 เซนติเมตร จำานวน 5 ชิ้น ภีมม์ต้องใช้ผ้ากุ๊นสำาเร็จยาวอย่างน้อยเท่าใด สิ่งที่โจทย์ถาม ความยาวของผ้ากุ๊นสำาเร็จที่ใช้หุ้มขอบที่รองจาน 5 ชิ้น ส"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s040" data-title="7.5 โจทย์ปัญหา · หน้า 40"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ช่างปูนตัดเส้นทองเหลืองเพื่อทำาเป็นเส้นแบ่งแนวลายหินขัด ดังรูป ซึ่งเส้นแบ่งแนวแต่ละเส้นยาว 25 เซนติเมตร ช่างปูนต้องเตรียมเส้นทองเหลืองยาวอย่างน้อยเท่าใด วิธีคิด จากรูป ลายหินขัดเป็นรูปสี่เหลี่ยมจัตุรัส 6 รูป มีเส้นแบ่งแนว 6 × 4 = 24 เส้น ส่วนที่เหลือ เป็นด้านของรูปสามเหลี่ยม 6 รูป รูปละ 1 เส้นมีเส้น"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s041" data-title="7.5 โจทย์ปัญหา · หน้า 41"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีคิดและหาคำาตอบ แบบฝึกหัดหน้า 71 1 2 ปรายนำาลวดยาว 240 เซนติเมตร มาดัดเป็นรูปแปดเหลี่ยมด้านเท่ามุมเท่าที่ยาวด้านละ 5 เซนติเมตร ได้มากที่สุดกี่ชิ้น ช่องระบายอากาศรูปสี่เหลี่ยมผืนผ้า กว้าง 50 เซนติเมตร ยาว 60 เซนติเมตร ต้นต้องการทำาเหล็กดัดติดช่องระบายอากาศให้มีลวดลายเป็นรูปหกเหลี่ยมต่อกัน ดังร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s042" data-title="7.5 โจทย์ปัญหา · หน้า 42"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="โจทย์ปัญหาเกี่ยวกับพื้นที่ของรูปหลายเหลี่ยม พิจารณาสถานการณ์ต่อไปนี ช่างต้องการปูพื้นห้องรูปสี่เหลี่ยมมุมฉากที่มีพื้นที่ 40 ตารางเมตร ด้วยกระเบื้องรูปสี่เหลี่ยมจัตุรัส ที่มีเส้นทแยงมุมยาว 20 เซนติเมตร ช่างจะต้องใช้กระเบื้องอย่างน้อยกี่แผ่น สิ่งที่โจทย์ถาม จำานวนแผ่นกระเบื้องที่ใช สิ่งที่โจทย์บอก พื้"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s043" data-title="7.5 โจทย์ปัญหา · หน้า 43"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ที่ดินแปลงหนึ่งเป็นรูปสี่เหลี่ยมคางหมูมีด้านที่ขนานกันยาว 20 วา และ 30 วา โดยด้านที่ขนานกัน อยู่ห่างกัน 10 วา ที่ดินแปลงนี้มีพื้นที่เท่าใด"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s044" data-title="7.5 โจทย์ปัญหา · หน้า 44"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 44 / 44</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีคิดและหาคำาตอบ แบบฝึกหัดหน้า 73 1 2 สนั่นต้องการทำาว่าวตัวหนึ่ง ตัวว่าวกว้าง 80 เซนติเมตร ยาว 100 เซนติเมตร เขาต้องใช้กระดาษทำาว่าวตัวนี้มีพื้นที่อย่างน้อยเท่าใด กระดานอัดแผ่นหนึ่งเป็นรูปสี่เหลี่ยมขนมเปียกปูน มีเส้นทแยงมุมยาว 20 เซนติเมตร และ 32 เซนติเมตร ด้านหน้าของกระดานอัดแผ่นนี้มีพื้นที่"></div></div></div>
+  
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
+  <div class="kru fig"><span class="av"><img src="k10.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>จบบทที่ 7 รูปหลายเหลี่ยม</h2>
+  <div class="card c-yellow center endpic"><img src="k9.webp" alt="ครูอู๋ชูถ้วยรางวัล"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="f11.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="toc"><button data-jump="7.1"><span class="e">⬠</span><span>ทบทวน 7.1 ลักษณะของรูปหลายเหลี่ยม</span></button><button data-jump="7.2"><span class="e">📐</span><span>ทบทวน 7.2 มุมภายในของรูปหลายเหลี่ยม</span></button><button data-jump="7.3"><span class="e">📏</span><span>ทบทวน 7.3 ความยาวรอบรูปของรูปหลายเหลี่ยม</span></button><button data-jump="7.4"><span class="e">🟩</span><span>ทบทวน 7.4 พื้นที่ของรูปหลายเหลี่ยม</span></button><button data-jump="7.5"><span class="e">📝</span><span>ทบทวน 7.5 โจทย์ปัญหา</span></button></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m6-ch6-triangles/">◀ บทก่อนหน้า</a><a class="btn" style="--c:var(--purple)" href="../m6-math-hub/">🏠 หน้ารวม ป.6</a><a class="btn ghost" href="../m6-ch8-circles/">บทถัดไป ▶</a></div>
+  <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.6 สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m6-ch7-polygons", STORE_PREFIX = 'kruau-p6-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [{"q": "รูปหลายเหลี่ยมที่มี 5 ด้าน เรียกว่าอะไร", "c": ["รูปห้าเหลี่ยม", "รูปหกเหลี่ยม", "รูปสี่เหลี่ยม", "รูปแปดเหลี่ยม"], "a": 0, "w": "จำนวนด้านบอกชื่อรูปหลายเหลี่ยม 5 ด้านเป็นรูปห้าเหลี่ยม"}, {"q": "ผลรวมของขนาดของมุมภายในรูปสี่เหลี่ยมเท่ากับเท่าใด", "c": ["360°", "180°", "540°", "720°"], "a": 0, "w": "แบ่งรูปสี่เหลี่ยมเป็นรูปสามเหลี่ยม 2 รูป: 2 × 180° = 360°"}, {"q": "ผลรวมของขนาดของมุมภายในรูปห้าเหลี่ยมเท่ากับเท่าใด", "c": ["540°", "360°", "720°", "900°"], "a": 0, "w": "แบ่งรูปห้าเหลี่ยมได้รูปสามเหลี่ยม 3 รูป: 3 × 180° = 540°"}, {"q": "รูปหกเหลี่ยมด้านเท่า ยาวด้านละ 7 ซม. มีความยาวรอบรูปเท่าใด", "c": ["42 ซม.", "35 ซม.", "49 ซม.", "13 ซม."], "a": 0, "w": "6 × 7 = 42 เซนติเมตร"}, {"q": "รูปสี่เหลี่ยมด้านขนาน ฐาน 9 ซม. สูง 4 ซม. มีพื้นที่เท่าใด", "c": ["36 ตร.ซม.", "18 ตร.ซม.", "26 ตร.ซม.", "13 ตร.ซม."], "a": 0, "w": "ฐาน × สูง = 9 × 4 = 36 ตร.ซม."}, {"q": "รูปสี่เหลี่ยมคางหมู ด้านคู่ขนานยาว 5 ซม. และ 9 ซม. สูง 6 ซม. มีพื้นที่เท่าใด", "c": ["42 ตร.ซม.", "84 ตร.ซม.", "270 ตร.ซม.", "20 ตร.ซม."], "a": 0, "w": "{1/2} × (5 + 9) × 6 = 42 ตร.ซม."}, {"q": "รูปว่าวมีเส้นทแยงมุมยาว 10 ซม. และ 12 ซม. มีพื้นที่เท่าใด", "c": ["60 ตร.ซม.", "120 ตร.ซม.", "22 ตร.ซม.", "44 ตร.ซม."], "a": 0, "w": "{1/2} × 10 × 12 = 60 ตร.ซม."}, {"q": "การหาพื้นที่ของรูปหลายเหลี่ยมใด ๆ ทำได้อย่างไร", "c": ["แบ่งเป็นรูปสามเหลี่ยมหรือรูปสี่เหลี่ยมย่อย แล้วนำพื้นที่มารวมกัน", "คูณความยาวทุกด้าน", "บวกความยาวทุกด้าน", "ใช้สูตรวงกลม"], "a": 0, "w": "แบ่งรูปเป็นรูปที่รู้วิธีหาพื้นที่ แล้วนำพื้นที่แต่ละส่วนมารวมกัน"}];
+
+/* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
+var PRAISE = [['k11', 'เยี่ยมมาก!'], ['k2', 'สุดยอด!'], ['k6', 'เก่งมาก!'], ['k9', 'แชมป์เลย!'], ['k11', 'ปรบมือให้เลย!'], ['k7', 'เข้าใจแล้วใช่ไหม']];
+function ppPaint(sl, quiet) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, z = sl.querySelector('.ppz'), img = z.querySelector('img:not(.ghost)');
+  var src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (img.getAttribute('src') && img.getAttribute('src') !== src && !quiet) {
+    var g = img.cloneNode(); g.className = 'ghost'; g.removeAttribute('alt'); z.insertBefore(g, img.nextSibling);
+    var fade = function () { g.style.opacity = 0; setTimeout(function () { g.remove(); }, 400); };
+    img.onload = function () { img.onload = null; requestAnimationFrame(fade); };
+    setTimeout(fade, 900);
+  }
+  img.src = src;
+  if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
+  sl.querySelector('.ppbox').classList.toggle('can', k < n);
+  var b = sl.querySelector('[data-pstep]');
+  if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+  var d = sl.querySelector('.ppbox .done');
+  if (d) d.remove();
+  if (n && k >= n) {
+    var p = PRAISE[(+sl.getAttribute('data-src').slice(-3)) % PRAISE.length];
+    d = document.createElement('div'); d.className = 'done';
+    d.innerHTML = '<span>' + p[1] + '</span><img src="' + p[0] + '.webp" alt="">';
+    sl.querySelector('.ppbox').appendChild(d);
+    if (!quiet) { Kit.sound.good(); if (Math.random() < .35) Kit.confetti(); }
+  }
+}
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl, 1); } }
+function ppTools(sl, mode) {
+  ['zoom'].forEach(function (m) {
+    var on = m === mode && !sl.classList.contains(m);
+    sl.classList.toggle(m, on);
+    sl.querySelector('[data-' + m + ']').classList.toggle('on', on);
+  });
+  if (!sl.classList.contains('zoom')) sl.querySelector('.ppz').style.transformOrigin = '50% 50%';
+  sl.querySelector('.ppbox').classList.toggle('noswipe', sl.classList.contains('zoom'));
+}
+/* ---------- จับเวลา ---------- */
+var TM = { el: null, end: 0, iv: 0 };
+function tmShow() {
+  if (!TM.el) {
+    TM.el = document.createElement('div'); TM.el.className = 'timer';
+    document.body.appendChild(TM.el);
+  }
+  clearInterval(TM.iv); TM.el.classList.remove('end');
+  TM.el.innerHTML = '⏱️ <span class="opts"><button data-m="1">1 นาที</button><button data-m="2">2</button><button data-m="3">3</button><button data-m="5">5</button></span><button class="x" aria-label="ปิด">✖</button>';
+  TM.el.classList.add('show');
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show'); };
+  Array.prototype.forEach.call(TM.el.querySelectorAll('[data-m]'), function (b) { b.onclick = function () { tmStart(+b.getAttribute('data-m')); }; });
+}
+function tmStart(m) {
+  TM.end = Date.now() + m * 60000;
+  TM.el.innerHTML = '⏱️ <span class="t"></span><button class="x" aria-label="หยุด">✖</button>';
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show', 'end'); };
+  var t = TM.el.querySelector('.t');
+  function tick() {
+    var r = Math.max(0, Math.ceil((TM.end - Date.now()) / 1000));
+    t.textContent = Math.floor(r / 60) + ':' + ('0' + r % 60).slice(-2);
+    if (!r) { clearInterval(TM.iv); TM.el.classList.add('end'); Kit.sound.win(); Kit.toast('⏰ หมดเวลา! มาดูเฉลยกันนะ'); }
+  }
+  tick(); TM.iv = setInterval(tick, 250); Kit.sound.tap();
+}
+(function () {
+  var go = Kit.go;
+  Kit.go = function (n, instant) {
+    var cur = Kit.slides[Kit.cur];
+    if (!instant && cur && cur.classList.contains('pslide')) {
+      var N = +cur.getAttribute('data-steps'), k = cur._k || 0;
+      if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
+      if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
+    }
+    if (cur && cur.classList.contains('pslide') && n !== Kit.cur) ppTools(cur, null);
+    var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
+    go(n, instant);
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t, 1); }
+    for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+  };
+})();
+SETUP = function () {
+  setupToc();
+  Kit.slides.forEach(function (sl) {
+    if (!sl.classList.contains('pslide')) return;
+    var box = sl.querySelector('.ppbox'), z = sl.querySelector('.ppz'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
+    box.addEventListener('click', function (e) {
+      if (sl.classList.contains('zoom')) {
+        var q = box.getBoundingClientRect();
+        z.style.transformOrigin = ((e.clientX - q.left) / q.width * 100) + '% ' + ((e.clientY - q.top) / q.height * 100) + '%';
+        return;
+      }
+      adv();
+    });
+    if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+    sl.querySelector('[data-zoom]').onclick = function () { ppTools(sl, 'zoom'); Kit.sound.tap(); if (sl.classList.contains('zoom')) Kit.toast('🔎 แตะตรงที่อยากดูใกล้ ๆ'); };
+    sl.querySelector('[data-timer]').onclick = function () { tmShow(); Kit.sound.tap(); };
+  });
+};
+
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast('✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil ได้ วางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    if (e.pointerType === 'pen') penSeen = true;
+    else if (e.pointerType === 'touch' && penSeen) return; /* มีปากกาแล้ว ไม่นับฝ่ามือ */
+    e.preventDefault(); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
+    cur = { c: color, p: [pt(e)], id: e.pointerId }; list().push(cur); draw();
+  });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- กล้องมุมจอ + อัดวิดีโอการสอน ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit) return;
+  var md = navigator.mediaDevices || {};
+  var inFrame = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  var canRec = !!md.getDisplayMedia && !!window.MediaRecorder;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '🎥'; btn.title = 'กล้องมุมจอ / อัดวิดีโอการสอน'; btn.setAttribute('aria-label', 'กล้องและอัดวิดีโอ');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var pnl = document.createElement('div'); pnl.className = 'campnl';
+  pnl.innerHTML = '<b>🎥 สอนออนไลน์ / ทำวิดีโอ</b>' +
+    '<button data-cam>📷 เปิดกล้องมุมจอ</button>' +
+    (canRec ? '<button data-rec>🔴 อัดวิดีโอหน้าจอ + เสียง</button>' : '') +
+    '<p class="tip">' + (canRec
+      ? 'กดอัดแล้วเลือก <b>แท็บนี้</b> ระบบจะอัดสไลด์ กล้อง และเสียงครูไว้ด้วยกัน กดหยุดแล้วจะได้ไฟล์วิดีโอทันที'
+      : 'บน iPad: เปิดกล้องมุมจอ แล้วใช้ <b>การบันทึกหน้าจอ</b> ในศูนย์ควบคุม (กดค้างที่ปุ่ม ⏺ เพื่อเปิดไมโครโฟน)') + '</p>' +
+    '<button data-x class="ghost">ปิด</button>';
+  document.body.appendChild(pnl);
+  btn.onclick = function () { pnl.classList.toggle('show'); Kit.sound.tap(); };
+  pnl.querySelector('[data-x]').onclick = function () { pnl.classList.remove('show'); };
+
+  function newTab(flag) {
+    var w = window.open(location.href.split('#')[0] + '#s=' + Kit.cur + '&' + flag + '=1', '_blank');
+    if (!w) Kit.toast('เปิดแท็บใหม่ไม่ได้ ลองกดปุ่ม "เปิดในแท็บใหม่" ของเว็บครูอู๋');
+  }
+
+  /* ---- กล้อง ---- */
+  var cam = null, stream = null, SIZES = [120, 170, 240], si = 1, round = true;
+  try { var sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); if (sv.si != null) si = sv.si; if (sv.round != null) round = sv.round; } catch (e) {}
+  function save(x, y) { try { localStorage.setItem('kruau-cam', JSON.stringify({ si: si, round: round, x: x, y: y })); } catch (e) {} }
+  function place() {
+    var s = SIZES[si], h = round ? s : Math.round(s * .75);
+    cam.style.width = s + 'px'; cam.style.height = h + 'px';
+    cam.classList.toggle('sq', !round);
+    var r = cam.getBoundingClientRect();
+    var x = Math.min(Math.max(4, r.left), innerWidth - s - 4), y = Math.min(Math.max(4, r.top), innerHeight - h - 4);
+    cam.style.left = x + 'px'; cam.style.top = y + 'px';
+  }
+  function openCam() {
+    if (cam) return;
+    if (!md.getUserMedia) { Kit.toast('อุปกรณ์นี้เปิดกล้องผ่านเว็บไม่ได้'); return; }
+    md.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }).then(function (s) {
+      stream = s;
+      cam = document.createElement('div'); cam.className = 'cambub noswipe';
+      cam.innerHTML = '<video autoplay playsinline muted></video><span class="cb"><button data-sz title="ย่อ/ขยาย">⤢</button><button data-sh title="วงกลม/สี่เหลี่ยม">◐</button><button data-cl title="ปิดกล้อง">✖</button></span>';
+      document.body.appendChild(cam);
+      var v = cam.querySelector('video'); v.srcObject = s; v.play().catch(function () {});
+      var sv = {}; try { sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); } catch (e) {}
+      cam.style.left = (sv.x != null ? sv.x : innerWidth - SIZES[si] - 16) + 'px';
+      cam.style.top = (sv.y != null ? sv.y : innerHeight - SIZES[si] - 90) + 'px';
+      place();
+      cam.querySelector('[data-sz]').onclick = function (e) { e.stopPropagation(); si = (si + 1) % SIZES.length; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-sh]').onclick = function (e) { e.stopPropagation(); round = !round; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-cl]').onclick = function (e) { e.stopPropagation(); closeCam(); };
+      var drag = null;
+      cam.addEventListener('pointerdown', function (e) {
+        if (e.target.closest('button')) return;
+        drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
+        cam.setPointerCapture && cam.setPointerCapture(e.pointerId); e.preventDefault();
+      });
+      cam.addEventListener('pointermove', function (e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        cam.style.left = Math.min(Math.max(4, e.clientX - drag.dx), innerWidth - cam.offsetWidth - 4) + 'px';
+        cam.style.top = Math.min(Math.max(4, e.clientY - drag.dy), innerHeight - cam.offsetHeight - 4) + 'px';
+      });
+      cam.addEventListener('pointerup', function () { if (drag) save(cam.offsetLeft, cam.offsetTop); drag = null; });
+      pnl.querySelector('[data-cam]').textContent = '📷 ปิดกล้องมุมจอ';
+      pnl.classList.remove('show');
+      Kit.toast('📷 ลากกล้องไปวางมุมไหนก็ได้ · ⤢ ย่อ/ขยาย');
+    }).catch(function (err) {
+      if (inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่อใช้กล้อง…'); newTab('cam'); }
+      else Kit.toast('เปิดกล้องไม่ได้ — กรุณาอนุญาตให้เว็บใช้กล้อง');
+    });
+  }
+  function closeCam() {
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    if (cam) cam.remove();
+    cam = stream = null;
+    pnl.querySelector('[data-cam]').textContent = '📷 เปิดกล้องมุมจอ';
+  }
+  pnl.querySelector('[data-cam]').onclick = function () { if (cam) closeCam(); else openCam(); };
+  addEventListener('resize', function () { if (cam) place(); });
+
+  /* ---- อัดวิดีโอ (คอมพิวเตอร์: Chrome / Edge / Firefox) ---- */
+  var rec = null, chip = null, parts = [], t0 = 0, iv = 0, all = [];
+  function pickType() {
+    var c = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    for (var i = 0; i < c.length; i++) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c[i])) return c[i];
+    return '';
+  }
+  function startRec() {
+    md.getDisplayMedia({ video: { frameRate: 30 }, audio: true, preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude' }).then(function (ds) {
+      all = [ds];
+      return md.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }).then(function (mic) { all.push(mic); return [ds, mic]; }, function () { Kit.toast('ไม่ได้เปิดไมโครโฟน จะอัดแต่ภาพ'); return [ds, null]; });
+    }).then(function (r) {
+      var ds = r[0], mic = r[1], tracks = ds.getVideoTracks().slice();
+      var aud = [ds, mic].filter(function (s) { return s && s.getAudioTracks().length; });
+      if (aud.length === 1) tracks = tracks.concat(aud[0].getAudioTracks());
+      else if (aud.length > 1) {
+        var ac = new (window.AudioContext || window.webkitAudioContext)(), dst = ac.createMediaStreamDestination();
+        aud.forEach(function (s) { ac.createMediaStreamSource(s).connect(dst); });
+        tracks = tracks.concat(dst.stream.getAudioTracks());
+      }
+      var type = pickType();
+      rec = new MediaRecorder(new MediaStream(tracks), type ? { mimeType: type, videoBitsPerSecond: 3000000 } : undefined);
+      parts = [];
+      rec.ondataavailable = function (e) { if (e.data && e.data.size) parts.push(e.data); };
+      rec.onstop = finish;
+      ds.getVideoTracks()[0].addEventListener('ended', stopRec);
+      rec.start(1000); t0 = Date.now();
+      chip = document.createElement('div'); chip.className = 'recchip';
+      chip.innerHTML = '<span class="dot"></span> อัดอยู่ <span class="t">0:00</span><button>■ หยุด</button>';
+      document.body.appendChild(chip);
+      chip.querySelector('button').onclick = stopRec;
+      iv = setInterval(function () { var s = Math.floor((Date.now() - t0) / 1000); chip.querySelector('.t').textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }, 500);
+      pnl.classList.remove('show');
+      if (!cam) Kit.toast('🔴 เริ่มอัดแล้ว · เปิดกล้องมุมจอได้ที่ปุ่ม 🎥');
+    }).catch(function (err) {
+      all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+      if (err && err.name === 'NotAllowedError' && inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่ออัดวิดีโอ…'); newTab('rec'); }
+      else if (err && err.name !== 'NotAllowedError') Kit.toast('อัดวิดีโอไม่ได้: ' + err.name);
+    });
+  }
+  function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+  function finish() {
+    clearInterval(iv);
+    all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+    if (chip) chip.remove();
+    var type = (rec && rec.mimeType) || 'video/webm', ext = type.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+    var blob = new Blob(parts, { type: type }), a = document.createElement('a');
+    var d = new Date(), name = (document.title.split('·')[0].trim() || 'บทเรียน').replace(/[\\\/:*?"<>|]/g, '') + ' ' + d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    a.href = URL.createObjectURL(blob); a.download = name + '.' + ext;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+    Kit.sound.win(); Kit.toast('💾 บันทึกวิดีโอแล้ว (' + ext.toUpperCase() + ') ดูได้ในโฟลเดอร์ดาวน์โหลด');
+    rec = null;
+  }
+  var rb = pnl.querySelector('[data-rec]');
+  if (rb) rb.onclick = function () { if (rec) stopRec(); else startRec(); };
+
+  /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
+  if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
+  if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+</script>
+</body>
+</html>
