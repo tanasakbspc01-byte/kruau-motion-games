@@ -79,6 +79,11 @@ table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(
 .endpic img{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:4px solid var(--main);background:var(--glow)}
 table.vt tr.sep td{border-top:3px solid var(--ink)}
 .card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
 
 </style>
 </head>
@@ -102,11 +107,11 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
     <div class="card c-yellow goals" style="width:100%"><h3>🎯 เรียนจบบทนี้ หนูจะ…</h3><ul><li><b>บวก ลบ</b> จำนวนที่มากกว่า 100,000 และตรวจคำตอบด้วย <b>ค่าประมาณ</b> ได้</li><li>ใช้ <b>เครื่องคิดเลข</b> และหา <b>ตัวไม่ทราบค่า</b> ได้</li><li>แก้และ <b>สร้างโจทย์ปัญหา</b> การบวกการลบได้</li></ul></div>
     <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
   </div>
-  <div class="pic"><img src="kru-full.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+  <div class="pic"><img src="full-p8.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
 </div></div></section>
 <section class="slide" data-title="สารบัญ"><div class="inner">
   <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 2</h2>
-  <div class="kru"><span class="av"><img src="kru-face.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>บวกลบจำนวนหลักล้านไม่ยากเลย แค่ <b>ตั้งหลักให้ตรง</b> ทดและกระจายให้เป็น เลือกหัวข้อด้านล่างได้เลย 👇</div></div>
+  <div class="kru fig"><span class="av"><img src="full-p6.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>บวกลบจำนวนหลักล้านไม่ยากเลย แค่ <b>ตั้งหลักให้ตรง</b> ทดและกระจายให้เป็น เลือกหัวข้อด้านล่างได้เลย 👇</div></div>
   <div class="toc"><button data-jump="1"><span class="e">➕</span><span>2.1 การบวกและการลบ</span></button><button data-jump="2"><span class="e">🧮</span><span>2.2 ใช้เครื่องคิดเลข</span></button><button data-jump="3"><span class="e">🔍</span><span>2.3 หาค่าตัวไม่ทราบค่า</span></button><button data-jump="4"><span class="e">📝</span><span>2.4 โจทย์ปัญหา</span></button><button data-jump="5"><span class="e">✏️</span><span>2.5 สร้างโจทย์ปัญหา</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (12 ข้อ)</span></button></div>
 </div></section>
 
@@ -128,7 +133,7 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
       <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="add">บวกทีละหลัก 👇</button></div>
     </div>
   </div>
-  <div class="kru"><span class="av"><img src="kru-face.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เตือน</b>เวลาตั้งบวก ให้ <b>หลักหน่วยตรงกับหลักหน่วย</b> เสมอ จำนวนที่สั้นกว่าให้ชิดขวา อย่าชิดซ้ายนะ!</div></div>
+  <div class="kru"><span class="av"><img src="av-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เตือน</b>เวลาตั้งบวก ให้ <b>หลักหน่วยตรงกับหลักหน่วย</b> เสมอ จำนวนที่สั้นกว่าให้ชิดขวา อย่าชิดซ้ายนะ!</div></div>
 </div></section>
 
 <section class="slide" data-title="การลบ"><div class="inner">
@@ -165,7 +170,7 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
     <div class="row center" style="margin-top:8px"><button class="btn" data-reveal="est">ตรวจด้วยค่าประมาณ 👇</button></div>
   </div>
   <div class="trap"><b class="t">🕵️ จับผิดคำตอบ</b> เพื่อนบอกว่า 1,506,200 − 798,400 = 1,292,200 · ประมาณ 1,500,000 − 800,000 = 700,000 ห่างกันมาก ➜ <b>ไม่สมเหตุสมผล</b> (ที่ถูกคือ 707,800)</div>
-  <div class="kru"><span class="av"><img src="kru-face.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋แนะ</b>จะประมาณเป็นเต็มพัน เต็มหมื่น หรือเต็มแสนก็ได้ เลือกแบบที่คิดในใจง่ายที่สุด</div></div>
+  <div class="kru"><span class="av"><img src="av-p8.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋แนะ</b>จะประมาณเป็นเต็มพัน เต็มหมื่น หรือเต็มแสนก็ได้ เลือกแบบที่คิดในใจง่ายที่สุด</div></div>
 </div></section>
 
 <section class="slide" data-title="ฝึกบวกลบ"><div class="inner">
@@ -230,7 +235,7 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
     <div class="card c-orange"><h3>② a − □ = b</h3><p class="eq">□ = a − b</p><p>950,000 − □ = 386,500<br>□ = 950,000 − 386,500 = <b>563,500</b></p></div>
     <div class="card c-purple"><h3>③ □ − a = b</h3><p class="eq">□ = b + a</p><p>□ − 1,250,000 = 2,375,500<br>□ = 2,375,500 + 1,250,000 = <b>3,625,500</b></p></div>
   </div>
-  <div class="kru"><span class="av"><img src="kru-face.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ถาม</b>ได้คำตอบแล้วต้องทำอะไร? ใช่! <b>แทนค่ากลับ</b> ลงใน □ ดูว่าประโยคเป็นจริงไหม ✔</div></div>
+  <div class="kru"><span class="av"><img src="av-p1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ถาม</b>ได้คำตอบแล้วต้องทำอะไร? ใช่! <b>แทนค่ากลับ</b> ลงใน □ ดูว่าประโยคเป็นจริงไหม ✔</div></div>
 </div></section>
 
 <section class="slide" data-title="หาเลขโดดที่หายไป"><div class="inner">
@@ -319,12 +324,12 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 </div></section>
 <section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
   <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (12 ข้อ)</h2>
-  <div class="kru"><span class="av"><img src="kru-face.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div class="kru fig"><span class="av"><img src="full-p7.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
   <div data-quiz="main"></div>
 </div></section>
 <section class="slide" data-title="สรุป" data-final><div class="inner">
   <h2 class="h"><span class="e">🌟</span>สรุปบทที่ 2</h2>
-  <div class="card c-yellow center endpic"><img src="kru-face.webp" alt="ครูอู๋"><div data-score></div></div>
+  <div class="card c-yellow center endpic"><img src="av-p3.webp" alt="ครูอู๋"><div data-score></div></div>
   <div class='chant'>ตั้งหลักให้ตรง · บวกครบ 10 ทด · ลบไม่พอ กระจาย<small>ตรวจคำตอบด้วยค่าประมาณทุกครั้ง</small></div><div class='grid' style='--min:240px'><div class='key'><b>ตัวไม่ทราบค่า</b><br>□ + a = b → □ = b − a<br>a − □ = b → □ = a − b<br>□ − a = b → □ = b + a</div><div class='key'><b>โจทย์ปัญหา</b> ถาม → บอก → วาดแถบ → ประโยคสัญลักษณ์ → แสดงวิธีทำ → ตรวจสอบ<br>คำว่า “มากกว่า/น้อยกว่า” ไม่ได้แปลว่าบวก/ลบเสมอ</div></div>
   <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m4-ch1-big-numbers/">◀ บทที่ 1</a><a class="btn" style="--c:var(--purple)" href="../m4-math-hub/">🏠 หน้ารวม ป.4</a><a class="btn ghost" href="../m4-ch3-mul-div/">บทที่ 3 ▶</a></div>
   <p class="credit center">สื่อการสอนโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เรียบเรียงตามลำดับเนื้อหาหนังสือเรียน สสวท.</p>
