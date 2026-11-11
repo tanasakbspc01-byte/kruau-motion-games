@@ -22,6 +22,7 @@
   <span class="logo">🍕</span>
   <div class="ttl"><b>รู้จักเศษส่วน เศษเกิน จำนวนคละ</b><small>คณิตศาสตร์ ป.4 · บทที่ 6 เศษส่วน · สื่อที่ 1</small></div>
   <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
   <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
   <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
 </header>
@@ -202,13 +203,21 @@
     <div class="card c-blue"><h3>① ตัวส่วนเท่ากัน</h3><p>ดู <b>ตัวเศษ</b> ตัวเศษมากกว่า มีค่ามากกว่า</p><p class="big center">{5/8} &gt; {3/8}</p></div>
     <div class="card c-pink"><h3>② ตัวเศษเท่ากัน</h3><p>ดู <b>ตัวส่วน</b> ตัวส่วนน้อยกว่า (ชิ้นใหญ่กว่า) มีค่ามากกว่า</p><p class="big center">{1/3} &gt; {1/6}</p></div>
   </div>
+  <div class="grid" style="--min:260px">
+    <div class="card c-blue"><div data-bars="5/8" style="--c:var(--blue)"></div><div style="height:6px"></div><div data-bars="3/8" style="--c:var(--blue)"></div><p class="center sub">{5/8} ยาวกว่า {3/8}</p></div>
+    <div class="card c-pink"><div data-bars="1/3" style="--c:var(--pink)"></div><div style="height:6px"></div><div data-bars="1/6" style="--c:var(--pink)"></div><p class="center sub">{1/3} ยาวกว่า {1/6}</p></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เปรียบเทียบ ตัวส่วนเป็นพหุคูณ"><div class="inner">
+  <h2 class="h"><span class="e">🐊</span>เปรียบเทียบ เมื่อตัวส่วนไม่เท่ากัน</h2>
   <div class="card c-purple">
     <h3>③ ตัวส่วนตัวหนึ่งเป็นพหุคูณของอีกตัว — ทำตัวส่วนให้เท่ากันก่อน</h3>
     <p class="big center">{2/3} ☐ {5/6}</p>
     <div class="steps" id="cp1">
       <div class="step"><p>1️⃣ 6 เป็นพหุคูณของ 3 (3 × 2 = 6) จึงทำ {2/3} ให้มีตัวส่วนเป็น 6</p><p class="big center">{2 × 2/3 × 2} = {4/6}</p></div>
       <div class="step"><p>2️⃣ เปรียบเทียบ {4/6} กับ {5/6} ตัวส่วนเท่ากัน ดูตัวเศษ 4 &lt; 5</p>
-        <div class="pbars" data-bars="4/6" style="--c:var(--orange)"></div><div style="height:6px"></div><div class="pbars" data-bars="5/6" style="--c:var(--purple)"></div></div>
+        <div data-bars="4/6" style="--c:var(--orange)"></div><div style="height:6px"></div><div data-bars="5/6" style="--c:var(--purple)"></div></div>
       <div class="step"><p class="big center t-purple">ดังนั้น {2/3} &lt; {5/6}</p></div>
     </div>
     <div class="row center"><button class="btn" style="--c:var(--purple)" data-reveal="cp1">ดูขั้นต่อไป 👇</button></div>
@@ -222,8 +231,13 @@
     <p>ทำตัวส่วนให้เป็น 8 ทั้งหมด → {1/2} = {4/8}, &nbsp;{3/8}, &nbsp;{3/4} = {6/8}</p>
     <p>เปรียบเทียบตัวเศษ 3 &lt; 4 &lt; 6 → <b class="t-orange big">{3/8}, {1/2}, {3/4}</b></p>
   </div>
+  <div class="key">🧠 <b>ขั้นตอน</b> ① ทำตัวส่วนให้เท่ากัน → ② เปรียบเทียบตัวเศษ → ③ เรียงตามที่โจทย์ถาม (น้อยไปมาก หรือ มากไปน้อย)</div>
+</div></section>
+
+<section class="slide" data-title="ฝึกเรียงลำดับ"><div class="inner">
+  <h2 class="h"><span class="e">🎮</span>ฝึกเรียงลำดับเศษส่วน</h2>
   <div class="card c-teal">
-    <h3>🎮 ลองเอง: แตะเศษส่วนจาก <u>น้อยไปมาก</u></h3>
+    <h3>แตะเศษส่วนจาก <u>น้อยไปมาก</u></h3>
     <div data-order="sort1"></div>
   </div>
 </div></section>

@@ -250,6 +250,37 @@
       var id = S[n].getAttribute('data-id');
       if (id && K.onShow[id]) K.onShow[id](S[n]);
       if (S[n].hasAttribute('data-final')) K.final(S[n]);
+      K.fit();
+    },
+    fitOn: store('kruau-media-fit') !== 'off',
+    /* ย่อเนื้อหาสไลด์ให้พอดีความสูงจอ (ไม่ต้องเลื่อน) */
+    fit: function () {
+      var sl = K.slides[K.cur]; if (!sl) return;
+      var inner = $('.inner', sl); if (!inner) return;
+      var st = inner.style;
+      st.transform = ''; st.width = ''; st.maxWidth = ''; st.marginLeft = ''; st.marginRight = ''; st.marginBottom = '';
+      if (!K.fitOn || sl.hasAttribute('data-nofit')) { sl.classList.remove('fitted'); return; }
+      var cs = getComputedStyle(sl);
+      var H = sl.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      var W = sl.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      if (inner.offsetHeight <= H + 1) { sl.classList.remove('fitted'); return; }
+      var MIN = W < 700 ? 0.7 : 0.55, lo = MIN, hi = 1, z = MIN;
+      st.maxWidth = 'none';
+      function wid(zz) { return Math.min(W / zz, Math.max(980, W * 1.25)); }
+      function tall(zz) { st.width = wid(zz) + 'px'; return inner.offsetHeight * zz; }
+      if (tall(MIN) <= H) {
+        for (var i = 0; i < 9; i++) { var mid = (lo + hi) / 2; if (tall(mid) <= H) lo = mid; else hi = mid; }
+        z = lo;
+      }
+      var w = wid(z);
+      st.width = w + 'px';
+      var h = inner.offsetHeight;
+      st.transformOrigin = '0 0';
+      st.transform = 'scale(' + z + ')';
+      st.marginLeft = Math.max(0, (W - w * z) / 2) + 'px';
+      st.marginRight = (-w * (1 - z)) + 'px';
+      st.marginBottom = (-h * (1 - z)) + 'px';
+      sl.classList.add('fitted');
     },
     final: function (sl) {
       var box = $('[data-score]', sl); if (!box) return;
@@ -297,14 +328,36 @@
       paintSnd();
       var fs = $('[data-fs]'), root = document.documentElement;
       var req = root.requestFullscreen || root.webkitRequestFullscreen;
-      if (!req || !(document.fullscreenEnabled || document.webkitFullscreenEnabled)) fs.classList.add('hidden');
+      var canFs = !!(req && (document.fullscreenEnabled || document.webkitFullscreenEnabled));
+      var framed = false;
+      try { framed = window.self !== window.top; } catch (e) { framed = true; }
+      function isFs() { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+      function paintFs() { fs.textContent = isFs() ? '🗗' : '⛶'; fs.title = isFs() ? 'ออกจากเต็มจอ' : 'เต็มจอ'; }
+      function fallback() {
+        if (framed) {
+          var w = window.open(location.href.split('#')[0] + '#s=' + K.cur, '_blank');
+          if (!w) toast('เบราว์เซอร์บล็อกหน้าต่างใหม่ — ใช้ปุ่ม “เปิดในแท็บใหม่” ของเว็บแทนนะ');
+        } else {
+          toast('iPad: แตะ aA ที่แถบที่อยู่ แล้วเลือก “ซ่อนแถบเครื่องมือ”');
+        }
+      }
       fs.onclick = function () {
-        var on = document.fullscreenElement || document.webkitFullscreenElement;
+        if (isFs()) { try { (document.exitFullscreen || document.webkitExitFullscreen).call(document); } catch (e) { } return; }
+        if (!canFs) { fallback(); return; }
         try {
-          if (on) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
-          else req.call(root);
-        } catch (e) { toast('เปิดเต็มจอไม่ได้ในเครื่องนี้'); }
+          var r = req.call(root);
+          if (r && r.catch) r.catch(fallback);
+        } catch (e) { fallback(); }
       };
+      ['fullscreenchange', 'webkitfullscreenchange'].forEach(function (ev) { document.addEventListener(ev, function () { paintFs(); K.fit(); }); });
+      paintFs();
+      /* ปุ่มพอดีจอ */
+      var fitBtn = $('[data-fit]');
+      if (fitBtn) {
+        var paintFit = function () { fitBtn.textContent = K.fitOn ? '🔍' : '↕️'; fitBtn.title = K.fitOn ? 'ย่อให้พอดีจอ: เปิด (แตะเพื่อเลื่อนอ่านแทน)' : 'เลื่อนอ่าน (แตะเพื่อย่อให้พอดีจอ)'; };
+        fitBtn.onclick = function () { K.fitOn = !K.fitOn; store('kruau-media-fit', K.fitOn ? 'on' : 'off'); paintFit(); K.fit(); toast(K.fitOn ? '🔍 ย่อสไลด์ให้พอดีจอ' : '↕️ แสดงขนาดเต็ม เลื่อนลงเพื่ออ่าน'); };
+        paintFit();
+      }
       $('[data-home]').onclick = function () { K.go(0); };
       /* ขั้นตอนเปิดทีละขั้น */
       $$('[data-reveal]').forEach(function (b) {
@@ -328,7 +381,15 @@
       $$('[data-sorter]').forEach(function (el) { var c = K.sorters[el.getAttribute('data-sorter')]; if (c) Sorter(el, c); });
       $$('[data-order]').forEach(function (el) { var c = K.orders[el.getAttribute('data-order')]; if (c) Order(el, c); });
       if (K.setup) K.setup();
-      K.go(0, true);
+      var m = /[#&]s=(\d+)/.exec(location.hash), start = m ? Math.min(+m[1], K.slides.length - 1) : 0;
+      K.go(start, true);
+      var pend = false;
+      function later() { if (pend) return; pend = true; requestAnimationFrame(function () { pend = false; K.fit(); }); }
+      window.addEventListener('resize', later);
+      window.addEventListener('orientationchange', function () { setTimeout(K.fit, 300); });
+      if (window.MutationObserver) new MutationObserver(later).observe(stage, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'open'] });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(K.fit);
+      window.addEventListener('load', K.fit);
     }
   };
   window.Kit = K;
