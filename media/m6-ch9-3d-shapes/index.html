@@ -94,6 +94,10 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 /* ---- ปากกาเขียนบนสไลด์ ---- */
 .drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
 body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
 .drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
 body.drawing .drawbar{display:flex}
 .drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
@@ -102,6 +106,28 @@ body.drawing .drawbar{display:flex}
 .drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
 .bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
 @media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
 /* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
 .campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
 .campnl.show{display:flex}
@@ -197,17 +223,17 @@ body.drawing .drawbar{display:flex}
   <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
   <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เตรียมความพร้อม</span></button><button data-jump="9.1"><span class="e">🧊</span><span>9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ</span></button><button data-jump="9.2"><span class="e">📦</span><span>9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ</span></button><button data-jump="9.3"><span class="e">🥤</span><span>9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ</span></button><button data-jump="9.4"><span class="e">📝</span><span>9.4 โจทย์ปัญหา</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-sec="pre" data-steps="6" data-src="img/s002" data-title="เตรียมความพร้อม · หน้า 2"><div class="inner pp">
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="6" data-src="img/s002" data-thumb="img/t002.webp" data-title="เตรียมความพร้อม · หน้า 2"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 2 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9.1 9.2 9.3 9.4 9.1 ลักษณะและส่วนต่างๆ ของรูปเรขาคณิตสามมิติ 6 9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ 16 9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ 28 9.4 โจทย์ปัญหา 41 เตรียมความพร้อม 1 บอกชนิดของปริซึม จำนวนหน้าตัดหรือฐาน และจำนวนหน้าข้าง ปริซึมสามเหลี่ยมมีหน้าตัดหรือฐาน 2 หน้า มีหน้าข้าง 3 หน้า ปริซึมห้"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s003" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s003" data-thumb="img/t003.webp" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3แสดงวิธีหาคำตอบ 360 ลูกบาศก์เซนติเมตร 3 2 2หาปริมาตรของทรงสี่เหลี่ยมมุมฉาก 966 ลูกบาศก์เมตร 483 ลูกบาศก์เมตร 2,800 ลูกบาศก์เซนติเมตร 1) แท็งก์น้ำทรงสี่เหลี่ยมมุมฉาก มีขนาดภายในกว้าง 1.3 เมตร ยาว 2 เมตร และสูง 1.5 เมตร แท็งก์น้ำมีความจุเท่าใด วิธีทำ ความจุของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง × ความยาว"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s004" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s004" data-thumb="img/t004.webp" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 4 4) กล่องพลาสติกทรงสี่เหลี่ยมมุมฉาก วัดขนาดภายใน พบว่าฐานมีพื้นที่ 400 ตารางเซนติเมตร สูง 15 เซนติเมตร ถังมีน้ำในกล่อง 5,200 ลูกบาศก์เซนติเมตร ระดับน้ำสูงเท่าใด วิธีทำ กล่องพลาสติกทรงสี่เหลี่ยมมุมฉากมีพื้นที่ฐาน 400 ตารางเซนติเมตร มีน้ำในกล่อง 5,200 ลูกบาศก์เซนติเมตร เนื่องจาก ความสูง = ปริมาตรขอ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -217,27 +243,27 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s005" data-title="9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ · หน้า 5"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s005" data-thumb="img/t005.webp" data-title="9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ · หน้า 5"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="7 6 ลักษณะและส่วนต่างๆ ของรูปเรขาคณิตสามมิติ9.1 ปริซึมสามเหลี่ยม ปริซึมสี่เหลี่ยม พิจารณารูปเรขาคณิตสามมิติต่อไปนี้ ปริซึมห้าเหลี่ยม ปริซึมเป็นรูปเรขาคณิตสามมิติ ทรงตัน มีหน้าตัดหรือฐาน 2 หน้า เป็นรูปหลายเหลี่ยมที่เท่ากันทุกประการ และอยู่บนระนาบที่ขนานกัน หน้าข้างเป็นรูปสี่เหลี่ยมด้านขนานชนิดของปริซ"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s006" data-title="9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ · หน้า 6"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s006" data-thumb="img/t006.webp" data-title="9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ · หน้า 6"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9 8 พีระมิดฐานสามเหลี่ยม พีระมิดฐานสี่เหลี่ยม พีระมิดฐานห้าเหลี่ยม พีระมิดเป็นรูปเรขาคณิตสามมิติ ทรงตัน มีฐานเป็นรูปหลายเหลี่ยม มียอดแหลมซึ่งไม่อยู่บนระนาบเดียวกันกับฐาน และมีหน้าข้างเป็นรูปสามเหลี่ยมชนิดของพีระมิด จำแนกตามรูปหลายเหลี่ยมที่เป็นฐานจำนวนหน้าข้างของพีระมิด เท่ากับ จำนวนด้านของรูปหลายเห"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s007" data-title="9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ · หน้า 7"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s007" data-thumb="img/t007.webp" data-title="9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ · หน้า 7"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="11 10 ทรงกระบอก กรวย ทรงกลม ทรงกระบอกเป็นรูปเรขาคณิตสามมิติ ทรงตัน มีหน้าตัดหรือฐานทั้งสองเป็นวงกลมที่เท่ากันทุกประการ และอยู่บนระนาบที่ขนานกัน กรวยเป็นรูปเรขาคณิตสามมิติ ทรงตัน มีฐานเป็นวงกลม มียอดแหลมซึ่งไม่อยู่บนระนาบเดียวกันกับฐาน ทรงกลมเป็นรูปเรขาคณิตสามมิติ ทรงตัน มีผิวโค้งเรียบ ทุกๆ จุดที่อยู"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="10" data-src="img/s008" data-title="9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ · หน้า 8"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s008" data-thumb="img/t008.webp" data-title="9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ · หน้า 8"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="13 12 ตรวจสอบความเข้าใจ ระบุชนิดของรูปเรขาคณิตสามมิติตามข้อกำหนด 1หน้าทุกหน้าเป็นรูปสามเหลี่ยม 2หน้าข้างเป็นรูปสามเหลี่ยม 8 หน้า 3มีหน้าทั้งหมด 5 หน้า 4ฐานเป็นวงกลม 1 หน้า พีระมิดฐานสามเหลี่ยม พีระมิดฐานแปดเหลี่ยม พีระมิดฐานสี่เหลี่ยม หรือปริซึมสามเหลี่ยม กรวย บอกชนิด ลักษณะ จำนวนหน้าตัดหรือฐาน และจ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s009" data-title="9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ · หน้า 9"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s009" data-thumb="img/t009.webp" data-title="9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ · หน้า 9"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.1 ลักษณะและส่วนต่าง ๆ ของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="15 14 สิ่งที่ได้เรียนรู้ 1ทรงกระบอกกับปริซึม มีลักษณะเหมือนกันและต่างกันอย่างไร 2พีระมิดกับกรวย มีลักษณะเหมือนกันและต่างกันอย่างไร 3พีระมิดกับปริซึม มีลักษณะเหมือนกันและต่างกันอย่างไร 4ทรงกระบอกกับกรวย มีลักษณะเหมือนกันและต่างกันอย่างไร ทรงกระบอกกับปริซึม- ลักษณะที่เหมือนกัน คือ มีหน้าตัดหรือฐาน 2 ห"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -247,32 +273,32 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s010" data-title="9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ · หน้า 10"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s010" data-thumb="img/t010.webp" data-title="9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ · หน้า 10"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="17 16 รูปคลี่ของรูปเรขาคณิตสามมิติ9.2 พิจารณาลักษณะและจำนวนหน้าของรูปเรขาคณิตสามมิติ กิจกรรมสร้างรูปเรขาคณิตสามมิติ ดาวน์โหลดใบกิจกรรมจาก QR Code และพิมพ์บนกระดาษแล้วให้นักเรียนปฏิบัติตามขั้นตอนต่อไปนี้1. ใช้กรรไกรตัดแยกชิ้นส่วนรูปเรขาคณิตสองมิติที่กำหนดให้2. นำรูปเรขาคณิตสองมิติ มาประกอบเป็นรูปเรขา"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-title="9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ · หน้า 11"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-thumb="img/t011.webp" data-title="9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ · หน้า 11"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="19 18 พิจารณารูปต่อไปนี้ รูปใดเมื่อพับตามแนวเส้นประแล้วไม่เป็นลูกบาศก์ เพราะเหตุใด รูป พับเป็นลูกบาศก์ไม่ได้ เพราะลูกบาศก์มีหน้า 6 หน้า ซึ่งแต่ละหน้าเป็นรูปสี่เหลี่ยมจัตุรัสที่เท่ากันทุกประการแต่รูป ประกอบด้วยรูปสี่เหลี่ยมจัตุรัส 7 รูป จึงพับไม่ได้ รูป พับเป็นลูกบาศก์ไม่ได้ เพราะประกอบด้วยรูปสี่เหลี"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s012" data-title="9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ · หน้า 12"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s012" data-thumb="img/t012.webp" data-title="9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ · หน้า 12"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="21 20 พีระมิดฐานสี่เหลี่ยม ทรงกระบอก กรวย กิจกรรมสร้างรูปเรขาคณิตสามมิติจากรูปคลี่ ดาวน์โหลดใบกิจกรรมจาก QR Code และพิมพ์บนกระดาษแล้วให้นักเรียนปฏิบัติตามขั้นตอนต่อไปนี้1. ใช้กรรไกรตัดรูปคลี่ที่กำหนดให้2. นำรูปคลี่มาประกอบเป็นรูปเรขาคณิตสามมิติ โดยติดเทปใส ตัวอย่าง รูปเรขาคณิตสองมิติแต่ละรูปเป็นรูปค"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="13" data-src="img/s013" data-title="9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ · หน้า 13"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="13" data-src="img/s013" data-thumb="img/t013.webp" data-title="9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ · หน้า 13"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="23 22 กิจกรรมตามหารูปคลี่ ระบายสีในกระดาษตารางเพื่อแสดงรูปคลี่ของลูกบาศก์ให้ได้จำนวนแบบมากที่สุด ปฏิบัติกิจกรรม 1บอกชนิดของรูปเรขาคณิตสามมิติจากรูปคลี่ที่กำหนด 1) 2) 3) 4) พีระมิดฐานสามเหลี่ยม ปริซึมสี่เหลี่ยมหรือทรงสี่เหลี่ยมมุมฉาก พีระมิดฐานสี่เหลี่ยม ปริซึมสี่เหลี่ยม หรือทรงสี่เหลี่ยมมุมฉาก 9.1 9"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/13)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="8" data-src="img/s014" data-title="9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ · หน้า 14"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s014" data-thumb="img/t014.webp" data-title="9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ · หน้า 14"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="25 24 ปฏิบัติกิจกรรม 1บอกชนิดของรูปเรขาคณิตสามมิติจากรูปคลี่ที่กำหนด 1) 2) 3) 4) พีระมิดฐานสามเหลี่ยม ปริซึมสี่เหลี่ยมหรือทรงสี่เหลี่ยมมุมฉาก พีระมิดฐานสี่เหลี่ยม ปริซึมสี่เหลี่ยม หรือทรงสี่เหลี่ยมมุมฉาก 2เขียนรูปคลี่ของรูปเรขาคณิตสามมิติที่กำหนด 1) 2) 3) 4) 9.1 9.2 9.4 9.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s015" data-title="9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ · หน้า 15"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s015" data-thumb="img/t015.webp" data-title="9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ · หน้า 15"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.2 รูปคลี่ของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="27 26 ตรวจสอบความเข้าใจ 1รูปใดเป็นรูปคลี่ของพีระมิดฐานห้าเหลี่ยม รูป C ตอบคำถามจากรูปที่กำหนด 2รูปใดเป็นรูปคลี่ของลูกบาศก์ รูป F 3รูปใดเป็นรูปคลี่ของปริซึมห้าเหลี่ยม รูป E 4รูปใดเป็นรูปคลี่ของทรงกระบอก รูป A ปฏิบัติกิจกรรม รูปใดบ้างเป็นรูปคลี่ของพีระมิดฐานหกเหลี่ยม รูป 1, 3, 4, 5, 6 และ 8 9.1 9.2 9."></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -282,32 +308,32 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-title="9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ · หน้า 16"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-thumb="img/t016.webp" data-title="9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ · หน้า 16"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="29 28 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ9.3 การหาปริมาตรและความจุของรูปเรขาคณิตสามมิติที่สามารถแบ่งเป็นทรงสี่เหลี่ยมมุมฉากได้ อาจทำได้ดังนี้ วิธีที่ 1 แบ่งให้เป็นทรงสี่เหลี่ยมมุมฉาก จากนั้นหาปริมาตรของทรงสี่เหลี่ยมมุมฉากแต่ละรูปแล้วนำมารวมกัน เช่น วิธีที่ 2 เติมให้เป็นทรงสี่เหลี่ยมมุมฉาก พร้อมหาป"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s017" data-title="9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ · หน้า 17"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s017" data-thumb="img/t017.webp" data-title="9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ · หน้า 17"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="31 30 1 หาปริมาตรของรูปเรขาคณิตสามมิติที่ประกอบด้วยทรงสี่เหลี่ยมมุมฉากต่อไปนี้ วิธีคิด แบ่งให้เป็นทรงสี่เหลี่ยมมุมฉาก จากนั้นหาปริมาตรของทรงสี่เหลี่ยมมุมฉากแต่ละรูปแล้วนำมารวมกัน วิธีทำ ปริมาตรของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง × ความยาว × ความสูง ส่วนที่ มีปริมาตร 20 × 30 × 30 = 18,000 ลูกบาศก์เซนต"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-title="9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ · หน้า 18"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-thumb="img/t018.webp" data-title="9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ · หน้า 18"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="33 32 วิธีคิด ตัดแล้วนำมาต่อกันให้เป็นทรงสี่เหลี่ยมมุมฉาก จากนั้นหาปริมาตรของทรงสี่เหลี่ยมมุมฉาก วิธีทำ ปริมาตรของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง × ความยาว × ความสูง = 5 × 20 × 16 ลูกบาศก์เซนติเมตร = 1,600 ลูกบาศก์เซนติเมตร ดังนั้น รูปเรขาคณิตสามมิติมีปริมาตร 1,600 ลูกบาศก์เซนติเมตรตอบ ๑,๖๐๐ ลูกบาศก"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s019" data-title="9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ · หน้า 19"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s019" data-thumb="img/t019.webp" data-title="9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ · หน้า 19"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="35 34 วิธีทำ ความจุของภาชนะทรงสี่เหลี่ยมมุมฉาก = ความกว้าง × ความยาว × ความสูง ภาชนะทรงสี่เหลี่ยมมุมฉากใหญ่มีความจุ 15 × 34 × 25 = 12,750 ลูกบาศก์เซนติเมตร ทรงสี่เหลี่ยมมุมฉากส่วนที่เติมมีความจุ 12 × 15 × 15 = 2,700 ลูกบาศก์เซนติเมตร ดังนั้น ภาชนะรูปเรขาคณิตสามมิติมีความจุ 12,750 – 2,700 = 10,050 ลู"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s020" data-title="9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ · หน้า 20"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s020" data-thumb="img/t020.webp" data-title="9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ · หน้า 20"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="37 36 2หาความจุของภาชนะรูปเรขาคณิตสามมิติที่ประกอบด้วยทรงสี่เหลี่ยมมุมฉาก 1) 2) 3) 183,000 ลูกบาศก์เซนติเมตร 19,500 ลูกบาศก์เซนติเมตร 145.8 ลูกบาศก์เมตร ตรวจสอบความเข้าใจ 1หาปริมาตรของรูปเรขาคณิตสามมิติที่ประกอบด้วยทรงสี่เหลี่ยมมุมฉาก แสดงวิธีหาคำตอบ วิธีคิด แบ่งให้เป็นทรงสี่เหลี่ยมมุมฉาก แล้วหาปริม"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s021" data-title="9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ · หน้า 21"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s021" data-thumb="img/t021.webp" data-title="9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ · หน้า 21"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.3 ปริมาตรและความจุของรูปเรขาคณิตสามมิติ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="39 38 สิ่งที่ได้เรียนรู้ 2หาความจุของภาชนะรูปเรขาคณิตสามมิติที่ประกอบด้วยทรงสี่เหลี่ยมมุมฉาก วิธีคิด เมื่อเติมทรงสี่เหลี่ยมมุมฉากในช่องว่าง จะได้ภาชนะทรงสี่เหลี่ยมมุมฉากใหญ่ จากนั้นหาความจุของภาชนะที่กำหนด โดยหาความจุของภาชนะทรงสี่เหลี่ยมมุมฉากใหญ่ลบด้วยความจุของทรงสี่เหลี่ยมมุมฉากส่วนที่เติม วิธีทำ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -317,52 +343,52 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s022" data-title="9.4 โจทย์ปัญหา · หน้า 22"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s022" data-thumb="img/t022.webp" data-title="9.4 โจทย์ปัญหา · หน้า 22"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="41 40 2. เติมให้เป็นทรงสี่เหลี่ยมมุมฉาก เช่นเมื่อเติมทรงสี่เหลี่ยมมุมฉากในช่องว่าง 2 ส่วน แต่ละส่วนกว้าง 3 เซนติเมตร ยาว 12 เซนติเมตรและสูง 3 เซนติเมตร จะได้เป็นทรงสี่เหลี่ยมมุมฉากใหญ่ที่กว้าง 3 เซนติเมตร ยาว 15 เซนติเมตรและสูง 9 + 3 + 3 = 15 เซนติเมตร จากนั้นหาปริมาตรของทรงสี่เหลี่ยมมุมฉากใหญ่แล้วล"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-title="9.4 โจทย์ปัญหา · หน้า 23"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-thumb="img/t023.webp" data-title="9.4 โจทย์ปัญหา · หน้า 23"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="43 42 9.1 9.2 9.3 9.4 อาจหาได้โดย แบ่งอ่างน้ำเป็น 3 ส่วน ให้แต่ละส่วนเป็นทรงสี่เหลี่ยมมุมฉากจากนั้น หาความจุของอ่างน้ำแต่ละส่วน แล้วนำมารวมกันความจุของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง × ความยาว × ความสูง จะต้องเติมน้ำอีก 186,000 – 126,000 = 60,000 ลบ.ซม. สิ่งที่โจทย์ถาม หาความจุของอ่างได้อย่างไร 1ลุง"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-title="9.4 โจทย์ปัญหา · หน้า 24"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-thumb="img/t024.webp" data-title="9.4 โจทย์ปัญหา · หน้า 24"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="45 44 9.1 9.2 9.3 9.4 2ครั้งแรกบอยเทคอนกรีตส่วนหนึ่งลงในแบบหล่อที่มีลักษณะและขนาดดังรูป แล้วยังไม่เต็มจึงเทคอนกรีตเพิ่มอีก 135,000 ลูกบาศก์เซนติเมตร คอนกรีตเต็มแบบหล่อพอดี ครั้งแรกบอยเทคอนกรีตลงในแบบหล่อเท่าใด วิธีคิด แบ่งแบบหล่อเป็น 2 ส่วน ให้แต่ละส่วนเป็นทรงสี่เหลี่ยมมุมฉาก ดังรูป คือ ส่วนที่ และส"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-title="9.4 โจทย์ปัญหา · หน้า 25"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-thumb="img/t025.webp" data-title="9.4 โจทย์ปัญหา · หน้า 25"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="47 46 9.1 9.2 9.3 9.4 3แผ่นปูทางเดินแผ่นหนึ่งที่มีลักษณะและขนาดดังรูป มีปริมาตร 1,200 ลูกบาศก์เซนติเมตร ถ้าเททรายลงในช่องว่างให้เต็มพอดี ต้องใช้ทราย 300 ลูกบาศก์เซนติเมตร แผ่นปูทางเดินนี้หนาเท่าใด วิธีคิด นำปริมาตรของทรายรวมกับปริมาตรของแผ่นปูทางเดิน จะได้ปริมาตรของทรงสี่เหลี่ยมมุมฉาก ที่กว้าง 15 เซ"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s026" data-title="9.4 โจทย์ปัญหา · หน้า 26"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s026" data-thumb="img/t026.webp" data-title="9.4 โจทย์ปัญหา · หน้า 26"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="49 48 แสดงวิธีหาคำตอบ 1ช่างต้องการทำแผ่นคอนกรีต 120 แผ่น ให้มีลักษณะดังรูป โดยแต่ละแผ่นยาว 40 เซนติเมตร กว้าง 30 เซนติเมตร และหนา 8 เซนติเมตร จะต้องใช้คอนกรีตกี่ลูกบาศก์เซนติเมตร วิธีทำ แบ่งแผ่นคอนกรีต 1 แผ่น เป็น 3 ส่วน ให้แต่ละส่วนเป็นทรงสี่เหลี่ยมมุมฉาก ปริมาตรของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง ×"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s027" data-title="9.4 โจทย์ปัญหา · หน้า 27"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s027" data-thumb="img/t027.webp" data-title="9.4 โจทย์ปัญหา · หน้า 27"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="51 50 2บ่อเลี้ยงปลากว้าง 4 เมตร ยาว 8 เมตร ก้นบ่อเป็นรูปสี่เหลี่ยมมุมฉาก ความลึกของบ่อแบ่งเป็น 2 ระดับ ระดับหนึ่งลึก 1.20 เมตร อีกระดับหนึ่งลึก 1.80 เมตร ถ้าระดับน้ำต่ำกว่าขอบบ่อ 1 เมตร บ่อเลี้ยงปลาจะมีน้ำอยู่กี่ลูกบาศก์เมตร วิธีทำ แบ่งบ่อเลี้ยงปลาเป็น 2 ส่วน จะได้แต่ละส่วนเป็นทรงสี่เหลี่ยมมุมฉาก ปร"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s028" data-title="9.4 โจทย์ปัญหา · หน้า 28"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s028" data-thumb="img/t028.webp" data-title="9.4 โจทย์ปัญหา · หน้า 28"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="53 52 3ไม้แผ่นหนึ่งมีลักษณะและขนาดดังรูป ถ้าแผ่นไม้มีปริมาตร 4,800 ลูกบาศก์เซนติเมตร แผ่นไม้นี้หนากี่เซนติเมตร วิธีทำ ตัดแผ่นไม้ส่วนเกินมาต่อส่วนที่ขาดให้เต็ม จะได้แผ่นไม้ทรงสี่เหลี่ยมมุมฉาก แผ่นไม้ทรงสี่เหลี่ยมมุมฉาก กว้าง 30 เซนติเมตร ยาว 12 + 12 + 8 = 32 เซนติเมตร มีพื้นที่ฐาน 30 × 32 = 960 ตาราง"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s029" data-title="9.4 โจทย์ปัญหา · หน้า 29"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s029" data-thumb="img/t029.webp" data-title="9.4 โจทย์ปัญหา · หน้า 29"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="55 54 ตรวจความเข้าใจ 1โรงเรียนแห่งหนึ่งต้องการทำฐานเสาธงที่มีลักษณะดังรูป แต่ละชั้นมีความหนา 0.2 เมตร โดยหน้าตัดของฐานชั้นล่างเป็นรูปสี่เหลี่ยมจัตุรัส ยาวด้านละ 4 เมตร หน้าตัดของฐานชั้นบนมีความยาวของด้านน้อยกว่าชั้นล่างด้านละ 0.5 เมตร ถ้าผู้รับเหมาคิดค่าก่อสร้างลูกบาศก์เมตรละ 2,000 บาท โรงเรียนต้องจ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s030" data-title="9.4 โจทย์ปัญหา · หน้า 30"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s030" data-thumb="img/t030.webp" data-title="9.4 โจทย์ปัญหา · หน้า 30"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="57 56 2แม่มีกระถางต้นไม้ที่มีลักษณะและขนาดดังรูป แม่ต้องการใส่ดินให้ต่ำกว่าขอบกระถาง 5 เซนติเมตร ทั้งสองส่วน ถ้าดิน 1 ถุง มีปริมาตร 10,000 ลูกบาศก์เซนติเมตรต้องใช้ดินอย่างน้อยกี่ถุง วิธีทำ แบ่งกระถางออกเป็น 2 ส่วน ให้แต่ละส่วนเป็นทรงสี่เหลี่ยมมุมฉาก แม่ต้องการใส่ดินให้ต่ำกว่าขอบกระถาง 5 เซนติเมตร ทั"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s031" data-title="9.4 โจทย์ปัญหา · หน้า 31"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s031" data-thumb="img/t031.webp" data-title="9.4 โจทย์ปัญหา · หน้า 31"><div class="inner pp">
   <div class="pphead"><span class="secbadge">9.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 31</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="58 สิ่งที่ได้เรียนรู้ 9.1 9.2 9.3 9.4 ขั้นที่ 1 หาความจุของสระว่ายน้ำทรงสี่เหลี่ยมมุมฉากที่กว้าง 10 เมตร ยาว 20 เมตร และลึก 1.5 เมตรขั้นที่ 2 หาปริมาตรของที่วางเตียงไม้ทรงสี่เหลี่ยมมุมฉากที่กว้าง 1.2 เมตร ยาว 2 เมตร และสูง 1.5 เมตร แล้วนำมาคูณกับ 3 จะได้ปริมาตรของที่วางเตียงไม้ทั้งสามที่ขั้นที่ 3 หา"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -669,18 +695,31 @@ function start() {
   }
   function setOn(v) {
     on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
     cv.classList.toggle('noswipe', on);
-    if (on) Kit.toast('✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil ได้ วางมือบนจอได้)');
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
   }
   btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
   function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
   cv.addEventListener('pointerdown', function (e) {
     if (!on) return;
-    if (e.pointerType === 'pen') penSeen = true;
-    else if (e.pointerType === 'touch' && penSeen) return; /* มีปากกาแล้ว ไม่นับฝ่ามือ */
-    e.preventDefault(); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
-    cur = { c: color, p: [pt(e)], id: e.pointerId }; list().push(cur); draw();
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
   });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
   cv.addEventListener('pointermove', function (e) {
     if (!cur || e.pointerId !== cur.id) return;
     var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
@@ -765,7 +804,7 @@ function start() {
       cam.addEventListener('pointerdown', function (e) {
         if (e.target.closest('button')) return;
         drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
-        cam.setPointerCapture && cam.setPointerCapture(e.pointerId); e.preventDefault();
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
       });
       cam.addEventListener('pointermove', function (e) {
         if (!drag || e.pointerId !== drag.id) return;
@@ -850,6 +889,77 @@ function start() {
   /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
   if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
   if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

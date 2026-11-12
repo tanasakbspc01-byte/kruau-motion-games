@@ -94,6 +94,10 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 /* ---- ปากกาเขียนบนสไลด์ ---- */
 .drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
 body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
 .drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
 body.drawing .drawbar{display:flex}
 .drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
@@ -102,6 +106,28 @@ body.drawing .drawbar{display:flex}
 .drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
 .bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
 @media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
 /* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
 .campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
 .campnl.show{display:flex}
@@ -197,32 +223,32 @@ body.drawing .drawbar{display:flex}
   <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
   <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เตรียมความพร้อม</span></button><button data-jump="2.1"><span class="e">⚖️</span><span>2.1 การเปรียบเทียบและเรียงลำดับ</span></button><button data-jump="2.2"><span class="e">➕</span><span>2.2 การบวก การลบ</span></button><button data-jump="2.3"><span class="e">🧮</span><span>2.3 การบวก ลบ คูณ หารระคน</span></button><button data-jump="2.4"><span class="e">📝</span><span>2.4 โจทย์ปัญหา</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-sec="pre" data-steps="1" data-src="img/s002" data-title="เตรียมความพร้อม · หน้า 2"><div class="inner pp">
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="1" data-src="img/s002" data-thumb="img/t002.webp" data-title="เตรียมความพร้อม · หน้า 2"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 2 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เตรียมความพร้อม 1แสดงวิธีทำและตอบในรูปเศษส่วนอย่างต่ำ จำนวนคละ หรือจำนวนนับ 1 1) 1 - + เฉลย 2.1 2.2 2.3 2.4 วิธีทำ 1 - + = - + = - + = - + = = 1 ตอบ 1 2.1 การเปรียบเทียบและเรียงลำดับ 12 2.2 การบวก การลบ 47 2.3 การบวก ลบ คูณ หารระคน 85 2.4 โจทย์ปัญหา 102 บทที่ 2 เศษส่วน"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s003" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s003" data-thumb="img/t003.webp" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 2) 1 - ( + ) เฉลย วิธีทำ 1 - ( + ) = - ( + ) = - ( + ) = - ( + ) = - = - = - = ตอบ 3) (2 + ) × 2 วิธีทำ (2 + ) × 2 = ( + ) × = ( + ) × = ( + ) × = × = = = 7 ตอบ 7 2 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s004" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s004" data-thumb="img/t004.webp" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 4) 2 + × 2 เฉลย วิธีทำ 2 + × 2 = + × = + = + = + = = = 4 ตอบ 4 5) 4 ÷ ( - ) วิธีทำ (2 + ) × 2 = ( + ) × = ( + ) × = ( + ) × = × = = = 7 ตอบ 7 4 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s005" data-title="เตรียมความพร้อม · หน้า 5"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s005" data-thumb="img/t005.webp" data-title="เตรียมความพร้อม · หน้า 5"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="7 6) 4 ÷ - เฉลย วิธีทำ 2 + × 2 = + × = + = + = + = = = 4 ตอบ 4 1) แม่ซื้อผักคะน้า 1 กิโลกรัม ซึ่งซื้อมากกว่าผักกวางตุ้ง กิโลกรัม แม่ซื้อผักทั้งสองอย่างรวมกันกี่กิโลกรัม 6 2แสดงวิธีคิดและวิธีทำ วิธีคิดวิธีทำ แม่ซื้อผักคะน้า 1 กิโลกรัม ซึ่งซื้อมากกว่าผักกวางตุ้ง กิโลกรัม แม่ซื้อผักกวางตุ้ง 1 - = - กิโ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s006" data-title="เตรียมความพร้อม · หน้า 6"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s006" data-thumb="img/t006.webp" data-title="เตรียมความพร้อม · หน้า 6"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9 เฉลย 3) มีนักเรียนมาสมัครเข้าชุมนุมคณิตศาสตร์ 72 คน เป็นนักเรียนชาย ของนักเรียนที่มาสมัคร มีนักเรียนหญิงมาสมัครเข้าชุมนุมคณิตศาสตร์กี่คน 8 วิธีคิดวิธีทำ น้อยตัดริบบิ้น 6 เส้น เส้นละ 1 เมตร น้อยตัดริบบิ้นไป 6 × 1= 6 × เมตร = เมตร น้อยมีริบบิ้นยาว 10 เมตร ดังนั้น น้อยเหลือริบบิ้น 10 - = - เมตร = - เ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s007" data-title="เตรียมความพร้อม · หน้า 7"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s007" data-thumb="img/t007.webp" data-title="เตรียมความพร้อม · หน้า 7"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="11 เฉลย 1) 18 และ 21 10 3แสดงวิธีหา ค.ร.น. ของจำนวนนับที่กำหนด วิธีทำ 18 = 2 × 3 × 3 21 = 3 × 7 ดังนั้น ค.ร.น. ของ 18 และ 21 คือ 2 × 3 × 3 × 7 = 126ตอบ 126 2) 5, 7 และ 9 วิธีทำ เนื่องจากตัวหารร่วมของ 5, 7 และ 9 มีเพียงจำนวนเดียว คือ 1 ดังนั้น ค.ร.น. ของ 5, 7 และ 9 คือ 5 × 7 × 9 = 315ตอบ 315 3) 12, 1"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -232,92 +258,92 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s008" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 8"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s008" data-thumb="img/t008.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 8"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="12 13 ป้าแดงขายขนมฟักทองและขนมกล้วย แล้วยังเหลือขนมฟักทอง ถาด และขนมกล้วย ถาด ป้าแดงเหลือขนมชนิดใดมากกว่า การเปรียบเทียบและเรียงลำดับ2.1 พิจารณาสถานการณ์ต่อไปนี้ การเปรียบเทียบเศษส่วนและจำนวนคละ ถ้าต้องการรู้ว่า ป้าแดงเหลือขนมชนิดใดมากกว่า จะมีวิธีเปรียบเทียบอย่างไร ต้องทำเศษส่วนทั้งสองจำนวนให้มีตัว"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s009" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 9"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s009" data-thumb="img/t009.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 9"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="14 15 ตาสนมีที่ดิน 5 ไร่ ยายบัวมีที่ดิน 5 ไร่ ใครมีที่ดินมากกว่ากัน พิจารณาสถานการณ์ต่อไปนี้ ถ้าต้องการรู้ว่า ตาสนกับยายบัว ใครมีที่ดินมากกว่ากัน จะมีวิธีเปรียบเทียบอย่างไร เปรียบเทียบ 5 กับ 5 พบว่า 5 = 5จึงเปรียบเทียบ และ โดยทำ และ ให้มีตัวส่วนเท่ากันซึ่งอาจทำตัวส่วนให้เท่ากับ ค.ร.น. ของ 12 และ 16 "></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s010" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 10"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s010" data-thumb="img/t010.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 10"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีเปรียบเทียบเศษส่วนและจำนวนคละ 16 17 ตัวอย่างที่ 1 กับ วิธีทำ ค.ร.น. ของ 6 และ 14 คือ 42 = = = = ซึ่ง &gt; ดังนั้น &gt; ตอบ &gt; ตัวอย่างที่ 2 4 กับ วิธีทำ 1 เขียนเศษเกินในรูปจำนวนคละ จะได้ = 4 เปรียบเทียบ 4 กับ 4 พบว่า 4 = 4 จึงเปรียบเทียบ กับ ค.ร.น. ของ 15 และ 18 คือ 90 = = = = ซึ่ง &lt; แสดงว่า &lt; ดังน"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s011" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 11"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s011" data-thumb="img/t011.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 11"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="18 19 แสดงวิธีเปรียบเทียบเศษส่วนและจำนวนคละ 1 กับ เฉลย วิธีทำ ค.ร.น. ของ 5 และ 11 คือ 55 = = = = ซึ่ง &gt; ดังนั้น &gt; ตอบ &gt; 2 กับ วิธีทำ ค.ร.น. ของ 15 และ 20 คือ 60 = = = = ซึ่ง &gt; ดังนั้น &gt; ตอบ &gt; 3 กับ 3 วิธีทำ เนื่องจาก = 2 จึงเปรียบเทียบ 2 กับ 3 พบว่า 2 &lt; 3 จะได้ 2 &lt; 3 ดังนั้น &lt; 3ตอบ &lt; 3 46 กับ วิธีทำ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s012" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 12"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s012" data-thumb="img/t012.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 12"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="20 21 54 กับ 4 เฉลย วิธีทำ เนื่องจาก 4 = 4 จึงเปรียบเทียบ กับ ค.ร.น. ของ 3 และ 4 คือ 12 = = = = ซึ่ง &lt; แสดงว่า &lt; ดังนั้น 4 &lt; 4ตอบ 4 &lt; 4 615 กับ 15 วิธีทำ เนื่องจาก 15 = 15 จึงเปรียบเทียบ กับ ค.ร.น. ของ 9 และ 12 คือ 36 = = = = ซึ่ง &lt; แสดงว่า &lt; ดังนั้น 15 &lt; 15ตอบ 15 &lt; 15 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 13"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-thumb="img/t013.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 13"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="22 23 มะม่วง 4 ผล มีน้ำหนักดังนี้ มะม่วงแรด กิโลกรัม มะม่วงน้ำดอกไม้มัน กิโลกรัม มะม่วงอกร่อง กิโลกรัม และมะม่วงเขียวเสวย กิโลกรัม พิจารณาสถานการณ์ต่อไปนี้ การเรียงลำดับเศษส่วนและจำนวนคละ จะมีวิธีเรียงลำดับน้ำหนักมะม่วงจากน้อยไปมาก อย่างไร เนื่องจาก , และ น้อยกว่า ในขณะที่ มากกว่า แสดงว่า มากที่สุด "></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s014" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 14"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s014" data-thumb="img/t014.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 14"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="24 25 จึงเปรียบเทียบ , , และ โดยทำให้เป็นเศษส่วนที่มีตัวส่วนเท่ากันซึ่งอาจทำตัวส่วนให้เท่ากับ ค.ร.น. ของ 5, 6, 3 และ 10 ค.ร.น. ของ 5, 6, 3 และ 10 คือ 30จึงทำ , , และ ให้เป็นเศษส่วนที่มีตัวส่วนเป็น 30 ดังนี้ = = = = = = = = เมื่อเรียงลำดับจากมากไปน้อย จะได้ , , , หรือ , , , ดังนั้น เรียงลำดับระยะเวลา"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s015" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 15"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s015" data-thumb="img/t015.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 15"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="26 27 จึงเปรียบเทียบ , , และ โดยทำให้เป็นเศษส่วนที่มีตัวส่วนเท่ากันซึ่งอาจทำตัวส่วนให้เท่ากับ ค.ร.น. ของ 5, 6, 3 และ 10 ค.ร.น. ของ 5, 6, 3 และ 10 คือ 30จึงทำ , , และ ให้เป็นเศษส่วนที่มีตัวส่วนเป็น 30 ดังนี้ = = = = = = = = เมื่อเรียงลำดับจากมากไปน้อย จะได้ , , , หรือ , , , ดังนั้น เรียงลำดับระยะเวลา"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 16"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-thumb="img/t016.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 16"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="28 29 ค.ร.น. ของ 6 และ 15 คือ 30 = = = = ซึ่ง &lt; แสดงว่า &lt; ดังนั้น เรียงลำดับจากน้อยไปมาก ได้ดังนี้ , , , ตอบ , , , ตัวอย่างที่ 3 เรียงลำดับ , 4, 3, และ จากน้อยไปมาก วิธีทำ เนื่องจาก = 3, = 4 และ = 4 จึงเปรียบเทียบ 3, 4, 3, 4 และ 4 เปรียบเทียบ 3 และ 3 พบว่า 3 = 3 จึงเปรียบเทียบ และ เนื่องจาก &gt; และ &lt; "></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s017" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 17"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s017" data-thumb="img/t017.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 17"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="30 31 ปฏิบัติกิจกรรม 1เรียงลำดับจากน้อยไปมาก เฉลย 1) , , และ วิธีทำ เนื่องจาก , และ น้อยกว่า 1 ในขณะที่ มากกว่า 1 แสดงว่า มากที่สุด จึงเปรียบเทียบ , และ พบว่า และ มากกว่า และ &lt; แสดงว่า น้อยที่สุด จึงเปรียบเทียบ กับ ซึ่ง ค.ร.น. ของ 10 และ 12 คือ 60 = = และ = = ซึ่ง &lt; แสดงว่า &lt; ดังนั้น เรียงลำดับจากน้"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s018" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 18"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s018" data-thumb="img/t018.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 18"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="32 33 2เรียงลำดับจากมากไปน้อย เฉลย 1) , , และ วิธีทำ เนื่องจาก , และ น้อยกว่า 1 และ = 1 แสดงว่า มากที่สุด จึงเปรียบเทียบ , และ พบว่า น้อยกว่า ในขณะที่ และ มากกว่า แสดงว่า น้อยที่สุด จึงเปรียบเทียบ กับ ซึ่ง ค.ร.น. ของ 4 และ 9 คือ 36 = = และ = = ซึ่ง &gt; แสดงว่า &gt; ดังนั้น เรียงลำดับจากน้อยไปมากได้ดังนี้"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s019" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 19"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s019" data-thumb="img/t019.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 19"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="34 35 ตรวจสอบความเข้าใจ 1เรียงลำดับจากน้อยไปมาก เฉลย 1) , , และ วิธีทำ เนื่องจาก , และ น้อยกว่า 1 ในขณะที่ มากกว่า 1 แสดงว่า มากที่สุด จึงเปรียบเทียบ , และ พบว่า และ มากกว่า และ &lt; แสดงว่า น้อยที่สุด จึงเปรียบเทียบ กับ ซึ่ง ค.ร.น. ของ 10 และ 12 คือ 60 = = และ = = ซึ่ง &lt; แสดงว่า &lt; ดังนั้น เรียงลำดับจา"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s020" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 20"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s020" data-thumb="img/t020.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 20"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="36 37 2เรียงลำดับจากมากไปน้อย เฉลย 1) , , และ วิธีทำ เนื่องจาก , และ น้อยกว่า 1 และ = 1 แสดงว่า มากที่สุด จึงเปรียบเทียบ , และ พบว่า น้อยกว่า ในขณะที่ และ มากกว่า แสดงว่า น้อยที่สุด จึงเปรียบเทียบ กับ ซึ่ง ค.ร.น. ของ 4 และ 9 คือ 36 = = และ = = ซึ่ง &gt; แสดงว่า &gt; ดังนั้น เรียงลำดับจากน้อยไปมากได้ดังนี้"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s021" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 21"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s021" data-thumb="img/t021.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 21"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="38 39 ตรวจสอบความเข้าใจ 1แสดงวิธีเปรียบเทียบเศษส่วนและจำนวนคละ เฉลย 1) กับ วิธีทำ ค.ร.น. ของ 18 และ 12 คือ 36 = = = = ซึ่ง &gt; ดังนั้น &gt; ตอบ &gt; 2) กับ วิธีทำ ค.ร.น. ของ 15 และ 25 คือ 75 = = = = ซึ่ง &gt; ดังนั้น &gt; ตอบ &gt; 3) 10 กับ 10 วิธีทำ เนื่องจาก 10 = 10 จึงเปรียบเทียบ กับ ค.ร.น. ของ 9 และ 30 คือ 90 = "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s022" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 22"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s022" data-thumb="img/t022.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 22"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="40 41 เฉลย 4) กับ 11 วิธีทำ เนื่องจาก = 11 จึงเปรียบเทียบ 11 กับ 11 พบว่า 11 = 11 จึงเปรียบเทียบ กับ ค.ร.น. ของ 8 และ 5 คือ 40 = = = = ซึ่ง &gt; แสดงว่า &gt; ดังนั้น 11 &gt; 11 หรือ &gt; 11ตอบ &gt; 11 2แสดงวิธีเรียงลำดับจากน้อยไปมาก 1) , , และ วิธีทำ เนื่องจาก และ น้อยกว่า 1 ในขณะที่ และ มากกว่า 1 จึงเปรียบเทียบ ก"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s023" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 23"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s023" data-thumb="img/t023.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 23"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="42 43 เฉลย 2) 2 , , , 4 และ วิธีทำ เนื่องจาก 2 , , 4 และ มากกว่า 1 และ เท่ากับ 1 แสดงว่า น้อยที่สุด จึงเปรียบเทียบ 2 , , 4 และ  เปรียบเทียบ 2 กับ 2 พบว่า 2 = 2 จึงเปรียบเทียบ กับ พบว่า &lt; และ &gt; แสดงว่า &lt; ดังนั้น 2 &lt; 2  เปรียบเทียบ 4 กับ 4 พบว่า 4 = 4 จึงเปรียบเทียบ กับ ค.ร.น. ของ 6 และ 10 คือ 30 = "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s024" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 24"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s024" data-thumb="img/t024.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 24"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="44 45 เฉลย 2) 3 , , 6 , และ วิธีทำ เนื่องจาก = 6 , = 6 และ = 3 จึงเปรียบเทียบ 3 , 6 , 6 , 6 และ 3  เปรียบเทียบ 6 , 6 และ 6 พบว่า 6 เท่ากัน จึงเปรียบเทียบ , และ พบว่า และ มากกว่า ในขณะที่ น้อยกว่า เปรียบเทียบ และ ซึ่ง ค.ร.น. ของ 10 และ 15 คือ 30 = = และ = = ซึ่ง &gt; แสดงว่า &gt; ดังนั้น 6 &gt; 6 และ 6 &gt; 6 "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 25"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-thumb="img/t025.webp" data-title="2.1 การเปรียบเทียบและเรียงลำดับ · หน้า 25"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.1 การเปรียบเทียบและเรียงลำดับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="46 การเรียงลำดับอาจทำได้ดังนี้1. ใช้วิธีเขียนเศษเกินในรูปจำนวนคละ แล้วพิจารณาจำนวนนับของจำนวนคละ  ถ้าจำนวนนับไม่เท่ากัน จำนวนคละที่มีจำนวนนับน้อยกว่า จำนวนคละนั้นจะน้อยกว่า  ถ้าจำนวนนับเท่ากัน ให้เปรียบเทียบเศษส่วน โดยทำให้เป็นเศษส่วนที่มีตัวส่วนเท่ากันแล้วเปรียบเทียบตัวเศษ เศษส่วนที่มีตัวเศษน้อยก"></div></div></div>
   
@@ -327,97 +353,97 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s026" data-title="2.2 การบวก การลบ · หน้า 26"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s026" data-thumb="img/t026.webp" data-title="2.2 การบวก การลบ · หน้า 26"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="48 หยกนำน้ำผึ้งและน้ำมะนาวมาผสมกัน จะได้น้ำผึ้งผสมน้ำมะนาวกี่แก้ว 49 แสดงวิธีหาปริมาณน้ำผึ้งผสมน้ำมะนาว ดังนี้ค.ร.น. ของ 3 และ 4 คือ 12 + = + = + = ดังนั้น จะได้น้ำผึ้งผสมน้ำมะนาว แก้ว การบวกหรือการลบเศษส่วนที่มีตัวส่วนไม่เท่ากัน ต้องทำตัวส่วนของตัวเศษส่วนให้เท่ากันก่อน โดยอาจทำให้เท่ากับ ค.ร.น. ของ"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s027" data-title="2.2 การบวก การลบ · หน้า 27"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s027" data-thumb="img/t027.webp" data-title="2.2 การบวก การลบ · หน้า 27"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="50 51 การหาความสัมพันธ์ระหว่างการบวกกับการลบเศษส่วน ใช้วิธีการเดียวกันกับการหาความสัมพันธ์ระหว่างการบวกกับการลบจำนวนนับ - = - = - = = ดังนั้น - = แสดงวิธีหาผลลบของ - และ - ได้อย่างไร - = - = - = = ดังนั้น - = สรุปความสัมพันธ์ของ + = ได้อย่างไร จาก + = จะได้ - = หรือ - = ตัวอย่างที่ 1 + วิธีทำ ค.ร.น."></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s028" data-title="2.2 การบวก การลบ · หน้า 28"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s028" data-thumb="img/t028.webp" data-title="2.2 การบวก การลบ · หน้า 28"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="52 53 แสดงวิธีหาคำตอบและตอบในรูปเศษส่วนอย่างต่ำ จำนวนคละ หรือจำนวนนับ 1 + เฉลย วิธีทำ ค.ร.น. ของ 3 และ 5 คือ 15 + = + = + = ตอบ 2 - วิธีทำ ค.ร.น. ของ 4 และ 7 คือ 28 - = - = - = ตอบ 3 - วิธีทำ ค.ร.น. ของ 8 และ 12 คือ 24 - = - = - = ตอบ 4 + วิธีทำ ค.ร.น. ของ 15 และ 10 คือ 30 + = + = + = ตอบ 2.1 2.2 2."></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s029" data-title="2.2 การบวก การลบ · หน้า 29"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s029" data-thumb="img/t029.webp" data-title="2.2 การบวก การลบ · หน้า 29"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="54 55 5 - เฉลย วิธีทำ ค.ร.น. ของ 10 และ 4 คือ 20 - = - = - = ตอบ 6 + วิธีทำ ค.ร.น. ของ 16 และ 24 คือ 48 + = + = + = ตอบ แม่ค้ามีขนมถั่วกวนและขนมเผือกกวนในถาดที่มีขนาดเท่ากัน โดยมีขนมถั่วกวน 2 ถาด และขนมเผือกกวน 1 ถาด แม่ค้ามีขนมถั่วกวนและขนมเผือกกวนทั้งหมดกี่ถาด และขนมถั่วกวนมากกว่าขนมเผือกกวนกี่ถาด"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s030" data-title="2.2 การบวก การลบ · หน้า 30"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s030" data-thumb="img/t030.webp" data-title="2.2 การบวก การลบ · หน้า 30"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="56 57 จะได้ขนมถั่วกวนและขนมเผือกกวน 2 + 1 ถาด ดังนี้ 2 + 1 = (2 + 1) + ( + ) ถาด = 3 + ( + ) ถาด = 3 + ถาด = 3 ถาด ดังนั้น แม่ค้ามีขนมถั่วกวนและขนมเผือกกวนทั้งหมด 3ถาด สังเกตได้ว่า ในการหาคำตอบสามารถหาได้โดยนำจำนวนนับบวกกับจำนวนนับและเศษส่วนบวกกับเศษส่วน 2 + 1 = (2 + ) + (1 + ) = (2 + 1) + ( + ) = 3"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s031" data-title="2.2 การบวก การลบ · หน้า 31"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s031" data-thumb="img/t031.webp" data-title="2.2 การบวก การลบ · หน้า 31"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="58 59  หาปริมาณขนมถั่วกวนที่มากกว่าขนมเผือกกวน ดังนี้ ขนมถั่วกวน 2 ถาด = = ขนมเผือกกวน 1 ถาด = = จะได้ขนมถั่วกวนมากกว่าขนมเผือกกวน 2 - 1 ถาด ดังนี้ 2 - 1 = (2 - 1) + ( - ) ถาด = 1 + ( - ) ถาด = 1 + ถาด = 1 ถาด ดังนั้น ขนมถั่วกวนมากกว่าขนมเผือกกวน 1ถาด สังเกตได้ว่า ในการหาคำตอบสามารถหาได้โดยนำจำนวนน"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-title="2.2 การบวก การลบ · หน้า 32"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-thumb="img/t032.webp" data-title="2.2 การบวก การลบ · หน้า 32"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="60 61 2 - 1 = - = - = - = = 1 ดังนั้น ขนมถั่วกวนมากกว่าขนมเผือกกวน 1ถาด หรือ อาจหาคำตอบได้โดยเขียนจำนวนคละในรูปเศษเกินแล้วจึงหาผลลบ นุ่นรีดนมวัวได้ 1 ถัง อ้อรีดนมวัวได้ 3 ถัง ถ้าถังแต่ละถังมีขนาดเท่ากัน นุ่นและอ้อรีดนมวัวได้ทั้งหมดกี่ถัง และนุ่นรีดนมวัวได้น้อยกว่าอ้อกี่ถัง พิจารณาสถานการณ์ต่อไปนี้ "></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-title="2.2 การบวก การลบ · หน้า 33"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-thumb="img/t033.webp" data-title="2.2 การบวก การลบ · หน้า 33"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="62 63 จะได้นมวัวทั้งหมด 4 + 3 ถัง ดังนี้ 1 + 3 = (1 + 3) + ( + ) ถัง = 4 + ( + ) ถัง = 4 + ถัง = 4 + 1 ถัง = 4 + 1 + ถัง = 5 + ถัง = 5 ถัง ดังนั้น นุ่นและอ้อรีดนมวัวได้ทั้งหมด 5 ถัง สังเกตได้ว่า ในการหาคำตอบสามารถหาได้โดยนำจำนวนนับบวกกับจำนวนนับและเศษส่วนบวกกับเศษส่วน ถ้าผลบวกของเศษส่วนกับเศษส่วนอยู"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-title="2.2 การบวก การลบ · หน้า 34"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-thumb="img/t034.webp" data-title="2.2 การบวก การลบ · หน้า 34"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="64 65 1 + 3 = + = + = + = = 5 ดังนั้น นุ่นและอ้อรีดนมวัวได้ทั้งหมด 5 ถัง หรือ อาจหาคำตอบได้โดยเขียนจำนวนคละในรูปเศษเกินแล้วจึงหาผลบวก  หาปริมาณนมวัวที่นุ่นรีดได้น้อยกว่าอ้อ ดังนี้ นุ่นรีดนมวัวได้ 1 ถัง = = อ้อรีดนมวัวได้ 3 ถัง = = จะได้ว่า นุ่นรีดนมวัวได้น้อยกว่าอ้อ 3 - 1 ถัง ดังนี้ 2.1 2.2 2.3 2.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-title="2.2 การบวก การลบ · หน้า 35"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-thumb="img/t035.webp" data-title="2.2 การบวก การลบ · หน้า 35"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="66 67 สังเกตได้ว่า ในการหาคำตอบสามารถหาได้โดยนำจำนวนนับลบกับจำนวนนับและเศษส่วนลบกับเศษส่วน ถ้าผลลบของเศษส่วน มีตัวตั้งน้อยกว่าตัวลบ ให้กระจายผลลบของจำนวนนับมา 1 โดยเขียนในรูปเศษส่วน แล้วนำไปบวกกับตัวตั้ง จากนั้นจึงหาผลลบ 3 - 1 = (3 - 1) + ( - ) ถัง = 2 + ( - ) ถัง = 1 + 1 + ( - ) ถัง = 1 + ( + - ) ถ"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-title="2.2 การบวก การลบ · หน้า 36"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-thumb="img/t036.webp" data-title="2.2 การบวก การลบ · หน้า 36"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="68 69 3 - 1 = - = - = - = = 1 ดังนั้น นุ่นรีดนมวัวได้น้อยกว่าอ้อ 1 ถัง หรือ อาจหาคำตอบได้โดยเขียนจำนวนคละในรูปเศษเกินแล้วจึงหาผลลบ การบวกบวกจำนวนคละ อาจทำได้โดย นำจำนวนนับบวกกับจำนวนนับ และเศษส่วนบวกกับเศษส่วน ถ้าผลบวกของเศษส่วนกับเศษส่วนอยู่ในรูปเศษเกิน ให้ทำเป็นจำนวนคละแล้วนำจำนวนนับของจำนวนคละไปบ"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s037" data-title="2.2 การบวก การลบ · หน้า 37"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s037" data-thumb="img/t037.webp" data-title="2.2 การบวก การลบ · หน้า 37"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="70 แสดงวิธีหาคำตอบและตอบในรูปเศษส่วนอย่างต่ำ จำนวนคละ หรือจำนวนนับ ตัวอย่างที่ 1 2 + 3 วิธีทำ 2 + 3 = (2 + ) + (3 + ) = (2 + 3) + ( + ) = 5 + ( + ) = 5 + ( + ) = 5 + = 5ตอบ 5 ค.ร.น. ของ 15 และ 12 คือ 60 ตรวจสอบ5 - 3 = (5 – 3) + ( - ) = 2 + ( - ) = 2 + = 2 + = 2แสดงว่า 5 เป็นคำตอบที่ถูกต้อง หรืออาจแส"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s038" data-title="2.2 การบวก การลบ · หน้า 38"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s038" data-thumb="img/t038.webp" data-title="2.2 การบวก การลบ · หน้า 38"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="72 73 แสดงวิธีหาคำตอบ 11 + 2 เฉลย 23 - 1 วิธีทำ 1 + 2 = (1 + ) + (2 + ) = (1 + 2) + ( + ) = 3 + ( + ) = 3 + ( + ) = 3 + = 3 + 1 = 3 + 1 + = 4 + = 4ตอบ 4 วิธีทำ 3 - 1 = (3 + ) - (1 + ) = (3 - 1) + ( - ) = 2 + ( - ) = 2 + ( - ) = 2 + = 2ตอบ 2 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s039" data-title="2.2 การบวก การลบ · หน้า 39"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s039" data-thumb="img/t039.webp" data-title="2.2 การบวก การลบ · หน้า 39"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="74 75 3 + 2 เฉลย 44 + 6 วิธีทำ + 2 = 3 + 2 = (3 + ) + (2 + ) = (3 + 2) + ( + ) = 5 + ( + ) = 5 + ( + ) = 5 + = 5 + 1 = 5 + 1 + = 6 + = 6ตอบ 6 วิธีทำ 4 + 6 = (4 + ) + 6 = (4 + 6) + = 10 + = 10ตอบ 10 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s040" data-title="2.2 การบวก การลบ · หน้า 40"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s040" data-thumb="img/t040.webp" data-title="2.2 การบวก การลบ · หน้า 40"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="76 77 55 - เฉลย 67 - 4 วิธีทำ 5 - = 5 - 3 = (5 + ) - (3 + ) = (5 - 3) + ( - ) = 2 + ( - ) = 2 + ( - ) = 1 + 1 + ( - ) = 1 + + ( - ) = 1 + ( + - ) = 1 + = 1ตอบ 1 วิธีทำ 7 - 4 = 7 - (4 + ) = (6 + 1) – (4 + ) = (6 – 4) + (1 - ) = 2 + ( - ) = 2 + = 2ตอบ 2 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s041" data-title="2.2 การบวก การลบ · หน้า 41"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s041" data-thumb="img/t041.webp" data-title="2.2 การบวก การลบ · หน้า 41"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="78 79 ตรวจสอบความเข้าใจ แสดงวิธีหาคำตอบ เฉลย 1 + วิธีทำ ค.ร.น. ของ 10 และ 7 คือ 70 + = + = + = = 1ตอบ 1 2 - วิธีทำ ค.ร.น. ของ 4 และ 9 คือ 36 - = - = - = = 4ตอบ 4 35 + 6 วิธีทำ 5 + 6 = (5 + ) + (6 + ) = (5 + 6) + ( + ) = 11 + ( + ) = 11 + ( + ) = 11 + = 11ตอบ 11 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s042" data-title="2.2 การบวก การลบ · หน้า 42"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s042" data-thumb="img/t042.webp" data-title="2.2 การบวก การลบ · หน้า 42"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="80 81 เฉลย 43 + วิธีทำ 3 + = (3 + ) + = 3 + + = 3 + + = 3 + = 3 + 1 = 3 + 1 + = 4 + = 4ตอบ 4 5 - 2 วิธีทำ - 2 = 4 - 2 = (4 + ) - (2 + ) = (4 - 2) + ( - ) = 2 + ( - ) = 2 + ( - ) = 1 + 1 + ( - ) = 1 + + ( - ) = 1 + ( + - ) = 1 + = 1ตอบ 1 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s043" data-title="2.2 การบวก การลบ · หน้า 43"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s043" data-thumb="img/t043.webp" data-title="2.2 การบวก การลบ · หน้า 43"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="82 83 เฉลย 64 - 1 วิธีทำ 4 - 1 = (4 + ) – (1 + ) = (4 – 1) + ( - ) = 3 + ( - ) = 3 + ( - ) = 2 + 1 +( - ) = 2 + + ( - ) = 2 + ( + - ) = 2 + = 2ตอบ 2 สิ่งที่ได้เรียนรู้ วิธีหาคำตอบต่อไปนี้ ถูกหรือผิด ถ้าผิดให้แก้ไข 14 + 3 =  วิธีทำ 4 + 3 = 4 + (3 + ) = (4 + 3) + = 7 + = 7ตอบ 7 ถูก เฉลย 2.1 2.2 2.3 2"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s044" data-title="2.2 การบวก การลบ · หน้า 44"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s044" data-thumb="img/t044.webp" data-title="2.2 การบวก การลบ · หน้า 44"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.2 การบวก การลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 44 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="84 24 - 3 =  วิธีทำ 4 - 3 = 4 - (3 + ) = (4 - 3) + = 1 + = 1ตอบ 1 ผิด แก้ไขให้ถูกต้อง ดังนี้ตัวอย่าง วิธีทำ 4 - 3 = 4 - (3 + ) = (3 + 1) - (3 + ) = (3 – 3) + (1 - ) = 0 + (1 - ) = - = ตอบ ข้อตกลงเกี่ยวกับลำดับขั้นการคำนวณที่มากกว่า 1 ขั้นตอนขั้นที่  คำนวณในวงเล็บ (ถ้ามี)ขั้นที่  คูณ หรือ หาร โดยค"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -427,42 +453,42 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s045" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 45"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s045" data-thumb="img/t045.webp" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 45"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.3 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="86 87 ขั้นที่ 2 หาผลลัพธ์ของ × × = = 1131 ขั้นที่ 3 หาผลลัพธ์ของ - - = - = - = ค.ร.น.ของ 16 และ 3 คือ 48 ดังนั้น 1 ÷ 1 - × = ขั้นที่ 1 หาผลลัพธ์ของ 1 ÷ 1 1 ÷ 1 = ÷ = × = = 5382 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="8" data-src="img/s046" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 46"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s046" data-thumb="img/t046.webp" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 46"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.3 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 46 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="88 89 พิจารณาการหาผลลัพธ์ของ 1 ÷ (1 - ) × ลำดับขั้นการคำนวณ 1 ÷ (1 - ) ×    ขั้นที่ 1 หาผลลัพธ์ของ 1 - 1 - = - = - = - = ค.ร.น.ของ 33 และ 11 คือ 33 ขั้นที่ 2 หาผลลัพธ์ของ 1 ÷ 1 ÷ = ÷ = × = = 32 ขั้นที่ 3 หาผลลัพธ์ของ × × = = = 1 258 ดังนั้น 1 ÷ (1 - ) × = 1 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="7" data-src="img/s047" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 47"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s047" data-thumb="img/t047.webp" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 47"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.3 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="90 91 ซึ่งอาจเขียนแสดงการหาผลลัพธ์ของ 1 ÷ (1 - ) × ดังนี้ 1 ÷ (1 - ) × = ÷ ( - ) × = ÷ ( - ) × = ÷ ( - ) × = = = = = 1 พิจารณาการหาผลลัพธ์ของ (5 + 1) ÷ (2 - ) ลำดับขั้นการคำนวณ (5 + 1) ÷ (2 - )    วิธีทำ (5 + 1) ÷ (2 - ) = ( + ) ÷ ( - ) = ( + ) ÷ ( - ) = ( + ) ÷ ( - ) = = = = 3ตอบ 3 12ค.ร.น. ของ "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s048" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 48"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s048" data-thumb="img/t048.webp" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 48"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.3 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 48 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="92 93 หาผลลัพธ์ของ 5 + 1 ÷ 2 - ลำดับขั้นการคำนวณ 5 + 1 ÷ 2 -    วิธีทำ 5 + 1 ÷ 2 - = + ÷ - = + × - = + - = + - = + - = + - = = = = 5 ตอบ 5 แสดงวิธีหาผลลัพธ์ 13 - 2 × 1 ÷ เฉลย วิธีทำ 3 - 2 × 1 ÷ = - × ÷ = - ÷ = - ÷ = - × = - = - = - = - = ตอบ 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s049" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 49"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s049" data-thumb="img/t049.webp" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 49"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.3 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 49 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="94 95 2(3 - 2) × (1 ÷ ) เฉลย 36 ÷ 1 + 1 × วิธีทำ (3 - 2) × (1 ÷ ) = ( - ) × ( ÷ ) = ( - ) × ( × ) = ( - ) × () = × = = ตอบ วิธีทำ 6 ÷ 1 + 1 × = ÷ + × = × + × = + = + = + = + = = 4ตอบ 4 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s050" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 50"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s050" data-thumb="img/t050.webp" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 50"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.3 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 50 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="96 97 42 - + ÷ 1 เฉลย วิธีทำ 2 - + ÷ 1 = - + ÷ = - + × = - + = - + = - + = - + = = 1ตอบ ตรวจสอบความเข้าใจ แสดงวิธีหาผลลัพธ์ 1(3 - 1) × 2 + วิธีทำ (3 - 1) × 2 + = ( - ) × + = ( - ) × + = ( - ) × + = × + = + = + = = 4ตอบ 4 เฉลย 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s051" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 51"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s051" data-thumb="img/t051.webp" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 51"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.3 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 51 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="98 99 21 + 2 ÷ (4 × ) เฉลย 31 × 2 + ÷ วิธีทำ 1 + 2 ÷ (4 × ) = + ÷ (4 × ) = + ÷ () = + ÷ = + × = + = + = × = + = = 4ตอบ วิธีทำ 1 × 2 + ÷ = × + ÷ = × + × = + = + = + = + = = 5ตอบ 5 2.1 2.2 2.3 2.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s052" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 52"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s052" data-thumb="img/t052.webp" data-title="2.3 การบวก ลบ คูณ หารระคน · หน้า 52"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.3 การบวก ลบ คูณ หารระคน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 52 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="100 101 4 + ÷ 1 - เฉลย วิธีทำ + ÷ 1 - = + ÷ - = + × - = + - = + - = + - = + - = = ตอบ สิ่งที่ได้เรียนรู้ 1 ÷ × ( + ) เฉลย การโยงเส้นแสดงลำดับขั้นการคำนวณข้างต้นถูกหรือผิด ถ้าผิดให้แก้ไขพร้อมหาผลลัพธ์    ผิด แก้ไขให้ถูกต้องดังนี้วิธีทำ 1 ÷ × ( + ) = ÷ × ( + ) = ÷ × ( + ) = ÷ × ( + ) = ÷ × = × × = "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -472,147 +498,147 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s053" data-title="2.4 โจทย์ปัญหา · หน้า 53"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s053" data-thumb="img/t053.webp" data-title="2.4 โจทย์ปัญหา · หน้า 53"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 53 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="102 103 โจทย์ปัญหา2.4 หนุ่ยขับรถยนต์จากกรุงเทพฯ ไประยอง โดยช่วงแรกขับได้ระยะทาง 75 กิโลเมตร และช่วงหลังขับอีก 123 กิโลเมตร จึงถึงระยอง ถ้าน้ำมันราคาลิตรละ 30 บาท และน้ำมัน 1 ลิตร รถยนต์คันนี้แล่นได้ระยะทางเฉลี่ย 11 กิโลเมตร ระยะทางจากกรุงเทพฯ ไประยองรถยนต์ของหนุ่ยใช้น้ำมันคิดเป็นเงินกี่บาท พิจารณาสถ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s054" data-title="2.4 โจทย์ปัญหา · หน้า 54"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s054" data-thumb="img/t054.webp" data-title="2.4 โจทย์ปัญหา · หน้า 54"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 54 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="104 105 เนื่องจาก ระยะทาง 11 กิโลเมตร ใช้น้ำมัน 1 ลิตรดังนั้น ระยะทาง กิโลเมตร ใช้น้ำมัน ÷ 11 = × ลิตร = ลิตร = ลิตร รถยนต์คันนี้ใช้น้ำมันไปทั้งหมดกี่ลิตร เนื่องจาก น้ำมันราคาลิตรละ 30 บาทดังนั้น ค่าน้ำมันรถยนต์ของหนุ่ยที่ขับจากกรุงเทพฯ ไประยองคิดเป็นเงิน × 30 = × 30 บาท = บาท = 543 บาท เงินค่าน้ำมั"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s055" data-title="2.4 โจทย์ปัญหา · หน้า 55"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s055" data-thumb="img/t055.webp" data-title="2.4 โจทย์ปัญหา · หน้า 55"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 55 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="106 107 ทิพย์มีน้ำเชื่อม 10 ลิตร ครั้งแรกนำมาบรรจุ 6 ขวด ขวดละ ลิตร ครั้งที่ 2 บรรจุน้ำเชื่อมที่เหลือทั้งหมดขวดละ 1 ลิตร ทิพย์บรรจุน้ำเชื่อมครั้งที่ 2 ได้กี่ขวด หาจำนวนขวดที่บรรจุครั้งที่ 2 โดยนำปริมาณน้ำเชื่อมทั้งหมด ลบด้วยปริมาณน้ำเชื่อมที่บรรจุครั้งแรก จะได้น้ำเชื่อมที่เหลือ จากนั้นนำปริมาณน้ำเชื"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s056" data-title="2.4 โจทย์ปัญหา · หน้า 56"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s056" data-thumb="img/t056.webp" data-title="2.4 โจทย์ปัญหา · หน้า 56"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 56 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="108 109 แสดงวิธีหาคำตอบ 1นุ่นวิ่งออกกำลังกาย วันเสาร์วิ่งได้ 3 กิโลเมตร วันอาทิตย์วิ่งได้ 4 กิโลเมตร ในสองวันนี้นุ่นวิ่งออกกำลังกายเฉลี่ยวันละกี่กิโลเมตร เฉลย วิธีคิดนำระยะทางที่วิ่งได้ในวันเสาร์และวันอาทิตย์รวมกัน แล้วหารด้วย 2วิธีทำ วันเสาร์วิ่งได้ 3 กิโลเมตร วันอาทิตย์วิ่งได้ 4 กิโลเมตร 2 วัน วิ่"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s057" data-title="2.4 โจทย์ปัญหา · หน้า 57"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s057" data-thumb="img/t057.webp" data-title="2.4 โจทย์ปัญหา · หน้า 57"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 57 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="110 111 3ในการเข้าค่าพักแรมแห่งหนึ่ง ครูแบ่งเชื่อให้ลูกเสือ 6 หมู่ หมู่ละ เมตร เพื่อทำราวตากผ้า และแบ่งให้ลูกเสืออีก 11 คน คนละ เมตร เพื่อใช้ทำกิจกรมผูกเงื่อน ครูยังเหลือเชือกอีก เมตร เดิมครูมีเชือกยาวกี่เมตร วิธีคิดนำความยาวเชือกแต่ละส่วน แล้วนำมารวมกัน จะได้ความยาวเชือกทั้งหมดวิธีทำ ครูแบ่งเชือกให"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s058" data-title="2.4 โจทย์ปัญหา · หน้า 58"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s058" data-thumb="img/t058.webp" data-title="2.4 โจทย์ปัญหา · หน้า 58"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 58 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="112 113 4ลุงแบ่งน้ำตาลมะพร้าว 40 กิโลกรัม ใส่ถุง ถุงละ กิโลกรัม และแบ่งน้ำตาลโตนด 15 กิโลกรัม ใส่ถุง ถุงละ กิโลกรัม ลุงจะต้องใช้ถุงทั้งหมดกี่ใบ วิธีคิดวิธีทำ น้ำตาลมะพร้าว 40 กิโลกรัม แบ่งใส่ถุง ถุงละ กิโลกรัม แสดงว่า ลุงต้องใช้ถุงใส่น้ำตาลมะพร้าว 40 ÷ = 40 × ใบ = 80 ใบ น้ำตาลโตนด 15 กิโลกรัม แบ่งใส"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s059" data-title="2.4 โจทย์ปัญหา · หน้า 59"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s059" data-thumb="img/t059.webp" data-title="2.4 โจทย์ปัญหา · หน้า 59"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 59 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="114 115 นำพื้นที่ทั้งหมด ลบด้วยพื้นที่ที่ปลูกมะม่วงและชมพู่ จากภาพ จะหาพื้นที่สำหรับขุดบ่อเลี้ยงปลาได้อย่างไร นำพื้นที่ที่ปลูกมะม่วง รวมกับพื้นที่ที่ปลูกชมพู่จะได้ + = + = ของพื้นที่ทั้งหมดซึ่งคิดเป็น × = × = ไร่ดังนั้น เกษตรกรปลูกมะม่วงและชมพู่ ไร่ จะหาพื้นที่ที่ปลูกมะม่วงและชมพู่ได้อย่างไร และได้ค"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s060" data-title="2.4 โจทย์ปัญหา · หน้า 60"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s060" data-thumb="img/t060.webp" data-title="2.4 โจทย์ปัญหา · หน้า 60"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 60 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="116 117 นักฟุตบอลทีมหนึ่งใช้เวลาฝึกซ้อมครั้งละ 3 ชั่วโมง เริ่มจากการอบอุ่นร่างกาย ของเวลาฝึกซ้อมทั้งหมด ต่อด้วยการซ้อมเทคนิคการเล่น ของเวลาที่เหลือ จากการอบอุ่นร่างกาย จากนั้นจึงฝึกซ้อมการเล่นเป็นทีม นักฟุตบอลทีมนี้ฝึกซ้อมเทคนิคการเล่นครั้งละกี่นาที วิธีคิด คิดเป็น × 150 = 80 นาที ดังนั้น นักฟุตบอลท"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s061" data-title="2.4 โจทย์ปัญหา · หน้า 61"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s061" data-thumb="img/t061.webp" data-title="2.4 โจทย์ปัญหา · หน้า 61"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 61 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="118 119 แสดงวิธีหาคำตอบ 1อดุลย์มีเงินเดือน เดือนละ 45,000 บาท เก็บออม ของเงินเดือน เป็นค่าใช้จ่ายในบ้าน ของเงินเดือน ส่วนที่เหลือเป็นค่าใช้จ่ายส่วนตัว อดุลย์มีค่าใช้จ่ายส่วนตัวเท่าใด เฉลย วิธีคิดรวมเงินที่เก็บออมและค่าใช้จ่ายในบ้าน แล้วนำไปลบออกจากเงินเดือนทั้งหมด จะได้เป็นค่าใช้จ่ายส่วนตัววิธีทำ อด"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s062" data-title="2.4 โจทย์ปัญหา · หน้า 62"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s062" data-thumb="img/t062.webp" data-title="2.4 โจทย์ปัญหา · หน้า 62"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 62 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="120 121 3พ่อค้ามีสายไฟยาว เมตร วันแรกขายไป ของความยาวสายไฟที่มีอยู่ วันที่สองขายได้ ของความยาวสายไฟที่เหลือ วันที่สองพ่อค้าขายสายไฟได้กี่เมตร วิธีคิดหาความยาวของสายไฟเป็นเมตรที่ขายในวันแรก แล้วหาความยาวของสายไฟที่เหลือโดยนำไปลบออกจากความยาวของสายไฟทั้งหมด จากนั้นจึงหาความยาวของสายไฟที่ขายในวันที่สอง"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s063" data-title="2.4 โจทย์ปัญหา · หน้า 63"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s063" data-thumb="img/t063.webp" data-title="2.4 โจทย์ปัญหา · หน้า 63"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 63 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="122 123 4ลุงเก็บมะม่วงได้ 378 ผล เป็นพันธุ์อกร่อง ของมะม่วงที่เก็บได้ เป็นพันธุ์น้ำดอกไม้ ของมะม่วงที่เก็บได้ ที่เหลือเป็นพันธุ์เขียวเสวย ลุงเก็บมะม่วงพันธุ์ใดได้มากที่สุดและเก็บได้กี่ผล วิธีคิดหาจำนวนผลของมะม่วงพันธุ์อกร่องและพันธุ์น้ำดอกไม้ แล้วจึงหาจำนวนผลของพันธุ์เขียวเสวย โดยนำจำนวนมะม่วงพันธุ์"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s064" data-title="2.4 โจทย์ปัญหา · หน้า 64"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s064" data-thumb="img/t064.webp" data-title="2.4 โจทย์ปัญหา · หน้า 64"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 64 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="124 125 กิจกรรมทบทวนความหมายของเศษส่วน “แม่แบ่งเงินให้ลูก ของเงินที่มีอยู่” หมายความว่าอย่างไร เงินของแม่แบ่งเป็น 6 ส่วนเท่า ๆ กัน แบ่งให้ลูก 1 ส่วน แม่เหลือเงิน 6 – 1 = 5 ส่วน แสดงด้วยภาพดังนี้ จากภาพ แม่มีเงินอยู่ แบ่งให้ลูก ของเงินที่มีอยู่ แม่เหลือเงิน - = ของเงินที่มีอยู่ หาคำตอบ 1แม่ค้าขายส้มโ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s065" data-title="2.4 โจทย์ปัญหา · หน้า 65"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s065" data-thumb="img/t065.webp" data-title="2.4 โจทย์ปัญหา · หน้า 65"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 65 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="126 127 ขวัญออมเงิน 28,000 บาท คิดเป็น ของเงินโบนัสที่ได้รับ ขวัญได้รับเงินโบนัสเท่าใด พิจารณาสถานการณ์ต่อไปนี้ เงินโบนัสที่ขวัญได้รับ ขวัญออมเงิน 28,000 บาท คิดเป็น ของเงินโบนัสที่ได้รับ สิ่งที่โจทย์ถาม สิ่งที่โจทย์บอก จากโจทย์ เขียนแสดงด้วยภาพอย่างไร ขวัญออมเงิน ของเงินโบนัสที่ได้รับ ซึ่งเท่ากับ 2"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s066" data-title="2.4 โจทย์ปัญหา · หน้า 66"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s066" data-thumb="img/t066.webp" data-title="2.4 โจทย์ปัญหา · หน้า 66"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 66 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="128 129 ชมรมกีฬามีสมาชิกเป็นชาย ของสมาชิกทั้งหมด ที่เหลือเป็นหญิง 30 คน ชมรมนี้มีสมาชิกทั้งหมดกี่คน หาจำนวนสมาชิกทั้งหมด โดยคิดจำนวนสมาชิกที่เป็นหญิงในรูปเศษส่วน แล้วนำไปเทียบกับ 30 คน วิธีคิด วิธีทำ มีสมาชิกทั้งหมด เป็นชาย ของสมาชิกทั้งหมด ดังนั้น มีสมาชิกเป็นหญิง - ของสมาชิกทั้งหมด ซึ่งเท่ากับ 30 "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s067" data-title="2.4 โจทย์ปัญหา · หน้า 67"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s067" data-thumb="img/t067.webp" data-title="2.4 โจทย์ปัญหา · หน้า 67"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 67 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="130 131 แสดงวิธีหาคำตอบ 1ในฟาร์มแห่งหนึ่งมีไก่ 1,200 ตัว คิดเป็น ของสัตว์ทั้งหมดในฟาร์ม ฟาร์มแห่งนี้มีสัตว์ทั้งหมดกี่ตัว เฉลย วิธีคิดหาจำนวนสัตว์ทั้งหมดจากความหมายของเศษส่วน โดยเทียบกับไก่ 1,200 ตัว แล้วจึงหาตัวส่วนทั้งหมดวิธีทำ ในฟาร์มแห่งหนึ่งมีไก่ 1,200 ตัว คิดเป็น ของจำนวนสัตว์ทั้งหมด แสดงว่า สั"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s068" data-title="2.4 โจทย์ปัญหา · หน้า 68"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s068" data-thumb="img/t068.webp" data-title="2.4 โจทย์ปัญหา · หน้า 68"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 68 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="132 133 วิธีทำ 2 ครูซื้อดินสอมา แจกให้นักเรียน ของดินสอที่ซื้อมา ดังนั้น เหลือดินสอ - = ของดินสอที่ซื้อมา ซึ่งเท่ากับ 35 แท่ง แสดงว่า ดินสอ 5 ส่วน คิดเป็น 35 แท่ง ดินสอ 1 ส่วน คิดเป็น แท่ง ดินสอ 12 ส่วน คิดเป็น 12 × = 84 แท่ง ดังนั้น ครูซื้อดินสอทั้งหมด 84 แท่งตอบ 84 แท่ง 3ครูแจกดินสอให้นักเรียน ของ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s069" data-title="2.4 โจทย์ปัญหา · หน้า 69"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s069" data-thumb="img/t069.webp" data-title="2.4 โจทย์ปัญหา · หน้า 69"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 69 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="134 135 4เก่งออกกำลังกายเป็นเวลา 3 เดือน ทำให้น้ำหนักตัวลดลง 12 กิโลกรัม ซึ่งคิดเป็น ของน้ำหนักตัวก่อนออกกำลังกาย หลังจากที่เก่งออกกำลังกายเป็นเวลา 3 เดือนแล้วเก่งหนักเท่าใด วิธีคิด 1 หาน้ำหนักตัวที่ลดลงในรูปเศษส่วน แล้วใช้ความหมายของเศษส่วนเทียบกับน้ำหนัก 12 กก. เพื่อหาน้ำหนักตัวก่อนออกกำลังกายจากต"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s070" data-title="2.4 โจทย์ปัญหา · หน้า 70"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s070" data-thumb="img/t070.webp" data-title="2.4 โจทย์ปัญหา · หน้า 70"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 70 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="136 137 5แม่ค้าซื้อส้ม 2 ชนิด เป็นส้มสายน้ำาผึ้ง ของส้มที่ซื้อมาทั้งหมด และเป็นส้มโชกุน 45 กิโลกรัม แม่ค้าซื้อส้มทั้งหมดกี่กิโลกรัม หาจำนวนส้มทั้งหมดจากความหมายของเศษส่วน โดยเทียบกับส้ม 45 กก. แล้วจึงหาตัวส่วนทั้งหมดวิธีทำ 1 แม่ค้าซื้อส้มสายน้ำผึ้ง ของส้มที่ซื้อมาทั้งหมด หมายความว่า ถ้าแม่ค้าซื้อส้ม"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s071" data-title="2.4 โจทย์ปัญหา · หน้า 71"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s071" data-thumb="img/t071.webp" data-title="2.4 โจทย์ปัญหา · หน้า 71"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 71 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="138 139 6ช่วงปิดภาคเรียน ใบบัวต้องฝึกทำโจทย์คณิตศาสตร์ โดยทำเสร็จไปแล้ว ของจำนวนข้อทั้งหมด ยังเหลือที่ต้องทำอีก 56 ข้อ ใบบัวทำโจทย์คณิตศาสตร์เสร็จแล้วกี่ข้อ วิธีคิด 1 หาจำนวนข้อที่ทำเสร็จแล้วจากความหมายของเศษส่วนที่แสดงถึงจำนวนข้อที่ทำไปแล้ว โดยเทียบกับจำนวนข้อที่ต้องทำอีก 56 ข้อวิธีทำ 1 ทำโจทย์คณิต"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s072" data-title="2.4 โจทย์ปัญหา · หน้า 72"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s072" data-thumb="img/t072.webp" data-title="2.4 โจทย์ปัญหา · หน้า 72"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 72 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="140 141 ลุงนัดปลูกทุเรียน เงาะ และมังคุด เป็นทุเรียน ของจำนวนไม้ผลที่ปลูกเป็นเงาะ ของจำนวนไม้ผลที่ปลูก ที่เหลือเป็นมังคุด 42 ต้น ลุงนัดปลูกไม้ผลทั้งหมดกี่ต้น พิจารณาสถานการณ์ต่อไปนี้ จำนวนไม้ผลที่ลุงนัดปลูกทั้งหมด ปลูกทุเรียน ของจำนวนไม้ผลที่ ปลูกเป็นเงาะ ของจำนวนไม้ผลที่ปลูก และปลูกมังคุด 42 ต้น สิ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s073" data-title="2.4 โจทย์ปัญหา · หน้า 73"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s073" data-thumb="img/t073.webp" data-title="2.4 โจทย์ปัญหา · หน้า 73"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 73 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="142 143 2.1 2.2 2.3 2.4 เนื่องจาก ปลูกมังคุด ของจำนวนไม้ผลที่ปลูกทั้งหมด ซึ่งเท่ากับ 42 ต้นแสดงว่า จำนวนไม้ผลที่ปลูก 7 ส่วน คิดเป็น 42 ต้น จำนวนไม้ผลที่ปลูก 1 ส่วน คิดเป็น ต้น จำนวนไม้ผลที่ปลูก 24 ส่วน คิดเป็น 24 × = 144 ต้นดังนั้น ลุงนัดปลูกไม้ผลทั้งหมด 144 ต้น ลุงนัดปลูกไม้ผลทั้งหมดกี่ต้น ถ้าลุงนั"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s074" data-title="2.4 โจทย์ปัญหา · หน้า 74"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s074" data-thumb="img/t074.webp" data-title="2.4 โจทย์ปัญหา · หน้า 74"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 74 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="144 145 แสดงว่า วิมลได้รับเงินเดือน เดือนละ เหลือเป็นค่าใช้จ่ายส่วนตัว - = ของเงินเดือน ซึ่งเท่ากับ 11,200 บาท แสดงว่า เงิน 16 ส่วน คิดเป็น 11,200 บาท เงิน 1 ส่วน คิดเป็น บาท เงิน 30 ส่วน คิดเป็น 30 × = 21,000 บาท ดังนั้น วิมลได้รับเงินเดือน เดือนละ 21,000 บาทตอบ 21,000 บาท ถ้าวิมลได้รับเงินเดือน เด"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s075" data-title="2.4 โจทย์ปัญหา · หน้า 75"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s075" data-thumb="img/t075.webp" data-title="2.4 โจทย์ปัญหา · หน้า 75"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 75 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="146 147 วิธีทำ 2 ชาวสวนเก็บทุเรียนพันธุ์หมอนทองได้ ของทุเรียนที่เก็บได้ทั้งหมด และเก็บพันธุ์ก้านยาวได้ ของทุเรียนที่เก็บได้ทั้งหมด ชาวสวนเก็บทุเรียนพันธุ์หมอนทองและพันธุ์ก้านยาวได้ + = ของ ทุเรียนที่เก็บได้ทั้งหมด หมายความว่า ถ้าชาวสวนเก็บทุเรียนได้ 20 ส่วน เป็นพันธุ์หมอนทองและพันธุ์ก้านยาว 19 ส่วน "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s076" data-title="2.4 โจทย์ปัญหา · หน้า 76"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s076" data-thumb="img/t076.webp" data-title="2.4 โจทย์ปัญหา · หน้า 76"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 76 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="148 149 แสดงว่า เงิน 7 ส่วน คิดเป็น 490 บาท เงิน 1 ส่วน คิดเป็น บาท เงิน 60 ส่วน คิดเป็น 60 × = 4,200 บาท ดังนั้น วันนี้ป้าติ๋มขายของได้เงินทั้งหมด 4,200 บาทตอบ 4,200 บาทวิธีทำ 2 ป้าติ๋มขายข้าวมันไก่ได้ ของเงินที่ขายได้ทั้งหมด ขายก๋วยเตี๋ยวได้ ของเงินที่ขายได้ทั้งหมด ป้าติ๋มขายข้าวมันไก่และก๋วยเตี๋ย"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s077" data-title="2.4 โจทย์ปัญหา · หน้า 77"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s077" data-thumb="img/t077.webp" data-title="2.4 โจทย์ปัญหา · หน้า 77"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 77 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="150 151 วิธีทำ 2 ลุงจรัญเลี้ยงห่าน ของสัตว์ที่เลี้ยงทั้งหมด เลี้ยงเป็ด ของสัตว์ที่เลี้ยงทั้งหมด ลุงจรัญเลี้ยงห่านและเป็ด + = ของสัตว์ที่เลี้ยงทั้งหมด หมายความว่า ถ้ามีสัตว์ที่เลี้ยง 18 ส่วน เลี้ยงห่านและเป็ด 7 ส่วน ที่เหลือเลี้ยงไก่ 18 – 7 = 11 ส่วน ซึ่งเท่ากับ 550 ตัว โดยเลี้ยงไก่ - = ของสัตว์ที่เล"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s078" data-title="2.4 โจทย์ปัญหา · หน้า 78"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s078" data-thumb="img/t078.webp" data-title="2.4 โจทย์ปัญหา · หน้า 78"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 78 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="152 153 แสดงว่า นักเรียน 7 ส่วน คิดเป็น 230 คน นักเรียน 1 ส่วน คิดเป็น คน นักเรียน 60 ส่วน คิดเป็น 40 × = 400 คน ดังนั้น โรงเรียนแห่งนี้มีนักเรียนทั้งหมด 400 คนตอบ 400 คนวิธีทำ 2 นักเรียนเดินทางโดยรถประจำทาง ของจำนวนนักเรียนทั้งหมด เดินทางโดยรถส่วนตัว ของจำนวนนักเรียนทั้งหมด มีนักเรียนที่เดินทางโดยร"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s079" data-title="2.4 โจทย์ปัญหา · หน้า 79"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s079" data-thumb="img/t079.webp" data-title="2.4 โจทย์ปัญหา · หน้า 79"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 79 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="154 155 รวมเงินขายสมุดและเครื่องเขียน 2,400 + 2,000 = 2,000 บาท แสดงว่า ขายขนมได้เงิน 6,400 – 4,400 = 2,000 บาท ดังนั้น สหกรณ์โรงเรียนแห่งนี้ขายขนมได้เงิน 2,000 บาทตอบ 2,000 บาท 2ชมรมกีฬาของโรงเรียนแห่งหนึ่ง มีสมาชิกสมัครเรียนฟุตบอล ของจำนวนสมาชิกในชมรมและสมัครเรียนว่ายน้ำ ของจำนวนสมาชิกในชมรม ส่วนท"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s080" data-title="2.4 โจทย์ปัญหา · หน้า 80"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s080" data-thumb="img/t080.webp" data-title="2.4 โจทย์ปัญหา · หน้า 80"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 80 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="156 157 วิธีทำ 2 มีสมาชิกสมัครเรียนฟุตบอล ของสมาชิกในชมรม สมัครเรียนว่ายน้ำ ของสมาชิกในชมรม มีสมาชิกสมัครเรียนฟุตบอลและว่ายน้ำ + = ของสมาชิกในชมรม หมายความว่า ถ้าสมาชิกทั้งหมด 21 ส่วน เรียนฟุตบอลและว่ายน้ำ 13 ส่วน ที่เหลือ เรียนวอลเลย์บอล 21 – 13 = 8 ส่วน ซึ่งเท่ากับ 96 ส่วน แสดงว่า สมาชิก 8 ส่วน คิ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s081" data-title="2.4 โจทย์ปัญหา · หน้า 81"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s081" data-thumb="img/t081.webp" data-title="2.4 โจทย์ปัญหา · หน้า 81"><div class="inner pp">
   <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 81 / 81</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="158 159 พบกันต่อในบทที่ 3ทศนิยม หาเงินทั้งหมดของขวัญขั้นที่ 1 แปลความหมายของ “ขวัญใช้เงินไป ของเงินที่มีอยู่” หมายความว่า ขวัญมีเงินทั้งหมด 5 ส่วน ใช้ไป 3 ส่วน เหลือเงิน 5 – 3 = 2 ส่วนขั้นที่ 2 หาเงินทั้งหมดของขวัญ โดยนำเงิน 2 ส่วน เทียบกับเงิน 180 บาท ดังนี้ เงิน 2 ส่วน คิดเป็น 180 บาท เงิน 1 ส่วน "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -919,18 +945,31 @@ function start() {
   }
   function setOn(v) {
     on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
     cv.classList.toggle('noswipe', on);
-    if (on) Kit.toast('✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil ได้ วางมือบนจอได้)');
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
   }
   btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
   function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
   cv.addEventListener('pointerdown', function (e) {
     if (!on) return;
-    if (e.pointerType === 'pen') penSeen = true;
-    else if (e.pointerType === 'touch' && penSeen) return; /* มีปากกาแล้ว ไม่นับฝ่ามือ */
-    e.preventDefault(); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
-    cur = { c: color, p: [pt(e)], id: e.pointerId }; list().push(cur); draw();
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
   });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
   cv.addEventListener('pointermove', function (e) {
     if (!cur || e.pointerId !== cur.id) return;
     var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
@@ -1015,7 +1054,7 @@ function start() {
       cam.addEventListener('pointerdown', function (e) {
         if (e.target.closest('button')) return;
         drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
-        cam.setPointerCapture && cam.setPointerCapture(e.pointerId); e.preventDefault();
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
       });
       cam.addEventListener('pointermove', function (e) {
         if (!drag || e.pointerId !== drag.id) return;
@@ -1100,6 +1139,77 @@ function start() {
   /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
   if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
   if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

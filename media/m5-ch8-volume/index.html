@@ -94,6 +94,10 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 /* ---- ปากกาเขียนบนสไลด์ ---- */
 .drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
 body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
 .drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
 body.drawing .drawbar{display:flex}
 .drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
@@ -102,6 +106,28 @@ body.drawing .drawbar{display:flex}
 .drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
 .bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
 @media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
 /* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
 .campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
 .campnl.show{display:flex}
@@ -202,72 +228,72 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s003" data-title="8.1 ปริซึม · หน้า 3"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s003" data-thumb="img/t003.webp" data-title="8.1 ปริซึม · หน้า 3"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รูปเรขาคณิตสองมิติ และสามมิติ รูปเรขาคณิตสองมิติ รูปเรขาคณิตสามมิติ"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s004" data-title="8.1 ปริซึม · หน้า 4"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s004" data-thumb="img/t004.webp" data-title="8.1 ปริซึม · หน้า 4"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รูปใดเป็นรูปเรขาคณิตสองมิติ และรูปใดเป็นรูปเรขาคณิตสามมิติ แบบฝึกหัดหน้า 136"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s005" data-title="8.1 ปริซึม · หน้า 5"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s005" data-thumb="img/t005.webp" data-title="8.1 ปริซึม · หน้า 5"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รูปเรขาคณิตสามมิติ ทรงกลม ทรงกระบอก ปริซึม กรวย พีระมิด"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s006" data-title="8.1 ปริซึม · หน้า 6"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s006" data-thumb="img/t006.webp" data-title="8.1 ปริซึม · หน้า 6"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt=""></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s007" data-title="8.1 ปริซึม · หน้า 7"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s007" data-thumb="img/t007.webp" data-title="8.1 ปริซึม · หน้า 7"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รูปเรขาคณิตสามมิติต่อไปนี้เป็นปริซึมหรือไม่ ถ้าเป็นให้ระบุชนิดของปริซึม ถ้าไม่เป็นให้ระบุเหตุผล แบบฝึกหัดหน้า 140 1 2 3 4 5 6 7 8 9 10"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s008" data-title="8.1 ปริซึม · หน้า 8"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s008" data-thumb="img/t008.webp" data-title="8.1 ปริซึม · หน้า 8"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ปริซึมสี่เหลี่ยม ที่มีหน้าทุกหน้าเป็นรูปสี่เหลี่ยมมุมฉาก อาจเรียกว่า ทรงสี่เหลี่ยมมุมฉากปริซึมสี่เหลี่ยมหรือทรงสี่เหลี่ยมมุมฉาก ที่มีหน้าทุกหน้าเป็นรูปสี่เหลี่ยมจัตุรัส เรียกว่า ลูกบาศก์ ทรงสี่เหลี่ยมมุมฉาก พิจารณาปริซึมสี่เหลี่ยม"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s009" data-title="8.1 ปริซึม · หน้า 9"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s009" data-thumb="img/t009.webp" data-title="8.1 ปริซึม · หน้า 9"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การเขียนส่วนของเส้นตรงให้มีความยาว 1 หน่วย บนกระดาษจุดไอโซเมตริก เขียนได้ 3 ทิศทางตามแนวจุด ดังนี้ การเขียนรูปของทรงสี่เหลี่ยมมุมฉาก"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s010" data-title="8.1 ปริซึม · หน้า 10"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s010" data-thumb="img/t010.webp" data-title="8.1 ปริซึม · หน้า 10"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การเขียนส่วนของเส้นตรงให้มีความยาว 3 หน่วย บนกระดาษจุดไอโซเมตริก เขียนได้ 3 ทิศทางตามแนวจุด ดังนี้"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-title="8.1 ปริซึม · หน้า 11"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-thumb="img/t011.webp" data-title="8.1 ปริซึม · หน้า 11"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การเขียนส่วนของเส้นตรงให้มีความยาว 5 หน่วย บนกระดาษจุดไอโซเมตริกเขียนได้ 3 ทิศทางตามแนวจุด ดังนี้"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s012" data-title="8.1 ปริซึม · หน้า 12"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s012" data-thumb="img/t012.webp" data-title="8.1 ปริซึม · หน้า 12"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการเขียนรูปของทรงสี่เหลี่ยมมุมฉากบนกระดาษจุดไอโซเมตริกต่อไปนี้ ลูกบาศก์กว้าง 3 หน่วย ยาว 3 หน่วย สูง 3 หน่วย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-title="8.1 ปริซึม · หน้า 13"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-thumb="img/t013.webp" data-title="8.1 ปริซึม · หน้า 13"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ทรงสี่เหลี่ยมมุมฉากกว้าง 3 หน่วย ยาว 4 หน่วย สูง 2 หน่วย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s014" data-title="8.1 ปริซึม · หน้า 14"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s014" data-thumb="img/t014.webp" data-title="8.1 ปริซึม · หน้า 14"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ทรงสี่เหลี่ยมมุมฉากกว้าง 2 หน่วย ยาว 4 หน่วย สูง 5 หน่วย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s015" data-title="8.1 ปริซึม · หน้า 15"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s015" data-thumb="img/t015.webp" data-title="8.1 ปริซึม · หน้า 15"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการเขียนรูปของทรงสี่เหลี่ยมมุมฉากบนกระดาษจุด ต่อไปนี้ ทรงสี่เหลี่ยมมุมฉากกว้าง 3 หน่วย ยาว 4 หน่วย สูง 2 หน่วย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-title="8.1 ปริซึม · หน้า 16"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-thumb="img/t016.webp" data-title="8.1 ปริซึม · หน้า 16"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.1 ปริซึม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ทรงสี่เหลี่ยมมุมฉากกว้าง 6 เซนติเมตร ยาว 8 เซนติเมตร สูง 5 เซนติเมตร"></div></div></div>
   
@@ -277,112 +303,112 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-title="8.2 ปริมาตรและความจุ · หน้า 18"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-thumb="img/t018.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 18"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หน่วยของปริมาตรและการหาปริมาตร พิจารณาปริมาตร 1 ลูกบาศก์หน่วย ลูกบาศก์ที่เป็นทรงตัน เป็นทรงสี่เหลี่ยมมุมฉากที่มีความกว้าง ความยาว และความสูง ด้านละ 1 หน่วย มีปริมาตร 1 ลูกบาศก์หน่วย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s019" data-title="8.2 ปริมาตรและความจุ · หน้า 19"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s019" data-thumb="img/t019.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 19"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาปริมาตรโดยการนับลูกบาศก์ เมื่อกำหนด มีปริมาตร 1 ลูกบาศก์หน่วย มีลูกบาศก์ 6 ลูก แสดงว่า มีปริมาตร 6 ลูกบาศก์หน่วย มีลูกบาศก์ 4 ลูก แสดงว่า มีปริมาตร 4 ลูกบาศก์หน่วย มีลูกบาศก์ 8 ลูก แสดงว่า มีปริมาตร 8 ลูกบาศก์หน่วย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s020" data-title="8.2 ปริมาตรและความจุ · หน้า 20"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s020" data-thumb="img/t020.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 20"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 147 1 2 3 4 5 6 7 8 9 10 พิจารณาการหาปริมาตรโดยการนับลูกบาศก์ เมื่อกำหนด มีปริมาตร 1 ลูกบาศก์หน่วย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s021" data-title="8.2 ปริมาตรและความจุ · หน้า 21"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s021" data-thumb="img/t021.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 21"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาปริมาตร 1 ลูกบาศก์เซนติเมตร ลูกบาศก์ที่เป็นทรงตัน เป็นทรงสี่เหลี่ยมมุมฉากที่มีความกว้าง ความยาว และความสูง ด้านละ 1 เซนติเมตร มีปริมาตร 1 ลูกบาศก์เซนติเมตร ลูกบาศก์เซนติเมตร ใช้อักษรย่อ ลบ.ซม."></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s022" data-title="8.2 ปริมาตรและความจุ · หน้า 22"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s022" data-thumb="img/t022.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 22"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาปริมาตร 1 ลูกบาศก์เมตร ลูกบาศก์ที่เป็นทรงตัน เป็นทรงสี่เหลี่ยมมุมฉากที่มีความกว้าง ความยาว และความสูง ด้านละ 1 เมตร มีปริมาตร 1 ลูกบาศก์เมตร ลูกบาศก์เมตร ใช้อักษรย่อ ลบ.ม."></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-title="8.2 ปริมาตรและความจุ · หน้า 23"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-thumb="img/t023.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 23"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 150 1 2 3 หาปริมาตร เมื่อกำหนด มีปริมาตร 1 ลูกบาศก์เซนติเมตร 4 5 6"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-title="8.2 ปริมาตรและความจุ · หน้า 24"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-thumb="img/t024.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 24"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 150 1 2 3 หาปริมาตร เมื่อกำหนด มีปริมาตร 1 ลูกบาศก์เมตร"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-title="8.2 ปริมาตรและความจุ · หน้า 25"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-thumb="img/t025.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 25"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ปริมาตรของทรงสี่เหลี่ยมมุมฉาก เรียงลูกบาศก์ที่มีปริมาตร 1 ลูกบาศก์หน่วย ให้เป็นทรงสี่เหลี่ยมมุมฉากกว้าง 3 หน่วย ยาว 4 หน่วย และสูง 2 หน่วย แต่ละชั้น กว้าง 3 หน่วย ยาว 4 หน่วย มีปริมาตร 3 x 4 = 12 ลูกบาศก์หน่วย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s026" data-title="8.2 ปริมาตรและความจุ · หน้า 26"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s026" data-thumb="img/t026.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 26"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ลูกบาศก์ 2 ชั้น มีปริมาตร 2 x (3 x 4) = 2 x 12 = 24 ลูกบาศก์หน่วย ดังนั้น ทรงสี่เหลี่ยมมุมฉากนี้มีปริมาตร 2 x 3 x 4 = 24 ลูกบาศก์หน่วย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s027" data-title="8.2 ปริมาตรและความจุ · หน้า 27"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s027" data-thumb="img/t027.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 27"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เรียงลูกบาศก์ที่มีปริมาตร 1 ลูกบาศก์หน่วย ให้เป็นทรงสี่เหลี่ยมมุมฉาก กว้าง 2 หน่วย ยาว 5 หน่วย และสูง 3 หน่วย แต่ละชั้น กว้าง 2 หน่วย ยาว 5 หน่วย มีปริมาตร 2 x 5 = 10 ลูกบาศก์หน่วย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s028" data-title="8.2 ปริมาตรและความจุ · หน้า 28"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s028" data-thumb="img/t028.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 28"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ลูกบาศก์ 3 ชั้น มีปริมาตร 3 x (2 x 5) = 3 x 10 = 30 ลูกบาศก์หน่วย ดังนั้น ทรงสี่เหลี่ยมมุมฉากนี้มีปริมาตร 3 x 2 x 5 = 30 ลูกบาศก์หน่วย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s029" data-title="8.2 ปริมาตรและความจุ · หน้า 29"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s029" data-thumb="img/t029.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 29"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ปริมาตรของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง x ความยาว x ความสูง ปริมาตรของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง x ความยาว x ความสูง ทรงสี่เหลี่ยมมุมฉากนี้มีปริมาตร 2 x 5 x 3 = 30 ลูกบาศก์เซนติเมตร"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s030" data-title="8.2 ปริมาตรและความจุ · หน้า 30"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s030" data-thumb="img/t030.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 30"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ ปริมาตรของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง x ความยาว x ความสูง = 3 x 7 x 5 ลูกบาศก์เซนติเมตร = 105 ลูกบาศก์เซนติเมตรตอบ ๑๐๕ ลูกบาศก์เซนติเมตร หาปริมาตรของทรงสี่เหลี่ยมมุมฉาก"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s031" data-title="8.2 ปริมาตรและความจุ · หน้า 31"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s031" data-thumb="img/t031.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 31"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ ปริมาตรของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง x ความยาว x ความสูง = 3 x 8 x 4 ลูกบาศก์เซนติเมตร = 96 ลูกบาศก์เซนติเมตรตอบ ๙๖ ลูกบาศก์เซนติเมตร หาปริมาตรของทรงสี่เหลี่ยมมุมฉาก"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-title="8.2 ปริมาตรและความจุ · หน้า 32"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-thumb="img/t032.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 32"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 154 1 2 หาปริมาตรของทรงสี่เหลี่ยมมุมฉาก 4 5"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-title="8.2 ปริมาตรและความจุ · หน้า 33"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-thumb="img/t033.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 33"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาปริมาตรของทรงสี่เหลี่ยมมุมฉาก กว้าง 6 เซนติเมตร ยาว 8 เซนติเมตร และสูง 5 เซนติเมตร ปริมาตรของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง x ความยาว x ความสูงดังนั้น ทรงสี่เหลี่ยมมุมฉากนี้มีปริมาตร 6 x 8 x 5 = 240 ลูกบาศก์เซนติเมตรจากรูปพบว่า 6 x 8 ตารางเซนติเมตร เป็นพื้นฐานของทรงสี่เหลี่ยมมุมฉากที่กว"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-title="8.2 ปริมาตรและความจุ · หน้า 34"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-thumb="img/t034.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 34"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ดังนั้นปริมาตรของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง x ความยาว x ความสูงหรือ ปริมาตรของทรงสี่เหลี่ยมมุมฉาก = พื้นฐาน x ความสูง"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-title="8.2 ปริมาตรและความจุ · หน้า 35"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-thumb="img/t035.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 35"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ ปริมาตรของทรงสี่เหลี่ยมมุมฉาก = พื้นที่ฐาน x ความสูงดังนั้น แท่งเหล็กนี้มีปริมาตร 32 x 4 = 128 ลูกบาศก์เซนติเมตรตอบ ๑๒๘ ลูกบาศก์เซนติเมตร แท่งเหล็กทรงสี่เหลี่ยมมุมฉาก มีพื้นที่ฐาน 32 ตารางเซนติเมตร สูง 4 เซนติเมตร แท่งเหล็กนี้มีปริมาตรเท่าใด"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-title="8.2 ปริมาตรและความจุ · หน้า 36"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-thumb="img/t036.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 36"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 156 หาปริมาตรของทรงสี่เหลี่ยมมุมฉาก 1 2 3 กล่องทรงสี่เหลี่ยมมุมฉาก กฎฐาน 240 ตารางบางส่วน 16 ส่วนนั้น เหล็กแท่งทรงสี่เหลี่ยมมุมฉาก ข้อสังเกตฐาน 450 ตารางในส่วนนี้ 21 ส่วน ทรงสี่เหลี่ยมมุมฉาก ฐาน 738 ตารางความหนา 0.9 ส่วน 4 5 6"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s037" data-title="8.2 ปริมาตรและความจุ · หน้า 37"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s037" data-thumb="img/t037.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 37"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ความจุของภาชนะทรงสี่เหลี่ยมมุมฉาก ต้องการใส่ลูกบาศก์ที่มีปริมาตร 1 ลูกบาศก์เซนติเมตร ให้เต็มกล่องพอดี ต้องใส่ลูกบาศก์กี่ลูก พิจารณาการหาความจุของกล่องทรงสี่เหลี่ยมมุมฉาก กำหนด มีปริมาตร 1 ลูกบาศก์เซนติเมตร 2 x 4 x 1 = 8 ลูก 2 x 4 x 2 = 16 ลูก 2 x 4 x 3 = 24 ลูก ความจุของทรงสี่เหลี่ยมมุมฉาก = ความกว้"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s038" data-title="8.2 ปริมาตรและความจุ · หน้า 38"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s038" data-thumb="img/t038.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 38"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ ความจุของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง x ความยาว x ความสูงดังนั้น กระถางปลูกไม้น้ำมีความจุ 30 x 30 x 25 = 22,500 ลูกบาศก์เซนติเมตรตอบ ๒๒,๕๐๐ ลูกบาศก์เซนติเมตร หาความจุของกระถางปลูกไม้น้ำทรงสี่เหลี่ยมมุมฉาก ซึ่งวัดขนาดภายในได้ดังรูป"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s039" data-title="8.2 ปริมาตรและความจุ · หน้า 39"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s039" data-thumb="img/t039.webp" data-title="8.2 ปริมาตรและความจุ · หน้า 39"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.2 ปริมาตรและความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 158 หาปริมาตรของทรงสี่เหลี่ยมมุมฉาก ตู้คอนเทนเนอร์ วัดขนาดภายในได้ดังรูป ตู้ปลาวัดขนาดภายในได้ดังรูป สระน้ำทรงสี่เหลี่ยมมุมฉาก มีพื้นที่ฐาน 12 ตารางเมตร และลึก 1.5 เมตร 1 2 3"></div></div></div>
   
@@ -392,27 +418,27 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s041" data-title="8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ · หน้า 41"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s041" data-thumb="img/t041.webp" data-title="8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ · หน้า 41"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ความสัมพันธ์ระหว่างลูกบาศก์เซนติเมตร กับ ลูกบาศก์เมตร ปริมาตรของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง x ความยาว x ความสูงปริมาตร 1 ลูกบาศก์เมตร = 1 x 1 x 1 ลูกบาศก์เมตร = 100 x 100 x 100 ลูกบาศก์เซนติเมตร = 1,000,000 ลูกบาศก์เซนติเมตร 1 เมตร 1 เมตร 1 เมตร"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s042" data-title="8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ · หน้า 42"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s042" data-thumb="img/t042.webp" data-title="8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ · หน้า 42"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ความสัมพันธ์ระหว่างมิลลิลิตร ลิตร ลูกบาศก์เซนติเมตร ลูกบาศก์เมตร กล่องทรงสี่เหลี่ยมมุมฉากมีความจุ 10 x 10 x 10 = 1,000 ลูกบาศก์เซนติเมตร พิจารณากล่องทรงสี่เหลี่ยมมุมฉากที่มีขนาดภายในยาวด้านละ 10 เซนติเมตร"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s043" data-title="8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ · หน้า 43"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s043" data-thumb="img/t043.webp" data-title="8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ · หน้า 43"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เมื่อเทน้ำปริมาตร 1 ลิตร ใส่กล่องใบนี้ จะเต็มกล่องพอดีแสดงว่า กล่องใบนี้มีความจุ 1 ลิตร หรือ 1,000 ลูกบาศก์เซนติเมตรดังนั้น 1 ลิตร = 1,000 ลูกบาศก์เซนติเมตรเนื่องจาก 1 ลิตร = 1,000 มิลลิลิตรแสดงว่า 1,000 ลูกบาศก์เซนติเมตร = 1,000 มิลลิลิตรดังนั้น 1 ลูกบาศก์เซนติเมตร = 1 มิลลิลิตรเนื่องจาก 1 ลูกบาศก์"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s044" data-title="8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ · หน้า 44"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s044" data-thumb="img/t044.webp" data-title="8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ · หน้า 44"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 44 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ น้ำเต็มถังมีปริมาตร 6 ลูกบาศก์เมตรเนื่องจาก 1 ลูกบาศก์เมตร = 1,000 ลิตรดังนั้น ถังใบนี้มีความจุ 6 x 1,000 = 6,000 ลิตรตอบ ๖,๐๐๐ ลิตร 1 น้ำเต็มถังมีปริมาตร 6 ลูกบาศก์เมตร ถังใบนี้มีความจุกี่ลิตร วิธีทำ กล่องใบหนึ่งมีความจุ 3,000 ลูกบาศก์เซนติเมตรเนื่องจาก 1,000 ลูกบาศก์เซนติเมตร = 1 ลิตรดังนั้"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s045" data-title="8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ · หน้า 45"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s045" data-thumb="img/t045.webp" data-title="8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ · หน้า 45"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.3 ความสัมพันธ์ระหว่างหน่วยปริมาตร หรือหน่วยความจุ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 162 แสดงวิธีหาคำตอบ น้ำผลไม้ 2.75 ลิตร คิดเป็นกี่ลูกบาศก์เซนติเมตร นมสด 630 ลูกบาศก์เซนติเมตร คิดเป็นกี่มิลลิลิตร ถังเก็บน้ำใบหนึ่งเก็บน้ำได้ 5,000 ลิตร ถังใบนี้มีความจุกี่ลูกบาศก์เมตร 4 5 6 น้ำยาจาน 4,000 มิลลิลิตร คิดเป็นกี่ลิตร น้ำมัน 18 ลิตร คิดเป็นกี่มิลลิลิตร น้ำประปา 5 ลูกบาศก์เ"></div></div></div>
   
@@ -422,42 +448,42 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s047" data-title="8.4 โจทย์ปัญหา · หน้า 47"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s047" data-thumb="img/t047.webp" data-title="8.4 โจทย์ปัญหา · หน้า 47"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการแก้โจทย์ปัญหา กล่องพลาสติกทรงสี่เหลี่ยมุมฉาก วัดขนาดภายใน ได้กว้าง 20 เซนติเมตร ยาว 35 เซนติเมตร สูง 25 เซนติเมตร ถ้าใส่น้ำให้เต็ม ต้องใส่น้ำกี่ลูกบาศก์เซนติเมตร สิ่งที่โจทย์ถาม ปริมาณน้ำที่ต้องใส่ให้เต็มกล่อง กล่องทรงสี่เหลี่ยมมุมฉาก วัดขนาดภายในได้กว้าง 20 เซนติเมตร ยาว 35 เซนติเมตร สูง "></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s048" data-title="8.4 โจทย์ปัญหา · หน้า 48"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s048" data-thumb="img/t048.webp" data-title="8.4 โจทย์ปัญหา · หน้า 48"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 48 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="อิฐทรงสี่เหลี่ยมมุมฉาก 2 ก้อน ก้อนเล็ก มีปริมาตร 420 ลูกบาศก์เซนติเมตร ก้อนใหญ่ มีขนาดกว้าง 8 เซนติเมตร ยาว 15 เซนติเมตร และหนา 5 เซนติเมตร อิฐ 2 ก้อนนี้มีปริมาตรต่างกันกี่ลูกบาศก์เซนติเมตร ปริมาตรของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง x ความยาว x ความสูงอิฐก้อนใหญ่มีปริมาตร = 8 x 15 x 5 = 600 ลูกบาศก์เ"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s049" data-title="8.4 โจทย์ปัญหา · หน้า 49"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s049" data-thumb="img/t049.webp" data-title="8.4 โจทย์ปัญหา · หน้า 49"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 49 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ปริมาตรของทรงสี่เหลี่ยมมุมฉาก = ความกว้าง x ความยาว x ความสูงสระน้ำมีความจุ 4 x 5 x 1.2 = 24 ลูกบาศก์เมตรเนื่องจาก 1 ลูกบาศก์เมตร เท่ากับ 1,000 ลิตรดังนั้น สระน้ำมีความจุ 24 x 1,000 = 24,000 ลิตร สระน้ำทรงสี่เหลี่ยมมุมฉาก กว้าง 4 เมตร ยาว 5 เซนติเมตร ลึก 1.2 เมตร สระน้ำนี้มีความจุกี่ลิตร วิธีทำ ตอบ "></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s050" data-title="8.4 โจทย์ปัญหา · หน้า 50"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s050" data-thumb="img/t050.webp" data-title="8.4 โจทย์ปัญหา · หน้า 50"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 50 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 167 แสดงวิธีหาคำตอบ แผ่นปูนทรงสี่เหลี่ยมมุมฉาก มีพื้นที่ฐาน 225 ตารางเซนติเมตร และหนา 2 เซนติเมตร ถังน้ำทรงสี่เหลี่ยมมุมฉาก ที่มีขนาดภายในกว้าง 80 เซนติเมตร ยาว 120 เซนติเมตร และสูง 90 เซนติเมตร มีความจุกี่ลิตร 1 2"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s051" data-title="8.4 โจทย์ปัญหา · หน้า 51"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s051" data-thumb="img/t051.webp" data-title="8.4 โจทย์ปัญหา · หน้า 51"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 51 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการแก้โจทย์ปัญหา หินอ่อนถูกสกัดเป็นแท่งทรงสี่เหลี่ยมมุมฉาก มีฐานกว้าง 20 เซนติเมตร ยาว 45 เซนติเมตร และมีปริมาตร 19,800 ลูกบาศก์เซนติเมตร จะมีความสูงกี่เซนติเมตร สิ่งที่โจทย์ถาม ความสูงของแท่นหินอ่อน แท่งหินอ่อนทรงสี่เหลี่ยมมุมฉาก มีฐานกว้าง 20 เซนติเมตร ยาว 45 เซนติเมตร และมีปริมาตร 19,800 ล"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s052" data-title="8.4 โจทย์ปัญหา · หน้า 52"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s052" data-thumb="img/t052.webp" data-title="8.4 โจทย์ปัญหา · หน้า 52"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 52 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แผ่นคอนกรีตสำเร็จรูปทรงมีปริมาตร 180,000 ลูกบาศก์เซนติเมตรมีความหนา หรือ ความสูง 5 เซนติเมตรเนื่องจาก พื้นที่ฐาน = ปริมาตรของทรงสี่เหลี่ยมมุมฉาก ÷ ความสูงดังนั้น แผ่นคอนกรีตนี้มีพื้นที่ฐาน 180,000 ÷ 5 = 36,000 ตารางเซนติเมตร แผ่นคอนกรีตสำเร็จรูปทรงสี่เหลี่ยมมุมฉาก หนา 5 เซนติเมตร มีปริมาตร 180,000 ล"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s053" data-title="8.4 โจทย์ปัญหา · หน้า 53"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s053" data-thumb="img/t053.webp" data-title="8.4 โจทย์ปัญหา · หน้า 53"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 53 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 169 แสดงวิธีหาคำตอบ กระดาษรูปสี่เหลี่ยมผืนผ้า มีพื้นที่ 420 ตารางเซนติเมตร วางซ้อนกันเป็นทรงสี่เหลี่ยมมุมฉาก ที่มีปริมาตร 2,520 ลูกบาศก์เซนติเมตร จะมีความสูงกี่เซนติเมตร ออมเทน้ำ 60,000 ลูกบาศก์เซนติเมตร ใส่ถังน้ำทรงสี่เหลี่ยมมุมฉากที่มีฐานกว้าง 50 เซนติเมตร ยาว 60 เซนติเมตร ระดับน้ำใน"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s054" data-title="8.4 โจทย์ปัญหา · หน้า 54"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s054" data-thumb="img/t054.webp" data-title="8.4 โจทย์ปัญหา · หน้า 54"><div class="inner pp">
   <div class="pphead"><span class="secbadge">8.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 54 / 54</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 172 แสดงวิธีหาคำตอบ แท็งก์น้ำทรงสี่เหลี่ยมมุมฉาก วัดขนาดภายในได้กว้าง 1 เมตร ยาว 1 เมตร สูง 1.2 เมตร มีน้ำอยู่ครึ่งแท็งก์ ในแท็งก์มีน้ำกี่ลูกบาศก์เมตร บ่อน้ำทรงสี่เหลี่ยมมุมฉาก กว้าง 4 เมตร ยาว 6 เมตร ลึก 1.5 เมตร มีระดับน้ำสูง 1 เมตร ในบ่อมีน้ำกี่ลิตร 1 2 กระถางต้นไม้ทรงสี่เหลี่ยมมุมฉ"></div></div></div>
   
@@ -764,18 +790,31 @@ function start() {
   }
   function setOn(v) {
     on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
     cv.classList.toggle('noswipe', on);
-    if (on) Kit.toast('✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil ได้ วางมือบนจอได้)');
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
   }
   btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
   function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
   cv.addEventListener('pointerdown', function (e) {
     if (!on) return;
-    if (e.pointerType === 'pen') penSeen = true;
-    else if (e.pointerType === 'touch' && penSeen) return; /* มีปากกาแล้ว ไม่นับฝ่ามือ */
-    e.preventDefault(); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
-    cur = { c: color, p: [pt(e)], id: e.pointerId }; list().push(cur); draw();
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
   });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
   cv.addEventListener('pointermove', function (e) {
     if (!cur || e.pointerId !== cur.id) return;
     var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
@@ -860,7 +899,7 @@ function start() {
       cam.addEventListener('pointerdown', function (e) {
         if (e.target.closest('button')) return;
         drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
-        cam.setPointerCapture && cam.setPointerCapture(e.pointerId); e.preventDefault();
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
       });
       cam.addEventListener('pointermove', function (e) {
         if (!drag || e.pointerId !== drag.id) return;
@@ -945,6 +984,77 @@ function start() {
   /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
   if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
   if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

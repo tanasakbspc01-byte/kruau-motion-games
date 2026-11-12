@@ -94,6 +94,10 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 /* ---- ปากกาเขียนบนสไลด์ ---- */
 .drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
 body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
 .drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
 body.drawing .drawbar{display:flex}
 .drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
@@ -102,6 +106,28 @@ body.drawing .drawbar{display:flex}
 .drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
 .bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
 @media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
 /* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
 .campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
 .campnl.show{display:flex}
@@ -197,12 +223,12 @@ body.drawing .drawbar{display:flex}
   <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
   <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เตรียมความพร้อม</span></button><button data-jump="10.1"><span class="e">🥧</span><span>10.1 การอ่านแผนภูมิรูปวงกลม</span></button><button data-jump="10.2"><span class="e">📝</span><span>10.2 โจทย์ปัญหา</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-sec="pre" data-steps="1" data-src="img/s002" data-title="เตรียมความพร้อม · หน้า 2"><div class="inner pp">
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="1" data-src="img/s002" data-thumb="img/t002.webp" data-title="เตรียมความพร้อม · หน้า 2"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 2 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="10.1 10.2 10.1 การอ่านแผนภูมิรูปวงกลม 4 10.2 โจทย์ปัญหา 20 เตรียมความพร้อม 1 ตอบคำถามโดยใช้ข้อมูลจากแผนภูมิ จำนวนนักเรียนชั้น ป.1-ป.6 ร.ร.สาธิตจุฬาลงกรณ์มหาวิทยาลัย (ฝ่ายประถม) ปีการศึกษา 2561 1 บทที่ 10 การนำเสนอข้อมูล 1) แผนภูมินี้แสดงข้อมูลเกี่ยวกับเรื่องใด"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="12" data-src="img/s003" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="12" data-src="img/s003" data-thumb="img/t003.webp" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2หาคำตอบ 3 2 2) ชั้นใดมีจำนวนนักเรียนมากที่สุด และกี่คน3) ชั้นใดบ้างที่มีจำนวนนักเรียนชายมากกว่านักเรียนหญิง4) ชั้นใดมีจำนวนนักเรียนเท่ากัน5) จำนวนนักเรียนชั้น ป.5 คิดเป็นร้อยละเท่าใดของจำนวนนักเรียนชั้นประถมศึกษาทั้งหมด (ตอบเป็นทศนิยม 1 ตำแหน่ง)6) ถ้าโรงเรียนได้รับงบประมาณค่าใช้จ่ายสำหรับนักเรียนคน"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/12)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -212,42 +238,42 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s004" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 4"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s004" data-thumb="img/t004.webp" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 4"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.1 การอ่านแผนภูมิรูปวงกลม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 4 การอ่านแผนภูมิรูปวงกลม10.1 พิจารณาการนำเสนอข้อมูลด้วยแผนภูมิรูปวงกลมต่อไปนี้ แผนภูมิรูปวงกลมนี้แสดงข้อมูลเกี่ยวกับเรื่องใด จำนวนหนังสืออ่านนอกเวลาที่มุมหนังสือในห้องเรียน ที่มุมหนังสือมีหนังสือกี่ชนิด ชนิดละกี่เล่ม มี 4 ชนิด เป็นนิทาน 18 เล่ม สารคดี 10 เล่ม การ์ตูน 15 เล่ม และความรู้รอบตัว 7 เล่"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s005" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 5"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s005" data-thumb="img/t005.webp" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 5"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.1 การอ่านแผนภูมิรูปวงกลม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="7 6 การนำเสนอข้อมูลด้วยแผนภูมิรูปวงกลม นิยมแสดงปริมาณของข้อมูลแต่ละรายการในรูปร้อยละ หรือ เปอร์เซ็นต์ จากแผนภูมิรูปวงกลมแสดงจำนวนหนังสืออ่านนอกเวลาที่มุมหนังสือในห้องเรียน สามารถแสดงจำนวนหนังสือในรูปเปอร์เซ็นต์ได้ดังนี้ มีหนังสือสารคดีมากกว่าหนังสือความรู้รอบตัวกี่เปอร์เซ็นต์ และมีวิธีคิดอย่างไร 6% "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s006" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 6"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s006" data-thumb="img/t006.webp" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 6"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.1 การอ่านแผนภูมิรูปวงกลม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9 8 พิจารณาแผนภูมิรูปวงกลมต่อไปนี้ ด.ญ.ออมสิน ทำกิจกรรมอะไรบ้าง และแต่ละกิจกรรมใช้เวลาเท่าใด เรียนหนังสือและทำกิจกรรม 7 ชั่วโมง เดินทาง 1 ชั่วโมง ออกกำลังกาย และทำากิจวัตรส่วนตัว 2 ชั่วโมง ทำการบ้านและอ่านหนังสือ 2 ชั่วโมง รับประทานอาหาร 3 ชั่วโมง ทำงานบ้าน 1 ชั่วโมง และนอน 8 ชั่วโมง ใน 1 วัน ออมสิน"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s007" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 7"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s007" data-thumb="img/t007.webp" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 7"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.1 การอ่านแผนภูมิรูปวงกลม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="11 10 พิจารณาแผนภูมิรูปวงกลมต่อไปนี้ นักท่องเที่ยวจากทวีปใดที่เดินทางมาท่องเที่ยวในประเทศไทยมากที่สุด คิดเป็นกี่เปอร์เซ็นต์ ทวีปเอเชียคิดเป็น 73% นักท่องเที่ยวทั้งหมดที่เดินทางมาท่องเที่ยวในประเทศไทย คิดเป็นกี่เปอร์เซ็นต์ 100% ถ้านักท่องเที่ยวเดินทางมาท่องเที่ยวในประเทศไทยทั้งหมด 32,529,600 คน จะเป็"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s008" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 8"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s008" data-thumb="img/t008.webp" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 8"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.1 การอ่านแผนภูมิรูปวงกลม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="13 12 1) อาหารไทยชนิดใดที่มีจำนวนชาวต่างชาติชอบมากที่สุด คิดเป็นกี่เปอร์เซ็นต์2) ชาวต่างชาติที่ชอบต้มยำกุ้งมีกี่เปอร์เซ็นต์3) เรียงลำดับชื่ออาหารไทยที่ชาวต่างชาติชอบจากมากไปน้อย4) จากการสำรวจ ชาวต่างชาติที่ชอบต้มข่าไก่มีกี่คน5) ชาวต่างชาติที่ชอบต้มยำกุ้งมากกว่าชอบส้มตำกี่คน6) จำนวนชาวต่างชาติที่ชอบม"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s009" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 9"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s009" data-thumb="img/t009.webp" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 9"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.1 การอ่านแผนภูมิรูปวงกลม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="15 14 1) สุรพงษ์มีรายจ่ายในเรื่องใดมากที่สุด และคิดเป็นเงินกี่บาท2) ค่าใช้จ่ายของบุตรคิดเป็นกี่เปอร์เซ็นต์ และเป็นเงินกี่บาท3) สุรพงษ์จ่ายค่าผ่อนรถกี่บาท4) ค่าผ่อนรถน้อยกว่าค่าผ่อนบ้านกี่บาท5) สุรพงษ์จัดสรรเงินเป็นค่าใช้จ่ายทั้งหมดกี่บาท 2สุรพงษ์มีรายได้เดือนละ 50,000 บาท เขาจัดสรรเงินรายได้ประจำเดื"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s010" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 10"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s010" data-thumb="img/t010.webp" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 10"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.1 การอ่านแผนภูมิรูปวงกลม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="17 16 ตรวจสอบความเข้าใจ 1ผลการแข่งขันฟุตบอลไทยลีก 2018 ของทีม SCG เมืองทอง ยูไนเต็ด ตอบคำถามโดยใช้ข้อมูลจากแผนภูมิ 1) ทีม SCG เมืองทอง ยูไนเต็ด แข่งขันฟุตบอลไทยลีกทั้งหมดกี่ครั้ง2) ผลการแข่งขันของทีม SCG เมืองทอง ยูไนเต็ดเป็นอย่างไร3) ทีม SCG เมืองทอง ยูไนเต็ด แข่งขันชนะมากกว่าแพ้กี่ครั้ง4) ถ้ากำหนด"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="7" data-src="img/s011" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 11"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s011" data-thumb="img/t011.webp" data-title="10.1 การอ่านแผนภูมิรูปวงกลม · หน้า 11"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.1 การอ่านแผนภูมิรูปวงกลม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="19 18 2ชูใจแบ่งที่ดิน 40 ไร่ สำหรับทำการเกษตร ดังนี้ 1) ชูใจแบ่งที่ดินสำหรับทำสวนผลไม้เป็นกี่เท่าของที่ดินสำหรับปลูกบ้านและพืชผักสวนครัว2) ชูใจแบ่งที่ดินสำหรับทำนามากกว่าทำไร่ข้าวโพดกี่เปอร์เซ็นต์3) ชูใจแบ่งที่ดินสำหรับทำสระน้ำและบ่อเลี้ยงปลากี่ไร่4) ชูใจแบ่งที่ดินสำหรับทำสวนผลไม้กี่ไร่5) ชูใจแบ่งที"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -257,42 +283,42 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s012" data-title="10.2 โจทย์ปัญหา · หน้า 12"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s012" data-thumb="img/t012.webp" data-title="10.2 โจทย์ปัญหา · หน้า 12"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.2 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="21 20 โจทย์ปัญหา10.2 พิจารณาสถานการณ์ต่อไปนี้ บริษัทขายรถยนต์แห่งหนึ่งสรุปจำนวนรถยนต์ที่พนักงานแต่ละคนขายได้ในไตรมาสแรกของ พ.ศ. 2562 ดังนี้ ถ้าไตรมาสแรกของ พ.ศ. 2562 บริษัทขายรถยนต์ได้ 400 คัน วศินขายรถยนต์ได้มากกว่าอรุณากี่คัน จะหาจำนวนรถยนต์ที่วศินขายได้มากกว่าอรุณาได้อย่างไร และได้คำตอบเท่าใด หาจ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s013" data-title="10.2 โจทย์ปัญหา · หน้า 13"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s013" data-thumb="img/t013.webp" data-title="10.2 โจทย์ปัญหา · หน้า 13"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.2 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="23 22 โรงงานแห่งหนึ่งสรุปค่าใช้จ่ายประจำเดือนมกราคม พ.ศ. 2563 ดังนี้ ถ้าเดือนมกราคม 2563 โรงงานนี้มีค่าใช้จ่ายทั้งสิ้น 4,500,000 บาท ค่าใช้จ่ายด้านการบริหารมากกว่าค่าสาธารณูปโภคกี่เปอร์เซ็นต์ คิดเป็นเงินเท่าใด วิธีคิดขั้นที่ 1 หาเปอร์เซ็นต์ของค่าสาธารณูปโภค โดยนำเปอร์เซ็นต์ของทุกรายการมารวมกันแล้วลบ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s014" data-title="10.2 โจทย์ปัญหา · หน้า 14"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s014" data-thumb="img/t014.webp" data-title="10.2 โจทย์ปัญหา · หน้า 14"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.2 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="25 24 ผู้สูงอายุจะได้รับเบี้ยยังชีพเป็นรายเดือน ตามช่วงอายุ ดังนี้ อายุ 60–69 ปี เดือนละ 600 บาท อายุ 70–79 ปี เดือนละ 700 บาท อายุ 80–89 ปี เดือนละ 800 บาท อายุ 90 ปีขึ้นไป เดือนละ 1,000 บาทถ้า พ.ศ. 2561 จังหวัดนี้มีผู้สูงอายุ 49,500 คน รัฐบาลจะต้องจ่ายค่าเบี้ยยังชีพให้ผู้ที่มีอายุ 60–69 ปี เท่าใด "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s015" data-title="10.2 โจทย์ปัญหา · หน้า 15"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s015" data-thumb="img/t015.webp" data-title="10.2 โจทย์ปัญหา · หน้า 15"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.2 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="27 26 ถ้ามีนักท่องเที่ยวชาวเอเชียตะวันออกเดินทางมาท่องเที่ยวในประเทศไทย พ.ศ. 2561 2,440,000 คน และค่าใช้จ่ายเฉลี่ยสำหรับซื้อสินค้าคนละ 15,500 บาท ประเทศไทยจะมีรายได้จากนักท่องเที่ยวชาวเอเชียตะวันออกที่ไม่ใช่นักท่องเที่ยวจากประเทศในกลุ่มอาเซียนเท่าใด วิธีคิดขั้นที่ 1 หาร้อยละของจำนวนนักท่องเที่ยวชาวเ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s016" data-title="10.2 โจทย์ปัญหา · หน้า 16"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s016" data-thumb="img/t016.webp" data-title="10.2 โจทย์ปัญหา · หน้า 16"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.2 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="29 28 ถ้าในจังหวัดนี้มีผู้ประกอบอาชีพต่าง ๆ 541,900 คน และรัฐบาลจะมอบเงินช่วยเหลือให้กับผู้ที่ประกอบอาชีพรับจ้างทั่วไปคนละ 500 บาท รัฐบาลจะต้องจ่ายเงินช่วยเหลือให้กับผู้ที่ประกอบอาชีพรับจ้างทั่วไปทั้งหมดกี่บาท วิธีคิดขั้นที่ 1 หาร้อยละของจำนวนผู้ประกอบอาชีพรับจ้างทั่วไป โดยนำ 100% ลบด้วยร้อยละของจำน"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s017" data-title="10.2 โจทย์ปัญหา · หน้า 17"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s017" data-thumb="img/t017.webp" data-title="10.2 โจทย์ปัญหา · หน้า 17"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.2 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="31 30 ตรวจสอบความเข้าใจ 1พ.ศ. 2560 จำนวนผู้ป่วยนอกที่เข้ารับการรักษาโรคเบาหวานคิดเป็นกี่เปอร์เซ็นต์ของจำนวนผู้ป่วยนอก 10 โรค ตอบคำถามจากข้อมูลที่กำหนดโดยใช้เครื่องคิดเลข (ตอบเป็นทศนิยม 2 ตำแหน่ง) 11.92% โรงพยาบาลศิริราชเป็นโรงพยาบาลของรัฐแห่งแรกของประเทศไทย สังกัดคณะแพทยศาสตร์ศิริราชพยาบาล มหาวิทยาล"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s018" data-title="10.2 โจทย์ปัญหา · หน้า 18"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s018" data-thumb="img/t018.webp" data-title="10.2 โจทย์ปัญหา · หน้า 18"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.2 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="33 32 สิ่งที่ได้เรียนรู้ โจทย์ปัญหานี้มีลำดับขั้นการหาคำตอบอย่างไร วิธีคิดขั้นที่ 1 หาจำนวนนักเรียนชั้น ป.3 ในภาคเรียนที่ 2 โดยนำจำนวนนักเรียน ชั้น ป.3 ในภาคเรียนที่ 1 รวมกับจำนวนนักเรียนที่ย้ายเข้ามาใหม่ จะได้ 32 + 8 = 40 คนขั้นที่ 2 หาจำนวนนักเรียนทั้งหมดในภาคเรียนที่ 2 โดยนำจำนวนนักเรียน ชั้น ป.1"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s019" data-title="10.2 โจทย์ปัญหา · หน้า 19"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s019" data-thumb="img/t019.webp" data-title="10.2 โจทย์ปัญหา · หน้า 19"><div class="inner pp">
   <div class="pphead"><span class="secbadge">10.2 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 19</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="35 34 ร่วมคิดร่วมทำ หาข้อมูลที่นำเสนอด้วยแผนภูมิรูปวงกลม แล้วนำเสนอข้อมูลดังกล่าวในรูปของตารางทางเดียว จากข้อมูลดังกล่าว สามารถนำเสนอในรูปตารางทางเดียวได้ดังนี้ อยู่ในดุลยพินิจของครูผู้สอน 10.1 10.2"></div></div></div>
   
@@ -599,18 +625,31 @@ function start() {
   }
   function setOn(v) {
     on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
     cv.classList.toggle('noswipe', on);
-    if (on) Kit.toast('✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil ได้ วางมือบนจอได้)');
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
   }
   btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
   function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
   cv.addEventListener('pointerdown', function (e) {
     if (!on) return;
-    if (e.pointerType === 'pen') penSeen = true;
-    else if (e.pointerType === 'touch' && penSeen) return; /* มีปากกาแล้ว ไม่นับฝ่ามือ */
-    e.preventDefault(); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
-    cur = { c: color, p: [pt(e)], id: e.pointerId }; list().push(cur); draw();
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
   });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
   cv.addEventListener('pointermove', function (e) {
     if (!cur || e.pointerId !== cur.id) return;
     var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
@@ -695,7 +734,7 @@ function start() {
       cam.addEventListener('pointerdown', function (e) {
         if (e.target.closest('button')) return;
         drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
-        cam.setPointerCapture && cam.setPointerCapture(e.pointerId); e.preventDefault();
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
       });
       cam.addEventListener('pointermove', function (e) {
         if (!drag || e.pointerId !== drag.id) return;
@@ -780,6 +819,77 @@ function start() {
   /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
   if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
   if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

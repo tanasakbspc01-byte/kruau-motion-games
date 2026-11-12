@@ -94,6 +94,10 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 /* ---- ปากกาเขียนบนสไลด์ ---- */
 .drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
 body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
 .drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
 body.drawing .drawbar{display:flex}
 .drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
@@ -102,6 +106,28 @@ body.drawing .drawbar{display:flex}
 .drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
 .bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
 @media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
 /* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
 .campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
 .campnl.show{display:flex}
@@ -197,27 +223,27 @@ body.drawing .drawbar{display:flex}
   <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
   <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เตรียมความพร้อม</span></button><button data-jump="3.1"><span class="e">🔄</span><span>3.1 การเขียนเศษส่วนในรูปทศนิยม</span></button><button data-jump="3.2"><span class="e">➗</span><span>3.2 การหารทศนิยม</span></button><button data-jump="3.3"><span class="e">💱</span><span>3.3 การแลกเปลี่ยนเงินตรา</span></button><button data-jump="3.4"><span class="e">📝</span><span>3.4 โจทย์ปัญหา</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s003" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s003" data-thumb="img/t003.webp" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-sec="pre" data-steps="4" data-src="img/s004" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="4" data-src="img/s004" data-thumb="img/t004.webp" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เตรียมความพร้อม &lt; &gt; เขียนในรูปทศนิยม 0.6 1) เขียนในรูปทศนิยมเท่ากับ2) เขียนในรูปทศนิยมเท่ากับ3) เขียนในรูปทศนิยมเท่ากับ 4) เขียนในรูปทศนิยมเท่ากับ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 98 1 0.17 3.75 0.09 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="10" data-src="img/s005" data-title="เตรียมความพร้อม · หน้า 5"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s005" data-thumb="img/t005.webp" data-title="เตรียมความพร้อม · หน้า 5"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; หาจำนวนที่แทนด้วย 9.2 1) 7.3 + 9.9 – 8 = 2) 0.5 – (0.124 + 0.07) =3) 0.003 × 15 = 4) 1.4 ÷ 8 =5) (6.3 ÷ 9) × 7 = 6) (2.8 × 3.5) ÷ 20 =7) (0.2 × 100) + (0.05 × 100) = 8) 7.5 × = 759) × 0.002 = 2 10) 5.36 × = 536 หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 98 2 0.306 0.045 0.175 4.9 0.49 25 10 "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s006" data-title="เตรียมความพร้อม · หน้า 6"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s006" data-thumb="img/t006.webp" data-title="เตรียมความพร้อม · หน้า 6"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; แสดงวิธีหาคำตอบ 1) ข้าวหอมมะลิถุงหนึ่งหนัก 5 กิโลกรัม ราคา 302.50 บาท ข้าวหอมมะลิราคากิโลกรัมละกี่บาท หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 98 3 ข้าวหอมมะลิถุงหนึ่งหนัก5กิโลกรัมราคาถุงละ302.50บาทดังนั้น ข้าวหอมมะลิราคากิโลกรัมละ302.50 ÷ 5 =60.50บาท ตอบ ข้าวหอมมะลิราคากิโลกรัมละ ๖๐.๕๐ บา"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s007" data-title="เตรียมความพร้อม · หน้า 7"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s007" data-thumb="img/t007.webp" data-title="เตรียมความพร้อม · หน้า 7"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; 3) น้ำมันพืช 1 ปี๊บ มีปริมาตร 0.02 ลูกบาศก์เมตร น้ำมันพืช 500 ปี๊บ มีปริมาตรกี่ลูกบาศก์เมตร หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 98 น้ำมันพืช 1 ปี๊บ มีปริมาตร0.02ลูกบาศก์เมตรดังนั้น น้ำมันพืช 500 ปี๊บ มีปริมาตร500 × 0.02 =10ลูกบาศก์เมตร ตอบ มีปริมาตร ๑๐ ลูกบาศก์เมตร วิธีทำ 4) เงาะราคาก"></div></div></div>
   
@@ -227,42 +253,42 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s009" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 9"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s009" data-thumb="img/t009.webp" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 9"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.1 การเขียนเศษส่วนในรูปทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การเขียนเศษส่วนในรูปทศนิยม &lt; &gt; เศษส่วนที่มีตัวส่วนเป็น 10, 100 และ 1,000สามารถเขียนเป็นทศนิยม 1 ตำแหน่ง 2 ตำแหน่ง และ 3 ตำแหน่ง ตามลำดับ ตัวอย่าง เขียน ในรูปทศนิยม วิธีทำ = = = = = 0.25 ตอบ ๐.๒๕ 01 02 03 04"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s010" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 10"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s010" data-thumb="img/t010.webp" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 10"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.1 การเขียนเศษส่วนในรูปทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; ตัวอย่าง เขียน ในรูปทศนิยม วิธีทำ = = = = = 0.35 ตอบ ๐.๓๕ 01 02 03 04"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s011" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 11"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s011" data-thumb="img/t011.webp" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 11"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.1 การเขียนเศษส่วนในรูปทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; เขียน ในรูปทศนิยม วิธีทำ = = = = = 0.5 ตอบ ๐.๕ 2 เขียน ในรูปทศนิยม 1 วิธีทำ = = = = = 1.75 ตอบ ๑.๗๕ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 100 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s012" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 12"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s012" data-thumb="img/t012.webp" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 12"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.1 การเขียนเศษส่วนในรูปทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; เขียน ในรูปทศนิยม วิธีทำ = = = = = 0.14 ตอบ ๐.๕ 4 เขียน ในรูปทศนิยม 3 วิธีทำ = = = = = 0.36 ตอบ ๑.๗๕ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 100 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s013" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 13"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s013" data-thumb="img/t013.webp" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 13"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.1 การเขียนเศษส่วนในรูปทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; เขียน ในรูปทศนิยม วิธีทำ = = = = = 0.25 ตอบ ๐.๒๕ 6 เขียน ในรูปทศนิยม 5 วิธีทำ = = = = = 0.85 ตอบ ๐.๘๕ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 100 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s014" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 14"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s014" data-thumb="img/t014.webp" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 14"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.1 การเขียนเศษส่วนในรูปทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; เขียน ในรูปทศนิยม วิธีทำ = = = = = 0.375 ตอบ ๐.๓๗๕ 8 เขียน ในรูปทศนิยม 7 วิธีทำ = = = = = 0.052 ตอบ ๐.๐๕๒ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 100 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s015" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 15"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s015" data-thumb="img/t015.webp" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 15"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.1 การเขียนเศษส่วนในรูปทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; เขียน ในรูปทศนิยม วิธีทำ = = = 0.021 ตอบ ๐.๐๒๑ 10 เขียน ในรูปทศนิยม 9 วิธีทำ = = = = = 0.065 ตอบ ๐.๐๖๕ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 100 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s016" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 16"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s016" data-thumb="img/t016.webp" data-title="3.1 การเขียนเศษส่วนในรูปทศนิยม · หน้า 16"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.1 การเขียนเศษส่วนในรูปทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; เขียน ในรูปทศนิยม วิธีทำ = = = = = 0.792 ตอบ ๐.๗๙๒ 12 เขียน ในรูปทศนิยม 11 วิธีทำ = = = = = 1.4 ตอบ ๑.๔ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 100 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -272,132 +298,132 @@ body.drawing .drawbar{display:flex}
   <div class="subs"><div><b>1</b>การหารด้วยทศนิยม 1 ตำแหน่ง</div><div><b>2</b>การหารด้วยทศนิยม 2 ตำแหน่ง</div><div><b>3</b>การหารด้วยทศนิยม 3 ตำแหน่ง</div><div><b>4</b>การหารทศนิยมในแนวตั้ง</div></div>
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-title="3.2 การหารทศนิยม · หน้า 18"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-thumb="img/t018.webp" data-title="3.2 การหารทศนิยม · หน้า 18"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1. การหารทศนิยมหรือจำนวนนับ ด้วยทศนิยม 1 ตำแหน่ง &lt; &gt; ตรวจสอบโดยใช้ความสัมพันธ์ระหว่างการคูณกับการหารที่ว่าตัวตั้ง ÷ ตัวหาร = ผลหารหรือ ตัวหาร × ผลหาร = ตัวตั้ง พิจารณา 0.08 ÷ 0.4 เนื่องจาก 0.08 = และ 0.4 = จะได้ว่า 0.08 ÷ 0.4 = ÷ = × = = = 0.2ตรวจสอบ 0.4 × 0.2 = 0.08ดังนั้น 0.08 ÷ 0.4 = 0.2 1 2 1 10"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s019" data-title="3.2 การหารทศนิยม · หน้า 19"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s019" data-thumb="img/t019.webp" data-title="3.2 การหารทศนิยม · หน้า 19"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; การหารทศนิยมหรือจำนวนนับด้วยทศนิยม 1 ตำแหน่ง อาจทำได้โดยเขียนทศนิยมในรูปเศษส่วน แล้วหาผลหาร จากนั้นเขียนผลหารในรูปทศนิยม พิจารณา 3 ÷ 0.6 เนื่องจาก 0.5 = จะได้ว่า 3 ÷ 0.6 = 3 ÷ = 3 × = = 5ตรวจสอบ 0.6 × 5 = 3.0 = 3ดังนั้น 3 ÷ 0.6 = 5 1 2 1 5 01 02 03 04"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s020" data-title="3.2 การหารทศนิยม · หน้า 20"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s020" data-thumb="img/t020.webp" data-title="3.2 การหารทศนิยม · หน้า 20"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; 0.32 ÷ 0.4 วิธีทำ 2.1 ÷ 0.3 = ÷ = × = = 7 ตอบ ๗ 2 2.1 ÷ 0.3 1 วิธีทำ 0.32 ÷ 0.4 = ÷ = × = = = 0.8 ตอบ ๐.๘ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 102 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s021" data-title="3.2 การหารทศนิยม · หน้า 21"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s021" data-thumb="img/t021.webp" data-title="3.2 การหารทศนิยม · หน้า 21"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; 54 ÷ 0.6 วิธีทำ 0.576 ÷ 0.9 = ÷ = × = = = 0.64 ตอบ ๐.๖๔ 4 0.576 ÷ 0.9 3 วิธีทำ 54 ÷ 0.6 = 54 ÷ = 54 × = = 90 ตอบ ๙๐ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 102 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s022" data-title="3.2 การหารทศนิยม · หน้า 22"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s022" data-thumb="img/t022.webp" data-title="3.2 การหารทศนิยม · หน้า 22"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; 1.08 ÷ 1.8 วิธีทำ 7 ÷ 0.2 = 7 ÷ = 7 × = = 35 ตอบ ๓๕ 6 7 ÷ 0.2 5 วิธีทำ 1.08 ÷ 1.8 = ÷ = × = = = 0.6 ตอบ ๐.๖ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 102 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-title="3.2 การหารทศนิยม · หน้า 23"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-thumb="img/t023.webp" data-title="3.2 การหารทศนิยม · หน้า 23"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2. การหารทศนิยมหรือจำนวนนับ ด้วยทศนิยม 2 ตำแหน่ง &lt; &gt; ตรวจสอบโดยใช้ความสัมพันธ์ระหว่างการคูณกับการหารที่ว่าตัวตั้ง ÷ ตัวหาร = ผลหารหรือ ตัวหาร × ผลหาร = ตัวตั้ง พิจารณา 0.148 ÷ 0.04 เนื่องจาก 0.148 = และ 0.04 = จะได้ว่า 0.147 ÷ 0.04 = ÷ = × = = = 3.7ตรวจสอบ 0.04 × 3.7 = 0.148ดังนั้น 0.148 ÷ 0.04 = 3."></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-title="3.2 การหารทศนิยม · หน้า 24"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-thumb="img/t024.webp" data-title="3.2 การหารทศนิยม · หน้า 24"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; การหารทศนิยมหรือจำนวนนับด้วยทศนิยม 2 ตำแหน่ง อาจทำได้โดยเขียนทศนิยมในรูปเศษส่วน แล้วหาผลหาร จากนั้นเขียนผลหารในรูปทศนิยม พิจารณา 27 ÷ 0.36 เนื่องจาก 0.36 = จะได้ว่า 27 ÷ 0.36 = 27 ÷ = 27 × = = 75ตรวจสอบ 0.36 × 75 = 27ดังนั้น 27 ÷ 0.36 = 75 3 4 1 25 01 02 03 04"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s025" data-title="3.2 การหารทศนิยม · หน้า 25"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s025" data-thumb="img/t025.webp" data-title="3.2 การหารทศนิยม · หน้า 25"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; 3.6 ÷ 0.09 วิธีทำ 20 ÷ 0.05 = 20 ÷ = 20 × = = 400 ตอบ ๔๐๐ 2 20 ÷ 0.05 1 วิธีทำ 3.6 ÷ 0.09 = ÷ = × = = 40 ตอบ ๔๐ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 104 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s026" data-title="3.2 การหารทศนิยม · หน้า 26"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s026" data-thumb="img/t026.webp" data-title="3.2 การหารทศนิยม · หน้า 26"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; 0.812 ÷ 0.28 วิธีทำ 1.75 ÷ 0.07 = ÷ = × = = 25 ตอบ ๒๕ 4 1.75 ÷ 0.07 3 วิธีทำ 0.812 ÷ 0.28 = ÷ = × = = = 2.9 ตอบ ๒.๙ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 104 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s027" data-title="3.2 การหารทศนิยม · หน้า 27"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s027" data-thumb="img/t027.webp" data-title="3.2 การหารทศนิยม · หน้า 27"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; 9.018 ÷ 15.03 วิธีทำ 46.8 ÷ 3.12 = ÷ = × = = = 15 ตอบ ๑๕ 6 46.8 ÷ 3.12 5 วิธีทำ 9.018 ÷ 15.03 = ÷ = × = = = 0.6 ตอบ ๐.๖ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 104 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s028" data-title="3.2 การหารทศนิยม · หน้า 28"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s028" data-thumb="img/t028.webp" data-title="3.2 การหารทศนิยม · หน้า 28"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3. การหารทศนิยมหรือจำนวนนับ ด้วยทศนิยม 3 ตำแหน่ง ตรวจสอบโดยใช้ความสัมพันธ์ระหว่างการคูณกับการหารที่ว่าตัวตั้ง ÷ ตัวหาร = ผลหารหรือ ตัวหาร × ผลหาร = ตัวตั้ง พิจารณา 0.228 ÷ 0.285 เนื่องจาก 0.228 = และ 0.285 = จะได้ว่า 0.228 ÷ 0.285 = ÷ = × = = = 0.8ตรวจสอบ 0.285 × 0.8 = 0.228ดังนั้น 0.228 ÷ 0.285 = 0"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s029" data-title="3.2 การหารทศนิยม · หน้า 29"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s029" data-thumb="img/t029.webp" data-title="3.2 การหารทศนิยม · หน้า 29"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; การหารทศนิยมหรือจำนวนนับด้วยทศนิยม 3 ตำแหน่ง อาจทำได้โดยเขียนทศนิยมในรูปเศษส่วน แล้วหาผลหาร จากนั้นเขียนผลหารในรูปทศนิยม พิจารณา 243 ÷ 0.081 เนื่องจาก 0.081 = จะได้ว่า 243 ÷ 0.081 = 243 ÷ = 243 × = = 3,000ตรวจสอบ 0.081 × 3,000 = 243ดังนั้น 243 ÷ 0.081 = 3,000 3 1 01 02 03 04"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s030" data-title="3.2 การหารทศนิยม · หน้า 30"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s030" data-thumb="img/t030.webp" data-title="3.2 การหารทศนิยม · หน้า 30"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; 6 ÷ 0.015 วิธีทำ 0.392 ÷ 0.112 = ÷ = × = = 3.5 ตอบ ๓.๕ 2 0.392 ÷ 0.112 1 วิธีทำ 6 ÷ 0.015 = 6 ÷ = 6 × = = 400 ตอบ ๔๐๐ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 106 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s031" data-title="3.2 การหารทศนิยม · หน้า 31"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s031" data-thumb="img/t031.webp" data-title="3.2 การหารทศนิยม · หน้า 31"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; 0.53 ÷ 0.106 วิธีทำ 1.89 ÷ 0.035 = ÷ = × = = 54 ตอบ ๕๔ 4 1.89 ÷ 0.035 3 วิธีทำ 0.53 ÷ 0.106 = ÷ = × = = 5 ตอบ ๕ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 106 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s032" data-title="3.2 การหารทศนิยม · หน้า 32"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s032" data-thumb="img/t032.webp" data-title="3.2 การหารทศนิยม · หน้า 32"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; 0.5 ÷ 0.125 วิธีทำ 0.098 ÷ 0.028 = ÷ = × = = 3.5 ตอบ ๓.๕ 6 0.098 ÷ 0.028 5 วิธีทำ 0.5 ÷ 0.125 = ÷ = × = = 4 ตอบ ๔ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 106 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-title="3.2 การหารทศนิยม · หน้า 33"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-thumb="img/t033.webp" data-title="3.2 การหารทศนิยม · หน้า 33"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4. การหารทศนิยมในแนวตั้ง &lt; &gt; การหารทศนิยมด้วยทศนิยม อาจทำตัวหารเป็นจำนวนนับโดยนำ 10, 100 และ 1,000 มาคูณทั้งตัวตั้งและตัวหาร แล้วจึงหาผลหาร พิจารณา 1.95 ÷ 0.3 ดังนี้ ตรวจสอบ 0.3 × 6.5 = 1.95ดังนั้น 1.95 ÷ 0.3 = 6.5 0.3 × 6 0.3 × 0.5 01 02 03 04"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-title="3.2 การหารทศนิยม · หน้า 34"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-thumb="img/t034.webp" data-title="3.2 การหารทศนิยม · หน้า 34"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; การหาผลหารของ 1.95 ÷ 0.3 อาจใช้ความรู้เรื่องการหารทศนิยมเมื่อตัวหารเป็นจำนวนนับ ได้ดังนี้เนื่องจาก 1.95 ÷ 0.3 = (1.95 × 10) ÷ (0.3 × 10) = 19.5 ÷ 3 ตรวจสอบ 3 × 6.5 = 19.5เนื่องจาก 19.5 ÷ 3 = 19.5 ÷ 0.3 ดังนั้น 1.95 ÷ 0.3 = 6.5 3 × 6 3 × 0.5 01 02 03 04"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-title="3.2 การหารทศนิยม · หน้า 35"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-thumb="img/t035.webp" data-title="3.2 การหารทศนิยม · หน้า 35"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; ตรวจสอบ 0.042 × 5 = 0.210 = 0.21ดังนั้น 0.21 ÷ 0.042 = 5 พิจารณา 0.21 ÷ 0.042 ดังนี้ 0.042 × 5 01 02 03 04"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-title="3.2 การหารทศนิยม · หน้า 36"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-thumb="img/t036.webp" data-title="3.2 การหารทศนิยม · หน้า 36"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; การหาผลหารของ 0.21 ÷ 0.042 อาจใช้ความรู้เรื่องการหารทศนิยมเมื่อตัวหารเป็นจำนวนนับ ได้ดังนี้เนื่องจาก 0.21 ÷ 0.042 = (0.21 × 1,000) ÷ (0.042 × 1,000) = 210 ÷ 42 ตรวจสอบ 42 × 5 = 210เนื่องจาก 210 ÷ 42 = 0.21 ÷ 0.042 ดังนั้น 0.21 ÷ 0.042 = 5 42 × 5 01 02 03 04"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s037" data-title="3.2 การหารทศนิยม · หน้า 37"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s037" data-thumb="img/t037.webp" data-title="3.2 การหารทศนิยม · หน้า 37"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; ตอบ ๗.๔๘ 3.74 ÷ 0.5 1 หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 110 วิธีทำ 3.74 ÷ 0.5 = (3.74 × 10) ÷ (0.5 × 10) = 37.4 ÷ 5 ตอบ ๑.๘ 2.16 ÷ 1.2 2 วิธีทำ 2.16 ÷ 1.2 = (2.16 × 10) ÷ (1.2 × 10) = 21.4 ÷ 5 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s038" data-title="3.2 การหารทศนิยม · หน้า 38"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s038" data-thumb="img/t038.webp" data-title="3.2 การหารทศนิยม · หน้า 38"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; ตอบ ๕๐๐ 75 ÷ 0.15 3 หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 110 วิธีทำ 75 ÷ 0.15 = (75 × 100) ÷ (0.15 × 100) = 7,500 ÷ 15 ตอบ ๔๐๐ 3.2 ÷ 0.008 4 วิธีทำ 3.2 ÷ 0.008 = (3.2 × 1,000) ÷ (0.008 × 1,000) = 3,200 ÷ 8 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s039" data-title="3.2 การหารทศนิยม · หน้า 39"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s039" data-thumb="img/t039.webp" data-title="3.2 การหารทศนิยม · หน้า 39"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; ตอบ ๑๖ 2.56 ÷ 0.16 5 หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 110 วิธีทำ 2.56 ÷ 0.16 = (2.56 × 100) ÷ (0.16 × 100) = 256 ÷ 16 ตอบ ๑๕ 1.62 ÷ 0.108 6 วิธีทำ 1.62 ÷ 0.108 = (1.62 × 1,000) ÷ (0.108 × 1,000) = 1,620 ÷ 108 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="8" data-src="img/s040" data-title="3.2 การหารทศนิยม · หน้า 40"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s040" data-thumb="img/t040.webp" data-title="3.2 การหารทศนิยม · หน้า 40"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; ตอบ ๗.๕ 3 ÷ 0.4 1 หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 110 วิธีทำ 3 ÷ 0.4 = (3 × 10) ÷ (0.4 × 10) = 30 ÷ 4 ตอบ ๕ 0.25 ÷ 0.05 2 วิธีทำ 0.25 ÷ 0.05 = (0.25 × 100) ÷ (0.05 × 100) = 25 ÷ 5 = 5 ตรวจสอบความเข้าใจ ตอบ ๒,๗๐๐ 8.1 ÷ 0.003 3 วิธีทำ 8.1 ÷ 0.003 = (8.1 × 1000) ÷ (0.003 × 1000) = 8,10"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s041" data-title="3.2 การหารทศนิยม · หน้า 41"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s041" data-thumb="img/t041.webp" data-title="3.2 การหารทศนิยม · หน้า 41"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; ตอบ ๐.๑๒ 0.192 ÷ 0.6 4 หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 110 วิธีทำ 0.192 ÷ 1.6 = (0.192 × 10) ÷ (1.6 × 10) = 1.92 ÷ 16 ตอบ ๐.๓๑ 1.395 ÷ 4.5 5 วิธีทำ 1.395 ÷ 4.5 = (1.395 × 10) ÷ (4.5 × 10) = 13.95 ÷ 45 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s042" data-title="3.2 การหารทศนิยม · หน้า 42"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s042" data-thumb="img/t042.webp" data-title="3.2 การหารทศนิยม · หน้า 42"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; ตอบ ๘๔ 1.008 ÷ 0.012 6 หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 110 วิธีทำ 1.008 ÷ 0.012 = (1.008 × 1000) ÷ (1.008 × 1000) = 1,008 ÷ 12 ตอบ ๖,๓๐๐ 3,402 ÷ 0.54 7 วิธีทำ 3,402 ÷ 0.54 = (3,402 × 100) ÷ (0.54 × 100) = 340,200 ÷ 54 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s043" data-title="3.2 การหารทศนิยม · หน้า 43"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s043" data-thumb="img/t043.webp" data-title="3.2 การหารทศนิยม · หน้า 43"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.2 การหารทศนิยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&gt; ตอบ ๒.๖ 3.38 ÷ 1.3 8 หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 110 วิธีทำ 3.38 ÷ 1.3 = (3.38 × 10) ÷ (1.3 × 10) = 33.8 ÷ 13 ตอบ ๑.๐๒ 7.65 ÷ 7.5 9 วิธีทำ 7.65 ÷ 7.5 = (7.65 × 10) ÷ (7.5 × 10) = 76.5 ÷ 75 01 02 03 04"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -407,22 +433,22 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s045" data-title="3.3 การแลกเปลี่ยนเงินตรา · หน้า 45"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s045" data-thumb="img/t045.webp" data-title="3.3 การแลกเปลี่ยนเงินตรา · หน้า 45"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.3 การแลกเปลี่ยนเงินตรา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; เนื่องจาก 1 ดอลลาร์สหรัฐ แลกเงินไทยได้ 32.55 บาทธนบัตรหนึ่งร้อยดอลลาร์สหรัฐ 1 ฉบับ แลกเงินไทยได้ 100 × 32.55 = 3,255 บาทดังนั้น มะลินำธนบัตรหนึ่งร้อยดอลลาร์สหรัฐ 1 ฉบับ ไปแลกเงินไทยได้ 3,255 บาท พิจารณาการแลกเปลี่ยนเงินตรา ถ้าเงิน 1 ดอลลาร์สหรัฐ แลกเงินไทยได้ 32.55 บาท มะลินำธนบัตรหนึ่งร้อยดอลลา"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s046" data-title="3.3 การแลกเปลี่ยนเงินตรา · หน้า 46"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s046" data-thumb="img/t046.webp" data-title="3.3 การแลกเปลี่ยนเงินตรา · หน้า 46"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.3 การแลกเปลี่ยนเงินตรา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 46 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; เนื่องจาก เงิน 34.25 บาท แลกเงินยูโรได้ 1 ยูโรเงิน 68,500 บาท แลกเงินยูโรได้ 68,500 ÷ 34.25 = 2,000 ยูโรดังนั้น เจนนำเงิน 68,500 บาท ไปแลกเงินยูโรได้ 2,000 ยูโร พิจารณาการแลกเปลี่ยนเงินตรา ถ้าเงิน 34.25 บาท แลกเงินยูโรได้ 1 ยูโร เจนนำเงิน 68,500 บาท ไปแลกเงินยูโรได้กี่ยูโร 01 02 03 04"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s047" data-title="3.3 การแลกเปลี่ยนเงินตรา · หน้า 47"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s047" data-thumb="img/t047.webp" data-title="3.3 การแลกเปลี่ยนเงินตรา · หน้า 47"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.3 การแลกเปลี่ยนเงินตรา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; พิจารณาการแลกเปลี่ยนเงินตรา ถ้าเงิน 1 ดอลลาร์ออสเตรเลีย แลกเงินเกาหลีใต้ 824.16 วอนเกาหลีใต้ แคนนำเงิน 150 ดอลลาร์ออสเตรเลีย ไปแลกเงินเกาหลีใต้ได้กี่วอนเกาหลีใต้ เนื่องจาก 1 ดอลลาร์ออสเตรเลีย แลกเงินเกาหลีใต้ 824.16 วอนเกาหลีใต้เงิน 150 ดอลลาร์ออสเตรเลีย แลกเงินเกาหลีใต้ได้ 150 × 824.16 = 123,62"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s048" data-title="3.3 การแลกเปลี่ยนเงินตรา · หน้า 48"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s048" data-thumb="img/t048.webp" data-title="3.3 การแลกเปลี่ยนเงินตรา · หน้า 48"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.3 การแลกเปลี่ยนเงินตรา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 48 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; หาคำตอบโดยใช้เครื่องคิดเลข 2,000 ยูโร หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 111 1 ถ้าเงิน 34.25 บาท แลกเงินยูโรได้ 1 ยูโร กวางนำเงิน 68,500 บาท ไปแลกเงินยูโรได้กี่ยูโร 123,624 วอนเกาหลีใต้ 2 ถ้าเงิน 1 ดอลลาร์ออสเตรเลีย แลกเงินเกาหลีใต้ได้ 824.16 วอนเกาหลีใต้ อุ้มนำเงิน 150 ดอลลาร์ออสเตร"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -432,77 +458,77 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s050" data-title="3.4 โจทย์ปัญหา · หน้า 50"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s050" data-thumb="img/t050.webp" data-title="3.4 โจทย์ปัญหา · หน้า 50"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 50 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; ต้องหาว่า ปอยซื้อผ้าทั้งหมดเป็นเงินเท่าใดซึ่งหาได้จาก นำความยาวของผ้าที่ซื้อ คูณกับราคาผ้า 1 เมตรจะได้ 3.5 × 40 = 140 บาท พบว่าสอดคล้องกับโจทย์แสดงว่า 40 บาท เป็นคำตอบที่ถูกต้อง สิ่งที่โจทย์ถาม ราคาผ้า 1 เมตร สิ่งที่โจทย์บอก ผ้า 3.5 เมตร ราคา 140 บาท มีวิธีหาราคาผ้า 1 เมตร อย่างไร นำราคาผ้าที่ซื"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s051" data-title="3.4 โจทย์ปัญหา · หน้า 51"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s051" data-thumb="img/t051.webp" data-title="3.4 โจทย์ปัญหา · หน้า 51"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 51 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; สิ่งที่โจทย์ถาม สิ่งที่โจทย์บอก ที่ดิน 26.6 ไร่ ใช้ทำสวน 11 ไร่ ส่วนที่เหลือแบ่งเป็นแปลงสำหรับปลูกผักแปลงละ 1.2 ไร่ มีวิธีหาจำนวนแปลงที่ดินอย่างไร หาได้โดยนำที่ดินที่เหลือจากใช้ทำสวน หารด้วยพื้นที่ของที่ดิน 1 แปลง สุดามีที่ดิน 26.6 ไร่ ใช้ทำสวน 11 ไร่ ที่เหลือแบ่งเป็นแปลงสำหรับปลูกผักแปลงละ 1.2 "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s052" data-title="3.4 โจทย์ปัญหา · หน้า 52"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s052" data-thumb="img/t052.webp" data-title="3.4 โจทย์ปัญหา · หน้า 52"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 52 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; ต้องหาว่า สุดามีที่ดินทั้งหมดเท่าใดซึ่งหาได้จาก นำจำนวนแปลง คูณกับพื้นที่ของที่ดิน 1 แปลงแล้วนำไปรวมกับที่ดินที่ใช้ทำสวนจะได้ ที่ดินที่นำมาแบ่งเป็นแปลง มีพื้นที่ 13 × 12 = 15.6 ไร่ดังนั้น สุดามีที่ดินทั้งหมด 15.6 + 11 = 26.6 ไร่พบว่าสอดคล้องกับโจทย์ แสดงว่า 13 แปลง เป็นคำตอบที่ถูกต้อง คำตอบ สุดา"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s053" data-title="3.4 โจทย์ปัญหา · หน้า 53"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s053" data-thumb="img/t053.webp" data-title="3.4 โจทย์ปัญหา · หน้า 53"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 53 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; พิณมีน้ำส้ม 91 ลิตร แบ่งใส่ขวด ขวดละ 0.35 ลิตร แล้วขายราคาขวดละ 14.50 บาท ถ้าขายหมด พิณจะได้เงินกี่บาท วิธีคิด หาจำนวนขวดน้ำส้มโดยนำปริมาตรน้ำส้มทั้งหมด หารด้วยปริมาตรน้ำส้ม 1 ขวด แล้วนำจำนวนขวดที่ได้คูณกับราคาน้ำส้ม 1 ขวดวิธีทำ น้ำส้ม91ลิตรแบ่งใส่ขวด ขวดละ0.35ลิตรจะได้น้ำส้ม91 ÷ 0.35 =260ขวดนำน"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s054" data-title="3.4 โจทย์ปัญหา · หน้า 54"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s054" data-thumb="img/t054.webp" data-title="3.4 โจทย์ปัญหา · หน้า 54"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 54 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; ถังทรงสี่เหลี่ยมมุมฉากมีพื้นที่ฐาน 4.5 ตารางเมตร และมีความจุ 6.75 ลูกบาศก์เมตร ถังนี้สูงเท่าใด วิธีคิด เนื่องจาก ความจุของทรงสี่เหลี่ยมมุมฉาก = พื้นที่ฐาน × ความสูง จึงหาความสูงของถังทรงสี่เหลี่ยมมุมฉาก โดยนำความจุของถัง หารด้วย พื้นที่ฐานวิธีทำ ถังทรงสี่เหลี่ยมมุมฉากมีความจุ6.75ลูกบาศก์เมตรมีพื"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s055" data-title="3.4 โจทย์ปัญหา · หน้า 55"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s055" data-thumb="img/t055.webp" data-title="3.4 โจทย์ปัญหา · หน้า 55"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 55 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; คุกกี้ราคาชิ้นละ 5.25 บาท ถ้าปิ่นซื้อคุกกี้ 126 บาท ได้คุกกี้กี่ชิ้น วิธีคิด หาจำนวนคุกกี้โดยนำจำนวนเงินที่ซื้อคุกกี้ หารด้วย ราคาคุกกี้ 1 ชิ้นวิธีทำ ปิ่นซื้อคุกกี้125บาทคุกกี้ราคาชิ้นละ5.25บาทดังนั้น ปิ่นได้คุกกี้126 ÷ 5.25 =24ชิ้น ตอบ ปิ่นได้คุกกี้ ๒๔ ชิ้น หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s056" data-title="3.4 โจทย์ปัญหา · หน้า 56"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s056" data-thumb="img/t056.webp" data-title="3.4 โจทย์ปัญหา · หน้า 56"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 56 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; นัชชาต้องการปลูกต้นเฟื่องฟ้าตลอดแนวรั้วยาว 12 เมตร โดยปลูกต้นแรกที่มุมรั้วด้านหนึ่ง และให้มีระยะห่างระหว่างต้น 0.5 เมตร นัชชาต้องปลูกต้นเฟื่องฟ้าทั้งหมดกี่ต้น วิธีคิด หาจำนวนเฟื่องฟ้าทั้งหมด โดยนำความยาวของแนวรั้ว หารด้วย ระยะห่างระหว่างต้นเฟื่องฟ้า แล้วรวมกับจำนวนต้นเฟื่องฟ้าที่มุมรั้วอีก 1 ต้น"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s057" data-title="3.4 โจทย์ปัญหา · หน้า 57"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s057" data-thumb="img/t057.webp" data-title="3.4 โจทย์ปัญหา · หน้า 57"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 57 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; หาได้จากความยาวรอบรูปของแปลงไม้ดอก 1 แปลง ซึ่งหาได้โดยนำความยาวของเชือกที่ใช้ทั้งหมด หารด้วย จำนวนแปลงไม้ดอกจะได้ 32 ÷ 5 = 6.4 เมตรเนื่องจาก แปลงไม้ดอกเป็นรูปสี่เหลี่ยมจัตุรัสมีความยาวรอบรูป 6.4 เมตรแสดงว่า แปลงไม้ดอกมีความยาวด้านละ 6.4 ÷ 4 = 1.6 เมตร สิ่งที่โจทย์ถาม พื้นที่ของแปลงไม้ดอก 1 แปลง "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s058" data-title="3.4 โจทย์ปัญหา · หน้า 58"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s058" data-thumb="img/t058.webp" data-title="3.4 โจทย์ปัญหา · หน้า 58"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 58 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; แปลงไม้ดอก 5 แปลง แต่ละแปลงมีพื้นที่ 2.56 ตร.ม.ซึ่ง 2.56 ตร.ม. มากกว่า 1 ตร.ม. แต่น้อยกว่า 4 ตร.ม.ถ้าแต่ละแปลงมีพื้นที่ 1 ตร.ม. จะมีความยาวด้านละ 1 ม. และมีความยาวรอบรูปแปลงละ 4 × 1 = 4 ม. แสดงว่า แปลงไม้ดอก 5 แปลง ต้องใช้เชือกยาว 5 × 4 = 20 ม.ถ้าแต่ละแปลงมีพื้นที่ 4 ตร.ม. จะมีความยาวด้านละ 2 ม."></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s059" data-title="3.4 โจทย์ปัญหา · หน้า 59"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s059" data-thumb="img/t059.webp" data-title="3.4 โจทย์ปัญหา · หน้า 59"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 59 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; มดซื้อแตงโม 1.25 กิโลกรัม ราคากิโลกรัมละ 22 บาท และส้ม 1.5 กิโลกรัม ราคากิโลกรัมละ 64 บาท มดต้องจ่ายเงินทั้งหมดเท่าใด มดซื้อแตงโม1.25กิโลกรัมราคากิโลกรัมละ22บาทมดซื้อแตงโมเป็นเงิน1.25 × 22 =27.50บาทมดซื้อส้ม1.5กิโลกรัมราคากิโลกรัมละ64บาทมดซื้อส้มเป็นเงิน1.5 × 64 =96บาทดังนั้น มดต้องจ่ายเงินทั้งห"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s060" data-title="3.4 โจทย์ปัญหา · หน้า 60"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s060" data-thumb="img/t060.webp" data-title="3.4 โจทย์ปัญหา · หน้า 60"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 60 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; สนามหญ้ารูปสี่เหลี่ยมผืนผ้ามีด้านหนึ่งยาว 4.2 เมตร และมีพื้นที่ 23.52 ตารางเมตร ต่ายต้องการทำรั้วรอบสนามหญ้า โดยเว้นช่องสำหรับเข้า – ออก กว้าง 2.75 เมตร ต่ายต้องทำรั้วยาวกี่เมตร วิธีคิด หาความยาวของรั้วที่ต้องทำ โดยนำพื้นที่ของสนามหญ้า หารด้วยความยาวด้านที่กำหนดจะได้ความยาวของด้านที่เหลือ จากนั้"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s061" data-title="3.4 โจทย์ปัญหา · หน้า 61"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s061" data-thumb="img/t061.webp" data-title="3.4 โจทย์ปัญหา · หน้า 61"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 61 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; ออมสินนำน้ำมะพร้าว 20 ลิตร บรรจุขวด ขวดละ 0.25 ลิตร แล้วขายขวดละ 15 บาท และขายหมด ถ้าออมสินลงทุนไป 505.50 บาท จะได้กำไรเท่าใด วิธีคิด หากำไรจากการขายมะพร้าว เริ่มจากหาจำนวนของน้ำมะพร้าว โดยนำปริมาณน้ำมะพร้าวทั้งหมด หารด้วยปริมาณน้ำมะพร้าว 1 ขวด แล้วคูณกับราคาขาย 1 ขวด จากนั้นลบด้วยทุนวิธีทำ ออมส"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s062" data-title="3.4 โจทย์ปัญหา · หน้า 62"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s062" data-thumb="img/t062.webp" data-title="3.4 โจทย์ปัญหา · หน้า 62"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 62 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; รถตู้โดยสารประจำทางคันหนึ่งวิ่งจากอนุสาวรีย์ชัยสมรภูมิไปสถานีขนส่งจังหวัดสมุทรสงครามเป็นระยะทาง 82.4 กิโลเมตร ถ้ารถตู้คันนี้วิ่งไป-กลับ 3 รอบ และน้ำมัน 1 ลิตร ใช้วิ่งได้ระยะทางเฉลี่ย 9.6 กิโลเมตร รถคันนี้ใช้น้ำมันกี่ลิตร วิธีคิด หาปริมาณน้ำมันที่รถคันนี้ใช้ โดยนำจำนวนเที่ยวทั้งหมด คูณกับระยะทางท"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s063" data-title="3.4 โจทย์ปัญหา · หน้า 63"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s063" data-thumb="img/t063.webp" data-title="3.4 โจทย์ปัญหา · หน้า 63"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 63 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจ &lt; &gt; ตอบคำถามโดยใช้ข้อมูลที่กำหนดบริษัท ทินประภา จำกัด (มหาชน) ให้บริการเกี่ยวกับการสื่อสารโทรคมนาคม โดยคิดค่าบริการ ดังนี้ หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 119 หมายเหตุ คิดค่าบริการเมื่อเริ่มสนทนา โดยเศษของนาที คิดเป็น 1 นาที เช่น ใช้บริการ 7 นาที 12 วินาที คิดเป็น 8 "></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s064" data-title="3.4 โจทย์ปัญหา · หน้า 64"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s064" data-thumb="img/t064.webp" data-title="3.4 โจทย์ปัญหา · หน้า 64"><div class="inner pp">
   <div class="pphead"><span class="secbadge">3.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 64 / 64</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="&lt; &gt; 5.25 บาท หนังสือเรียนรายวิชาพื้นฐาน คณิตศาสตร์ ป.6 หน้า 111 1 ถ้าวิมลใช้บริการในวันพุธ เวลา 9.05 – 9.12 น. วิมลเสียค่าบริการเท่าใด 19 บาท 2 ถ้ายุวดีใช้บริการในวันศุกร์ เวลา 17.58 – 18.14 น. ยุวดีเสียค่าบริการเท่าใด 600 นาที 3 ถ้าชัยชนะใช้บริการเฉพาะวันเสาร์ – วันอาทิตย์ และเสียค่าบริการทั้งสิ้น "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -809,18 +835,31 @@ function start() {
   }
   function setOn(v) {
     on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
     cv.classList.toggle('noswipe', on);
-    if (on) Kit.toast('✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil ได้ วางมือบนจอได้)');
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
   }
   btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
   function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
   cv.addEventListener('pointerdown', function (e) {
     if (!on) return;
-    if (e.pointerType === 'pen') penSeen = true;
-    else if (e.pointerType === 'touch' && penSeen) return; /* มีปากกาแล้ว ไม่นับฝ่ามือ */
-    e.preventDefault(); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
-    cur = { c: color, p: [pt(e)], id: e.pointerId }; list().push(cur); draw();
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
   });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
   cv.addEventListener('pointermove', function (e) {
     if (!cur || e.pointerId !== cur.id) return;
     var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
@@ -905,7 +944,7 @@ function start() {
       cam.addEventListener('pointerdown', function (e) {
         if (e.target.closest('button')) return;
         drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
-        cam.setPointerCapture && cam.setPointerCapture(e.pointerId); e.preventDefault();
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
       });
       cam.addEventListener('pointermove', function (e) {
         if (!drag || e.pointerId !== drag.id) return;
@@ -990,6 +1029,77 @@ function start() {
   /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
   if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
   if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

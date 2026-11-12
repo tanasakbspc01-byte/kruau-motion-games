@@ -94,6 +94,10 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 /* ---- ปากกาเขียนบนสไลด์ ---- */
 .drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
 body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
 .drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
 body.drawing .drawbar{display:flex}
 .drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
@@ -102,6 +106,28 @@ body.drawing .drawbar{display:flex}
 .drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
 .bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
 @media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
 /* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
 .campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
 .campnl.show{display:flex}
@@ -197,27 +223,27 @@ body.drawing .drawbar{display:flex}
   <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
   <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เป้าหมาย & เตรียมความพร้อม</span></button><button data-jump="7.1"><span class="e">🔷</span><span>7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span></button><button data-jump="7.2"><span class="e">📐</span><span>7.2 การสร้างรูปสี่เหลี่ยม</span></button><button data-jump="7.3"><span class="e">🟩</span><span>7.3 พื้นที่ของรูปสี่เหลี่ยม</span></button><button data-jump="7.4"><span class="e">📝</span><span>7.4 โจทย์ปัญหา</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-sec="pre" data-steps="0" data-src="img/s003" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="0" data-src="img/s003" data-thumb="img/t003.webp" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 3"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เป้าหมาย &amp; เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เรียนจบบทนี้แล้ว นักเรียนสามารถ บอกชนิดและสมบัติของรูปสี่เหลี่ยมสร้างรูปสี่เหลี่ยมตามข้อกำหนดหาพื้นที่ของรูปสี่เหลี่ยมด้านขนานและรูปสี่เหลี่ยมขนมเปียกปูนแสดงวิธีหาคำตอบของโจทย์ปัญหาเกี่ยวกับความยาวรอบรูปของรูปสี่เหลี่ยมแสดงวิธีหาคำตอบของโจทย์ปัญหาเกี่ยวกับพื้นที่ของรูปสี่เหลี่ยมด้านขนานและรูปสี่เหลี"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s004" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 4"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s004" data-thumb="img/t004.webp" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 4"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เป้าหมาย &amp; เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เตรียมความพร้อม 1 ตรวจสอบรูปที่กำหนด ว่าเป็นรูปสี่เหลี่ยมมุมฉากหรือไม่ เพราะเหตุใด ถ้าเป็นรูปสี่เหลี่ยมมุมฉากชนิดใด เพราะเหตุใด 1) 2) 3) 4) 5) 6) ไม่เป็น เพราะมุมทั้งสี่มุมไม่เป็นมุมฉาก ไม่เป็น เพราะมุมทั้งสี่มุมไม่เป็นมุมฉาก ไม่เป็น เพราะมุมทั้งสี่มุมไม่เป็นมุมฉาก ไม่เป็น เพราะมี 2 มุมไม่เป็นมุมฉาก"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s005" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 5"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s005" data-thumb="img/t005.webp" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 5"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เป้าหมาย &amp; เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 สร้างรูปตามข้อกำหนด 1) สร้างรูปสี่เหลี่ยมมุมฉาก KLMN ให้มีด้านยาวด้านละ 4.5 เซนติเมตร พร้อมเขียนเส้นทแยงมุมและบอกชนิดของรูปสี่เหลี่ยม 3) จากรูป สร้าง ให้ขนานกับ และผ่านจุด C 2) สร้างรูปสี่เหลี่ยมผืนผ้าให้มีความกว้าง 3 เซนติเมตร และมีความยาว 5.5 เซนติเมตร พร้อมกำหนดชื่อและเขียนเส้นทแยงมุมของรูปสี่เ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s006" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 6"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s006" data-thumb="img/t006.webp" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 6"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เป้าหมาย &amp; เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 กำหนดข้อมูลดังนี้ รูปสี่เหลี่ยมมุมฉาก 4 รูป มีลักษณะ ดังนี้รูปที่ 1 กว้าง 5 เซนติเมตร ยาว 8 เซนติเมตรรูปที่ 2 ยาวด้านละ 6 เซนติเมตรรูปที่ 3 ด้านที่อยู่ติดกันมีความยาวเท่ากัน และผลบวกของความยาวของด้าน 2 ด้านที่อยู่ติดกันเป็น 14 เซนติเมตรรูปที่ 4 มีความยาวของด้านเป็นจำนวนนับ โดยด้านที่อยู่ติดกันมีคว"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s007" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 7"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s007" data-thumb="img/t007.webp" data-title="เป้าหมาย &amp; เตรียมความพร้อม · หน้า 7"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เป้าหมาย &amp; เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2) รูปใดบ้างที่เส้นทแยงมุมแบ่งครึ่งซึ่งกันและกัน และตัดกันเป็นมุมฉาก3) รูปใดบ้างที่เส้นทแยงมุมแบ่งครึ่งซึ่งกันและกัน และตัดกันไม่เป็นมุมฉาก4) รูปที่ 4 มีความยาวด้านเป็นเท่าใด5) รูปสี่เหลี่ยมแต่ละรูปมีความยาวรอบรูปเท่าใด6) รูปที่มีพื้นที่มากที่สุดและรูปที่มีพื้นที่น้อยที่สุด มีพื้นที่ต่างกันเท่าใด รู"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -227,102 +253,102 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s009" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 9"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s009" data-thumb="img/t009.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 9"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ชนิดของรูปสี่เหลี่ยม กิจกรรมสำรวจรูปสี่เหลี่ยม ตรวจสอบขนาดของมุม ความยาวของด้าน และการขนานกันของด้านของรูปสี่เหลี่ยมที่กำหนด แล้วเขียน  ในตาราง มุมที่อยู่ตรงข้ามกัน ได้แก่ กับ และ กับ มุมที่ไม่อยู่ตรงข้ามกับ ได้แก่ กับ 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="7" data-src="img/s010" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 10"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s010" data-thumb="img/t010.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 10"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สมบัติของรูปสี่เหลี่ยมรูป Aรูป Bรูป Cรูป Dรูป Eรูป Fมุมทุกมุมเป็นมุมฉากมุมที่อยู่ตรงข้ามกันมีขนาดเท่ากัน 1 คู่ด้านทุกด้านยาวเท่ากันด้านตรงข้ามยาวเท่ากันด้านที่อยู่ติดกันยาวเท่ากัน 2 คู่ด้านตรงข้ามขนานกัน 2 คู่ด้านตรงข้ามขนานกัน 1 คู่ชนิดของรูปสี่เหลี่ยมรูปสี่เหลี่ยมจัตุรัสรูปสี่เหลี่ยม ผืนผ้ารูปสี่เ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 11"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-thumb="img/t011.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 11"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การจำแนกรูปสี่เหลี่ยม โดยพิจารณาจากขนาดของมุม ความยาวของด้าน และการขนานกันของด้านสามารถจำแนกได้ดังนี้ รูปสี่เหลี่ยมผืนผ้า เป็นรูปสี่เหลี่ยมที่มีมุมทุกมุมเป็นมุมฉาก ด้านตรงข้ามยาวเท่ากันและขนานกัน 2 คู่ ด้านที่อยู่ติดกันยาวไม่เท่ากัน2. รูปสี่เหลี่ยมขนมเปียกปูน เป็นรูปสี่เหลี่ยมที่มีมุมทุกมุมไม่เป็นมุ"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s012" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 12"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s012" data-thumb="img/t012.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 12"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4.รูปสี่เหลี่ยมด้านขนาน เป็นรูปสี่เหลี่ยมที่มีมุมที่อยู่ตรงข้ามกันมีขนาดเท่ากัน ด้านตรงข้ามยาวเท่ากันและขนานกัน 2 คู่ รูปสี่เหลี่ยมคางหมู เป็นรูปสี่เหลี่ยมที่มีด้านขนาน 1 คู่5. รูปสี่เหลี่ยมรูปว่าว เป็นรูปสี่เหลี่ยมที่มีมุมที่อยู่ตรงข้ามกันมีขนาดเท่ากัน 1 คู่ และด้านที่อยู่ติดกันยาวเท่ากัน 1 คู่6. 7"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 13"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-thumb="img/t013.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 13"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ABCD เป็นรูปสี่เหลี่ยมจัตุรัสเพราะมีมุมทุกมุมเป็นมุมฉากมี m() = m() = m() = m()มี // และ // FORG เป็นรูปสี่เหลี่ยมผืนผ้าเพราะมีมุมทุกมุมเป็นมุมฉากมี m() = m() = m() = m()มี // และ // 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s014" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 14"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s014" data-thumb="img/t014.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 14"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="MEKT เป็นรูปสี่เหลี่ยมขนมเปียกปูนเพราะมุมทุกมุมไม่เป็นมุมฉากมี = และ = มี m() = m() = m() = m()มี // และ // NULH เป็นรูปสี่เหลี่ยมด้านขนานเพราะ = และ = มี m() = m() และ m() = m()มี // และ // 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s015" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 15"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s015" data-thumb="img/t015.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 15"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="PQVS เป็นรูปสี่เหลี่ยมคางหมูเพราะมี // WXYX เป็นรูปสี่เหลี่ยมรูปว่าวเพราะมี = มี m() = m() และ m() = m() มีรูปสี่เหลี่ยมชนิดใดบ้างที่เป็นรูปสี่เหลี่ยมด้านขนาน รูปสี่เหลี่ยมจัตุรัส รูปสี่เหลี่ยมผืนผ้ารูปสี่เหลี่ยมขนมเปียกปูน และรูปสี่เหลี่ยมด้านขนาน 7.1 7.2 7.3 7.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 16"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s016" data-thumb="img/t016.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 16"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 95 พิจารณารูป แล้วตอบคำถาม รูป 1รูป 2รูป 3รูป 4รูป 5รูป 6รูป 7รูป 8รูป 9 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="7" data-src="img/s017" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 17"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s017" data-thumb="img/t017.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 17"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 รูปใดบ้างเป็นรูปสี่เหลี่ยมมุมฉาก เพราะเหตุใด 2 รูปใดบ้างเป็นรูปสี่เหลี่ยมจัตุรัส เพราะเหตุใด 3 รูปใดบ้างเป็นรูปสี่เหลี่ยมผืนผ้า เพราะเหตุใด 4 รูปใดบ้างเป็นรูปสี่เหลี่ยมด้านขนาน เพราะเหตุใด 5 รูปใดบ้างเป็นรูปสี่เหลี่ยมขนมเปียกปูน เพราะเหตุใด 6 รูปใดบ้างเป็นรูปสี่เหลี่ยมคางหมู เพราะเหตุใด 7 รูปใดบ้า"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 18"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-thumb="img/t018.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 18"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เส้นทแยงมุมของรูปสี่เหลี่ยม กิจกรรมสำรวจเส้นทแยงมุม ลากเส้นทแยงมุมของรูปสี่เหลี่ยมทุกรูป แล้วเขียน  ในตาราง รูปสี่เหลี่ยมจัตุรัส รูปสี่เหลี่ยมผืนผ้า 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s019" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 19"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s019" data-thumb="img/t019.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 19"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รูปสี่เหลี่ยมขนมเปียกปูน รูปสี่เหลี่ยมด้านขนาน 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s020" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 20"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s020" data-thumb="img/t020.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 20"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รูปสี่เหลี่ยมรูปว่าว รูปสี่เหลี่ยมคางหมู 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s021" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 21"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s021" data-thumb="img/t021.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 21"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สมบัติของรูปสี่เหลี่ยมเกี่ยวกับเส้นทแยงมุมรูปสี่เหลี่ยมจัตุรัสรูปสี่เหลี่ยม ผืนผ้ารูปสี่เหลี่ยมขนมเปียกปูนรูปสี่เหลี่ยมด้านขนานรูปสี่เหลี่ยมคางหมูรูปสี่เหลี่ยมรูปว่าวเส้นทแยงมุมมีความยาวเท่ากันเส้นทแยงมุมแบ่งครึ่งซึ่งกันและกันเส้นทแยงมุมเพียงเส้นเดียวที่ถูกแบ่งครึ่งด้วยเส้นทแยงมุมอีกเส้นหนึ่งเส้นทแย"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s022" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 22"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s022" data-thumb="img/t022.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 22"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สมบัติของรูปสี่เหลี่ยมชนิดต่างๆ มุมทุกมุมเป็นมุมฉากด้านทุกด้านยาวเท่ากัน และด้านตรงข้ามขนานกัน 2 คู่เส้นทแยงมุมยาวเท่ากัน แบ่งครึ่งซึ่งกันและกัน และตัดกันเป็นมุมฉาก รูปสี่เหลี่ยมจัตุรัส มุมทุกมุมเป็นมุมฉากด้านตรงข้ามยาวเท่ากัน แต่ด้านที่อยู่ติดกันยาวไม่เท่ากัน และด้านตรงข้ามขนานกัน 2 คู่เส้นทแยงมุมย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 23"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-thumb="img/t023.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 23"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="มุมทุกมุมไม่เป็นมุมฉาก และมุมที่อยู่ตรงข้ามกันมีขนาดเท่ากันด้านทุกด้านยาวเท่ากัน และด้านตรงข้ามขนานกัน 2 คู่เส้นทแยงมุมแบ่งครึ่งซึ่งกันและกัน และตัดกันเป็นมุมฉาก รูปสี่เหลี่ยมขนมเปียกปูน มุมที่อยู่ตรงข้ามกันมีขนาดเท่ากันด้านตรงข้ามยาวเท่ากัน และขนานกัน 2 คู่เส้นทแยงมุมแบ่งครึ่งซึ่งกันและกัน รูปสี่เห"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 24"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-thumb="img/t024.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 24"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ด้านตรงข้ามขนานกัน 1 คู่ รูปสี่เหลี่ยมคางหมู ด้านที่อยู่ติดกันยาวเท่ากัน 2 คู่มุมที่อยู่ตรงข้ามกันมีขนาดเท่ากัน 1 คู่เส้นทแยงมุมตัดกันเป็นมุมฉาก และมีเส้นทแยงมุมเพียงเส้นเดียวที่ถูกแบ่งครึ่งด้วยเส้นทแยงมุมอีกเส้นหนึ่ง รูปสี่เหลี่ยมรูปว่าว 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s025" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 25"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s025" data-thumb="img/t025.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 25"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 100 พิจารณาเส้นทแยงมุมของรูปสี่เหลี่ยมแต่ละรูป แล้วตอบคำถาม 1) รูปใดบ้างเป็นรูปสี่เหลี่ยมจัตุรัส เพราะเหตุใด2) รูปใดบ้างเป็นรูปสี่เหลี่ยมผืนผ้า เพราะเหตุใด3) รูปใดบ้างเป็นรูปสี่เหลี่ยมขนมเปียกปูน เพราะเหตุใด4) รูปใดบ้างเป็นรูปสี่เหลี่ยมด้านขนาน เพราะเหตุใด5) รูปใดบ้างเป็นรูปสี่เหลี่ยมร"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s026" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 26"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s026" data-thumb="img/t026.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 26"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจตอบคำถาม รูปสี่เหลี่ยมจัตุรัส รูปสี่เหลี่ยมผืนผ้า รูปสี่เหลี่ยมขนมเปียกปูน รูปสี่เหลี่ยมด้านขนาน รูปสี่เหลี่ยมผืนผ้า รูปสี่เหลี่ยมด้านขนาน รูปสี่เหลี่ยมขนมเปียกปูน เป็นรูปสี่เหลี่ยมชนิดเดียวกัน คือ รูปสี่เหลี่ยมคางหมู เพราะมีด้านขนานกัน 1 คู่ “PUTH มีด้าน 4 ด้านยาวไม่เท่ากัน และมีด"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s027" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 27"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s027" data-thumb="img/t027.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 27"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ถูกต้อง เพราะมีด้านขนานกัน 2 คู่ เช่น การตรวจสอบว่า เส้นตรง 2 เส้นขนานกันหรือไม่ มีวิธีการอย่างไร ไม่ถูกต้อง เพราะรูปสี่เหลี่ยมด้านขนานบางรูปอาจไม่เป็นรูปสี่เหลี่ยมผืนผ้า เนื่องจากมีมุมทุกมุมไม่เป็นมุมฉาก เช่น 1 รูปสี่เหลี่ยมจัตุรัสและรูปสี่เหลี่ยมผืนผ้าทุกรูป เป็นรูปสี่เหลี่ยมด้านขนาน 2 สิ่งที่ได้เ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s028" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 28"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s028" data-thumb="img/t028.webp" data-title="7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม · หน้า 28"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.1 ชนิดและสมบัติของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ถูกต้อง เพราะมีด้านขนานกัน 2 คู่ เช่น ไม่ถูกต้อง เพราะรูปสี่เหลี่ยมคางหมูมีด้านขนานกัน 1 คู่ ถ้ามีมุมฉาก 1 มุม แสดงว่าอีกด้านหนึ่งต้องตั้งฉากกับด้านคู่ที่ขนานกัน ซึ่งจะทำให้เกิดมุมฉาก 2 มุม เช่น 3รูปสี่เหลี่ยมขนมเปียกปูนทุกรูป เป็นรูปสี่เหลี่ยมด้านขนาน รูปสี่เหลี่ยมคางหมูบางรูป มีมุมฉากเพียง 1 มุม4 "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -332,112 +358,112 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s030" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 30"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s030" data-thumb="img/t030.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 30"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การสร้างรูปสี่เหลี่ยม เมื่อกำหนดความยาวของด้านและขนาดของมุม การสร้างรูปสี่เหลี่ยม ต้องนำความรู้เกี่ยวกับสมบัติของรูปสี่เหลี่ยมมาพิจารณาเพื่อวางแผนการสร้าง พิจารณาการสร้างรูปสี่เหลี่ยมด้านขนาน CDEF ที่มีด้านยาว ยาว 4.5 เซนติเมตร ด้านสั้นยาว 3 เซนติเมตร และมุมมุมหนึ่งมีขนาด 70˚ เขียนรูปคร่าวๆ จากรูปคร"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s031" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 31"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s031" data-thumb="img/t031.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 31"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 1 เขียน ยาว 4.5 เซนติเมตร ขั้นที่ 2 ที่จุด C สร้าง ขนาด 70° โดยให้ ยาว 3 เซนติเมตร ขั้นที่ 3 ที่จุด F สร้าง ขนาด 110° โดยให้ ยาว 4.5 เซนติเมตร จะได้ // ขั้นที่ 4 เขียน จะได้ CDEF เป็นรูปสี่เหลี่ยมด้านขนาน เราอาจสร้างรูปสี่เหลี่ยมด้านขนาน CDEF โดยสร้างให้ // และมี เป็นเส้นตัดขวาง ซึ่งจากสมบั"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 32"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-thumb="img/t032.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 32"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วงเวียน มี 2 ขา โดยขาข้างหนึ่งเป็นปลายแหลม ขาอีกข้างหนึ่งเป็นดินสอ วงเวียนเป็นเครื่องมือสำหรับเขียนวงกลม หรือส่วนโค้งของวงกลม ซึ่งระยะจากจุดศูนย์กลางถึงเส้นรอบวง เรียกว่า รัศมี เครื่องมือที่ใช้ในการสร้างรูปเรขาคณิต นอกจากโพรแทรกเตอร์แล้ว ยังอาจใช้วงเวียนช่วยในการสร้างได้ ปลายแหลม ดินสอ วิธีใช้วงเวีย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 33"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-thumb="img/t033.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 33"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการสร้างรูปสี่เหลี่ยมรูปว่าว ABCD ที่มี ยาว 4 เซนติเมตร และ ยาว 2 เซนติเมตร มีขนาด 120° เขียนรูปคร่าวๆ ขั้นที่ 1 เขียน ยาว 4 เซนติเมตร การสร้างรูปสี่เหลี่ยม ขั้นที่ 2 ที่จุด B สร้าง ขนาด 120° โดยให้ ยาว 2 เซนติเมตร 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 34"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-thumb="img/t034.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 34"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 3 กางวงเวียนรัศมี 2 เซนติเมตร แล้วใช้จุด C เป็นจุดศูนย์กลาง เขียนส่วนโค้งและกางวงเวียนรัศมี 4 เซนติเมตร แล้วใช้จุด A เป็นจุดศูนย์กลาง เขียนส่วนโค้งให้ตัดกับส่วนโค้งแรกที่จุด D ขั้นที่ 4 เขียน และ จะได้ ABCD เป็นรูปสี่เหลี่ยมรูปว่าว 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 35"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-thumb="img/t035.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 35"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการสร้างรูปสี่เหลี่ยม PQRS ที่มี ยาว 4 เซนติเมตร และ ยาว 2.5 เซนติเมตร ยาว 3 เซนติเมตร มีขนาด 70° และ มีขนาด 60° เขียนรูปคร่าวๆ ขั้นที่ 1 เขียน ยาว 4 เซนติเมตร ขั้นที่ 2 ที่จุด P สร้าง ขนาด 70° โดยให้ ยาว 2.5 เซนติเมตร 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 36"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-thumb="img/t036.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 36"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 3 ที่จุด Q สร้าง มีขนาด 60° โดยให้ ยาว 3 เซนติเมตร ขั้นที่ 4 เขียน จะได้ PQRS ตามต้องการ 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s037" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 37"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s037" data-thumb="img/t037.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 37"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 106สร้างรูปสี่เหลี่ยมตามข้อกำหนด 1รูปสี่เหลี่ยมคางหมู ABCD ที่มีด้านที่ขนานกันยาว 8 เซนติเมตร และ 3 เซนติเมตร มุมมุมหนึ่งมีขนาด 80° รูปสี่เหลี่ยมด้านขนาน QRST ที่มี ยาว 6 เซนติเมตร ยาว 8 เซนติเมตร และ มีขนาด 115° 2 รูปสี่เหลี่ยมขนมเปียกปูน MPVT ที่มีด้านแต่ละด้านยาว 4.5 เซนติเมตร และ ม"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s038" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 38"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s038" data-thumb="img/t038.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 38"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5รูปสี่เหลี่ยมคางหมู BOWL ที่มีมุมฉาก 2 มุม รูปสี่เหลี่ยมคางหมู ที่มีด้านที่ขนานกันอยู่ห่างกัน 3 เซนติเมตร และด้านที่ขนานกันยาว 4 เซนติเมตร และ 8.5 เซนติเมตร มุมมุมหนึ่งมีขนาด 60° พร้อมกำหนดชื่อรูปสี่เหลี่ยม6 รูปสี่เหลี่ยม PUSH ที่มี ยาว 6 เซนติเมตร ยาว 3 เซนติเมตร ด้านที่เหลืออีก 2 ด้านยาว 4 เซนติเ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s039" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 39"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s039" data-thumb="img/t039.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 39"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การสร้างรูปสี่เหลี่ยม เมื่อกำหนดความยาวของเส้นทแยงมุม การสร้างรูปสี่เหลี่ยม เมื่อกำหนดความยาวของเส้นทแยงมุมต้องนำความรู้เกี่ยวกับเส้นทแยงมุมของรูปสี่เหลี่ยมมาพิจารณาเพื่อวางแผนการสร้าง พิจารณาการสร้างรูปสี่เหลี่ยมจัตุรัส MODE ที่มีเส้นทแยงมุมยาว 4 เซนติเมตร เขียนรูปคร่าวๆ รูปสี่เหลี่ยมจัตุรัส มีเส้น"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s040" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 40"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s040" data-thumb="img/t040.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 40"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 1 เขียน ยาว 4 เซนติเมตร แล้วแบ่งครึ่ง ที่จุด B จะได้ และ ยาว 2 เซนติเมตร ขั้นที่ 2 เขียน ให้ตั้งฉากกับ ที่จุด B จะได้ และ ยาว 2 เซนติเมตร จะได้ ยาว 4 เซนติเมตร ขั้นที่ 3 เขียน และ จะได้ MODE เป็นรูปสี่เหลี่ยมจัตุรัส 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s041" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 41"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s041" data-thumb="img/t041.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 41"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการสร้างรูปสี่เหลี่ยมรูปว่าว CALS ที่มีเส้นทแยงมุมยาว 3 เซนติเมตร และ 5 เซนติเมตร เขียนรูปคร่าวๆ รูปสี่เหลี่ยมรูปว่าว มีเส้นทแยงมุมตัดกันเป็นมุมฉาก และมีเส้นทแยงมุมเพียงเส้นเดียวที่ถูกแบ่งครึ่งด้วยเส้นทแยงมุมอีกเส้นหนึ่ง ขั้นที่ 1 เขียน ยาว 3 เซนติเมตร แล้วแบ่งครึ่ง ที่จุด O จะได้ และ ยาว 1.5"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s042" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 42"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s042" data-thumb="img/t042.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 42"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 2 เขียน ยาว 5 เซนติเมตร ให้ตั้งฉากกับ ที่จุด O โดยที่ และ ยาวไม่เท่ากัน ขั้นที่ 3 เขียน และ จะได้ CALS เป็นรูปสี่เหลี่ยมรูปว่าว ถ้า และ ยาวเท่ากัน รูปที่ได้จะเป็นรูปสี่เหลี่ยมชนิดใดจะสร้างรูปสี่เหลี่ยม CALS ตามข้อกำหนด แต่ขนาดต่างจากนี้ได้หรือไม่ถ้าเปลี่ยนจากแบ่งครึ่งเส้นทแยงมุม CL เป็นแบ่ง"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s043" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 43"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s043" data-thumb="img/t043.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 43"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการสร้างรูปสี่เหลี่ยมด้านขนาน PKUN ที่มีเส้นทแยงมุมยาว 5 เซนติเมตร และ 4 เซนติเมตร มุมที่จุดตัดของเส้นทแยงมุมมุมหนึ่งมีขนาด 60° เขียนรูปคร่าวๆ รูปสี่เหลี่ยมด้านขนาน มีเส้นทแยงมุมยาวไม่เท่ากัน แบ่งครึ่งซึ่งกันและกันและตัดกันไม่เป็นมุมฉาก ขั้นที่ 1 เขียน ยาว 5 เซนติเมตร แล้วแบ่งครึ่ง ที่จุด E จ"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s044" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 44"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s044" data-thumb="img/t044.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 44"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 44 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 2 ที่จุด E สร้าง ขนาด 60° โดยให้ ยาว 2 เซนติเมตร ขั้นที่ 3 เขียน ยาว 2 เซนติเมตร โดยให้อยู่ในแนวเดียวกันกับ จะได้ ยาว 4 เซนติเมตร ขั้นที่ 4 เขียน และ จะได้ PKUN เป็นรูปสี่เหลี่ยมด้านขนาน 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s045" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 45"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s045" data-thumb="img/t045.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 45"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 110สร้างรูปสี่เหลี่ยมตามข้อกำหนด 1รูปสี่เหลี่ยมด้านขนาน THEY ที่มี และ เป็นเส้นทแยงมุมยาว 4 เซนติเมตร และ 8 เซนติเมตรตามลำดับ มีจุด C เป็นจุดตัดของเส้นทแยงมุม และ มีขนาด 45° รูปสี่เหลี่ยมจัตุรัส กขคง ที่มีเส้นทแยงมุมยาว 5 เซนติเมตร2 รูปสี่เหลี่ยมผืนผ้า ROPE ที่มีเส้นทแยงมุมยาว 7 เซนติเ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s046" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 46"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s046" data-thumb="img/t046.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 46"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 46 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4รูปสี่เหลี่ยม MNOK ที่มีเส้นทแยงมุมทั้งสองเส้นยาว 6 เซนติเมตร ตัดกับ ที่จุด A มีขนาด 110° และ m() = m() = 2.5 เซนติเมตร รูปสี่เหลี่ยมนี้เป็นรูปสี่เหลี่ยมชนิดใด เพราะเหตุใด รูปสี่เหลี่ยมรูปว่าว QCVR ที่มีเส้นทแยงมุมยาวเท่ากันและตัดกันที่จุด Z โดยให้ M() = m() = 3 เซนติเมตร 5 MNOK เป็นรูปสี่เหลี่ยมค"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s047" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 47"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s047" data-thumb="img/t047.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 47"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="6รูปสี่เหลี่ยมขนมเปียกปูน ABCD ที่มีด้านแต่ละด้านยาว 5 เซนติเมตร เส้นทแยงมุมตัดกันที่จุด O และ m() = 4.5 เซนติเมตร รูปสี่เหลี่ยมที่มีด้านคู่ที่อยู่ติดกันคู่หนึ่งยาวด้านละ 3 เซนติเมตร อีกคู่หนึ่งยาวด้านละ 4 เซนติเมตร และมีเส้นทแยงมุมยาว 5 เซนติเมตร รูปสี่เหลี่ยมนี้เป็นรูปสี่เหลี่ยมชนิดใด7 จนลง เป็นร"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s048" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 48"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s048" data-thumb="img/t048.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 48"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 48 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจสร้างรูปสี่เหลี่ยมตามข้อกำหนด 1รูปสี่เหลี่ยมด้านขนาน ABCD ที่มี ยาว 3.5 เซนติเมตร ยาว 5 เซนติเมตร และมุมมุมหนึ่งมีขนาด 50° รูปสี่เหลี่ยมคางหมู 2 รูป ที่แตกต่างกัน และมีเส้นทแยงมุมเส้นหนึ่งยาว 5.5 เซนติเมตร พร้อมกำหนดชื่อรูปสี่เหลี่ยม2 7.1 7.2 7.3 7.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s049" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 49"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s049" data-thumb="img/t049.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 49"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 49 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3รูปสี่เหลี่ยมที่มีด้านตรงข้ามขนานกัน 2 คู่ แต่ด้านที่อยู่ติดกันยาวไม่เท่ากัน โดยมีผลรวมของความยาวของด้าน 2 ด้านที่อยู่ติดกันเป็น 12 เซนติเมตร รูปสี่เหลี่ยมนี้เป็นรูปสี่เหลี่ยมชนิดใดบ้าง เป็นรูปสี่เหลี่ยมผืนผ้าและรูปสี่เหลี่ยมด้านขนาน ที่มีลักษณะตามข้อกำหนด เช่นรูปสี่เหลี่ยมผืนผ้าและรูปสี่เหลี่ยมด้า"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s050" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 50"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s050" data-thumb="img/t050.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 50"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 50 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4รูปสี่เหลี่ยมที่มีเส้นทแยงมุมยาว 4 เซนติเมตร และ 7 เซนติเมตร เส้นทแยงมุมแบ่งครึ่งซึ่งกันและกัน รูปสี่เหลี่ยมนี้เป็นรูปสี่เหลี่ยมชนิดใดบ้าง รูปสี่เหลี่ยมที่มีเส้นทแยงมุมยาว 5 เซนติเมตร และ 9 เซนติเมตร เส้นทแยงมุมตัดกันเป็นมุมฉาก รูปสี่เหลี่ยมนี้เป็นรูปสี่เหลี่ยมชนิดใดบ้าง5 ถ้าเส้นทแยงมุมตัดกันเป็นมุ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s051" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 51"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s051" data-thumb="img/t051.webp" data-title="7.2 การสร้างรูปสี่เหลี่ยม · หน้า 51"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.2 การสร้างรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 51 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="- สมบัติของรูปสี่เหลี่ยม และสมบัติของเส้นขนาน- การเขียนรูปสี่เหลี่ยมอย่างคร่าว ๆ- การสร้างเส้นขนาน- การวัดขนาดของมุมโดยใช้โพรแทรกเตอร์- การวัดความยาวของส่วนของเส้นตรง- การใช้วงเวียน สิ่งที่ได้เรียนรู้ การสร้างรูปสี่เหลี่ยม จำเป็นต้องมีความรู้และทักษะเรื่องใดบ้าง 7.1 7.2 7.3 7.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -447,77 +473,77 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s053" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 53"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s053" data-thumb="img/t053.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 53"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 53 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พื้นที่ของรูปสี่เหลี่ยมด้านขนาน เมื่อกำหนดด้านใดด้านหนึ่งของรูปสี่เหลี่ยมด้านขนานให้เป็น ฐาน ส่วนของเส้นตรงที่ลากจากด้านที่อยู่ตรงข้ามกับฐาน มาตั้งฉากกับฐานหรือแนวของฐาน เรียกว่า ส่วนสูง ความยาวของส่วนสูง เรียกว่า ความสูง กขคง มี เป็นฐาน และ เป็นส่วนสูง กขคง มี เป็นฐาน และ เป็นส่วนสูง ABCD มี เป็"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s054" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 54"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s054" data-thumb="img/t054.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 54"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 54 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 113บอกความยาวของฐานและความสูงของรูปสี่เหลี่ยมด้านขนาน 1234 ฐานยาว 5 ซม.สูง 3.7 ซม. ฐานยาว 4.4 ซม.สูง 2.5 ซม. ฐานยาว 3 ซม.สูง 4 ซม. ฐานยาว 3 ซม.สูง 3.5 ซม. 7.1 7.2 7.3 7.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s055" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 55"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s055" data-thumb="img/t055.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 55"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 55 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาพื้นที่ของรูปสี่เหลี่ยมด้านขนาน อปพร กำหนดด้าน เป็นฐาน ยาว 5 เซนติเมตร มี เป็นส่วนสูงยาว 2 เซนติเมตร หาพื้นที่โดยการนับตารางได้ 10 ตารางเซนติเมตร เมื่อตัดรูปสี่เหลี่ยมด้านขนาน อปพร ตามแนว แล้วต่อให้เป็นรูปสี่เหลี่ยมผืนผ้า ดังรูป 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s056" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 56"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s056" data-thumb="img/t056.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 56"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 56 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จะได้ รูปสี่เหลี่ยมด้านรูปสี่เหลี่ยมด้านขนาน อปพร มีพื้นที่เท่ากับ รูปสี่เหลี่ยมผืนผ้า กมพร พื้นที่ของรูปสี่เหลี่ยมผืนผ้า = ความกว้าง × ความยาว พื้นที่ของรูปสี่เหลี่ยมผืนผ้า กมพร = 2 × 5 ตารางเซนติเมตร = 10 ตารางเซนติเมตรดังนั้น พื้นที่ของรูปสี่เหลี่ยมด้านขนาน อปพร = 10 ตารางเซนติเมตรจากรูป พบว่า คว"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s057" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 57"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s057" data-thumb="img/t057.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 57"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 57 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาพื้นที่ของรูปสี่เหลี่ยมด้านขนาน YMCK กำหนดด้าน เป็นฐาน ยาว 4 เซนติเมตร มี เป็นส่วนสูงยาว 4 เซนติเมตร หาพื้นที่โดยการนับตารางได้ 16 ตารางเซนติเมตร เมื่อตัดรูปสี่เหลี่ยมด้านขนาน YMCK ตามแนว แล้วต่อให้เป็นรูปสี่เหลี่ยมผืนผ้า ดังรูป 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s058" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 58"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s058" data-thumb="img/t058.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 58"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 58 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พื้นที่ของรูปสี่เหลี่ยมด้านขนาน YMCK มีพื้นที่เท่ากับ พื้นที่ของรูปสี่เหลี่ยมจัตุรัส HJCK พื้นที่ของรูปสี่เหลี่ยมจัตุรัส = ความยาวของด้าน × ความยาวของด้าน พื้นที่ของรูปสี่เหลี่ยมจัตุรัส HJCK = 4 × 4 ตารางเซนติเมตร = 16 ตารางเซนติเมตรดังนั้น พื้นที่ของรูปสี่เหลี่ยมด้านขนาน YMCK = 16 ตารางเซนติเมตรจาก"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s059" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 59"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s059" data-thumb="img/t059.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 59"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 59 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หาพื้นที่ของรูปสี่เหลี่ยมด้านขนาน กขคง วิธีทำ พื้นที่ของรูปสี่เหลี่ยมด้านขนาน = ความสูง × ความยาวของฐาน พื้นที่ของ กขคง = 4 × 3 ตารางเซนติเมตร = 12 ตารางเซนติเมตรดังนั้น รูปสี่เหลี่ยมด้านขนาน กขคง มีพื้นที่ 12 ตารางเซนติเมตรตอบ ๑๒ ตารางเซนติเมตร 7.1 7.2 7.3 7.4"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s060" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 60"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s060" data-thumb="img/t060.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 60"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 60 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 116หาพื้นที่ของรูปสี่เหลี่ยมด้านขนาน 20 ตร.ซม. 14 ตร.ซม. 16 ตร.ซม. 123456 16.2 ตร.ซม. 7.6 ตร.ซม. 10.08 ตร.ซม. 7.1 7.2 7.3 7.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s061" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 61"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s061" data-thumb="img/t061.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 61"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 61 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พื้นที่ของรูปสี่เหลี่ยมขนมเปียกปูน พิจารณาการหาพื้นที่ของรูปสี่เหลี่ยมขนมเปียกปูน รูปสี่เหลี่ยมด้านขนาน รูปสี่เหลี่ยมขนมเปียกปูน มีด้านที่อยู่ตรงข้ามกันขนานกัน 2 คู่ เช่นเดียวกันกับรูปสี่เหลี่ยมด้านขนาน ดังนั้น การหาพื้นที่ของรูปสี่เหลี่ยมขนมเปียกปูน จึงอาจใช้วิธีการเดียวกันกับการหาพื้นที่ของรูปสี่เ"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s062" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 62"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s062" data-thumb="img/t062.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 62"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 62 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 117หาพื้นที่ของรูปสี่เหลี่ยมขนมเปียกปูน 1234 6 ตารางหน่วย 5.75 ตร.ซม. 22.5 ตร.ม. 10.88 ตร.ซม. 7.1 7.2 7.3 7.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s063" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 63"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s063" data-thumb="img/t063.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 63"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 63 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจหาพื้นที่ของรูปที่กำหนด 20 ตร.ซม. 14 ตร.ซม. 16 ตร.ซม. 123456 16.2 ตร.ซม. 7.6 ตร.ซม. 10.08 ตร.ซม. 7.1 7.2 7.3 7.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s064" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 64"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s064" data-thumb="img/t064.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 64"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 64 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ 1พิจารณาได้อย่างไรว่า ส่วนของเส้นตรงใดเป็นส่วนสูงของรูปสี่เหลี่ยมด้านขนาน ถ้าต้องการหาพื้นที่ของรูปสี่เหลี่ยมด้านขนานและรูปสี่เหลี่ยมขนมเปียกปูนต้องรู้สิ่งใดบ้าง2 ส่วนของเส้นตรงที่เป็นส่วนสูงของรูปสี่เหลี่ยมด้านขนาน เป็นระยะห่างระหว่างด้านคู่ขนาน ความสูงและความยาวของฐานซึ่งหน่วยคว"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s065" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 65"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s065" data-thumb="img/t065.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 65"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 65 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาพื้นที่โดยใช้ความรู้เกี่ยวกับรูปสี่เหลี่ยมด้านขนาน พิจารณาการหาพื้นที่ของ กขคง ที่มี // และห่างกัน 2 หน่วย นำรูปสี่เหลี่ยมที่มีขนาดเท่ากับ กขคง มาวางชิดติดกัน ดังรูปจะได้ รูปสี่เหลี่ยมด้านขนาน กขจฉ มีฐานยาว 8 หน่วย สูง 2 หน่วยและมีพื้นที่เป็น 2 เท่าของ กขคง หรือ กขคง มีพื้นที่เป็น ของพื้นที่"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s066" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 66"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s066" data-thumb="img/t066.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 66"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 66 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาการหาพื้นที่ของรูปที่กำหนด เนื่องจากรูปที่กำหนด เป็นรูปที่ประกอบด้วยรูปสี่เหลี่ยมขนมเปียกปูนที่มีฐานยาว 3 เซนติเมตรและสูง 2.6 เซนติเมตร จำนวน 6 รูป ดังนั้น พื้นที่ของรูปที่กำาหนด อาจหาได้จาก6 × พื้นที่ของรูปสี่เหลี่ยมขนมเปียกปูน 1 รูป รูปสี่เหลี่ยมขนมเปียกปูน 1 รูป มีพื้นที่ 2.6 × 3 = 7.8 ตาร"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s067" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 67"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s067" data-thumb="img/t067.webp" data-title="7.3 พื้นที่ของรูปสี่เหลี่ยม · หน้า 67"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.3 พื้นที่ของรูปสี่เหลี่ยม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 67 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 120หาพื้นที่ของส่วนที่ระบายสี 41.52 ตร.ซม. 12 ตร.ซม. 1,755 ตร.ม. 123456 30.6 ตร.ม. 24 ตร.ซม. 4,680 ตร.ซม. 7.1 7.2 7.3 7.4"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -527,107 +553,107 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s069" data-title="7.4 โจทย์ปัญหา · หน้า 69"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s069" data-thumb="img/t069.webp" data-title="7.4 โจทย์ปัญหา · หน้า 69"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 69 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แปลงไม้ดอกรูปสี่เหลี่ยมขนมเปียกปูน ยาวด้านละ 6.75 เมตร ถ้าใช้ตาข่ายล้อมแปลงไม้ดอกนี้ จะต้องใช้ตาข่ายยาวเท่าใด สิ่งที่โจทย์ถาม ความยาวของตาข่ายที่ใช้ล้อมแปลงไม้ดอก สิ่งที่โจทย์บอก แปลงไม้ดอกเป็นรูปสี่เหลี่ยมขนมเปียกปูนยาวด้านละ 6.75 เมตร หาความยาวของตาข่ายที่ใช้ล้อมเเปลงไม้ดอก ได้อย่างไร หาความยาวรอบ"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s070" data-title="7.4 โจทย์ปัญหา · หน้า 70"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s070" data-thumb="img/t070.webp" data-title="7.4 โจทย์ปัญหา · หน้า 70"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 70 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ติ๊บนำเชือกยาว 54 เมตร มาล้อมพื้นที่สนามเป็นรูปสี่เหลี่ยมด้านขนาน ให้ด้านที่อยู่ตรงข้ามกันคู่หนึ่งยาวด้านละ 12 เมตร ด้านที่อยู่ตรงข้ามกันอีกคู่หนึ่งยาวด้านละเท่าใด วิธีคิด เชือกยาว 54 เมตร ด้านที่อยู่ตรงข้ามกันคู่หนึ่งใช้เชือกยาว 2 × 12 = 24 เมตร เเสดงว่า ด้านที่อยู่ตรงข้ามกันอีกคู่หนึ่งใช้เชือกยาว "></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s071" data-title="7.4 โจทย์ปัญหา · หน้า 71"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s071" data-thumb="img/t071.webp" data-title="7.4 โจทย์ปัญหา · หน้า 71"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 71 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 122แสดงวิธีหาคำตอบ 1อุ๋ยเย็บผ้าลูกไม้ติดรอบผ้าเช็ดมือรูปสี่เหลี่ยมจัตุรัสผืนหนึ่ง ใช้ผ้าลูกไม้ทั้งหมด 170 เซนติเมตร ผ้าเช็ดมือผืนนี้ยาวด้านละเท่าใด สวนสาธารณะแห่งหนึ่งเป็นรูปสี่เหลี่ยมมุมฉากกว้าง 0.75 กิโลเมตร ยาว 1.25 กิโลเมตร มีรั้วล้อมรอบ ยกเว้นส่วนที่เป็นประตูซึ่งกว้าง 3.5 เมตร รั้"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s072" data-title="7.4 โจทย์ปัญหา · หน้า 72"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s072" data-thumb="img/t072.webp" data-title="7.4 โจทย์ปัญหา · หน้า 72"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 72 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3ผ้าใบผืนหนึ่งเป็นรูปสี่เหลี่ยมมุมฉากมีความยาวรอบรูป 24 เมตร มีด้านหนึ่งยาว 3.5 เมตร ด้านอีกด้านหนึ่งยาวเท่าใด ช่องระบายอากาศช่องหนึ่งเป็นรูปสี่เหลี่ยมมุมฉาก มนัสต้องการทำเหล็กดัดติดที่ช่องระบายอากาศนี้ ดังรูป มนัสจะต้องใช้เหล็กเส้นเพื่อทำเหล็กดัดยาวอย่างน้อยเท่าใด4 วิธีทำ ผ้าใบผืนหนึ่งเป็นรูปสี่เหล"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s073" data-title="7.4 โจทย์ปัญหา · หน้า 73"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s073" data-thumb="img/t073.webp" data-title="7.4 โจทย์ปัญหา · หน้า 73"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 73 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แผ่นป้ายเตือนแนวทางมีลักษณะและขนาด ดังรูปส่วนที่เป็นสีดำสามารถแบ่งเป็นรูปสี่เหลี่ยมด้านขนานที่มีขนาดเท่ากัน 2 รูป ส่วนที่เป็นสีดำมีพื้นที่เท่าใด สิ่งที่โจทย์ถาม พื้นที่ส่วนที่เป็นสีดำ สิ่งที่โจทย์บอก ส่วนที่เป็นสีดำสามารถแบ่งเป็นรูปสี่เหลี่ยมด้านขนาน ขนาดเดียวกัน 2 รูป แต่ละรูปมีฐานยาว 27 เซนติเมตร "></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s074" data-title="7.4 โจทย์ปัญหา · หน้า 74"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s074" data-thumb="img/t074.webp" data-title="7.4 โจทย์ปัญหา · หน้า 74"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 74 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ธงผืนหนึ่งเป็นรูปสี่เหลี่ยมผืนผ้ากว้าง 84 เซนติเมตร ยาว 120 เซนติเมตร ตรงกลางเป็นรูปสี่เหลี่ยมขนมเปียกปูน ยาวด้าวละ 60 เซนติเมตร ด้านคู่ที่ขนานกันห่างกัน 42 เซนติเมตร ส่วนที่เป็นสีเขียวมีพื้นที่เท่าใด สิ่งที่โจทย์ถาม พื้นที่ส่วนที่เป็นสีเขียว สิ่งที่โจทย์บอก ธงเป็นรูปสี่เหลี่ยมผืนผ้ากว้าง 84 ซม. ยาว"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s075" data-title="7.4 โจทย์ปัญหา · หน้า 75"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s075" data-thumb="img/t075.webp" data-title="7.4 โจทย์ปัญหา · หน้า 75"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 75 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ไม้อัดแผ่นหนึ่งเป็นรูปสี่เหลี่ยมด้านขนานมีฐานยาว 110 เซนติเมตร และสูง 60 เซนติเมตร นิดาต้องการทาสีไม้อัดทั้งสองด้าน ส่วนที่ทาสีคิดเป็นพื้นที่เท่าใด วิธีทำ พื้นที่ของรูปสี่เหลี่ยมด้านขนาน = ความสูง × ความยาวของฐาน ไม้อัด 1 ด้าน มีพื้นที่ 60 × 110 = 6,600 ตารางเซนติเมตร ดังนั้น ส่วนที่ทาสีคิดเป็นพื้นท"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s076" data-title="7.4 โจทย์ปัญหา · หน้า 76"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s076" data-thumb="img/t076.webp" data-title="7.4 โจทย์ปัญหา · หน้า 76"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 76 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 122แสดงวิธีหาคำตอบ 1แผ่นป้ายรูปสี่เหลี่ยมด้านขนานมีฐานยาว 20 เซนติเมตร สูง 15 เซนติเมตร ด้านหน้าของแผ่นป้ายแผ่นนี้มีพื้นที่เท่าใด กระดาษรูปสี่เหลี่ยมขนมเปียกปูนแผ่นหนึ่ง แต่ละด้านมีความยาว 12.6 เซนติเมตร และมีระยะห่างระหว่างด้านที่อยู่ตรงข้ามกัน 6.8 เซนติเมตร กระดาษแผ่นนี้มีพื้นที่เท่า"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s077" data-title="7.4 โจทย์ปัญหา · หน้า 77"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s077" data-thumb="img/t077.webp" data-title="7.4 โจทย์ปัญหา · หน้า 77"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 77 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3อารีรัตน์จ้างช่างปูพื้นด้วยแผ่นคอนกรีตรูปสี่เหลี่ยมขนมเปียกปูน 300 แผ่น ซึ่งแต่ละแผ่นยาวด้านละ 0.5 เมตร ด้านที่อยู่ตรงข้ามกันห่างกัน 0.4 เมตร ช่างคิดค่าจ้างตารางเมตรละ 490 บาท อารีรัตน์ต้องจ่ายค่าจ้างเท่าใด ด้านหน้าของอาคารแห่งหนึ่งเป็นรูปสี่เหลี่ยมด้านขนานมีฐานยาว 60 เมตร และสูง 15 เมตร ด้านหน้าขอ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s078" data-title="7.4 โจทย์ปัญหา · หน้า 78"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s078" data-thumb="img/t078.webp" data-title="7.4 โจทย์ปัญหา · หน้า 78"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 78 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจแสดงวิธีคิดและหาคำตอบ 1น้องปรายมีลวดยาว 720 เซนติเมตร นำมาตัดแล้วดัดเป็นรูปสี่เหลี่ยมขนมเปียกปูนที่มีความยาวด้านละ 15 เซนติเมตร ได้ทั้งหมดกี่ชิ้น กระดาษแผ่นหนึ่งเป็นรูปสี่เหลี่ยมด้านขนาน ที่มีด้านคู่ที่ขนานกันคู่หนึ่งยาวด้านละ 15 เซนติเมตร อีกคู่หนึ่งยาวด้านละ 20 เซนติเมตร โดยด้านคู"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s079" data-title="7.4 โจทย์ปัญหา · หน้า 79"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s079" data-thumb="img/t079.webp" data-title="7.4 โจทย์ปัญหา · หน้า 79"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 79 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สวนหย่อมแห่งหนึ่งเป็นรูปสี่เหลี่ยมขนมเปียกปูนมีความยาวโดยรอบ 80 เมตร ด้านที่อยู่ตรงข้ามกันห่างกัน 10 เมตร ส่วนหย่อมแห่งนี้มีพื้นที่เท่าใด สิ่งที่โจทย์ถาม พื้นที่ของสวนหย่อม สิ่งที่โจทย์บอก สวนหย่อมเป็นรูปสี่เหลี่ยมขนมเปียกปูน มีความยาวโดยรอบ 80 เมตร และด้านที่อยู่ตรงข้ามกันห่างกัน 10 เมตร ความยาวโดย"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s080" data-title="7.4 โจทย์ปัญหา · หน้า 80"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s080" data-thumb="img/t080.webp" data-title="7.4 โจทย์ปัญหา · หน้า 80"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 80 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สนามแห่งหนึ่งเป็นรูปสี่เหลี่ยมด้านขนานมีพื้นที่ 120 ตารางเมตร ด้านที่ขนานกันกับฐานยาว 12 เมตร ระยะห่างระหว่างฐานกับด้านที่ขนานกันกับฐานยาวเท่าใด สิ่งที่โจทย์ถาม ระยะห่างระหว่างฐานกับด้านที่ขนานกันกับฐาน สิ่งที่โจทย์บอก สนามเป็นรูปสี่เหลี่ยมด้านขนาน มีพื้นที่ 120 ตารางเมตร ด้านที่ขนานกันกับฐานยาว 12 "></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s081" data-title="7.4 โจทย์ปัญหา · หน้า 81"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s081" data-thumb="img/t081.webp" data-title="7.4 โจทย์ปัญหา · หน้า 81"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 81 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กระดาษรูปสี่เหลี่ยมด้านขนานแผ่นหนึ่งมีพื้นที่ 600 ตารางเซนติเมตร ด้านขนานคู่หนึ่งมีความยาวด้านละ 25 เซนติเมตร ด้านคู่ที่เหลือห่างกัน 20 เซนติเมตร กระดาษแผ่นนี้มีความยาวรอบรูปเท่าใด วิธีทำ พื้นที่ของรูปสี่เหลี่ยมด้านขนาน = ความสูง × ความยาวของฐาน ความยาวของฐาน = พื้นที่ ÷ ความสูง = 600 ÷ 20 เซนติเมตร"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s082" data-title="7.4 โจทย์ปัญหา · หน้า 82"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s082" data-thumb="img/t082.webp" data-title="7.4 โจทย์ปัญหา · หน้า 82"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 82 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 129แสดงวิธีหาคำตอบ 1แผ่นไม้รูปสี่เหลี่ยมขนมเปียกปูนมีความยาวรอบรูป 100 เซนติเมตร ด้านที่อยู่ตรงข้ามกันคู่หนึ่งห่างกัน 20 เซนติเมตร ไม้แผ่นนี้มีพื้นที่เท่าใด วิธีทำ ความยาวรอบรูปของรูปสี่เหลี่ยมขนมเปียกปูน = 4 × ความยาวของด้าน ความยาวของด้านของรูปสี่เหลี่ยมขนมเปียกปูน = ความยาวรอบรูป ÷ "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s083" data-title="7.4 โจทย์ปัญหา · หน้า 83"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s083" data-thumb="img/t083.webp" data-title="7.4 โจทย์ปัญหา · หน้า 83"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 83 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2แผ่นพลาสติกรูปสี่เหลี่ยมด้านขนานมีพื้นที่ 160 ตารางเซนติเมตร มีฐานยาว 20 เซนติเมตร ระยะห่างระหว่างฐานกับด้านที่อยู่ตรงกันข้ามกับฐานยาวเท่าใด วิธีทำ พื้นที่ของรูปสี่เหลี่ยมด้านขนาน = ความสูง × ความยาวของฐาน ความสูง = พื้นที่ของรูปสี่เหลี่ยมด้านขนาน ÷ ความยาวของฐาน = 160 ÷ 20 เซนติเมตร = 8 เซนติเมตร "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s084" data-title="7.4 โจทย์ปัญหา · หน้า 84"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s084" data-thumb="img/t084.webp" data-title="7.4 โจทย์ปัญหา · หน้า 84"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 84 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3สนามหญ้าเป็นรูปสี่เหลี่ยมขนมเปียกปูนมีพื้นที่ 4,000 ตารางเมตร ด้านที่อยู่ตรงข้ามกันคู่หนึ่งห่างกัน 50 เมตร มุกเดินรอบสนามหญ้านี้ 8 รอบ ได้ระยะทางเท่าใด วิธีทำ เนื่องจากด้านที่อยู่ตรงข้ามกันคู่หนึ่งห่างกัน 50 เมตร แสดงว่าสนามหญ้านี้มีความสูง 50 เมตร พื้นที่ของรูปสี่เหลี่ยมขนมเปียกปูน = ความสูง × ควา"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s085" data-title="7.4 โจทย์ปัญหา · หน้า 85"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s085" data-thumb="img/t085.webp" data-title="7.4 โจทย์ปัญหา · หน้า 85"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 85 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจแสดงวิธีคิดและหาคำตอบ 1บัญชานำลวดมาดัดเป็นรูปสี่เหลี่ยมด้านขนานที่มีความยาวรอบรูป 200 เซนติเมตร และมีด้านด้านหนึ่งยาว 60 เซนติเมตร ด้านที่อยู่ติดกันกับด้านนี้ยาวเท่าใด วิธีทำ ความยาวรอบรูปของรูปสี่เหลี่ยมด้านขนาน = 2 × ผลบวกของความยาวของด้าน 2 ด้านที่อยู่ติดกัน ผลบวกของความยาวของด้า"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s086" data-title="7.4 โจทย์ปัญหา · หน้า 86"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s086" data-thumb="img/t086.webp" data-title="7.4 โจทย์ปัญหา · หน้า 86"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 86 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2กระเบื้องปูพื้นแผ่นหนึ่งเป็นรูปสี่เหลี่ยมขนมเปียกปูนมีพื้นที่ 800 ตารางเซนติเมตร ด้านที่อยู่ตรงข้ามกันห่างกัน 20 เซนติเมตร กระเบื้องแผ่นนี้มีความยาวรอบรูปเท่าใด วิธีทำ ด้านที่อยู่ตรงข้ามกันห่างกัน 20 เซนติเมตร เป็นความสูงของกระเบื้องรูปสี่เหลี่ยมขนมเปียกปูน พื้นที่ของรูปสี่เหลี่ยมขนมเปียกปูน = ความ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s087" data-title="7.4 โจทย์ปัญหา · หน้า 87"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s087" data-thumb="img/t087.webp" data-title="7.4 โจทย์ปัญหา · หน้า 87"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 87 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3ที่ดินแปลงหนึ่งเป็นรูปสี่เหลี่ยมขนมเปียกปูนมีความยาวโดยรอบ 120 วา ด้านที่อยู่ตรงข้ามกันห่างกัน 22 วา ที่ดินแปลงนี้มีพื้นที่เท่าใด วิธีทำ ความยาวรอบรูปของรูปสี่เหลี่ยมขนมเปียกปูน = 4 × ความยาวของด้าน ความยาวของด้านของรูปสี่เหลี่ยมขนมเปียกปูน = ความยาวรอบรูป ÷ 4 ความยาวของด้านของที่ดิน = 120 ÷ 4 วา ="></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s088" data-title="7.4 โจทย์ปัญหา · หน้า 88"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s088" data-thumb="img/t088.webp" data-title="7.4 โจทย์ปัญหา · หน้า 88"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 88 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้บอกลำดับขั้นการหาคำตอบของโจทย์ปัญหาต่อไปนี้ 1ล้อมรั้วตาข่ายรอบสนามรูปสี่เหลี่ยมขนมเปียกปูนใช้ตาข่ายไป 240 เมตร ถ้าสนามมีพื้นที่ 1,800 ตารางเมตร ด้านที่อยู่ตรงข้ามกันของสนามห่างกันเท่าใด ขั้นที่ 1 เขียนรูปคร่าว ๆ เพื่อช่วยในการหาความยาวของด้านแต่ละด้านและความสูงของรูปสี่เหลี่ยมขนมเป"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s089" data-title="7.4 โจทย์ปัญหา · หน้า 89"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s089" data-thumb="img/t089.webp" data-title="7.4 โจทย์ปัญหา · หน้า 89"><div class="inner pp">
   <div class="pphead"><span class="secbadge">7.4 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 89 / 89</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รูปสี่เหลี่ยมด้านขนาน ABDC มีฐานยาว 30 เซนติเมตร สูง 20 เซนติเมตร และรูปสี่เหลี่ยมด้านขนาน PQRS มีความยาวของฐานและความสูงเป็น 2 เท่าของรูปสี่เหลี่ยมด้านขนาน ABDC รูปสี่เหลี่ยมทั้งสองรูปมีพื้นที่ต่างกันเท่าใด2 ขั้นที่ 1 เขียนรูปคร่าว ๆ ของรูปสี่เหลี่ยมทั้งสองรูปขั้นที่ 2 หาพื้นที่ของรูปสี่เหลี่ยมทั้ง"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -934,18 +960,31 @@ function start() {
   }
   function setOn(v) {
     on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
     cv.classList.toggle('noswipe', on);
-    if (on) Kit.toast('✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil ได้ วางมือบนจอได้)');
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
   }
   btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
   function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
   cv.addEventListener('pointerdown', function (e) {
     if (!on) return;
-    if (e.pointerType === 'pen') penSeen = true;
-    else if (e.pointerType === 'touch' && penSeen) return; /* มีปากกาแล้ว ไม่นับฝ่ามือ */
-    e.preventDefault(); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
-    cur = { c: color, p: [pt(e)], id: e.pointerId }; list().push(cur); draw();
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
   });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
   cv.addEventListener('pointermove', function (e) {
     if (!cur || e.pointerId !== cur.id) return;
     var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
@@ -1030,7 +1069,7 @@ function start() {
       cam.addEventListener('pointerdown', function (e) {
         if (e.target.closest('button')) return;
         drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
-        cam.setPointerCapture && cam.setPointerCapture(e.pointerId); e.preventDefault();
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
       });
       cam.addEventListener('pointermove', function (e) {
         if (!drag || e.pointerId !== drag.id) return;
@@ -1115,6 +1154,77 @@ function start() {
   /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
   if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
   if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

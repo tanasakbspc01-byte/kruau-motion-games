@@ -94,6 +94,10 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 /* ---- ปากกาเขียนบนสไลด์ ---- */
 .drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
 body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
 .drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
 body.drawing .drawbar{display:flex}
 .drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
@@ -102,6 +106,28 @@ body.drawing .drawbar{display:flex}
 .drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
 .bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
 @media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
 /* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
 .campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
 .campnl.show{display:flex}
@@ -197,17 +223,17 @@ body.drawing .drawbar{display:flex}
   <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
   <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เตรียมความพร้อม</span></button><button data-jump="5.1"><span class="e">💯</span><span>5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์</span></button><button data-jump="5.2"><span class="e">🔢</span><span>5.2 ร้อยละของจำนวนนับ</span></button><button data-jump="5.3"><span class="e">📝</span><span>5.3 โจทย์ปัญหา</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-sec="pre" data-steps="4" data-src="img/s003" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="4" data-src="img/s003" data-thumb="img/t003.webp" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เตรียมความพร้อม 1 เขียนเศษส่วนแสดงส่วนที่ระบายสี 1) 2) 3) 4) 5.1 5.2 5.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="9" data-src="img/s004" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s004" data-thumb="img/t004.webp" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 หาผลคูณ 1) 25 × 3) 50 × 7.25 × 40300 × 2.59) 6.2 × 20 2) × 304) × 35200 × 0.188) 140 × 0.2 6 15 290 10.5 หรือ 10 20 36 750 28 124 5.1 5.2 5.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s005" data-title="เตรียมความพร้อม · หน้า 5"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s005" data-thumb="img/t005.webp" data-title="เตรียมความพร้อม · หน้า 5"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 หาคำตอบ 1) ร้านค้าขายหนังสือการ์ตูน 12 เล่ม ราคา 900 บาท ถ้าฝนซื้อ 16 เล่ม ต้องจ่ายเงินกี่บาทห้องเรียนห้องหนึ่งมีนักเรียน 50 คน เป็นนักเรียนชาย 30 คน ถ้าห้องเรียนนี้มีนักเรียน 100 คน จะเป็นนักเรียนชายกี่คนในการทำน้ำผลไม้ 100 แก้ว ต้องใช้น้ำเชื่อม 16 ถ้วยตวง ถ้าทรายต้องการทำน้ำผลไม้ 250 แก้ว ต้องใช"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -217,57 +243,57 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s007" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 7"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s007" data-thumb="img/t007.webp" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 7"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ส่วนที่ระบายสีเขียนแสดงด้วยเศษส่วนได้อย่างไร พิจารณาส่วนที่ระบายสี แบ่งเป็น 100 ส่วน เท่าๆ กัน อาจกล่าวว่า ร้อยละ 32 หรือ 32 เปอร์เซ็นต์ 5.1 5.2 5.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s008" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 8"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s008" data-thumb="img/t008.webp" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 8"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ส่วนที่ระบายสีเขียนแสดงด้วยร้อยละหรือเปอร์เซ็นต์ได้อย่างไร พิจารณาส่วนที่ระบายสี แบ่งเป็น 100 ส่วน เท่าๆ กัน ร้อยละ 8 หรือ 8 เปอร์เซ็นต์ ร้อยละ 8 หรือ 8 เปอร์เซ็นต์ เขียนในรูปเศษส่วน 5.1 5.2 5.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s009" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 9"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s009" data-thumb="img/t009.webp" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 9"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เศษส่วนที่มีตัวส่วนเป็น 100 สามารถเขียนในรูป ร้อยละ หรือ เปอร์เซ็นต์ร้อยละ หรือ เปอร์เซ็นต์ สามารถเขียนในรูปเศษส่วนที่มีตัวส่วนเป็น 100 เปอร์เซ็นต์ เขียนแทนด้วย %เช่น 25 เปอร์เซ็นต์ เขียนแทนด้วย 25% เขียนเป็นตัวหนังสือ ยี่สิบห้าเปอร์เซ็นต์ 7 เปอร์เซ็นต์ เขียนแทนด้วย 7% เขียนเป็นตัวหนังสือ เจ็ดเปอร์เ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s010" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 10"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s010" data-thumb="img/t010.webp" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 10"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 23 1 เขียนแสดงส่วนที่ระบายสีในรูปเศษส่วน ร้อยละ และเปอร์เซ็นต์ ร้อยละ 1212% 1) 2) 3) 4) ร้อยละ 5050% ร้อยละ 3535% ร้อยละ 100100% 5.1 5.2 5.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="9" data-src="img/s011" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 11"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s011" data-thumb="img/t011.webp" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 11"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 เขียนในรูปร้อยละ และเปอร์เซ็นต์ 1) 3) 5) 7) 9) 2) 4) 6) 8) ร้อยละ 3636% ร้อยละ 8989% ร้อยละ 11% ร้อยละ 55% ร้อยละ 2424% ร้อยละ 1111% ร้อยละ 5050% ร้อยละ 100100% ร้อยละ 7575% 5.1 5.2 5.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="9" data-src="img/s012" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 12"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s012" data-thumb="img/t012.webp" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 12"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 เขียนในรูปเศษส่วน 1) 25%3) 7%5) ร้อยละ 447) 10 เปอร์เซ็นต์9) 82 เปอร์เซ็นต์ 2) 18%4) ร้อยละ 26) ร้อยละ 698) 56 เปอร์เซ็นต์ 5.1 5.2 5.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="9" data-src="img/s013" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 13"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s013" data-thumb="img/t013.webp" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 13"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="นักเรียนกลุ่มหนึ่งมี 100 คน เป็นหญิง 52 คน มีนักเรียนหญิงร้อยละเท่าใดของนักเรียนทั้งหมด นักเรียนกลุ่มนี้มีกี่คน 100 คน เป็นหญิงกี่คน 52 คน ร้อยละ 52 ของนักเรียนทั้งหมด คิดได้จากนักเรียน 100 คน เป็นหญิง 52 คนเป็นชาย 100 – 52 = 48 คนดังนั้น มีนักเรียนชายร้อยละ 47 ของนักเรียนทั้งหมด มีนักเรียนหญิงคิดเป"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s014" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 14"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s014" data-thumb="img/t014.webp" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 14"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ผลการสำรวจจำนวนสมาชิกชมรมกีฬาของนักเรียน 100 คน พบว่า ชมรมบาสเกตบอลมี 26 คน ชมรมฟุตบอลมี 32 คน ที่เหลือเป็นสมาชิกชมรมวอลเลย์บอล 1. สมาชิกชมรมบาสเกตบอลคิดเป็นกี่เปอร์เซ็นต์ของนักเรียนทั้งหมด 2. สมาชิกชมรมวอลเลย์บอลคิดเป็นกี่เปอร์เซ็นต์ของนักเรียนทั้งหมด 1. วิธีคิด นักเรียนทั้งหมด 100 คน เป็นสมาชิกชมร"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s015" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 15"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s015" data-thumb="img/t015.webp" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 15"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 24 ตอบคำถาม 1 ข้อสอบวิชาคณิตศาสตร์คะแนนเต็ม 100 คะแนน ขุนสอบได้ 85 คะแนน ขุนสอบได้ร้อยละเท่าใดของคะแนนเต็ม 2 ลุงตู่ปลูกต้นไม้ 100 ต้น เป็นต้นทุเรียน 26 ต้น ต้นมังคุด 45 ต้น ที่เหลือเป็นต้นเงาะ ลุงตู่ปลูกต้นไม้แต่ละชนิดคิดเป็นกี่เปอร์เซ็นต์ของต้นไม้ทั้งหมด 3 ไก่ทั้งหมด 100 ตัว เป็นไก่ตั"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="8" data-src="img/s016" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 16"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s016" data-thumb="img/t016.webp" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 16"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจ เขียนในรูปร้อยละ และเปอร์เซ็นต์ เขียนในรูปเศษส่วน 1) 3) 2) 4) ร้อยละ 3434% ร้อยละ 9999% ร้อยละ 77% ร้อยละ 6868% 1) ร้อยละ 483) 100% 2) 74%4) ร้อยละ 9 1 2 5.1 5.2 5.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="4" data-src="img/s017" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 17"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s017" data-thumb="img/t017.webp" data-title="5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์ · หน้า 17"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.1 การอ่านและการเขียนร้อยละหรือเปอร์เซ็นต์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เมื่อวานร้านดาวเด่นขายกาแฟร้อนและกาแฟเย็นได้ 100 แก้ว เป็นกาแฟร้อน 36 แก้ว ที่เหลือเป็นกาแฟเย็น1) เมื่อวาน ร้านนี้ขายกาแฟร้อนคิดเป็นร้อยละเท่าใดของจำนวนกาแฟที่ขายได้2) เมื่อวาน ร้านนี้ขายกาแฟเย็นคิดเป็นร้อยละเท่าใดของจำนวนกาแฟที่ขายได้ ถ้าอยากทราบว่า ลูกบอลสีแดงคิดเป็นร้อยละเท่าใดของลูกบอลทั้งหมด จะ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -277,47 +303,47 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="12" data-src="img/s019" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 19"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="12" data-src="img/s019" data-thumb="img/t019.webp" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 19"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.2 ร้อยละของจำนวนนับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="มีวิธีหาคำตอบของสถานการณ์นี้อย่างไร พิจารณาสถานการณ์ต่อไปนี้ ร้อยละ 20 ของเงิน 80 บาท คิดเป็นเงินกี่บาท เขียน ร้อยละ 20 ในรูปเศษส่วนได้ แล้วนำไปคูณกับ 80ซึ่งแสดงได้ดังนี้ร้อยละ 20 ของเงิน 80 บาท คิดเป็น × 80 = 16 บาทดังนั้น ร้อยละ 20 ของเงิน 80 บาท คิดเป็น 16 บาท คำนวณโดยใช้เครื่องคิดเลข ตัวเลขแสดงจ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/12)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s020" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 20"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s020" data-thumb="img/t020.webp" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 20"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.2 ร้อยละของจำนวนนับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ร้อยละ 35 ของน้ำหนัก 500 กิโลกรัม คิดเป็นกี่กิโลกรัม วิธีทำ ร้อยละ 30 ของน้ำหนัก 500 กิโลกรัม คิดเป็น × 500 = 175 กิโลกรัม ดังนั้น ร้อยละ 35 ของน้ำหนัก 500 กิโลกรัม คิดเป็น 175 กิโลกรัมตอบ ๑๗๕ กิโลกรัม หา ร้อยละ 35 ของน้ำหนัก 500 กิโลกรัม แสดงว่า 175 กิโลกรัม เป็นคำตอบที่ถูกต้อง 5.1 5.2 5.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s021" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 21"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s021" data-thumb="img/t021.webp" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 21"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.2 ร้อยละของจำนวนนับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="80% ของน้ำมัน 40 ลิตร คิดเป็นกี่ลิตร วิธีทำ 80% ของน้ำมัน 40 ลิตร คิดเป็น × 40 = 32 ลิตร ดังนั้น 80% ของน้ำมัน 40 ลิตร คิดเป็น 32 ลิตรตอบ ๓๒ ลิตร หา 80% ของน้ำมัน 40 ลิตร แสดงว่า 32 ลิตร เป็นคำตอบที่ถูกต้อง 5.1 5.2 5.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="7" data-src="img/s022" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 22"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s022" data-thumb="img/t022.webp" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 22"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.2 ร้อยละของจำนวนนับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ร้อยละ 50 ของ 450 วัน กับ ร้อยละ 40 ของ 600 วัน ต่างกันกี่วัน วิธีทำ ร้อยละ 50 ของ 450 วัน คิดเป็น × 450 = 225 วัน ร้อยละ 40 ของ 600 วัน คิดเป็น × 600 = 240 วัน ดังนั้น ร้อยละ 50 ของ 450 วัน กับร้อยละ 40 ของ 600 วัน ต่างกัน 240 – 225 = 15 วันตอบ ๑๕ วัน หา ร้อยละ 50 ของ 450 วัน หา ร้อยละ 40 ของ 600 ว"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s023" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 23"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s023" data-thumb="img/t023.webp" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 23"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.2 ร้อยละของจำนวนนับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 28 แสดงวิธีทำ 1 45% ของลูกอม 1,100 เม็ด คิดเป็นลูกอมกี่เม็ด 2 ร้อยละ 31 ของไข่ไก่ 400 ฟอง คิดเป็นไข่ไก่กี่ฟอง วิธีทำ 45% ของลูกอม 1,100 เม็ด คิดเป็น × 1,100 = 495 เม็ด ดังนั้น 45% ของลูกอม 1,100 เม็ด คิดเป็นลูกอม 495 เม็ดตอบ ๔๙๕ เม็ด วิธีทำ ร้อยละ 31 ของไข่ไก่ 400 ฟอง คิดเป็น × 400 = 1"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s024" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 24"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s024" data-thumb="img/t024.webp" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 24"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.2 ร้อยละของจำนวนนับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 82 เปอร์เซ็นต์ ของน้ำดื่ม 2,900 ขวด คิดเป็นน้ำดื่มกี่ขวด 4 30% ของเงิน 800 บาท มากกว่าหรือน้อยกว่า 45% ของเงิน 500 บาท อยู่เท่าใด วิธีทำ 82 เปอร์เซ็นต์ของน้ำดื่ม 2,900 ขวด คิดเป็น × 2,900 = 2,378 ขวด ดังนั้น 82 เปอร์เซ็นต์ ของน้ำดื่ม 2,900 ขวด คิดเป็นน้ำดื่ม 2,378 ขวดตอบ ๒,๓๗๘ ขวด วิธีทำ 30% ของเง"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s025" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 25"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s025" data-thumb="img/t025.webp" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 25"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.2 ร้อยละของจำนวนนับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 ร้อยละ 9 ของกล้าไม้สัก 2,000 ต้น กับร้อยละ 15 ของกล้าไม้พยุง 1,200 ต้น ต่างกันกี่ต้น วิธีทำ ร้อยละ 9 ของกล้าไม้สัก 2,000 ต้น คิดเป็น × 2,000 = 180 ต้น ร้อยละ 15 ของกล้าไม้พะยูง 1,200 ต้น คิดเป็น × 1,200 = 180 ต้น ดังนั้น ร้อยละ 9 ของกล้าไม้สัก 2,000 ต้น กับร้อยละ 15 ของกล้าไม้พะยูง 1,200 ต้น มีจำน"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s026" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 26"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s026" data-thumb="img/t026.webp" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 26"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.2 ร้อยละของจำนวนนับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจ แสดงวิธีทำ 1 ร้อยละ 54 ของหนังสือ 350 หน้า คิดเป็นกี่หน้า 2 60% ของที่ดิน 5 ไร่ คิดเป็นกี่ไร่ วิธีทำ ร้อยละ 54 ของหนังสือ 350 หน้า คิดเป็น × 350 = 189 หน้า ดังนั้น ร้อยละ 54 ของหนังสือ 350 หน้า คิดเป็น 189 หน้าตอบ ๑๘๙ หน้า วิธีทำ 60% ของที่ดิน 5 ไร่ คิดเป็น × 5 = 3 ไร่ ดังนั้น 60% "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s027" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 27"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s027" data-thumb="img/t027.webp" data-title="5.2 ร้อยละของจำนวนนับ · หน้า 27"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.2 ร้อยละของจำนวนนับ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 ร้อยละ 75 ของน้ำหนัก 20 ตัน คิดเป็นกี่ตัน 4 30% ของนักเรียน 260 คน มากกว่าหรือน้อยกว่า 25% ของนักเรียน 520 คน อยู่กี่คน วิธีทำ ร้อยละ 75 ของน้ำหนัก 20 ตัน คิดเป็น × 20 = 15 ตัน ดังนั้น ร้อยละ 75 ของน้ำหนัก 20 ตัน คิดเป็น 15 ตันตอบ ๑๕ ตัน วิธีทำ 30% ของนักเรียน 260 คน คิดเป็น × 260 = 78 คน 25% ของน"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -327,227 +353,227 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="8" data-src="img/s029" data-title="5.3 โจทย์ปัญหา · หน้า 29"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s029" data-thumb="img/t029.webp" data-title="5.3 โจทย์ปัญหา · หน้า 29"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="“สวนผลไม้แห่งหนึ่งมีต้นทุเรียน 40% ของต้นไม้ทั้งหมด” หมายความว่าอย่างไร ถ้าสวนผลไม้นี้มีต้นไม้ 100 ต้น จะมีต้นทุเรียน 40 ต้น “ปีนี้มีนักท่องเที่ยวเพิ่มขึ้น 11% ของปีที่แล้ว” หมายความว่าอย่างไร ถ้าปีที่แล้วมีนักท่องเที่ยว 100 คนปีนี้มีนักท่องเที่ยวเพิ่มขึ้นอีก 11 คนแสดงว่า ปีนี้มีนักท่องเที่ยว 100 + "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="9" data-src="img/s030" data-title="5.3 โจทย์ปัญหา · หน้า 30"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s030" data-thumb="img/t030.webp" data-title="5.3 โจทย์ปัญหา · หน้า 30"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="โรงเรียนแห่งหนึ่งมีนักเรียนชาย 45% ของนักเรียนทั้งหมด ข้อความนี้หมายความว่าอย่างไร ถ้าโรงเรียนมีนักเรียน 100 คน จะมีนักเรียนชาย 45 คนและจะมีนักเรียนหญิง 100 – 45 = 55 คนถ้าโรงเรียนมีนักเรียน 100 คน จะมีนักเรียนหญิง 55 คนแสดงว่า มีนักเรียนหญิง 55% ของนักเรียนทั้งหมด ถ้าโรงเรียนมีนักเรียน 560 คน จะมีน"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s031" data-title="5.3 โจทย์ปัญหา · หน้า 31"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s031" data-thumb="img/t031.webp" data-title="5.3 โจทย์ปัญหา · หน้า 31"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ออมสินสอบวิชาคณิตศาสตร์ได้ 80% ของคะแนนเต็ม ถ้าวิชานี้มีคะแนนเต็ม 30 คะแนนออมสินสอบได้กี่คะแนน วิธีทำ ออมสินสอบวิชาคณิตศาสตร์ได้ 80% ของคะแนนเต็ม คะแนนเต็ม 30 คะแนน ออมสินสอบได้ × 30 = 24 คะแนนชตอบ ๒๔ คะแนน หา 80% ของคะแนนเต็ม 30 คะแนน แสดงว่า 24 คะแนน เป็นคำตอบที่ถูกต้อง 5.1 5.2 5.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s032" data-title="5.3 โจทย์ปัญหา · หน้า 32"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s032" data-thumb="img/t032.webp" data-title="5.3 โจทย์ปัญหา · หน้า 32"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ปีนี้บริษัทมีรายได้เพิ่มขึ้น 40% ของรายได้ปีที่แล้ว ถ้าปีที่แล้วมีรายได้ 890,000 บาท ปีนี้มีรายได้กี่บาท วิธีทำ ปีนี้บริษัทมีรายได้เพิ่มขึ้น 40% ของรายได้ปีที่แล้ว ปีที่แล้วมีรายได้ 890,000 บาท ปีนี้มีรายได้เพิ่มขึ้น × 890,000 = 356,000 บาท ดังนั้น ปีนี้มีรายได้ 890,000 + 356,000 = 1,246,000 บาทตอบ "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s033" data-title="5.3 โจทย์ปัญหา · หน้า 33"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s033" data-thumb="img/t033.webp" data-title="5.3 โจทย์ปัญหา · หน้า 33"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ปีนี้ปริมาณการส่งออกสินค้าของบริษัทแห่งหนึ่งลดลงจากปีที่แล้ว 8% ถ้าปีที่แล้วบริษัทนี้ส่งออกสินค้า 5,200 ตัน ปีนี้บริษัทส่งออกสินค้าเท่าใด วิธีทำ ปีนี้ปริมาณการส่งออกสินค้าของบริษัทลดลงจากปีที่แล้ว 8% ปีที่แล้วส่งออกสินค้า 5,200 ตัน ปีนี้ส่งออกสินค้าลดลง × 5,200 = 416 ตัน ดังนั้น ปีนี้บริษัทส่งออกสิน"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s034" data-title="5.3 โจทย์ปัญหา · หน้า 34"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s034" data-thumb="img/t034.webp" data-title="5.3 โจทย์ปัญหา · หน้า 34"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 33 แสดงวิธีทำ 1 เกษตรกรแบ่งที่ดิน 12% สำหรับปลูกกล้วย ถ้ามีที่ดิน 4,600 ตารางวา เกษตรกรปลูกกล้วยกี่ตารางวา วิธีทำเกษตรกรแบ่งที่ดิน 12% สำหรับปลูกกล้วยรินใส่แก้ว แก้วละเท่าๆ กันได้8แก้วเกษตรกรมีที่ดิน4,600ตารางวาแบ่งปลูกกล้วย × 4,600=552ตารางวาตอบ๕๕๒ ตารางวาวิธีทำเกษตรกรแบ่งที่ดิน 12% ส"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s035" data-title="5.3 โจทย์ปัญหา · หน้า 35"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s035" data-thumb="img/t035.webp" data-title="5.3 โจทย์ปัญหา · หน้า 35"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 เดือนตุลาคม แม่ค้าขายไข่ไก่ได้เพิ่มขึ้นจากเดือนที่แล้ว 25 เปอร์เซ็นต์ ถ้าเดือนกันยายน แม่ค้าขายไข่ไก่ได้ 30,840 ฟอง เดือนตุลาคมแม่ค้าขายไข่ไก่ได้กี่ฟอง วิธีทำเดือนตุลาคมแม่ค้าขายไข่ไก่ได้เพิ่มขึ้นจากเดือนที่แล้ว 25 เปอร์เซ็นต์รินใส่แก้ว แก้วละเท่าๆ กันได้8แก้วเดือนกันยายน แม่ค้าขายไข่ไก่ได้30,840ฟ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s036" data-title="5.3 โจทย์ปัญหา · หน้า 36"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s036" data-thumb="img/t036.webp" data-title="5.3 โจทย์ปัญหา · หน้า 36"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 แก้วตาออมเงินได้ 6,520 บาท ต้นกล้าออมเงินได้น้อยกว่าแก้วตาร้อยละ 15 ต้นกล้าออมเงินได้กี่บาท วิธีทำต้นกล้าออมเงินได้น้อยกว่าแก้วตาร้อยละ 15รินใส่แก้ว แก้วละเท่าๆ กันได้8แก้วแก้วตาออมเงินได้6,520บาทต้นกล้าออมเงินได้น้อยกว่าแก้วตา × 6,520=978บาทดังนั้น ต้นกล้าออมเงินได้6,520 – 978=5,542บาทตอบ๕,๕๔๒ บา"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="8" data-src="img/s037" data-title="5.3 โจทย์ปัญหา · หน้า 37"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s037" data-thumb="img/t037.webp" data-title="5.3 โจทย์ปัญหา · หน้า 37"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="โรงเรียนแห่งหนึ่งมีนักเรียนที่ว่ายน้ำเป็น ร้อยละ 36 ของนักเรียนทั้งหมด ถ้าโรงเรียนแห่งนี้มีนักเรียนทั้งหมด 2,400 คน มีนักเรียนที่ว่ายน้ำเป็นกี่คน จากข้อความ “โรงเรียนแห่งหนึ่งมีนักเรียนที่ว่ายน้ำเป็นร้อยละ 36 ของนักเรียนทั้งหมด” หมายความว่าอย่างไร ถ้าโรงเรียนมีนักเรียนทั้งหมด 100 คน จะมีนักเรียนที่ว"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="10" data-src="img/s038" data-title="5.3 โจทย์ปัญหา · หน้า 38"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s038" data-thumb="img/t038.webp" data-title="5.3 โจทย์ปัญหา · หน้า 38"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เอกมีที่ดิน 1,250 ตารางวา แบ่งพื้นที่สำหรับปลูกข้าว 84% ของที่ดินทั้งหมด พื้นที่ที่เหลือใช้เลี้ยงปลา เอกมีพื้นที่สำหรับเลี้ยงปลากี่ตารางวา วิธีคิด ปลูกข้าว 84% ของที่ดินทั้งหมด หมายความว่า ถ้ามีที่ดินทั้งหมด 100 ตารางวา ปลูกข้าว 84 ตารางวา เหลือพื้นที่สำหรับเลี้ยงปลา 100 – 84 = 16 ตารางวา ถ้าเอกมีที"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="10" data-src="img/s039" data-title="5.3 โจทย์ปัญหา · หน้า 39"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s039" data-thumb="img/t039.webp" data-title="5.3 โจทย์ปัญหา · หน้า 39"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รอบบ่ายมีผู้ชมละครเวที 540 คน รอบค่ำมีผู้ชมเพิ่มขึ้นจากรอบบ่าย 35% รอบค่ำมีผู้ชมละครเวทีกี่คน วิธีคิด รอบค่ำมีผู้ชมเพิ่มขึ้นจากบ่าย 35% หมายความว่า ถ้ารอบบ่ายมีผู้ชม 100 คน รอบค่ำมีผู้ชมเพิ่มขึ้น 35 คน แสดงว่า รอบค่ำมีผู้ชม 100 + 35 = 135 คน ถ้ารอบบ่ายมีผู้ชม100คนรอบค่ำมีผู้ชม135คน ถ้ารอบบ่ายมีผู้ชม"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s040" data-title="5.3 โจทย์ปัญหา · หน้า 40"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s040" data-thumb="img/t040.webp" data-title="5.3 โจทย์ปัญหา · หน้า 40"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 36 แสดงวิธีทำ 1 โรงเรียนแห่งหนึ่งมีนักเรียน 950 คน วันนี้มีนักเรียนมาเรียน 98% ของนักเรียนทั้งหมด วันนี้มีนักเรียนไม่มาเรียนกี่คน วิธีทำถ้าโรงเรียนมีนักเรียน100คนวันนี้ไม่มาเรียน100 – 98 =2คนถ้าโรงเรียนมีนักเรียน1คนวันนี้ไม่มาเรียน คนโรงเรียนมีนักเรียน950คนวันนี้ไม่มาเรียน950 × =19คนดั"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s041" data-title="5.3 โจทย์ปัญหา · หน้า 41"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s041" data-thumb="img/t041.webp" data-title="5.3 โจทย์ปัญหา · หน้า 41"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 ปริมาณน้ำฝนในปีนี้เพิ่มขึ้นจากปีที่แล้วร้อยละ 20 ถ้าปีที่แล้วมีปริมาณน้ำฝน 2,380 มิลลิเมตร ปีนี้มีปริมาณน้ำฝนกี่มิลลิเมตร วิธีทำถ้าปีที่แล้วมีปริมาณน้ำฝน100มิลลิเมตรปีนี้มีปริมาณน้ำฝน100 + 20=120มิลลิเมตรถ้าปีที่แล้วมีปริมาณน้ำฝน1มิลลิเมตรปีนี้มีปริมาณน้ำฝน มิลลิเมตรถ้าปีที่แล้วมีปริมาณน้ำฝน2,380ม"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="7" data-src="img/s042" data-title="5.3 โจทย์ปัญหา · หน้า 42"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s042" data-thumb="img/t042.webp" data-title="5.3 โจทย์ปัญหา · หน้า 42"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การลดราคาเป็นร้อยละหรือเปอร์เซ็นต์ เป็นการบอกส่วนลดเมื่อเทียบกับราคาที่ติดไว้ 100 บาท พิจารณาข้อความต่อไปนี้ หมายความว่า ถ้าติดราคาไว้ 100 บาท ลดราคา 10 บาทหรือ ถ้าติดราคาไว้ 100 บาท ขายจริง 100 – 10 = 90 บาท ลดราคา 10% ของราคาที่ติดไว้ หมายความว่า ถ้าติดราคาไว้ 100 บาท ลดราคา 50 บาทหรือ ถ้าติดราคาไ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="8" data-src="img/s043" data-title="5.3 โจทย์ปัญหา · หน้า 43"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s043" data-thumb="img/t043.webp" data-title="5.3 โจทย์ปัญหา · หน้า 43"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ร้านค้าประกาศลดราคาสินค้า 20% - 60% ของราคาที่ติดไว้ ถ้าติดราคารองเท้า100บาทลดราคา20บาท ถ้าติดราคารองเท้า1บาทลดราคา บาทถ้าติดราคารองเท้า1บาทลดราคาบาท ถ้าติดราคารองเท้า100บาทลดราคา1,990 × =398บาทถ้าติดราคารองเท้า100บาทลดราคา=398บาท ดังนั้น ร้านค้าลดราคา 398 บาท ร้านค้าลดราคารองเท้า 20% ของราคาที่ติดไ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s044" data-title="5.3 โจทย์ปัญหา · หน้า 44"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s044" data-thumb="img/t044.webp" data-title="5.3 โจทย์ปัญหา · หน้า 44"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 44 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ร้านค้าติดราคากระเป๋า2,560บาท ร้านค้าลดราคา × 2,560=768บาทร้านค้าลดราคา=768บาท ดังนั้น ผู้ซื้อต้องจ่ายเงิน2,560 – 768=1,792บาท ร้านค้าลดราคากระเป๋า 30% ของราคาที่ติดไว้ ผู้ซื้อต้องจ่ายเงินกี่บาท 2 ร้านค้าลดราคากระเป๋า 30% ของราคาที่ติดไว้ การหาจำนวนเงินที่ลดจากราคาที่ติดไว้ อาจใช้บัญญัติไตรยางศ์ หรื"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="10" data-src="img/s045" data-title="5.3 โจทย์ปัญหา · หน้า 45"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s045" data-thumb="img/t045.webp" data-title="5.3 โจทย์ปัญหา · หน้า 45"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ร้านค้าติดราคาตู้เย็นไว้ 8,900 บาท ลดราคา 10% ของราคาที่ติดไว้ ผู้ซื้อต้องจ่ายเงินกี่บาท วิธีคิด ลดราคา 10% ของราคาที่ติดไว้ หมายความว่า ถ้าติดราคาตู้เย็น 100 บาท ลดราคา 10 บาท ขายราคา 100 – 10 = 90 บาท ถ้าติดราคาตู้เย็น100บาทขายราคา90บาท ถ้าติดราคาตู้เย็น100บาทขายราคา บาทถ้าติดราคาตู้เย็น100บาทขายร"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="9" data-src="img/s046" data-title="5.3 โจทย์ปัญหา · หน้า 46"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s046" data-thumb="img/t046.webp" data-title="5.3 โจทย์ปัญหา · หน้า 46"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 46 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="อาจหาคำตอบได้โดยหาราคาที่ลดแล้วนำไปลบออกจากราคาที่ติดไว้ ลดราคา 10% ของราคาที่ติดไว้ ติดราคาตู้เย็น8,900บาท ลดราคา × 8,900=890บาทลดราคา=890บาท วิธีทำ 2 ตอบ ๘,๐๑๐ บาท หา ส่วนลด 10% ของราคาตู้เย็น 8,900 บาท จะได้ 10% ของ 8,900 เท่ากับ 890 ซึ่งผู้ซื้อต้องจ่ายเงิน 8,900 – 890 = 8,010 บาทแสดงว่า 8,010 บา"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s047" data-title="5.3 โจทย์ปัญหา · หน้า 47"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s047" data-thumb="img/t047.webp" data-title="5.3 โจทย์ปัญหา · หน้า 47"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 40 แสดงวิธีทำ 1 ร้านค้าประกาศลดราคาสินค้า 10% - 30% ของราคาที่ติดไว้ วิธีทำถ้าติดราคากางเกงยีนส์100บาทลดราคา30บาทถ้าติดราคากางเกงยีนส์1บาทลดราคาบาทถ้าติดราคากางเกงยีนส์2,200บาทลดราคา2,200 × =660บาทดังนั้น ร้านค้าลดราคา 660 บาทตอบ๖๖๐ บาทวิธีทำถ้าติดราคากางเกงยีนส์100บาทลดราคา30บาทถ้าติด"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s048" data-title="5.3 โจทย์ปัญหา · หน้า 48"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s048" data-thumb="img/t048.webp" data-title="5.3 โจทย์ปัญหา · หน้า 48"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 48 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำลดราคา 10% ของราคาที่ติดไว้ติดราคาหมวก520บาทลดราคา × 520=52บาทดังนั้น ร้านค้าลดราคา 52 บาท800 – 200=600บาทตอบ๖๐๐ บาทวิธีทำลดราคา 10% ของราคาที่ติดไว้ติดราคาหมวก520บาทลดราคา=52บาทดังนั้น ร้านค้าลดราคา 52 บาท800 – 200=600บาทตอบ๖๐๐ บาท 2) หมวก ลดราคา 10% ลดราคากี่บาท วิธีทำถ้าติดราคากระเป๋า100บาท"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s049" data-title="5.3 โจทย์ปัญหา · หน้า 49"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s049" data-thumb="img/t049.webp" data-title="5.3 โจทย์ปัญหา · หน้า 49"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 49 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำลดราคา 25% ของราคาที่ติดไว้ติดราคารองเท้า800บาทลดราคา × 800=200บาทดังนั้น ผู้ซื้อจะต้องจ่ายเงิน800 – 200=600บาทตอบ๖๐๐ บาทวิธีทำลดราคา 25% ของราคาที่ติดไว้ติดราคารองเท้า800บาทลดราคา=200บาทดังนั้น ผู้ซื้อจะต้องจ่ายเงิน800 – 200=600บาทตอบ๖๐๐ บาท 4) รองเท้า ลดราคา 25%ผู้ซื้อจะต้องจ่ายเงินกี่บาท 2 "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="0" data-src="img/s050" data-title="5.3 โจทย์ปัญหา · หน้า 50"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s050" data-thumb="img/t050.webp" data-title="5.3 โจทย์ปัญหา · หน้า 50"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 50 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำร้าน A ลดราคา 40% ของราคาที่ติดไว้ติดราคากระเป๋า5,850บาทลดราคา × 5,850=2,340บาทร้าน A ขายกระเป๋าราคา5,850 – 2,340=3,510บาทร้าน B ลดราคา 30% ของราคาที่ติดไว้ติดราคากระเป๋า4,950บาทลดราคา × 4,950=1,485บาทร้าน B ขายกระเป๋าราคา4,950 – 1,485=3,465บาทดังนั้น ร้าน B ขายกระเป๋าราคาถูกกว่าร้าน A 3,510 –"></div></div></div>
   
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s051" data-title="5.3 โจทย์ปัญหา · หน้า 51"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s051" data-thumb="img/t051.webp" data-title="5.3 โจทย์ปัญหา · หน้า 51"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 51 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาความหมายของ ทุน ราคาขาย กำไร ขาดทุน และเท่าทุน ถ้าราคาขายมากกว่าทุน การขายจะได้ กำไร ซึ่ง กำไร หาได้จาก ราคาขาย – ทุนถ้าราคาขายน้อยกว่าทุน การขายจะ ขาดทุน ซึ่ง ขาดทุน หาได้จาก ทุน – ราคาขายถ้าราคาขายเท่ากับทุน เรียกว่า ทุน ทุน คือ ราคาสินค้าที่ซื้อมา อาจเรียกว่า ราคาซื้อ หรืออาจหมายถึง ค่าใช้"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="8" data-src="img/s052" data-title="5.3 โจทย์ปัญหา · หน้า 52"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s052" data-thumb="img/t052.webp" data-title="5.3 โจทย์ปัญหา · หน้า 52"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 52 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณาสถานการณ์การขายสินค้าในร้านของขวัญ ต่อไปนี้ ขายรถของเล่นได้ในราคาที่ มากกว่าทุน หรือ น้อยกว่าทุน ขายได้ในราคาที่มากกว่าทุน 250 – 140 = 110 บาทแสดงว่า ขายรถของเล่นได้กำไร 110 บาท รถของเล่นทุน 140 บาทขายได้ 250 บาท ขายตุ๊กตาหมีได้ในราคาที่ มากกว่าทุน หรือ น้อยกว่าทุน ขายได้ในราคาที่น้อยกว่าทุน "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="7" data-src="img/s053" data-title="5.3 โจทย์ปัญหา · หน้า 53"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s053" data-thumb="img/t053.webp" data-title="5.3 โจทย์ปัญหา · หน้า 53"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 53 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กำไร หรือ ขาดทุน เป็นร้อยละหรือเปอร์เซ็นต์ เป็นการบอกผลต่างระหว่างทุน 100 บาท กับราคาขาย พิจารณาข้อความต่อไปนี้ หมายความว่า ถ้าทุน 100 บาท ขายได้กำไร 10 บาทหรือ ถ้าทุน 100 บาท ขายไป 100 + 10 = 110 บาท กำไร 10% หมายความว่าอย่างไร หมายความว่า ถ้าทุน 100 บาท ขายได้กำไร 25 บาทหรือ ถ้าทุน 100 บาท ขายไป 1"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s054" data-title="5.3 โจทย์ปัญหา · หน้า 54"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s054" data-thumb="img/t054.webp" data-title="5.3 โจทย์ปัญหา · หน้า 54"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 54 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หมายความว่า ถ้าทุน 100 บาท ขายขาดทุน 10 บาทหรือ ถ้าทุน 100 บาท ขายไป 100 - 10 = 90 บาท ขาดทุน 10% หมายความว่าอย่างไร หมายความว่า ถ้าทุน 100 บาท ขายขาดทุน 10 บาทหรือ ถ้าทุน 100 บาท ขายไป 100 - 25 = 75 บาท ขาดทุน 25% หมายความว่าอย่างไร หมายความว่า ถ้าทุน 100 บาท ขายขาดทุน 10 บาทหรือ ถ้าทุน 100 บาท ขาย"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s055" data-title="5.3 โจทย์ปัญหา · หน้า 55"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s055" data-thumb="img/t055.webp" data-title="5.3 โจทย์ปัญหา · หน้า 55"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 55 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 42 บอกความหมาย 1 กำไร 30% กำไร 30% หมายความ ถ้าทุน 100 บาท ขายได้กำไร 30 บาท หรือ ถ้าทุน 100 บาท ขายไป 100 + 30 = 130 บาท 2 ขาดทุน 42 เปอร์เซ็นต์ ขาดทุน 42 เปอร์เซ็นต์ หมายความ ถ้าทุน 100 บาท ขายขาดทุน 42 บาท หรือ ถ้าทุน 100 บาท ขายไป 100 - 42 = 58 บาท 3 กำไร 69 เปอร์เซ็นต์ กำไร 69 เปอ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="3" data-src="img/s056" data-title="5.3 โจทย์ปัญหา · หน้า 56"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s056" data-thumb="img/t056.webp" data-title="5.3 โจทย์ปัญหา · หน้า 56"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 56 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4 ขาดทุนร้อยละ 12 ขาดทุนร้อยละ 12 หมายความ ถ้าทุน 100 บาท ขายขาดทุน 12 บาท หรือ ถ้าทุน 100 บาท ขายไป 100 - 12 = 88 บาท 5 กำไรร้อยละ 100 กำไรร้อยละ 100 หมายความ ถ้าทุน 100 บาท ขายได้กำไร 100 บาท หรือ ถ้าทุน 100 บาท ขายไป 100 + 100 = 200 บาท 3 ขาดทุน 65% ขาดทุน 65% หมายความ ถ้าทุน 100 บาท ขายขาดทุน 65"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s057" data-title="5.3 โจทย์ปัญหา · หน้า 57"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s057" data-thumb="img/t057.webp" data-title="5.3 โจทย์ปัญหา · หน้า 57"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 57 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ร้านค้าซื้อโคมไฟอันหนึ่งราคา 960 บาท ขายได้กำไร 25% ร้านค้าขายโคมไฟนี้ได้กำไรกี่บาท และขายราคาเท่าใด ถ้าซื้อโคมไฟ100บาทขายได้กำไร25บาท ถ้าซื้อโคมไฟ1บาทขายได้กำไร บาทถ้าซื้อโคมไฟ1บาทขายได้กำไรบาท ถ้าซื้อโคมไฟ960บาทขายได้กำไร960 × =240บาทถ้าซื้อโคมไฟ960บาทขายได้กำไร=240บาท ดังนั้น ร้านค้าขายโคมไฟได้กำ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s058" data-title="5.3 โจทย์ปัญหา · หน้า 58"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s058" data-thumb="img/t058.webp" data-title="5.3 โจทย์ปัญหา · หน้า 58"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 58 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ร้านค้าซื้อโคมไฟอันหนึ่งราคา 960 บาท ขายได้กำไร 25% ร้านค้าขายโคมไฟนี้ได้กำไรกี่บาท และขายราคาเท่าใด ร้านค้าซื้อโคมไฟ960บาท ขายได้กำไร × 960 =240บาทขายได้กำไร=240บาท ดังนั้น ร้านค้าขายโคมไฟได้กำไร240บาท วิธีคิด 2 ขายได้กำไร 25% และขายในราคา960 + 2240=1,200บาท 5.1 5.2 5.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="10" data-src="img/s059" data-title="5.3 โจทย์ปัญหา · หน้า 59"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s059" data-thumb="img/t059.webp" data-title="5.3 โจทย์ปัญหา · หน้า 59"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 59 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ออมสินซื้อหูฟังราคา 1,400 บาท ขายต่อให้แก้วตา ได้กำไรร้อยละ 30 ออมสินขายหูฟังราคาเท่าใด วิธีคิด ขายได้กำไรร้อยละ 30 หมายความว่า ถ้าซื้อมา 100 บาท ขายได้กำไร 30 บาท แสดงว่า ขายราคา 100 + 30 = 130 บาท ถ้าซื้อหูฟัง100บาทขาย130บาท ถ้าซื้อหูฟัง1บาทขาย บาทถ้าซื้อหูฟัง1บาทขายบาท ถ้าซื้อหูฟัง1,400บาทขาย1,40"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="9" data-src="img/s060" data-title="5.3 โจทย์ปัญหา · หน้า 60"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s060" data-thumb="img/t060.webp" data-title="5.3 โจทย์ปัญหา · หน้า 60"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 60 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="อาจหากำไรโดยใช้บัญญัติไตรยางศ์ก่อน แล้วจึงหาราคาขาย ขายได้กำไรร้อยละ 30 ออมสินซื้อหูฟัง1,400บาท ขายได้กำไร × 1,400=420บาทขายได้กำไร=420บาท วิธีทำ 2 ตอบ ๑,๘๒๐ บาท หา กำไร 30% ของราคาหูฟัง 1,400 บาท จะได้กำไร 420 บาท และขายราคา 1,400 + 420 = 1,820 บาทแสดงว่า กำไร 420 บาท และขายราคา 1,820 บาท เป็นคำตอบ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s061" data-title="5.3 โจทย์ปัญหา · หน้า 61"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s061" data-thumb="img/t061.webp" data-title="5.3 โจทย์ปัญหา · หน้า 61"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 61 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จอมซื้อสเกตบอร์ดราคา 2,950 บาท ขายต่อให้ต้อม ขาดทุน 40% จอมขายสเกตบอร์ดขาดทุนกี่บาทและขายราคาเท่าใด ถ้าซื้อสเกตบอร์ด100บาทขายขาดทุน40บาท ถ้าซื้อสเกตบอร์ด1บาทขายขาดทุน บาทถ้าซื้อสเกตบอร์ด1บาทขายขาดทุนบาท ถ้าซื้อสเกตบอร์ด2,950บาทขายขาดทุน2,950 × =1,180บาทถ้าซื้อสเกตบอร์ด2,950บาทขายขาดทุน=1,180บาท ดังน"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s062" data-title="5.3 โจทย์ปัญหา · หน้า 62"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s062" data-thumb="img/t062.webp" data-title="5.3 โจทย์ปัญหา · หน้า 62"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 62 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จอมซื้อสเกตบอร์ดราคา 2,950 บาท ขายต่อให้ต้อม ขาดทุน 40% จอมขายสเกตบอร์ดขาดทุนกี่บาทและขายราคาเท่าใด จอมซื้อสเกตบอร์ด2,950บาท ขายขาดทุน × 2,950 =1,180บาทขายขาดทุน=1,180บาท ดังนั้น จอมขายสเกตบอร์ดขาดทุน1,180บาท วิธีคิด 2 ขายขาดทุน 4% และขายในราคา2,950 – 1,180=1,770บาท 5.1 5.2 5.3"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="10" data-src="img/s063" data-title="5.3 โจทย์ปัญหา · หน้า 63"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s063" data-thumb="img/t063.webp" data-title="5.3 โจทย์ปัญหา · หน้า 63"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 63 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หยกซื้อรองเท้าราคา 1,250 บาท ขายต่อให้กิ๊บ ขาดทุนร้อยละ 12 หยกขายรองเท้าราคาเท่าใด วิธีคิด ขายขาดทุนร้อยละ 12 หมายความว่า ถ้าซื้อมา 100 บาท ขายขาดทุน 12 บาท แสดงว่า ขายราคา 100 – 12 = 88 บาท ถ้าซื้อรองเท้าราคา100บาทขายราคา88บาท ถ้าซื้อรองเท้าราคา1บาทขายราคา บาทถ้าซื้อรองเท้าราคา1บาทขายราคาบาท ถ้าซื้"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="9" data-src="img/s064" data-title="5.3 โจทย์ปัญหา · หน้า 64"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s064" data-thumb="img/t064.webp" data-title="5.3 โจทย์ปัญหา · หน้า 64"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 64 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="อาจหาขาดทุนโดยใช้บัญญัติไตรยางศ์ก่อน แล้วจึงหาราคาขาย ขายขาดทุนร้อยละ 12 หยกซื้อรองเท้าราคา1,250บาท ขายขาดทุน × 1,250=150บาทขายขาดทุน=150บาท วิธีทำ 2 ตอบ ๑,๑๐๐ บาท หา ส่วนที่ขาดทุน 12% ของราคารองเท้า 1,250 บาท จะขาดทุน 150 บาท และขายราคา 1,250 – 150 = 1,100 บาทแสดงว่า ขาดทุน 150 บาท และขายราคา 1,100"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s065" data-title="5.3 โจทย์ปัญหา · หน้า 65"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s065" data-thumb="img/t065.webp" data-title="5.3 โจทย์ปัญหา · หน้า 65"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 65 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 47 แสดงวิธีทำ 1 แก้วตาซื้อรองเท้าราคา 850 บาท ขายต่อให้ปิ่น ขาดทุน 14% แก้วตาขายรองเท้าขาดทุนเท่าใด และขายไปราคาเท่าใด วิธีทำขายขาดทุน 14%แก้วตาซื้อรองเท้าราคา850บาทขายขาดทุน × 850=119บาทดังนั้น แก้วตาขายรองเท้าขาดทุน และขายไปราคา 850 – 119=119731บาทบาทตอบขาดทุน ๑๑๙ บาท และขายราคา ๗๓๑ "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s066" data-title="5.3 โจทย์ปัญหา · หน้า 66"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s066" data-thumb="img/t066.webp" data-title="5.3 โจทย์ปัญหา · หน้า 66"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 66 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 ร้านค้าซื้อจักรยานคันหนึ่งราคา 3,960 บาท ต้องการขายให้ได้กำไรร้อยละ 35 ร้านค้าต้องติดราคาจักรยานคันนี้เท่าใด วิธีทำขายได้กำไรร้อยละ 35ร้านค้าซื้อจักรยานราคา3,960บาทต้องการขายให้ได้กำไร × 3,960=1,386บาทดังนั้น ร้านค้าต้องติดราคาจักรยาน3,960 + 1,386=5,346บาทตอบ๕,๓๔๖ บาทวิธีทำขายได้กำไรร้อยละ 35ร้านค"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s067" data-title="5.3 โจทย์ปัญหา · หน้า 67"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s067" data-thumb="img/t067.webp" data-title="5.3 โจทย์ปัญหา · หน้า 67"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 67 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 ขุนซื้อกระเป๋าราคา 1,340 บาท ขายต่อให้ออมสิน ขาดทุน 5 เปอร์เซ็นต์ ออมสินซื้อกระเป๋าใบนี้ราคาเท่าใด วิธีทำถ้าซื้อกระเป๋าราคา100บาทขายราคา100 – 5 =95บาทถ้าซื้อกระเป๋าราคา10บาทขายราคา บาทถ้าซื้อกระเป๋าราคา1,340บาทขายราคา1,340 × =1,273บาทดังนั้น ออมสินซื้อกระเป๋าใบนี้ราคา 1,273 บาทตอบ๑,๒๗๓ บาทวิธีทำถ้"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s068" data-title="5.3 โจทย์ปัญหา · หน้า 68"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s068" data-thumb="img/t068.webp" data-title="5.3 โจทย์ปัญหา · หน้า 68"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 68 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4 ลุงเมฆลงทุนปลูกข้าวโพด 8,900 บาท เก็บข้าวโพดขายได้กำไร 42% ลุงเมฆขายข้าวโพดได้เท่าไร วิธีทำถ้าลงทุนปลูกข้าวโพด100บาทขาย100 + 42=142บาทถ้าลงทุนปลูกข้าวโพด1บาทขาย บาทถ้าลงทุนปลูกข้าวโพด8,900บาทขาย8,900 × =12,638บาทดังนั้น ลุงเมฆขายข้าวโพดได้ 12,638 บาทตอบ๑๒,๖๓๘ บาทวิธีทำถ้าลงทุนปลูกข้าวโพด100บาทขาย1"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s069" data-title="5.3 โจทย์ปัญหา · หน้า 69"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s069" data-thumb="img/t069.webp" data-title="5.3 โจทย์ปัญหา · หน้า 69"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 69 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจ แสดงวิธีทำ 1 แม่ค้าซื้ออาหารสดมาทำอาหาร 2,250 บาท เมื่อขายหมดได้กำไร 62% แม่ค้าขายอาหารได้เงินเท่าใด วิธีทำขายได้กำไร 62%แม่ค้าซื้ออาหารสดมาทำอาหาร2,250บาทขายได้กำไร × 2,250=1,395บาทดังนั้น แม่ค้าขายอาหารได้เงิน2,250 + 1,395=3,645บาทตอบ๓,๖๔๕ บาทวิธีทำขายได้กำไร 62%แม่ค้าซื้ออาหารสด"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s070" data-title="5.3 โจทย์ปัญหา · หน้า 70"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s070" data-thumb="img/t070.webp" data-title="5.3 โจทย์ปัญหา · หน้า 70"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 70 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 ขุนซื้อกล้องถ่ายรูปราคา 5,600 บาท ขายต่อให้จอม ขาดทุนร้อยละ 25 ขุนขายกล้องถ่ายรูปขาดทุนกี่บาทและขายไปในราคาเท่าใด วิธีทำขายขาดทุนร้อยละ 25ขุนซื้อกล้องถ่ายรูปราคา5,600บาทขายขาดทุน × 5,600=1,400บาทดังนั้น ขุนขายกล้องถ่ายรูปขาดทุน1,400บาท และขายไปในราคา5,600 – 1,400=4,200บาทตอบขาดทุน ๑,๔๐๐ บาท และขาย"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s071" data-title="5.3 โจทย์ปัญหา · หน้า 71"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s071" data-thumb="img/t071.webp" data-title="5.3 โจทย์ปัญหา · หน้า 71"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 71 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 ต้นทุนในการผลิตเสื้อยืดตัวละ 80 บาท ร้านค้าต้องการกำไร 60 เปอร์เซ็นต์ ร้านค้าจะต้องติดราคาขายเสื้อยืดตัวละเท่าใด และได้กำไรตัวละกี่บาท วิธีทำร้านค้าต้องการกำไร 60 เปอร์เซ็นต์ต้นทุนในการผลิตเสื้อยืดตัวละ80บาทร้านค้าต้องการกำไร × 80=48บาทดังนั้น ร้านค้าต้องการกำไรตัวละ48บาท และต้องติดราคาขายเสื้อยืด"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s072" data-title="5.3 โจทย์ปัญหา · หน้า 72"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s072" data-thumb="img/t072.webp" data-title="5.3 โจทย์ปัญหา · หน้า 72"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 72 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4 บอสซื้อเสื้อกันหนาวราคา 540 บาท นำไปขายต่อให้เพชร ได้กำไร 20 เปอร์เซ็นต์ เพชรซื้อเสื้อกันหนาวตัวนี้ราคาเท่าใด วิธีทำขายได้กำไร 20 เปอร์เซ็นต์บอสซื้อเสื้อกันหนาวราคา540บาทขายได้กำไร × 540=108บาทดังนั้น เพชรซื้อเสื้อกันหนาวตัวนี้ราคา540 + 108=648บาทตอบ๖๔๘ บาทวิธีทำขายได้กำไร 20 เปอร์เซ็นต์บอสซื้อเสื"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s073" data-title="5.3 โจทย์ปัญหา · หน้า 73"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s073" data-thumb="img/t073.webp" data-title="5.3 โจทย์ปัญหา · หน้า 73"><div class="inner pp">
   <div class="pphead"><span class="secbadge">5.3 โจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 73 / 73</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ โจทย์ปัญหาแต่ละข้อมีขั้นตอนการหาคำตอบอย่างไร 1 สหกรณ์ชุมชนติดราคาเตารีด 2,400 บาท แต่ลดราคาให้สมาชิกของสหกรณ์ 10% ถ้าเจนเป็นสมาชิกของสหกรณ์ชุมชนแห่งนี้ เจนจะซื้อเตารีดได้ในราคากี่บาท หาจำนวนเงินที่เจนจะต้องจ่ายค่าเตารีดได้โดยใช้ความหมายของการลดราคา นั่นคือถ้าติดราคาเตารีด 100 บาท "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -854,18 +880,31 @@ function start() {
   }
   function setOn(v) {
     on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
     cv.classList.toggle('noswipe', on);
-    if (on) Kit.toast('✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil ได้ วางมือบนจอได้)');
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
   }
   btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
   function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
   cv.addEventListener('pointerdown', function (e) {
     if (!on) return;
-    if (e.pointerType === 'pen') penSeen = true;
-    else if (e.pointerType === 'touch' && penSeen) return; /* มีปากกาแล้ว ไม่นับฝ่ามือ */
-    e.preventDefault(); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
-    cur = { c: color, p: [pt(e)], id: e.pointerId }; list().push(cur); draw();
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
   });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
   cv.addEventListener('pointermove', function (e) {
     if (!cur || e.pointerId !== cur.id) return;
     var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
@@ -950,7 +989,7 @@ function start() {
       cam.addEventListener('pointerdown', function (e) {
         if (e.target.closest('button')) return;
         drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
-        cam.setPointerCapture && cam.setPointerCapture(e.pointerId); e.preventDefault();
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
       });
       cam.addEventListener('pointermove', function (e) {
         if (!drag || e.pointerId !== drag.id) return;
@@ -1035,6 +1074,77 @@ function start() {
   /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
   if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
   if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

@@ -94,6 +94,10 @@ table.vt tr.sep td{border-top:3px solid var(--ink)}
 /* ---- ปากกาเขียนบนสไลด์ ---- */
 .drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
 body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
 .drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
 body.drawing .drawbar{display:flex}
 .drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
@@ -102,6 +106,28 @@ body.drawing .drawbar{display:flex}
 .drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
 .bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
 @media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
 /* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
 .campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
 .campnl.show{display:flex}
@@ -197,32 +223,32 @@ body.drawing .drawbar{display:flex}
   <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
   <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เตรียมความพร้อม</span></button><button data-jump="4.1"><span class="e">🧮</span><span>4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-sec="pre" data-steps="5" data-src="img/s003" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="5" data-src="img/s003" data-thumb="img/t003.webp" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เตรียมความพร้อม 1 จับคู่โจทย์ทางซ้ายกับโจทย์ทางขวาที่มีผลลัพธ์เท่ากัน 1) 48 × 3 ÷ 12 1) 48 × 3 ÷ 12 1) 48 × 3 ÷ 12 1) 48 × 3 ÷ 12 1) 48 × 3 ÷ 12 A) 260 ÷ 25 × 10 B) 10 × 240 ÷ 3 C) 260 ÷ 10 × 25 D) 48 × E) 240 × 3 ÷ 10 F) 260 × 3 ÷ 10 G) 12 × 01"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s004" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s004" data-thumb="img/t004.webp" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 หาผลคูณ 1) × 2002) 300 × 3) × 48 4) 56 × 5) × 1053) 51 × 48 200 20 32 147 68 01"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="5" data-src="img/s005" data-title="เตรียมความพร้อม · หน้า 5"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s005" data-thumb="img/t005.webp" data-title="เตรียมความพร้อม · หน้า 5"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 หาคำตอบ 1) ดารณีซื้อดินสอ 3 แท่ง จ่ายเงิน 24 บาท ดินสอราคาแท่งละเท่าใดระยะทาง 33 กิโลเมตร จินดาใช้เวลาเดินทาง 4 ชั่วโมง เฉลี่ยแล้วจินดาใช้เวลาเดินทางชั่วโมงละกี่กิโลเมตรไข่ราคาฟองละ 4.75 บาท โกวิทซื้อไข่ 6 ฟอง จ่ายเงินเท่าใดน้ำผลไม้ 1.25 ลิตร อุษณีย์แบ่งใส่แก้ว 5 ใบ ใบละเท่าๆ กัน แก้วแต่ละใบมีน้ำผ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s006" data-title="เตรียมความพร้อม · หน้า 6"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s006" data-thumb="img/t006.webp" data-title="เตรียมความพร้อม · หน้า 6"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4 แสดงวิธีหาคำตอบ 1) นิดมีส้มโอ 54 ผล ขายไป ของส้มโอทั้งหมด นิดขายส้มโอกี่ผล วิธีทำ นิดมีส้มโอ 54 ผล ขายไป ของส้มโอทั้งหมด นิดขายส้มโอไป × 54 = 9 ผลตอบ ๙ ผล 2) ลุงอำนวยมีพื้นที่ปลูกข้าว 3,600 ตารางวา เป็นพื้นที่ปลูกข้าวเหนียว ของพื้นที่ทั้งหมด ที่เหลือเป็นพื้นที่ปลูกข้าวเจ้า ลุงอำนวยปลูกข้าวเจ้าคิดเ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s007" data-title="เตรียมความพร้อม · หน้า 7"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s007" data-thumb="img/t007.webp" data-title="เตรียมความพร้อม · หน้า 7"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3) นักเรียนชั้น ป.5 มี 72 คน เป็นนักเรียนชาย ของนักเรียนทั้งหมด ชั้น ป.5 มีนักเรียนหญิงกับนักเรียนชายต่างกันกี่คน วิธีทำ นักเรียนชั้น ป.5 มี 72 คน เป็นนักเรียนชาย ของนักเรียนทั้งหมด ชั้น ป.5 มีนักเรียนชาย × 72 = 30 คน จะได้ว่าชั้น ป.5 มีนักเรียนหญิง 72 – 30 = 40 คน ดังนั้น ชั้น ป.5 มีนักเรียนหญิงกับ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s008" data-title="เตรียมความพร้อม · หน้า 8"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s008" data-thumb="img/t008.webp" data-title="เตรียมความพร้อม · หน้า 8"><div class="inner pp">
   <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5) นักเรียนชั้น ป.5 มี 72 คน เป็นนักเรียนชาย ของนักเรียนทั้งหมด ชั้น ป.5 มีนักเรียนหญิงกับนักเรียนชายต่างกันกี่คน วิธีทำ บริษัทรับเหมาทำสัญญาสร้างถนน 20 กิโลเมตร ช่วงแรกสร้างไปแล้ว ของทั้งหมด และช่วงที่สองสร้างอีก ของทั้งหมด บริษัทสร้างถนนไปแล้ว + = + ของทั้งหมด = + ของทั้งหมด = ของทั้งหมด หรือ คิดเ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -232,172 +258,172 @@ body.drawing .drawbar{display:flex}
   
   <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="9" data-src="img/s010" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 10"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s010" data-thumb="img/t010.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 10"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 น้ำปลา 3 ลิตร นำมาบรรจุขวดปริมาณเท่ากัน ได้ 6 ขวด น้ำปลา 1 ลิตร บรรจุขวดได้กี่ขวด สิ่งที่โจทย์ถาม จำนวนขวดที่ใช้สำหรับบรรจุน้ำปลา 1 ลิตร สิ่งที่โจทย์บอก น้ำปลา 3 ลิตร นำมาบรรจุขวดปริมาณเท่ากันได้ 6 ขวด นำจำนวนขวดทั้งหมดหารด้วยปริมาณน้ำปลาที่ใช้บรรจุขวด ซึ่งจะได้ว่า 6 ÷ 3 = 2 ขวด เพราะน้ำปลา 3 ลิต"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="9" data-src="img/s011" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 11"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s011" data-thumb="img/t011.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 11"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 น้ำดื่ม 1 ขวด ราคา 8 บาท อ้อยซื้อน้ำดื่ม 5 ขวด จ่ายเงินเท่าใด สิ่งที่โจทย์ถาม จำนวนเงินที่อ้อยต้องจ่ายเมื่อซื้อน้ำดื่ม 5 ขวด สิ่งที่โจทย์บอก น้ำดื่ม 1 ขวด ราคา 8 บาท นำจำนวนน้ำดื่มที่ซื้อ คูณกับ ราคาน้ำดื่ม 1 ขวดจะได้ 5 × 8 = 40 บาท เพราะจำนวนเงินที่ต้องจ่ายเพิ่มขึ้นครั้งละ 8 บาท จะหาจำนวนเงินที่"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="7" data-src="img/s012" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 12"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s012" data-thumb="img/t012.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 12"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 วิธีทำ ข้าวสาร 5 กิโลกรัม นิดหุงรับประทานมื้อละเท่าๆ กันได้ 20 มื้อ ข้าวสาร 1 กิโลกรัม นิดหุงรับประทานได้กี่มื้อ ตอบ ๔ มื้อ นิดหุงได้20มื้อ ข้าวสาร 1 กิโลกรัม นิดหุงได้20 ÷ 5 =4มื้อ ดังนั้น ข้าวสาร 1 กิโลกรัม นิดหุงรับประทานได้ 4 มื้อ ข้าวสาร5กิโลกรัม"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="7" data-src="img/s013" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 13"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s013" data-thumb="img/t013.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 13"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 วิธีทำ เก่งมีสี 4 กระป๋อง แต่ละกระป๋องใช้ทาผนังได้ 50 ตารางเมตร เก่งใช้สีทั้งหมดทาผนังได้กี่ตารางเมตร ตอบ ๒๐๐ ตารางเมตร สี 1 กระป๋องใช้ทาผนังได้50ตารางเมตร สี 4 กระป๋องใช้ทาผนังได้4 ÷ 50 =200ตารางเมตร ดังนั้น เก่งใช้สีทั้งหมดทาผนังได้ 200 ตารางเมตร เก่งมีสี4กระป๋อง"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s014" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 14"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s014" data-thumb="img/t014.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 14"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 8 แสดงวิธีหาคำตอบ 1 ปลากะพง 2 กิโลกรัม ราคา 500 บาท ปลากะพง 1 กิโลกรัม ราคาเท่าใด ปลากะพง 2 กิโลกรัม ราคา500บาทปลากะพง 1 กิโลกรัม ราคา500 ÷ 2 =250บาทดังนั้น ปลากะพง 1 กิโลกรัม ราคา 250 บาท วิธีทำ ตอบ ๒๕๐ บาท 2 จินดานำข้าวหอมมะลิ 2,000 กรัม บรรจุถุง ถุงละเท่าๆ กันได้ 4 ถุง ข้าวหอมมะลิหน"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s015" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 15"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s015" data-thumb="img/t015.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 15"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 สมบูรณ์ทำงาน 6 วัน ได้รับค่าจ้าง 2,100 บาท สมบูรณ์ได้รับค่าจ้างวันละเท่าใด ได้รับค่าจ้าง2,100บาทสมบูรณ์ทำงาน6วันสมบูรณ์ได้รับค่าจ้างวันละ2,100 ÷ 6 =350บาทดังนั้น สมบูรณ์ได้รับค่าจ้างวันละ 350 บาท วิธีทำ ตอบ ๒๕๐ บาท 4 ในการจัดค่ายคณิตศาสตร์ ครู 8 คน ดูแลนักเรียน 240 คน ถ้าครูแต่ละคนดูแลนักเรียนจำนว"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s016" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 16"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s016" data-thumb="img/t016.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 16"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 ชุดนักเรียน 1 ชุด ราคา 325 บาท สมเกียรติซื้อชุดนักเรียน 3 ชุด จ่ายเงินเท่าใด ชุดนักเรียน 1 ชุด ราคา325บาทสมเกียรติซื้อชุดนักเรียน3ชุดสมเกียรติจ่ายเงิน3 × 325 =975บาทดังนั้น สมเกียรติซื้อชุดนักเรียน 3 ชุด จ่ายเงิน 975 บาท วิธีทำ ตอบ ๙๗๕ บาท 6 น้ำส้มคั้น 1 ลิตร ใช้ส้ม 45 ผล ถ้าต้องการซื้อส้มคั้น 15 "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s017" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 17"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s017" data-thumb="img/t017.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 17"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="7 รถยนต์คันหนึ่งใช้น้ำมัน 1 ลิตร แล่นได้ระยะทางประมาณ 13 กิโลเมตร ถ้ารถคันนี้มีน้ำมัน 32 ลิตร จะแล่นได้ระยะทางประมาณกี่กิโลเมตร น้ำมัน 1 ลิตร แล่นได้ระยะทางประมาณ13กิโลเมตรมีน้ำมัน32ลิตรจะแล่นได้ระยะทางประมาณ32 × 13 =416กิโลเมตรดังนั้น ถ้ารถคันนี้มีน้ำมัน 32 ลิตร จะแล่นได้ระยะทางประมาณ 416 กิโลเมตร "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="13" data-src="img/s018" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 18"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="13" data-src="img/s018" data-thumb="img/t018.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 18"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 ขนม 4 ห่อ ราคา 24 บาทถ้าป้าซื้อขนม 10 ห่อ จ่ายเงินเท่าใด สิ่งที่โจทย์ถาม จำนวนเงินที่ป้าต้องจ่ายเมื่อซื้อขนม 10 ห่อ สิ่งที่โจทย์บอก ขนม 4 ห่อ จ่ายเงินเป็นราคา 24 บาท รู้ราคาของขนม 1 ห่อ นำจำนวนเงินที่ซื้อขนม หารด้วย จำนวนขนม 4 ห่อจะได้ขนม 1 ห่อ ราคา 24 ÷ 4 = 6 บาท จะหาจำนวนเงินที่ซื้อขนม 10 ห่อ จ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/13)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="2" data-src="img/s019" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 19"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s019" data-thumb="img/t019.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 19"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 โจทย์ปัญหาการคูณและการหารที่แสดงความสัมพันธ์ระหว่างปริมาณของสิ่ง 2 สิ่ง สิ่งละ 2 จำนวน โดยโจทย์กำหนดปริมาณของสิ่ง 2 สิ่ง ให้ 3 จำนวน เป็นปริมาณของสิ่งเดียวกัน 2 จำนวน และเป็นปริมาณของอีกสิ่งหนึ่ง 1 จำนวน อาจหาปริมาณของอีกสิ่งหนึ่ง อีก 1 จำนวนได้ โดยใช้ บัญญัติไตรยางศ์ การเขียนแสดงวิธีหาคำตอบโดยใช"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="8" data-src="img/s020" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 20"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s020" data-thumb="img/t020.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 20"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 ขนม 4 ห่อ ราคา 24 บาทถ้าป้าซื้อขนม 10 ห่อ จ่ายเงินเท่าใด เขียนแสดงวิธีหาคำตอบได้ ดังนี้ ถ้าป้าซื้อขนม1ห่อต้องจ่ายเงิน24 ÷ 4=บาทถ้าป้าซื้อขนม1ห่อต้องจ่ายเงิน24 ÷ 4=บาท ถ้าป้าซื้อขนม4ห่อต้องจ่ายเงิน24บาท ถ้าป้าซื้อขนม10ห่อต้องจ่ายเงิน4 × =60บาทถ้าป้าซื้อขนม10ห่อต้องจ่ายเงิน=60บาท ดังนั้น ถ้าป้าซื้อ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="7" data-src="img/s021" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 21"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s021" data-thumb="img/t021.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 21"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 ส้ม 8 ถุง ถุงละเท่าๆ กัน นับรวมได้ 40 ผล ถ้าอุดรซื้อส้ม 6 ถุง จะได้ส้มทั้งหมดกี่ผล วิธีทำส้ม8ถุงมี40ผล ส้ม1ถุงมี40 ÷ 8=ผลส้ม1ถุงมี40 ÷ 8=ผล ส้ม6ถุงมี6 × =30ผลส้ม6ถุงมี=30ผล ดังนั้น ถ้าอุดรซื้อส้ม 6 ถุง จะได้ส้มทั้งหมด 30 ผล ตอบ๓๐ ผล โจทย์ถามจำนวนผลส้มจึงเขียนจำนวนผลส้มไว้ทางขวา 30 ผล เป็นคำตอบที่"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="7" data-src="img/s022" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 22"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s022" data-thumb="img/t022.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 22"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 ร้านค้าจัดรายการส่งเสริมการขาย โดยแจ้งว่าถ้าซื้อสมุด 3 เล่ม จะแถมดินสอ 2 แท่ง หลินซื้อสมุด 1 โหล หลินได้แถมดินสอกี่แท่ง วิธีทำซื้อสมุด3เล่มแถมดินสอ2แท่ง ซื้อสมุด1เล่มแถมดินสอ2 ÷ 3=แท่งซื้อสมุด1เล่มแถมดินสอ2 ÷ 3=แท่ง ซื้อสมุด6เล่มแถมดินสอ12 × =8แท่งซื้อสมุด6เล่มแถมดินสอ=8แท่ง ดังนั้น หลินซื้อสมุด "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s023" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 23"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s023" data-thumb="img/t023.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 23"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 หน่อยมีน้ำ 12 ถัง ถังละเท่าๆ กัน คิดเป็นปริมาณน้ำทั้งหมด 222 ลิตร เมื่อใช้น้ำไปจำนวนหนึ่ง ปรากฏว่ายังเหลือน้ำอีก 8 ถัง หน่อยเหลือน้ำกี่ลิตร วิธีทำน้ำ12ถังคิดเป็น222ลิตร น้ำ1ถังคิดเป็นลิตรน้ำ1ถังคิดเป็นลิตร น้ำ8ถังคิดเป็น8 × =148ลิตรน้ำ8ถังคิดเป็น=148ลิตร ดังนั้น หน่อยเหลือน้ำ 148 ลิตร ตอบ๑๔๘ ลิตร"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s024" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 24"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s024" data-thumb="img/t024.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 24"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 12 แสดงวิธีหาคำตอบ 1 กิ๊บรินน้ำส้ม 4 ขวด ใส่แก้ว แก้วละเท่าๆ กันได้ 8 แก้ว ถ้ากิ๊บมีน้ำส้ม 10 ขวด จะรินได้กี่แก้ว 01 วิธีทำน้ำ4ขวดรินใส่แก้ว แก้วละเท่าๆ กันได้8แก้วน้ำส้ม1ขวดรินใส่แก้ว แก้วละเท่าๆ กันได้แก้วน้ำส้ม10ขวดรินใส่แก้ว แก้วละเท่าๆ กันได้10 × =20แก้วดังนั้น ถ้ากิ๊บมีน้ำส้ม 10 "></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s025" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 25"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s025" data-thumb="img/t025.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 25"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 น้ำยาซักผ้า 6 ถุง ใช้ซักผ้าครั้งละเท่าๆ กันได้ 90 ครั้ง ถ้าอั๋นมีน้ำยาซักผ้า 10 ถุง จะใช้ซักผ้าได้กี่ครั้ง 01 วิธีทำน้ำยาซักผ้า6ถุงใช้ซักผ้าครั้งละเท่าๆ กันได้90ครั้งน้ำยาซักผ้า1ถุงใช้ซักผ้าครั้งละเท่าๆ กันได้ครั้งน้ำยาซักผ้า10ถุงใช้ซักผ้าครั้งละเท่าๆ กันได้10 × =150ครั้งดังนั้น ถ้าอั๋นมีน้ำยาซักผ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s026" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 26"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s026" data-thumb="img/t026.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 26"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 กชพรมีกุหลาบ 100 ดอก นำมาจัดเป็นห่อ ห่อละเท่าๆ กันได้ 4 ห่อ ถ้ากชพรมีกุหลาบ 2,500 ดอก จะจัดได้ทั้งหมดกี่ห่อ 01 วิธีทำกุหลาบ100ดอกจัดเป็นห่อ ห่อละเท่าๆ กันได้4ห่อกุหลาบ1ดอกจัดเป็นห่อ ห่อละเท่าๆ กันได้ห่อกุหลาบ2,500ดอกจัดเป็นห่อ ห่อละเท่าๆ กันได้2,500 × =150ห่อดังนั้น ถ้ากชพรมีกุหลาบ 2,500 ดอก จะจัด"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s027" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 27"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s027" data-thumb="img/t027.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 27"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4 การสอบคัดเลือกครั้งหนึ่งคะแนนเต็ม 400 คะแนน หยกสอบได้ 360 คะแนน ถ้าคิดคะแนนเต็ม 100 คะแนน หยกจะได้กี่คะแนน 01 วิธีทำคะแนนเต็ม400คะแนนหยกสอบได้360คะแนนคะแนนเต็ม1คะแนนหยกสอบได้คะแนนคะแนนเต็ม100คะแนนหยกสอบได้100 × =90คะแนนดังนั้น ถ้าคิดคะแนนเต็ม 100 คะแนน หยกจะได้ 90 คะแนนตอบ๑๐๐ ห่อวิธีทำคะแนนเต็ม400"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s028" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 28"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s028" data-thumb="img/t028.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 28"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 ข้าวสาร 75 กิโลกรัม แตนนำมาบรรจุถุง ถุงละเท่าๆ กันได้ 6 ถุง ถ้าแตนมีข้าวสาร 50 กิโลกรัม จะบรรจุได้กี่ถุง 01 วิธีทำข้าวสาร75กิโลกรัมบรรจุถุง ถุงละเท่าๆ กันได้6ถุงข้าวสาร1กิโลกรัมบรรจุถุง ถุงละเท่าๆ กันได้ถุงข้าวสาร50กิโลกรัมบรรจุถุง ถุงละเท่าๆ กันได้50 × =4ถุงดังนั้น ถ้าแตนมีข้าวสาร 50 กิโลกรัม จะบ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s029" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 29"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s029" data-thumb="img/t029.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 29"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="6 สมพรทำขนมบ้าปิ่น 42 ถาด ใช้มะพร้าวอ่อน 3 กิโลกรัม ถ้าลูกค้าสั่งขนมบ้าบิ่น 112 ถาด ต้องใช้มะพร้าวอ่อนกี่กิโลกรัม 01 วิธีทำขนมบ้าบิ่น42ถาดใช้มะพร้าวอ่อน3กิโลกรัมขนมบ้าบิ่น1ถาดใช้มะพร้าวอ่อน กิโลกรัมขนมบ้าบิ่น112ถาดใช้มะพร้าวอ่อน112 × =8กิโลกรัมดังนั้น ถ้าลูกค้าสั่งขนมบ้าบิ่น 112 ถาด ต้องใช้มะพร้าวอ่"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="13" data-src="img/s030" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 30"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="13" data-src="img/s030" data-thumb="img/t030.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 30"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 แม่ค้าขายขนม 6 ชิ้น ราคา 21 บาทแดงซื้อขนม 35 บาท จะได้กี่ชิ้น สิ่งที่โจทย์ถาม จำนวนขนมที่ได้ เมื่อซื้อ 35 บาท สิ่งที่โจทย์บอก ขนม 6 ชิ้น ราคา 21 บาท แดงซื้อ 35 บาท จะหาว่า เงิน 35 บาท ซื้อขนมได้กี่ชิ้น จะต้องรู้อะไรก่อน ต้องรู้ว่าเงิน 1 บาท ซื้อขนมได้กี่ชิ้น เงิน 1 บาท ซื้อขนมได้กี่ชิ้น จะหาได้อย"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/13)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="7" data-src="img/s031" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 31"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s031" data-thumb="img/t031.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 31"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 แม่ค้าขายขนม 6 ชิ้น ราคา 21 บาท แดงซื้อ 35 บาท จะได้ขนมกี่ชิ้น ถ้าแก้โจทย์ปัญหานี้ โดยใช้บัญญัติไตรยางศ์ จะต้องเขียนความสัมพันธ์ระหว่างปริมาณของสิ่ง 2 สิ่งตามโจทย์กำหนด โดยให้จำนวนของสิ่งที่ต้องการหาไว้ทางขวา ซึ่งเรียบเรียงใหม่ได้ ดังนี้ เงิน 21 บาท ซื้อขนมได้ 6 ชิ้น เงิน 35 บาท ซื้อขนมได้กี่ชิ้น"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="6" data-src="img/s032" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 32"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s032" data-thumb="img/t032.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 32"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 ต้อยเดินออกกำลังกายนาน 30 นาที ได้ระยะทาง 2 กิโลเมตร ถ้าต้อยต้องการเดินออกกำลังกายระยะทาง 5 กิโลเมตร ต้องใช้เวลาอย่างน้อยกี่นาที วิธีทำระยะทาง2กิโลเมตรต้อยใช้เวลาเดิน30นาที ซื้อสมุด1กิโลเมตรต้อยใช้เวลาเดิน2 ÷ 3=นาทีซื้อสมุด1กิโลเมตรต้อยใช้เวลาเดิน2 ÷ 3=นาที ซื้อสมุด5กิโลเมตรต้อยใช้เวลาเดิน5 × =75"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s033" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 33"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s033" data-thumb="img/t033.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 33"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบฝึกหัดหน้า 15 แสดงวิธีหาคำตอบ 1 เชิดขับรถยนต์ระยะทาง 80 กิโลเมตร ใช้เวลา 50 นาที ถ้าเชิดขับรถด้วยอัตราเร็วเดียวกันนี้ 110 นาที จะได้ระยะทางเท่าใด 01 วิธีทำเวลา50นาทีเชิดขับรถยนต์ได้ระยะทาง80กิโลเมตรเวลา1นาทีเชิดขับรถยนต์ได้ระยะทาง กิโลเมตรเวลา110นาทีเชิดขับรถยนต์ได้ระยะทาง110 × =176กิโลเมตรดังนั้"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f4.webp" alt="">คิดเองก่อนนะ แล้วแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s034" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 34"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s034" data-thumb="img/t034.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 34"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 อาหารสุนัข 30 กิโลกรัม บอยใช้เลี้ยงสุนัขตัวหนึ่งได้ 12 วัน ในเดือนเมษายนบอยต้องซื้ออาหารให้สุนัขตัวนี้อย่างน้อยกี่กิโลกรัม 01 วิธีทำเวลา12วันบอยใช้อาหารเลี้ยงสุนัข30กิโลกรัมเวลา1วันบอยใช้อาหารเลี้ยงสุนัข กิโลกรัมเดือนเมษายนมี 30 วัน ใช้อาหารสุนัข1วันบอยใช้อาหารเลี้ยงสุนัข30 × =75กิโลกรัมดังนั้น ใน"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s035" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 35"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s035" data-thumb="img/t035.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 35"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 การใส่ปุ๋ยในนาข้าว ปุ๋ย 1 ตัน ใส่นาข้าวได้ 30 ไร่ ถ้าลุงสมมีนาข้าว 9 ไร่ ลุงสมต้องซื้อปุ๋ยอย่างน้อยกี่กิโลกรัม 01 วิธีทำ1 ตัน เท่ากับ 1,000 กิโลกรัมนาข้าว30ไร่ใช้ปุ๋ย1,000กิโลกรัมนาข้าว1ไร่ใช้ปุ๋ย กิโลกรัมนาข้าว1ไร่ใช้ปุ๋ย9 × =300กิโลกรัมดังนั้น ถ้าลุงสมมีนาข้าว 9 ไร่ ต้องซื้อปุ๋ยอย่างน้อย 300 กิโ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s036" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 36"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s036" data-thumb="img/t036.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 36"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4 มาลินจ่ายค่าจ้างปูกระบื้องในห้องครัว 16 ตารางเมตร เป็นเงิน 5,120 บาท และจ่ายค่าปูกระเบื้องห้องเก็บของ 1,920 บาท ห้องเก็บของของมาลินมีพื้นที่เท่าใด 01 วิธีทำจ่ายเงินค่าจ้าง5,120บาทปูกระเบื้องได้พื้นที่16ตารางเมตรจ่ายเงินค่าจ้าง1บาทปูกระเบื้องได้พื้นที่ ตารางเมตรจ่ายเงินค่าจ้าง1,920บาทปูกระเบื้องได้"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s037" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 37"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s037" data-thumb="img/t037.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 37"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตรวจสอบความเข้าใจ แสดงวิธีหาคำตอบ 1 น้ำดื่ม 5 ขวด ราคา 35 บาท เพชรซื้อน้ำดื่ม 20 ขวด ต้องจ่ายเงินเท่าใด 01 วิธีทำน้ำดื่ม5ขวดราคา35บาทน้ำดื่ม1ขวดราคา บาทน้ำดื่ม20ขวดราคา20 × =140บาทดังนั้น เพชรซื้อน้ำดื่ม 20 ขวด ต้องจ่ายเงิน 140 บาทตอบ๑๔๐ บาทวิธีทำน้ำดื่ม5ขวดราคา35บาทน้ำดื่ม1ขวดราคาบาทน้ำดื่ม20ขวดราค"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s038" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 38"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s038" data-thumb="img/t038.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 38"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 ป้าภาขายมะม่วงโดยบรรจุมะม่วงใส่กล่อง 8 กล่อง กล่องละเท่าๆ กัน ใช้มะม่วง 96 ผลถ้าลูกค้าซื้อมะม่วง 3 กล่อง จะได้มะม่วงกี่ผล 01 วิธีทำบรรจุมะม่วง8กล่องกล่องละเท่าๆ กัน ใช้มะม่วง96ผลบรรจุมะม่วง1กล่องกล่องละเท่าๆ กัน ใช้มะม่วง ผลบรรจุมะม่วง3กล่องกล่องละเท่าๆ กัน ใช้มะม่วง3 × =36ผลดังนั้น ถ้าลูกค้าซื้อม"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s039" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 39"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s039" data-thumb="img/t039.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 39"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 ก้องขับรถยนต์ระยะทาง 25 กิโลเมตร ใช้น้ำมัน 2 ลิตร ถ้าก้องใช้น้ำมันไป 40 ลิตร รถจะแล่นได้ระยะทางกี่กิโลเมตร 01 วิธีทำน้ำมัน2ลิตรรถยนต์แล่นได้ระยะทาง25กิโลเมตรน้ำมัน1ลิตรรถยนต์แล่นได้ระยะทาง กิโลเมตรน้ำมัน40ลิตรรถยนต์แล่นได้ระยะทาง40 × =500กิโลเมตรดังนั้น ถ้าก้องใช้น้ำมันไป 40 ลิตร รถจะแล่นได้ระยะทา"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s040" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 40"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s040" data-thumb="img/t040.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 40"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4 สมุด 5 เล่ม ราคา 75 บาท โมจ่ายเงินซื้อสมุด 120 บาท จะได้กี่เล่ม 01 วิธีทำเงิน75บาทซื้อสมุดได้25กิโลเมตรเงิน1บาทซื้อสมุดได้ กิโลเมตรเงิน120บาทซื้อสมุดได้120 × =8เล่มดังนั้น โมต้องจ่ายเงินซื้อสมุด 120 บาท จะได้ 8 เล่มตอบ๘ เล่มวิธีทำเงิน75บาทซื้อสมุดได้25กิโลเมตรเงิน1บาทซื้อสมุดได้กิโลเมตรเงิน120บาทซ"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s041" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 41"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s041" data-thumb="img/t041.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 41"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5 ข้าวสาร 15 กิโลกรัม ลักษณ์ใช้หุงได้ 6 สัปดาห์ สัปดาห์ละเท่าๆ กัน ถ้าลักษณ์มีข้าวสารเหลืออยู่ 20 กิโลกรัม จะใช้หุงได้กี่สัปดาห์ 01 วิธีทำข้าวสาร15กิโลกรัมหุงสัปดาห์ละเท่าๆ กันได้6สัปดาห์ข้าวสาร1กิโลกรัมหุงสัปดาห์ละเท่าๆ กันได้ สัปดาห์ข้าวสาร20กิโลกรัมหุงสัปดาห์ละเท่าๆ กันได้20 × =8สัปดาห์ดังนั้น ถ้"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s042" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 42"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s042" data-thumb="img/t042.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 42"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สิ่งที่ได้เรียนรู้ มีวิธีแก้โจทย์ปัญหาต่อไปนี้ โดยใช้บัญญัติไตรยางศ์ได้อย่างไร 1 ออมสินซื้อข้าวโพดสด 4 ถุง ถุงละเท่าๆ กัน ได้ข้าวโพด 60 ฝัก ถ้าใบบัวซื้อข้าวโพดชนิดเดียวกันนี้ 5 ถุง จะได้ข้าวโพดกี่ฝัก 01 ตัวอย่างบรรทัดที่ 1 เขียนความสัมพันธ์ระหว่างจำนวนข้าวโพดเป็นถุง กับจำนวนข้าวโพดเป็นฝัก โดยให้จำนว"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f8.webp" alt="">มาทบทวนกัน แตะเพื่อดูทีละข้อ</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
 </div></section>
-<section class="slide pslide" data-nofit data-steps="1" data-src="img/s043" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 43"><div class="inner pp">
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s043" data-thumb="img/t043.webp" data-title="4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ · หน้า 43"><div class="inner pp">
   <div class="pphead"><span class="secbadge">4.1 การแก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 43</span></span></div>
   <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 หลินตัดเสื้อ 6 ตัว ใช้ผ้า 8 เมตร ถ้าหลินมีผ้า 100 เมตร จะใช้ตัดเสื้อแบบเดียวกันนี้ได้มากที่สุดกี่ตัว 01 ตัวอย่างบรรทัดที่ 1 เขียนความสัมพันธ์ระหว่างจำนวนเสื้อเป็นตัว กับความยาวของผ้าเป็นเมตร โดยให้ความยาวของผ้าเป็นเมตรอยู่ทางซ้าย และจำนวนเสื้อเป็นตัวอยู่ทางขวา จะได้ว่า ผ้ายาว 8 เมตร ใช้ตัดเย็บเสื้"></div></div></div>
   <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
@@ -704,18 +730,31 @@ function start() {
   }
   function setOn(v) {
     on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
     cv.classList.toggle('noswipe', on);
-    if (on) Kit.toast('✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil ได้ วางมือบนจอได้)');
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
   }
   btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
   function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
   cv.addEventListener('pointerdown', function (e) {
     if (!on) return;
-    if (e.pointerType === 'pen') penSeen = true;
-    else if (e.pointerType === 'touch' && penSeen) return; /* มีปากกาแล้ว ไม่นับฝ่ามือ */
-    e.preventDefault(); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
-    cur = { c: color, p: [pt(e)], id: e.pointerId }; list().push(cur); draw();
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
   });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
   cv.addEventListener('pointermove', function (e) {
     if (!cur || e.pointerId !== cur.id) return;
     var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
@@ -800,7 +839,7 @@ function start() {
       cam.addEventListener('pointerdown', function (e) {
         if (e.target.closest('button')) return;
         drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
-        cam.setPointerCapture && cam.setPointerCapture(e.pointerId); e.preventDefault();
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
       });
       cam.addEventListener('pointermove', function (e) {
         if (!drag || e.pointerId !== drag.id) return;
@@ -885,6 +924,77 @@ function start() {
   /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
   if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
   if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
