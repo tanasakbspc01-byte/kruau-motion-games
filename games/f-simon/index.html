@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>จำลำดับไฟ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.sbar{display:flex;justify-content:space-between;font-weight:700;font-size:1.15rem;background:#fff;border-radius:16px;padding:8px 16px;border:2px dashed var(--line)}
+.mode{text-align:center;font-weight:700;color:var(--ink-soft)}
+.pads{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;width:100%;max-width:440px;margin:0 auto}
+.pads.k6{grid-template-columns:repeat(3,1fr);max-width:520px}
+.pad{aspect-ratio:1;border:none;border-radius:28px;background:var(--c);opacity:.55;box-shadow:0 7px 0 rgba(0,0,0,.15);display:grid;place-items:center;transition:opacity .1s,transform .1s,filter .1s}
+.pad span{font-size:clamp(2.2rem,9vw,3.4rem)}
+.pad.lit{opacity:1;transform:scale(1.06);filter:brightness(1.15) drop-shadow(0 0 16px var(--c))}
+.pad.bad{animation:shk .4s}
+.pads.watch .pad{cursor:default}
+@keyframes shk{25%{translate:-6px 0}75%{translate:6px 0}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand} = KIT;
+const PADS = [["#E8708F","🐱",262],["#7FD39A","🐸",330],["#86B6F0","🐳",392],["#F6CD6B","🐥",523],["#B7A4EE","🦄",587],["#F2A65A","🦊",659]];
+const LV = {1:{k:4, start:2, speed:650, reverse:false, goal:10}, 2:{k:6, start:3, speed:560, reverse:false, goal:11}, 3:{k:4, start:2, speed:600, reverse:true, goal:9}};
+
+KIT.mount({
+  key:"f-simon", title:"จำลำดับไฟ", subtitle:"เกมฝึกสมาธิ · ฝึกความจำ",
+  heroHTML:"ดูให้ดี แล้ว<em>กดตามลำดับ</em> 💡", heroDesc:"ไฟจะกะพริบเป็นลำดับ จำให้ได้แล้วกดตาม ผ่านแต่ละรอบ ลำดับจะยาวขึ้นทีละ 1 ดูซิว่าจำได้ยาวที่สุดกี่ตัว",
+  progIcon:"💡",
+  howto:["ดูและฟังไฟที่กะพริบจนจบ","กดปุ่มตามลำดับเดิม","ผิดได้ 2 ครั้ง (❤️❤️) ผิดแล้วไฟจะเล่นลำดับเดิมให้ดูอีกรอบ","ด่านยาก: ต้องกดย้อนลำดับ จากตัวสุดท้ายไปตัวแรก!"],
+  note:"ฝึกความจำขณะทำงาน (working memory) ซึ่งช่วยเรื่องการคิดเลขในใจและการทำตามคำสั่งหลายขั้นตอน",
+  levels:{
+    1:{pill:"ถึง 10 ตัว", color:"var(--green)", desc:"ปุ่ม 4 สี เริ่มที่ 2 ตัว"},
+    2:{pill:"ถึง 11 ตัว", color:"var(--blue)", desc:"ปุ่ม 6 สี เริ่มที่ 3 ตัว"},
+    3:{pill:"ถึง 9 ตัว", color:"var(--purple)", desc:"ปุ่ม 4 สี กดย้อนลำดับจากหลังไปหน้า"}
+  },
+  play(level, ctx){
+    const L = LV[level], pads = PADS.slice(0, L.k);
+    let seq = [], pos = 0, lives = 2, lock = true, best = 0;
+    ctx.stage.innerHTML = `<div class="sbar"><span id="len">ความยาว: -</span><span id="hp">❤️❤️</span></div>
+      <div class="mode" id="md">${L.reverse ? "🔁 กดย้อนจากตัวสุดท้าย" : "▶️ กดตามลำดับ"}</div>
+      <div class="pads k${L.k}" id="pd">${pads.map((p,i) => `<button class="pad" type="button" data-i="${i}" style="--c:${p[0]}" aria-label="ปุ่ม ${p[1]}"><span>${p[1]}</span></button>`).join("")}</div>`;
+    const $ = s => ctx.stage.querySelector(s), el = i => ctx.stage.querySelectorAll(".pad")[i];
+    const flash = (i, ms) => { const b = el(i); if (!b) return; b.classList.add("lit"); KIT.tone && KIT.tone(pads[i][2], ms/1000*.9, "triangle", 0, .18); ctx.after(ms*.75, () => b.classList.remove("lit")); };
+    const expected = () => L.reverse ? seq[seq.length - 1 - pos] : seq[pos];
+    function play(){
+      lock = true; pos = 0; $("#pd").classList.add("watch");
+      ctx.say("👀 ดูให้ดี…");
+      seq.forEach((v, k) => ctx.after(600 + k*L.speed, () => flash(v, L.speed)));
+      ctx.after(600 + seq.length*L.speed + 150, () => { lock = false; $("#pd").classList.remove("watch"); ctx.say(L.reverse ? "ถึงตาเธอแล้ว กดย้อนลำดับนะ!" : "ถึงตาเธอแล้ว!"); });
+    }
+    function newRound(){
+      if (seq.length >= L.goal){ ctx.say(`สุดยอด! จำได้ครบ ${L.goal} ตัว 🏆`, "good"); ctx.finish({targetSec:0}); return; }
+      if (!seq.length) for (let k = 0; k < L.start; k++) seq.push(rand(0, L.k-1)); else seq.push(rand(0, L.k-1));
+      $("#len").textContent = `ความยาว: ${seq.length}`;
+      play();
+    }
+    $("#pd").onclick = e => {
+      const b = e.target.closest(".pad"); if (!b || lock) return;
+      const i = +b.dataset.i; flash(i, 280);
+      if (i === expected()){
+        pos++;
+        if (pos === seq.length){ lock = true; best = seq.length; ctx.correct(10*seq.length, `ถูกครบ ${seq.length} ตัว!`); ctx.progress(best, L.goal); ctx.after(900, newRound); }
+        return;
+      }
+      lock = true; lives--; $("#hp").textContent = "❤️".repeat(lives) + "🤍".repeat(2 - lives);
+      b.classList.add("bad"); ctx.after(500, () => b.classList.remove("bad"));
+      if (lives > 0){ ctx.wrong(`ผิดตัวที่ ${pos+1} ไม่เป็นไร ดูลำดับเดิมอีกครั้งนะ`, 10); ctx.after(1200, play); }
+      else { ctx.wrong(`หมดหัวใจแล้ว! จำได้ยาวสุด ${best} ตัว`, 10); ctx.after(1400, () => ctx.finish({targetSec:0})); }
+    };
+    ctx.progress(0, L.goal); ctx.after(500, newRound);
+  }
+});
+
+})();
+</script>
+</body>
+</html>

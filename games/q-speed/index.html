@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คิดไวไฟลุก</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.clockbar{position:relative;height:28px;background:#F3E8DA;border-radius:16px;overflow:hidden;border:3px solid #fff;box-shadow:0 3px 0 var(--line)}
+.clockbar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#7FD39A,#F6CD6B);transition:width .1s linear}
+.clockbar i.hot{background:linear-gradient(90deg,#E57373,#F2A65A);animation:blink .5s infinite alternate}
+.clockbar span{position:absolute;inset:0;display:grid;place-items:center;font-weight:700;font-variant-numeric:tabular-nums}
+.fire{display:flex;align-items:center;justify-content:center;gap:10px;min-height:64px;font-weight:700;color:var(--orange-deep)}
+.flame{font-size:1.6rem;transition:font-size .25s;line-height:1}
+.qbig{text-align:center;font-size:clamp(2.4rem,9vw,4rem);font-weight:700;background:#fff;border-radius:26px;padding:18px 10px;border:3px solid var(--line);box-shadow:0 6px 0 var(--line);font-variant-numeric:tabular-nums}
+.choices.sp .choice{font-size:clamp(1.6rem,6vw,2.3rem);padding:18px 10px}
+@keyframes blink{to{opacity:.6}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const LIMIT = 60;
+function gen(level){
+  let a, b, op, ans, q;
+  if (level === 1){
+    op = pick(["+","−"]); a = rand(1,15); b = rand(1,10);
+    if (op === "−" && b > a) [a, b] = [b, a];
+    ans = op === "+" ? a + b : a - b; q = `${a} ${op} ${b}`;
+  } else if (level === 2){
+    const k = rand(0,2);
+    if (k === 0){ a = rand(2,12); b = rand(2,12); ans = a*b; q = `${a} × ${b}`; }
+    else if (k === 1){ a = rand(15,80); b = rand(5,19); ans = a + b; q = `${a} + ${b}`; }
+    else { a = rand(30,99); b = rand(5,29); ans = a - b; q = `${a} − ${b}`; }
+  } else {
+    const k = rand(0,3);
+    if (k === 0){ b = rand(2,12); ans = rand(2,12); a = b*ans; q = `${a} ÷ ${b}`; }
+    else if (k === 1){ a = rand(11,25); b = rand(3,9); ans = a*b; q = `${a} × ${b}`; }
+    else if (k === 2){ a = rand(2,12); ans = rand(2,12); q = `${a} × ▢ = ${a*ans}`; }
+    else { a = rand(120,480); b = rand(25,99); ans = a - b; q = `${a} − ${b}`; }
+  }
+  const set = new Set([ans]);
+  const near = [ans+1, ans-1, ans+2, ans-2, ans+10, ans-10, ans+(level>1?pick([3,4,5]):3)];
+  for (const v of shuffle(near)) if (set.size < 4 && v >= 0) set.add(v);
+  const options = shuffle([...set]);
+  return {q, ans, options, answer:options.indexOf(ans)};
+}
+
+KIT.mount({
+  key:"q-speed", title:"คิดไวไฟลุก", subtitle:"เกมคณิตแก้เวลาว่าง · ทุกชั้น",
+  heroHTML:"ตอบให้ได้มากที่สุดใน <em>60 วินาที</em> ⚡", heroDesc:"โจทย์จะมาเรื่อย ๆ ตอบถูกติดกันได้คอมโบ ไฟยิ่งลุกโชน ลองทำลายสถิติตัวเองและเพื่อนในห้อง",
+  progIcon:"⚡",
+  howto:["แตะคำตอบที่ถูกให้เร็วที่สุด","ตอบถูกติดกันได้คอมโบ คะแนนเพิ่มขึ้นเรื่อย ๆ","ตอบผิดจะเห็นเฉลยแวบหนึ่ง แล้วไปข้อต่อไปทันที","หมด 60 วินาที ดูคะแนนและข้อที่ควรทบทวน"],
+  note:"เล่นได้ทุกชั้น เหมาะกับช่วงต้นคาบหรือตอนรอเพื่อน",
+  levels:{
+    1:{pill:"60 วินาที", color:"var(--green)", desc:"บวก ลบ ไม่เกิน 25"},
+    2:{pill:"60 วินาที", color:"var(--blue)", desc:"สูตรคูณแม่ 2–12 และบวก ลบ สองหลัก"},
+    3:{pill:"60 วินาที", color:"var(--purple)", desc:"หาร คูณสองหลัก หาตัวไม่ทราบค่า และลบสามหลัก"}
+  },
+  play(level, ctx){
+    let left = LIMIT, right = 0, seen = 0, streak = 0, lock = false, cur = null, ended = false;
+    ctx.stage.innerHTML = `<div class="clockbar"><i id="tb"></i><span id="tt">60</span></div>
+      <div class="fire" id="fire"><span class="flame" id="flame">🔥</span><span id="streak">พร้อมไหม?</span></div>
+      <div class="qbig" id="q"></div><div class="choices sp" id="ch"></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    const t0 = Date.now();
+    const tick = setInterval(() => {
+      if (!ctx.alive()){ clearInterval(tick); return; }
+      left = Math.max(0, LIMIT - (Date.now() - t0)/1000);
+      $("#tb").style.width = (left/LIMIT*100) + "%"; $("#tt").textContent = Math.ceil(left);
+      $("#tb").classList.toggle("hot", left < 10);
+      if (left <= 0 && !ended){ ended = true; clearInterval(tick); lock = true; ctx.say(`หมดเวลา! ตอบถูก ${right} จาก ${seen} ข้อ`, "good"); ctx.finish({targetSec:0}); }
+    }, 100);
+    ctx.cleanup(() => clearInterval(tick));
+    function next(){
+      if (ended) return;
+      cur = gen(level); lock = false;
+      $("#q").textContent = cur.q.includes("▢") ? cur.q : cur.q + " = ?";
+      $("#ch").innerHTML = cur.options.map((o,i) => `<button class="choice" type="button" data-i="${i}">${o}</button>`).join("");
+    }
+    $("#ch").onclick = e => {
+      const b = e.target.closest(".choice"); if (!b || lock || ended) return;
+      lock = true; seen++;
+      const i = +b.dataset.i, rec = sc => ctx.record({q:cur.q.includes("▢") ? cur.q : cur.q + " = ?", a:String(cur.ans), options:cur.options.map(String), answer:cur.answer, score:sc});
+      if (i === cur.answer){
+        right++; streak++; rec(1); b.classList.add("right");
+        ctx.correct(level === 1 ? 20 : 30, streak >= 3 ? `🔥 ไฟลุก x${streak}!` : "ถูก!");
+        ctx.progress(right, seen);
+        $("#flame").style.fontSize = (1.6 + Math.min(streak, 10)*0.22) + "rem"; $("#streak").textContent = streak >= 2 ? `ติดกัน ${streak} ข้อ` : "เยี่ยม!";
+        ctx.after(220, next);
+      } else {
+        streak = 0; rec(0); b.classList.add("wrong"); ctx.stage.querySelectorAll(".choice")[cur.answer].classList.add("show");
+        ctx.wrong(`${cur.q.replace("▢", "▢")} → ${cur.ans}`, 5); ctx.progress(right, seen);
+        $("#flame").style.fontSize = "1.6rem"; $("#streak").textContent = "ไฟมอด… เริ่มใหม่!";
+        ctx.after(900, next);
+      }
+    };
+    ctx.progress(0, 0); ctx.say("เริ่ม!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

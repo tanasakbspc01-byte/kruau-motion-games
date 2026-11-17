@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สภานักเรียนตัวจิ๋ว</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.meters{display:grid;gap:6px;width:100%;background:#fff;border-radius:20px;padding:12px 16px;border:2px dashed var(--line)}
+.mt{display:grid;grid-template-columns:110px 1fr 38px;align-items:center;gap:10px;font-weight:700;font-size:.95rem;position:relative}
+.mt .bar{height:16px;background:#F3E8DA;border-radius:10px;overflow:hidden}
+.mt .bar i{display:block;height:100%;border-radius:10px;transition:width .8s cubic-bezier(.3,1.3,.5,1)}
+.mt b{text-align:right;font-variant-numeric:tabular-nums}
+.mt em{position:absolute;right:-6px;top:-14px;font-style:normal;font-weight:700;font-size:.9rem;animation:float 1.4s forwards}
+.mt em.up{color:#2C8A52}.mt em.dn{color:var(--bad)}
+.agenda{background:linear-gradient(110deg,#EEF5FF,#FFF3E6);border-radius:24px;padding:14px 18px;border:3px solid #fff;box-shadow:0 5px 0 rgba(134,182,240,.3)}
+.ag-top{display:flex;gap:14px;align-items:center;margin-top:4px}
+.ag-ic{font-size:2.8rem;width:74px;height:74px;flex:none;display:grid;place-items:center;background:#fff;border-radius:20px;box-shadow:0 4px 0 var(--line)}
+.ag-title{font-weight:700;font-size:1.25rem;color:var(--orange-deep)}
+.ag-sit{font-size:1.08rem;line-height:1.5}
+.motions{display:grid;gap:10px}
+.motion{text-align:left;border:3px solid var(--line);background:#fff;border-radius:18px;padding:12px 16px 12px 52px;font-size:1.05rem;font-weight:600;box-shadow:0 4px 0 var(--line);position:relative;line-height:1.45}
+.motion::before{content:"✋";position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:1.4rem}
+.motion.right{border-color:var(--good);background:#EAF8EE;box-shadow:0 4px 0 var(--good)}
+.motion.right::before{content:"✅"}
+.motion.wrong{border-color:var(--bad);background:#FDECEC;opacity:.75}
+.motion.wrong::before{content:"❌"}
+.motion.show{border-color:var(--good);border-style:dashed;background:#F2FBF4}
+.motion.show::before{content:"💡"}
+@keyframes float{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-14px)}}
+@media (max-width:520px){.mt{grid-template-columns:96px 1fr 30px;font-size:.85rem}.ag-ic{width:58px;height:58px;font-size:2.2rem}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {shuffle} = KIT;
+const METERS = [["happy","❤️","ความสุข","#E8708F"],["fair","⚖️","ยุติธรรม","#86B6F0"],["pub","🌏","ส่วนรวม","#7FD39A"]];
+/* [tier, icon, title, situation, [[text, happy, fair, pub, feedback] x3 — first is best], why] */
+const BANK = [
+  [1,"🗑️","ขยะล้นถัง","ขยะล้นถังหน้าห้อง เพราะเพื่อนเวรวันนี้ไม่มา",
+    [["ช่วยกันเก็บก่อน แล้วตกลงกติกาเวรสำรองเผื่อมีคนไม่มา",5,10,15,""],["รอให้นักการภารโรงมาเก็บเอง",-5,-5,-15,"ห้องเรียนเป็นของทุกคน การดูแลจึงเป็นหน้าที่ของเราด้วย"],["ลงโทษเพื่อนที่ไม่มาให้ทำเวรคนเดียวทั้งสัปดาห์",-10,-10,0,"ลงโทษเกินเหตุ ไม่ยุติธรรม และขยะก็ยังล้นอยู่"]],
+    "พลเมืองดีช่วยกันรับผิดชอบพื้นที่ส่วนรวม และวางกติกาป้องกันปัญหา"],
+  [1,"💡","ไฟเปิดทิ้ง","ไฟและพัดลมในห้องเปิดทิ้งไว้ทุกวันตอนพักเที่ยง",
+    [["ตั้งเวรปิดไฟและพัดลมทุกครั้งที่ออกจากห้อง",5,5,15,""],["เปิดไว้ก็ได้ โรงเรียนจ่ายค่าไฟเอง",0,-5,-15,"ค่าไฟของโรงเรียนก็คือเงินส่วนรวม ต้องช่วยกันประหยัด"],["ถอดหลอดไฟออกไปเลย จะได้ไม่ต้องปิด",-15,0,-5,"แก้ปัญหาไม่ถูกวิธี ทำให้ทุกคนเดือดร้อน"]],
+    "ใช้ทรัพยากรส่วนรวมอย่างประหยัด คือความรับผิดชอบต่อสังคม"],
+  [1,"📚","หนังสือหาย","หนังสือในมุมห้องสมุดของห้องหายและขาดหลายเล่ม",
+    [["ทำสมุดยืม-คืน และชวนเพื่อนช่วยกันซ่อมหนังสือ",5,10,15,""],["ห้ามทุกคนยืมหนังสืออีกต่อไป",-15,-5,-5,"ทุกคนเสียสิทธิ์ใช้ของส่วนรวม เพราะไม่ได้แก้ที่ต้นเหตุ"],["ใครอยากได้เล่มไหนก็เอากลับบ้านไปเลย",5,-10,-20,"ของส่วนรวมจะหมดไป คนอื่นไม่ได้ใช้"]],
+    "ดูแลของส่วนรวมด้วยระบบที่ทุกคนตรวจสอบได้"],
+  [1,"🚰","ก๊อกน้ำรั่ว","ก๊อกน้ำหน้าห้องน้ำรั่ว น้ำไหลทิ้งทั้งวัน",
+    [["ปิดวาล์วน้ำ แล้วแจ้งครูหรือนักการภารโรงให้ซ่อม",0,5,15,""],["ไม่ใช่ห้องเรา ไม่ต้องสนใจ",0,-5,-15,"น้ำที่เสียไปเป็นของส่วนรวม เราทุกคนต้องช่วยดูแล"],["เอาเทปพันไว้เองแล้วไม่ต้องบอกใคร",0,0,-5,"ยังรั่วอยู่ และผู้ดูแลไม่รู้เพื่อซ่อมให้ถูกวิธี"]],
+    "เห็นปัญหาส่วนรวมแล้วแจ้งผู้รับผิดชอบ คือพลเมืองที่รับผิดชอบ"],
+  [2,"🗳️","เลือกตั้งประธานนักเรียน","ผู้สมัครคนหนึ่งแจกขนมให้ทุกคน แล้วบอกว่า \"กินแล้วต้องเลือกเรานะ\"",
+    [["ไม่รับขนม และเลือกคนที่มีนโยบายดีต่อส่วนรวม",0,15,10,""],["รับขนมแล้วเลือกคนนั้น เพราะใจดี",5,-15,-10,"การให้ของแลกคะแนนเสียงคือการซื้อสิทธิขายเสียง เป็นการทุจริต"],["ไม่ไปเลือกตั้ง เพราะเบื่อ",0,-5,-10,"การเลือกตั้งเป็นทั้งสิทธิและหน้าที่ของพลเมือง"]],
+    "ไม่ขายเสียง และใช้สิทธิเลือกตั้งอย่างรับผิดชอบ"],
+  [2,"💸","เงินกองกลางห้อง","เงินกองกลางห้องเหลือ 300 บาท เพื่อนกลุ่มหนึ่งขอให้ซื้อขนมแจกเฉพาะกลุ่มตัวเอง",
+    [["เปิดประชุมทั้งห้อง โหวตเลือกซื้อของที่ทุกคนได้ใช้",10,15,10,""],["ซื้อขนมให้กลุ่มที่ขอ เพราะขอมาก่อน",5,-15,-10,"เงินของทุกคนถูกใช้เพื่อคนกลุ่มเดียว ไม่ยุติธรรม"],["หัวหน้าห้องเก็บเงินไว้เอง ไม่ต้องใช้",-10,-15,-15,"เงินส่วนรวมต้องเปิดเผยและใช้เพื่อส่วนรวม"]],
+    "ใช้เงินส่วนรวมเพื่อประโยชน์ของทุกคน โดยให้ทุกคนมีส่วนร่วม"],
+  [2,"🪑","เก้าอี้หัก","เก้าอี้ในห้องหักหลายตัว เพราะเพื่อนชอบโยกเก้าอี้เล่น",
+    [["แจ้งซ่อม และตั้งกติกาห้องว่าห้ามโยกเก้าอี้",5,10,15,""],["ซ่อนเก้าอี้หักไว้หลังห้อง ไม่ต้องบอกใคร",0,-5,-10,"ปิดบังปัญหา ของส่วนรวมก็ยังเสียหาย"],["ให้คนที่ได้เก้าอี้หักยืนเรียน",-15,-10,0,"คนที่ไม่ได้ทำผิดต้องเดือดร้อน ไม่ยุติธรรม"]],
+    "รับผิดชอบสมบัติส่วนรวม และป้องกันไม่ให้เกิดซ้ำ"],
+  [2,"🌳","จิตอาสาปลูกต้นไม้","ชุมชนชวนนักเรียนไปปลูกต้นไม้ในวันเสาร์",
+    [["ชวนเพื่อนไปช่วยด้วยความเต็มใจ",10,5,15,""],["ไปเฉพาะถ้าครูให้คะแนนพิเศษเท่านั้น",0,0,0,"ยังไม่ใช่จิตอาสา เพราะหวังสิ่งตอบแทน"],["ไปลงชื่อไว้ แล้วแอบกลับบ้าน",-5,-10,-10,"ไม่ซื่อตรง ลงชื่อแต่ไม่ได้ทำจริง"]],
+    "จิตอาสาคือการช่วยเหลือส่วนรวมด้วยความเต็มใจ ไม่หวังผลตอบแทน"],
+  [3,"📢","เพื่อนสนิทแอบใช้เงิน","เพื่อนสนิทที่เป็นคนเก็บเงินห้อง แอบเอาเงินไปใช้ 50 บาท แล้วขอให้เธอช่วยเงียบไว้",
+    [["ชวนเพื่อนนำเงินมาคืน และบอกครูตามความจริง",-5,15,15,""],["เงียบไว้ เพราะเป็นเพื่อนสนิท",5,-15,-10,"การปกปิดทำให้การทุจริตเกิดซ้ำ และเงินส่วนรวมเสียหาย"],["ประจานเพื่อนลงในกลุ่มแชตของห้อง",-15,-5,0,"ควรแก้ไขและแจ้งผู้รับผิดชอบอย่างเหมาะสม ไม่ประจานให้อับอาย"]],
+    "ไม่ทนต่อการทุจริต แม้ผู้ทำจะเป็นคนใกล้ตัว และแก้ไขอย่างเหมาะสม"],
+  [3,"🏆","รางวัลห้องสะอาด","ห้องชนะประกวดห้องสะอาด ได้คูปองอาหาร 20 ใบ แต่นักเรียนมี 30 คน",
+    [["ให้ทั้งห้องตกลงร่วมกัน เช่น แลกคูปองเป็นของใช้ที่ทุกคนได้ใช้",10,15,10,""],["หัวหน้าห้องจับฉลาก 20 คนเลย โดยไม่ถามความเห็นใคร",0,5,0,"ดูยุติธรรม แต่ยังไม่ได้ฟังเสียงของเพื่อนทั้งห้อง"],["แจกให้เฉพาะเพื่อนที่สนิทกับหัวหน้าห้อง",0,-15,-10,"ใช้ตำแหน่งเอื้อประโยชน์ให้พวกพ้อง เป็นการไม่ยุติธรรม"]],
+    "ผลงานเป็นของทุกคน การตัดสินใจจึงควรให้ทุกคนมีส่วนร่วม"],
+  [3,"📵","กติกาต้องเท่ากัน","ห้องตกลงกันว่าห้ามเล่นโทรศัพท์ในคาบเรียน แต่เพื่อนที่เป็นลูกครูทำผิดบ่อย",
+    [["ใช้กติกาเดียวกันกับทุกคน ตักเตือนตามข้อตกลง",-5,15,10,""],["ยกเว้นให้ เพราะเป็นลูกครู",5,-15,-5,"การยกเว้นให้บางคนคือการเลือกปฏิบัติ ไม่ยุติธรรม"],["ยกเลิกกติกาไปเลย จะได้ไม่มีปัญหา",10,-5,-10,"ทุกคนเสียประโยชน์จากการเรียน ปัญหาไม่ได้ถูกแก้"]],
+    "พลเมืองดีเคารพกติกา และใช้กติกาเดียวกันกับทุกคน"],
+  [3,"🏞️","สวนสาธารณะเลอะเทอะ","สวนสาธารณะในชุมชนมีคนติดป้ายโฆษณาและขีดเขียนกำแพง",
+    [["ชวนเพื่อนช่วยทำความสะอาด และแจ้งผู้นำชุมชนเรื่องป้ายโฆษณา",5,5,15,""],["เขียนเพิ่มบ้าง เพราะคนอื่นก็ทำ",5,-10,-15,"ทำลายสมบัติสาธารณะ แม้คนอื่นทำก็ไม่ใช่ข้ออ้าง"],["บ่นว่าผู้ใหญ่ไม่ดูแล แล้วไม่ทำอะไร",0,0,-5,"พลเมืองดีลงมือช่วยและแจ้งผู้เกี่ยวข้อง ไม่ใช่แค่บ่น"]],
+    "ดูแลสมบัติสาธารณะ และใช้ช่องทางที่ถูกต้องแก้ปัญหา"]
+];
+const PICK = {1:[[1,4],[2,2]], 2:[[1,2],[2,4],[3,2]], 3:[[1,2],[2,4],[3,4]]};
+
+KIT.mount({
+  key:"ac-council", title:"สภานักเรียนตัวจิ๋ว", subtitle:"การป้องกันการทุจริต ป.4 · หน่วยที่ 4 พลเมืองกับความรับผิดชอบต่อสังคม",
+  heroHTML:"เป็น<em>ประธานนักเรียน</em> ตัดสินใจเพื่อส่วนรวม 🏛️", heroDesc:"ปัญหาในห้องและชุมชนรอให้เธอตัดสินใจ ทุกการเลือกมีผลต่อหลอด ความสุข ความยุติธรรม และประโยชน์ส่วนรวม",
+  progIcon:"🏛️",
+  howto:["อ่านปัญหาที่เกิดขึ้น แล้วแตะทางเลือกที่เป็นพลเมืองดีที่สุด","ดูหลอดด้านบน เลือกผิดหลอดจะลดลง","ทางเลือกที่ดีที่สุดคือทางที่ยุติธรรมและเป็นประโยชน์ต่อส่วนรวม แม้บางครั้งเพื่อนจะไม่ถูกใจ","จบวาระ ดูว่าห้องของเธอน่าอยู่แค่ไหน"],
+  note:"พลเมืองดี: รับผิดชอบต่อตนเองและส่วนรวม เคารพกติกา ใช้สิทธิและทำหน้าที่ ไม่ซื้อสิทธิขายเสียง",
+  levels:{
+    1:{pill:"6 วาระ", color:"var(--green)", desc:"ปัญหาในห้องเรียน ทางเลือกชัดเจน"},
+    2:{pill:"8 วาระ", color:"var(--blue)", desc:"เงินส่วนรวม การเลือกตั้ง และจิตอาสา"},
+    3:{pill:"10 วาระ", color:"var(--purple)", desc:"ทางเลือกที่ดูดีทั้งคู่ และเพื่อนสนิททำผิด"}
+  },
+  play(level, ctx){
+    const agenda = [];
+    PICK[level].forEach(([t, n]) => agenda.push(...shuffle(BANK.filter(b => b[0] === t)).slice(0, n)));
+    const total = agenda.length, M = {happy:50, fair:50, pub:50};
+    let idx = 0;
+    const bars = () => `<div class="meters">${METERS.map(([k, ic, name, c]) => `<div class="mt"><span>${ic} ${name}</span><div class="bar"><i id="m-${k}" style="width:${M[k]}%;background:${c}"></i></div><b id="v-${k}">${M[k]}</b></div>`).join("")}</div>`;
+    const apply = (o, f=1) => {
+      [["happy",o[1]],["fair",o[2]],["pub",o[3]]].forEach(([k, d]) => {
+        M[k] = Math.max(0, Math.min(100, M[k] + Math.round(d*f)));
+        const bar = ctx.stage.querySelector("#m-" + k), v = ctx.stage.querySelector("#v-" + k);
+        if (bar){ bar.style.width = M[k] + "%"; v.textContent = M[k]; if (d){ const tag = document.createElement("em"); tag.className = d > 0 ? "up" : "dn"; tag.textContent = (d > 0 ? "+" : "") + Math.round(d*f); v.parentNode.appendChild(tag); setTimeout(() => tag.remove(), 1400); } }
+      });
+    };
+    function next(){
+      if (idx >= total){
+        const avg = Math.round((M.happy + M.fair + M.pub) / 3);
+        ctx.say(avg >= 75 ? `🏆 ห้องน่าอยู่มาก! คะแนนเฉลี่ยหลอด ${avg}` : avg >= 55 ? `👍 ห้องน่าอยู่ คะแนนเฉลี่ยหลอด ${avg}` : `ยังต้องช่วยกันอีก คะแนนเฉลี่ยหลอด ${avg}`, "good");
+        ctx.finish({targetSec: level === 3 ? 260 : 180}); return;
+      }
+      const [, ic, title, sit, opts, why] = agenda[idx];
+      const order = shuffle([0,1,2]);
+      let miss = 0, lock = false;
+      ctx.stage.innerHTML = `${bars()}<div class="agenda"><div class="qlabel">วาระที่ ${idx+1} จาก ${total}</div><div class="ag-top"><span class="ag-ic">${ic}</span><div><div class="ag-title">${title}</div><div class="ag-sit">${sit}</div></div></div></div>
+        <div class="motions">${order.map(i => `<button class="motion" type="button" data-i="${i}">${opts[i][0]}</button>`).join("")}</div><div class="mcq-next" id="nx"></div>`;
+      const $ = s => ctx.stage.querySelector(s);
+      let gone = false; const go = () => { if (gone) return; gone = true; idx++; ctx.progress(idx, total); next(); };
+      $(".motions").onclick = e => {
+        const b = e.target.closest(".motion"); if (!b || b.disabled || lock) return;
+        const i = +b.dataset.i;
+        if (i === 0){
+          lock = true; b.classList.add("right"); ctx.stage.querySelectorAll(".motion").forEach(x => x.disabled = true);
+          apply(opts[0]); ctx.record({q:`${title}: ${sit}`, a:opts[0][0], options:order.map(k => opts[k][0]), answer:order.indexOf(0), score: miss ? .5 : 1, explain:why});
+          ctx.correct(miss ? 50 : 100, `มติผ่าน! ${why}`); ctx.after(miss ? 2600 : 2000, go); return;
+        }
+        miss++; b.classList.add("wrong"); b.disabled = true; apply(opts[i]);
+        if (miss < 2){ ctx.wrong(`${opts[i][4]} (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; ctx.wrong(null); ctx.record({q:`${title}: ${sit}`, a:opts[0][0], options:order.map(k => opts[k][0]), answer:order.indexOf(0), score:0, explain:why});
+        ctx.stage.querySelectorAll(".motion").forEach(x => { x.disabled = true; if (+x.dataset.i === 0) x.classList.add("show"); });
+        apply(opts[0], .5);
+        ctx.reveal(`📖 ${opts[i][4]} — ทางที่ดีที่สุดคือ "${opts[0][0]}" (${why})`);
+        $("#nx").innerHTML = `<button class="btn" type="button">วาระต่อไป ▶</button>`; $("#nx").firstChild.onclick = go;
+      };
+    }
+    ctx.progress(0, total); ctx.say("เปิดประชุมสภานักเรียน!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ปาเป้า 24</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.target{font-size:2.6rem;font-weight:700;color:#E8708F;line-height:1.2}
+.target b{display:inline-grid;place-items:center;min-width:90px;padding:0 14px;border-radius:50%;background:radial-gradient(circle,#fff 0 30%,#F7B6C8 31% 48%,#fff 49% 62%,#F7B6C8 63%);color:#C4506F}
+.cards{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;min-height:120px}
+.ncard{width:96px;height:120px;border:none;border-radius:18px;background:#fff;font-size:2.6rem;font-weight:700;color:var(--ink);box-shadow:0 6px 0 var(--line),0 0 0 3px var(--line) inset;transition:transform .15s}
+.ncard.sel{transform:translateY(-10px);box-shadow:0 10px 0 var(--orange-deep),0 0 0 4px var(--orange) inset;color:var(--orange-deep)}
+.ncard.fresh{animation:pop2 .35s}
+.ncard.hit{background:#EAF8EE;box-shadow:0 6px 0 var(--good),0 0 0 4px var(--good) inset;animation:pop2 .5s 2}
+.ops{display:flex;gap:12px;justify-content:center}
+.opb{width:70px;height:70px;border:none;border-radius:50%;font-size:2rem;font-weight:700;color:#fff;background:#86B6F0;box-shadow:0 5px 0 #5C8FCF}
+.opb.sel{background:#F2A65A;box-shadow:0 5px 0 #C97A2E;transform:scale(1.08)}
+.steps{text-align:center;font-weight:700;color:var(--ink-soft);min-height:1.5em;line-height:1.7}
+@keyframes pop2{50%{transform:scale(1.15)}}
+@media (max-width:520px){.ncard{width:72px;height:94px;font-size:2rem}.opb{width:58px;height:58px;font-size:1.6rem}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, shuffle, pick} = KIT;
+const ROUNDS = 5;
+const SYM = {"+":"+","-":"−","*":"×","/":"÷"};
+function apply(a, op, b){
+  if (op === "+") return a + b;
+  if (op === "-") return a - b >= 0 ? a - b : null;
+  if (op === "*") return a * b;
+  if (op === "/") return b !== 0 && a % b === 0 ? a / b : null;
+}
+/* integer-only solver: returns list of steps [a, op, b, r] or null */
+function solve(nums, target, ops){
+  if (nums.length === 1) return nums[0] === target ? [] : null;
+  for (let i = 0; i < nums.length; i++) for (let j = 0; j < nums.length; j++){
+    if (i === j) continue;
+    for (const op of ops){
+      if ((op === "+" || op === "*") && j < i) continue;
+      const r = apply(nums[i], op, nums[j]); if (r === null) continue;
+      const rest = nums.filter((_, k) => k !== i && k !== j); rest.push(r);
+      const s = solve(rest, target, ops);
+      if (s) return [[nums[i], op, nums[j], r], ...s];
+    }
+  }
+  return null;
+}
+const LV = {
+  1:{n:3, max:9, ops:["+","-"], target:() => rand(8,15)},
+  2:{n:4, max:9, ops:["+","-","*"], target:() => 24},
+  3:{n:4, max:13, ops:["+","-","*","/"], target:() => 24, needDiv:true}
+};
+function genPuzzle(level, k){
+  const L = LV[level];
+  for (let g = 0; g < 4000; g++){
+    const nums = Array.from({length:L.n}, () => rand(1, L.max)), target = L.target();
+    const s = solve(nums, target, L.ops); if (!s) continue;
+    if (L.needDiv && k % 2 === 0 && solve(nums, target, ["+","-","*"])) continue;
+    if (level === 2 && solve(nums, target, ["+","-"])) continue;
+    return {nums, target, sol:s};
+  }
+  return {nums:[3,8,1,1], target:24, sol:[[3,"*",8,24],[24,"*",1,24],[24,"*",1,24]]};
+}
+
+KIT.mount({
+  key:"q-24", title:"ปาเป้า 24", subtitle:"เกมคณิตแก้เวลาว่าง · ฝึกคิด ฝึกวางแผน",
+  heroHTML:"รวมเลขให้ตรง<em>เป้า</em> 🎯", heroDesc:"ใช้ตัวเลขทุกใบ ใบละครั้ง บวก ลบ คูณ หาร ให้เหลือการ์ดใบสุดท้ายที่ตรงกับเป้าพอดี",
+  progIcon:"🎯",
+  howto:["แตะการ์ดตัวเลขใบแรก → แตะเครื่องหมาย → แตะการ์ดใบที่สอง","การ์ดสองใบจะรวมกันเป็นใบใหม่","ทำต่อจนเหลือใบเดียว ถ้าตรงเป้า ได้คะแนน!","กด ↩️ ย้อนกลับ หรือ 🔄 เริ่มข้อนี้ใหม่ได้ตลอด"],
+  note:"ต้องใช้ตัวเลขครบทุกใบ ผลลัพธ์ระหว่างทางต้องเป็นจำนวนนับ (ไม่ติดลบ ไม่มีเศษ)",
+  levels:{
+    1:{pill:ROUNDS+" เป้า", color:"var(--green)", desc:"เลข 3 ใบ บวก ลบ ให้ได้เป้า 8–15"},
+    2:{pill:ROUNDS+" เป้า", color:"var(--blue)", desc:"เลข 4 ใบ บวก ลบ คูณ ให้ได้ 24"},
+    3:{pill:ROUNDS+" เป้า", color:"var(--purple)", desc:"เลข 1–13 ใช้ครบ 4 เครื่องหมาย บางข้อต้องใช้การหาร"}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    let r = 0;
+    function next(){
+      if (r >= ROUNDS){ ctx.finish({targetSec: level === 1 ? 100 : 240}); return; }
+      const P = genPuzzle(level, r);
+      let cards = P.nums.map((v,i) => ({v, id:i})), hist = [], sel = null, op = null, miss = 0, lock = false, nid = 10;
+      const qtxt = `ใช้ ${P.nums.join(", ")} ให้ได้ ${P.target}`;
+      const solTxt = P.sol.map(([a,o,b,x]) => `${a} ${SYM[o]} ${b} = ${x}`).join(" , ");
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">เป้าที่ ${r+1} จาก ${ROUNDS}</div><div class="target">🎯 <b>${P.target}</b></div></div>
+        <div class="cards" id="cards"></div>
+        <div class="ops" id="ops">${L.ops.map(o => `<button class="opb" type="button" data-op="${o}">${SYM[o]}</button>`).join("")}</div>
+        <div class="steps" id="steps"></div>
+        <div class="row"><button class="btn ghost" type="button" id="undo">↩️ ย้อน</button><button class="btn ghost" type="button" id="reset">🔄 เริ่มใหม่</button></div><div class="mcq-next" id="nx"></div>`;
+      const $ = s => ctx.stage.querySelector(s);
+      const draw = () => {
+        $("#cards").innerHTML = cards.map(c => `<button class="ncard${sel === c.id ? " sel" : ""}${c.fresh ? " fresh" : ""}" type="button" data-id="${c.id}">${c.v}</button>`).join("");
+        ctx.stage.querySelectorAll(".opb").forEach(b => b.classList.toggle("sel", b.dataset.op === op));
+        $("#steps").textContent = hist.map(h => h.step).join("   ·   ");
+        cards.forEach(c => delete c.fresh);
+      };
+      draw();
+      const resetAll = () => { cards = P.nums.map((v,i) => ({v, id:i})); hist = []; sel = null; op = null; draw(); };
+      $("#cards").onclick = e => {
+        const b = e.target.closest(".ncard"); if (!b || lock) return;
+        const id = +b.dataset.id;
+        if (sel === null || op === null){ sel = sel === id ? null : id; KIT.sfx.tap(); draw(); return; }
+        if (id === sel){ sel = null; op = null; draw(); return; }
+        const A = cards.find(c => c.id === sel), B = cards.find(c => c.id === id);
+        const v = apply(A.v, op, B.v);
+        if (v === null){ ctx.say(op === "-" ? "ลบแล้วติดลบ ลองเอาตัวมากเป็นตัวตั้ง" : `${A.v} หารด้วย ${B.v} ไม่ลงตัว ลองวิธีอื่น`, "bad"); KIT.sfx.bad(); return; }
+        hist.push({cards:cards.map(c => ({...c})), step:`${A.v} ${SYM[op]} ${B.v} = ${v}`});
+        const pos = cards.indexOf(B);
+        cards = cards.filter(c => c !== A); cards[cards.indexOf(B)] = {v, id:nid++, fresh:true};
+        sel = null; op = null; KIT.sfx.pop(); draw();
+        if (cards.length === 1) check();
+      };
+      $("#ops").onclick = e => { const b = e.target.closest(".opb"); if (!b || lock) return; if (sel === null){ ctx.say("แตะการ์ดตัวเลขก่อนนะ"); return; } op = b.dataset.op; KIT.sfx.tap(); draw(); };
+      $("#undo").onclick = () => { if (lock || !hist.length) return; cards = hist.pop().cards; sel = null; op = null; draw(); };
+      $("#reset").onclick = () => { if (!lock) resetAll(); };
+      function check(){
+        const v = cards[0].v;
+        if (v === P.target){
+          lock = true; ctx.record({q:qtxt, a:hist.map(h => h.step).join(" , "), score: miss ? .5 : 1});
+          $("#cards").firstChild.classList.add("hit"); ctx.correct(miss ? 60 : 120, `เข้าเป้า ${P.target} พอดี! 🎯`);
+          ctx.after(1400, () => { r++; ctx.progress(r, ROUNDS); next(); });
+          return;
+        }
+        miss++;
+        if (miss < 2){ ctx.wrong(`ได้ ${v} ยังไม่ตรงเป้า ${P.target} ลองวิธีใหม่ (เหลืออีก 1 ครั้ง)`); ctx.after(1200, () => { if (!lock) resetAll(); }); return; }
+        lock = true; ctx.wrong(null); ctx.record({q:qtxt, a:solTxt, score:0});
+        ctx.reveal(`📖 เฉลยตัวอย่าง: ${solTxt}`);
+        $("#steps").innerHTML = `<b>วิธีหนึ่งที่ได้ ${P.target}:</b><br>${P.sol.map(([a,o,b,x]) => `${a} ${SYM[o]} ${b} = ${x}`).join("<br>")}`;
+        $("#nx").innerHTML = `<button class="btn" type="button">เป้าต่อไป ▶</button>`;
+        $("#nx").firstChild.onclick = () => { $("#nx").innerHTML = ""; r++; ctx.progress(r, ROUNDS); next(); };
+      }
+    }
+    ctx.progress(0, ROUNDS); ctx.say("เล็งเป้าแรกกันเลย!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

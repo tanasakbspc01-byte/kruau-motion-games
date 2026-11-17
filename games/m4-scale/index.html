@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตาชั่งเศษส่วน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.balance{position:relative;width:100%;height:300px;background:linear-gradient(#FFF7EC,#FBE9D6);border-radius:26px;border:3px solid #fff;box-shadow:0 6px 0 rgba(224,138,60,.18);overflow:hidden}
+.beam{position:absolute;left:8%;right:8%;top:58px;height:12px;background:#B9732F;border-radius:8px;transform-origin:50% 50%;transition:transform .7s cubic-bezier(.3,1.5,.5,1);z-index:2}
+.beam::after{content:"";position:absolute;left:50%;top:-8px;width:26px;height:26px;margin-left:-13px;border-radius:50%;background:#F6CD6B;border:4px solid #8A5A2B}
+.pan{position:absolute;top:6px;height:132px;width:44%;max-width:250px;display:flex;flex-direction:column;align-items:center;transform-origin:50% 0;transition:transform .7s cubic-bezier(.3,1.5,.5,1)}
+.pan.L{left:-4%}.pan.R{right:-4%}
+.pan .load{position:absolute;bottom:22px;display:flex;align-items:center;gap:4px;flex-wrap:nowrap}
+.pan .dish{position:absolute;top:110px;width:100%;height:20px;background:#DDB27C;border-radius:0 0 60% 60%/0 0 100% 100%;border:3px solid #8A5A2B}
+.pan::before{content:"";position:absolute;top:0;left:12%;right:12%;height:112px;border-left:2px solid #8A5A2B;border-right:2px solid #8A5A2B;clip-path:polygon(50% 0,100% 100%,0 100%);background:transparent}
+.post{position:absolute;left:50%;top:66px;width:16px;margin-left:-8px;bottom:40px;background:#8A5A2B;border-radius:6px}
+.base{position:absolute;left:50%;bottom:22px;width:160px;margin-left:-80px;height:22px;background:#8A5A2B;border-radius:14px 14px 6px 6px}
+.tip{position:absolute;left:0;right:0;bottom:0;text-align:center;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.wt,.slot{display:inline-grid;place-items:center;min-width:56px;min-height:58px;padding:4px 8px;border-radius:14px 14px 10px 10px;background:#6E6A80;color:#fff;font-size:1.25rem;font-weight:700;box-shadow:0 4px 0 #4A4658}
+.slot{background:#fff;color:var(--ink-soft);border:3px dashed var(--ink-soft);box-shadow:none}
+.slot.filled{background:#F2A65A;color:#fff;border:none;box-shadow:0 4px 0 #C97A2E;animation:drop .35s}
+.op{font-size:1.5rem;font-weight:700;color:var(--orange-deep)}
+.tray{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.weight{min-width:84px;min-height:74px;border:none;border-radius:18px 18px 12px 12px;background:#F2A65A;color:#fff;font-size:1.35rem;font-weight:700;box-shadow:0 5px 0 #C97A2E;position:relative}
+.weight::before{content:"";position:absolute;top:-10px;left:50%;width:24px;height:14px;margin-left:-12px;border:4px solid #C97A2E;border-bottom:none;border-radius:12px 12px 0 0}
+.weight.used{opacity:.4}
+.weight.right{background:var(--good);box-shadow:0 5px 0 #3E8F59;opacity:1}
+.mixed{display:inline-flex;align-items:center;gap:.12em}.mixed .w{font-size:1.25em}
+@keyframes drop{from{transform:translateY(-30px)}to{transform:none}}
+@media (max-width:520px){.wt,.slot{min-width:44px;font-size:1rem;padding:2px 5px}.op{font-size:1.1rem}.pan .load{gap:2px}.weight{min-width:70px;font-size:1.15rem}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, gcd, frac} = KIT;
+const N = 8;
+/* a value is {n, d} as an improper fraction with fixed denominator d */
+function show(n, d, mixed){
+  if (!mixed || n < d) return frac(n, d);
+  const w = Math.floor(n/d), r = n % d;
+  return r ? `<span class="mixed"><span class="w">${w}</span>${frac(r,d)}</span>` : `<span class="mixed"><span class="w">${w}</span></span>`;
+}
+function txt(n, d, mixed){ if (!mixed || n < d) return `${n}/${d}`; const w = Math.floor(n/d), r = n % d; return r ? `${w} ${r}/${d}` : `${w}`; }
+
+/* returns {left:[{n,d}|"?" ...], ops, right, ans:n, d, mixed, ask:"right"|"left"} */
+function genQ(level, i){
+  for (let g = 0; g < 500; g++){
+    const d = level === 1 ? rand(3,10) : level === 2 ? rand(4,12) : rand(3,8);
+    if (level === 1){
+      const plus = i % 2 === 0;
+      const a = rand(1, d-2), b = plus ? rand(1, d-1-a) : rand(1, a-1); if (b < 1 || (!plus && b >= a)) continue;
+      return {terms:[a,b], op:plus?"+":"−", d, ans: plus ? a+b : a-b, missing:-1, mixed:false};
+    }
+    if (level === 2){
+      const kind = i % 4;
+      if (kind < 2){ const plus = kind === 0, a = rand(1,d-2), b = plus ? rand(1,d-1-a) : rand(1,a-1); if (b < 1 || (!plus && b >= a)) continue;
+        return {terms:[a,b], op:plus?"+":"−", d, ans: plus?a+b:a-b, missing:-1, mixed:false}; }
+      /* missing addend / minuend: a + ? = c  or  ? − b = c */
+      const plus = kind === 2;
+      if (plus){ const a = rand(1,d-2), c = rand(a+1, d-1); return {terms:[a,null], op:"+", d, total:c, ans:c-a, missing:1, mixed:false}; }
+      const b = rand(1,d-2), c = rand(1, d-1-b); return {terms:[null,b], op:"−", d, total:c, ans:b+c, missing:0, mixed:false};
+    }
+    /* level 3: mixed numbers and whole numbers */
+    const kind = i % 4;
+    if (kind === 0){ const a = rand(1,2)*d + rand(1,d-1), b = rand(1,d-1); if ((a+b) % d === 0) continue; return {terms:[a,b], op:"+", d, ans:a+b, missing:-1, mixed:true}; }
+    if (kind === 1){ const a = rand(1,2)*d + rand(1,d-1), b = rand(1,1)*d + rand(1,d-1); if (a <= b || (a-b) % d === 0) continue; return {terms:[a,b], op:"−", d, ans:a-b, missing:-1, mixed:true}; }
+    if (kind === 2){ const w = rand(2,4), b = rand(1,w-1)*d + rand(1,d-1); if (b >= w*d) continue; return {terms:[w*d,b], op:"−", d, ans:w*d-b, missing:-1, mixed:true}; }
+    const a = rand(1,2)*d + rand(1,d-1), c = a + rand(1,2*d-1); if (c % d === 0) continue; return {terms:[a,null], op:"+", d, total:c, ans:c-a, missing:1, mixed:true};
+  }
+}
+function options(Q){
+  const set = new Set([Q.ans]), out = [Q.ans];
+  const cands = shuffle([Q.ans+1, Q.ans-1, Q.ans+2, Q.ans-2, Q.ans + Q.d, Q.ans - Q.d, Q.ans+3]);
+  for (const c of cands){ if (out.length >= 4) break; if (c > 0 && !set.has(c)){ set.add(c); out.push(c); } }
+  return shuffle(out);
+}
+
+KIT.mount({
+  key:"m4-scale", title:"ตาชั่งเศษส่วน", subtitle:"คณิตศาสตร์ ป.4 · บทที่ 6 เศษส่วน · การบวก การลบเศษส่วน",
+  heroHTML:"เลือกตุ้มน้ำหนักให้<em>ตาชั่งสมดุล</em> ⚖️", heroDesc:"ตาชั่งจะเอียงไปข้างที่หนักกว่า เลือกตุ้มที่ทำให้สองข้างเท่ากันพอดี แล้วตาชั่งจะตั้งตรง",
+  progIcon:"⚖️",
+  howto:["ดูจานซ้ายและจานขวาของตาชั่ง","แตะตุ้มน้ำหนักด้านล่างเพื่อวางลงในช่องที่มีเครื่องหมาย ?","ถ้าตาชั่งตั้งตรง แปลว่าถูก ถ้าเอียง ให้ดูว่าข้างไหนหนักกว่า","บวกลบเศษส่วนที่ตัวส่วนเท่ากัน ให้บวกลบเฉพาะตัวเศษ ตัวส่วนคงเดิม"],
+  note:"ตัวส่วนเท่ากัน: บวกหรือลบตัวเศษ ตัวส่วนเหมือนเดิม · จำนวนคละ: ทำเป็นเศษเกินก่อนก็ได้",
+  levels:{
+    1:{pill:N+" ข้อ", color:"var(--green)", desc:"บวก ลบ เศษส่วนแท้ที่ตัวส่วนเท่ากัน"},
+    2:{pill:N+" ข้อ", color:"var(--blue)", desc:"หาจำนวนที่หายไป เช่น 3/8 + ? = 7/8"},
+    3:{pill:N+" ข้อ", color:"var(--purple)", desc:"จำนวนคละและจำนวนนับ เช่น 3 − 1 2/5"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level === 3 ? 170 : 130}); return; }
+      const Q = genQ(level, idx), d = Q.d, M = Q.mixed, opts = options(Q);
+      const leftHTML = Q.terms.map((t,i) => t === null ? `<span class="slot" id="slot">?</span>` : `<span class="wt">${show(t,d,M)}</span>`).join(`<span class="op">${Q.op}</span>`);
+      const rightHTML = Q.missing < 0 ? `<span class="slot" id="slot">?</span>` : `<span class="wt">${show(Q.total,d,M)}</span>`;
+      const exprTxt = Q.terms.map(t => t === null ? "?" : txt(t,d,M)).join(` ${Q.op === "−" ? "-" : "+"} `) + " = " + (Q.missing < 0 ? "?" : txt(Q.total,d,M));
+      const ansTxt = txt(Q.ans, d, M);
+      let miss = 0, lock = false;
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">ข้อ ${idx+1} จาก ${N}</div><div class="qtext">เลือกตุ้มน้ำหนักให้ตาชั่ง<b>สมดุล</b></div></div>
+        <div class="balance"><div class="beam" id="beam"><div class="pan L"><div class="load">${leftHTML}</div><div class="dish"></div></div><div class="pan R"><div class="load">${rightHTML}</div><div class="dish"></div></div></div>
+          <div class="post"></div><div class="base"></div><div class="tip" id="tip"></div></div>
+        <div class="tray" id="tray">${opts.map(v => `<button class="weight" type="button" data-v="${v}">${show(v,d,M)}</button>`).join("")}</div>`;
+      const $ = s => ctx.stage.querySelector(s);
+      const value = v => {
+        const t = Q.terms.map(x => x === null ? v : x);
+        const L = Q.op === "+" ? t[0] + t[1] : t[0] - t[1];
+        const R = Q.missing < 0 ? v : Q.total;
+        return [L, R];
+      };
+      const tilt = (L, R) => { const deg = Math.max(-14, Math.min(14, (R - L) / d * 9)); $("#beam").style.transform = `rotate(${deg}deg)`; ctx.stage.querySelectorAll(".pan").forEach(p => p.style.transform = `rotate(${-deg}deg)`); };
+      tilt(...value(0));
+      $("#tray").onclick = e => {
+        const b = e.target.closest(".weight"); if (!b || lock || b.disabled) return;
+        const v = +b.dataset.v, [L, R] = value(v);
+        $("#slot").innerHTML = show(v, d, M); $("#slot").classList.add("filled"); KIT.sfx.tap();
+        tilt(L, R);
+        if (L === R){
+          lock = true; ctx.record({q:exprTxt, a:ansTxt, options:opts.map(v => show(v,d,M)), answer:opts.indexOf(Q.ans), score: miss ? 0.5 : 1});
+          $("#tip").textContent = "⚖️ สมดุลพอดี!"; ctx.correct(miss ? 50 : 100, `สมดุล! ${exprTxt.replace("?", ansTxt)}`);
+          ctx.after(1300, () => { idx++; ctx.progress(idx, N); next(); });
+          return;
+        }
+        miss++; b.disabled = true; b.classList.add("used");
+        const heavy = L > R ? "ซ้าย" : "ขวา";
+        const big = Q.missing < 0 ? R > L : L > R, hint = big ? "ตุ้มนี้มากไป" : "ตุ้มนี้น้อยไป";
+        $("#tip").textContent = `ข้าง${heavy}หนักกว่า`;
+        if (miss < 2){ ctx.wrong(`ตาชั่งเอียงไปทาง${heavy} ${hint} (เหลืออีก 1 ครั้ง)`); ctx.after(1300, () => { if (!lock){ $("#slot").innerHTML = "?"; $("#slot").classList.remove("filled"); tilt(...value(0)); } }); }
+        else {
+          lock = true; ctx.wrong(null); ctx.record({q:exprTxt, a:ansTxt, options:opts.map(v => show(v,d,M)), answer:opts.indexOf(Q.ans), score:0});
+          ctx.after(1100, () => {
+            $("#slot").innerHTML = show(Q.ans, d, M); tilt(0, 0); $("#tip").textContent = "⚖️ ตุ้มที่ถูกคือ " + ansTxt;
+            ctx.stage.querySelectorAll(".weight").forEach(w => { w.disabled = true; if (+w.dataset.v === Q.ans) w.classList.add("right"); });
+            ctx.reveal(`📖 เฉลย: ${exprTxt.replace("?", ansTxt)} (บวกลบเฉพาะตัวเศษ ตัวส่วนคงเดิม)`);
+            ctx.after(3400, () => { idx++; ctx.progress(idx, N); next(); });
+          });
+        }
+      };
+    }
+    ctx.progress(0, N); ctx.say("วางตุ้มให้ตาชั่งตั้งตรงกันเลย!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

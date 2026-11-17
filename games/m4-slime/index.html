@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สไลม์ย่อส่วน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.lab{position:relative;width:100%;background:linear-gradient(#EAF6FF,#F3ECFF);border:3px solid #fff;border-radius:26px;box-shadow:0 6px 0 rgba(134,182,240,.35);height:300px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.lab::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34px;background:#DCCFF5}
+.tube{position:relative;width:250px;height:230px;display:flex;align-items:flex-end;justify-content:center;z-index:1}
+.tube svg{width:270px;transform-origin:50% 100%;transition:transform .45s cubic-bezier(.3,1.6,.5,1)}
+.tube.squish svg{animation:squish .45s}
+.tube.happy svg{animation:hop .6s 2}
+.belly{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:2;background:rgba(255,255,255,.88);border-radius:16px;padding:4px 14px;border:3px solid #4A3A30}
+.bigfrac{font-size:2.1rem;font-weight:700}
+.trail{text-align:center;font-weight:700;color:var(--ink-soft);min-height:1.4em;font-size:1.05rem;word-break:break-word}
+.gems{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.gem{min-width:72px;border:none;border-radius:18px 18px 26px 26px;padding:12px 14px;font-size:1.4rem;font-weight:700;color:#fff;background:linear-gradient(160deg,#B7A4EE,#8C75E0);box-shadow:0 5px 0 #6E58C4}
+.gem:nth-child(2n){background:linear-gradient(160deg,#86D9F0,#4FA9D8);box-shadow:0 5px 0 #3A87B5}
+.gem:nth-child(3n){background:linear-gradient(160deg,#F7B6C8,#E8708F);box-shadow:0 5px 0 #C4506F}
+.gem:active{transform:translateY(3px)}
+.gem.shake{animation:gshake .4s}
+@keyframes squish{0%{scale:1 1}40%{scale:1.15 .8}70%{scale:.92 1.08}100%{scale:1 1}}
+@keyframes hop{50%{translate:0 -24px}}
+@keyframes gshake{25%{translate:-6px 0}75%{translate:6px 0}}
+@media (max-width:520px){.lab{height:240px}.tube svg{width:190px}.gem{min-width:60px;font-size:1.2rem}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, gcd, frac} = KIT;
+const N = 8;
+const PRIMES = [2,3,5,7,11,13];
+const LV = {
+  1:{gems:[2,3,5], maxD:30, lowest:2, desc:"ตัวเลขไม่เกิน 30 ใช้ ÷2 ÷3 ÷5"},
+  2:{gems:[2,3,5,7], maxD:72, lowest:1, desc:"ตัวเลขไม่เกิน 72 อาจต้องย่อหลายครั้ง"},
+  3:{gems:[2,3,4,5,6,7,8,9,10,12], maxD:144, lowest:1, improper:true, desc:"ตัวเลขถึง 144 ย่อครั้งเดียวด้วย ห.ร.ม. ได้โบนัส"}
+};
+const COLORS = ["#7FD39A","#86B6F0","#B7A4EE","#F2A7B8","#F6CD6B","#7FD3C8"];
+
+function genQ(level, lowestOnly){
+  const L = LV[level];
+  for (let g = 0; g < 2000; g++){
+    let d = rand(3, Math.min(15, L.maxD)), n = rand(1, d-1);
+    if (L.improper && Math.random() < .3){ const t = d; d = n + 1 + rand(0,3); n = t + rand(1,4); if (n <= d) continue; }
+    if (gcd(n,d) !== 1) continue;
+    if (lowestOnly) return {n, d, g:1};
+    const kOpts = level === 1 ? [2,3,4,5,6] : level === 2 ? [4,6,8,9,10,12] : [6,8,9,12,14,15,16,18];
+    const k = pick(kOpts);
+    if (n*k > L.maxD || d*k > L.maxD) continue;
+    /* level 1 must be solvable with the gems offered */
+    let r = k; for (const p of L.gems) while (r % p === 0) r /= p;
+    if (r !== 1) continue;
+    return {n:n*k, d:d*k, g:k, sn:n, sd:d};
+  }
+  return {n:6, d:8, g:2, sn:3, sd:4};
+}
+const ft = (n,d) => `${n}/${d}`;
+function slimeSVG(col, scale){
+  return `<svg viewBox="0 0 200 170" aria-hidden="true" style="transform:scale(${scale})">
+    <path d="M20 150 Q10 90 50 55 Q100 10 150 55 Q190 90 180 150 Q160 140 145 152 Q125 140 105 153 Q85 140 65 152 Q45 140 20 150Z" fill="${col}" stroke="#4A3A30" stroke-width="4"/>
+    <ellipse cx="70" cy="62" rx="14" ry="8" fill="#fff" opacity=".55"/>
+    <circle cx="78" cy="88" r="9" fill="#4A3A30"/><circle cx="122" cy="88" r="9" fill="#4A3A30"/>
+    <circle cx="81" cy="85" r="3" fill="#fff"/><circle cx="125" cy="85" r="3" fill="#fff"/>
+    <path d="M90 108 q10 8 20 0" stroke="#4A3A30" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`;
+}
+
+KIT.mount({
+  key:"m4-slime", title:"สไลม์ย่อส่วน", subtitle:"คณิตศาสตร์ ป.4 · บทที่ 6 เศษส่วน · เศษส่วนอย่างต่ำ",
+  heroHTML:"ยิงอัญมณีให้<em>สไลม์</em>หดเป็นเศษส่วนอย่างต่ำ 🧪", heroDesc:"สไลม์ในห้องแล็บตัวโตเกินไป! เลือกอัญมณีตัวหารที่หารทั้งตัวเศษและตัวส่วนได้ลงตัว จนย่อต่อไม่ได้อีก",
+  progIcon:"🧪",
+  howto:["แตะอัญมณี ÷ ที่หารทั้งตัวเศษและตัวส่วนได้ลงตัว สไลม์จะหดลง","ย่อต่อจนไม่มีจำนวนใดนอกจาก 1 หารทั้งสองตัวได้ลงตัว แล้วกด \"อย่างต่ำแล้ว!\"","บางตัวเป็นเศษส่วนอย่างต่ำอยู่แล้ว กดปุ่มได้เลย","ด่านยาก ถ้าย่อได้ในครั้งเดียว (หารด้วย ห.ร.ม.) ได้โบนัส"],
+  note:"เศษส่วนอย่างต่ำ คือ เศษส่วนที่ไม่มีจำนวนนับใดนอกจาก 1 หารทั้งตัวเศษและตัวส่วนได้ลงตัว",
+  levels:{
+    1:{pill:N+" ตัว", color:"var(--green)", desc:LV[1].desc},
+    2:{pill:N+" ตัว", color:"var(--blue)", desc:LV[2].desc},
+    3:{pill:N+" ตัว", color:"var(--purple)", desc:LV[3].desc}
+  },
+  play(level, ctx){
+    const L = LV[level];
+    const lowSlots = shuffle([...Array(N).keys()]).slice(0, L.lowest);
+    let idx = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level === 3 ? 160 : 120}); return; }
+      const Q = genQ(level, lowSlots.includes(idx));
+      const n0 = Q.n, d0 = Q.d, g0 = gcd(n0, d0), an = n0/g0, ad = d0/g0;
+      let n = n0, d = d0, miss = 0, moves = 0, lock = false;
+      const trail = [ft(n,d)];
+      const col = COLORS[idx % COLORS.length];
+      const qq = `ทำ ${ft(n0,d0)} ให้เป็นเศษส่วนอย่างต่ำ`, aa = g0 === 1 ? `${ft(an,ad)} (เป็นอย่างต่ำอยู่แล้ว)` : `${ft(an,ad)} (หารด้วย ห.ร.ม. ${g0})`;
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">สไลม์ตัวที่ ${idx+1} จาก ${N}</div><div class="qtext">ย่อสไลม์ให้เป็น<b>เศษส่วนอย่างต่ำ</b></div></div>
+        <div class="lab"><div class="tube" id="tube"></div><div class="belly" id="belly"></div></div>
+        <div class="trail" id="trail"></div>
+        <div class="gems" id="gems">${L.gems.map(k => `<button class="gem" type="button" data-k="${k}">÷${k}</button>`).join("")}</div>
+        <div class="row"><button class="btn" type="button" id="done" style="--c:var(--green)">✅ อย่างต่ำแล้ว!</button></div>`;
+      const $ = s => ctx.stage.querySelector(s);
+      const draw = (pop) => {
+        const scale = Math.max(.55, Math.min(1, .35 + Math.log10(n + d) * .38));
+        $("#tube").innerHTML = slimeSVG(col, scale.toFixed(2));
+        $("#belly").innerHTML = `<span class="bigfrac">${frac(n,d)}</span>`;
+        $("#trail").textContent = trail.join("  →  ");
+        if (pop){ $("#tube").classList.remove("squish"); void $("#tube").offsetWidth; $("#tube").classList.add("squish"); }
+      };
+      draw();
+      const reveal = (why) => {
+        lock = true; ctx.wrong(null); ctx.record({q:qq, a:aa, score:0});
+        n = an; d = ad; if (trail[trail.length-1] !== ft(n,d)) trail.push(ft(n,d)); draw(true);
+        ctx.reveal(`📖 ${why} — เฉลย: ${ft(n0,d0)} หารด้วย ${g0} ได้ ${ft(an,ad)}`);
+        ctx.after(3600, () => { idx++; ctx.progress(idx, N); next(); });
+      };
+      const miss1 = (msg) => { miss++; if (miss < 2) ctx.wrong(msg + " (พลาดได้อีก 1 ครั้ง)"); else reveal(msg); };
+      $("#gems").onclick = e => {
+        const b = e.target.closest(".gem"); if (!b || lock) return;
+        const k = +b.dataset.k;
+        if (n % k === 0 && d % k === 0){
+          n /= k; d /= k; moves++; trail.push(ft(n,d)); KIT.sfx.pop(); draw(true);
+          ctx.say(`หารด้วย ${k} ทั้งตัวเศษและตัวส่วน ได้ ${ft(n,d)}`, "good");
+        } else {
+          b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake");
+          const bad = n % k !== 0 && d % k !== 0 ? `${n} และ ${d}` : n % k !== 0 ? `${n}` : `${d}`;
+          miss1(`÷${k} ใช้ไม่ได้ เพราะ ${bad} หารด้วย ${k} ไม่ลงตัว`);
+        }
+      };
+      $("#done").onclick = () => {
+        if (lock) return;
+        if (gcd(n,d) === 1){
+          lock = true;
+          const score = miss ? 0.5 : 1;
+          ctx.record({q:qq, a:aa, score});
+          let base = miss ? 50 : 100, msg = `เยี่ยม! ${ft(n,d)} เป็นเศษส่วนอย่างต่ำแล้ว`;
+          if (level === 3 && moves === 1 && g0 > 1 && !miss){ base += 50; msg += " · ย่อครั้งเดียวด้วย ห.ร.ม. โบนัส +50"; }
+          ctx.correct(base, msg); $("#tube").classList.add("happy");
+          ctx.after(1100, () => { idx++; ctx.progress(idx, N); next(); });
+        } else {
+          const p = PRIMES.find(x => n % x === 0 && d % x === 0);
+          miss1(`ยังย่อต่อได้อีก ${n} และ ${d} หารด้วย ${p} ลงตัวทั้งคู่`);
+        }
+      };
+    }
+    ctx.progress(0, N); ctx.say("สไลม์ตัวแรกมาแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

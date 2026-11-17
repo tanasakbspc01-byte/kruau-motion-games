@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โดรนส่งพัสดุ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.hint{margin-top:8px;font-weight:700;color:#2C8A52;background:#EAF8EE;border-radius:12px;padding:4px 12px;display:inline-block}
+.sky{width:100%;background:linear-gradient(#CFE6FF,#EAF4FF 60%,#D9F0D3 60%,#C6E7BC);border-radius:24px;border:3px solid #fff;box-shadow:0 6px 0 rgba(134,182,240,.3);padding:92px 36px 136px;overflow:hidden}
+.route{position:relative;height:14px;background:repeating-linear-gradient(90deg,#8A7466 0 18px,#B9A493 18px 30px);border-radius:8px}
+.tk{position:absolute;top:-6px;width:3px;height:26px;margin-left:-1.5px;background:#5A4335;border-radius:2px}
+.tl{position:absolute;top:-30px;transform:translateX(-50%);font-weight:700;font-size:.85rem;color:#3A6FB0;white-space:nowrap}
+.bl{position:absolute;top:22px;transform:translateX(-50%);font-weight:700;font-size:.95rem;color:#4A3A30;white-space:nowrap}
+.house{position:absolute;top:44px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.house .hi{font-size:2rem;line-height:1}
+.house .ht{background:#E8708F;color:#fff;border-radius:10px;padding:0 8px;font-weight:700;font-size:.85rem}
+.house .hb{background:#fff;border:2px solid #E8708F;color:#E8708F;border-radius:10px;padding:0 8px;font-weight:700;font-size:.9rem;white-space:nowrap}
+.drone{position:absolute;left:0;top:-90px;transform:translateX(-50%);font-size:2.2rem;transition:left 1.2s cubic-bezier(.45,.05,.4,1);z-index:3;animation:hover 1.2s ease-in-out infinite}
+.drone .pk{position:absolute;left:50%;top:34px;font-size:1.3rem;transform:translateX(-50%);transition:top .5s cubic-bezier(.5,0,1,.6),opacity .3s}
+.drone.drop .pk{top:138px}
+.drone.ok .pk{opacity:0}
+.mark{position:absolute;top:-4px;transform:translateX(-50%);font-size:1.6rem;opacity:0;transition:opacity .3s}
+.mark.on{opacity:1}
+@keyframes hover{50%{translate:0 -5px}}
+@media (max-width:520px){.sky{padding:92px 22px 118px}.tl{font-size:.72rem}.house .hi{font-size:1.6rem}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 8;
+const PLACES = ["🏠 บ้านคุณยาย","🏫 โรงเรียน","🏥 สถานีอนามัย","⛺ ค่ายลูกเสือ","🏡 บ้านเพื่อน","🛕 วัด","🏪 ร้านค้าชุมชน","🌾 ทุ่งนาลุงมา"];
+const STUFF = ["ยา","หนังสือ","ขนม","จดหมาย","เมล็ดพันธุ์","อุปกรณ์กีฬา","ข้าวกล่อง","ของขวัญ"];
+
+/* A: find p% of T   B: what percent is part of T   C: part is p% of what total */
+function genQ(level){
+  for (let g = 0; g < 2000; g++){
+    let kind = "A", T, p;
+    if (level === 1){ T = pick([10,20,30,40,50,60,80,100,200,300,500]); p = rand(1,9)*10; }
+    else if (level === 2){ T = pick([20,40,60,80,120,160,200,240,300,400,500,600,800]); p = pick([5,15,25,35,45,55,65,75,85,95,20,40,60,80,50]); kind = Math.random() < .3 ? "B" : "A"; }
+    else { T = pick([25,50,75,120,150,250,300,450,600,750,1200]); p = pick([4,8,12,15,24,35,36,45,64,75,85]); kind = pick(["A","B","C"]); }
+    const part = T*p/100;
+    if (!Number.isInteger(part) || part === 0) continue;
+    const ans = kind === "A" ? part : kind === "B" ? p : T;
+    return {kind, T, p, part, ans};
+  }
+}
+
+KIT.mount({
+  key:"m5-drone", title:"โดรนส่งพัสดุ", subtitle:"คณิตศาสตร์ ป.5 · บทที่ 5 ร้อยละ · ร้อยละของจำนวนนับ",
+  heroHTML:"บังคับ<em>โดรน</em>ส่งของให้ตรงจุด 🚁", heroDesc:"คำนวณร้อยละของระยะทาง กรอกตัวเลข แล้วโดรนจะบินไปปล่อยของ ถ้าคิดผิด โดรนจะตกที่อื่น และบอกว่าตกตรงกี่เปอร์เซ็นต์",
+  progIcon:"📦",
+  howto:["อ่านคำสั่งงาน แล้วดูเส้นทาง แถบบนเป็นร้อยละ แถบล่างเป็นระยะทางจริง","กดตัวเลขบนแป้น แล้วกด \"ปล่อยโดรน\"","ถ้าคิดถูก โดรนจะส่งของถึงจุดหมายพอดี","ร้อยละ 25 ของ 80 = 25/100 × 80 = 20"],
+  note:"หาร้อยละของจำนวน: ร้อยละ a ของ b = a × b ÷ 100 · ถ้าหา 10% ได้ ก็หา 20%, 30% ... ได้ง่าย",
+  levels:{
+    1:{pill:N+" เที่ยว", color:"var(--green)", desc:"ร้อยละ 10, 20, ..., 90 ของจำนวนนับ มีคำใบ้ 10%"},
+    2:{pill:N+" เที่ยว", color:"var(--blue)", desc:"ร้อยละ 5, 15, 25, 75 และ หาว่าเป็นร้อยละเท่าไร"},
+    3:{pill:N+" เที่ยว", color:"var(--purple)", desc:"ร้อยละไม่ลงตัวสิบ หาร้อยละ และหาจำนวนทั้งหมด"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: level === 3 ? 220 : 160}); return; }
+      const Q = genQ(level), place = pick(PLACES), stuff = pick(STUFF);
+      const unit = "กม.";
+      let html, qtxt, ansTxt, axisR;
+      if (Q.kind === "A"){ html = `ส่ง${stuff}ไป${place} ซึ่งอยู่ที่ <b>ร้อยละ ${Q.p}</b> ของเส้นทางยาว <b>${fmt(Q.T)} ${unit}</b><br>ต้องบินไปกี่กิโลเมตร`; qtxt = `ร้อยละ ${Q.p} ของ ${fmt(Q.T)}`; ansTxt = `${fmt(Q.part)} ${unit}`; axisR = fmt(Q.T); }
+      else if (Q.kind === "B"){ html = `${place} อยู่ห่าง <b>${fmt(Q.part)} ${unit}</b> จากเส้นทางทั้งหมด <b>${fmt(Q.T)} ${unit}</b><br>คิดเป็นร้อยละเท่าไรของเส้นทาง`; qtxt = `${fmt(Q.part)} เป็นร้อยละเท่าไรของ ${fmt(Q.T)}`; ansTxt = `ร้อยละ ${Q.p}`; axisR = fmt(Q.T); }
+      else { html = `${place} อยู่ห่าง <b>${fmt(Q.part)} ${unit}</b> ซึ่งเป็น <b>ร้อยละ ${Q.p}</b> ของเส้นทาง<br>เส้นทางทั้งหมดยาวกี่กิโลเมตร`; qtxt = `${fmt(Q.part)} เป็นร้อยละ ${Q.p} ของจำนวนใด`; ansTxt = `${fmt(Q.T)} ${unit}`; axisR = "?"; }
+      const kpUnit = Q.kind === "B" ? "%" : unit;
+      const tick10 = [...Array(11).keys()].map(i => i*10);
+      const topLbl = level === 1 ? tick10 : [0,25,50,75,100];
+      const hint = level === 1 ? `<div class="hint">💡 10% ของ ${fmt(Q.T)} คือ ${fmt(Q.T/10)}</div>` : "";
+      const houseTop = Q.kind === "B" ? "?%" : `${Q.p}%`, houseBot = Q.kind === "A" ? "?" : fmt(Q.part);
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">เที่ยวที่ ${idx+1} จาก ${N}</div><div class="qtext">${html}</div>${hint}</div>
+        <div class="sky"><div class="route" id="route">
+          ${tick10.map(t => `<i class="tk" style="left:${t}%"></i>`).join("")}
+          ${topLbl.map(t => `<span class="tl" style="left:${t}%">${t}%</span>`).join("")}
+          <span class="bl" style="left:0">0</span><span class="bl" style="left:100%">${axisR}</span>
+          <div class="house" style="left:${Q.p}%"><span class="ht">${houseTop}</span><span class="hi">${place.split(" ")[0]}</span><span class="hb">${houseBot}</span></div>
+          <div class="drone" id="dr"><span class="pk">📦</span>🚁</div><div class="mark" id="mk"></div>
+        </div></div>
+        <div class="kp-row"><div class="kp-screen" id="scr" aria-live="polite">0</div><span class="kp-unit">${kpUnit}</span></div>
+        <div class="kp" id="kp">${[7,8,9,4,5,6,1,2,3].map(x => `<button type="button" data-k="${x}">${x}</button>`).join("")}<button type="button" data-k="C">ล้าง</button><button type="button" data-k="0">0</button><button type="button" data-k="B" aria-label="ลบตัวสุดท้าย">⌫</button>
+          <button type="button" class="kp-ok" data-k="OK">🚁 ปล่อยโดรน</button></div>`;
+      const $ = s => ctx.stage.querySelector(s), dr = $("#dr"), mk = $("#mk"), scr = $("#scr");
+      let val = "", miss = 0, lock = false;
+      const landing = v => Q.kind === "A" ? v / Q.T * 100 : Q.kind === "B" ? v : Q.part / v * 100;
+      const fly = (pct, cb) => { dr.classList.remove("drop"); dr.style.left = Math.max(0, Math.min(104, pct)) + "%"; ctx.after(1300, () => { dr.classList.add("drop"); cb && cb(); }); };
+      const finishQ = (score) => { ctx.record({q:qtxt, a:ansTxt, score}); };
+      const press = k => {
+        if (lock || !ctx.alive()) return;
+        if (k !== "OK"){ KIT.sfx.tap(); if (k === "C") val = ""; else if (k === "B") val = val.slice(0,-1); else if (val.length < 6) val = (val === "0" ? "" : val) + k; scr.textContent = val ? fmt(+val) : "0"; return; }
+        if (!val || +val === 0){ ctx.say("กดตัวเลขก่อนนะ"); return; }
+        const v = +val; lock = true;
+        const pct = landing(v);
+        fly(pct, () => {
+          if (v === Q.ans){
+            finishQ(miss ? .5 : 1); dr.classList.add("ok");
+            ctx.correct(miss ? 50 : 100, `ส่งถึงพอดี! ${qtxt} = ${ansTxt}`);
+            ctx.after(1200, () => { idx++; ctx.progress(idx, N); next(); });
+            return;
+          }
+          miss++;
+          const where = Q.kind === "C" ? `ถ้าทั้งเส้นทางยาว ${fmt(v)} ${unit} จุด ${fmt(Q.part)} ${unit} จะอยู่ที่ ${+pct.toFixed(1)}%` : pct > 100 ? `บินเลยปลายทางไปแล้ว (${+pct.toFixed(1)}%)` : `ของตกที่ ${+pct.toFixed(1)}% ของเส้นทาง`;
+          mk.style.left = Math.min(104, pct) + "%"; mk.textContent = "💥"; mk.classList.add("on");
+          if (miss < 2){
+            ctx.wrong(`${where} ยังไม่ตรง ${pct < Q.p ? "น้อยไป" : "มากไป"} (เหลืออีก 1 ครั้ง)`);
+            ctx.after(1500, () => { dr.style.left = "0%"; dr.classList.remove("drop"); val = ""; scr.textContent = "0"; lock = false; });
+            return;
+          }
+          ctx.wrong(null); finishQ(0);
+          ctx.after(1200, () => {
+            scr.textContent = Q.kind === "B" ? Q.ans : fmt(Q.ans); scr.style.color = "#2C8A52";
+            dr.classList.remove("drop"); fly(Q.p, () => dr.classList.add("ok"));
+            ctx.stage.querySelector(".hb").textContent = fmt(Q.part); ctx.stage.querySelector(".ht").textContent = Q.p + "%"; ctx.stage.querySelectorAll(".bl")[1].textContent = fmt(Q.T);
+            const how = Q.kind === "A" ? `${Q.p} × ${fmt(Q.T)} ÷ 100 = ${fmt(Q.part)}` : Q.kind === "B" ? `${fmt(Q.part)} ÷ ${fmt(Q.T)} × 100 = ${Q.p}` : `${fmt(Q.part)} × 100 ÷ ${Q.p} = ${fmt(Q.T)}`;
+            ctx.reveal(`📖 ${where} — เฉลย: ${how} (${ansTxt})`);
+            ctx.after(4200, () => { idx++; ctx.progress(idx, N); next(); });
+          });
+        });
+      };
+      $("#kp").onclick = e => { const b = e.target.closest("[data-k]"); if (b) press(b.dataset.k); };
+      KIT._kp = press;
+    }
+    ctx.progress(0, N); ctx.say("เครื่องยนต์พร้อม รับงานแรกได้เลย!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ซูโดกุจิ๋ว</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.board{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:5px;width:100%;max-width:400px;margin:0 auto;padding:10px;background:#E9DCCB;border-radius:20px;box-shadow:0 5px 0 #D6C3AA}
+.sq{aspect-ratio:1;border:none;border-radius:12px;font-size:clamp(1.5rem,7vw,2.4rem);font-weight:700;color:#3A6FB0;padding:0;box-shadow:inset 0 -3px 0 rgba(0,0,0,.08)}
+.board.s6 .sq{font-size:clamp(1.2rem,5vw,1.8rem);border-radius:9px}
+.sq.b0{background:#FFFDF8}.sq.b1{background:#EAF3FF}
+.sq.fx{color:var(--ink)}
+.sq.sel{outline:4px solid var(--orange);outline-offset:-4px}
+.sq.bad{background:#FDE3E3 !important;color:var(--bad);animation:shk .35s}
+.board.win .sq{background:#EAF8EE}
+.board.solved .sq:not(.fx){color:#2C8A52}
+.pad{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.pad button{width:64px;height:64px;border:none;border-radius:16px;background:#fff;font-size:1.8rem;font-weight:700;box-shadow:0 5px 0 var(--line),0 0 0 3px var(--line) inset}
+.pad button:active{transform:translateY(3px)}
+@keyframes shk{25%{translate:-4px 0}75%{translate:4px 0}}
+@media (max-width:520px){.pad button{width:52px;height:52px;font-size:1.5rem}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, shuffle} = KIT;
+const ROUNDS = 3;
+const LV = {
+  1:{n:4, h:2, w:2, blanks:6, sym:["🍎","🍌","🍇","🍊"]},
+  2:{n:4, h:2, w:2, blanks:10, sym:["1","2","3","4"]},
+  3:{n:6, h:2, w:3, blanks:18, sym:["1","2","3","4","5","6"]}
+};
+function makeGrid(L){
+  const {n, h, w} = L;
+  let g = [...Array(n).keys()].map(r => [...Array(n).keys()].map(c => (w*(r%h) + Math.floor(r/h) + c) % n));
+  const digits = shuffle([...Array(n).keys()]);
+  g = g.map(row => row.map(v => digits[v]));
+  /* rows: shuffle within bands (h rows) and bands */
+  const bands = shuffle([...Array(n/h).keys()]), rows = [];
+  bands.forEach(b => shuffle([...Array(h).keys()]).forEach(i => rows.push(b*h + i)));
+  g = rows.map(r => g[r]);
+  const stacks = shuffle([...Array(n/w).keys()]), cols = [];
+  stacks.forEach(s => shuffle([...Array(w).keys()]).forEach(i => cols.push(s*w + i)));
+  return g.map(row => cols.map(c => row[c]));
+}
+function conflicts(grid, L){
+  const {n, h, w} = L, bad = new Set();
+  const groups = [];
+  for (let r = 0; r < n; r++) groups.push([...Array(n).keys()].map(c => [r,c]));
+  for (let c = 0; c < n; c++) groups.push([...Array(n).keys()].map(r => [r,c]));
+  for (let br = 0; br < n; br += h) for (let bc = 0; bc < n; bc += w){ const g = []; for (let r = 0; r < h; r++) for (let c = 0; c < w; c++) g.push([br+r, bc+c]); groups.push(g); }
+  groups.forEach(g => { const seen = {}; g.forEach(([r,c]) => { const v = grid[r][c]; if (v === null) return; (seen[v] = seen[v] || []).push(r*n + c); });
+    Object.values(seen).forEach(list => { if (list.length > 1) list.forEach(i => bad.add(i)); }); });
+  return bad;
+}
+
+KIT.mount({
+  key:"q-sudoku", title:"ซูโดกุจิ๋ว", subtitle:"เกมคณิตแก้เวลาว่าง · ฝึกตรรกะ",
+  heroHTML:"เติมให้ครบ <em>ไม่ซ้ำกัน</em> 🧩", heroDesc:"ทุกแถว ทุกหลัก และทุกกล่องสี ต้องมีสัญลักษณ์ครบทุกตัว ตัวละครั้งเดียว ใช้เหตุผลหาว่าช่องว่างควรเป็นอะไร",
+  progIcon:"🧩",
+  howto:["แตะช่องว่าง แล้วแตะสัญลักษณ์ด้านล่างเพื่อเติม","แต่ละแถว (แนวนอน) แต่ละหลัก (แนวตั้ง) และแต่ละกล่องสี ห้ามซ้ำกัน","เติมครบแล้วกด \"ตรวจ\" ถ้ามีช่องซ้ำจะเป็นสีแดง","แก้ได้ 1 ครั้ง ถ้ายังไม่ถูกจะเฉลยให้ดู"],
+  note:"เคล็ดลับ: หาแถวหรือกล่องที่ขาดอยู่ตัวเดียวก่อน จะเติมได้แน่นอน",
+  levels:{
+    1:{pill:ROUNDS+" กระดาน", color:"var(--green)", desc:"ตาราง 4×4 ผลไม้ 4 ชนิด ช่องว่าง 6 ช่อง"},
+    2:{pill:ROUNDS+" กระดาน", color:"var(--blue)", desc:"ตาราง 4×4 ตัวเลข 1–4 ช่องว่าง 10 ช่อง"},
+    3:{pill:ROUNDS+" กระดาน", color:"var(--purple)", desc:"ตาราง 6×6 ตัวเลข 1–6 ช่องว่าง 18 ช่อง"}
+  },
+  play(level, ctx){
+    const L = LV[level], n = L.n;
+    let r = 0;
+    function next(){
+      if (r >= ROUNDS){ ctx.finish({targetSec: level === 3 ? 360 : 150}); return; }
+      const sol = makeGrid(L);
+      const holes = new Set(shuffle([...Array(n*n).keys()]).slice(0, L.blanks));
+      const grid = sol.map((row, ri) => row.map((v, ci) => holes.has(ri*n + ci) ? null : v));
+      let sel = [...holes][0], miss = 0, lock = false;
+      const sym = v => v === null ? "" : L.sym[v];
+      ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">กระดานที่ ${r+1} จาก ${ROUNDS}</div><div class="qtext">เติมให้ครบ ทุกแถว ทุกหลัก ทุกกล่อง ไม่ซ้ำกัน</div></div>
+        <div class="board s${n}" id="bd" style="--n:${n}"></div>
+        <div class="pad" id="pad">${L.sym.map((s,i) => `<button type="button" data-v="${i}">${s}</button>`).join("")}<button type="button" data-v="x" aria-label="ลบ">⌫</button></div>
+        <div class="row"><button class="btn" type="button" id="chk">✔️ ตรวจ</button></div><div class="mcq-next" id="nx"></div>`;
+      const $ = s => ctx.stage.querySelector(s);
+      const draw = (bad=new Set()) => {
+        $("#bd").innerHTML = grid.map((row, ri) => row.map((v, ci) => { const i = ri*n + ci, fixed = !holes.has(i);
+          const box = (Math.floor(ri/L.h) + Math.floor(ci/L.w)) % 2;
+          return `<button class="sq b${box}${fixed ? " fx" : ""}${i === sel ? " sel" : ""}${bad.has(i) ? " bad" : ""}" type="button" data-i="${i}" ${fixed ? "disabled" : ""}>${sym(v)}</button>`; }).join("")).join("");
+      };
+      draw();
+      $("#bd").onclick = e => { const b = e.target.closest(".sq"); if (!b || lock || b.disabled) return; sel = +b.dataset.i; KIT.sfx.tap(); draw(); };
+      $("#pad").onclick = e => {
+        const b = e.target.closest("[data-v]"); if (!b || lock || sel === null) return;
+        const ri = Math.floor(sel/n), ci = sel % n;
+        grid[ri][ci] = b.dataset.v === "x" ? null : +b.dataset.v; KIT.sfx.pop();
+        const empties = [...holes].filter(i => grid[Math.floor(i/n)][i%n] === null);
+        if (b.dataset.v !== "x" && empties.length) sel = empties.find(i => i > sel) ?? empties[0];
+        draw();
+      };
+      $("#chk").onclick = () => {
+        if (lock) return;
+        const empty = [...holes].filter(i => grid[Math.floor(i/n)][i%n] === null).length;
+        if (empty){ ctx.say(`ยังเหลือช่องว่างอีก ${empty} ช่อง เติมให้ครบก่อนนะ`); return; }
+        const bad = conflicts(grid, L);
+        const q = `ซูโดกุ ${n}×${n} กระดานที่ ${r+1}`;
+        if (!bad.size){
+          lock = true; ctx.record({q, a:"เติมครบไม่ซ้ำ", score: miss ? .5 : 1}); draw(); $("#bd").classList.add("win");
+          ctx.correct(miss ? 80 : 160, "ครบทุกแถว ทุกหลัก ทุกกล่อง เก่งมาก! 🧩"); ctx.after(1500, () => { r++; ctx.progress(r, ROUNDS); next(); });
+          return;
+        }
+        miss++; draw(bad);
+        if (miss < 2){ ctx.wrong(`มีช่องที่ซ้ำกันอยู่ (สีแดง) ลองแก้ดูนะ (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; ctx.wrong(null); ctx.record({q, a:"ดูเฉลยบนกระดาน", score:0});
+        ctx.after(1200, () => {
+          holes.forEach(i => grid[Math.floor(i/n)][i%n] = sol[Math.floor(i/n)][i%n]); sel = null; draw(); $("#bd").classList.add("solved");
+          ctx.reveal("📖 นี่คือคำตอบหนึ่งที่ถูกต้อง ลองดูว่าทุกแถว ทุกหลัก ทุกกล่อง ไม่ซ้ำกันเลย");
+          $("#nx").innerHTML = `<button class="btn" type="button">กระดานต่อไป ▶</button>`;
+          $("#nx").firstChild.onclick = () => { $("#nx").innerHTML = ""; r++; ctx.progress(r, ROUNDS); next(); };
+        });
+      };
+    }
+    ctx.progress(0, ROUNDS); ctx.say("ใช้เหตุผล ไม่ต้องเดา!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

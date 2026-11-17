@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สีหลอกตา</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.clockbar{position:relative;height:28px;background:#F3E8DA;border-radius:16px;overflow:hidden;border:3px solid #fff;box-shadow:0 3px 0 var(--line)}
+.clockbar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#B7A4EE,#86B6F0);transition:width .1s linear}
+.clockbar span{position:absolute;inset:0;display:grid;place-items:center;font-weight:700;font-variant-numeric:tabular-nums}
+.card{position:relative;background:#fff;border-radius:28px;border:4px solid var(--line);box-shadow:0 7px 0 var(--line);min-height:190px;display:grid;place-items:center;padding:20px}
+.card.read{border:6px dashed #F2A65A;background:#FFF8EE}
+.card.pop{animation:cpop .2s}
+.card.no{animation:shk .35s;border-color:var(--bad)}
+.rule{position:absolute;top:10px;left:0;right:0;text-align:center;font-weight:700;color:var(--ink-soft)}
+.word{font-size:clamp(3.2rem,14vw,5.4rem);font-weight:700;letter-spacing:.02em}
+.cbtns{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.cbtns.k6{grid-template-columns:repeat(3,1fr)}
+.cb{border:3px solid var(--line);background:#fff;border-radius:18px;padding:16px 8px;font-size:1.5rem;font-weight:700;color:var(--ink);box-shadow:0 5px 0 var(--line);display:flex;flex-direction:column;align-items:center;gap:6px}
+.cb.sw i{display:block;width:70%;height:30px;border-radius:10px;background:var(--c)}
+.cb.sw span{font-size:1.05rem;color:var(--ink-soft)}
+.cb:active{transform:translateY(3px)}
+@keyframes cpop{from{transform:scale(.92)}to{transform:none}}
+@keyframes shk{25%{translate:-6px 0}75%{translate:6px 0}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const COLORS = [["แดง","#E53935"],["เขียว","#2E9D48"],["น้ำเงิน","#1E5FD0"],["เหลือง","#E0A800"],["ม่วง","#8E44AD"],["ส้ม","#F57C00"]];
+const LV = {1:{k:4, sec:40, same:.4, swatch:true, rule:false}, 2:{k:4, sec:45, same:.15, swatch:false, rule:false}, 3:{k:6, sec:45, same:.15, swatch:false, rule:true}};
+
+KIT.mount({
+  key:"f-stroop", title:"สีหลอกตา", subtitle:"เกมฝึกสมาธิ · ฝึกควบคุมความคิด",
+  heroHTML:"ดู<em>สี</em> อย่าเพิ่งอ่าน<em>คำ</em> 🎨", heroDesc:"คำว่า \"แดง\" อาจเขียนด้วยหมึกสีเขียว! ให้แตะตามสีของหมึก ไม่ใช่ตามคำที่อ่านได้ สมองจะอยากอ่านคำก่อนเสมอ ต้องตั้งใจดี ๆ",
+  progIcon:"🎨",
+  howto:["ดูสีของตัวอักษร (สีหมึก) แล้วแตะปุ่มสีนั้น","อย่าแตะตามคำที่อ่านได้","ตอบถูกติดกันได้คอมโบ ตอบผิดเสียคะแนนเล็กน้อย","ด่านยาก: ถ้ามีกรอบ 📖 ให้แตะตาม \"คำ\" แทน"],
+  note:"เกมนี้มาจากการทดลองทางจิตวิทยาที่ชื่อว่า Stroop ช่วยฝึกสมาธิและการยับยั้งชั่งใจ",
+  levels:{
+    1:{pill:"40 วินาที", color:"var(--green)", desc:"4 สี ปุ่มเป็นแถบสี ช่วยให้ง่ายขึ้น"},
+    2:{pill:"45 วินาที", color:"var(--blue)", desc:"4 สี ปุ่มเป็นตัวหนังสือ หลอกตามากขึ้น"},
+    3:{pill:"45 วินาที", color:"var(--purple)", desc:"6 สี และกฎสลับ 📖 อ่านคำ / 🎨 ดูสี"}
+  },
+  play(level, ctx){
+    const L = LV[level], pal = COLORS.slice(0, L.k);
+    let right = 0, seen = 0, streak = 0, lock = true, cur = null, ended = false, t0 = 0, shown = 0, rtSum = 0;
+    ctx.stage.innerHTML = `<div class="clockbar"><i id="tb"></i><span id="tt">${L.sec}</span></div>
+      <div class="card" id="cd"><div class="rule" id="rl"></div><div class="word" id="wd">พร้อม?</div></div>
+      <div class="cbtns k${L.k}" id="bt">${pal.map((c,i) => `<button class="cb${L.swatch ? " sw" : ""}" type="button" data-i="${i}" style="--c:${c[1]}">${L.swatch ? "<i></i>" : ""}<span>${c[0]}</span></button>`).join("")}</div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    let tick = 0;
+    function start(){
+      t0 = Date.now();
+      tick = setInterval(() => {
+        if (!ctx.alive()){ clearInterval(tick); return; }
+        const left = Math.max(0, L.sec - (Date.now() - t0)/1000);
+        $("#tb").style.width = (left/L.sec*100) + "%"; $("#tt").textContent = Math.ceil(left);
+        if (left <= 0 && !ended){ ended = true; clearInterval(tick); lock = true;
+          ctx.say(`หมดเวลา! ถูก ${right} จาก ${seen} · เฉลี่ยข้อละ ${right ? (rtSum/right/1000).toFixed(2) : "-"} วินาที`, "good"); ctx.finish({targetSec:0}); }
+      }, 100);
+      next();
+    }
+    ctx.cleanup(() => clearInterval(tick));
+    function next(){
+      if (ended) return;
+      const ink = rand(0, L.k-1);
+      let word = Math.random() < L.same ? ink : pick([...Array(L.k).keys()].filter(i => i !== ink));
+      const readMode = L.rule && Math.random() < .35;
+      cur = {ink, word, readMode, ans: readMode ? word : ink};
+      $("#wd").textContent = pal[word][0]; $("#wd").style.color = pal[ink][1];
+      $("#cd").classList.toggle("read", readMode);
+      $("#rl").textContent = L.rule ? (readMode ? "📖 อ่านคำ" : "🎨 ดูสี") : "";
+      $("#cd").classList.remove("pop"); void $("#cd").offsetWidth; $("#cd").classList.add("pop");
+      lock = false; shown = Date.now();
+    }
+    $("#bt").onclick = e => {
+      const b = e.target.closest(".cb"); if (!b || lock || ended) return;
+      lock = true; seen++;
+      if (+b.dataset.i === cur.ans){
+        right++; streak++; rtSum += Date.now() - shown;
+        ctx.correct(10, streak >= 5 ? `สมาธิดีเยี่ยม x${streak}!` : "ถูก!"); ctx.progress(right, seen); ctx.after(150, next);
+      } else {
+        streak = 0; $("#cd").classList.add("no");
+        ctx.wrong(cur.readMode ? `กรอบ 📖 ต้องแตะตามคำ คือ "${pal[cur.word][0]}"` : `ต้องดูสีหมึก หมึกเป็นสี${pal[cur.ink][0]}`, 5);
+        ctx.progress(right, seen); ctx.after(700, () => { $("#cd").classList.remove("no"); next(); });
+      }
+    };
+    ctx.progress(0, 0); ctx.say("3… 2… 1…");
+    ctx.after(1200, start);
+  }
+});
+
+})();
+</script>
+</body>
+</html>
