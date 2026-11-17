@@ -87,14 +87,13 @@ BK.mount({
     function sell(o){ sold++; $("#sl").textContent = `💰 ยอดขาย ${sold} ชิ้น`; idx++; ctx.after(1200, next); }
     $("#sh").addEventListener("click", e => {
       const b = e.target.closest(".pp"); if (!b || idx >= N || b.classList.contains("no") || b.classList.contains("ok") || ctx.stage.querySelector(".pp.ok")) return;
-      const o = deck[idx];
-      if (phase === "paper"){
-        if (b.dataset.k === o[2]){ b.classList.add("ok"); ctx.correct(first ? 100 : 50, `${PAPER[o[2]][1]} เหมาะเลย!`); done++; ctx.progress(done, total); if (L.tool) ctx.after(900, () => toolStep(o)); else sell(o); }
-        else { first = false; b.classList.add("no"); ctx.wrong(`${PAPER[b.dataset.k][1]} ไม่เหมาะกับงานนี้`); }
-      } else {
-        if (b.dataset.k === o[4]){ b.classList.add("ok"); ctx.correct(first ? 100 : 50, `ใช้${TOOL[o[4]][1]} ถูกต้อง! ส่งของได้`); done++; ctx.progress(done, total); sell(o); }
-        else { first = false; b.classList.add("no"); ctx.wrong(`${TOOL[b.dataset.k][1]} ไม่เหมาะกับขั้นตอนนี้`); }
-      }
+      const o = deck[idx], isP = phase === "paper", want = isP ? o[2] : o[4], DIC = isP ? PAPER : TOOL;
+      const cards = [...ctx.stage.querySelectorAll(".pp")], names = cards.map(x => DIC[x.dataset.k][1]), ai = cards.findIndex(x => x.dataset.k === want);
+      const rec = sc => ctx.record({q: isP ? `${o[0]} ลูกค้าอยากได้${o[1]} ใช้กระดาษอะไร?` : `${o[0]} ${o[3]}`, a:DIC[want][1], options:names, answer:ai, score:sc});
+      const go = () => { done++; ctx.progress(done, total); if (isP && L.tool) ctx.after(900, () => toolStep(o)); else sell(o); };
+      if (b.dataset.k === want){ rec(first ? 1 : 0.5); b.classList.add("ok"); ctx.correct(first ? 100 : 50, isP ? `${PAPER[want][1]} เหมาะเลย!` : `ใช้${TOOL[want][1]} ถูกต้อง! ส่งของได้`); go(); }
+      else if (first && cards.length > 2){ first = false; b.classList.add("no"); ctx.wrong(`${DIC[b.dataset.k][1]} ไม่เหมาะ ลองอีกครั้ง (เหลืออีก 1 ครั้ง)`); }
+      else { b.classList.add("no"); rec(0); ctx.wrong(null); cards[ai].classList.add("ok"); ctx.reveal(`📖 เฉลย: ${DIC[want][1]}`); ctx.after(1600, go); }
     });
     ctx.progress(0, total); ctx.say("ร้านเปิดแล้ว! ลูกค้ามาแล้ว");
     next();

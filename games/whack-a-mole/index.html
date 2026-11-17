@@ -72,7 +72,7 @@ KIT.mount({
       <div class="field" id="field">${Array.from({length:9},(_,i)=>`<button class="hole" type="button" data-i="${i}" aria-label="หลุมที่ ${i+1}"><div class="mole">${MOLE}<span class="tag"></span></div><div class="lip"></div></button>`).join("")}</div>`;
     const holes = [...ctx.stage.querySelectorAll(".hole")];
     const upMs = level===3 ? 2300 : 1900, gapMs = level===3 ? 750 : 650;
-    let idx = 0, cur = null, wrongs = [], sinceRight = 0, timer = 0, busy = false;
+    let idx = 0, cur = null, wrongs = [], sinceRight = 0, timer = 0, busy = false, miss = 0;
     const state = holes.map(() => ({up:false, val:null, t:0}));
     function down(i){ state[i].up = false; holes[i].classList.remove("up","hit","bonk"); holes[i].setAttribute("aria-label", `หลุมที่ ${i+1} ว่าง`); }
     function popOne(){
@@ -98,20 +98,27 @@ KIT.mount({
       const h = e.target.closest(".hole"); if (!h) return;
       const i = +h.dataset.i; if (!state[i].up || busy) return;
       e.preventDefault();
+      const fa = typeof cur.ans === "number" ? fmt(cur.ans) : cur.ans;
       if (state[i].val === cur.ans){
-        h.classList.add("hit"); ctx.correct(); busy = true;
+        ctx.record({q:`${cur.q} = ?`, a:fa, score: miss ? 0.5 : 1});
+        h.classList.add("hit"); ctx.correct(miss ? 50 : 100); busy = true;
         idx++; ctx.progress(idx, N);
         ctx.after(500, () => { state.forEach((_,k)=>down(k)); busy = false; next(); });
       } else {
-        h.classList.add("bonk"); ctx.wrong(`ตัวนี้ถือ ${h.querySelector(".tag").textContent} ยังไม่ใช่คำตอบ`);
-        ctx.after(300, () => down(i));
+        h.classList.add("bonk"); miss++;
+        if (miss < 2){ ctx.wrong(`ตัวนี้ถือ ${h.querySelector(".tag").textContent} ยังไม่ใช่คำตอบ (เหลืออีก 1 ครั้ง)`); ctx.after(300, () => down(i)); }
+        else {
+          ctx.wrong(null); ctx.record({q:`${cur.q} = ?`, a:fa, score:0}); busy = true;
+          ctx.reveal(`📖 เฉลย: ${cur.q} = ${fa}`); idx++; ctx.progress(idx, N);
+          ctx.after(2400, () => { state.forEach((_,k)=>down(k)); busy = false; next(); });
+        }
       }
     });
     function next(){
       if (idx >= N){ ctx.finish({targetSec: level===3 ? 110 : 90}); return; }
       cur = GEN[level]();
       wrongs = cur.wr ? cur.wr.filter(v=>v!==cur.ans) : numWrongs(cur.ans);
-      sinceRight = 0;
+      sinceRight = 0; miss = 0;
       ctx.stage.querySelector("#qn").textContent = `ข้อ ${idx+1} จาก ${N}`;
       ctx.stage.querySelector("#qt").textContent = cur.q + " = ?";
     }

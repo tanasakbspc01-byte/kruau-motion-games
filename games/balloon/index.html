@@ -72,7 +72,7 @@ KIT.mount({
     ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext" id="qt"></div></div><div class="sky" id="sky"></div>`;
     const sky = ctx.stage.querySelector("#sky");
     const COUNT = 5, speed = level===3 ? 34 : 44;
-    let idx = 0, cur = null, wrongs = [], bals = [], raf = 0, last = 0, busy = false;
+    let idx = 0, cur = null, wrongs = [], bals = [], raf = 0, last = 0, busy = false, miss = 0;
     const STRING = `<svg viewBox="0 0 20 44" aria-hidden="true"><path d="M10 0 l-4 6 h8 z" fill="#8A7466"/><path d="M10 6 q-6 10 0 19 q6 9 0 19" stroke="#8A7466" stroke-width="1.5" fill="none"/></svg>`;
     function setVal(b, v){ b.val = v; b.el.querySelector(".body").textContent = show(v); b.el.setAttribute("aria-label", "บอลลูน " + show(v)); }
     function respawn(b){
@@ -101,13 +101,17 @@ KIT.mount({
       raf = requestAnimationFrame(frame);
     }
     function tap(b){
-      if (busy || b.el.classList.contains("popped")) return;
-      if (b.val === cur.ans){ busy = true; b.el.classList.add("popped"); KIT.sfx.pop(); ctx.correct(); idx++; ctx.progress(idx, N); ctx.after(600, () => { busy = false; next(); }); }
-      else { b.el.classList.add("bonk"); ctx.wrong(`${show(b.val)} ยังไม่ใช่ ลองดูตำแหน่งจุดทศนิยมอีกครั้ง`); ctx.after(420, () => b.el.classList.remove("bonk")); }
+      if (busy || idx >= N || b.el.classList.contains("popped")) return;
+      const qq = String(cur.q).replace(/<[^>]+>/g,"") + (level===2 ? " = ?" : ""), fa = show(cur.ans);
+      if (b.val === cur.ans){ ctx.record({q:qq, a:fa, score: miss ? 0.5 : 1}); busy = true; b.el.classList.add("popped"); KIT.sfx.pop(); ctx.correct(miss ? 50 : 100); idx++; ctx.progress(idx, N); ctx.after(600, () => { busy = false; next(); }); }
+      else { b.el.classList.add("bonk"); miss++;
+        if (miss < 2){ ctx.wrong(`${show(b.val)} ยังไม่ใช่ ลองดูตำแหน่งจุดทศนิยมอีกครั้ง (เหลืออีก 1 ครั้ง)`); ctx.after(420, () => b.el.classList.remove("bonk")); }
+        else { busy = true; ctx.wrong(null); ctx.record({q:qq, a:fa, score:0}); const g = bals.find(x => x.val === cur.ans && !x.el.classList.contains("popped")); if (g) g.el.classList.add("popped");
+          ctx.reveal(`📖 เฉลย: ${fa}`); idx++; ctx.progress(idx, N); ctx.after(2400, () => { busy = false; next(); }); } }
     }
     function next(){
       if (idx >= N){ ctx.finish({targetSec: level===3 ? 170 : 120}); return; }
-      cur = gen(level); wrongs = shifts(cur.ans);
+      cur = gen(level); wrongs = shifts(cur.ans); miss = 0;
       ctx.stage.querySelector("#qn").textContent = `ข้อ ${idx+1} จาก ${N}`;
       ctx.stage.querySelector("#qt").innerHTML = cur.q + (level===2 ? " = ?" : "");
       setup();

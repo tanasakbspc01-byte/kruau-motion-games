@@ -154,3 +154,16 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .kp button{border:3px solid var(--line);background:var(--card);border-radius:16px;padding:12px 0;font-size:1.5rem;font-weight:700;box-shadow:0 4px 0 var(--line)}
 .kp button:active{transform:translateY(2px);box-shadow:0 2px 0 var(--line)}
 .kp .kp-ok{grid-column:span 3;background:var(--c,var(--orange));border-color:var(--c,var(--orange));color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.15);font-size:1.25rem}
+/* v2: review, practice, reveal */
+.choice.show{border-color:#3FAE6A !important;background:#E8F8EE !important;box-shadow:0 5px 0 #3FAE6A !important;animation:pulse2 .8s 2}
+@keyframes pulse2{50%{transform:scale(1.04)}}
+.mcq-next{display:flex;justify-content:center;margin-top:12px}
+.review{text-align:left;margin-top:10px;max-height:34vh;overflow:auto}
+.review h3{font-size:1rem;margin:0 0 6px}
+.review ul{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:6px}
+.review li{background:#FFF7E8;border-radius:12px;padding:8px 10px;font-size:.9rem;line-height:1.4}
+.review li b{display:block;color:#2C8A52}
+.review .btn{width:100%}
+.all-good{text-align:center;font-weight:700;color:#2C8A52;margin:8px 0}
+.sheet.practice{max-width:640px;width:calc(100% - 24px);max-height:92vh;overflow:auto}
+.sheet.practice .choices{margin-top:10px}

@@ -68,7 +68,7 @@ BK.mount({
   key:"w-tools", title:"ช่างซ่อมประจำเซิร์ฟเวอร์", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 4 ซ่อมแซมอุปกรณ์",
   heroHTML:"หยิบ<em>เครื่องมือช่าง</em>ให้ถูกงาน 🛠️", heroDesc:"ชาวบ้านในเซิร์ฟเวอร์มาขอให้ช่วยซ่อมของ เลือกเครื่องมือจากช่องเก็บของให้เหมาะกับงาน",
   progIcon:"🛠️",
-  howto:["อ่านคำขอของชาวบ้าน","แตะเครื่องมือในช่องเก็บของที่เหมาะกับงาน","เลือกผิดเสียหัวใจ ❤️","ช่วยครบ 10 คนผ่านด่าน (ด่านตำนานมีให้เลือกช่างด้วย)"],
+  howto:["อ่านคำขอของชาวบ้าน","แตะเครื่องมือในช่องเก็บของที่เหมาะกับงาน","เลือกผิดได้ 2 ครั้ง (เสียหัวใจ ❤️) ถ้ายังผิดเกมจะเฉลยแล้วไปคนต่อไป","ช่วยครบ 10 คนผ่านด่าน (ด่านตำนานมีให้เลือกช่างด้วย)"],
   levels:{
     1:{pill:"10 งาน", color:"var(--green)", desc:"5 เครื่องมือพื้นฐาน: ค้อน ไขควง คีม เลื่อย ตลับเมตร"},
     2:{pill:"10 งาน", color:"var(--blue)", desc:"8 เครื่องมือ เพิ่มสว่าน ประแจ เทปใส"},
@@ -93,10 +93,17 @@ BK.mount({
     $("#iv").addEventListener("click", e => {
       const b = e.target.closest(".slot"); if (!b || b.disabled || lock) return;
       const d = deck[idx], name = (d.k === "c" ? CHANG : TOOLS)[d.r[2]][1];
+      const slots = [...ctx.stage.querySelectorAll(".slot")], ai = slots.findIndex(x => x.dataset.k === d.r[2]);
+      const pool = slots.filter((x,i) => i !== ai).sort(() => Math.random() - .5).slice(0,3).map(x => x.textContent.trim());
+      const opts = KIT.shuffle([name, ...pool]);
+      const rec = sc => ctx.record({q:`${d.r[0]} ${d.r[1]}`, a:name, options:opts, answer:opts.indexOf(name), score:sc});
       if (b.dataset.k === d.r[2]){
-        lock = true; b.classList.add("ok"); ctx.correct(first ? 100 : 50, `ถูกต้อง! ใช้${name} 👍`); idx++; ctx.progress(idx, N); ctx.after(1100, next);
+        rec(first ? 1 : 0.5); lock = true; b.classList.add("ok"); ctx.correct(first ? 100 : 50, `ถูกต้อง! ใช้${name} 👍`); idx++; ctx.progress(idx, N); ctx.after(1100, next);
+      } else if (first){
+        first = false; b.disabled = true; b.classList.add("no"); ctx.wrong(`${b.textContent.trim()} ไม่เหมาะกับงานนี้ ลองอีกครั้ง (เหลืออีก 1 ครั้ง)`);
       } else {
-        first = false; b.disabled = true; b.classList.add("no"); ctx.wrong(`${b.textContent.trim()} ไม่เหมาะกับงานนี้`);
+        lock = true; b.disabled = true; b.classList.add("no"); rec(0); ctx.wrong(null); slots[ai].classList.add("ok");
+        ctx.reveal(`📖 เฉลย: งานนี้ใช้${name}`); idx++; ctx.progress(idx, N); ctx.after(2800, next);
       }
     });
     ctx.progress(0, N); ctx.say("มีชาวบ้านมาขอความช่วยเหลือ!");

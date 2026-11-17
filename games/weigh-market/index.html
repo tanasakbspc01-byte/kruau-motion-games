@@ -85,8 +85,10 @@ KIT.mount({
         if (lock) return;
         if (k === "OK"){
           if (!val){ ctx.say("กดตัวเลขก่อนนะ"); return; }
-          if (+val === q.ans){ lock = true; ctx.correct(first?100:50, `ถูกต้อง! ลูกค้าจ่าย ${fmt(q.ans)} ${q.unit}`); ctx.after(900, () => done(q.unit==="บาท" ? q.ans : 20)); }
-          else { first = false; ctx.wrong("ลูกค้าบอกว่า \"ไม่ใช่นะจ๊ะ\" ลองหาราคาต่อ 1 หน่วยก่อน"); }
+          const qq = String(q.html).replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim(), aa = `${fmt(q.ans)} ${q.unit}`;
+          if (+val === q.ans){ ctx.record({q:qq, a:aa, score:first?1:0.5}); lock = true; ctx.correct(first?100:50, `ถูกต้อง! ลูกค้าจ่าย ${fmt(q.ans)} ${q.unit}`); ctx.after(900, () => done(q.unit==="บาท" ? q.ans : 20)); }
+          else if (first){ first = false; val = ""; scr.textContent = "0"; ctx.wrong("ลูกค้าบอกว่า \"ไม่ใช่นะจ๊ะ\" ลองหาราคาต่อ 1 หน่วยก่อน (เหลืออีก 1 ครั้ง)"); }
+          else { lock = true; scr.textContent = fmt(q.ans); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 เฉลย: ${aa}`); ctx.after(2800, () => done(0)); }
           return;
         }
         KIT.sfx.tap();

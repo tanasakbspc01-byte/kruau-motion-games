@@ -97,11 +97,13 @@ KIT.mount({
         <div class="timer" aria-hidden="true"><i id="bar"></i></div></div>
         <div class="abcd">${q.options.map((o,i)=>`<button class="choice" type="button" data-i="${i}" style="--k:${KEYS[i]}"><b>${"ABCD"[i]}</b><span>${o}</span></button>`).join("")}</div>`;
       const bar = ctx.stage.querySelector("#bar");
+      const rec = sc => ctx.record({q:q.html, a:q.options[q.answer], options:q.options, answer:q.answer, explain:q.explain, score:sc});
+      const showAns = () => ctx.stage.querySelectorAll(".choice").forEach((b,i) => { b.disabled = true; if (i === q.answer) b.classList.add("right"); });
       tick = setInterval(() => {
         if (!ctx.alive()){ clearInterval(tick); return; }
         left -= 0.25; bar.style.transform = `scaleX(${Math.max(0,left/LIM)})`;
         if (left <= 0 && !lock){ lock = true; clearInterval(tick);
-          ctx.stage.querySelectorAll(".choice").forEach((b,i) => { b.disabled = true; if (i === q.answer) b.classList.add("right"); });
+          showAns(); rec(0);
           ctx.wrong("หมดเวลา! คำตอบที่ถูกคือข้อสีเขียว", 0); idx++; ctx.progress(idx, N); ctx.after(2000, next); }
       }, 250);
       ctx.stage.querySelector(".abcd").onclick = e => {
@@ -109,10 +111,11 @@ KIT.mount({
         if (+b.dataset.i === q.answer){
           lock = true; clearInterval(tick); b.classList.add("right");
           ctx.stage.querySelectorAll(".choice").forEach(x => x.disabled = true);
-          const base = Math.round((first ? 60 : 30) + left*3);
+          rec(first ? 1 : 0.5); const base = Math.round((first ? 60 : 30) + left*3);
           ctx.correct(base, `ถูกต้อง! ตอบใน ${Math.round(LIM-left)} วินาที +${base}`);
           idx++; ctx.progress(idx, N); ctx.after(1100, next);
-        } else { first = false; b.classList.add("wrong"); b.disabled = true; ctx.wrong("ผิด! รีบเลือกใหม่ เวลายังเดินอยู่"); }
+        } else if (first){ first = false; b.classList.add("wrong"); b.disabled = true; ctx.wrong("ผิด! รีบเลือกใหม่ เวลายังเดินอยู่ (เหลืออีก 1 ครั้ง)"); }
+        else { lock = true; clearInterval(tick); b.classList.add("wrong"); showAns(); rec(0); ctx.wrong(null); ctx.reveal(`📖 เฉลย: ข้อสีเขียว ${String(q.options[q.answer]).replace(/<[^>]+>/g,"")}`); idx++; ctx.progress(idx, N); ctx.after(2400, next); }
       };
     }
     ctx.progress(0, N); ctx.say("ยินดีต้อนรับสู่เกมโชว์ซูเปอร์เซลล์!");

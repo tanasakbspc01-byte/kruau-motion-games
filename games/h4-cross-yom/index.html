@@ -73,7 +73,7 @@ KIT.mount({
   key:"h4-river", title:"ข้ามแม่น้ำยม", subtitle:"ประวัติศาสตร์ ป.4 · หน่วยที่ 3 ความเป็นมาของชาติไทย (ภูมิปัญญาสุโขทัย)",
   heroHTML:"กระโดด<em>ข้ามแม่น้ำยม</em> ไปเมืองสุโขทัย 🏞️", heroDesc:"เหยียบก้อนหินที่มีคำตอบถูกเท่านั้น! ก้อนผิดจะจมลงน้ำ ข้ามให้ครบ 8 แถวเพื่อไปถึงเมืองสุโขทัย",
   progIcon:"🏞️",
-  howto:["อ่านคำถามด้านล่างแม่น้ำ","แตะก้อนหินที่มีคำตอบถูกเพื่อกระโดดไป","ก้อนผิดจะจม เสีย 10 คะแนน แล้วเลือกใหม่","ข้ามครบ 8 แถวถึงฝั่งเมืองสุโขทัย"],
+  howto:["อ่านคำถามด้านล่างแม่น้ำ","แตะก้อนหินที่มีคำตอบถูกเพื่อกระโดดไป","ก้อนผิดจะจม เลือกได้ 2 ครั้ง (ด่านง่าย 1 ครั้ง) ถ้ายังผิด ห่วงยางจะพาไปแถวถัดไป","ข้ามครบ 8 แถวถึงฝั่งเมืองสุโขทัย"],
   levels:{
     1:{pill:"8 แถว", color:"var(--green)", desc:"ก้อนหิน 2 ก้อน เรื่องพื้นฐานของสุโขทัย"},
     2:{pill:"8 แถว", color:"var(--blue)", desc:"ก้อนหิน 3 ก้อน ภูมิปัญญา การปกครอง ศาสนา"},
@@ -101,11 +101,19 @@ KIT.mount({
     }
     wt.addEventListener("click", e => {
       const s = e.target.closest(".row.next .stone"); if (!s || lock) return;
-      if (s.dataset.ok === "1"){
+      const st = [...wt.querySelectorAll(".row.next .stone")], all = st.map(x => x.textContent), ai = st.findIndex(x => x.dataset.ok === "1");
+      const q = deck[idx], rec = sc => ctx.record({q:q[0], a:q[1], options:all, answer:ai, score:sc});
+      if (s.dataset.ok === "1"){ rec(first ? 1 : 0.5);
         lock = true; s.classList.add("ok"); placeHero(s); KIT.sfx.pop();
         ctx.correct(first ? 100 : 50, `กระโดดสำเร็จ! "${s.textContent}"`); idx++; ctx.progress(idx, N);
         ctx.after(900, () => { row(); });
-      } else { first = false; s.classList.add("sink"); ctx.wrong(`ตู้ม! "${s.textContent}" ไม่ใช่คำตอบ ก้อนหินจมแล้ว`); }
+      } else if (first && st.length > 2){ first = false; s.classList.add("sink"); ctx.wrong(`ตู้ม! "${s.textContent}" ไม่ใช่คำตอบ ก้อนหินจมแล้ว (เหลืออีก 1 ครั้ง)`); }
+      else {
+        lock = true; s.classList.add("sink"); rec(0); ctx.wrong(null);
+        const good = st[ai]; good.classList.add("ok");
+        ctx.reveal(`🛟 ห่วงยางช่วยไว้! เฉลย: "${q[1]}"`); hero.textContent = "🛟"; placeHero(good);
+        idx++; ctx.progress(idx, N); ctx.after(2600, () => { hero.textContent = "🧒"; row(); });
+      }
     });
     ctx.progress(0, N); ctx.say("ระวังก้อนหินหลอก!");
     row();

@@ -61,7 +61,7 @@ KIT.mount({
   key:"h4-evidence", title:"นักสืบหลักฐานประวัติศาสตร์", subtitle:"ประวัติศาสตร์ ป.4 · หลักฐานและยุคสมัยทางประวัติศาสตร์",
   heroHTML:"แยก<em>หลักฐาน</em>ให้ถูกกล่อง 🔎", heroDesc:"ดูหลักฐานแต่ละชิ้น แล้วแตะกล่องที่ถูกต้อง เป็นนักสืบประวัติศาสตร์ตัวน้อย",
   progIcon:"🔎",
-  howto:["อ่านชื่อหลักฐานบนการ์ด","แตะกล่องซ้ายหรือขวาที่ถูกต้อง","แตะผิดจะมีคำอธิบาย แล้วลองใหม่ได้","แยกครบ 10 ชิ้นผ่านด่าน"],
+  howto:["อ่านชื่อหลักฐานบนการ์ด","แตะกล่องซ้ายหรือขวาที่ถูกต้อง","แตะผิด เกมจะเฉลยพร้อมเหตุผล แล้วไปชิ้นต่อไป","แยกครบ 10 ชิ้นผ่านด่าน"],
   levels:{
     1:{pill:"10 ชิ้น", color:"var(--green)", desc:"ลายลักษณ์อักษร หรือ ไม่เป็นลายลักษณ์อักษร"},
     2:{pill:"10 ชิ้น", color:"var(--blue)", desc:"หลักฐานชั้นต้น (ปฐมภูมิ) หรือ ชั้นรอง (ทุติยภูมิ)"},
@@ -85,15 +85,11 @@ KIT.mount({
     }
     ctx.stage.querySelector(".bins").addEventListener("click", e => {
       const b = e.target.closest(".bin"); if (!b || lock) return;
-      const it = deck[idx], s = +b.dataset.s;
-      if (s === it[2]){
-        lock = true; $("#ev").classList.add(s ? "flyR" : "flyL");
-        cnt[s]++; $("#c"+s).textContent = cnt[s];
-        ctx.correct(first ? 100 : 50, `ถูกต้อง! ${it[3]}`); idx++; ctx.progress(idx, N); ctx.after(1400, next);
-      } else {
-        first = false; const ev = $("#ev"); ev.classList.remove("no"); void ev.offsetWidth; ev.classList.add("no");
-        ctx.wrong(`ยังไม่ใช่ — ${it[3]}`);
-      }
+      const it = deck[idx], s = +b.dataset.s, c = it[2], names = L.bins.map(x => x[1]);
+      lock = true; $("#ev").classList.add(c ? "flyR" : "flyL"); cnt[c]++; $("#c"+c).textContent = cnt[c];
+      ctx.record({q:`${it[0]} ${it[1]}`, a:names[c], options:names, answer:c, explain:it[3], score: s === c ? 1 : 0});
+      if (s === c){ ctx.correct(100, `ถูกต้อง! ${it[3]}`); idx++; ctx.progress(idx, N); ctx.after(1400, next); }
+      else { ctx.wrong(null); ctx.reveal(`📖 เฉลย: อยู่กล่อง "${names[c]}" — ${it[3]}`); idx++; ctx.progress(idx, N); ctx.after(2800, next); }
     });
     ctx.progress(0, N); ctx.say("เริ่มสืบหลักฐานกันเลย!");
     next();

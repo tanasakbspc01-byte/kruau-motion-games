@@ -95,6 +95,7 @@ BK.mount({
     function pick(v){
       lock = true; cancelAnimationFrame(raf);
       const it = deck[idx];
+      ctx.record({q:`${it[0]} ${it[1]}`, a:it[2] ? "สุภาพ" : "ไม่สุภาพ", options:["สุภาพ","ไม่สุภาพ"], answer:it[2] ? 0 : 1, explain:it[3], score: v === it[2] ? 1 : 0});
       if (v === it[2]){
         const left = lim ? Math.max(0, 1 - (performance.now()-t0)/lim) : 1;
         ctx.correct(lim ? 60 + Math.round(left*60) : 100, `${it[2] ? "สุภาพ" : "ไม่สุภาพ"} ถูกต้อง! ${it[3]}`); idx++; ctx.progress(idx, N); ctx.after(1200, next);

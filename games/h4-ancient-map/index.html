@@ -55,7 +55,7 @@ KIT.mount({
   key:"h4-map", title:"ภารกิจแผนที่แคว้นโบราณ", subtitle:"ประวัติศาสตร์ ป.4 · หน่วยที่ 2 การตั้งถิ่นฐานและพัฒนาการของมนุษย์ (แคว้นโบราณในดินแดนไทย)",
   heroHTML:"ปักหมุด<em>แคว้นโบราณ</em>บนแผนที่ 📍", heroDesc:"เป็นนักสำรวจ หาตำแหน่งแคว้นโบราณ แหล่งโบราณคดี และโบราณสถานบนแผนที่ประเทศไทยแบบง่าย",
   progIcon:"📍",
-  howto:["อ่านโจทย์ว่าต้องหาอะไร","ด่านง่าย: แตะภาคบนแผนที่","ด่านกลาง: แตะหมุดจังหวัด · ด่านยาก: แตะหมุดแคว้น","ผิดเสีย 10 คะแนน ปักหมุดครบ 8 ครั้งผ่านด่าน"],
+  howto:["อ่านโจทย์ว่าต้องหาอะไร","ด่านง่าย: แตะภาคบนแผนที่","ด่านกลาง: แตะหมุดจังหวัด · ด่านยาก: แตะหมุดแคว้น","ตอบได้ 2 ครั้ง ถ้ายังผิดจะเฉลยบนแผนที่ แล้วไปหมุดต่อไป"],
   note:"แผนที่ในเกมเป็นแผนที่แบบง่าย ไม่ใช่ขนาดและรูปร่างจริง",
   levels:{
     1:{pill:"8 หมุด", color:"var(--green)", desc:"แคว้นนี้อยู่ภาคไหน"},
@@ -88,13 +88,23 @@ KIT.mount({
       const key = level === 1 ? t.dataset.r : t.dataset.p;
       const right = key === q[2];
       const label = level === 1 ? REG[q[2]].name : (pins[q[2]][0]);
-      if (right){
+      const nameOf = k => level === 1 ? REG[k].name : pins[k][0];
+      const keys = Object.keys(level === 1 ? REG : pins);
+      const opts = KIT.shuffle([q[2], ...KIT.shuffle(keys.filter(k => k !== q[2])).slice(0,3)]);
+      const rec = sc => ctx.record({q:`${q[0]} ${q[1]} อยู่ที่ไหน / เป็นของใคร?`, a:label, options:opts.map(nameOf), answer:opts.indexOf(q[2]), score:sc});
+      if (right){ rec(first ? 1 : 0.5);
         lock = true; if (level > 1) t.classList.add("ok");
         const s = document.createElement("span"); s.textContent = `📍 ${q[1].split(" (")[0]} → ${label}`; $("#fd").appendChild(s);
         ctx.correct(first ? 100 : 50, `ถูกต้อง! ${label}`); idx++; ctx.progress(idx, N); ctx.after(1200, next);
-      } else {
+      } else if (first){
         first = false; t.classList.remove("no"); void t.getBoundingClientRect(); t.classList.add("no");
-        ctx.wrong(`ยังไม่ใช่${level === 1 ? REG[key].name : pins[key][0]} ลองใหม่นะ`);
+        ctx.wrong(`ยังไม่ใช่${nameOf(key)} ลองอีกครั้งนะ (เหลืออีก 1 ครั้ง)`);
+      } else {
+        lock = true; rec(0); ctx.wrong(null);
+        const good = level === 1 ? ctx.stage.querySelector(`.rg[data-r="${q[2]}"]`) : ctx.stage.querySelector(`.pin[data-p="${q[2]}"]`);
+        if (level > 1) good.classList.add("ok"); else { good.style.fill = "#7FD39A"; ctx.after(2400, () => good.style.fill = REG[q[2]].c); }
+        const s = document.createElement("span"); s.style.background = "#FDE8E8"; s.textContent = `📖 ${q[1].split(" (")[0]} → ${label}`; $("#fd").appendChild(s);
+        ctx.reveal(`📖 เฉลย: ${label} (ดูจุดสีเขียวบนแผนที่)`); idx++; ctx.progress(idx, N); ctx.after(2600, next);
       }
     });
     ctx.progress(0, N); ctx.say("นักสำรวจ ออกเดินทางได้!");

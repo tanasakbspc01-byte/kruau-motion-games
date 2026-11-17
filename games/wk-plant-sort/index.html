@@ -51,7 +51,7 @@ BK.mount({
   key:"w-plants", title:"คัดแยกต้นไม้ในคลัง", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 3 ไม้ดอกไม้ประดับ",
   heroHTML:"จัดต้นไม้เข้า<em>คลังให้ถูกช่อง</em> 🪴", heroDesc:"แยกไม้ดอกกับไม้ประดับ และวิธีขยายพันธุ์ เก็บเข้าคลังให้ถูกต้อง",
   progIcon:"🪴",
-  howto:["ดูต้นไม้บนการ์ด","แตะช่องคลังที่ถูกต้อง","ผิดเสียหัวใจ ❤️ แล้วลองใหม่ได้","ครบ 10 ต้นผ่านด่าน"],
+  howto:["ดูต้นไม้บนการ์ด","แตะช่องคลังที่ถูกต้อง","ผิดเสียหัวใจ ❤️ ถ้าผิดครบ เกมจะเฉลยแล้วไปต้นต่อไป","ครบ 10 ต้นผ่านด่าน"],
   levels:{
     1:{pill:"10 ต้น", color:"var(--green)", desc:"ไม้ดอก หรือ ไม้ประดับ"},
     2:{pill:"10 ต้น", color:"var(--blue)", desc:"ขยายพันธุ์แบบอาศัยเพศ หรือ ไม่อาศัยเพศ"},
@@ -74,14 +74,14 @@ BK.mount({
     }
     ctx.stage.querySelector(".bins").addEventListener("click", e => {
       const b = e.target.closest(".bin"); if (!b || lock) return;
-      const it = deck[idx], s = +b.dataset.s;
-      if (s === it[2]){
-        lock = true; $("#ev").classList.add("fly"); cnt[s]++; $("#c"+s).textContent = cnt[s];
-        ctx.correct(first ? 100 : 50, `ถูกต้อง! ${it[1]} — ${L.why[s]}`); idx++; ctx.progress(idx, N); ctx.after(1300, next);
-      } else {
+      const it = deck[idx], s = +b.dataset.s, c = it[2], names = L.bins.map(x => x[1]);
+      const rec = sc => ctx.record({q:`${it[0]} ${it[1]}`, a:names[c], options:names, answer:c, explain:L.why[c], score:sc});
+      const land = ok => { lock = true; $("#ev").classList.add("fly"); cnt[c]++; $("#c"+c).textContent = cnt[c]; idx++; ctx.progress(idx, N); ctx.after(ok ? 1300 : 2800, next); };
+      if (s === c){ rec(first ? 1 : 0.5); ctx.correct(first ? 100 : 50, `ถูกต้อง! ${it[1]} — ${L.why[c]}`); land(true); }
+      else if (first && nb > 2){
         first = false; const ev = $("#ev"); ev.classList.remove("no"); void ev.offsetWidth; ev.classList.add("no");
-        ctx.wrong(`ยังไม่ใช่ช่องนี้ ลองใหม่นะ`);
-      }
+        ctx.wrong("ยังไม่ใช่ช่องนี้ ลองอีกครั้ง (เหลืออีก 1 ครั้ง)");
+      } else { rec(0); ctx.wrong(null); ctx.reveal(`📖 เฉลย: ${it[1]} → ${names[c]} — ${L.why[c]}`); land(false); }
     });
     ctx.progress(0, N); ctx.say("จัดเข้าคลังกันเลย!");
     next();

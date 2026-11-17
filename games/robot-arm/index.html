@@ -148,11 +148,13 @@ KIT.mount({
           lock = true;
           const bx = vx + (L+22)*Math.cos(cur*R), by = vy - (L+22)*Math.sin(cur*R);
           const box = ctx.stage.querySelector("#box"); box.setAttribute("transform", `translate(${bx},${by})`); box.setAttribute("visibility","visible");
+          ctx.record({q:`กางแขนหุ่นยนต์ให้ได้ ${target}°`, a:`${target}°`, score: first ? 1 : 0.5});
           ctx.correct(first ? 100 : 50, `หยิบกล่องได้! แขนกางได้ ${cur}°`);
           ctx.after(1000, done);
         } else {
-          first = false;
-          ctx.wrong(`ยังไม่ได้ ${target}° ลองอ่านสเกลอีกครั้ง ต้อง${cur < target ? "กางแขนเพิ่ม" : "หุบแขนลง"}`);
+          if (first){ first = false; ctx.wrong(`ยังไม่ได้ ${target}° ลองอ่านสเกลอีกครั้ง ต้อง${cur < target ? "กางแขนเพิ่ม" : "หุบแขนลง"} (เหลืออีก 1 ครั้ง)`); return; }
+          lock = true; ctx.record({q:`กางแขนหุ่นยนต์ให้ได้ ${target}°`, a:`${target}°`, score:0}); ctx.wrong(null);
+          cur = target; draw(); ctx.reveal(`📖 เฉลย: แขนต้องกาง ${target}° (ตอนนี้ตั้งให้แล้ว ดูตำแหน่งบนสเกลนะ)`); ctx.after(3000, done);
         }
       };
     }

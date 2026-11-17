@@ -57,7 +57,7 @@ KIT.mount({
   key:"ac-clean", title:"เวรวันนี้ ห้องสะอาด", subtitle:"การป้องกันการทุจริต ป.4 · หน่วยที่ 2 การทำเวร (และการทิ้งขยะให้ถูกที่)",
   heroHTML:"ทำ<em>เวร</em>ให้ห้องเรียนสะอาด 🧹", heroDesc:"วันนี้เป็นเวรของเรา เก็บขยะในห้องทิ้งให้ถูกถัง และเก็บของใช้เข้าที่ ไม่ปล่อยให้เพื่อนทำแทน",
   progIcon:"🧹",
-  howto:["แตะของในห้องเรียน 1 ชิ้น","แล้วแตะถังหรือที่เก็บที่ถูกต้อง","ทิ้งผิดถังเสีย 10 คะแนน","เก็บครบทุกชิ้น ห้องสะอาด ผ่านด่าน"],
+  howto:["แตะของในห้องเรียน 1 ชิ้น","แล้วแตะถังหรือที่เก็บที่ถูกต้อง","ทิ้งผิดได้ 2 ครั้ง (ด่านง่าย 1 ครั้ง) ถ้ายังผิดเกมจะเฉลยและเก็บให้","เก็บครบทุกชิ้น ห้องสะอาด ผ่านด่าน"],
   levels:{
     1:{pill:"10 ชิ้น", color:"var(--green)", desc:"แยก ขยะ กับ ของใช้ที่ต้องเก็บเข้าที่"},
     2:{pill:"12 ชิ้น", color:"var(--blue)", desc:"แยกขยะ 3 ถัง เปียก / รีไซเคิล / ทั่วไป"},
@@ -88,15 +88,20 @@ KIT.mount({
       const b = e.target.closest(".bin"); if (!b) return;
       if (!sel){ ctx.say("แตะของในห้องก่อน แล้วค่อยแตะถังนะ"); return; }
       const x = items[+sel.dataset.i], want = L.map(x[2]);
-      if (b.dataset.b === want){
+      const miss = +(sel.dataset.miss || 0), maxT = L.bins.length <= 2 ? 1 : 2;
+      const names = L.bins.map(k => BINS[k][1]);
+      const rec = sc => ctx.record({q:`${x[0]} ${x[1]} ทิ้ง/เก็บที่ไหน?`, a:BINS[want][1], options:names, answer:L.bins.indexOf(want), score:sc});
+      const put = (msg, ok) => {
         sel.classList.remove("sel"); sel.classList.add("gone"); sel = null; done++;
-        ctx.correct(100, `ถูกต้อง! ${x[1]} → ${BINS[want][1]}`); ctx.progress(done, items.length);
+        ok ? ctx.correct(miss ? 50 : 100, msg) : ctx.reveal(msg); ctx.progress(done, items.length);
         $("#pk").textContent = done < items.length ? "แตะของชิ้นต่อไป" : "ห้องสะอาดแล้ว! ✨";
-        if (done === items.length) ctx.finish({targetSec: [0,50,70,90][level]});
-      } else {
-        sel.classList.remove("no"); void sel.offsetWidth; sel.classList.add("no");
-        ctx.wrong(`${x[1]} ไม่ใช่${BINS[b.dataset.b][1]} ลองถังอื่นนะ`);
-      }
+        if (done === items.length) ctx.after(ok ? 0 : 1800, () => ctx.finish({targetSec: [0,50,70,90][level]}));
+      };
+      if (b.dataset.b === want){ rec(miss ? 0.5 : 1); put(`ถูกต้อง! ${x[1]} → ${BINS[want][1]}`, true); }
+      else if (miss + 1 < maxT){
+        sel.dataset.miss = miss + 1; sel.classList.remove("no"); void sel.offsetWidth; sel.classList.add("no");
+        ctx.wrong(`${x[1]} ไม่ใช่${BINS[b.dataset.b][1]} ลองถังอื่นนะ (เหลืออีก 1 ครั้ง)`);
+      } else { rec(0); ctx.wrong(null); put(`📖 เฉลย: ${x[1]} → ${BINS[want][1]} (เก็บให้แล้ว)`, false); }
     });
     ctx.progress(0, items.length); ctx.say("ช่วยกันทำเวรให้ห้องสะอาดกัน!");
   }

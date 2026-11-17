@@ -50,7 +50,8 @@ KIT.mount({
   play(level, ctx){
     const L = LV[level];
     ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext" id="st">กดค้างที่ลูกบอลสีเหลือง</div></div>
-      <canvas class="cv" id="cv" width="${W*2}" height="${H*2}" aria-label="ทางให้ลากตาม"></canvas>`;
+      <canvas class="cv" id="cv" width="${W*2}" height="${H*2}" aria-label="ทางให้ลากตาม"></canvas>
+      <div class="mcq-next"><button class="btn" type="button" id="skip" style="display:none">ข้ามเส้นทางนี้ ▶</button></div>`;
     const $ = s => ctx.stage.querySelector(s);
     const cv = $("#cv"), g = cv.getContext("2d"); g.scale(2,2);
     let round = 0, pts, prog = 0, drag = false, ball = null, lock = false, fails = 0;
@@ -69,7 +70,7 @@ KIT.mount({
     }
     function newRound(){
       if (round >= ROUNDS){ ctx.finish({targetSec: [0,50,70,100][level]}); return; }
-      pts = makePath(L); prog = 0; ball = null; drag = false; lock = false; fails = 0;
+      pts = makePath(L); prog = 0; ball = null; drag = false; lock = false; fails = 0; $("#skip").style.display = "none";
       $("#qn").textContent = `เส้นทางที่ ${round+1} จาก ${ROUNDS}`; $("#st").textContent = "กดค้างที่ลูกบอลสีเหลือง แล้วลากไปที่ธง";
       draw();
     }
@@ -77,6 +78,7 @@ KIT.mount({
     function fail(msg){
       drag = false; prog = 0; ball = null; fails++;
       ctx.wrong(msg, 10); $("#st").textContent = "เริ่มใหม่จากลูกบอลสีเหลืองนะ";
+      if (fails >= 3){ $("#skip").style.display = ""; $("#st").textContent = "ยากไปไหม? ลองใหม่อีกครั้ง หรือกด \"ข้ามเส้นทางนี้\" ได้"; }
       draw();
     }
     cv.addEventListener("pointerdown", e => {
@@ -97,12 +99,14 @@ KIT.mount({
       ball = [x,y]; draw();
       if (prog >= pts.length-6){
         lock = true; drag = false; round++;
+        ctx.record({q:`ลากเส้นทางที่ ${round}`, a:"ลากถึงธงโดยไม่หลุด", score: fails === 0 ? 1 : 0.5});
         ctx.correct(fails === 0 ? 150 : 80, fails === 0 ? "ถึงธงรวดเดียว! สุดยอด" : "ถึงธงแล้ว!"); ctx.progress(round, ROUNDS);
         $("#st").textContent = "🎉 ถึงธงแล้ว"; ctx.after(900, newRound);
       }
     });
     const up = () => { if (drag && !lock) fail("ปล่อยมือก่อนถึงธง ลองใหม่นะ"); };
     cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up);
+    $("#skip").onclick = () => { if (lock) return; lock = true; drag = false; round++; ctx.record({q:`ลากเส้นทางที่ ${round}`, a:"ฝึกลากช้า ๆ ให้มือนิ่ง", score:0}); ctx.progress(round, ROUNDS); ctx.say("ข้ามไปเส้นทางต่อไป ลองค่อย ๆ ลากนะ"); ctx.after(600, newRound); };
     ctx.progress(0, ROUNDS); ctx.say("กดค้างที่ลูกบอลแล้วลากไปให้ถึงธง");
     newRound();
   }

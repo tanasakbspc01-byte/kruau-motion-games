@@ -54,7 +54,7 @@ KIT.mount({
   key:"h4-swipe", title:"ปัดการ์ดโบราณ", subtitle:"ประวัติศาสตร์ ป.4 · หน่วยที่ 1 เวลาและเหตุการณ์ (ยุคสมัยทางประวัติศาสตร์)",
   heroHTML:"<em>ปัดซ้าย–ขวา</em> สะสมการ์ดโบราณ 🃏", heroDesc:"ปัดการ์ดไปทางยุคที่ถูกต้อง ตอบถูกได้การ์ดเข้าอัลบั้ม สะสมให้ครบ 10 ใบ",
   progIcon:"🃏",
-  howto:["ดูการ์ดหลักฐานหรือวิถีชีวิต","ลากการ์ดไปซ้ายหรือขวา (หรือแตะปุ่มด้านล่าง)","ถูก การ์ดเข้าอัลบั้ม ผิดเสีย 10 คะแนน แล้วการ์ดเด้งกลับให้ลองใหม่","สะสมครบ 10 ใบผ่านด่าน"],
+  howto:["ดูการ์ดหลักฐานหรือวิถีชีวิต","ลากการ์ดไปซ้ายหรือขวา (หรือแตะปุ่มด้านล่าง)","ถูก การ์ดเข้าอัลบั้ม ผิด เกมจะเฉลยให้อ่านแล้วไปการ์ดใบต่อไป","เล่นครบ 10 ใบ ดูสรุปว่าเข้าใจกี่ % และกดฝึกข้อที่ผิดได้"],
   levels:{
     1:{pill:"10 ใบ", color:"var(--green)", desc:"สมัยก่อนประวัติศาสตร์ หรือ สมัยประวัติศาสตร์"},
     2:{pill:"10 ใบ", color:"var(--blue)", desc:"ยุคหิน หรือ ยุคโลหะ"},
@@ -87,11 +87,12 @@ KIT.mount({
     function reset(){ if (!card) return; card.style.transform = ""; card.querySelectorAll(".tagL,.tagR").forEach(t => t.style.opacity = 0); }
     function answer(s){
       if (lock) return; const it = deck[idx];
-      if (s === it[2]){
-        lock = true; card.style.transition = "transform .35s, opacity .35s"; card.style.transform = `translateX(${s ? 420 : -420}px) rotate(${s ? 25 : -25}deg)`; card.style.opacity = 0;
-        const slot = $("#al").children[idx]; slot.textContent = it[0]; slot.classList.add("on");
-        ctx.correct(first ? 100 : 50, `ได้การ์ด! ${it[1]} — ${L.why[s]}`); idx++; ctx.progress(idx, N); ctx.after(700, show);
-      } else { first = false; reset(); ctx.wrong(`ยังไม่ใช่ ${s ? L.R[1] : L.L[1]} นะ ลองคิดใหม่`); }
+      const c = it[2], ok = s === c, names = [L.L[1], L.R[1]];
+      lock = true; card.style.transition = "transform .35s, opacity .35s"; card.style.transform = `translateX(${c ? 420 : -420}px) rotate(${c ? 25 : -25}deg)`; card.style.opacity = 0;
+      const slot = $("#al").children[idx];
+      ctx.record({q:`${it[0]} ${it[1]} อยู่ฝั่งไหน?`, a:names[c], options:names, answer:c, explain:L.why[c], score: ok ? 1 : 0});
+      if (ok){ slot.textContent = it[0]; slot.classList.add("on"); ctx.correct(100, `ได้การ์ด! ${it[1]} — ${L.why[c]}`); idx++; ctx.progress(idx, N); ctx.after(700, show); }
+      else { slot.textContent = "✗"; ctx.wrong(null); ctx.reveal(`📖 เฉลย: ${it[1]} อยู่ฝั่ง "${names[c]}" — ${L.why[c]}`); idx++; ctx.progress(idx, N); ctx.after(2600, show); }
     }
     ctx.stage.querySelector(".btns").addEventListener("click", e => { const b = e.target.closest("button"); if (b) answer(+b.dataset.s); });
     ctx.progress(0, N); ctx.say("ปัดการ์ดไปทางที่ถูกต้อง!");

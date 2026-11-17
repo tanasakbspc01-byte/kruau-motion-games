@@ -56,7 +56,7 @@ BK.mount({
   key:"w-garden", title:"Garden Tycoon สวนไม้ดอก", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 3 ไม้ดอกไม้ประดับ",
   heroHTML:"ดูแล<em>สวนไม้ดอก</em>ให้งาม 🌼", heroDesc:"กระถางไหนมีปัญหาจะมีป้ายขึ้น เลือกเครื่องมือจากแถบด้านล่าง แล้วแตะกระถางนั้นเพื่อดูแลให้ถูกวิธี",
   progIcon:"🌼",
-  howto:["ดูป้ายบนกระถางว่าต้นไม้ต้องการอะไร","แตะเครื่องมือในแถบด้านล่าง","แตะกระถางที่ต้องการดูแล","ใช้เครื่องมือผิดเสียหัวใจ ❤️ ดูแลครบตามเป้าผ่านด่าน"],
+  howto:["ดูป้ายบนกระถางว่าต้นไม้ต้องการอะไร","แตะเครื่องมือในแถบด้านล่าง","แตะกระถางที่ต้องการดูแล","ใช้เครื่องมือผิดได้ 2 ครั้งต่อกระถาง ถ้ายังผิดเกมจะเฉลยและดูแลให้"],
   levels:{
     1:{pill:"10 ครั้ง", color:"var(--green)", desc:"3 กระถาง 4 เครื่องมือ มีรูปช่วย"},
     2:{pill:"12 ครั้ง", color:"var(--blue)", desc:"4 กระถาง 6 เครื่องมือ เพิ่มใส่ปุ๋ย กำจัดแมลง"},
@@ -92,15 +92,21 @@ BK.mount({
       const p = e.target.closest(".pot"); if (!p) return; const i = +p.dataset.i, n = state[i];
       if (!n){ ctx.say("กระถางนี้สบายดีแล้ว 😊"); return; }
       if (!tool){ ctx.say("เลือกเครื่องมือจากแถบด้านล่างก่อนนะ"); return; }
-      const t = TOOLS.find(x => x[0] === tool);
-      if (tool === n[0]){
-        state[i] = null; p.classList.remove("has"); p.classList.remove("ok"); void p.offsetWidth; p.classList.add("ok"); done++;
-        ctx.correct(100, `ถูกต้อง! ${n[2]} → ${t[3]}`); ctx.progress(done, L.need);
-        if (done >= L.need) ctx.finish({targetSec: [0,60,75,95][level]});
-      } else {
-        p.classList.remove("no"); void p.offsetWidth; p.classList.add("no");
-        ctx.wrong(`"${n[2]}" ไม่ต้อง${t[3]} ลองเครื่องมืออื่นนะ`);
-      }
+      const t = TOOLS.find(x => x[0] === tool), right = TOOLS.find(x => x[0] === n[0]);
+      const miss = +(p.dataset.miss || 0);
+      const others = KIT.shuffle(tools.filter(x => x[0] !== n[0])).slice(0,3).map(x => x[3]), opts = KIT.shuffle([right[3], ...others]);
+      const rec = sc => ctx.record({q:`ต้นไม้มีอาการ "${n[2]}" ควรทำอย่างไร?`, a:right[3], options:opts, answer:opts.indexOf(right[3]), score:sc});
+      const fix = ok => {
+        state[i] = null; p.dataset.miss = 0; p.classList.remove("has"); p.classList.remove("ok"); void p.offsetWidth; p.classList.add("ok"); done++;
+        ok ? ctx.correct(miss ? 50 : 100, `ถูกต้อง! ${n[2]} → ${t[3]}`) : ctx.reveal(`📖 เฉลย: "${n[2]}" ต้องใช้${right[2]} (${right[3]}) ดูแลให้แล้ว`);
+        ctx.progress(done, L.need);
+        if (done >= L.need) ctx.after(ok ? 0 : 1800, () => ctx.finish({targetSec: [0,60,75,95][level]}));
+      };
+      if (tool === n[0]){ rec(miss ? 0.5 : 1); fix(true); }
+      else if (miss < 1){
+        p.dataset.miss = 1; p.classList.remove("no"); void p.offsetWidth; p.classList.add("no");
+        ctx.wrong(`"${n[2]}" ไม่ต้อง${t[3]} ลองเครื่องมืออื่น (เหลืออีก 1 ครั้ง)`);
+      } else { rec(0); ctx.wrong(null); fix(false); }
     });
     const keyh = e => { const k = +e.key; if (k >= 1 && k <= tools.length) ctx.stage.querySelectorAll(".hot")[k-1].click(); };
     document.addEventListener("keydown", keyh); ctx.cleanup(() => document.removeEventListener("keydown", keyh));

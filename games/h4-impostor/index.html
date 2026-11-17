@@ -47,7 +47,7 @@ KIT.mount({
   key:"h4-impostor", title:"ใครคือตัวปลอม?", subtitle:"ประวัติศาสตร์ ป.4 · หน่วยที่ 2 การตั้งถิ่นฐานและพัฒนาการของมนุษย์",
   heroHTML:"หา<em>ตัวปลอม</em>ที่พูดผิด! 🎭", heroDesc:"ลูกเรือแต่ละคนพูดเรื่องประวัติศาสตร์ มีอยู่ 1 คนที่พูดไม่จริง โหวตให้ถูกคน!",
   progIcon:"🎭",
-  howto:["อ่านสิ่งที่ลูกเรือทุกคนพูด","มีเพียง 1 คนที่พูดผิด = ตัวปลอม","แตะโหวตคนที่คิดว่าเป็นตัวปลอม","โหวตผิดเสีย 10 คะแนน จับได้ครบ 8 รอบผ่านด่าน"],
+  howto:["อ่านสิ่งที่ลูกเรือทุกคนพูด","มีเพียง 1 คนที่พูดผิด = ตัวปลอม","แตะโหวตคนที่คิดว่าเป็นตัวปลอม","โหวตได้ 2 ครั้ง ถ้ายังผิดจะเฉลยตัวปลอมให้ แล้วไปรอบต่อไป"],
   levels:{
     1:{pill:"8 รอบ", color:"var(--green)", desc:"ลูกเรือ 3 คน เรื่องยุคหิน–ยุคโลหะ"},
     2:{pill:"8 รอบ", color:"var(--blue)", desc:"ลูกเรือ 4 คน เรื่องแหล่งโบราณคดีและแคว้นโบราณ"},
@@ -71,12 +71,19 @@ KIT.mount({
     }
     $("#cr").addEventListener("click", e => {
       const b = e.target.closest(".cm"); if (!b || lock || b.classList.contains("safe")) return;
-      const c = cur[+b.dataset.i];
-      if (c.fake){
+      const c = cur[+b.dataset.i], fi = cur.findIndex(x => x.fake);
+      const rec = sc => ctx.record({q:"ข้อใดพูดไม่ถูกต้อง (ตัวปลอม)?", a:cur[fi].t, options:cur.map(x => x.t), answer:fi, explain:`ความจริงคือ ${cur[fi].why}`, score:sc});
+      if (c.fake){ rec(first ? 1 : 0.5);
         lock = true; b.classList.add("out"); ctx.stage.querySelectorAll(".cm").forEach(x => { if (x !== b) x.classList.add("safe"); });
         $("#rs").textContent = `🎭 จับได้! ความจริงคือ ${c.why}`;
         ctx.correct(first ? 100 : 50, "โหวตถูก! ตัวปลอมถูกส่งออกจากยาน"); r++; ctx.progress(r, N); ctx.after(2200, round);
-      } else { first = false; b.classList.add("safe","no"); ctx.wrong("คนนี้พูดความจริงนะ! ตัวปลอมยังอยู่"); }
+      } else if (first && cur.length > 2){ first = false; b.classList.add("safe","no"); ctx.wrong("คนนี้พูดความจริงนะ! ตัวปลอมยังอยู่ (โหวตได้อีก 1 ครั้ง)"); }
+      else {
+        lock = true; rec(0); ctx.wrong(null); const fb = ctx.stage.querySelectorAll(".cm")[fi]; fb.classList.add("out");
+        ctx.stage.querySelectorAll(".cm").forEach(x => { if (x !== fb) x.classList.add("safe"); });
+        $("#rs").textContent = `🎭 ตัวปลอมคือคนนี้ ความจริงคือ ${cur[fi].why}`; ctx.reveal("📖 เฉลยแล้ว ดูว่าใครคือตัวปลอม");
+        r++; ctx.progress(r, N); ctx.after(3200, round);
+      }
     });
     ctx.progress(0, N); ctx.say("ประชุมฉุกเฉิน! มีตัวปลอมอยู่ในยาน");
     round();

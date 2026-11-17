@@ -134,8 +134,11 @@ KIT.mount({
       ctx.stage.querySelector("#send").onclick = () => {
         if (lock) return;
         if (!rect){ ctx.say("ลากบนตารางเพื่อสร้างรูปสี่เหลี่ยมก่อนนะ"); return; }
-        if (task.ok(rect.w, rect.h)){ lock = true; sel.setAttribute("fill", "#7FD39A"); ctx.correct(first ? 100 : 50, "ลูกค้าพอใจมาก! สร้างได้ถูกต้อง"); ctx.after(1000, done); }
-        else { first = false; ctx.wrong("ยังไม่ตรงกับที่สั่ง " + task.hint(rect.w, rect.h)); }
+        const rq = task.text.replace(/<[^>]+>/g, "");
+        let ex = ""; for (const lo of [2,1]) for (let a=lo; a<=14 && !ex; a++) for (let b=lo; b<=14 && !ex; b++) if (task.ok(a,b)) ex = `กว้าง ${b} หน่วย × ยาว ${a} หน่วย`;
+        if (task.ok(rect.w, rect.h)){ ctx.record({q:rq, a:ex, score: first ? 1 : 0.5}); lock = true; sel.setAttribute("fill", "#7FD39A"); ctx.correct(first ? 100 : 50, "ลูกค้าพอใจมาก! สร้างได้ถูกต้อง"); ctx.after(1000, done); }
+        else if (first){ first = false; ctx.wrong("ยังไม่ตรงกับที่สั่ง " + task.hint(rect.w, rect.h) + " (เหลืออีก 1 ครั้ง)"); }
+        else { lock = true; ctx.record({q:rq, a:ex, score:0}); ctx.wrong(null); ctx.reveal(`📖 เฉลย: ${task.hint(rect.w, rect.h)} — ตัวอย่างที่ถูกคือ ${ex}`); ctx.after(3600, done); }
       };
     }
     ctx.progress(0, N); ctx.say("ลูกค้ารอแบบสวนอยู่ เริ่มงานได้เลย!");

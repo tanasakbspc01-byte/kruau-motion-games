@@ -73,6 +73,8 @@ BK.mount({
       if (lock || !card) return; lock = true;
       const j = deck[idx], el = card; card = null;
       const right = c === j[2];
+      const names = L.cats.map(x => S.cats[x][1]);
+      ctx.record({q:`${j[0]} ${j[1]} เป็นอาชีพประเภทใด?`, a:S.cats[j[2]][1], options:names, answer:L.cats.indexOf(j[2]), explain:S.cats[j[2]][2], score: right ? 1 : 0});
       if (right) ctx.correct(100, `ถูกต้อง! ${j[1]} เป็น${S.cats[j[2]][1]}`);
       else ctx.wrong(`${c === null ? "การ์ดตกขอบ! " : ""}${j[1]} เป็น${S.cats[j[2]][1]}`);
       el.classList.add("out"); setTimeout(() => el.remove(), 400);

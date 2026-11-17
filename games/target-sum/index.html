@@ -59,13 +59,13 @@ KIT.mount({
       <div class="tiles" id="tl"></div>
       <div class="row"><button class="btn" type="button" id="clr" style="--c:#B9A894">↺ ล้างที่เลือก</button></div>`;
     const $ = s => ctx.stage.querySelector(s);
-    let idx = 0, cur, sel = [], lock = false, firstTry = true;
+    let idx = 0, cur, sel = [], lock = false, firstTry = true, overs = 0;
     const total = () => Math.round(sel.reduce((s,i)=>s+cur.vals[i],0)*10)/10;
     function next(){
       if (idx >= N){ ctx.finish({targetSec: level===3 ? 160 : 110}); return; }
       const m = C.make(); const vals = m.sol.slice();
       while (vals.length < C.tiles){ const v = m.pool(); if (v < m.T) vals.push(v); }
-      cur = {T:m.T, vals:shuffle(vals)}; sel = []; lock = false; firstTry = true;
+      const order = shuffle(vals.map((v,i)=>i)); cur = {T:m.T, vals:order.map(i => vals[i]), sol:order.map((o,i) => o < m.sol.length ? i : -1).filter(i => i >= 0)}; sel = []; lock = false; firstTry = true; overs = 0;
       $("#qn").textContent = `ด่านย่อย ${idx+1} จาก ${N} · ${C.hint}`;
       $("#tg").textContent = show(m.T);
       $("#tl").style.gridTemplateColumns = `repeat(4,1fr)`;
@@ -85,10 +85,18 @@ KIT.mount({
       sel = sel.includes(i) ? sel.filter(x=>x!==i) : [...sel, i]; upd();
       const s = total();
       if (Math.abs(s - cur.T) < 1e-9){
+        ctx.record({q:`เลือกเลขให้รวมกันได้ ${show(cur.T)}`, a:cur.sol.map(k => show(cur.vals[k])).join(" + "), score: firstTry ? 1 : 0.5});
         lock = true; ctx.correct(firstTry ? 100 : 60, `พอดีเป๊ะ! ${sel.map(k=>show(cur.vals[k])).join(" + ")} = ${show(cur.T)}`);
         idx++; ctx.progress(idx, N); ctx.after(1100, next);
       } else if (s > cur.T){
-        firstTry = false; ctx.wrong(`เกินไป ${show(Math.round((s-cur.T)*10)/10)} แล้ว ลองเลือกใหม่นะ`, 5);
+        firstTry = false; overs++;
+        if (overs >= 2){
+          lock = true; ctx.wrong(null, 5); const ans = cur.sol.map(k => show(cur.vals[k])).join(" + ");
+          ctx.record({q:`เลือกเลขให้รวมกันได้ ${show(cur.T)}`, a:ans, score:0});
+          sel = cur.sol.slice(); upd(); ctx.reveal(`📖 เฉลย: ${ans} = ${show(cur.T)} (มีหลายวิธี นี่คือหนึ่งในนั้น)`);
+          idx++; ctx.progress(idx, N); ctx.after(3000, next); return;
+        }
+        ctx.wrong(`เกินไป ${show(Math.round((s-cur.T)*10)/10)} แล้ว ลองเลือกใหม่ (เกินได้อีก 1 ครั้ง)`, 5);
         ctx.stage.querySelectorAll(".tile.on").forEach(t => t.classList.add("shake"));
         lock = true; ctx.after(600, () => { sel = []; lock = false; ctx.stage.querySelectorAll(".shake").forEach(t=>t.classList.remove("shake")); upd(); });
       }

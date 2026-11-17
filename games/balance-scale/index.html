@@ -92,12 +92,19 @@ KIT.mount({
     ctx.stage.addEventListener("click", e => {
       const b = e.target.closest("[data-s]"); if (!b || lock || b.disabled) return;
       const ans = sign(cur.L.v, cur.R.v), s = +b.dataset.s;
+      const strip = h => h.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      const O = [`ซ้าย (${strip(cur.L.html)}) มากกว่า`, `ขวา (${strip(cur.R.html)}) มากกว่า`, "เท่ากัน"], ai = ans === -1 ? 0 : ans === 1 ? 1 : 2;
+      const rec = sc => ctx.record({q:`${strip(cur.L.html)}  ⚖️  ${strip(cur.R.html)}`, a:O[ai], options:O, answer:ai, score:sc});
       if (s === ans){
-        lock = true; b.classList.add("right-b"); tilt(ans);
+        rec(first ? 1 : 0.5); lock = true; b.classList.add("right-b"); tilt(ans);
         ctx.correct(first ? 100 : 50); idx++; ctx.progress(idx, N); ctx.after(1300, next);
-      } else {
+      } else if (first){
         first = false; b.classList.add("wrong-b"); b.disabled = true;
-        ctx.wrong(s === 0 ? "สองฝั่งไม่เท่ากันนะ ลองคิดค่าอีกครั้ง" : "ยังไม่ใช่ ลองคิดค่าของแต่ละฝั่งใหม่");
+        ctx.wrong(s === 0 ? "สองฝั่งไม่เท่ากันนะ ลองอีกครั้ง (เหลืออีก 1 ครั้ง)" : "ยังไม่ใช่ ลองคิดค่าของแต่ละฝั่งใหม่ (เหลืออีก 1 ครั้ง)");
+      } else {
+        lock = true; b.classList.add("wrong-b"); rec(0); ctx.wrong(null); tilt(ans);
+        ctx.stage.querySelector(`[data-s="${ans}"]`).classList.add("right-b");
+        ctx.reveal(`📖 เฉลย: ${O[ai]} (ซ้าย = ${Math.round(cur.L.v*100)/100}, ขวา = ${Math.round(cur.R.v*100)/100})`); idx++; ctx.progress(idx, N); ctx.after(3000, next);
       }
     });
     ctx.progress(0, N); ctx.say("แตะจานฝั่งที่มากกว่า");

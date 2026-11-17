@@ -40,6 +40,7 @@ function fv(n, d){ // simplified html: whole, fraction, or mixed number
   if (n > d) return `<span class="mixed"><span class="w">${Math.floor(n/d)}</span>${frac(n%d,d)}</span>`;
   return frac(n,d);
 }
+function ft(n, d){ const g = gcd(n,d); n/=g; d/=g; if (d === 1) return String(n); if (n > d) return `${Math.floor(n/d)} ${n%d}/${d}`; return `${n}/${d}`; }
 const key = (n,d) => { const g = gcd(n,d); return n/g + "/" + d/g; };
 function cupSVG(n, d, col="#F2A65A"){
   const lvl = Math.min(1, n/d), h = 70*lvl;
@@ -83,26 +84,33 @@ KIT.mount({
       ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl()}</div><div class="qtext">ลูกค้าอยากได้แก้วที่มีน้ำ<b>${most?"มากที่สุด":"น้อยที่สุด"}</b> (หน่วยเป็นถ้วย)</div></div>
         <div class="cups">${fs.map(([n,d],i) => `<button class="cup" type="button" data-i="${i}">${cupSVG(n,d,fr[i][2])}<span>${frac(n,d)}</span></button>`).join("")}</div>`;
       let first = true;
+      const ti = vals.indexOf(target), qq = `แก้วที่มีน้ำ${most?"มากที่สุด":"น้อยที่สุด"}: ${fs.map(f=>ft(...f)).join(", ")}`, aa = ft(...fs[ti]) + " ถ้วย";
       ctx.stage.querySelector(".cups").onclick = e => {
         const b = e.target.closest(".cup"); if (!b || b.disabled) return;
         const i = +b.dataset.i;
-        if (vals[i] === target){ b.classList.add("right"); ctx.stage.querySelectorAll(".cup").forEach(x=>x.disabled=true); ctx.correct(first?100:50); ctx.after(800, done); }
-        else { first = false; b.classList.add("wrong"); b.disabled = true; ctx.wrong("ลองทำตัวส่วนให้เท่ากันแล้วเปรียบเทียบตัวเศษ"); }
+        if (vals[i] === target){ ctx.record({q:qq, a:aa, score:first?1:0.5}); b.classList.add("right"); ctx.stage.querySelectorAll(".cup").forEach(x=>x.disabled=true); ctx.correct(first?100:50); ctx.after(800, done); }
+        else if (first){ first = false; b.classList.add("wrong"); b.disabled = true; ctx.wrong("ลองทำตัวส่วนให้เท่ากันแล้วเปรียบเทียบตัวเศษ (เหลืออีก 1 ครั้ง)"); }
+        else { b.classList.add("wrong"); ctx.stage.querySelectorAll(".cup").forEach(x=>x.disabled=true); ctx.stage.querySelectorAll(".cup")[ti].classList.add("right");
+          ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 เฉลย: แก้ว ${aa} (ทำตัวส่วนให้เท่ากันแล้วเทียบตัวเศษ)`); ctx.after(2600, done); }
       };
     }
     function orderCups(){
       const fs = fracs(4);
       const sorted = fs.map((f,i)=>[f[0]/f[1], i]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
-      let step = 0, first = true;
+      let step = 0, first = true, miss = 0, auto = false;
       const fr = shuffle(FRUITS.slice());
+      const qq = `เรียงจากน้อยไปมาก: ${fs.map(f=>ft(...f)).join(", ")}`, aa = sorted.map(i=>ft(...fs[i])).join(" < ");
       ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel">${lbl()}</div><div class="qtext">แตะแก้วเรียงจาก<b>น้อยไปมาก</b></div></div>
         <div class="cups">${fs.map(([n,d],i) => `<button class="cup" type="button" data-i="${i}"><span class="ord"></span>${cupSVG(n,d,fr[i][2]).replace(/<rect[^>]*>/,"")}<span>${frac(n,d)}</span></button>`).join("")}</div>`;
       ctx.stage.querySelector(".cups").onclick = e => {
         const b = e.target.closest(".cup"); if (!b || b.disabled) return;
         const i = +b.dataset.i;
-        if (i === sorted[step]){ step++; b.disabled = true; b.classList.add("right"); b.querySelector(".ord").textContent = "ลำดับ " + step; KIT.sfx.tap();
-          if (step === 4){ ctx.correct(first?100:50, "เรียงถูกต้องทั้งหมด!"); ctx.after(900, done); } }
-        else { first = false; b.classList.add("shake"); ctx.after(400, () => b.classList.remove("shake")); ctx.wrong("ยังไม่ใช่แก้วที่น้อยที่สุดในที่เหลือ"); }
+        const place = (bb, bad) => { step++; miss = 0; bb.disabled = true; bb.classList.add(bad ? "wrong" : "right"); bb.querySelector(".ord").textContent = "ลำดับ " + step; KIT.sfx.tap();
+          if (step === 4){ ctx.record({q:qq, a:aa, score: auto ? 0 : first ? 1 : 0.5}); if (auto){ ctx.wrong(null); ctx.reveal(`📖 เฉลย: ${aa}`); ctx.after(2600, done); } else { ctx.correct(first?100:50, "เรียงถูกต้องทั้งหมด!"); ctx.after(900, done); } } };
+        if (i === sorted[step]) place(b, false);
+        else { first = false; miss++; b.classList.add("shake"); ctx.after(400, () => b.classList.remove("shake"));
+          if (miss < 2) ctx.wrong("ยังไม่ใช่แก้วที่น้อยที่สุดในที่เหลือ (เหลืออีก 1 ครั้ง)");
+          else { auto = true; const ok = ctx.stage.querySelectorAll(".cup")[sorted[step]]; ctx.say(`แก้วที่น้อยที่สุดในที่เหลือคือ ${ft(...fs[sorted[step]])} วางให้แล้วนะ`, "bad"); place(ok, true); } }
       };
     }
     function compareMixed(){
@@ -141,11 +149,13 @@ KIT.mount({
       const draw = () => { const h = cnt*per; fill.setAttribute("y", H - h); fill.setAttribute("height", h); ctx.stage.querySelector("#now").textContent = `ในเหยือก: ${cnt} ช้อน`; };
       ctx.stage.querySelector("#plus").onclick = () => { if (!lock && cnt < 2*L){ cnt++; KIT.sfx.tap(); draw(); } };
       ctx.stage.querySelector("#minus").onclick = () => { if (!lock && cnt > 0){ cnt--; KIT.sfx.tap(); draw(); } };
+      const qq = story.replace(/<br>/g," ").replace(/<span class="frac"><span class="n">(\d+)<\/span><span class="d">(\d+)<\/span><\/span>/g,"$1/$2").replace(/<[^>]+>/g,"").replace(/\s+/g," "), aa = `${ft(tn,L)} ถ้วย (${tn} ช้อน)`;
       ctx.stage.querySelector("#serve").onclick = () => {
         if (lock) return;
-        if (cnt === tn){ lock = true; ctx.correct(first?100:50, `พอดีเป๊ะ! ${tn} ช้อน`);
+        if (cnt === tn){ ctx.record({q:qq, a:aa, score:first?1:0.5}); lock = true; ctx.correct(first?100:50, `พอดีเป๊ะ! ${tn} ช้อน`);
           ctx.stage.querySelector("#now").innerHTML = `ได้ ${frac(tn,L)} = ${fv(tn,L)} ถ้วย`; ctx.after(1300, done); }
-        else { first = false; ctx.wrong(cnt < tn ? "ยังน้อยไป ลูกค้าอยากได้มากกว่านี้" : "มากเกินไปแล้ว ลองเทออกบ้าง"); }
+        else if (first){ first = false; ctx.wrong((cnt < tn ? "ยังน้อยไป ลูกค้าอยากได้มากกว่านี้" : "มากเกินไปแล้ว ลองเทออกบ้าง") + " (เหลืออีก 1 ครั้ง)"); }
+        else { lock = true; cnt = tn; draw(); ctx.stage.querySelector("#now").innerHTML = `ที่ถูกคือ ${frac(tn,L)} = ${fv(tn,L)} ถ้วย`; ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 เฉลย: ต้องเท ${tn} ช้อน = ${ft(tn,L)} ถ้วย`); ctx.after(3000, done); }
       };
     }
     function calc(){

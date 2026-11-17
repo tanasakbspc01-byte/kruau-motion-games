@@ -107,15 +107,22 @@ KIT.mount({
       const ev = TL.map((e,i)=>({e,i})).filter(x => x.i !== drop);
       host.innerHTML = `<div class="qcard"><div class="qlabel">ข้อ ${idx+1} จาก ${N} · เรียงเหตุการณ์</div><div class="qtext">แตะเหตุการณ์ที่เกิด <u>ก่อน</u> ไปหา <u>หลัง</u></div></div>
         <div class="ord">${shuffle(ev.slice()).map(x=>`<button class="ob" type="button" data-i="${x.i}"><span class="n">?</span><span>${x.e[0]}</span><span class="y"></span></button>`).join("")}</div>`;
-      const want = ev.map(x=>x.i); let k = 0, first = true;
+      const want = ev.map(x=>x.i); let k = 0, first = true, miss = 0, sm = 0;
       host.querySelector(".ord").onclick = e => {
         const b = e.target.closest(".ob"); if (!b || b.classList.contains("done") || k >= want.length) return;
-        if (+b.dataset.i === want[k]){
-          b.classList.add("done"); k++; b.querySelector(".n").textContent = k; b.querySelector(".y").textContent = TL[+b.dataset.i][1]; KIT.sfx.tap();
-          if (k === want.length){ ctx.correct(first ? 150 : 80, "เรียงถูกทั้งหมด! เก่งมาก"); ctx.after(1500, done); }
-        } else {
-          first = false; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
-          ctx.wrong("ยังไม่ใช่ลำดับนี้ ลองคิดว่าเหตุการณ์ไหนเกิดก่อน");
+        const place = (el, helped) => {
+          el.classList.add("done"); if (helped) el.style.background = "#FFE3E3"; k++; sm = 0; el.querySelector(".n").textContent = k; el.querySelector(".y").textContent = TL[+el.dataset.i][1]; KIT.sfx.tap();
+          if (k === want.length){
+            ctx.record({q:"เรียงเหตุการณ์สมัยสุโขทัย", a:want.map(i => TL[i][0]).join(" → "), score: miss === 0 ? 1 : miss <= 2 ? 0.5 : 0});
+            if (miss === 0) ctx.correct(150, "เรียงถูกทั้งหมด! เก่งมาก"); else ctx.say(`เรียงครบแล้ว (ผิด ${miss} ครั้ง) ดูปีที่กำกับไว้เพื่อจำลำดับนะ`, miss <= 2 ? "good" : "bad");
+            ctx.after(miss ? 2600 : 1500, done);
+          }
+        };
+        if (+b.dataset.i === want[k]) place(b, false);
+        else {
+          first = false; miss++; sm++; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
+          if (sm < 2) ctx.wrong("ยังไม่ใช่ลำดับนี้ ลองอีกครั้ง (เหลืออีก 1 ครั้ง)");
+          else { ctx.wrong(null); const r = host.querySelector(`.ob[data-i="${want[k]}"]`); ctx.reveal(`📖 เฉลย: ลำดับที่ ${k+1} คือ "${TL[want[k]][0]}" (วางให้แล้ว)`); place(r, true); }
         }
       };
     }

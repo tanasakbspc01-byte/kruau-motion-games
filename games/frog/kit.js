@@ -123,7 +123,7 @@ K.mount = function(cfg){
     </section>
     <section class="panel">
       <div class="lb-head"><h3 class="section-title">🏆 ตารางคะแนน</h3><div class="tabs" role="tablist" id="kTabs"></div></div>
-      <table class="lb"><thead><tr><th>อันดับ</th><th>ชื่อ</th><th class="num">เวลา</th><th class="num">คะแนน</th></tr></thead><tbody id="kLB"></tbody></table>
+      <table class="lb"><thead><tr><th>อันดับ</th><th>ชื่อ</th><th class="num">แม่นยำ</th><th class="num">เวลา</th><th class="num">คะแนน</th></tr></thead><tbody id="kLB"></tbody></table>
       <div class="lb-foot"><span>เก็บคะแนนสูงสุดของแต่ละคนในเครื่องนี้</span><button class="link-btn" id="kClear" type="button">ล้างตารางด่านนี้</button></div>
     </section>
   </div>
@@ -142,8 +142,13 @@ K.mount = function(cfg){
   <h2 id="kResTitle"></h2><div class="stars" id="kStars"></div>
   <table class="breakdown"><tbody id="kResBody"></tbody></table>
   <div class="rank" id="kRank"></div>
+  <div class="review" id="kReview"></div>
   <div class="btn-row"><button class="btn" id="kAgain" type="button">เล่นอีกครั้ง</button><button class="btn" id="kNext" type="button" style="--c:var(--good)">ด่านถัดไป →</button></div>
   <div class="btn-row"><button class="btn ghost" id="kHome" type="button">ดูตารางคะแนน / เปลี่ยนผู้เล่น</button></div>
+</div></div>
+<div class="modal" id="kPractice" role="dialog" aria-modal="true" aria-labelledby="kPrTitle"><div class="sheet practice">
+  <h2 id="kPrTitle">🔁 ฝึกข้อที่ผิด</h2><div class="say" id="kPrSay"></div><div id="kPrHost"></div>
+  <div class="btn-row"><button class="btn ghost" id="kPrClose" type="button">ปิด</button></div>
 </div></div>
 <div class="modal" id="kConfirm" role="dialog" aria-modal="true" aria-labelledby="kCfTitle"><div class="sheet">
   <h2 id="kCfTitle">ล้างตารางคะแนน?</h2><p id="kCfText" style="margin:0;color:var(--ink-soft)"></p>
@@ -169,10 +174,10 @@ K.mount = function(cfg){
   function renderTabs(){ $("kTabs").innerHTML = [1,2,3].map(i => `<button class="tab" role="tab" type="button" data-tab="${i}" aria-selected="${i===tab}">${K.TIER[i]}</button>`).join(""); }
   function renderLB(){
     const list = memLB[tab] || [];
-    if (!list.length){ $("kLB").innerHTML = `<tr><td colspan="4" class="lb-empty">ยังไม่มีใครเล่นด่าน ${tab} เป็นคนแรกเลย!</td></tr>`; return; }
+    if (!list.length){ $("kLB").innerHTML = `<tr><td colspan="5" class="lb-empty">ยังไม่มีใครเล่นด่าน ${tab} เป็นคนแรกเลย!</td></tr>`; return; }
     $("kLB").innerHTML = list.slice(0,10).map((e,i) => `<tr class="${player && norm(e.name)===norm(player)?'me':''}">
       <td><span class="medal ${i<3?'m'+(i+1):''}">${i+1}</span></td><td>${K.esc(e.name)}</td>
-      <td class="num">${K.fmtTime(e.time)}</td><td class="num">${e.score}</td></tr>`).join("");
+      <td class="num">${e.acc != null ? e.acc + "%" : "–"}</td><td class="num">${K.fmtTime(e.time)}</td><td class="num">${e.score}</td></tr>`).join("");
   }
   $("kTabs").onclick = e => { const b = e.target.closest("[data-tab]"); if (!b) return; tab = +b.dataset.tab; renderTabs(); renderLB(); };
   $("kName").oninput = () => { $("kNameErr").textContent = ""; renderLevels(); };
@@ -200,7 +205,7 @@ K.mount = function(cfg){
   function start(level){
     endSession();
     const L = cfg.levels[level];
-    const S = session = {level, L, alive:true, sec:0, score:0, combo:0, mistakes:0, right:0, timers:[], cleanups:[], done:false};
+    const S = session = {level, L, alive:true, sec:0, score:0, combo:0, mistakes:0, right:0, timers:[], cleanups:[], done:false, items:[]};
     S.timer = setInterval(() => { S.sec++; $("kHTime").textContent = "⏱ " + K.fmtTime(S.sec); }, 1000);
     $("kHName").textContent = "🐱 " + player;
     $("kHLevel").textContent = `ด่าน ${level} · ${K.TIER[level]}`; $("kHLevel").style.setProperty("--c", L.color);
@@ -232,6 +237,10 @@ K.mount = function(cfg){
         $("kHScore").textContent = "⭐ " + S.score;
         ctx.say(msg || "ยังไม่ถูก ลองอีกครั้งนะ", "bad"); K.sfx.bad();
       },
+      /* reveal the answer after the last try: no extra penalty, the miss was already counted */
+      reveal: (msg) => { if (S.done) return; ctx.say(msg || "เฉลยให้แล้ว ไปข้อต่อไปกัน", "bad"); },
+      /* one answered question: {q, a (answer text), options?, answer?, explain?, score: 1 | 0.5 | 0} */
+      record: (item) => { if (!S.done) S.items.push(item); },
       finish: (opts={}) => finish(S, opts)
     };
     cfg.play(level, ctx);
@@ -241,13 +250,16 @@ K.mount = function(cfg){
     if (!S.alive || S.done) return;
     S.done = true; clearInterval(S.timer);
     const target = opts.targetSec || 0;
-    const acc = S.right / Math.max(1, S.right + S.mistakes);
+    const n = S.items.length;
+    const full = S.items.filter(x => x.score >= 1).length, half = S.items.filter(x => x.score > 0 && x.score < 1).length, miss = n - full - half;
+    const acc = n ? (full + half*0.5) / n : S.right / Math.max(1, S.right + S.mistakes);
+    const accPct = Math.round(acc * 100);
     const timeBonus = Math.round(Math.max(0, target - S.sec) * 5 * acc);
     const total = S.score + timeBonus;
     const stars = acc >= .9 ? 3 : acc >= .7 ? 2 : 1;
     const list = memLB[S.level] || (memLB[S.level] = []);
     const nk = norm(player); const i = list.findIndex(e => norm(e.name) === nk);
-    const entry = {name:player, score:total, time:S.sec, stars, at:Date.now()};
+    const entry = {name:player, score:total, time:S.sec, stars, acc:accPct, at:Date.now()};
     let improved = true;
     if (i >= 0){ const o = list[i]; if (o.score > total || (o.score === total && o.time <= S.sec)) improved = false; else list[i] = entry; }
     else list.push(entry);
@@ -262,15 +274,39 @@ K.mount = function(cfg){
       $("kResBody").innerHTML = `
         <tr><td>คะแนนจากการตอบ (รวมคอมโบ)</td><td>${S.score}</td></tr>
         <tr><td>โบนัสเวลา (${K.fmtTime(S.sec)}, คิดตามความแม่นยำ)</td><td>+${timeBonus}</td></tr>
-        <tr><td>ตอบถูก / ตอบผิด</td><td>${S.right} / ${S.mistakes}</td></tr>
+        ${n ? `<tr><td>✅ ถูกตั้งแต่ครั้งแรก</td><td>${full} ข้อ</td></tr>
+        <tr><td>💡 ถูกเมื่อได้คำใบ้</td><td>${half} ข้อ</td></tr>
+        <tr><td>📖 เฉลยให้ (ต้องทบทวน)</td><td>${miss} ข้อ</td></tr>
+        <tr><td>🎯 ความเข้าใจ</td><td>${accPct}%</td></tr>` : `<tr><td>ตอบถูก / ตอบผิด</td><td>${S.right} / ${S.mistakes}</td></tr>`}
         <tr class="total"><td>คะแนนรวม</td><td>${total}</td></tr>`;
       $("kRank").textContent = improved ? `🏆 อันดับที่ ${rank} จาก ${list.length} คน ในด่าน ${S.level}`
         : `สถิติเดิมดีกว่า (${list[rank-1].score} คะแนน) ยังอยู่อันดับที่ ${rank}`;
       $("kNext").classList.toggle("hidden", S.level >= 3);
+      const weak = S.items.filter(x => x.score < 1);
+      lastWeak = weak.filter(x => x.options && x.answer != null);
+      $("kReview").innerHTML = weak.length ? `<h3>📚 ข้อที่ควรทบทวน</h3><ul>${weak.slice(0,12).map(x => `<li><span>${x.q}</span><b>✔ ${x.a}</b></li>`).join("")}</ul>
+        ${lastWeak.length ? `<button class="btn" id="kPractice1" type="button" style="--c:var(--purple)">🔁 ฝึกเฉพาะข้อที่ผิด (${lastWeak.length} ข้อ)</button>` : ""}` : (n ? `<p class="all-good">🌟 เข้าใจครบทุกข้อ ยอดเยี่ยม!</p>` : "");
+      const pb = $("kPractice1"); if (pb) pb.onclick = practice;
       $("kResult").classList.add("open"); $("kAgain").focus();
     }, 500);
   }
-  let lastLevel = 1;
+  let lastLevel = 1, lastWeak = [];
+  /* practice: replay missed questions with no score, until each is answered */
+  function practice(){
+    const items = K.shuffle(lastWeak.slice()); let k = 0, ok = 0;
+    $("kResult").classList.remove("open"); $("kPractice").classList.add("open");
+    const say = (m, c) => { $("kPrSay").textContent = m; $("kPrSay").className = "say" + (c ? " " + c : ""); };
+    const pctx = { alive: () => $("kPractice").classList.contains("open"), after: (ms, fn) => setTimeout(() => { if (pctx.alive()) fn(); }, ms),
+      correct: () => { K.sfx.good(); say("ถูกต้อง! 👍", "good"); return 1; }, wrong: (m) => { K.sfx.bad(); say(m || "ยังไม่ถูก ลองอีกครั้ง", "bad"); },
+      reveal: (m) => say(m || "เฉลยให้แล้ว", "bad"), record: (it) => { if (it.score > 0) ok++; }, say };
+    const step = () => {
+      if (k >= items.length){ $("kPrHost").innerHTML = `<p class="all-good">ฝึกครบแล้ว! ตอบถูก ${ok} จาก ${items.length} ข้อ 🎉</p>`; say(""); return; }
+      const it = items[k++]; say("");
+      K.mcq(pctx, $("kPrHost"), {label:`ฝึกข้อที่ ${k} จาก ${items.length}`, html:it.q, options:it.options, answer:it.answer, explain:it.explain, cols:it.options.length > 2 ? 2 : 1, onNext: step});
+    };
+    step();
+  }
+  $("kPrClose").onclick = () => { $("kPractice").classList.remove("open"); $("kResult").classList.add("open"); };
   const levelOf = () => (session && session.level) || lastLevel;
   $("kAgain").onclick = () => { const l = levelOf(); $("kResult").classList.remove("open"); start(l); };
   $("kNext").onclick = () => { const l = Math.min(3, levelOf()+1); $("kResult").classList.remove("open"); start(l); };
@@ -294,27 +330,38 @@ K.mount = function(cfg){
 };
 
 /* ---------- multiple-choice helper ----------
-   q: {label, html, big, options:[html], answer:index, onNext, cols, explain}
-   wrong picks are disabled and counted; the question stays until answered right. */
+   q: {label, html, big, options:[html], answer:index, onNext(ok), cols, explain, hint}
+   Two tries (one when there are only two choices). After the last miss the answer is shown with
+   the explanation and a "next" button, so a child is never stuck on one question. */
 K.mcq = function(ctx, host, q){
   host.innerHTML = `
     <div class="qcard"><div class="qlabel">${q.label||""}</div><div class="qtext ${q.big?'big':''}">${q.html}</div></div>
     <div class="choices" style="${q.cols?`grid-template-columns:repeat(${q.cols},1fr)`:""}">
       ${q.options.map((o,i) => `<button class="choice" type="button" data-i="${i}">${o}</button>`).join("")}
-    </div>`;
-  let first = true;
+    </div><div class="mcq-next"></div>`;
+  const maxTries = q.options.length <= 2 ? 1 : 2;
+  let tries = 0, done = false;
+  const all = () => host.querySelectorAll(".choice");
+  const rec = (score) => { if (ctx.record) ctx.record({q:q.html, a:q.options[q.answer], options:q.options, answer:q.answer, explain:q.explain, score}); };
   host.querySelector(".choices").onclick = e => {
-    const b = e.target.closest(".choice"); if (!b || b.disabled) return;
+    const b = e.target.closest(".choice"); if (!b || b.disabled || done) return;
     const i = +b.dataset.i;
     if (i === q.answer){
-      b.classList.add("right");
-      host.querySelectorAll(".choice").forEach(x => x.disabled = true);
-      ctx.correct(first ? 100 : 50);
-      ctx.after(750, q.onNext);
-    } else {
-      first = false; b.classList.add("wrong"); b.disabled = true;
-      ctx.wrong(q.explain ? q.explain : undefined);
+      done = true; b.classList.add("right"); all().forEach(x => x.disabled = true);
+      rec(tries === 0 ? 1 : 0.5);
+      ctx.correct(tries === 0 ? 100 : 50, q.explain && tries > 0 ? `ถูกต้อง! ${q.explain}` : undefined);
+      ctx.after(tries === 0 ? 750 : 1600, () => q.onNext && q.onNext(true));
+      return;
     }
+    tries++; b.classList.add("wrong"); b.disabled = true;
+    if (tries < maxTries){ ctx.wrong(q.hint || "ยังไม่ใช่ ลองอีกครั้งนะ (เหลืออีก 1 ครั้ง)"); return; }
+    done = true; ctx.wrong(null); rec(0);
+    all().forEach(x => x.disabled = true);
+    all()[q.answer].classList.add("show");
+    ctx.reveal ? ctx.reveal(`📖 เฉลย: ${q.options[q.answer]}${q.explain ? " — " + q.explain : ""}`) : ctx.say("เฉลย: " + q.options[q.answer]);
+    const nx = host.querySelector(".mcq-next");
+    nx.innerHTML = `<button class="btn" type="button">ไปข้อต่อไป ▶</button>`;
+    nx.firstChild.onclick = () => { nx.innerHTML = ""; q.onNext && q.onNext(false); };
   };
 };
 
@@ -334,8 +381,17 @@ K.keypad = function(ctx, host, q){
     if (lock || !ctx.alive()) return;
     if (k === "OK"){
       if (!val || val === "."){ ctx.say("กดตัวเลขก่อนนะ"); return; }
-      if (Math.abs(parseFloat(val) - q.answer) < 1e-9){ lock = true; ctx.correct(first?100:50); ctx.after(800, q.onNext); }
-      else { first = false; ctx.wrong(q.hint || "ยังไม่ถูก ลองคิดใหม่อีกครั้ง"); }
+      const fmtA = String(q.answer).includes(".") ? String(q.answer) : Number(q.answer).toLocaleString("en-US");
+      const rec = sc => { if (ctx.record) ctx.record({q:q.html, a:fmtA + (q.unit ? " " + q.unit : ""), score:sc}); };
+      if (Math.abs(parseFloat(val) - q.answer) < 1e-9){ lock = true; rec(first ? 1 : 0.5); ctx.correct(first?100:50); ctx.after(800, () => q.onNext && q.onNext(true)); }
+      else if (first){ first = false; ctx.wrong((q.hint || "ยังไม่ถูก ลองคิดใหม่อีกครั้ง") + " (เหลืออีก 1 ครั้ง)"); val = ""; scr.textContent = "0"; }
+      else {
+        lock = true; rec(0); ctx.wrong(null);
+        scr.textContent = fmtA; scr.style.color = "#2C8A52";
+        ctx.reveal ? ctx.reveal(`📖 เฉลย: ${fmtA}${q.unit ? " " + q.unit : ""}${q.explain ? " — " + q.explain : ""}`) : ctx.say("เฉลย: " + fmtA);
+        const nx = document.createElement("div"); nx.className = "mcq-next"; nx.innerHTML = `<button class="btn" type="button">ไปข้อต่อไป ▶</button>`;
+        host.appendChild(nx); nx.firstChild.onclick = () => { nx.remove(); q.onNext && q.onNext(false); };
+      }
       return;
     }
     K.sfx.tap();

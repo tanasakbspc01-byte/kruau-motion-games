@@ -60,7 +60,7 @@ BK.mount({
   key:"w-manner", title:"Obby มารยาทเด็กดี", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 2 มารยาทเด็กดี",
   heroHTML:"กระโดดบน<em>แพลตฟอร์มมารยาทดี</em> 🙏", heroDesc:"อ่านสถานการณ์ แล้วกระโดดไปยังแพลตฟอร์มที่เป็นมารยาทที่ดี ถ้าเลือกผิด แพลตฟอร์มจะร่วง!",
   progIcon:"🙏",
-  howto:["อ่านสถานการณ์: ต้อนรับแขก กินข้าว ในห้องเรียน ห้องน้ำ","แตะแพลตฟอร์มที่เป็นมารยาทที่ดีที่สุด","เลือกผิดแพลตฟอร์มร่วง เสียหัวใจ ❤️","ผ่าน 10 ด่านถึงธงชัย"],
+  howto:["อ่านสถานการณ์: ต้อนรับแขก กินข้าว ในห้องเรียน ห้องน้ำ","แตะแพลตฟอร์มที่เป็นมารยาทที่ดีที่สุด","เลือกผิดแพลตฟอร์มร่วง เสียหัวใจ ❤️ เลือกได้ 2 ครั้ง (มือใหม่ 1 ครั้ง) แล้วเฉลย","ผ่าน 10 ด่านถึงธงชัย"],
   levels:{
     1:{pill:"10 ด่าน", color:"var(--green)", desc:"2 แพลตฟอร์ม เรื่องใกล้ตัว"},
     2:{pill:"10 ด่าน", color:"var(--blue)", desc:"3 แพลตฟอร์ม มีเรื่องที่ต้องคิดมากขึ้น"},
@@ -84,13 +84,18 @@ BK.mount({
     }
     $("#pl").addEventListener("click", e => {
       const b = e.target.closest(".pl"); if (!b || b.disabled) return;
-      const it = deck[idx];
-      if (b.dataset.ok === "1"){
+      const it = deck[idx], plats = [...ctx.stage.querySelectorAll(".pl")], texts = plats.map(x => x.textContent.trim()), ai = plats.findIndex(x => x.dataset.ok === "1");
+      const rec = sc => ctx.record({q:`${it[0]}: ${it[2]} ควรทำอย่างไร?`, a:texts[ai], options:texts, answer:ai, explain:it[5], score:sc});
+      if (b.dataset.ok === "1"){ rec(first ? 1 : 0.5);
         b.classList.add("ok"); ctx.stage.querySelectorAll(".pl").forEach(x => x.disabled = true);
         ctx.correct(first ? 100 : 50, `กระโดดถูก! ${it[5]}`); idx++; ctx.progress(idx, N); ctx.after(1200, next);
-      } else {
+      } else if (first && plats.length > 2){
         first = false; b.disabled = true; b.classList.add("bad");
-        ctx.wrong(`แพลตฟอร์มร่วง! ลองคิดใหม่ — ${it[5]}`);
+        ctx.wrong("แพลตฟอร์มร่วง! ลองอีกครั้ง (เหลืออีก 1 ครั้ง)");
+      } else {
+        b.disabled = true; b.classList.add("bad"); rec(0); ctx.wrong(null);
+        plats.forEach(x => x.disabled = true); plats[ai].classList.add("ok");
+        ctx.reveal(`📖 เฉลย: ${texts[ai]} — ${it[5]}`); idx++; ctx.progress(idx, N); ctx.after(3200, next);
       }
     });
     ctx.progress(0, N); ctx.say("พร้อมกระโดดแล้ว!");

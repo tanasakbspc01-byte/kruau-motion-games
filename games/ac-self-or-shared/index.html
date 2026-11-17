@@ -61,7 +61,7 @@ KIT.mount({
   key:"ac-share", title:"ส่วนตน หรือ ส่วนรวม?", subtitle:"การป้องกันการทุจริต ป.4 · หน่วยที่ 1 การคิดแยกแยะผลประโยชน์ส่วนตนและส่วนรวม",
   heroHTML:"แยกให้ออก<em>ส่วนตน</em>หรือ<em>ส่วนรวม</em> ⚖️", heroDesc:"อ่านการกระทำบนการ์ด แล้วแตะกล่องที่ถูกต้อง ฝึกคิดแยกแยะผลประโยชน์ส่วนตนกับผลประโยชน์ส่วนรวม",
   progIcon:"⚖️",
-  howto:["อ่านการกระทำบนการ์ด","แตะกล่องซ้ายหรือขวาที่ถูกต้อง","แตะผิดจะมีคำอธิบาย แล้วลองใหม่ได้","แยกครบ 10 การ์ดผ่านด่าน"],
+  howto:["อ่านการกระทำบนการ์ด","แตะกล่องซ้ายหรือขวาที่ถูกต้อง","แตะผิด เกมจะเฉลยพร้อมเหตุผล แล้วไปการ์ดใบต่อไป","แยกครบ 10 การ์ดผ่านด่าน"],
   levels:{
     1:{pill:"10 การ์ด", color:"var(--green)", desc:"ที่โรงเรียน: ทำเพื่อตัวเรา หรือ ทำเพื่อทุกคน"},
     2:{pill:"10 การ์ด", color:"var(--blue)", desc:"ในชุมชน: เห็นแก่ตัว หรือ เพื่อส่วนรวม"},
@@ -84,13 +84,11 @@ KIT.mount({
     ctx.stage.querySelector(".bins").addEventListener("click", e => {
       const b = e.target.closest(".bin"); if (!b || lock) return;
       const it = deck[idx], s = +b.dataset.s;
-      if (s === it[2]){
-        lock = true; $("#ev").classList.add(s ? "flyR" : "flyL"); cnt[s]++; $("#c"+s).textContent = cnt[s];
-        ctx.correct(first ? 100 : 50, `ถูกต้อง! ${it[3]}`); idx++; ctx.progress(idx, N); ctx.after(1400, next);
-      } else {
-        first = false; const ev = $("#ev"); ev.classList.remove("no"); void ev.offsetWidth; ev.classList.add("no");
-        ctx.wrong(`ลองคิดใหม่ — ${it[3]}`);
-      }
+      const c = it[2], names = L.bins.map(x => x[1]);
+      lock = true; $("#ev").classList.add(c ? "flyR" : "flyL"); cnt[c]++; $("#c"+c).textContent = cnt[c];
+      ctx.record({q:`${it[0]} ${it[1]}`, a:names[c], options:names, answer:c, explain:it[3], score: s === c ? 1 : 0});
+      if (s === c){ ctx.correct(100, `ถูกต้อง! ${it[3]}`); idx++; ctx.progress(idx, N); ctx.after(1400, next); }
+      else { ctx.wrong(null); ctx.reveal(`📖 เฉลย: อยู่กล่อง "${names[c]}" — ${it[3]}`); idx++; ctx.progress(idx, N); ctx.after(2800, next); }
     });
     ctx.progress(0, N); ctx.say("เริ่มแยกการ์ดกันเลย!");
     next();

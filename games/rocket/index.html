@@ -149,6 +149,7 @@ KIT.mount({
       const right = cur.lanes[lane] === cur.ans;
       const ci = cur.lanes.indexOf(cur.ans);
       planets.forEach((p,i) => p.classList.add(i===ci ? "ok" : "no"));
+      ctx.record({q:cur.q, a:fmt(cur.ans), options:cur.lanes.map(v => fmt(v)), answer:ci, score: right ? 1 : 0});
       if (right){ ctx.correct(); }
       else ctx.wrong(`ชนดาวผิดดวง! คำตอบคือ ${fmt(cur.ans)}`);
       idx++; ctx.progress(idx, N);

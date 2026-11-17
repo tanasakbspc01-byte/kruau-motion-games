@@ -49,7 +49,7 @@ KIT.mount({
   key:"ac-shop", title:"กระปุกพอเพียง", subtitle:"การป้องกันการทุจริต ป.4 · หน่วยที่ 3 จิตพอเพียง (S = Sufficient)",
   heroHTML:"ซื้อของ<em>พอเพียง</em> เหลือเงินออม 🐷", heroDesc:"มีเงินจำกัด ต้องซื้อของที่จำเป็นให้ครบ และเหลือเงินหยอดกระปุกตามเป้าหมาย คิดก่อนซื้อ รู้จักพอ",
   progIcon:"🐷",
-  howto:["ดูรายการของที่จำเป็นต้องซื้อ และเป้าหมายเงินออม","แตะสินค้าเพื่อใส่ตะกร้า (แตะซ้ำเพื่อเอาออก)","ซื้อของจำเป็นให้ครบ และเงินเหลือไม่น้อยกว่าเป้าหมาย","กด \"จ่ายเงิน\" ผ่านครบ 5 วันผ่านด่าน"],
+  howto:["ดูรายการของที่จำเป็นต้องซื้อ และเป้าหมายเงินออม","แตะสินค้าเพื่อใส่ตะกร้า (แตะซ้ำเพื่อเอาออก)","ซื้อของจำเป็นให้ครบ และเงินเหลือไม่น้อยกว่าเป้าหมาย","กด \"จ่ายเงิน\" จ่ายไม่ผ่านได้ 2 ครั้ง ถ้ายังไม่ผ่านจะเฉลยวิธีซื้อแล้วไปวันต่อไป"],
   levels:{
     1:{pill:"5 วัน", color:"var(--green)", desc:"ของจำเป็น 2 อย่าง เงินพอใช้สบาย"},
     2:{pill:"5 วัน", color:"var(--blue)", desc:"ของจำเป็น 2–3 อย่าง ต้องเลือกแบบประหยัด"},
@@ -63,14 +63,14 @@ KIT.mount({
       <div class="shelf" id="sh"></div>
       <div class="pay"><button class="btn" type="button" id="pay">💳 จ่ายเงิน</button></div>`;
     const $ = s => ctx.stage.querySelector(s);
-    let day = 0, cur, basket = new Set(), first = true;
+    let day = 0, cur, basket = new Set(), first = true, fails = 0;
     function newDay(){
       if (day >= ROUNDS){ ctx.finish({targetSec: 150}); return; }
       const needs = shuffle(NEEDS.slice()).slice(0, rand(L.need[0], L.need[1]));
       const cheap = needs.reduce((s,n) => s + n[1][2], 0);
       const save = rand(L.save[0]/5, L.save[1]/5)*5, money = Math.ceil((cheap + save + rand(L.slack[0], L.slack[1]))/5)*5;
       const goods = shuffle([...needs.flatMap((n,i) => [{...arr(n[1]), need:i}, {...arr(n[2]), need:i}]), ...shuffle(WANTS.slice()).slice(0, L.wants).map(w => ({...arr(w), need:-1}))]);
-      cur = {needs, save, money, goods}; basket = new Set(); first = true;
+      cur = {needs, save, money, goods}; basket = new Set(); first = true; fails = 0;
       $("#qn").textContent = `วันที่ ${day+1} จาก ${ROUNDS}`;
       $("#nd").innerHTML = "ต้องซื้อ: " + needs.map((n,i)=>`<i data-n="${i}">${n[0]}</i>`).join("");
       $("#sh").innerHTML = goods.map((g,i)=>`<button class="g" type="button" data-i="${i}"><span class="e">${g.icon}</span>${g.label}<br><span class="p">${g.price} ฿</span></button>`).join("");
@@ -95,8 +95,18 @@ KIT.mount({
       const have = new Set([...basket].map(i => cur.goods[i].need));
       const miss = cur.needs.filter((n,i) => !have.has(i)).map(n => n[0]);
       const left = cur.money - spent();
-      if (miss.length){ first = false; ctx.wrong(`ยังไม่ได้ซื้อของจำเป็น: ${miss.join(", ")}`); return; }
-      if (left < cur.save){ first = false; ctx.wrong(`ใช้เงินเกินไป ${cur.save - left} บาท ยังออมไม่ถึงเป้า ลองเลือกของที่ประหยัดกว่า หรือเอาของที่ไม่จำเป็นออก`); return; }
+      const q = `วันที่ ${day+1}: มีเงิน ${cur.money} บาท ต้องซื้อ ${cur.needs.map(n => n[0]).join(", ")} และออม ${cur.save} บาท`;
+      const best = cur.needs.map(n => `${n[1][1]} ${n[1][2]}฿`).join(" + ");
+      if (miss.length || left < cur.save){
+        first = false; fails++;
+        const why = miss.length ? `ยังไม่ได้ซื้อของจำเป็น: ${miss.join(", ")}` : `ใช้เงินเกินไป ${cur.save - left} บาท ยังออมไม่ถึงเป้า`;
+        if (fails < 2){ ctx.wrong(`${why} ลองอีกครั้งนะ (เหลืออีก 1 ครั้ง)`); return; }
+        ctx.record({q, a:best, score:0}); ctx.wrong(null);
+        ctx.reveal(`📖 วิธีที่พอเพียง: ซื้อ ${best} แล้วเก็บส่วนที่เหลือไว้ออม`);
+        day++; ctx.progress(day, ROUNDS);
+        $("#pay").disabled = true; ctx.after(4200, () => { $("#pay").disabled = false; newDay(); }); return;
+      }
+      ctx.record({q, a:best, score: first ? 1 : 0.5});
       const extra = left - cur.save;
       ctx.correct((first ? 100 : 60) + Math.min(40, extra*2), `พอเพียง! หยอดกระปุกได้ ${left} บาท 🐷`);
       day++; ctx.progress(day, ROUNDS); ctx.after(1500, newDay);

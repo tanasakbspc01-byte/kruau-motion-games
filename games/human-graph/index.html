@@ -141,8 +141,10 @@ KIT.mount({
       ctx.stage.querySelector("#chk").onclick = () => {
         if (lock) return;
         const bad = D.cats.filter((c,i) => cur[i] !== D.vals[i]);
-        if (!bad.length){ lock = true; ctx.correct(first?150:75, "กราฟถูกต้องครบทุกจุด!"); ctx.after(900, done); }
-        else { first = false; ctx.wrong(`ยังไม่ถูก: ${bad.slice(0,3).join(", ")} ดูค่าในตารางแล้วนับช่องใหม่`); }
+        const qq = `สร้าง${D.type==="bar"?"แผนภูมิแท่ง":"กราฟเส้น"}: ${D.title} (1 ช่องแทน ${D.step} ${D.unit})`, aa = D.cats.map((c,i) => `${c} ${D.vals[i]}`).join(", ");
+        if (!bad.length){ ctx.record({q:qq, a:aa, score:first?1:0.5}); lock = true; ctx.correct(first?150:75, "กราฟถูกต้องครบทุกจุด!"); ctx.after(900, done); }
+        else if (first){ first = false; ctx.wrong(`ยังไม่ถูก: ${bad.slice(0,3).join(", ")} ดูค่าในตารางแล้วนับช่องใหม่ (เหลืออีก 1 ครั้ง)`); }
+        else { lock = true; D.vals.forEach((v,i) => cur[i] = v); draw(); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 เฉลย: กราฟที่ถูกเป็นแบบนี้ — ${aa}`); ctx.after(3600, done); }
       };
     }
     ctx.progress(0, N); ctx.say("มาสร้างกราฟกันเลย!");

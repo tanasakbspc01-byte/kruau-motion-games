@@ -100,10 +100,11 @@ KIT.mount({
       svg.addEventListener("pointerup", up); svg.addEventListener("pointercancel", up);
       ctx.stage.querySelector("#go").onclick = () => {
         if (locked) return;
-        if (k === q.k){ locked = true; ctx.correct(tries ? 50 : 100, `ตรงเป๊ะ! ${val(q,k)} ถูกต้อง`); advance(); return; }
+        const rq = q.prompt.replace(/<[^>]+>/g, " ");
+        if (k === q.k){ ctx.record({q:rq, a:String(val(q,q.k)), score: tries ? 0.5 : 1}); locked = true; ctx.correct(tries ? 50 : 100, `ตรงเป๊ะ! ${val(q,k)} ถูกต้อง`); advance(); return; }
         tries++;
         if (tries >= 2){
-          locked = true; ctx.wrong(`ยังไม่ตรง ลูกแก้วอยู่ที่ ${val(q,k)} คำตอบคือ ${val(q,q.k)} (ธงสีเขียว)`);
+          ctx.record({q:rq, a:String(val(q,q.k)), score:0}); locked = true; ctx.wrong(`ยังไม่ตรง ลูกแก้วอยู่ที่ ${val(q,k)} คำตอบคือ ${val(q,q.k)} (ธงสีเขียว)`);
           const f = ctx.stage.querySelector("#flag"); f.setAttribute("transform", `translate(${X0 + q.k*dx},0)`); f.setAttribute("visibility","visible");
           advance(2200); return;
         }

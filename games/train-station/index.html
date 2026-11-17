@@ -161,9 +161,14 @@ KIT.mount({
         draw();
       };
       host.querySelector("#check").onclick = () => {
-        const [th, tm] = q.target;
-        if ((h%12) === (th%12) && m === tm){ host.querySelector("#check").disabled = true; ctx.correct(first?100:50); ctx.after(500, done); }
-        else { first = false; ctx.wrong(m !== tm ? "เข็มยาว (นาที) ยังไม่ตรง ลองใหม่" : "เข็มสั้น (ชั่วโมง) ยังไม่ตรง ลองใหม่"); }
+        const [th, tm] = q.target, ta = `${th}:${String(tm).padStart(2,"0")} น.`;
+        if ((h%12) === (th%12) && m === tm){ ctx.record({q:q.html, a:ta, score: first ? 1 : 0.5}); host.querySelector("#check").disabled = true; ctx.correct(first?100:50); ctx.after(500, done); }
+        else if (first){ first = false; ctx.wrong((m !== tm ? "เข็มยาว (นาที) ยังไม่ตรง" : "เข็มสั้น (ชั่วโมง) ยังไม่ตรง") + " ลองอีกครั้ง (เหลืออีก 1 ครั้ง)"); }
+        else {
+          ctx.record({q:q.html, a:ta, score:0}); ctx.wrong(null); h = th; m = tm; draw();
+          host.querySelectorAll(".sbtn").forEach(b => b.disabled = true); host.querySelector("#check").disabled = true;
+          ctx.reveal(`📖 เฉลย: เข็มสั้นชี้ ${th} เข็มยาวชี้ ${tm === 0 ? 12 : tm/5} (${ta}) ดูที่หน้าปัดนะ`); ctx.after(3200, done);
+        }
       };
     }
     ctx.progress(0, N); ctx.say("รถไฟขบวนแรกกำลังรอ เริ่มเลย!");

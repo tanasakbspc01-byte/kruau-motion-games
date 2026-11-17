@@ -63,7 +63,7 @@ KIT.mount({
   key:"ac-spot", title:"จับผิดเมืองสุจริต", subtitle:"การป้องกันการทุจริต ป.4 · หน่วยที่ 1 ความแตกต่างระหว่างจริยธรรมและการทุจริต",
   heroHTML:"ใครกำลัง<em>ทุจริต</em>? หาให้เจอ 🕵️", heroDesc:"ในเมืองมีคนทำดีและคนทุจริตปะปนกัน แตะเฉพาะคนที่ทุจริตให้ครบ อย่าไปแตะคนที่ทำดีนะ",
   progIcon:"🕵️",
-  howto:["อ่านการกระทำของแต่ละคน","แตะคนที่ทุจริต จะขึ้นตรา \"ทุจริต!\"","แตะคนที่ทำดีเสีย 10 คะแนน","หาครบทุกคนในเมืองแล้วไปเมืองต่อไป มี 4 เมือง"],
+  howto:["อ่านการกระทำของแต่ละคน","แตะคนที่ทุจริต จะขึ้นตรา \"ทุจริต!\"","แตะคนที่ทำดีผิดได้ 2 ครั้งต่อเมือง ครั้งที่ 3 เกมจะเฉลยให้แล้วไปเมืองต่อไป","หาครบทุกคนในเมืองแล้วไปเมืองต่อไป มี 4 เมือง"],
   levels:{
     1:{pill:"4 เมือง", color:"var(--green)", desc:"6 คน มีคนทุจริต 2 คน"},
     2:{pill:"4 เมือง", color:"var(--blue)", desc:"8 คน มีคนทุจริต 3 คน รวมเรื่องของหลวง"},
@@ -75,13 +75,16 @@ KIT.mount({
     ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext">แตะคนที่ <u>ทุจริต</u> <span class="left" id="lf"></span></div></div>
       <div class="town" id="tw" style="grid-template-columns:repeat(${L.cols},1fr)"></div>`;
     const $ = s => ctx.stage.querySelector(s);
-    let round = 0, found = 0, people = [], lock = false, bi = 0, gi = 0;
+    let round = 0, found = 0, people = [], lock = false, bi = 0, gi = 0, tmiss = 0;
+    const OPT = ["ทุจริต","ไม่ทุจริต (มีจริยธรรม)"];
+    const rec = (p, sc) => ctx.record({q:`"${p[0]}" เป็นการกระทำแบบใด?`, a:OPT[p[1] ? 0 : 1], options:OPT, answer:p[1] ? 0 : 1, explain:p[2] || "เป็นการกระทำที่ดี มีจริยธรรม", score:sc});
+    function endTown(){ lock = true; round++; ctx.progress(round, ROUNDS); ctx.stage.querySelectorAll(".p:not(.bad)").forEach(x => x.classList.add("reveal")); }
     const take = (pool, k, start) => { const out = []; for (let i=0;i<k;i++) out.push(pool[(start+i) % pool.length]); return out; };
     function town(){
       if (round >= ROUNDS){ ctx.finish({targetSec: level===3 ? 150 : 110}); return; }
       const bads = take(badPool, L.bad, bi); bi += L.bad;
       const goods = take(goodPool, L.n - L.bad, gi); gi += L.n - L.bad;
-      people = shuffle([...bads, ...goods]); found = 0; lock = false;
+      people = shuffle([...bads, ...goods]); found = 0; lock = false; tmiss = 0;
       const faces = shuffle(FACES.slice());
       $("#qn").textContent = `เมืองที่ ${round+1} จาก ${ROUNDS}`;
       $("#lf").textContent = `(เหลือ ${L.bad} คน)`;
@@ -92,15 +95,16 @@ KIT.mount({
       const p = people[+b.dataset.i];
       if (p[1]){
         b.classList.add("bad"); found++; $("#lf").textContent = `(เหลือ ${L.bad - found} คน)`;
-        ctx.correct(100, `จับได้! ${p[2]}`);
-        if (found === L.bad){
-          lock = true; round++; ctx.progress(round, ROUNDS);
-          ctx.stage.querySelectorAll(".p:not(.bad)").forEach(x => x.classList.add("reveal"));
-          ctx.after(1600, town);
-        }
+        rec(p, 1); ctx.correct(100, `จับได้! ${p[2]}`);
+        if (found === L.bad){ endTown(); ctx.after(1600, town); }
       } else {
         b.classList.remove("good"); void b.offsetWidth; b.classList.add("good");
-        ctx.wrong(`คนนี้ "${p[0]}" เป็นการกระทำที่ดี มีจริยธรรม`);
+        rec(p, 0); tmiss++;
+        if (tmiss < 3){ ctx.wrong(`คนนี้ "${p[0]}" เป็นการกระทำที่ดี มีจริยธรรม (ผิดได้อีก ${3 - tmiss} ครั้งในเมืองนี้)`); return; }
+        ctx.wrong(null);
+        const left = [...ctx.stage.querySelectorAll(".p")].filter(x => people[+x.dataset.i][1] && !x.classList.contains("bad"));
+        left.forEach(x => { x.classList.add("bad"); rec(people[+x.dataset.i], 0); });
+        endTown(); ctx.reveal(`📖 เฉลย: คนที่ทุจริตมีตรา "ทุจริต!" ทั้งหมด ลองอ่านดูว่าทำอะไรผิด`); ctx.after(3600, town);
       }
     });
     ctx.progress(0, ROUNDS); ctx.say("สอดส่องให้ดี ใครกำลังทุจริต?");

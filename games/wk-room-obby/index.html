@@ -56,7 +56,7 @@ BK.mount({
   key:"w-room", title:"Obby จัดห้องเก็บของ", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 1 ดูแลและจัดเก็บของใช้",
   heroHTML:"จัดห้องให้<em>เป๊ะ</em> หยิบง่าย หายรู้ ดูงามตา 🏠", heroDesc:"ของกระจายเต็มห้อง! แตะของแต่ละชิ้น แล้วแตะที่เก็บที่ถูกต้อง จัดให้ครบทั้งห้อง",
   progIcon:"🏠",
-  howto:["แตะของในห้อง 1 ชิ้น","แตะที่เก็บที่เหมาะสม","ผิดเสียหัวใจ ❤️ หัวใจหมดจะรีสปอน","จัดครบทุกชิ้นผ่านด่าน ได้แรงก์ตามความแม่นยำ"],
+  howto:["แตะของในห้อง 1 ชิ้น","แตะที่เก็บที่เหมาะสม","ผิดได้ 2 ครั้งต่อชิ้น (เสียหัวใจ ❤️) ถ้ายังผิดเกมจะเฉลยและเก็บให้","จัดครบทุกชิ้นผ่านด่าน ได้แรงก์ตามความแม่นยำ"],
   levels:{
     1:{pill:"9 ชิ้น", color:"var(--green)", desc:"3 ที่เก็บ: ชั้นหนังสือ กล่องของเล่น ตะกร้าผ้า"},
     2:{pill:"12 ชิ้น", color:"var(--blue)", desc:"5 ที่เก็บ: เพิ่มตู้เสื้อผ้า (แขวน) และลิ้นชัก (พับ)"},
@@ -82,16 +82,19 @@ BK.mount({
     ctx.stage.querySelector(".spots").addEventListener("click", e => {
       const b = e.target.closest(".sp"); if (!b) return;
       if (!sel){ ctx.say("แตะของในห้องก่อนนะ"); return; }
-      const x = items[+sel.dataset.i];
-      if (b.dataset.s === x[2]){
+      const x = items[+sel.dataset.i], miss = +(sel.dataset.miss || 0);
+      const names = L.spots.map(k => SPOTS[k][1]);
+      const rec = sc => ctx.record({q:`${x[0]} ${x[1]} ควรเก็บที่ไหน?`, a:SPOTS[x[2]][1], options:names, answer:L.spots.indexOf(x[2]), explain:x[3], score:sc});
+      const store = ok => {
         sel.classList.add("gone"); sel = null; done++;
-        ctx.correct(100, `เก็บถูกที่! ${x[3]}`); ctx.progress(done, items.length);
+        ok ? ctx.correct(miss ? 50 : 100, `เก็บถูกที่! ${x[3]}`) : ctx.reveal(`📖 เฉลย: ${x[1]} → ${SPOTS[x[2]][1]} — ${x[3]} (เก็บให้แล้ว)`);
+        ctx.progress(done, items.length);
         $("#hn").textContent = done < items.length ? "แตะของชิ้นต่อไป" : "ห้องเรียบร้อยแล้ว! ✨";
-        if (done === items.length) ctx.finish({targetSec: [0,50,70,90][level]});
-      } else {
-        sel.classList.remove("no"); void sel.offsetWidth; sel.classList.add("no");
-        ctx.wrong(`${x[1]} ไม่ควรเก็บที่${SPOTS[b.dataset.s][1]}`);
-      }
+        if (done === items.length) ctx.after(ok ? 0 : 2000, () => ctx.finish({targetSec: [0,50,70,90][level]}));
+      };
+      if (b.dataset.s === x[2]){ rec(miss ? 0.5 : 1); store(true); }
+      else if (miss < 1){ sel.dataset.miss = 1; sel.classList.remove("no"); void sel.offsetWidth; sel.classList.add("no"); ctx.wrong(`${x[1]} ไม่ควรเก็บที่${SPOTS[b.dataset.s][1]} ลองอีกครั้ง (เหลืออีก 1 ครั้ง)`); }
+      else { rec(0); ctx.wrong(null); store(false); }
     });
     ctx.progress(0, items.length); ctx.say("จัดห้องให้เป็นระเบียบกัน!");
   }

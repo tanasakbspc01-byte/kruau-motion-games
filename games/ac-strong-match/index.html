@@ -46,7 +46,7 @@ KIT.mount({
   key:"ac-strong", title:"จับคู่ STRONG", subtitle:"การป้องกันการทุจริต ป.4 · หน่วยที่ 3 STRONG / จิตพอเพียงต่อต้านการทุจริต",
   heroHTML:"รวมพลัง<em>STRONG</em> ต้านทุจริต 💪", heroDesc:"จับคู่ตัวอักษร S T R O N G กับความหมายและตัวอย่างการกระทำ ให้ครบทุกตัว",
   progIcon:"💪",
-  howto:["แตะตัวอักษรทางซ้าย","แล้วแตะข้อความทางขวาที่คู่กัน","จับคู่ผิดเสีย 10 คะแนน","จับคู่ครบทุกรอบผ่านด่าน"],
+  howto:["แตะตัวอักษรทางซ้าย","แล้วแตะข้อความทางขวาที่คู่กัน","จับคู่ผิดได้ 2 ครั้งต่อตัวอักษร ถ้ายังผิดเกมจะเฉลยและจับคู่ให้","จับคู่ครบทุกรอบผ่านด่าน"],
   note:"S = Sufficient พอเพียง · T = Transparent โปร่งใส · R = Realize ตื่นรู้ · O = Onward มุ่งไปข้างหน้า · N = Knowledge ความรู้ · G = Generosity เอื้ออาทร",
   levels:{
     1:{pill:"2 รอบ", color:"var(--green)", desc:"ความหมาย และคำภาษาอังกฤษ"},
@@ -78,16 +78,23 @@ KIT.mount({
     $("#cr").addEventListener("click", e => {
       const b = e.target.closest(".m"); if (!b || b.classList.contains("ok")) return;
       if (!sel){ ctx.say("แตะตัวอักษรทางซ้ายก่อนนะ"); return; }
-      const k = +sel.dataset.k;
-      if (+b.dataset.k === k){
-        sel.classList.remove("sel"); sel.classList.add("ok"); b.classList.add("ok"); sel = null; got++;
+      const k = +sel.dataset.k, miss = +(sel.dataset.miss || 0), rd = R[round];
+      const others = KIT.shuffle([0,1,2,3,4,5].filter(x => x !== k)).slice(0,3), oi = KIT.shuffle([k, ...others]);
+      const rec = sc => ctx.record({q:`${LET[k][0]} (${LET[k][1]} = ${MEAN[k]}) คู่กับข้อใด?`, a:rd.r[k], options:oi.map(x => rd.r[x]), answer:oi.indexOf(k), score:sc});
+      const match = (ok) => {
+        const rb = ctx.stage.querySelector(`#cr .m[data-k="${k}"]`);
+        sel.classList.remove("sel"); sel.classList.add("ok"); rb.classList.add("ok"); sel = null; got++;
         ctx.stage.querySelector(`.strong b[data-k="${k}"]`).classList.add("on");
-        ctx.correct(100, `ถูกต้อง! ${LET[k][0]} (${LET[k][1]}) = ${MEAN[k]}`); ctx.progress(got, total);
-        if (got % 6 === 0){ round++; ctx.after(1200, show); }
-      } else {
-        b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
-        ctx.wrong(`ข้อนี้ไม่ใช่ ${LET[k][0]} (${MEAN[k]}) ลองข้อความอื่นนะ`);
-      }
+        if (ok) ctx.correct(miss ? 50 : 100, `ถูกต้อง! ${LET[k][0]} (${LET[k][1]}) = ${MEAN[k]}`);
+        else ctx.reveal(`📖 เฉลย: ${LET[k][0]} (${MEAN[k]}) คู่กับ "${rd.r[k]}" จับคู่ให้แล้ว`);
+        ctx.progress(got, total);
+        if (got % 6 === 0){ round++; ctx.after(ok ? 1200 : 2600, show); }
+      };
+      if (+b.dataset.k === k){ rec(miss ? 0.5 : 1); match(true); }
+      else if (miss < 1){
+        sel.dataset.miss = 1; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
+        ctx.wrong(`ข้อนี้ไม่ใช่ ${LET[k][0]} (${MEAN[k]}) ลองอีกครั้งนะ (เหลืออีก 1 ครั้ง)`);
+      } else { b.classList.add("no"); rec(0); ctx.wrong(null); match(false); }
     });
     ctx.progress(0, total); ctx.say("แตะตัวอักษรก่อน แล้วแตะข้อความที่คู่กัน");
     show();

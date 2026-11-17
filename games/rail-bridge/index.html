@@ -127,8 +127,12 @@ KIT.mount({
         if (lock) return;
         if (!Q){ ctx.say("แตะจุดบนตารางเพื่อลากรางก่อนนะ"); return; }
         const dx = Q[0]-P[0], dy = Q[1]-P[1];
-        if (dx*b - dy*a === 0){ lock = true; nl.setAttribute("stroke", "#5BB878"); ctx.correct(first?100:50, "รางขนานกันพอดี รถไฟวิ่งได้แล้ว! 🚂"); ctx.after(1000, done); }
-        else { first = false; ctx.wrong(`ยังไม่ขนาน รางเดิมไปทางขวา ${a} ช่อง ${b>0?"ลง":"ขึ้น"} ${Math.abs(b)} ช่อง ลองนับแบบเดียวกันจากจุด P`); }
+        const qq = "ลากรางจากจุด P ให้ขนานกับรางเดิม", aa = `ไปทางขวา ${a} ช่อง ${b>0?"ลง":"ขึ้น"} ${Math.abs(b)} ช่อง (หรือย้อนทางตรงข้าม)`;
+        if (dx*b - dy*a === 0){ ctx.record({q:qq, a:aa, score:first?1:0.5}); lock = true; nl.setAttribute("stroke", "#5BB878"); ctx.correct(first?100:50, "รางขนานกันพอดี รถไฟวิ่งได้แล้ว! 🚂"); ctx.after(1000, done); }
+        else if (first){ first = false; ctx.wrong(`ยังไม่ขนาน รางเดิมไปทางขวา ${a} ช่อง ${b>0?"ลง":"ขึ้น"} ${Math.abs(b)} ช่อง ลองนับแบบเดียวกันจากจุด P (เหลืออีก 1 ครั้ง)`); }
+        else { lock = true; let T = null; for (let m = 3; m >= 1 && !T; m--) for (const sg of [1,-1]){ const x = P[0]+sg*a*m, y = P[1]+sg*b*m; if (x>=0 && x<=COLS && y>=0 && y<=ROWS){ T = [x,y]; break; } }
+          if (T){ nl.setAttribute("x2", gx(T[0])); nl.setAttribute("y2", gy(T[1])); nl.setAttribute("visibility","visible"); }
+          nl.setAttribute("stroke", "#5BB878"); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 เฉลย: รางที่ขนานต้อง${aa.replace(" (หรือย้อนทางตรงข้าม)","")} แบบเดียวกับรางเดิม`); ctx.after(3400, done); }
       };
     }
     function angles(){

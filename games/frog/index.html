@@ -84,16 +84,20 @@ KIT.mount({
       }
       const pond = board(nums, task);
       let left = target.length, first = true;
+      const qq = task.replace(/<[^>]+>/g,""), aa = target.slice().sort((x,y)=>x-y).join(", ");
       const need = ctx.stage.querySelector("#need"); need.textContent = `เหลืออีก ${left} ใบ`;
       pond.onclick = e => {
         const p = e.target.closest(".pad"); if (!p || p.classList.contains("on")) return;
         const n = +p.dataset.n;
         if (target.includes(n)){
           p.classList.add("on"); KIT.sfx.tap(); left--; need.textContent = left ? `เหลืออีก ${left} ใบ` : "ครบแล้ว!";
-          if (!left){ pond.onclick = null; ctx.correct(first?120:60, "กบข้ามบึงได้สำเร็จ!"); ctx.after(900, done); }
+          if (!left){ ctx.record({q:qq, a:aa, score:first?1:0.5}); pond.onclick = null; ctx.correct(first?120:60, "กบข้ามบึงได้สำเร็จ!"); ctx.after(900, done); }
         } else {
-          first = false; p.classList.add("bad"); ctx.after(500, () => p.classList.remove("bad"));
-          ctx.wrong(kind === "prime" ? `${n} ไม่ใช่จำนวนเฉพาะ เพราะหารด้วย ${factors(n)[1]} ลงตัว` : `${n} ไม่ใช่คำตอบ ลองหารดูว่าลงตัวไหม`);
+          p.classList.add("bad"); ctx.after(500, () => p.classList.remove("bad"));
+          const why = kind === "prime" ? `${n} ไม่ใช่จำนวนเฉพาะ เพราะหารด้วย ${factors(n)[1]} ลงตัว` : `${n} ไม่ใช่คำตอบ ลองหารดูว่าลงตัวไหม`;
+          if (first){ first = false; ctx.wrong(why + " (พลาดได้อีก 1 ครั้ง)"); }
+          else { pond.onclick = null; pond.querySelectorAll(".pad").forEach(x => { if (target.includes(+x.dataset.n)) x.classList.add("on"); });
+            need.textContent = "เฉลยแล้ว"; ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 ${why} — ใบที่ถูกคือ ${aa}`); ctx.after(3400, done); }
         }
       };
     }
@@ -106,9 +110,12 @@ KIT.mount({
       let first = true;
       pond.onclick = e => {
         const p = e.target.closest(".pad"); if (!p) return; const n = +p.dataset.n;
-        if (n === h){ p.classList.add("on"); pond.onclick = null; ctx.correct(first?100:50, `ถูกต้อง! ห.ร.ม. ของ ${a} และ ${b} คือ ${h}`); ctx.after(900, done); }
-        else { first = false; p.classList.add("bad"); ctx.after(500, () => p.classList.remove("bad"));
-          ctx.wrong(cf.includes(n) ? `${n} เป็นตัวหารร่วม แต่ยังไม่มากที่สุด` : `${n} หาร ${a} และ ${b} ไม่ลงตัวทั้งคู่`); }
+        const qq = `ห.ร.ม. ของ ${a} และ ${b}`;
+        if (n === h){ ctx.record({q:qq, a:String(h), score:first?1:0.5}); p.classList.add("on"); pond.onclick = null; ctx.correct(first?100:50, `ถูกต้อง! ห.ร.ม. ของ ${a} และ ${b} คือ ${h}`); ctx.after(900, done); }
+        else { p.classList.add("bad"); ctx.after(500, () => p.classList.remove("bad"));
+          const why = cf.includes(n) ? `${n} เป็นตัวหารร่วม แต่ยังไม่มากที่สุด` : `${n} หาร ${a} และ ${b} ไม่ลงตัวทั้งคู่`;
+          if (first){ first = false; ctx.wrong(why + " (เหลืออีก 1 ครั้ง)"); }
+          else { pond.onclick = null; const ok = pond.querySelector(`.pad[data-n="${h}"]`); if (ok) ok.classList.add("on"); ctx.wrong(null); ctx.record({q:qq, a:String(h), score:0}); ctx.reveal(`📖 เฉลย: ห.ร.ม. ของ ${a} และ ${b} คือ ${h}`); ctx.after(2800, done); } }
       };
     }
     function lcmTrack(){
@@ -120,9 +127,12 @@ KIT.mount({
       let first = true;
       pond.onclick = e => {
         const p = e.target.closest(".pad"); if (!p) return; const n = +p.dataset.n;
-        if (n === L){ p.classList.add("on","both"); pond.onclick = null; ctx.correct(first?100:50, `เจอกันที่ ${L} = ค.ร.น. ของ ${a} และ ${b}`); ctx.after(1000, done); }
-        else { first = false; p.classList.add("bad"); ctx.after(500, () => p.classList.remove("bad"));
-          ctx.wrong(n % a === 0 && n % b === 0 ? `${n} เป็นตัวคูณร่วม แต่ยังไม่ใช่ใบแรก` : n % a === 0 ? `กบเขียวมาถึง ${n} แต่กบฟ้าไม่ผ่าน` : n % b === 0 ? `กบฟ้ามาถึง ${n} แต่กบเขียวไม่ผ่าน` : `ไม่มีกบตัวไหนมาถึง ${n}`); }
+        const qq = `กบกระโดดทีละ ${a} และทีละ ${b} เจอกันใบแรกที่ใด (ค.ร.น.)`;
+        if (n === L){ ctx.record({q:qq, a:String(L), score:first?1:0.5}); p.classList.add("on","both"); pond.onclick = null; ctx.correct(first?100:50, `เจอกันที่ ${L} = ค.ร.น. ของ ${a} และ ${b}`); ctx.after(1000, done); }
+        else { p.classList.add("bad"); ctx.after(500, () => p.classList.remove("bad"));
+          const why = n % a === 0 && n % b === 0 ? `${n} เป็นตัวคูณร่วม แต่ยังไม่ใช่ใบแรก` : n % a === 0 ? `กบเขียวมาถึง ${n} แต่กบฟ้าไม่ผ่าน` : n % b === 0 ? `กบฟ้ามาถึง ${n} แต่กบเขียวไม่ผ่าน` : `ไม่มีกบตัวไหนมาถึง ${n}`;
+          if (first){ first = false; ctx.wrong(why + " (เหลืออีก 1 ครั้ง)"); }
+          else { pond.onclick = null; const ok = pond.querySelector(`.pad[data-n="${L}"]`); if (ok) ok.classList.add("on","both"); ctx.wrong(null); ctx.record({q:qq, a:String(L), score:0}); ctx.reveal(`📖 เฉลย: เจอกันที่ ${L} = ค.ร.น. ของ ${a} และ ${b}`); ctx.after(2800, done); } }
       };
     }
     function story(){

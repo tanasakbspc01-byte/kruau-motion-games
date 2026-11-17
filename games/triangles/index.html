@@ -146,8 +146,15 @@ KIT.mount({
       ctx.stage.querySelector("#send").onclick = () => {
         if (lock) return;
         if (cross(...P) === 0){ ctx.say("จุดทั้งสามอยู่บนเส้นตรงเดียวกัน ยังไม่เป็นสามเหลี่ยม"); return; }
-        if (test(P)){ lock = true; tri.setAttribute("fill", "#7FD39A"); ctx.correct(first?120:60, "สร้างสามเหลี่ยมได้ถูกต้อง!"); ctx.after(1000, done); }
-        else { first = false; ctx.wrong("ยังไม่ใช่ " + hint(P)); }
+        const qq = goal.replace(/<[^>]+>/g,"");
+        if (test(P)){ ctx.record({q:qq, a:"สร้างได้หลายแบบ", score:first?1:0.5}); lock = true; tri.setAttribute("fill", "#7FD39A"); ctx.correct(first?120:60, "สร้างสามเหลี่ยมได้ถูกต้อง!"); ctx.after(1000, done); }
+        else if (first){ first = false; ctx.wrong("ยังไม่ใช่ " + hint(P) + " (เหลืออีก 1 ครั้ง)"); }
+        else { lock = true; const was = hint(P); let ex = null;
+          for (const [b0,b1] of [[[2,7],[6,7]],[[2,7],[7,7]],[[2,7],[5,7]],[[1,7],[9,7]],[[1,7],[7,7]],[[2,7],[8,7]],[[1,7],[4,7]]]) { if (ex) break;
+            for (let y = 0; y <= ROWS && !ex; y++) for (let x = 0; x <= COLS && !ex; x++){ const T = [b0, b1, [x,y]]; if (cross(...T) !== 0 && test(T)) ex = T; } }
+          let aa = "สร้างได้หลายแบบ";
+          if (ex){ ex.forEach((p,i) => P[i] = p.slice()); draw(); tri.setAttribute("fill", "#7FD39A"); aa = `ตัวอย่างบนตาราง: ${mode === "kind" ? "ดูรูปที่เกมวาดให้" : "ฐาน " + Math.abs(ex[1][0]-ex[0][0]) + " หน่วย สูง " + Math.abs(ex[2][1]-ex[0][1]) + " หน่วย"}`; }
+          ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 เฉลย: ${was} — ดูตัวอย่างที่ถูกบนตาราง (สีเขียว)`); ctx.after(3800, done); }
       };
     }
     ctx.progress(0, N); ctx.say("พร้อมสร้างสามเหลี่ยมหรือยัง?");

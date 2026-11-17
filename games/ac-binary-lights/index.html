@@ -109,6 +109,7 @@ KIT.mount({
       lock = true; cancelAnimationFrame(raf);
       const it = deck[idx];
       ctx.stage.querySelector(".tl ." + (it[2] ? "g" : "r")).classList.add("on");
+      ctx.record({q:`${it[0]} ${it[1]}`, a:it[2] ? "ควรทำ" : "ไม่ควรทำ", options:["ควรทำ","ไม่ควรทำ"], answer:it[2] ? 0 : 1, explain:it[3], score: v === it[2] ? 1 : 0});
       if (v === it[2]){
         const left = lim ? Math.max(0, 1 - (performance.now()-t0)/lim) : 1;
         ctx.correct(lim ? 60 + Math.round(left*60) : 100, `ถูกต้อง! ${it[2] ? "ควรทำ" : "ไม่ควรทำ"} เพราะ${it[3]}`);

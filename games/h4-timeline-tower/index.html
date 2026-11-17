@@ -54,7 +54,7 @@ KIT.mount({
   key:"h4-tower", title:"หอคอยไทม์ไลน์", subtitle:"ประวัติศาสตร์ ป.4 · หน่วยที่ 1 เวลาและเหตุการณ์ (ยุคสมัย)",
   heroHTML:"ต่อ<em>หอคอยเวลา</em> เรียงให้ถูกจากฐาน 🏗️", heroDesc:"แตะบล็อกที่มาก่อนให้วางเป็นฐาน แล้วไล่ต่อขึ้นไปจนสุด หอคอยจะสูงขึ้นเรื่อย ๆ",
   progIcon:"🏗️",
-  howto:["อ่านคำสั่งว่าเรียงแบบไหน","แตะบล็อกที่ \"มาก่อน\" เพื่อวางเป็นฐานหอคอย","แตะบล็อกถัดไปต่อขึ้นไปจนครบ","แตะผิดลำดับเสีย 10 คะแนน ครบ 4 หอคอยผ่านด่าน"],
+  howto:["อ่านคำสั่งว่าเรียงแบบไหน","แตะบล็อกที่ \"มาก่อน\" เพื่อวางเป็นฐานหอคอย","แตะบล็อกถัดไปต่อขึ้นไปจนครบ","แตะผิดได้ 2 ครั้งต่อบล็อก ถ้ายังผิดเกมจะวางให้ (บล็อกสีแดง) แล้วเล่นต่อ"],
   levels:{
     1:{pill:"4 หอคอย", color:"var(--green)", desc:"หอคอยละ 4 บล็อก หน่วยเวลา ชีวิตเรา ยุคหิน–โลหะ"},
     2:{pill:"4 หอคอย", color:"var(--blue)", desc:"หอคอยละ 5 บล็อก สมัยของไทย ทศวรรษ ปี พ.ศ."},
@@ -68,10 +68,10 @@ KIT.mount({
     ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="qtext" id="qt"></div></div>
       <div class="site"><div class="tower" id="tw"><span class="crane">🏗️</span></div><div><div class="ask" id="ak"></div><div class="pile" id="pl"></div></div></div>`;
     const $ = s => ctx.stage.querySelector(s);
-    let si = 0, order = [], k = 0, first = true;
+    let si = 0, order = [], k = 0, first = true, miss = 0, bmiss = 0;
     function tower(){
       if (si >= total){ ctx.finish({targetSec: level===3 ? 150 : 100}); return; }
-      const S = sets[si]; order = build(S, n); k = 0; first = true;
+      const S = sets[si]; order = build(S, n); k = 0; first = true; miss = 0; bmiss = 0;
       $("#qn").textContent = `หอคอยที่ ${si+1} จาก ${total}`; $("#qt").textContent = S.t;
       $("#tw").innerHTML = `<span class="crane">🏗️</span>`;
       const col = shuffle(COLORS.slice());
@@ -80,16 +80,24 @@ KIT.mount({
     }
     $("#pl").addEventListener("click", e => {
       const b = e.target.closest(".pb"); if (!b) return;
-      if (+b.dataset.i === k){
-        const blk = document.createElement("div"); blk.className = "tb"; blk.style.background = b.style.background; blk.textContent = b.textContent;
-        $("#tw").appendChild(blk); b.remove(); k++; KIT.sfx.pop();
-        if (k === order.length){ ctx.correct(first ? 150 : 80, "หอคอยตั้งตรงเป๊ะ! 🎉"); si++; ctx.progress(si, total); $("#ak").textContent = "สำเร็จ!"; ctx.after(1300, tower); }
-        else $("#ak").textContent = `ดีมาก! บล็อกที่ ${k+1} คืออะไร?`;
-      } else {
-        first = false; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
-        ctx.wrong("ยังไม่ใช่บล็อกถัดไป หอคอยโยกเลย! ลองคิดลำดับใหม่");
+      if (+b.dataset.i === k) place(b, false);
+      else {
+        first = false; miss++; bmiss++; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
+        if (bmiss < 2) ctx.wrong("ยังไม่ใช่บล็อกถัดไป หอคอยโยกเลย! ลองอีกครั้ง (เหลืออีก 1 ครั้ง)");
+        else { ctx.wrong(null); const right = $("#pl").querySelector(`.pb[data-i="${k}"]`); ctx.reveal(`📖 เฉลย: บล็อกที่ ${k+1} คือ "${order[k]}" เกมวางให้แล้ว (บล็อกสีแดง)`); place(right, true); }
       }
     });
+    function place(b, helped){
+      const blk = document.createElement("div"); blk.className = "tb"; blk.style.background = helped ? "#E06767" : b.style.background; blk.textContent = (helped ? "⚠️ " : "") + b.textContent;
+      $("#tw").appendChild(blk); b.remove(); k++; bmiss = 0; KIT.sfx.pop();
+      if (k === order.length){
+        const S = sets[si];
+        ctx.record({q:S.t, a:order.join(" → "), score: miss === 0 ? 1 : miss <= 2 ? 0.5 : 0});
+        if (miss === 0) ctx.correct(150, "หอคอยตั้งตรงเป๊ะ! 🎉"); else ctx.say(`หอคอยเสร็จแล้ว! (ผิด ${miss} ครั้ง) ลำดับที่ถูกคือ ${order.join(" → ")}`, miss <= 2 ? "good" : "bad");
+        si++; ctx.progress(si, total); $("#ak").textContent = "สำเร็จ!"; ctx.after(miss ? 2600 : 1300, tower);
+      } else if (!helped) $("#ak").textContent = `ดีมาก! บล็อกที่ ${k+1} คืออะไร?`;
+      else $("#ak").textContent = `บล็อกที่ ${k+1} คืออะไร?`;
+    }
     ctx.progress(0, total); ctx.say("มาสร้างหอคอยเวลากัน!");
     tower();
   }

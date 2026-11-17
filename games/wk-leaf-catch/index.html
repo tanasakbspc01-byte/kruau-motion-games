@@ -78,6 +78,7 @@ BK.mount({
         l.el.style.top = l.y + "px"; l.el.style.marginLeft = (Math.sin(l.sw)*10) + "px";
         if (l.y > h - 120 && l.y < h - 60 && Math.abs(l.x - x)*w < 62){
           l.el.remove();
+          ctx.record({q:`ใบตอง "${l.it[1]}" เหมาะกับงานประดิษฐ์ไหม?`, a:l.good ? "เหมาะ (ใบตองดี)" : "ไม่เหมาะ (ใบตองเสีย)", options:["เหมาะ (ใบตองดี)","ไม่เหมาะ (ใบตองเสีย)"], answer:l.good ? 0 : 1, score:l.good ? 1 : 0});
           if (l.good){ got++; ctx.correct(100, `รับได้! ${l.it[1]} ✔`); ctx.progress(got, NEED); if (got >= NEED) ctx.finish({targetSec: 60}); }
           else ctx.wrong(`โอ๊ะ! "${l.it[1]}" ไม่เหมาะกับงานประดิษฐ์`);
           return false;

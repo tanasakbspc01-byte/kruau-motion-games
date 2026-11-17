@@ -129,9 +129,9 @@ KIT.mount({
           draw(); return g;
         },
         wrong: (msg) => {
-          if (firstTry){ firstTry = false; origWrong("ยังไม่ถูก"); const v = roll(); const [p, note] = move(cat, v); cat = p; draw(); ctx.say(`ผิด! แมวน้อยทอยได้ ${v} เดินไปช่อง ${cat}${note} ลองตอบใหม่`, "bad");
+          if (firstTry){ firstTry = false; origWrong("ยังไม่ถูก"); const v = roll(); const [p, note] = move(cat, v); cat = p; draw(); ctx.say(`ผิด! แมวน้อยทอยได้ ${v} เดินไปช่อง ${cat}${note} ลองตอบใหม่ (เหลืออีก 1 ครั้ง)`, "bad");
             if (cat >= GOAL){ ctx.say("แมวน้อยถึงเส้นชัยก่อน! แต่เธอยังเล่นต่อได้", "bad"); cat = 1; ctx.after(1200, draw); } }
-          else origWrong("ยังไม่ถูก ลองอีกครั้ง");
+          else origWrong(msg);
         }
       });
       KIT.mcq(wctx, host, {label:`คำถามที่ ${asked}`, html:q.html, options:q.options, answer:q.answer, cols:q.cols || 2, onNext:() => ctx.after(500, turn)});

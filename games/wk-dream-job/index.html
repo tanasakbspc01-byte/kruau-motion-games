@@ -57,7 +57,7 @@ BK.mount({
   key:"w-guess", title:"ไขปริศนาอาชีพในฝัน", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 7 อาชีพในฝัน",
   heroHTML:"ฉันคือ<em>อาชีพอะไร</em>? 🔍", heroDesc:"อ่านคำใบ้แล้วทายอาชีพ ยิ่งใช้คำใบ้น้อย ยิ่งได้เหรียญมาก",
   progIcon:"🔍",
-  howto:["อ่านคำใบ้ที่เปิดอยู่","ถ้ายังไม่แน่ใจ กด \"ขอคำใบ้เพิ่ม\"","แตะอาชีพที่คิดว่าใช่ ใช้คำใบ้น้อยได้คะแนนมาก","ทายผิดเสียหัวใจ ❤️ ทายครบ 8 อาชีพผ่านด่าน"],
+  howto:["อ่านคำใบ้ที่เปิดอยู่","ถ้ายังไม่แน่ใจ กด \"ขอคำใบ้เพิ่ม\"","แตะอาชีพที่คิดว่าใช่ ใช้คำใบ้น้อยได้คะแนนมาก","ทายได้ 2 ครั้ง (ผิดเสียหัวใจ ❤️) ถ้ายังผิดจะเฉลยแล้วไปปริศนาต่อไป"],
   levels:{
     1:{pill:"8 ปริศนา", color:"var(--green)", desc:"เริ่มด้วย 2 คำใบ้ เลือกจาก 4 อาชีพ"},
     2:{pill:"8 ปริศนา", color:"var(--blue)", desc:"เริ่มด้วย 1 คำใบ้ เลือกจาก 6 อาชีพ"},
@@ -88,13 +88,19 @@ BK.mount({
     $("#mo").onclick = () => { if (shown < 4 && !lock){ shown++; KIT.sfx.tap(); draw(); } };
     $("#an").addEventListener("click", e => {
       const b = e.target.closest(".job"); if (!b || lock || b.classList.contains("no")) return;
-      const j = deck[idx];
-      if (b.dataset.j === j[1]){
+      const j = deck[idx], btns = [...ctx.stage.querySelectorAll(".job")], names = btns.map(x => x.dataset.j);
+      const o4 = KIT.shuffle([j[1], ...KIT.shuffle(names.filter(x => x !== j[1])).slice(0,3)]);
+      const rec = sc => ctx.record({q:`ฉันคืออาชีพอะไร? ${j[2].join(" / ")}`, a:j[1], options:o4, answer:o4.indexOf(j[1]), score:sc});
+      if (b.dataset.j === j[1]){ rec(miss === 0 ? 1 : 0.5);
         const gain = pts(); lock = true; b.classList.add("ok"); shown = 4; draw(); $("#my").className = "mys show"; $("#my").innerHTML = `<div style="font-size:4rem;text-align:center">${j[0]}</div>`;
         ctx.correct(gain, `ใช่แล้ว! ${j[1]} — ทักษะสำคัญ: ${j[3]}`); idx++; ctx.progress(idx, N); ctx.after(2000, next);
-      } else {
+      } else if (miss < 1){
         miss++; b.classList.add("no"); if (shown < 4) shown++; draw();
-        ctx.wrong(`ยังไม่ใช่ ${b.dataset.j} — เปิดคำใบ้เพิ่มให้แล้ว`);
+        ctx.wrong(`ยังไม่ใช่ ${b.dataset.j} — เปิดคำใบ้เพิ่มให้แล้ว (ทายได้อีก 1 ครั้ง)`);
+      } else {
+        lock = true; b.classList.add("no"); rec(0); ctx.wrong(null); shown = 4; draw();
+        btns.find(x => x.dataset.j === j[1]).classList.add("ok"); $("#my").className = "mys show"; $("#my").innerHTML = `<div style="font-size:4rem;text-align:center">${j[0]}</div>`;
+        ctx.reveal(`📖 เฉลย: ${j[1]} — ทักษะสำคัญ: ${j[3]}`); idx++; ctx.progress(idx, N); ctx.after(3200, next);
       }
     });
     ctx.progress(0, N); ctx.say("อ่านคำใบ้ แล้วทายอาชีพ!");

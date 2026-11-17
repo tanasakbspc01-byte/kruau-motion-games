@@ -88,8 +88,12 @@ KIT.mount({
         const r = +b.dataset.r, wh = ctx.stage.querySelector("#wh");
         const frac2 = Math.min(1.15, circ(r)/dist);
         wh.style.left = (4 + 80*frac2) + "%"; wh.querySelector("svg").style.transform = `rotate(${360*Math.min(1.15,frac2)}deg)`;
-        if (r === target){ lock = true; b.classList.add("right"); ctx.correct(first?100:50, `ถึงธงพอดี! เส้นรอบวง = 2 × 22/7 × ${r} = ${dist} ซม.`); ctx.after(1900, done); }
-        else { first = false; b.classList.add("wrong"); b.disabled = true; ctx.wrong(`ล้อรัศมี ${r} ซม. กลิ้งได้ ${circ(r)} ซม. ${circ(r) < dist ? "ยังไม่ถึงธง" : "เลยธงไป"}`);
+        const qq = `ธงห่าง ${dist} ซม. ล้อรัศมีเท่าใดหมุน 1 รอบถึงธงพอดี`, aa = `รัศมี ${target} ซม. (2 × 22/7 × ${target} = ${dist})`;
+        if (r === target){ ctx.record({q:qq, a:aa, score:first?1:0.5}); lock = true; b.classList.add("right"); ctx.correct(first?100:50, `ถึงธงพอดี! เส้นรอบวง = 2 × 22/7 × ${r} = ${dist} ซม.`); ctx.after(1900, done); }
+        else if (!first){ lock = true; b.classList.add("wrong"); ctx.stage.querySelector(`.wbtn[data-r="${target}"]`).classList.add("right"); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0});
+          ctx.reveal(`📖 เฉลย: ${aa} — ล้อรัศมี ${r} ซม. กลิ้งได้ ${circ(r)} ซม.`);
+          ctx.after(1800, () => { wh.style.left = "84%"; wh.querySelector("svg").style.transform = "rotate(360deg)"; }); ctx.after(4200, done); }
+        else { first = false; b.classList.add("wrong"); b.disabled = true; ctx.wrong(`ล้อรัศมี ${r} ซม. กลิ้งได้ ${circ(r)} ซม. ${circ(r) < dist ? "ยังไม่ถึงธง" : "เลยธงไป"} (เหลืออีก 1 ครั้ง)`);
           ctx.after(1800, () => { wh.style.transition = "none"; wh.querySelector("svg").style.transition = "none"; wh.style.left = "4%"; wh.querySelector("svg").style.transform = ""; void wh.offsetWidth; wh.style.transition = ""; wh.querySelector("svg").style.transition = ""; }); }
       };
     }

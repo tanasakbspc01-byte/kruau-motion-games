@@ -94,6 +94,8 @@ KIT.mount({
       lock = true; cancelAnimationFrame(raf);
       const all = [...ctx.stage.querySelectorAll(".choice")]; all.forEach(b => b.disabled = true);
       const good = all.find(b => +b.dataset.v === cur.ans);
+      const ov = all.map(b => b.textContent), ai = all.indexOf(good);
+      ctx.record({q:`${cur.q} = ?`, a:show(cur.ans), options:ov, answer:ai, score: btn && btn === good ? 1 : 0});
       if (btn && btn === good){
         btn.classList.add("right");
         const left = Math.max(0, 1 - (performance.now()-t0)/lim);

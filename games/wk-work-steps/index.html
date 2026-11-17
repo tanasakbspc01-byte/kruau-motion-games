@@ -46,7 +46,7 @@ BK.mount({
   key:"w-steps", title:"ขั้นตอนโปร ทำงานเป็นระบบ", subtitle:"การงานอาชีพ ป.4 · หน่วยที่ 1 ดูแลและจัดเก็บของใช้ (กระบวนการทำงาน)",
   heroHTML:"เรียง<em>ขั้นตอน</em>ให้ถูก งานเสร็จไว ⚙️", heroDesc:"งานบ้านทุกงานมีลำดับขั้นตอน แตะขั้นตอนที่ต้องทำก่อนไปหลังให้ถูกต้อง",
   progIcon:"⚙️",
-  howto:["อ่านชื่องาน","แตะขั้นตอนที่ต้องทำ \"ก่อน\" ไล่ไปจนถึงขั้นสุดท้าย","แตะผิดลำดับเสียหัวใจ ❤️","เรียงครบทุกงานผ่านด่าน"],
+  howto:["อ่านชื่องาน","แตะขั้นตอนที่ต้องทำ \"ก่อน\" ไล่ไปจนถึงขั้นสุดท้าย","แตะผิดได้ 2 ครั้งต่อขั้น ถ้ายังผิดเกมจะเฉลยและวางให้","เรียงครบทุกงานผ่านด่าน"],
   levels:{
     1:{pill:"5 งาน", color:"var(--green)", desc:"งานละ 3 ขั้นตอน"},
     2:{pill:"6 งาน", color:"var(--blue)", desc:"งานละ 4 ขั้นตอน"},
@@ -62,10 +62,10 @@ BK.mount({
     const total = tasks.reduce((a,t) => a + t.steps.length, 0);
     ctx.stage.innerHTML = `<div class="qcard"><div class="qlabel" id="qn"></div><div class="task"><span class="e" id="ic"></span><span class="qtext" id="tn"></span></div><div class="slots" id="sl"></div></div><div class="opts" id="op"></div>`;
     const $ = s => ctx.stage.querySelector(s);
-    let ti = 0, k = 0, got = 0, first = true;
+    let ti = 0, k = 0, got = 0, first = true, miss = 0, smiss = 0;
     function show(){
       if (ti >= tasks.length){ ctx.finish({targetSec: level===3 ? 160 : 100}); return; }
-      const t = tasks[ti]; k = 0; first = true;
+      const t = tasks[ti]; k = 0; first = true; miss = 0; smiss = 0;
       $("#qn").textContent = `งานที่ ${ti+1} จาก ${tasks.length} · แตะขั้นตอนแรกก่อน`; $("#ic").textContent = t.ic; $("#tn").textContent = t.name;
       $("#sl").innerHTML = t.steps.map((_,i)=>`<i>${i+1}</i>`).join("");
       $("#op").innerHTML = shuffle(t.steps.map((s,i)=>({s,i}))).map(x=>`<button class="st" type="button" data-i="${x.i}"><span class="n">?</span><span>${x.s}</span></button>`).join("");
@@ -73,14 +73,20 @@ BK.mount({
     $("#op").addEventListener("click", e => {
       const b = e.target.closest(".st"); if (!b || b.classList.contains("done")) return;
       const t = tasks[ti];
-      if (+b.dataset.i === k){
-        b.classList.add("done"); b.querySelector(".n").textContent = k+1; $("#sl").children[k].classList.add("on"); k++; got++;
+      const step = (el, helped) => {
+        el.classList.add("done"); if (helped) el.style.background = "#FFE3E3"; el.querySelector(".n").textContent = k+1; $("#sl").children[k].classList.add("on"); k++; got++; smiss = 0;
         KIT.sfx.tap(); ctx.progress(got, total);
-        if (k === t.steps.length){ ctx.correct(first ? 150 : 80, `เรียง "${t.name}" ถูกครบ! 🎉`); ti++; ctx.after(1300, show); }
-        else ctx.say(`ถูก! ขั้นที่ ${k+1} คืออะไรต่อ?`, "good");
-      } else {
-        first = false; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
-        ctx.wrong(`ยังไม่ใช่ขั้นที่ ${k+1} ลองคิดว่าต้องทำอะไรก่อน`);
+        if (k === t.steps.length){
+          ctx.record({q:`ขั้นตอน "${t.name}"`, a:t.steps.join(" → "), score: miss === 0 ? 1 : miss <= 2 ? 0.5 : 0});
+          if (miss === 0) ctx.correct(150, `เรียง "${t.name}" ถูกครบ! 🎉`); else ctx.say(`จบงาน "${t.name}" (ผิด ${miss} ครั้ง) ทบทวนลำดับที่ถูกได้ในหน้าสรุป`, miss <= 2 ? "good" : "bad");
+          ti++; ctx.after(miss ? 2400 : 1300, show);
+        } else if (!helped) ctx.say(`ถูก! ขั้นที่ ${k+1} คืออะไรต่อ?`, "good");
+      };
+      if (+b.dataset.i === k) step(b, false);
+      else {
+        first = false; miss++; smiss++; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
+        if (smiss < 2) ctx.wrong(`ยังไม่ใช่ขั้นที่ ${k+1} ลองอีกครั้ง (เหลืออีก 1 ครั้ง)`);
+        else { ctx.wrong(null); const r = $("#op").querySelector(`.st[data-i="${k}"]`); ctx.reveal(`📖 เฉลย: ขั้นที่ ${k+1} คือ "${t.steps[k]}" (วางให้แล้ว)`); step(r, true); }
       }
     });
     ctx.progress(0, total); ctx.say("ทำงานเป็นขั้นตอน งานจะสำเร็จ!");

@@ -77,29 +77,37 @@ BK.mount({
       const opts = shuffle([...P.need, ...shuffle(BAD.slice()).slice(0, 8 - P.need.length)]);
       const draw = () => { const arr = [...chosen]; $("#g9").innerHTML = Array.from({length:9},(_,i)=>`<i>${arr[i] ? MAT[arr[i]][0] : ""}</i>`).join(""); $("#rs").textContent = `เลือกแล้ว ${chosen.size}/${P.need.length}`; };
       $("#area").innerHTML = `<div class="mats" id="mt">${opts.map(k=>`<button class="mat" type="button" data-k="${k}"><span class="e">${MAT[k][0]}</span>${MAT[k][1]}</button>`).join("")}</div><div class="go"><button class="btn" type="button" id="cf">🛠️ คราฟต์!</button></div>`;
-      draw(); let first = true;
+      draw(); let first = true, bad = 0;
       $("#mt").onclick = e => {
         const b = e.target.closest(".mat"); if (!b || b.disabled) return; const k = b.dataset.k;
         if (chosen.has(k)){ chosen.delete(k); b.classList.remove("in"); draw(); return; }
-        if (!P.need.includes(k)){ first = false; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no"); b.disabled = true; ctx.wrong(`${MAT[k][1]} ไม่ต้องใช้ในงาน${P.name}`); return; }
+        if (!P.need.includes(k)){ first = false; bad++; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no"); b.disabled = true; ctx.wrong(`${MAT[k][1]} ไม่ต้องใช้ในงาน${P.name}`); return; }
         chosen.add(k); b.classList.add("in"); KIT.sfx.tap(); draw();
       };
       $("#cf").onclick = () => {
         const miss = P.need.filter(k => !chosen.has(k));
         if (miss.length){ ctx.say(`ยังขาดอีก ${miss.length} อย่าง ลองดูให้ครบนะ`); return; }
+        ctx.record({q:`วัสดุอุปกรณ์สำหรับ${P.name}`, a:P.need.map(k => MAT[k][1]).join(", "), score: bad === 0 ? 1 : bad <= 2 ? 0.5 : 0});
         ctx.correct(first ? 120 : 70, `ได้วัสดุครบ! ✨`); done++; ctx.progress(done, total);
         if (L.steps) ctx.after(900, () => order(P)); else { pi++; ctx.after(1100, product); }
       };
     }
     function order(P){
-      const steps = (level === 3 && P === PRODUCTS[0]) ? KRATONG : PROCESS; let k = 0, first = true;
+      const steps = (level === 3 && P === PRODUCTS[0]) ? KRATONG : PROCESS; let k = 0, first = true, miss = 0, smiss = 0;
       $("#rs").textContent = "เรียงขั้นตอนการทำให้ถูก";
       $("#area").innerHTML = `<div class="qcard" style="margin-top:12px"><div class="qtext">แตะขั้นตอน${steps === PROCESS ? "การทำงานประดิษฐ์" : "การทำกระทงใส่ขนม"}จากแรกไปสุดท้าย</div></div><div class="steps" id="sp">${shuffle(steps.map((s,i)=>({s,i}))).map(x=>`<button class="st" type="button" data-i="${x.i}"><span class="n">?</span>${x.s}</button>`).join("")}</div>`;
       $("#sp").onclick = e => {
         const b = e.target.closest(".st"); if (!b || b.classList.contains("done")) return;
-        if (+b.dataset.i === k){ b.classList.add("done"); k++; b.querySelector(".n").textContent = k; KIT.sfx.tap();
-          if (k === steps.length){ ctx.correct(first ? 150 : 80, `คราฟต์ ${P.name} สำเร็จ! ${P.ic}`); done++; ctx.progress(done, total); pi++; ctx.after(1300, product); }
-        } else { first = false; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no"); ctx.wrong(`ยังไม่ใช่ขั้นที่ ${k+1}`); }
+        const step = (el, helped) => { el.classList.add("done"); if (helped) el.style.background = "#FFE3E3"; k++; smiss = 0; el.querySelector(".n").textContent = k; KIT.sfx.tap();
+          if (k === steps.length){
+            ctx.record({q:`ขั้นตอนการทำ${P.name}`, a:steps.join(" → "), score: miss === 0 ? 1 : miss <= 2 ? 0.5 : 0});
+            if (miss === 0) ctx.correct(150, `คราฟต์ ${P.name} สำเร็จ! ${P.ic}`); else ctx.say(`คราฟต์ ${P.name} เสร็จแล้ว (ผิด ${miss} ครั้ง)`, miss <= 2 ? "good" : "bad");
+            done++; ctx.progress(done, total); pi++; ctx.after(miss ? 2200 : 1300, product);
+          } };
+        if (+b.dataset.i === k) step(b, false);
+        else { first = false; miss++; smiss++; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
+          if (smiss < 2) ctx.wrong(`ยังไม่ใช่ขั้นที่ ${k+1} ลองอีกครั้ง (เหลืออีก 1 ครั้ง)`);
+          else { ctx.wrong(null); ctx.reveal(`📖 เฉลย: ขั้นที่ ${k+1} คือ "${steps[k]}" (วางให้แล้ว)`); step($("#sp").querySelector(`.st[data-i="${k}"]`), true); } }
       };
     }
     ctx.progress(0, total); ctx.say("มาคราฟต์งานใบตองกัน!");

@@ -81,6 +81,8 @@ KIT.mount({
     function tap(b){
       if (lock || b.done) return;
       const want = PLAN[round].t;
+      const KO = L.trick ? ["สิทธิ","หน้าที่","การกระทำที่ไม่ควรทำ"] : ["สิทธิ","หน้าที่"], ki = {R:0, D:1, X:2}[b.it[2]];
+      ctx.record({q:`${b.it[0]} "${b.it[1]}" คืออะไร?`, a:KO[ki], options:KO, answer:ki, score: b.it[2] === want ? 1 : 0});
       if (b.it[2] === want){
         b.done = true; b.el.classList.add("pop"); KIT.sfx.pop(); got++; total++;
         $("#cn").textContent = `(${got}/${L.need})`;
@@ -88,7 +90,7 @@ KIT.mount({
         ctx.after(350, () => b.el.remove());
         if (got >= L.need){ lock = true; round++; ctx.after(1200, start); }
       } else {
-        b.el.classList.remove("bad"); void b.el.offsetWidth; b.el.classList.add("bad");
+        b.done = true; b.el.classList.remove("bad"); void b.el.offsetWidth; b.el.classList.add("bad"); ctx.after(900, () => b.el.remove());
         const kind = b.it[2] === "R" ? "สิทธิ" : b.it[2] === "D" ? "หน้าที่" : "การกระทำที่ไม่ควรทำ";
         ctx.wrong(`"${b.it[1]}" เป็น${kind} ไม่ใช่${PLAN[round].n}`);
       }
