@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>อ่านออกเขียนได้ ขั้นที่ 3 วรรณยุกต์และการผันเสียง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#E8478B;--main-deep:#B8236A}
+.tm{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+@media (max-width:700px){.tm{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tc{background:#fff;border:3px solid var(--tc);border-radius:20px;box-shadow:0 4px 0 var(--tc);padding:10px 6px;text-align:center;cursor:pointer;font:inherit;color:inherit}
+.tc .mk{font:700 52px/1 Sarabun,sans-serif;color:var(--tc);min-height:56px;display:grid;place-items:center}
+.tc .nm{font:700 1.05rem Mali,sans-serif}
+.tc .ex{font:700 34px/1.2 Sarabun,sans-serif}
+.tc svg{width:70px;height:40px;display:block;margin:2px auto}
+.cls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.cls{grid-template-columns:1fr}}
+.cls .card h3{margin:0 0 6px}
+.lt{display:flex;flex-wrap:wrap;gap:6px}
+.lt button{min-width:46px;height:46px;border-radius:12px;border:2px solid #eee;background:#fff;font:700 26px Sarabun,sans-serif;cursor:pointer}
+.song{font:600 1rem Mali,sans-serif;color:#555;margin:6px 0 0}
+.build{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:14px;align-items:start}
+@media (max-width:760px){.build{grid-template-columns:1fr}}
+.pal{display:flex;flex-wrap:wrap;gap:6px}
+.pal button{min-width:46px;height:46px;border-radius:12px;border:2px solid #f3d6e4;background:#fff;font:700 24px Sarabun,sans-serif;cursor:pointer;padding:0 8px}
+.pal button.on{background:var(--main);color:#fff;border-color:var(--main)}
+.pal button[data-g="m"]{border-bottom:4px solid #2DBE6C}.pal button[data-g="h"]{border-bottom:4px solid #FF7A45}.pal button[data-g="l"]{border-bottom:4px solid #3B82F6}
+.lad{display:grid;gap:8px}
+.lad button{display:grid;grid-template-columns:72px minmax(0,1fr) 84px;align-items:center;gap:8px;background:#fff;border:3px solid #eee;border-radius:16px;padding:6px 10px;cursor:pointer;font:inherit;text-align:left}
+.lad button .w{font:700 clamp(30px,5vw,42px)/1.1 Sarabun,sans-serif;color:var(--main-deep)}
+.lad button .t{font:700 1rem Mali,sans-serif}
+.lad button small{color:#888;font-size:.85rem}
+.lad button.off{opacity:.45}
+.lad svg{width:64px;height:36px}
+.grp{font:700 1.05rem Mali,sans-serif;padding:6px 12px;border-radius:999px;display:inline-block;color:#fff}
+.g-m{background:#2DBE6C}.g-h{background:#FF7A45}.g-l{background:#3B82F6}
+table.rule{width:100%;border-collapse:separate;border-spacing:4px;font-size:1.05rem}
+table.rule th,table.rule td{background:#fff;border-radius:10px;padding:6px 8px;text-align:center;border:2px solid #f0e3ea}
+table.rule td b{font:700 30px Sarabun,sans-serif}
+table.rule td.na{color:#bbb;background:#fafafa}
+.game{display:flex;flex-direction:column;align-items:center;gap:12px}
+.gtop{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+.ask{font:700 clamp(54px,9vw,88px)/1.1 Sarabun,sans-serif;min-height:96px;display:grid;place-items:center;color:var(--main-deep);text-align:center}
+.ask .em{font-size:clamp(60px,10vw,92px)}
+.ask .wd{font:700 clamp(24px,4vw,34px) Mali,sans-serif;color:#555;display:block}
+.opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:min(640px,100%)}
+.opts.five{grid-template-columns:repeat(5,minmax(0,1fr));width:min(720px,100%)}
+.opts.three{grid-template-columns:repeat(3,minmax(0,1fr));width:min(560px,100%)}
+@media (max-width:600px){.opts.five{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.opts button{min-height:84px;border-radius:18px;border:3px solid #eee;background:#fff;font:700 clamp(28px,5vw,44px)/1.1 Sarabun,sans-serif;cursor:pointer;box-shadow:0 4px 0 #e2e2e2;color:#333;padding:6px}
+.opts button small{display:block;font:600 15px Mali,sans-serif;color:#777}
+.opts button.tn{font:700 clamp(18px,2.6vw,24px)/1.2 Mali,sans-serif}
+.opts button.ok{background:#DFF7E8;border-color:#2DBE6C}
+.opts button.no{background:#FFE3E3;border-color:#FF5C7A;animation:shk .35s}
+@keyframes shk{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.stat{font-weight:700;color:var(--main-deep);font-size:1.1rem}
+.voice{font-size:.95rem}
+[data-rate].on{background:var(--main);color:#fff;border-color:var(--main)}
+.trace{display:flex;flex-direction:column;align-items:center;gap:10px}
+.tbox{position:relative;width:min(520px,92vw);aspect-ratio:1.3;border-radius:22px;background:#fff;border:3px dashed #F3B5D0;overflow:hidden;touch-action:none}
+.tbox .gd{position:absolute;inset:0;display:grid;place-items:center;transform:translateY(-10%);font:400 min(210px,42vw)/1 Sarabun,sans-serif;color:#FBEAF2;-webkit-text-stroke:2px #EFA3C5;pointer-events:none;white-space:nowrap}
+.tbox .ln{position:absolute;left:0;right:0;border-top:2px dashed #F6D3E3;pointer-events:none}
+.tbox canvas{position:absolute;inset:0;width:100%;height:100%}
+.kru5{width:min(220px,50vw);height:auto;display:block;margin:0 auto}
+.tipk{display:flex;gap:14px;align-items:center}.tipk img{width:min(130px,26vw);height:auto;flex:none}
+.big{font:700 40px Sarabun,sans-serif}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🎵</span>
+  <div class="ttl"><b>วรรณยุกต์และการผันเสียง</b><small>อ่านออกเขียนได้ · ขั้นที่ 3</small></div>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge" style="background:var(--pink)">ภาษาไทย · อ่านออกเขียนได้ ขั้นที่ 3</span>
+  <img class="kru5" src="k5.webp" alt="ครูอู๋">
+  <h1>วรรณยุกต์และการผันเสียง</h1>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul>
+      <li>รู้จัก <b>วรรณยุกต์ 4 รูป 5 เสียง</b></li>
+      <li>แยก <b>อักษรกลาง อักษรสูง อักษรต่ำ</b> (อักษรสามหมู่) ได้</li>
+      <li><b>ผันเสียง</b> คำง่าย ๆ เช่น กา ก่า ก้า ก๊า ก๋า ได้</li>
+      <li><b>อ่านและเขียน</b> คำที่มีวรรณยุกต์ เช่น ไก่ ม้า ปู่ ได้</li>
+    </ul>
+  </div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button>
+</div></section>
+
+<section class="slide" data-title="เปิดเสียงก่อนเรียน"><div class="inner">
+  <h2 class="h"><span class="e">🔊</span>เปิดเสียงก่อนเรียนนะ</h2>
+  <div class="card c-blue center">
+    <p>บทเรียนนี้ <b>อ่านออกเสียง</b> ให้ฟัง แตะปุ่มเพื่อลองฟัง แล้วเลือกความเร็วที่เด็กฟังทัน</p>
+    <button class="btn" data-say="กา|ก่า|ก้า|ก๊า|ก๋า">🔊 ลองฟัง "กา ก่า ก้า ก๊า ก๋า"</button>
+    <div class="row center" style="margin-top:8px"><span>ความเร็วเสียงอ่าน:</span><button class="btn ghost" data-rate=".55">🐢 ช้ามาก</button><button class="btn ghost" data-rate=".7">🐌 ช้า</button><button class="btn ghost" data-rate=".9">🐇 ปกติ</button></div>
+    <p class="voice" id="voiceMsg"></p>
+  </div>
+  <div class="card c-yellow"><p>💡 ถ้าไม่มีเสียง ให้เปิดเสียงเครื่องและปิดโหมดเงียบ แล้วแตะใหม่อีกครั้ง · เสียงอ่านของเครื่องอาจออกเสียงวรรณยุกต์ไม่ชัดทุกคำ ครูช่วยออกเสียงตามได้เลย</p></div>
+</div></section>
+
+<section class="slide" data-title="วรรณยุกต์ 4 รูป 5 เสียง"><div class="inner">
+  <h2 class="h"><span class="e">🎵</span>วรรณยุกต์ 4 รูป 5 เสียง · แตะเพื่อฟัง</h2>
+  <div class="tm" id="tmarks"></div>
+  <div class="card c-yellow tipk" style="margin-top:12px"><img src="k7.webp" alt="ครูอู๋"><p><b>เคล็ดลับครูอู๋:</b> ทำมือตามเสียง 🖐️ <b>สามัญ</b> มือราบ · <b>เอก</b> มือต่ำลง · <b>โท</b> มือขึ้นแล้วตก · <b>ตรี</b> มือสูงขึ้น · <b>จัตวา</b> มือลงแล้วเชิดขึ้น<br>เสียงสามัญ <b>ไม่มีรูป</b> จึงมี 4 รูป แต่ 5 เสียง</p></div>
+</div></section>
+
+<section class="slide" data-title="อักษรสามหมู่"><div class="inner">
+  <h2 class="h"><span class="e">👨‍👩‍👧</span>อักษรสามหมู่ · พยัญชนะแบ่งเป็น 3 กลุ่ม</h2>
+  <div class="cls">
+    <div class="card" style="border-color:#2DBE6C"><h3><span class="grp g-m">🟢 อักษรกลาง 9 ตัว</span></h3><div class="lt" id="lm"></div><p class="song">🎶 ไก่ จิก เด็ก ตาย (ฎ ฏ) บน ปาก โอ่ง</p></div>
+    <div class="card" style="border-color:#FF7A45"><h3><span class="grp g-h">🟠 อักษรสูง 11 ตัว</span></h3><div class="lt" id="lh"></div><p class="song">🎶 ผี ฝาก ถุง (ฐ) ข้าว (ฃ) สาร (ศ ษ) ให้ ฉัน</p></div>
+    <div class="card" style="border-color:#3B82F6"><h3><span class="grp g-l">🔵 อักษรต่ำ 24 ตัว</span></h3><div class="lt" id="ll"></div><p class="song">ตัวที่เหลือทั้งหมดเป็นอักษรต่ำ</p></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="กติกาการผันเสียง"><div class="inner">
+  <h2 class="h"><span class="e">📋</span>ผันเสียงอย่างไร (คำเป็น เช่น กา ขา คา)</h2>
+  <table class="rule" id="rule"></table>
+  <div class="card c-pink tipk" style="margin-top:10px"><img src="k4.webp" alt="ครูอู๋คิด"><p>🟢 <b>อักษรกลาง</b> ผันได้ครบ <b>5 เสียง</b> ใช้ได้ทั้ง 4 รูป<br>🟠 <b>อักษรสูง</b> ผันได้ <b>3 เสียง</b> ไม่ใส่รูปจะเป็นเสียง <b>จัตวา</b><br>🔵 <b>อักษรต่ำ</b> ผันได้ <b>3 เสียง</b> ใส่ไม้เอกเป็นเสียง <b>โท</b> ใส่ไม้โทเป็นเสียง <b>ตรี</b></p></div>
+</div></section>
+
+<section class="slide" data-title="ห้องทดลองผันเสียง"><div class="inner">
+  <h2 class="h"><span class="e">🧪</span>ห้องทดลองผันเสียง · เลือกพยัญชนะ + สระ</h2>
+  <div class="build">
+    <div>
+      <h3 style="margin:0 0 6px">1️⃣ เลือกพยัญชนะ <small class="muted">(🟢 กลาง 🟠 สูง 🔵 ต่ำ)</small></h3><div class="pal" id="pc"></div>
+      <h3 style="margin:12px 0 6px">2️⃣ เลือกสระ</h3><div class="pal" id="pv"></div>
+    </div>
+    <div><p id="bgrp" style="margin:0 0 8px"></p><div class="lad" id="lad"></div></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="คู่หูสูง-ต่ำ"><div class="inner">
+  <h2 class="h"><span class="e">🤝</span>คู่หูอักษรสูง + อักษรต่ำ ช่วยกันให้ครบ 5 เสียง</h2>
+  <div class="card c-blue center"><p>อักษรสูงกับอักษรต่ำบางตัว <b>เสียงเหมือนกัน</b> เช่น ข–ค, ฉ–ช, ถ–ท, ผ–พ, ฝ–ฟ, ส–ซ, ห–ฮ<br>เมื่อจับคู่กัน จะผันได้ครบ 5 เสียง · แตะเพื่อฟัง</p></div>
+  <div class="tm" id="duo"></div>
+  <div class="card c-yellow" style="margin-top:10px"><p>💡 <b>ห นำ</b> อักษรต่ำเดี่ยว (ง ญ น ม ย ร ล ว) ใส่ <b>ห</b> ข้างหน้า จะออกเสียงแบบอักษรสูง เช่น <span data-say="หมา" class="big" style="cursor:pointer">หมา</span> <span data-say="หนู" class="big" style="cursor:pointer">หนู</span> <span data-say="ใหม่" class="big" style="cursor:pointer">ใหม่</span></p></div>
+</div></section>
+
+<section class="slide" data-title="คัดแยกอักษรสามหมู่"><div class="inner">
+  <h2 class="h"><span class="e">🗂️</span>คัดแยกพยัญชนะ: อักษรกลาง อักษรสูง อักษรต่ำ</h2>
+  <div data-sorter="cls"></div>
+</div></section>
+
+<section class="slide" data-title="เกม ฟังแล้วบอกเสียง"><div class="inner">
+  <h2 class="h"><span class="e">👂</span>เกม ฟังแล้วบอกว่าเป็นเสียงอะไร</h2>
+  <div class="game" data-g="tone">
+    <div class="gtop"><button class="btn ghost" data-start>▶ เริ่มเกม</button><button class="btn" data-rep>🔊 ฟังอีกครั้ง</button></div>
+    <div class="ask">👂</div>
+    <div class="opts five"></div>
+    <div class="stat">กด ▶ เริ่มเกม · ดูคำแล้วฟัง จากนั้นเลือกเสียงวรรณยุกต์</div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เกม ผันให้ถูก"><div class="inner">
+  <h2 class="h"><span class="e">🎯</span>เกม ผันเสียงให้ถูก</h2>
+  <div class="game" data-g="make">
+    <div class="gtop"><button class="btn ghost" data-start>▶ เริ่มเกม</button><button class="btn" data-rep>🔊 ฟังคำตอบที่ต้องการ</button></div>
+    <div class="ask">🎯</div>
+    <div class="opts"></div>
+    <div class="stat">กด ▶ เริ่มเกม</div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เกม เติมวรรณยุกต์ตามภาพ"><div class="inner">
+  <h2 class="h"><span class="e">🖼️</span>เกม ดูภาพ แล้วเลือกคำที่เขียนถูก</h2>
+  <div class="game" data-g="pic">
+    <div class="gtop"><button class="btn ghost" data-start>▶ เริ่มเกม</button><button class="btn" data-rep>🔊 ฟังคำ</button></div>
+    <div class="ask">🖼️</div>
+    <div class="opts"></div>
+    <div class="stat">กด ▶ เริ่มเกม</div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ฝึกเขียนคำ" data-nofit><div class="inner">
+  <h2 class="h"><span class="e">✍️</span>ฝึกเขียนคำ · พยัญชนะ → สระ → วรรณยุกต์ (เขียนไว้บนสุด)</h2>
+  <div class="trace">
+    <div class="pal" id="tpick" style="justify-content:center"></div>
+    <div class="tbox noswipe"><div class="ln" style="top:30%"></div><div class="ln" style="top:70%"></div><div class="gd" id="gd"></div><canvas id="tcv"></canvas></div>
+    <div class="row center"><button class="btn ghost" id="tSay">🔊 ฟังเสียง</button><button class="btn ghost" id="tClr">🧽 ลบ</button><button class="btn" id="tNext">คำถัดไป ▶</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="แบบทดสอบ"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบ (10 ข้อ)</h2>
+  <div data-quiz="main"></div>
+</div></section>
+
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปบทเรียน</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class="grid" style="--min:240px">
+    <div class="card c-pink"><h3>🎵 วรรณยุกต์</h3><p>มี <b>4 รูป 5 เสียง</b>: สามัญ เอก โท ตรี จัตวา</p></div>
+    <div class="card c-green"><h3>🟢 อักษรกลาง</h3><p>ผันได้ <b>5 เสียง</b> เช่น กา ก่า ก้า ก๊า ก๋า</p></div>
+    <div class="card c-orange"><h3>🟠 อักษรสูง</h3><p>ผันได้ 3 เสียง ไม่มีรูป = <b>จัตวา</b> เช่น ขา ข่า ข้า</p></div>
+    <div class="card c-blue"><h3>🔵 อักษรต่ำ</h3><p>ผันได้ 3 เสียง ไม้เอก = <b>โท</b> ไม้โท = <b>ตรี</b> เช่น คา ค่า ค้า</p></div>
+  </div>
+  <img class="kru5" src="k11.webp" alt="ครูอู๋ปรบมือ" style="width:150px">
+  <div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button><span class="muted">ขั้นต่อไป: มาตราตัวสะกด</span></div>
+</div></section>
+
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+/* ---------- ข้อมูล ---------- */
+var MID = ['ก', 'จ', 'ฎ', 'ฏ', 'ด', 'ต', 'บ', 'ป', 'อ'];
+var HIGH = ['ข', 'ฃ', 'ฉ', 'ฐ', 'ถ', 'ผ', 'ฝ', 'ศ', 'ษ', 'ส', 'ห'];
+var LOW = ['ค', 'ฅ', 'ฆ', 'ง', 'ช', 'ซ', 'ฌ', 'ญ', 'ฑ', 'ฒ', 'ณ', 'ท', 'ธ', 'น', 'พ', 'ฟ', 'ภ', 'ม', 'ย', 'ร', 'ล', 'ว', 'ฬ', 'ฮ'];
+function grp(c) { return MID.indexOf(c) >= 0 ? 'm' : HIGH.indexOf(c) >= 0 ? 'h' : 'l'; }
+var GN = { m: 'อักษรกลาง', h: 'อักษรสูง', l: 'อักษรต่ำ' };
+var MARK = ['', '่', '้', '๊', '๋'], MN = ['ไม่มีรูป', 'ไม้เอก', 'ไม้โท', 'ไม้ตรี', 'ไม้จัตวา'];
+var TN = ['สามัญ', 'เอก', 'โท', 'ตรี', 'จัตวา'];
+var TC = ['#8A8F98', '#2DBE6C', '#3B82F6', '#F59E0B', '#E8478B'];
+var CURVE = ['M4,18 L60,18', 'M4,22 L60,30', 'M4,12 Q36,2 60,32', 'M4,14 Q40,12 60,3', 'M4,24 Q30,38 60,4'];
+function curve(i) { return '<svg viewBox="0 0 64 36"><path d="' + CURVE[i] + '" fill="none" stroke="' + TC[i] + '" stroke-width="4" stroke-linecap="round"/></svg>'; }
+/* เสียงวรรณยุกต์ของคำเป็น: tone[กลุ่ม][รูป] (null = ไม่ใช้) */
+var TONE = { m: [0, 1, 2, 3, 4], h: [4, 1, 2, null, null], l: [0, 2, 3, null, null] };
+var LV = ['อา', 'อี', 'อือ', 'อู', 'เอ', 'แอ', 'โอ', 'ออ', 'เอีย', 'เอือ', 'อัว', 'ไอ', 'เอา', 'อำ'];
+var BC = ['ก', 'จ', 'ด', 'ต', 'บ', 'ป', 'อ', 'ข', 'ฉ', 'ถ', 'ผ', 'ฝ', 'ส', 'ห', 'ค', 'ง', 'ช', 'ซ', 'ท', 'น', 'พ', 'ฟ', 'ม', 'ย', 'ร', 'ล', 'ว'];
+/* ใส่พยัญชนะ + วรรณยุกต์ลงในสระ (วรรณยุกต์วางหลังสระบน/ล่าง) */
+function mk(c, v, k) {
+  var i = v.indexOf('อ'), nx = v.charAt(i + 1), up = 'ัิีึืุู'.indexOf(nx) >= 0 && nx;
+  return v.slice(0, i) + c + (up ? nx : '') + MARK[k || 0] + v.slice(i + 1 + (up ? 1 : 0));
+}
+function spellT(c, v, k) { var base = mk(c, v, 0); return c + 'อ|' + v + '|' + base + (k ? '|' + MN[k] + '|' + mk(c, v, k) : ''); }
+/* คำมีวรรณยุกต์ตามภาพ: [คำ, ภาพ, รูปวรรณยุกต์ที่ถูก, ตัวที่จะวางวรรณยุกต์ (ตำแหน่งตัวอักษร)] */
+var PIC = [['ไก่', '🐔'], ['ไข่', '🥚'], ['ม้า', '🐴'], ['ช้าง', '🐘'], ['เสื้อ', '👕'], ['ปู่', '👴'], ['ย่า', '👵'], ['น้ำ', '💧'], ['เต่า', '🐢'], ['บ้าน', '🏠'], ['แม่', '👩'], ['พ่อ', '👨'], ['ผ้า', '🧣'], ['ตุ๊กตา', '🧸'], ['ข้าว', '🍚'], ['เก้าอี้', '🪑'], ['ไม้', '🪵'], ['ก๋วยเตี๋ยว', '🍜']];
+function variants(w) { /* เปลี่ยนรูปวรรณยุกต์ตัวแรกในคำเป็นรูปอื่น ๆ */
+  var m = w.match(/[่้๊๋]/); if (!m) return [];
+  var out = []; MARK.forEach(function (k) { var x = w.replace(m[0], k); if (x !== w) out.push(x); }); return out;
+}
+var TRACE = ['ไก่', 'ม้า', 'ปู่', 'ย่า', 'แม่', 'พ่อ', 'น้ำ', 'เต่า', 'บ้าน', 'ช้าง', 'เสื้อ', 'ผ้า'];
+/* ---------- เสียงอ่าน ---------- */
+var THV = null, RATE = .7;
+try { var sr = parseFloat(localStorage.getItem('kruau-th-rate')); if (sr) RATE = sr; } catch (e) {}
+function pickVoice() { try { var v = speechSynthesis.getVoices(); THV = v.filter(function (x) { return /^th/i.test(x.lang); })[0] || null; } catch (e) {} vmsg(); }
+function vmsg() { var m = document.getElementById('voiceMsg'); if (!m) return; m.textContent = !window.speechSynthesis ? '⚠️ เครื่องนี้อ่านออกเสียงไม่ได้ ครูอ่านให้ฟังแทนได้นะ' : THV ? '✅ พร้อมแล้ว ใช้เสียง: ' + THV.name : 'ℹ️ ถ้าเสียงอ่านไม่ชัด ให้ติดตั้งเสียงภาษาไทยในการตั้งค่าเครื่อง (การช่วยการเข้าถึง → เนื้อหาที่พูด)'; }
+if (window.speechSynthesis) { speechSynthesis.onvoiceschanged = pickVoice; pickVoice(); }
+function say(t) {
+  if (!window.speechSynthesis) return;
+  try { speechSynthesis.cancel(); String(t).split('|').forEach(function (p) { var u = new SpeechSynthesisUtterance(p.trim()); u.lang = 'th-TH'; if (THV) u.voice = THV; u.rate = RATE; speechSynthesis.speak(u); }); } catch (e) {}
+}
+function hush() { try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {} }
+function rnd(n) { return Math.floor(Math.random() * n); }
+function shuf(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = rnd(i + 1), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+Kit.sorters.cls = {
+  bins: [{ k: 'm', t: '🟢 อักษรกลาง', c: '#2DBE6C' }, { k: 'h', t: '🟠 อักษรสูง', c: 'var(--orange)' }, { k: 'l', t: '🔵 อักษรต่ำ', c: 'var(--blue)' }],
+  items: ['ก', 'ด', 'ต', 'บ', 'ข', 'ส', 'ผ', 'ห', 'ค', 'ม', 'น', 'ว'].map(function (c) { return { t: c, k: grp(c), w: c + ' เป็น' + GN[grp(c)] }; })
+};
+Kit.quizzes.main = [
+  { q: 'วรรณยุกต์ไทยมีกี่รูป กี่เสียง', c: ['4 รูป 5 เสียง', '5 รูป 4 เสียง', '5 รูป 5 เสียง', '4 รูป 4 เสียง'], a: 0, w: 'เสียงสามัญไม่มีรูป จึงมี 4 รูป 5 เสียง' },
+  { q: 'ข้อใดเป็นอักษรกลางทั้งหมด', c: ['ก จ ด ต', 'ก ข ค ง', 'ส ห ผ ฝ', 'ม น ย ร'], a: 0, w: 'ไก่ จิก เด็ก ตาย บน ปาก โอ่ง' },
+  { q: 'ข้อใดเป็นอักษรสูงทั้งหมด', c: ['ข ส ห ผ', 'ก ด บ ป', 'ค ช ท พ', 'ง น ม ย'], a: 0, w: 'ผี ฝาก ถุง ข้าว สาร ให้ ฉัน' },
+  { q: '"ก้า" เป็นเสียงวรรณยุกต์ใด', c: ['โท', 'เอก', 'ตรี', 'จัตวา'], a: 0, w: 'อักษรกลาง + ไม้โท = เสียงโท' },
+  { q: '"ขา" (ไม่มีรูปวรรณยุกต์) เป็นเสียงใด', c: ['จัตวา', 'สามัญ', 'เอก', 'โท'], a: 0, w: 'อักษรสูง คำเป็น ไม่มีรูป = เสียงจัตวา' },
+  { q: '"ค่า" เป็นเสียงวรรณยุกต์ใด', c: ['โท', 'เอก', 'ตรี', 'สามัญ'], a: 0, w: 'อักษรต่ำ + ไม้เอก = เสียงโท' },
+  { q: '"ม้า" เป็นเสียงวรรณยุกต์ใด', c: ['ตรี', 'โท', 'เอก', 'จัตวา'], a: 0, w: 'ม เป็นอักษรต่ำ + ไม้โท = เสียงตรี' },
+  { q: 'ผันเสียงคำว่า "ปา" ให้เป็นเสียงจัตวา เขียนอย่างไร', c: ['ป๋า', 'ป๊า', 'ป้า', 'ป่า'], a: 0, w: 'อักษรกลางใส่ไม้จัตวาเป็นเสียงจัตวา' },
+  { q: 'คำใดเขียนถูกต้อง (ภาพ 🐔)', c: ['ไก่', 'ไก้', 'ไก๊', 'ไก'], a: 0, w: 'ไก่ ใช้ไม้เอก' },
+  { q: 'อักษรกลุ่มใดผันได้ครบ 5 เสียง', c: ['อักษรกลาง', 'อักษรสูง', 'อักษรต่ำ', 'ผันได้ทุกกลุ่มเท่ากัน'], a: 0, w: 'อักษรกลางใช้ได้ทั้ง 4 รูป ผันได้ 5 เสียง' }
+];
+
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  document.addEventListener('click', function (e) { var b = e.target.closest('[data-say]'); if (b) say(b.getAttribute('data-say')); });
+  function markRate() { Array.prototype.forEach.call(document.querySelectorAll('[data-rate]'), function (x) { x.classList.toggle('on', +x.getAttribute('data-rate') === RATE); }); }
+  document.addEventListener('click', function (e) { var b = e.target.closest('[data-rate]'); if (!b) return; RATE = +b.getAttribute('data-rate'); try { localStorage.setItem('kruau-th-rate', String(RATE)); } catch (er) {} markRate(); say('กา|ก่า|ก้า'); });
+  markRate();
+  /* ---- 4 รูป 5 เสียง ---- */
+  $('tmarks').innerHTML = TN.map(function (t, i) {
+    var w = mk('ก', 'อา', i);
+    return '<button class="tc" style="--tc:' + TC[i] + '" data-say="เสียง' + t + '|' + w + '"><div class="mk">' + (i ? '◌' + MARK[i] : '—') + '</div><div class="nm">เสียง' + t + '</div><div style="font-size:.85rem;color:#777">' + MN[i] + '</div>' + curve(i) + '<div class="ex">' + w + '</div></button>';
+  }).join('');
+  /* ---- อักษรสามหมู่ ---- */
+  function lt(id, L) { $(id).innerHTML = L.map(function (c) { return '<button data-say="' + c + 'อ">' + c + '</button>'; }).join(''); }
+  lt('lm', MID); lt('lh', HIGH); lt('ll', LOW);
+  /* ---- ตารางกติกา ---- */
+  var EX = { m: 'ก', h: 'ข', l: 'ค' };
+  var r = '<tr><th></th>' + MN.map(function (m, k) { return '<th>' + (k ? '◌' + MARK[k] + ' ' : '') + m + '</th>'; }).join('') + '</tr>';
+  ['m', 'h', 'l'].forEach(function (g) {
+    r += '<tr><th><span class="grp g-' + g + '">' + GN[g] + '</span></th>' + MARK.map(function (x, k) {
+      var t = TONE[g][k]; if (t === null) return '<td class="na">—</td>';
+      var w = mk(EX[g], 'อา', k); return '<td data-say="' + w + '" style="cursor:pointer"><b>' + w + '</b><br><span style="color:' + TC[t] + ';font-weight:700">เสียง' + TN[t] + '</span></td>';
+    }).join('') + '</tr>';
+  });
+  $('rule').innerHTML = r;
+  /* ---- ห้องทดลอง ---- */
+  var bc = 'ก', bv = 'อา', pc = $('pc'), pv = $('pv');
+  pc.innerHTML = BC.map(function (c) { return '<button data-c="' + c + '" data-g="' + grp(c) + '">' + c + '</button>'; }).join('');
+  pv.innerHTML = LV.map(function (v) { return '<button data-v="' + v + '">' + v + '</button>'; }).join('');
+  function upd(speak) {
+    Array.prototype.forEach.call(pc.children, function (b) { b.classList.toggle('on', b.dataset.c === bc); });
+    Array.prototype.forEach.call(pv.children, function (b) { b.classList.toggle('on', b.dataset.v === bv); });
+    var g = grp(bc);
+    $('bgrp').innerHTML = '<span class="grp g-' + g + '">' + bc + ' เป็น' + GN[g] + '</span> <button class="btn ghost" data-all>🔊 ผันให้ฟังทั้งหมด</button>';
+    $('lad').innerHTML = MARK.map(function (x, k) {
+      var t = TONE[g][k], w = mk(bc, bv, k);
+      if (t === null) return '<button class="off" disabled><span class="w">' + w + '</span><span class="t">ไม่ใช้<br><small>' + GN[g] + 'ไม่ใช้' + MN[k] + '</small></span><span></span></button>';
+      return '<button data-k="' + k + '"><span class="w">' + w + '</span><span class="t">เสียง' + TN[t] + '<br><small>' + MN[k] + '</small></span>' + curve(t) + '</button>';
+    }).join('');
+    if (speak) say(spellT(bc, bv, 0));
+  }
+  pc.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { bc = b.dataset.c; upd(1); } });
+  pv.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { bv = b.dataset.v; upd(1); } });
+  $('lad').addEventListener('click', function (e) { var b = e.target.closest('button[data-k]'); if (b) say(spellT(bc, bv, +b.dataset.k)); });
+  $('bgrp').addEventListener('click', function (e) { if (e.target.closest('[data-all]')) { var g = grp(bc); say(MARK.map(function (x, k) { return TONE[g][k] === null ? null : mk(bc, bv, k); }).filter(Boolean).join('|')); } });
+  upd(0);
+  /* ---- คู่หูสูง-ต่ำ ---- */
+  var DUO = [['คา', 0], ['ข่า', 1], ['ค่า', 2], ['ค้า', 3], ['ขา', 4]];
+  $('duo').innerHTML = DUO.map(function (d) { var g = grp(d[0].replace(/[^ก-ฮ]/g, '').charAt(0)); return '<button class="tc" style="--tc:' + TC[d[1]] + '" data-say="' + d[0] + '"><div class="ex">' + d[0] + '</div><div class="nm">เสียง' + TN[d[1]] + '</div>' + curve(d[1]) + '<span class="grp g-' + g + '" style="font-size:.8rem">' + GN[g] + '</span></button>'; }).join('');
+
+  /* ---- เกม ---- */
+  function game(el) {
+    var kind = el.getAttribute('data-g'), round = 0, score = 0, ans = null, lock = false;
+    var ask = el.querySelector('.ask'), stat = el.querySelector('.stat'), opts = el.querySelector('.opts');
+    function speakAns() { if (ans) say(ans.say); }
+    function rndSyl() {
+      var c = BC[rnd(BC.length)], g = grp(c), ks = [0, 1, 2, 3, 4].filter(function (k) { return TONE[g][k] !== null; }), k = ks[rnd(ks.length)];
+      return { c: c, v: LV[rnd(8)], k: k, g: g, t: TONE[g][k] };
+    }
+    function next() {
+      lock = false; round++;
+      if (round > 10) { stat.innerHTML = '🎉 จบเกม! ได้ <b>' + score + '/10</b> ' + '⭐'.repeat(Math.max(1, Math.round(score / 3.4))) + ' <button class="btn" data-start>เล่นอีกครั้ง</button>'; opts.innerHTML = ''; ask.innerHTML = score >= 8 ? '🏆' : '💪'; if (score >= 8) Kit.confetti(); return; }
+      if (kind === 'tone') {
+        var s = rndSyl(), w = mk(s.c, s.v, s.k);
+        ans = { ok: String(s.t), say: w, w: w, g: s.g };
+        ask.innerHTML = '<span>' + w + '</span><span class="wd">' + s.c + ' เป็น' + GN[s.g] + '</span>';
+        opts.innerHTML = TN.map(function (t, i) { return '<button class="tn" data-a="' + i + '" style="border-color:' + TC[i] + '">' + curve(i) + 'เสียง' + t + '</button>'; }).join('');
+      } else if (kind === 'make') {
+        var s2 = rndSyl(); while (s2.k === 0) s2 = rndSyl();
+        var base = mk(s2.c, s2.v, 0), want = mk(s2.c, s2.v, s2.k);
+        ans = { ok: want, say: want };
+        ask.innerHTML = '<span>' + base + '</span><span class="wd">ผันเป็น <b style="color:' + TC[s2.t] + '">เสียง' + TN[s2.t] + '</b></span>';
+        var ch = [0, 1, 2, 3, 4].map(function (k) { return mk(s2.c, s2.v, k); }).filter(function (x) { return x !== want; });
+        opts.innerHTML = shuf([want].concat(shuf(ch).slice(0, 3))).map(function (x) { return '<button data-a="' + x + '">' + x + '</button>'; }).join('');
+      } else {
+        var p = PIC[rnd(PIC.length)];
+        ans = { ok: p[0], say: p[0] };
+        ask.innerHTML = '<span class="em">' + p[1] + '</span>';
+        opts.innerHTML = shuf([p[0]].concat(shuf(variants(p[0])).slice(0, 3))).map(function (x) { return '<button data-a="' + x + '">' + x + '</button>'; }).join('');
+      }
+      stat.textContent = 'ข้อ ' + round + '/10 · ได้ ' + score + ' คะแนน';
+      if (kind !== 'pic') speakAns();
+    }
+    function right(btn, msg) { lock = true; if (btn) btn.classList.add('ok'); score++; Kit.sound.good(); if (msg) say(msg); setTimeout(next, 1800); }
+    function wrong(btn) { lock = true; if (btn) btn.classList.add('no'); Kit.sound.bad(); setTimeout(function () { var r = el.querySelector('.opts [data-a="' + ans.ok + '"]'); if (r) r.classList.add('ok'); if (kind === 'tone') say(ans.w + '|เสียง' + TN[+ans.ok]); else say(ans.say); }, 300); setTimeout(next, 2400); }
+    el.addEventListener('click', function (e) {
+      if (e.target.closest('[data-start]')) { round = 0; score = 0; next(); return; }
+      if (e.target.closest('[data-rep]')) { speakAns(); return; }
+      var b = e.target.closest('.opts button'); if (!b || lock || !ans) return;
+      if (b.dataset.a === ans.ok) right(b, kind === 'tone' ? 'เสียง' + TN[+ans.ok] : ans.say); else wrong(b);
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-g="tone"],[data-g="make"],[data-g="pic"]'), game);
+
+  /* ---- ฝึกเขียนคำ ---- */
+  var tp = $('tpick'), gd = $('gd'), cv = $('tcv'), ti = 0, strokes = [], curS = null, penOnly = false;
+  tp.innerHTML = TRACE.map(function (w, i) { return '<button data-i="' + i + '"' + (i ? '' : ' class="on"') + '>' + w + '</button>'; }).join('');
+  function setT(i) { ti = i; gd.textContent = TRACE[i]; strokes = []; draw(); Array.prototype.forEach.call(tp.children, function (b, k) { b.classList.toggle('on', k === i); }); }
+  function draw() {
+    var r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1; if (!r.width) return; cv.width = r.width * d; cv.height = r.height * d;
+    var x = cv.getContext('2d'); x.lineCap = x.lineJoin = 'round'; x.strokeStyle = '#6B1F45'; x.lineWidth = 11 * d;
+    strokes.forEach(function (s) { x.beginPath(); s.forEach(function (p, k) { if (k) x.lineTo(p[0] * cv.width, p[1] * cv.height); else x.moveTo(p[0] * cv.width, p[1] * cv.height); }); if (s.length === 1) x.lineTo(s[0][0] * cv.width + .5, s[0][1] * cv.height); x.stroke(); });
+  }
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  cv.addEventListener('pointerdown', function (e) { if (e.pointerType === 'pen') penOnly = true; else if (penOnly && e.pointerType === 'touch') return; e.preventDefault(); try { cv.setPointerCapture(e.pointerId); } catch (er) {} curS = [pt(e)]; curS.id = e.pointerId; strokes.push(curS); draw(); });
+  cv.addEventListener('pointermove', function (e) { if (curS && e.pointerId === curS.id) { curS.push(pt(e)); draw(); } });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function () { curS = null; }); });
+  ['touchstart', 'touchmove'].forEach(function (t) { cv.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false }); });
+  tp.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { setT(+b.dataset.i); say(TRACE[ti]); } });
+  $('tClr').onclick = function () { strokes = []; draw(); };
+  $('tSay').onclick = function () { say(TRACE[ti]); };
+  $('tNext').onclick = function () { setT((ti + 1) % TRACE.length); say(TRACE[ti]); };
+  setT(0);
+  window.addEventListener('resize', draw);
+  var go = Kit.go; Kit.go = function (n, i) { if (n !== Kit.cur) hush(); go(n, i); setTimeout(draw, 60); };
+});
+</script>
+<style id="kruau-tools">
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
+/* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
+.campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
+.campnl.show{display:flex}
+.campnl button{min-height:44px;border-radius:14px;border:2px solid var(--main);background:var(--glow,#FFF1E0);font-weight:700;font-size:1rem;color:var(--ink)}
+.campnl button.ghost{background:#fff;min-height:36px}
+.campnl .tip{margin:0;font-size:.88rem;line-height:1.5;color:var(--ink-soft)}
+.cambub{position:fixed;z-index:65;border-radius:50%;overflow:hidden;background:#222;border:4px solid #fff;box-shadow:0 0 0 3px var(--main),0 8px 20px rgba(0,0,0,.3);touch-action:none;cursor:grab}
+.cambub.sq{border-radius:18px}
+.cambub video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;pointer-events:none}
+.cambub .cb{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:4px;opacity:0;transition:opacity .2s}
+.cambub:hover .cb,.cambub:active .cb,.cambub:focus-within .cb{opacity:1}
+@media (hover:none){.cambub .cb{opacity:.85}}
+.cambub .cb button{width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.9);font-size:.9rem;padding:0}
+.recchip{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid #E53935;border-radius:999px;padding:4px 6px 4px 14px;font-weight:700;color:#C62828;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.recchip .dot{width:12px;height:12px;border-radius:50%;background:#E53935;animation:recb 1s infinite}
+.recchip button{border:none;background:#E53935;color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;min-height:36px}
+@keyframes recb{50%{opacity:.25}}
+@media print{.campnl,.cambub,.recchip{display:none}}
+
+/* ---- แถบด้านบนบนมือถือ ---- */
+@media (max-width:520px){.bar .tb{width:34px!important;min-width:34px;height:34px!important;font-size:15px!important;padding:0!important}.bar{gap:3px!important}.bar .ttl small{display:none}}</style>
+<script id="kruau-tools">
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
+  });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- กล้องมุมจอ + อัดวิดีโอการสอน ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit) return;
+  var md = navigator.mediaDevices || {};
+  var inFrame = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  var canRec = !!md.getDisplayMedia && !!window.MediaRecorder;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '🎥'; btn.title = 'กล้องมุมจอ / อัดวิดีโอการสอน'; btn.setAttribute('aria-label', 'กล้องและอัดวิดีโอ');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var pnl = document.createElement('div'); pnl.className = 'campnl';
+  pnl.innerHTML = '<b>🎥 สอนออนไลน์ / ทำวิดีโอ</b>' +
+    '<button data-cam>📷 เปิดกล้องมุมจอ</button>' +
+    (canRec ? '<button data-rec>🔴 อัดวิดีโอหน้าจอ + เสียง</button>' : '') +
+    '<p class="tip">' + (canRec
+      ? 'กดอัดแล้วเลือก <b>แท็บนี้</b> ระบบจะอัดสไลด์ กล้อง และเสียงครูไว้ด้วยกัน กดหยุดแล้วจะได้ไฟล์วิดีโอทันที'
+      : 'บน iPad: เปิดกล้องมุมจอ แล้วใช้ <b>การบันทึกหน้าจอ</b> ในศูนย์ควบคุม (กดค้างที่ปุ่ม ⏺ เพื่อเปิดไมโครโฟน)') + '</p>' +
+    '<button data-x class="ghost">ปิด</button>';
+  document.body.appendChild(pnl);
+  btn.onclick = function () { pnl.classList.toggle('show'); Kit.sound.tap(); };
+  pnl.querySelector('[data-x]').onclick = function () { pnl.classList.remove('show'); };
+
+  function newTab(flag) {
+    var w = window.open(location.href.split('#')[0] + '#s=' + Kit.cur + '&' + flag + '=1', '_blank');
+    if (!w) Kit.toast('เปิดแท็บใหม่ไม่ได้ ลองกดปุ่ม "เปิดในแท็บใหม่" ของเว็บครูอู๋');
+  }
+
+  /* ---- กล้อง ---- */
+  var cam = null, stream = null, SIZES = [120, 170, 240], si = 1, round = true;
+  try { var sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); if (sv.si != null) si = sv.si; if (sv.round != null) round = sv.round; } catch (e) {}
+  function save(x, y) { try { localStorage.setItem('kruau-cam', JSON.stringify({ si: si, round: round, x: x, y: y })); } catch (e) {} }
+  function place() {
+    var s = SIZES[si], h = round ? s : Math.round(s * .75);
+    cam.style.width = s + 'px'; cam.style.height = h + 'px';
+    cam.classList.toggle('sq', !round);
+    var r = cam.getBoundingClientRect();
+    var x = Math.min(Math.max(4, r.left), innerWidth - s - 4), y = Math.min(Math.max(4, r.top), innerHeight - h - 4);
+    cam.style.left = x + 'px'; cam.style.top = y + 'px';
+  }
+  function openCam() {
+    if (cam) return;
+    if (!md.getUserMedia) { Kit.toast('อุปกรณ์นี้เปิดกล้องผ่านเว็บไม่ได้'); return; }
+    md.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }).then(function (s) {
+      stream = s;
+      cam = document.createElement('div'); cam.className = 'cambub noswipe';
+      cam.innerHTML = '<video autoplay playsinline muted></video><span class="cb"><button data-sz title="ย่อ/ขยาย">⤢</button><button data-sh title="วงกลม/สี่เหลี่ยม">◐</button><button data-cl title="ปิดกล้อง">✖</button></span>';
+      document.body.appendChild(cam);
+      var v = cam.querySelector('video'); v.srcObject = s; v.play().catch(function () {});
+      var sv = {}; try { sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); } catch (e) {}
+      cam.style.left = (sv.x != null ? sv.x : innerWidth - SIZES[si] - 16) + 'px';
+      cam.style.top = (sv.y != null ? sv.y : innerHeight - SIZES[si] - 90) + 'px';
+      place();
+      cam.querySelector('[data-sz]').onclick = function (e) { e.stopPropagation(); si = (si + 1) % SIZES.length; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-sh]').onclick = function (e) { e.stopPropagation(); round = !round; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-cl]').onclick = function (e) { e.stopPropagation(); closeCam(); };
+      var drag = null;
+      cam.addEventListener('pointerdown', function (e) {
+        if (e.target.closest('button')) return;
+        drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
+      });
+      cam.addEventListener('pointermove', function (e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        cam.style.left = Math.min(Math.max(4, e.clientX - drag.dx), innerWidth - cam.offsetWidth - 4) + 'px';
+        cam.style.top = Math.min(Math.max(4, e.clientY - drag.dy), innerHeight - cam.offsetHeight - 4) + 'px';
+      });
+      cam.addEventListener('pointerup', function () { if (drag) save(cam.offsetLeft, cam.offsetTop); drag = null; });
+      pnl.querySelector('[data-cam]').textContent = '📷 ปิดกล้องมุมจอ';
+      pnl.classList.remove('show');
+      Kit.toast('📷 ลากกล้องไปวางมุมไหนก็ได้ · ⤢ ย่อ/ขยาย');
+    }).catch(function (err) {
+      if (inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่อใช้กล้อง…'); newTab('cam'); }
+      else Kit.toast('เปิดกล้องไม่ได้ — กรุณาอนุญาตให้เว็บใช้กล้อง');
+    });
+  }
+  function closeCam() {
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    if (cam) cam.remove();
+    cam = stream = null;
+    pnl.querySelector('[data-cam]').textContent = '📷 เปิดกล้องมุมจอ';
+  }
+  pnl.querySelector('[data-cam]').onclick = function () { if (cam) closeCam(); else openCam(); };
+  addEventListener('resize', function () { if (cam) place(); });
+
+  /* ---- อัดวิดีโอ (คอมพิวเตอร์: Chrome / Edge / Firefox) ---- */
+  var rec = null, chip = null, parts = [], t0 = 0, iv = 0, all = [];
+  function pickType() {
+    var c = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    for (var i = 0; i < c.length; i++) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c[i])) return c[i];
+    return '';
+  }
+  function startRec() {
+    md.getDisplayMedia({ video: { frameRate: 30 }, audio: true, preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude' }).then(function (ds) {
+      all = [ds];
+      return md.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }).then(function (mic) { all.push(mic); return [ds, mic]; }, function () { Kit.toast('ไม่ได้เปิดไมโครโฟน จะอัดแต่ภาพ'); return [ds, null]; });
+    }).then(function (r) {
+      var ds = r[0], mic = r[1], tracks = ds.getVideoTracks().slice();
+      var aud = [ds, mic].filter(function (s) { return s && s.getAudioTracks().length; });
+      if (aud.length === 1) tracks = tracks.concat(aud[0].getAudioTracks());
+      else if (aud.length > 1) {
+        var ac = new (window.AudioContext || window.webkitAudioContext)(), dst = ac.createMediaStreamDestination();
+        aud.forEach(function (s) { ac.createMediaStreamSource(s).connect(dst); });
+        tracks = tracks.concat(dst.stream.getAudioTracks());
+      }
+      var type = pickType();
+      rec = new MediaRecorder(new MediaStream(tracks), type ? { mimeType: type, videoBitsPerSecond: 3000000 } : undefined);
+      parts = [];
+      rec.ondataavailable = function (e) { if (e.data && e.data.size) parts.push(e.data); };
+      rec.onstop = finish;
+      ds.getVideoTracks()[0].addEventListener('ended', stopRec);
+      rec.start(1000); t0 = Date.now();
+      chip = document.createElement('div'); chip.className = 'recchip';
+      chip.innerHTML = '<span class="dot"></span> อัดอยู่ <span class="t">0:00</span><button>■ หยุด</button>';
+      document.body.appendChild(chip);
+      chip.querySelector('button').onclick = stopRec;
+      iv = setInterval(function () { var s = Math.floor((Date.now() - t0) / 1000); chip.querySelector('.t').textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }, 500);
+      pnl.classList.remove('show');
+      if (!cam) Kit.toast('🔴 เริ่มอัดแล้ว · เปิดกล้องมุมจอได้ที่ปุ่ม 🎥');
+    }).catch(function (err) {
+      all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+      if (err && err.name === 'NotAllowedError' && inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่ออัดวิดีโอ…'); newTab('rec'); }
+      else if (err && err.name !== 'NotAllowedError') Kit.toast('อัดวิดีโอไม่ได้: ' + err.name);
+    });
+  }
+  function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+  function finish() {
+    clearInterval(iv);
+    all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+    if (chip) chip.remove();
+    var type = (rec && rec.mimeType) || 'video/webm', ext = type.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+    var blob = new Blob(parts, { type: type }), a = document.createElement('a');
+    var d = new Date(), name = (document.title.split('·')[0].trim() || 'บทเรียน').replace(/[\\\/:*?"<>|]/g, '') + ' ' + d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    a.href = URL.createObjectURL(blob); a.download = name + '.' + ext;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+    Kit.sound.win(); Kit.toast('💾 บันทึกวิดีโอแล้ว (' + ext.toUpperCase() + ') ดูได้ในโฟลเดอร์ดาวน์โหลด');
+    rec = null;
+  }
+  var rb = pnl.querySelector('[data-rec]');
+  if (rb) rb.onclick = function () { if (rec) stopRec(); else startRec(); };
+
+  /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
+  if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
+  if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
+</body>
+</html>
