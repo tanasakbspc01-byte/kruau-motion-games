@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ใบงานคณิตศาสตร์ ป.5 · ครูอู๋</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@500;700&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--main:#2DBE6C;--deep:#1E9E55;--ink:#22302A;--soft:#5E6F67;--line:#D8E6DD;--red:#D93A2F;--bg:#EEF7F1}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Sarabun,system-ui,sans-serif}
+.tool{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px max(3vw,10px);background:#fff;border-bottom:3px solid var(--main);box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.tool b{font-family:Mali,sans-serif;font-size:18px;color:var(--deep);margin-right:auto}
+.tool select,.tool button{font:600 16px Sarabun,sans-serif;min-height:44px;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink);padding:6px 12px;cursor:pointer}
+.tool button.pri{background:var(--main);border-color:var(--main);color:#fff;box-shadow:0 3px 0 var(--deep)}
+.tool button.key.on{background:var(--red);border-color:var(--red);color:#fff}
+.tool .set{font-size:14px;color:var(--soft);white-space:nowrap}
+.sheets{padding:18px max(2vw,8px) 60px}
+.page{width:min(210mm,100%);margin:0 auto 18px;background:#fff;border-radius:8px;box-shadow:0 6px 24px rgba(20,60,40,.12);padding:12mm 13mm 14mm;position:relative}
+.hd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;align-items:start;border-bottom:3px solid var(--main);padding-bottom:8px;margin-bottom:10px}
+.hd h1{font-family:Mali,sans-serif;font-size:24px;line-height:1.2;margin:0;color:var(--deep)}
+.hd .sub{font-size:14px;color:var(--soft)}
+.hd img{width:78px;height:auto;grid-row:1/3;grid-column:2}
+.who{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:15px;margin:2px 0 4px}
+.who span{white-space:nowrap}
+.who i{display:inline-block;border-bottom:1.5px dotted #777;width:150px;margin-left:4px}
+.who i.s{width:60px}
+.score{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--main);border-radius:10px;padding:0 10px;font-weight:700}
+.sec{margin:12px 0 6px;break-inside:avoid-page}
+.sec h2{font-size:17px;margin:0 0 6px;display:flex;gap:8px;align-items:baseline}
+.sec h2 .n{flex:none;background:var(--main);color:#fff;border-radius:8px;padding:0 9px;font-family:Mali,sans-serif;font-size:15px}
+.items{display:grid;gap:8px 22px;margin:0;padding:0 0 0 4px;list-style:none;counter-reset:q}
+.items>li{counter-increment:q;position:relative;padding-left:26px;break-inside:avoid}
+.items>li::before{content:counter(q) ".";position:absolute;left:0;top:0;font-weight:700;color:var(--soft)}
+.c1{grid-template-columns:1fr}.c2{grid-template-columns:repeat(2,minmax(0,1fr))}.c3{grid-template-columns:repeat(3,minmax(0,1fr))}.c4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.work>li{min-height:92px}
+.c1.work>li{min-height:70px}
+.bl{display:inline-block;min-width:110px;border-bottom:1.5px solid #555;height:1.35em;vertical-align:bottom;margin:0 2px;text-align:center;line-height:1.35}
+.bl.sm{min-width:54px}.bl.mid{min-width:190px}.bl.long{min-width:min(100%,440px)}
+.key .bl::after{content:attr(data-a);color:var(--red);font-weight:700;font-size:.95em}
+.key .bl{border-bottom-color:var(--red);height:auto;min-height:1.35em}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.05;margin:0 2px;font-size:.92em}
+.fr i{font-style:normal;padding:0 3px}.fr i:first-child{border-bottom:1.5px solid currentColor}
+svg.ang{width:210px;height:140px;display:block;margin:2px 0}
+svg.rc{width:190px;height:auto;display:block}
+svg.rc text{font:13px Sarabun,sans-serif}
+svg.qd{width:250px;max-width:100%;height:auto;display:block}svg.qd text{font:14px Sarabun,sans-serif}
+svg.grid{width:100%;max-width:520px;display:block}
+svg.par{width:320px;max-width:100%;display:block}
+.angs{margin-top:6px;line-height:2.2}.tip2{font-size:13px;color:var(--soft)}
+svg.grid .key{display:none}.key svg.grid .key{display:inline}
+.draw{height:110px;border:1.5px dashed #bbb;border-radius:10px;margin-top:6px}
+table.dt{border-collapse:collapse;margin:4px 0;font-size:16px}
+table.dt th,table.dt td{border:1.5px solid #888;padding:4px 14px;text-align:center}
+table.dt th{background:#F1F8F4;text-align:left}
+.foot{position:absolute;left:13mm;right:13mm;bottom:6mm;display:flex;justify-content:space-between;font-size:12px;color:#999}
+.keytag{display:none;position:absolute;top:26mm;right:14mm;z-index:2;background:#fff;border:3px solid var(--red);color:var(--red);font:700 18px Mali,sans-serif;padding:2px 12px;border-radius:10px;transform:rotate(-6deg)}
+.key .keytag{display:block}
+.list{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:12px}
+.list a{display:flex;gap:10px;align-items:center;background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px;text-decoration:none;color:var(--ink);font-weight:700;min-height:64px}
+.list a span{font-size:28px}
+@media(max-width:640px){table.dt th,table.dt td{padding:3px 6px;font-size:14px}.c3,.c4{grid-template-columns:repeat(2,minmax(0,1fr))}.c2{grid-template-columns:1fr}.page{padding:16px 14px 40px}.hd img{width:56px}.foot{left:14px;right:14px;bottom:10px}}
+@page{size:A4;margin:0}
+@media print{
+  body{background:#fff}.tool,.noprint{display:none!important}.sheets{padding:0}
+  .page{width:210mm;min-height:297mm;margin:0;border-radius:0;box-shadow:none;break-after:page}
+  .c3{grid-template-columns:repeat(3,minmax(0,1fr))!important}.c4{grid-template-columns:repeat(4,minmax(0,1fr))!important}.c2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="tool">
+  <b>📄 ใบงานคณิตศาสตร์ ป.5</b>
+  <select id="ch" aria-label="เลือกบท"></select>
+  <button id="nw" class="pri" type="button">🎲 สุ่มโจทย์ชุดใหม่</button>
+  <button id="ky" class="key" type="button">🔑 เฉลย (ครู)</button>
+  <button id="pr" type="button">🖨️ พิมพ์ / PDF</button>
+  <span class="set" id="set"></span>
+</div>
+<div class="sheets" id="out"></div>
+<script>
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+
+/* ตัวช่วยใบงาน (ทุกชั้น) */
+function fmt(n) { return Number(n).toLocaleString('en-US'); }
+function B(a, w) { return '<span class="bl' + (w ? ' ' + w : '') + '" data-a="' + String(a).replace(/"/g, '&quot;') + '"></span>'; }
+function fr(n, d) { return '<span class="fr"><i>' + n + '</i><i>' + d + '</i></span>'; }
+function mix(w, n, d) { return (w ? w : '') + (n ? fr(n, d) : ''); }
+function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+
+function angleSVG(deg, R) {
+  var rot = R.int(0, 35) * (R.int(0, 1) ? 1 : -1), W = 220, H = 150, cx = 110, cy = 120, L = 95;
+  if (deg > 120) cy = 110;
+  var a1 = rot * Math.PI / 180, a2 = (rot + deg) * Math.PI / 180;
+  var x1 = cx + L * Math.cos(a1), y1 = cy - L * Math.sin(a1), x2 = cx + L * Math.cos(a2), y2 = cy - L * Math.sin(a2);
+  var minx = Math.min(cx, x1, x2) - 10, maxx = Math.max(cx, x1, x2) + 10, miny = Math.min(cy, y1, y2) - 10, maxy = Math.max(cy, y1, y2) + 10;
+  return '<svg class="ang" viewBox="' + minx.toFixed(0) + ' ' + miny.toFixed(0) + ' ' + (maxx - minx).toFixed(0) + ' ' + (maxy - miny).toFixed(0) + '"><path d="M' + x1.toFixed(1) + ',' + y1.toFixed(1) + ' L' + cx + ',' + cy + ' L' + x2.toFixed(1) + ',' + y2.toFixed(1) + '" fill="none" stroke="#222" stroke-width="2"/><circle cx="' + cx + '" cy="' + cy + '" r="3"/></svg>';
+}
+function kind(d) { return d < 90 ? 'มุมแหลม' : d === 90 ? 'มุมฉาก' : d < 180 ? 'มุมป้าน' : 'มุมตรง'; }
+function rectSVG(w, h, unit) {
+  var sc = 120 / Math.max(w, h), W = Math.max(40, w * sc), H = Math.max(30, h * sc);
+  return '<svg class="rc" viewBox="-40 -8 ' + (W + 60) + ' ' + (H + 36) + '"><rect x="0" y="0" width="' + W.toFixed(0) + '" height="' + H.toFixed(0) + '" fill="#F2FAF5" stroke="#222" stroke-width="2"/><text x="' + (W / 2).toFixed(0) + '" y="' + (H + 20).toFixed(0) + '" text-anchor="middle">' + w + ' ' + unit + '</text><text x="-6" y="' + (H / 2 + 5).toFixed(0) + '" text-anchor="end">' + h + ' ' + unit + '</text></svg>';
+}
+
+/* ใบงานคณิตศาสตร์ ป.5 */
+var CH = {};
+function F(n, d) { var g = gcd(Math.abs(n), d); return { n: n / g, d: d / g }; }
+function fs(f) { /* ข้อความคำตอบ: 1 1/2, 3/4, 2 */ if (f.n % f.d === 0) return String(f.n / f.d); return f.n > f.d ? Math.floor(f.n / f.d) + ' ' + (f.n % f.d) + '/' + f.d : f.n + '/' + f.d; }
+function fh(n, d) { /* แสดงจำนวนคละ/เศษส่วน */ if (n % d === 0) return String(n / d); return n > d ? mix(Math.floor(n / d), n % d, d) : fr(n, d); }
+
+CH[1] = { t: 'เศษส่วน', e: '🍕', make: function (R) {
+  var s = [], a = [], i;
+  function pf() { var d = R.int(3, 12), n = R.int(1, d - 1); return [n, d]; }
+  for (i = 0; i < 4; i++) { var p = pf(), q = pf(); var c = p[0] * q[1] - q[0] * p[1]; a.push(fr(p[0], p[1]) + ' ' + B(c > 0 ? '>' : c < 0 ? '<' : '=', 'sm') + ' ' + fr(q[0], q[1])); }
+  s.push({ h: 'เติมเครื่องหมาย >, < หรือ =', items: a, cols: 4 });
+  a = [];
+  var pairs = [[2, 3], [3, 4], [4, 6], [2, 5], [3, 5], [4, 5], [5, 6], [3, 8], [6, 8], [4, 10]];
+  for (i = 0; i < 4; i++) {
+    var pr = R.pick(pairs), d1 = pr[0], d2 = pr[1], n1 = R.int(1, d1 - 1), n2 = R.int(1, d2 - 1), L = d1 * d2 / gcd(d1, d2);
+    if (i < 2) { a.push(fr(n1, d1) + ' + ' + fr(n2, d2) + ' = ' + B(fs(F(n1 * L / d1 + n2 * L / d2, L)), 'sm')); continue; }
+    var A = n1 * L / d1, Bq = n2 * L / d2;
+    if (A === Bq) { i--; continue; }
+    if (A < Bq) { a.push(fr(n2, d2) + ' − ' + fr(n1, d1) + ' = ' + B(fs(F(Bq - A, L)), 'sm')); }
+    else a.push(fr(n1, d1) + ' − ' + fr(n2, d2) + ' = ' + B(fs(F(A - Bq, L)), 'sm'));
+  }
+  var dA = R.pick([2, 3, 4]), dB = R.pick([3, 4, 6]), wA = R.int(2, 4), wB = R.int(1, wA - 1), nA = R.int(1, dA - 1), nB = R.int(1, dB - 1), LL = dA * dB / gcd(dA, dB);
+  a.push(mix(wA, nA, dA) + ' + ' + mix(wB, nB, dB) + ' = ' + B(fs(F((wA * dA + nA) * LL / dA + (wB * dB + nB) * LL / dB, LL)), 'sm'));
+  a.push(mix(wA + 1, nA, dA) + ' − ' + mix(wB, nB, dB) + ' = ' + B(fs(F(((wA + 1) * dA + nA) * LL / dA - (wB * dB + nB) * LL / dB, LL)), 'sm'));
+  s.push({ h: 'หาผลบวก ผลลบ (ตอบเป็นเศษส่วนอย่างต่ำหรือจำนวนคละ)', items: a, cols: 2, work: true });
+  a = [];
+  var d = R.pick([3, 4, 5, 6, 8]), n = R.int(1, d - 1), k = R.int(2, 9) * d; a.push(fr(n, d) + ' ของ ' + k + ' = ' + B(n * k / d, 'sm'));
+  d = R.int(3, 9); n = R.int(1, d - 1); var w = R.int(2, 9); a.push(w + ' × ' + fr(n, d) + ' = ' + B(fs(F(w * n, d)), 'sm'));
+  var p1 = pf(), p2 = pf(); a.push(fr(p1[0], p1[1]) + ' × ' + fr(p2[0], p2[1]) + ' = ' + B(fs(F(p1[0] * p2[0], p1[1] * p2[1])), 'sm'));
+  d = R.int(2, 4); n = R.int(1, d - 1); var d2b = R.int(2, 5), n2b = R.int(1, d2b - 1), wa = R.int(1, 3), wb = R.int(1, 2);
+  a.push(mix(wa, n, d) + ' × ' + mix(wb, n2b, d2b) + ' = ' + B(fs(F((wa * d + n) * (wb * d2b + n2b), d * d2b)), 'sm'));
+  s.push({ h: 'หาผลคูณ', items: a, cols: 2, work: true });
+  a = [];
+  p1 = pf(); a.push('ส่วนกลับของ ' + fr(p1[0], p1[1]) + ' คือ ' + B(fs(F(p1[1], p1[0])), 'sm'));
+  d = R.int(2, 6); n = R.int(1, d - 1); w = R.int(2, 8); a.push(w + ' ÷ ' + fr(n, d) + ' = ' + B(fs(F(w * d, n)), 'sm'));
+  p1 = pf(); w = R.int(2, 6); a.push(fr(p1[0], p1[1]) + ' ÷ ' + w + ' = ' + B(fs(F(p1[0], p1[1] * w)), 'sm'));
+  p1 = pf(); p2 = pf(); a.push(fr(p1[0], p1[1]) + ' ÷ ' + fr(p2[0], p2[1]) + ' = ' + B(fs(F(p1[0] * p2[1], p1[1] * p2[0])), 'sm'));
+  s.push({ h: 'หาผลหาร', items: a, cols: 2, work: true });
+  a = [];
+  var len = R.int(3, 9) * 4, f = R.pick([[1, 4], [3, 4], [1, 2]]);
+  a.push('เชือกยาว ' + len + ' เมตร ใช้ไป ' + fr(f[0], f[1]) + ' ของเชือก เหลือเชือกยาวกี่เมตร ตอบ ' + B(len - len * f[0] / f[1] + ' เมตร'));
+  var lit = R.int(2, 5), cup = R.pick([4, 5, 8]);
+  a.push('นม ' + lit + ' ลิตร แบ่งใส่แก้ว แก้วละ ' + fr(1, cup) + ' ลิตร ได้กี่แก้ว ตอบ ' + B(lit * cup + ' แก้ว'));
+  s.push({ h: 'โจทย์ปัญหา', items: a, cols: 1, work: true });
+  return s;
+} };
+
+CH[2] = { t: 'ทศนิยม', e: '🔟', make: function (R) {
+  var s = [], a = [], i;
+  var den = [2, 4, 5, 20, 25, 50, 8, 125];
+  for (i = 0; i < 6; i++) { var d = R.pick(den), n = R.int(1, d - 1); while (gcd(n, d) > 1) n = R.int(1, d - 1); var v = n / d; a.push(fr(n, d) + ' = ' + B(String(+v.toFixed(3)), 'sm')); }
+  s.push({ h: 'เขียนเศษส่วนในรูปทศนิยม', items: a, cols: 3, work: true });
+  a = [];
+  function rnd(x, p) { return (Math.round(x * Math.pow(10, p) + 1e-9) / Math.pow(10, p)).toFixed(p); }
+  for (i = 0; i < 6; i++) { var p = i % 3, x = R.int(1000, 99999) / 1000; var lab = ['จำนวนเต็มหน่วย', 'ทศนิยมหนึ่งตำแหน่ง', 'ทศนิยมสองตำแหน่ง'][p]; a.push('ค่าประมาณเป็น' + lab + 'ของ <b>' + x.toFixed(3) + '</b> คือ ' + B(rnd(x, p), 'sm')); }
+  s.push({ h: 'หาค่าประมาณ', items: a, cols: 1 });
+  a = [];
+  for (i = 0; i < 3; i++) { var x1 = R.int(11, 999) / 100, w = R.int(3, 9); a.push(x1.toFixed(2) + ' × ' + w + ' = ' + B(String(+(x1 * w).toFixed(2)), 'sm')); }
+  for (i = 0; i < 3; i++) { var y1 = R.int(2, 99) / 10, y2 = R.int(2, 99) / 10; a.push(y1.toFixed(1) + ' × ' + y2.toFixed(1) + ' = ' + B(String(+(y1 * y2).toFixed(2)), 'sm')); }
+  s.push({ h: 'หาผลคูณ', items: a, cols: 2, work: true });
+  a = [];
+  for (i = 0; i < 4; i++) { var dv = R.int(2, 9), q = R.int(11, 999) / 100; a.push(String(+(q * dv).toFixed(2)) + ' ÷ ' + dv + ' = ' + B(String(+q.toFixed(2)), 'sm')); }
+  s.push({ h: 'หาผลหาร', items: a, cols: 2, work: true });
+  a = [];
+  var m = R.int(1, 9), cm = R.int(5, 95); a.push(m + ' เมตร ' + cm + ' เซนติเมตร = ' + B(String(+(m + cm / 100).toFixed(2)), 'sm') + ' เมตร');
+  var kg = R.int(1, 9), g = R.int(5, 995); a.push(kg + ' กิโลกรัม ' + g + ' กรัม = ' + B(String(+(kg + g / 1000).toFixed(3)), 'sm') + ' กิโลกรัม');
+  var l = R.int(1, 9) + R.int(1, 9) / 10; a.push(l.toFixed(1) + ' ลิตร = ' + B(fmt(Math.round(l * 1000)), 'sm') + ' มิลลิลิตร');
+  var km = R.int(1, 9) + R.int(1, 99) / 100; a.push(km.toFixed(2) + ' กิโลเมตร = ' + B(fmt(Math.round(km * 1000)), 'sm') + ' เมตร');
+  s.push({ h: 'ทศนิยมกับการวัด', items: a, cols: 2 });
+  a = [];
+  var pr = R.int(51, 199) / 10, n2 = R.int(3, 9);
+  a.push('ปากกาด้ามละ ' + pr.toFixed(2) + ' บาท ซื้อ ' + n2 + ' ด้าม ต้องจ่ายเงินกี่บาท ตอบ ' + B((pr * n2).toFixed(2) + ' บาท'));
+  var bot = R.int(2, 6), each = R.int(5, 25) / 10;
+  a.push('น้ำ ' + (bot * each).toFixed(1) + ' ลิตร แบ่งใส่ขวด ' + bot + ' ขวดเท่า ๆ กัน ได้ขวดละกี่ลิตร ตอบ ' + B(each.toFixed(1) + ' ลิตร'));
+  s.push({ h: 'โจทย์ปัญหา', items: a, cols: 1, work: true });
+  return s;
+} };
+
+function gridSVG(cats, max, step, bars, line, legend) {
+  var W = 460, H = 250, x0 = 46, y0 = 214, top = 18, n = Math.round(max / step), dy = (y0 - top) / n, cw = (W - x0 - 10) / cats.length;
+  var g = '<svg class="grid" viewBox="0 0 ' + W + ' ' + H + '">';
+  for (var i = 0; i <= n; i++) { var y = y0 - i * dy; g += '<line x1="' + x0 + '" x2="' + (W - 8) + '" y1="' + y + '" y2="' + y + '" stroke="#ccc"/><text x="' + (x0 - 6) + '" y="' + (y + 4) + '" text-anchor="end" font-size="11">' + i * step + '</text>'; }
+  cats.forEach(function (c, i) { g += '<text x="' + (x0 + cw * (i + .5)) + '" y="' + (y0 + 18) + '" text-anchor="middle" font-size="12">' + c + '</text>'; if (line) g += '<line x1="' + (x0 + cw * (i + .5)) + '" x2="' + (x0 + cw * (i + .5)) + '" y1="' + top + '" y2="' + y0 + '" stroke="#e3e3e3"/>'; });
+  g += '<line x1="' + x0 + '" x2="' + x0 + '" y1="' + (top - 6) + '" y2="' + y0 + '" stroke="#222"/><line x1="' + x0 + '" x2="' + (W - 8) + '" y1="' + y0 + '" y2="' + y0 + '" stroke="#222"/>';
+  var col = ['#E0453A', '#3B82F6'];
+  if (bars) bars.forEach(function (set, k) { set.forEach(function (v, i) { var bw = cw * .3, x = x0 + cw * (i + .5) + (k ? 2 : -bw - 2); g += '<rect class="key" x="' + x + '" y="' + (y0 - v / step * dy) + '" width="' + bw + '" height="' + v / step * dy + '" fill="' + col[k] + '" opacity=".6"/>'; }); });
+  if (line) { g += '<polyline class="key" fill="none" stroke="#E0453A" stroke-width="2.5" points="' + line.map(function (v, i) { return (x0 + cw * (i + .5)) + ',' + (y0 - v / step * dy); }).join(' ') + '"/>'; line.forEach(function (v, i) { g += '<circle class="key" cx="' + (x0 + cw * (i + .5)) + '" cy="' + (y0 - v / step * dy) + '" r="4" fill="#E0453A"/>'; }); }
+  if (legend) g += '<g font-size="12"><rect x="' + (W - 150) + '" y="2" width="12" height="12" fill="#E0453A" opacity=".6"/><text x="' + (W - 134) + '" y="12">' + legend[0] + '</text><rect x="' + (W - 80) + '" y="2" width="12" height="12" fill="#3B82F6" opacity=".6"/><text x="' + (W - 64) + '" y="12">' + legend[1] + '</text></g>';
+  return g + '</svg>';
+}
+CH[3] = { t: 'การนำเสนอข้อมูล', e: '📊', make: function (R) {
+  var s = [], cats = R.pick([['ส้ม', 'มะม่วง', 'กล้วย', 'องุ่น'], ['ฟุตบอล', 'ว่ายน้ำ', 'แบด', 'วิ่ง'], ['แดง', 'ฟ้า', 'เขียว', 'ชมพู']]);
+  var boy = cats.map(function () { return R.int(1, 10) * 2; }), girl = cats.map(function () { return R.int(1, 10) * 2; });
+  var tbl = '<table class="dt"><tr><th>รายการ</th>' + cats.map(function (c) { return '<td>' + c + '</td>'; }).join('') + '</tr><tr><th>ชาย (คน)</th>' + boy.map(function (x) { return '<td>' + x + '</td>'; }).join('') + '</tr><tr><th>หญิง (คน)</th>' + girl.map(function (x) { return '<td>' + x + '</td>'; }).join('') + '</tr></table>';
+  s.push({ h: 'ข้อมูลสิ่งที่นักเรียน ป.5 ชอบ แยกชายและหญิง', items: [tbl], cols: 1, info: true });
+  s.push({ h: 'เขียนแผนภูมิแท่งเปรียบเทียบ (แท่งชายระบายสีแดง แท่งหญิงระบายสีฟ้า)', items: [gridSVG(cats, 20, 2, [boy, girl], null, ['ชาย', 'หญิง'])], cols: 1, fig: true });
+  var tot = cats.map(function (_, i) { return boy[i] + girl[i]; }), mx = Math.max.apply(null, tot);
+  var bi = R.int(0, 3);
+  s.push({ h: 'ตอบคำถามจากแผนภูมิ', items: [
+    'นักเรียนชายทั้งหมด ' + B(boy.reduce(function (p, q) { return p + q; }, 0) + ' คน', 'sm'),
+    'นักเรียนหญิงทั้งหมด ' + B(girl.reduce(function (p, q) { return p + q; }, 0) + ' คน', 'sm'),
+    'รายการที่มีผู้ชอบรวมกันมากที่สุด ' + B(cats.filter(function (_, i) { return tot[i] === mx; }).join(', '), 'sm'),
+    cats[bi] + ' ชายกับหญิงต่างกัน ' + B(Math.abs(boy[bi] - girl[bi]) + ' คน', 'sm')
+  ], cols: 1 });
+  var times = ['06.00', '09.00', '12.00', '15.00', '18.00'], base = R.int(22, 26), temp = [base, base + R.int(1, 4), base + R.int(5, 8), base + R.int(6, 10), base + R.int(2, 5)];
+  s.push({ h: 'อุณหภูมิ (องศาเซลเซียส) ในวันหนึ่ง', items: ['<table class="dt"><tr><th>เวลา (น.)</th>' + times.map(function (t) { return '<td>' + t + '</td>'; }).join('') + '</tr><tr><th>อุณหภูมิ (°C)</th>' + temp.map(function (t) { return '<td>' + t + '</td>'; }).join('') + '</tr></table>'], cols: 1, info: true });
+  s.push({ h: 'เขียนกราฟเส้น (ลงจุดแล้วลากเส้นเชื่อม)', items: [gridSVG(times, 40, 4, null, temp)], cols: 1, fig: true });
+  var dif = temp.slice(1).map(function (t, i) { return t - temp[i]; }), up = Math.max.apply(null, dif), ui = dif.indexOf(up), tmx = Math.max.apply(null, temp);
+  s.push({ h: 'ตอบคำถามจากกราฟเส้น', items: [
+    'อุณหภูมิสูงสุด ' + B(tmx + ' °C', 'sm') + ' เวลา ' + B(times[temp.indexOf(tmx)] + ' น.', 'sm'),
+    'ช่วงเวลาที่อุณหภูมิเพิ่มขึ้นมากที่สุด ' + B(times[ui] + '–' + times[ui + 1] + ' น.', 'mid'),
+    'อุณหภูมิเวลา 18.00 น. ต่างจากเวลา 06.00 น. ' + B(Math.abs(temp[4] - temp[0]) + ' °C', 'sm')
+  ], cols: 1 });
+  return s;
+} };
+
+CH[4] = { t: 'บัญญัติไตรยางศ์', e: '🧮', make: function (R) {
+  var s = [], a = [];
+  var T = [
+    function () { var u = R.int(3, 25), n1 = R.int(2, 6), n2 = R.int(7, 15); return ['ปากกา ' + n1 + ' ด้าม ราคา ' + u * n1 + ' บาท ปากกา ' + n2 + ' ด้ามราคาเท่าใด', 'ปากกา 1 ด้ามราคา ' + B(u, 'sm') + ' บาท', u * n2 + ' บาท']; },
+    function () { var u = R.int(40, 90), h1 = R.int(2, 4), h2 = R.int(5, 9); return ['รถวิ่ง ' + h1 + ' ชั่วโมง ได้ระยะทาง ' + u * h1 + ' กิโลเมตร ถ้าวิ่ง ' + h2 + ' ชั่วโมง ด้วยอัตราเดิม จะได้ระยะทางเท่าใด', '1 ชั่วโมงวิ่งได้ ' + B(u, 'sm') + ' กิโลเมตร', u * h2 + ' กิโลเมตร']; },
+    function () { var u = R.int(2, 9), n1 = R.int(3, 8), m = u * R.int(9, 30); return ['ขนม ' + n1 + ' ชิ้น ราคา ' + u * n1 + ' บาท มีเงิน ' + m + ' บาท ซื้อขนมได้กี่ชิ้น', 'ขนม 1 ชิ้นราคา ' + B(u, 'sm') + ' บาท', m / u + ' ชิ้น']; },
+    function () { var u = R.int(2, 6), d = R.int(12, 30); return ['ไข่ 1 โหล ราคา ' + u * 12 + ' บาท ไข่ ' + d + ' ฟองราคาเท่าใด', 'ไข่ 1 ฟองราคา ' + B(u, 'sm') + ' บาท', u * d + ' บาท']; },
+    function () { var u = R.int(20, 40), n1 = R.int(2, 5), m = u * R.int(6, 12); return ['ผ้า ' + n1 + ' เมตร ราคา ' + u * n1 + ' บาท มีเงิน ' + m + ' บาท ซื้อผ้าได้กี่เมตร', 'ผ้า 1 เมตรราคา ' + B(u, 'sm') + ' บาท', m / u + ' เมตร']; },
+    function () { var u = R.int(15, 40), t = R.int(10, 40); return ['ปั๊มน้ำสูบน้ำได้นาทีละ ' + u + ' ลิตร ต้องการน้ำ ' + u * t + ' ลิตร ต้องใช้เวลากี่นาที', 'น้ำ ' + u + ' ลิตรใช้เวลา ' + B(1, 'sm') + ' นาที', t + ' นาที']; }
+  ];
+  R.shuffle(T).forEach(function (f) { var r = f(); a.push(r[0] + '<br>' + r[1] + ' &nbsp; ตอบ ' + B(r[2], 'mid')); });
+  s.push({ h: 'แก้โจทย์ปัญหาโดยใช้บัญญัติไตรยางศ์ (หาค่าของ 1 หน่วยก่อน)', items: a, cols: 1, work: true });
+  return s;
+} };
+
+CH[5] = { t: 'ร้อยละ', e: '💯', make: function (R) {
+  var s = [], a = [], i;
+  var den = [2, 4, 5, 10, 20, 25, 50];
+  for (i = 0; i < 6; i++) { var d = R.pick(den), n = R.int(1, d - 1); a.push(fr(n, d) + ' = ' + B(n * 100 / d + '%', 'sm')); }
+  s.push({ h: 'เขียนเศษส่วนในรูปร้อยละ', items: a, cols: 3 });
+  a = [];
+  for (i = 0; i < 4; i++) { var p = R.pick([5, 10, 15, 20, 25, 30, 40, 45, 50, 60, 75, 80, 90]), f = F(p, 100); a.push(p + '% = ' + B(f.n + '/' + f.d, 'sm') + ' (เศษส่วนอย่างต่ำ)'); }
+  s.push({ h: 'เขียนร้อยละเป็นเศษส่วนอย่างต่ำ', items: a, cols: 2 });
+  a = [];
+  for (i = 0; i < 4; i++) { var pc = R.pick([5, 10, 20, 25, 40, 50, 75]), base = R.int(2, 40) * 20; a.push(pc + '% ของ ' + fmt(base) + ' = ' + B(fmt(base * pc / 100), 'sm')); }
+  s.push({ h: 'หาร้อยละของจำนวน', items: a, cols: 2, work: true });
+  a = [];
+  var tot = R.pick([20, 25, 40, 50]), part = R.int(1, tot - 1); while ((part * 100) % tot) part = R.int(1, tot - 1);
+  a.push('นักเรียน ' + tot + ' คน ชอบเล่นกีฬา ' + part + ' คน คิดเป็นร้อยละเท่าใด ตอบ ' + B(part * 100 / tot + '%', 'sm'));
+  var full = R.pick([20, 25, 40, 50]), sc = R.int(1, full); while ((sc * 100) % full) sc = R.int(1, full);
+  a.push('สอบได้ ' + sc + ' คะแนน จากคะแนนเต็ม ' + full + ' คะแนน คิดเป็นร้อยละเท่าใด ตอบ ' + B(sc * 100 / full + '%', 'sm'));
+  var price = R.int(3, 20) * 50, off = R.pick([10, 20, 25, 30]);
+  a.push('สินค้าราคา ' + fmt(price) + ' บาท ลดราคา ' + off + '% ลดไปกี่บาท ' + B(fmt(price * off / 100) + ' บาท', 'sm') + ' ต้องจ่ายเงิน ' + B(fmt(price - price * off / 100) + ' บาท', 'sm'));
+  s.push({ h: 'โจทย์ปัญหา', items: a, cols: 1, work: true });
+  return s;
+} };
+
+function parSVG(th) {
+  /* เส้นขนาน 2 เส้น + เส้นตัดขวาง มุม 1–8 */
+  var W = 300, H = 170, y1 = 50, y2 = 125, cx = 150, t = th * Math.PI / 180, k = 1 / Math.tan(t);
+  var top = { x: cx + (y2 - y1) / 2 * k, y: y1 }, bot = { x: cx - (y2 - y1) / 2 * k, y: y2 };
+  var ext = 40, dx = Math.cos(t), dy = Math.sin(t);
+  var g = '<svg class="par" viewBox="0 0 ' + W + ' ' + H + '"><line x1="20" x2="280" y1="' + y1 + '" y2="' + y1 + '" stroke="#222" stroke-width="2"/><line x1="20" x2="280" y1="' + y2 + '" y2="' + y2 + '" stroke="#222" stroke-width="2"/>';
+  g += '<line x1="' + (bot.x - dx * ext).toFixed(1) + '" y1="' + (bot.y + dy * ext).toFixed(1) + '" x2="' + (top.x + dx * ext).toFixed(1) + '" y2="' + (top.y - dy * ext).toFixed(1) + '" stroke="#1E66F5" stroke-width="2"/>';
+  function lab(p, base) {
+    var r = 17, out = '';
+    [[t / 2, '1'], [(t + Math.PI) / 2, '2'], [Math.PI + t / 2, '3'], [(t + Math.PI) / 2 + Math.PI, '4']].forEach(function (q, i) {
+      out += '<text x="' + (p.x + r * Math.cos(q[0])).toFixed(1) + '" y="' + (p.y - r * Math.sin(q[0]) + 5).toFixed(1) + '" text-anchor="middle" font-size="13" font-weight="700" fill="#C2410C">' + (+q[1] + base) + '</text>';
+    });
+    return out;
+  }
+  g += lab(top, 0) + lab(bot, 4) + '<text x="284" y="' + (y1 + 4) + '" font-size="12">AB</text><text x="284" y="' + (y2 + 4) + '" font-size="12">CD</text></svg>';
+  return g;
+}
+CH[6] = { t: 'เส้นขนาน', e: '🛤️', make: function (R) {
+  var s = [], a = [], i;
+  var th = R.int(9, 16) * 5, val = function (k) { return [1, 3, 5, 7].indexOf(k) >= 0 ? th : 180 - th; };
+  var ask = R.shuffle([2, 3, 4, 5, 6, 7, 8]).slice(0, 5);
+  s.push({ h: 'AB // CD มีเส้นตัดขวาง กำหนด ∠1 = ' + th + '° จงหาขนาดของมุม', items: [parSVG(th) + '<div class="angs">' + ask.map(function (k) { return '∠' + k + ' = ' + B(val(k) + '°', 'sm'); }).join(' &nbsp; ') + '</div>'], cols: 1, fig: true });
+  var REL = [[3, 5, 'มุมแย้ง'], [4, 6, 'มุมแย้ง'], [3, 6, 'มุมภายในบนข้างเดียวกันของเส้นตัดขวาง'], [4, 5, 'มุมภายในบนข้างเดียวกันของเส้นตัดขวาง'], [1, 5, 'มุมภายนอกและมุมภายในที่อยู่ตรงข้ามบนข้างเดียวกันของเส้นตัดขวาง'], [2, 6, 'มุมภายนอกและมุมภายในที่อยู่ตรงข้ามบนข้างเดียวกันของเส้นตัดขวาง']];
+  a = R.shuffle(REL.slice()).slice(0, 4).map(function (r) { return '∠' + r[0] + ' กับ ∠' + r[1] + ' เป็น ' + B(r[2], 'long'); });
+  s.push({ h: 'จากรูปข้างบน บอกชื่อคู่มุม', items: a, cols: 1 });
+  a = [];
+  for (i = 0; i < 4; i++) {
+    var x = R.int(8, 16) * 5, par = R.int(0, 1), kind = R.int(0, 1), y = par ? (kind ? x : 180 - x) : (kind ? x + R.pick([-10, 5, 10]) : 180 - x + R.pick([-5, 10]));
+    a.push((kind ? 'มุมแย้งคู่หนึ่งมีขนาด ' : 'มุมภายในบนข้างเดียวกันของเส้นตัดขวางมีขนาด ') + x + '° และ ' + y + '° เส้นตรงคู่นั้น ' + B(par ? 'ขนานกัน' : 'ไม่ขนานกัน', 'mid'));
+  }
+  s.push({ h: 'ตรวจสอบว่าเส้นตรงคู่หนึ่งขนานกันหรือไม่', items: a, cols: 1 });
+  s.push({ h: 'ใช้ไม้บรรทัดและไม้ฉาก สร้างเส้นตรงที่ผ่านจุด P และขนานกับเส้นตรงที่กำหนด', items: ['<svg class="par" viewBox="0 0 300 120"><line x1="20" x2="280" y1="95" y2="' + R.int(60, 100) + '" stroke="#222" stroke-width="2"/><circle cx="' + R.int(110, 190) + '" cy="30" r="3.5"/><text x="0" y="0" font-size="13"></text></svg><div class="tip2">จุด P คือจุดด้านบน</div>'], cols: 1, fig: true });
+  return s;
+} };
+
+function quadSVG(type, A, Bv, h) {
+  var W = 260, H = 150, sc = Math.min(180 / Math.max(A, Bv || 0, 1), 100 / h), hh = h * sc, out = '<svg class="qd" viewBox="-10 -14 ' + W + ' ' + (hh + 46) + '">';
+  if (type === 'par') { var b = A * sc, off = 30; out += '<polygon points="' + off + ',0 ' + (off + b) + ',0 ' + b + ',' + hh + ' 0,' + hh + '" fill="#F2FAF5" stroke="#222" stroke-width="2"/><line x1="' + off + '" y1="0" x2="' + off + '" y2="' + hh + '" stroke="#1E66F5" stroke-dasharray="4 3"/><text x="' + (b / 2) + '" y="' + (hh + 18) + '" text-anchor="middle">ฐาน ' + A + ' ซม.</text><text x="' + (off + 6) + '" y="' + (hh / 2 + 4) + '" fill="#1E66F5">สูง ' + h + ' ซม.</text>'; }
+  else if (type === 'trap') { var a2 = A * sc, b2 = Bv * sc, o = (b2 - a2) / 2; out += '<polygon points="' + o + ',0 ' + (o + a2) + ',0 ' + b2 + ',' + hh + ' 0,' + hh + '" fill="#F2FAF5" stroke="#222" stroke-width="2"/><line x1="' + (o + 6) + '" y1="0" x2="' + (o + 6) + '" y2="' + hh + '" stroke="#1E66F5" stroke-dasharray="4 3"/><text x="' + (b2 / 2) + '" y="-4" text-anchor="middle">' + A + ' ซม.</text><text x="' + (b2 / 2) + '" y="' + (hh + 18) + '" text-anchor="middle">' + Bv + ' ซม.</text><text x="' + (o + 12) + '" y="' + (hh / 2 + 4) + '" fill="#1E66F5">สูง ' + h + ' ซม.</text>'; }
+  else { var d1 = A * sc / 2, d2 = Bv * sc / 2, cx = 120, cy = d2 + 2, top = type === 'kite' ? d2 * .55 : d2; out = '<svg class="qd" viewBox="0 -4 260 ' + (d2 * 2 + 40) + '"><polygon points="' + cx + ',' + (cy - top) + ' ' + (cx + d1) + ',' + cy + ' ' + cx + ',' + (cy + d2) + ' ' + (cx - d1) + ',' + cy + '" fill="#F2FAF5" stroke="#222" stroke-width="2"/><line x1="' + (cx - d1) + '" y1="' + cy + '" x2="' + (cx + d1) + '" y2="' + cy + '" stroke="#1E66F5" stroke-dasharray="4 3"/><line x1="' + cx + '" y1="' + (cy - top) + '" x2="' + cx + '" y2="' + (cy + d2) + '" stroke="#1E66F5" stroke-dasharray="4 3"/><text x="' + (cx + d1 + 6) + '" y="' + (cy + 4) + '" font-size="12">' + A + ' ซม.</text><text x="' + (cx + 6) + '" y="' + (cy + d2 + 16) + '" font-size="12">' + Bv + ' ซม.</text>'; }
+  return out + '</svg>';
+}
+CH[7] = { t: 'รูปสี่เหลี่ยม', e: '🔷', make: function (R) {
+  var s = [], a = [];
+  var props = R.shuffle([['มีด้านตรงข้ามขนานกัน 2 คู่ และไม่มีมุมฉาก', 'รูปสี่เหลี่ยมด้านขนาน'], ['มีด้านขนานกันเพียง 1 คู่', 'รูปสี่เหลี่ยมคางหมู'], ['ด้านยาวเท่ากันทุกด้าน แต่ไม่มีมุมฉาก', 'รูปสี่เหลี่ยมขนมเปียกปูน'], ['มีด้านประชิดยาวเท่ากัน 2 คู่ และเส้นทแยงมุมตัดกันเป็นมุมฉาก', 'รูปสี่เหลี่ยมรูปว่าว'], ['ด้านยาวเท่ากันทุกด้าน และมีมุมฉาก 4 มุม', 'รูปสี่เหลี่ยมจัตุรัส']]);
+  a = props.slice(0, 4).map(function (p) { return p[0] + ' คือ ' + B(p[1], 'mid'); });
+  s.push({ h: 'บอกชื่อรูปสี่เหลี่ยมจากสมบัติ', items: a, cols: 1 });
+  a = [];
+  var b = R.int(6, 15), h = R.int(3, 9); a.push(quadSVG('par', b, 0, h) + '<div>พื้นที่ ' + B(b * h + ' ตร.ซม.', 'mid') + '</div>');
+  var t1 = R.int(4, 9), t2 = t1 + R.int(2, 6) * 2, th = R.int(3, 8); if (((t1 + t2) * th) % 2) th++; a.push(quadSVG('trap', t1, t2, th) + '<div>พื้นที่ ' + B((t1 + t2) * th / 2 + ' ตร.ซม.', 'mid') + '</div>');
+  var p1 = R.int(3, 8) * 2, p2 = R.int(3, 8) * 2; a.push(quadSVG('rh', p1, p2, 1) + '<div>รูปสี่เหลี่ยมขนมเปียกปูน พื้นที่ ' + B(p1 * p2 / 2 + ' ตร.ซม.', 'mid') + '</div>');
+  var k1 = R.int(3, 7) * 2, k2 = R.int(4, 8) * 2; a.push(quadSVG('kite', k1, k2, 1) + '<div>รูปสี่เหลี่ยมรูปว่าว พื้นที่ ' + B(k1 * k2 / 2 + ' ตร.ซม.', 'mid') + '</div>');
+  s.push({ h: 'หาพื้นที่ (เส้นประคือความสูงหรือเส้นทแยงมุม)', items: a, cols: 2, fig: true });
+  a = [];
+  b = R.int(6, 12); h = R.int(4, 9); a.push('รูปสี่เหลี่ยมด้านขนานมีพื้นที่ ' + b * h + ' ตร.ซม. ฐานยาว ' + b + ' ซม. สูง ' + B(h + ' ซม.', 'sm'));
+  k1 = R.int(3, 8) * 2; k2 = R.int(4, 9); a.push('รูปว่าวมีพื้นที่ ' + k1 * k2 / 2 + ' ตร.ซม. เส้นทแยงมุมเส้นหนึ่งยาว ' + k1 + ' ซม. อีกเส้นยาว ' + B(k2 + ' ซม.', 'sm'));
+  var fb = R.int(10, 30), fh = R.int(8, 20), cost = R.pick([20, 30, 40, 50]);
+  a.push('สนามรูปสี่เหลี่ยมด้านขนาน ฐานยาว ' + fb + ' ม. สูง ' + fh + ' ม. ปูหญ้าตารางเมตรละ ' + cost + ' บาท ต้องจ่ายเงิน ' + B(fmt(fb * fh * cost) + ' บาท', 'mid'));
+  s.push({ h: 'หาความยาวที่ไม่ทราบ และโจทย์ปัญหา', items: a, cols: 1, work: true });
+  return s;
+} };
+
+function boxSVG(w, l, h) {
+  var sc = 120 / Math.max(w + l * .5, h + l * .5), W = w * sc, H = h * sc, D = l * sc * .5;
+  return '<svg class="rc" viewBox="-60 -' + (D + 10) + ' ' + (W + D + 110) + ' ' + (H + D + 40) + '"><g fill="#F2FAF5" stroke="#222" stroke-width="2" stroke-linejoin="round"><polygon points="0,0 ' + W + ',0 ' + W + ',' + H + ' 0,' + H + '"/><polygon points="0,0 ' + D + ',-' + D + ' ' + (W + D) + ',-' + D + ' ' + W + ',0" fill="#E3F4EA"/><polygon points="' + W + ',0 ' + (W + D) + ',-' + D + ' ' + (W + D) + ',' + (H - D) + ' ' + W + ',' + H + '" fill="#D2ECDD"/></g><text x="' + W / 2 + '" y="' + (H + 18) + '" text-anchor="middle" font-size="13">' + w + ' ซม.</text><text x="-6" y="' + H / 2 + '" text-anchor="end" font-size="13">' + h + ' ซม.</text><text x="' + (W + D / 2 + 8) + '" y="' + (H - D / 2 + 14) + '" font-size="13">' + l + ' ซม.</text></svg>';
+}
+CH[8] = { t: 'ปริมาตรและความจุของทรงสี่เหลี่ยมมุมฉาก', e: '📦', make: function (R) {
+  var s = [], a = [], i;
+  for (i = 0; i < 4; i++) { var w = R.int(2, 15), l = R.int(2, 15), h = R.int(2, 15); a.push(boxSVG(w, l, h) + '<div>ปริมาตร ' + B(fmt(w * l * h) + ' ลบ.ซม.', 'mid') + '</div>'); }
+  s.push({ h: 'หาปริมาตรของทรงสี่เหลี่ยมมุมฉาก', items: a, cols: 2, fig: true });
+  a = [];
+  var ba = R.int(10, 60), hh = R.int(3, 12); a.push('พื้นที่ฐาน ' + ba + ' ตร.ซม. สูง ' + hh + ' ซม. ปริมาตร ' + B(fmt(ba * hh) + ' ลบ.ซม.', 'mid'));
+  var cb = R.int(3, 9); a.push('ลูกบาศก์ยาวด้านละ ' + cb + ' ซม. ปริมาตร ' + B(fmt(cb * cb * cb) + ' ลบ.ซม.', 'mid'));
+  s.push({ h: 'หาปริมาตร', items: a, cols: 1 });
+  a = [];
+  var L1 = R.int(2, 9) + R.pick([0, .5, .25]); a.push(L1 + ' ลิตร = ' + B(fmt(L1 * 1000), 'sm') + ' ลบ.ซม.');
+  var c2 = R.int(2, 40) * 500; a.push(fmt(c2) + ' ลบ.ซม. = ' + B(String(c2 / 1000), 'sm') + ' ลิตร');
+  var m3 = R.int(2, 9); a.push(m3 + ' ลบ.ม. = ' + B(fmt(m3 * 1000), 'sm') + ' ลิตร');
+  var lt = R.int(2, 9) * 1000; a.push(fmt(lt) + ' ลิตร = ' + B(lt / 1000, 'sm') + ' ลบ.ม.');
+  s.push({ h: 'เปลี่ยนหน่วยปริมาตรและความจุ', items: a, cols: 2 });
+  a = [];
+  var tw = R.int(2, 6) * 10, tl = R.int(3, 8) * 10, th = R.int(2, 5) * 10;
+  a.push('ตู้ปลาวัดภายในกว้าง ' + tw + ' ซม. ยาว ' + tl + ' ซม. สูง ' + th + ' ซม. มีความจุ ' + B(fmt(tw * tl * th) + ' ลบ.ซม.', 'mid') + ' หรือ ' + B(tw * tl * th / 1000 + ' ลิตร', 'sm'));
+  var bw = R.int(5, 15), bl = R.int(5, 20), bh = R.int(3, 15);
+  a.push('กล่องมีความจุ ' + fmt(bw * bl * bh) + ' ลบ.ซม. ฐานกว้าง ' + bw + ' ซม. ยาว ' + bl + ' ซม. กล่องสูง ' + B(bh + ' ซม.', 'sm'));
+  s.push({ h: 'โจทย์ปัญหา', items: a, cols: 1, work: true });
+  return s;
+} };
+
+(function () {
+  function rng(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function mk(seed) {
+    var r = rng(seed);
+    var R = { f: r, int: function (a, b) { return a + Math.floor(r() * (b - a + 1)); }, pick: function (l) { return l[Math.floor(r() * l.length)]; },
+      shuffle: function (l) { for (var i = l.length - 1; i > 0; i--) { var j = Math.floor(r() * (i + 1)), t = l[i]; l[i] = l[j]; l[j] = t; } return l; } };
+    return R;
+  }
+  var sel = document.getElementById('ch'), out = document.getElementById('out');
+  var keys = Object.keys(CH);
+  sel.innerHTML = '<option value="">— เลือกบท —</option>' + keys.map(function (k) { return '<option value="' + k + '">บทที่ ' + k + ' ' + CH[k].t + '</option>'; }).join('');
+  var state = { ch: '', seed: 0, key: false };
+  function parse() {
+    var m = location.hash.match(/ch(\d+)(?:-(\d+))?/);
+    if (m && CH[m[1]]) { state.ch = m[1]; state.seed = +(m[2] || 0) || Math.floor(Math.random() * 9000) + 1000; }
+    else state.ch = '';
+  }
+  function draw() {
+    sel.value = state.ch;
+    document.getElementById('set').textContent = state.ch ? 'ชุดที่ ' + state.seed : '';
+    ['nw', 'ky', 'pr'].forEach(function (id) { document.getElementById(id).disabled = !state.ch; });
+    if (!state.ch) {
+      out.innerHTML = '<div class="list">' + keys.map(function (k) { return '<a href="#ch' + k + '"><span>' + CH[k].e + '</span>บทที่ ' + k + '<br>' + CH[k].t + '</a>'; }).join('') + '</div>';
+      return;
+    }
+    var C = CH[state.ch], secs = C.make(mk(state.seed * 131 + (+state.ch)));
+    var head = '<div class="hd"><div><h1>' + C.e + ' ใบงาน บทที่ ' + state.ch + ' ' + C.t + '</h1><div class="sub">คณิตศาสตร์ ป.5 · สไตล์ครูอู๋ · ชุดที่ ' + state.seed + '</div></div><img src="k10.webp" alt=""><div class="who"><span>ชื่อ<i></i></span><span>ชั้น<i class="s"></i></span><span>เลขที่<i class="s"></i></span><span class="score">คะแนน ____ / ' + secs.reduce(function (p, s) { return p + (s.info || (s.fig && s.items.length === 1) ? 0 : s.items.length); }, 0) + '</span></div></div>';
+    var pages = [[]], n = 0;
+    secs.forEach(function (s, i) {
+      var html = '<div class="sec"><h2><span class="n">' + (i + 1) + '</span>' + s.h + '</h2><ol class="items c' + (s.cols || 1) + (s.work ? ' work' : '') + '">' + s.items.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ol></div>';
+      var w = s.items.length * (s.work ? 3 : 1.4) / (s.cols || 1) + (s.fig ? 6 : 1.5);
+      if (n + w > 30 && pages[pages.length - 1].length) { pages.push([]); n = 0; }
+      pages[pages.length - 1].push(html); n += w;
+    });
+    out.className = 'sheets' + (state.key ? ' key' : '');
+    out.innerHTML = pages.map(function (p, i) {
+      return '<section class="page"><span class="keytag">เฉลย</span>' + (i === 0 ? head : '') + p.join('') + '<div class="foot"><span>ครูอู๋ ธนศักดิ์ แก้วถาวร · ห้องเรียนแสนสนุก KruAu</span><span>บทที่ ' + state.ch + ' · ชุดที่ ' + state.seed + ' · หน้า ' + (i + 1) + '/' + pages.length + '</span></div></section>';
+    }).join('');
+  }
+  function go(ch, seed) { location.hash = ch ? 'ch' + ch + '-' + seed : ''; }
+  sel.onchange = function () { state.key = false; document.getElementById('ky').classList.remove('on'); go(sel.value, Math.floor(Math.random() * 9000) + 1000); };
+  document.getElementById('nw').onclick = function () { go(state.ch, Math.floor(Math.random() * 9000) + 1000); };
+  document.getElementById('ky').onclick = function () { state.key = !state.key; this.classList.toggle('on', state.key); this.textContent = state.key ? '🔑 ซ่อนเฉลย' : '🔑 เฉลย (ครู)'; draw(); };
+  document.getElementById('pr').onclick = function () { try { window.print(); } catch (e) {} };
+  window.addEventListener('hashchange', function () { parse(); draw(); });
+  parse();
+  if (state.ch && !/-\d+/.test(location.hash)) history.replaceState(null, '', '#ch' + state.ch + '-' + state.seed);
+  draw();
+})();
+</script>
+</body>
+</html>

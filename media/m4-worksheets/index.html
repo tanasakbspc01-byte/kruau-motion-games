@@ -45,7 +45,10 @@ body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Sarabun,system
 svg.ang{width:210px;height:140px;display:block;margin:2px 0}
 svg.rc{width:190px;height:auto;display:block}
 svg.rc text{font:13px Sarabun,sans-serif}
+svg.qd{width:250px;max-width:100%;height:auto;display:block}svg.qd text{font:14px Sarabun,sans-serif}
 svg.grid{width:100%;max-width:520px;display:block}
+svg.par{width:320px;max-width:100%;display:block}
+.angs{margin-top:6px;line-height:2.2}.tip2{font-size:13px;color:var(--soft)}
 svg.grid .key{display:none}.key svg.grid .key{display:inline}
 .draw{height:110px;border:1.5px dashed #bbb;border-radius:10px;margin-top:6px}
 table.dt{border-collapse:collapse;margin:4px 0;font-size:16px}
@@ -104,15 +107,28 @@ function thaiWords(n) {
 }
 var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
 
-/* ใบงานคณิตศาสตร์ ป.4 — สร้างโจทย์ใหม่ได้ไม่จำกัด (ตัวเลขสุ่มจากเลขชุด) */
-var WS_GRADE = 'ป.4';
-var CH = {};
+/* ตัวช่วยใบงาน (ทุกชั้น) */
 function fmt(n) { return Number(n).toLocaleString('en-US'); }
 function B(a, w) { return '<span class="bl' + (w ? ' ' + w : '') + '" data-a="' + String(a).replace(/"/g, '&quot;') + '"></span>'; }
 function fr(n, d) { return '<span class="fr"><i>' + n + '</i><i>' + d + '</i></span>'; }
 function mix(w, n, d) { return (w ? w : '') + (n ? fr(n, d) : ''); }
 function gcd(a, b) { return b ? gcd(b, a % b) : a; }
 
+function angleSVG(deg, R) {
+  var rot = R.int(0, 35) * (R.int(0, 1) ? 1 : -1), W = 220, H = 150, cx = 110, cy = 120, L = 95;
+  if (deg > 120) cy = 110;
+  var a1 = rot * Math.PI / 180, a2 = (rot + deg) * Math.PI / 180;
+  var x1 = cx + L * Math.cos(a1), y1 = cy - L * Math.sin(a1), x2 = cx + L * Math.cos(a2), y2 = cy - L * Math.sin(a2);
+  var minx = Math.min(cx, x1, x2) - 10, maxx = Math.max(cx, x1, x2) + 10, miny = Math.min(cy, y1, y2) - 10, maxy = Math.max(cy, y1, y2) + 10;
+  return '<svg class="ang" viewBox="' + minx.toFixed(0) + ' ' + miny.toFixed(0) + ' ' + (maxx - minx).toFixed(0) + ' ' + (maxy - miny).toFixed(0) + '"><path d="M' + x1.toFixed(1) + ',' + y1.toFixed(1) + ' L' + cx + ',' + cy + ' L' + x2.toFixed(1) + ',' + y2.toFixed(1) + '" fill="none" stroke="#222" stroke-width="2"/><circle cx="' + cx + '" cy="' + cy + '" r="3"/></svg>';
+}
+function kind(d) { return d < 90 ? 'มุมแหลม' : d === 90 ? 'มุมฉาก' : d < 180 ? 'มุมป้าน' : 'มุมตรง'; }
+function rectSVG(w, h, unit) {
+  var sc = 120 / Math.max(w, h), W = Math.max(40, w * sc), H = Math.max(30, h * sc);
+  return '<svg class="rc" viewBox="-40 -8 ' + (W + 60) + ' ' + (H + 36) + '"><rect x="0" y="0" width="' + W.toFixed(0) + '" height="' + H.toFixed(0) + '" fill="#F2FAF5" stroke="#222" stroke-width="2"/><text x="' + (W / 2).toFixed(0) + '" y="' + (H + 20).toFixed(0) + '" text-anchor="middle">' + w + ' ' + unit + '</text><text x="-6" y="' + (H / 2 + 5).toFixed(0) + '" text-anchor="end">' + h + ' ' + unit + '</text></svg>';
+}
+
+var CH = {};
 CH[1] = { t: 'จำนวนนับที่มากกว่า 100,000', e: '🔢', make: function (R) {
   var s = [];
   var a = []; for (var i = 0; i < 4; i++) { var n = R.int(100001, 9999999); a.push('<b>' + fmt(n) + '</b> อ่านว่า ' + B(thaiWords(n), 'long')); }
@@ -298,15 +314,6 @@ CH[7] = { t: 'ทศนิยม', e: '🔟', make: function (R) {
   return s;
 } };
 
-function angleSVG(deg, R) {
-  var rot = R.int(0, 35) * (R.int(0, 1) ? 1 : -1), W = 220, H = 150, cx = 110, cy = 120, L = 95;
-  if (deg > 120) cy = 110;
-  var a1 = rot * Math.PI / 180, a2 = (rot + deg) * Math.PI / 180;
-  var x1 = cx + L * Math.cos(a1), y1 = cy - L * Math.sin(a1), x2 = cx + L * Math.cos(a2), y2 = cy - L * Math.sin(a2);
-  var minx = Math.min(cx, x1, x2) - 10, maxx = Math.max(cx, x1, x2) + 10, miny = Math.min(cy, y1, y2) - 10, maxy = Math.max(cy, y1, y2) + 10;
-  return '<svg class="ang" viewBox="' + minx.toFixed(0) + ' ' + miny.toFixed(0) + ' ' + (maxx - minx).toFixed(0) + ' ' + (maxy - miny).toFixed(0) + '"><path d="M' + x1.toFixed(1) + ',' + y1.toFixed(1) + ' L' + cx + ',' + cy + ' L' + x2.toFixed(1) + ',' + y2.toFixed(1) + '" fill="none" stroke="#222" stroke-width="2"/><circle cx="' + cx + '" cy="' + cy + '" r="3"/></svg>';
-}
-function kind(d) { return d < 90 ? 'มุมแหลม' : d === 90 ? 'มุมฉาก' : d < 180 ? 'มุมป้าน' : 'มุมตรง'; }
 CH[8] = { t: 'มุม', e: '📐', make: function (R) {
   var s = [], a = [], i, d;
   var degs = [R.int(3, 8) * 5, 90, R.int(19, 34) * 5, 180, R.int(4, 16) * 5, R.int(20, 33) * 5]; R.shuffle(degs);
@@ -321,10 +328,6 @@ CH[8] = { t: 'มุม', e: '📐', make: function (R) {
   return s;
 } };
 
-function rectSVG(w, h, unit) {
-  var sc = 120 / Math.max(w, h), W = Math.max(40, w * sc), H = Math.max(30, h * sc);
-  return '<svg class="rc" viewBox="-40 -8 ' + (W + 60) + ' ' + (H + 36) + '"><rect x="0" y="0" width="' + W.toFixed(0) + '" height="' + H.toFixed(0) + '" fill="#F2FAF5" stroke="#222" stroke-width="2"/><text x="' + (W / 2).toFixed(0) + '" y="' + (H + 20).toFixed(0) + '" text-anchor="middle">' + w + ' ' + unit + '</text><text x="-6" y="' + (H / 2 + 5).toFixed(0) + '" text-anchor="end">' + h + ' ' + unit + '</text></svg>';
-}
 CH[9] = { t: 'รูปสี่เหลี่ยมมุมฉาก', e: '🟩', make: function (R) {
   var s = [], a = [], i, w, h;
   for (i = 0; i < 4; i++) { w = R.int(4, 25); h = i % 2 ? w : R.int(3, w - 1); var u = R.pick(['ซม.', 'ม.']); a.push(rectSVG(w, h, u) + '<div>ความยาวรอบรูป ' + B(2 * (w + h) + ' ' + u, 'sm') + '<br>พื้นที่ ' + B(w * h + ' ตาราง' + (u === 'ซม.' ? 'เซนติเมตร' : 'เมตร'), 'mid') + '</div>'); }
