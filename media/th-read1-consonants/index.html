@@ -49,6 +49,7 @@
 .pick button{width:44px;height:44px;border-radius:12px;border:2px solid #eee;background:#fff;font:700 24px Sarabun,sans-serif;cursor:pointer}
 .pick button.on{background:var(--main);color:#fff;border-color:var(--main)}
 .voice{font-size:.95rem}
+[data-rate].on{background:var(--main);color:#fff;border-color:var(--main)}
 .kru5{width:min(220px,50vw);height:auto;display:block;margin:0 auto}
 .tipk{display:flex;gap:14px;align-items:center}.tipk img{width:min(150px,30vw);height:auto;flex:none}
 .legend[hidden]{display:none}
@@ -87,7 +88,8 @@
   <h2 class="h"><span class="e">🔊</span>เปิดเสียงก่อนเรียนนะ</h2>
   <div class="card c-blue center">
     <p>บทเรียนนี้ <b>อ่านออกเสียง</b> ให้ฟังทุกตัวอักษร แตะปุ่มด้านล่างเพื่อลองฟัง</p>
-    <button class="btn" data-say="กอ ไก่ ขอ ไข่ ขอ ขวด">🔊 ลองฟังเสียง "กอ ไก่"</button>
+    <button class="btn" data-say="กอ ไก่">🔊 ลองฟัง "กอ ไก่"</button>
+    <div class="row center" style="margin-top:8px"><span>ความเร็วเสียงอ่าน:</span><button class="btn ghost" data-rate=".55">🐢 ช้ามาก</button><button class="btn ghost" data-rate=".7">🐌 ช้า</button><button class="btn ghost" data-rate=".9">🐇 ปกติ</button></div>
     <p class="voice" id="voiceMsg"></p>
   </div>
   <div class="card c-yellow"><p>💡 <b>เคล็ดลับครู:</b> ถ้าไม่มีเสียง ให้เปิดเสียงเครื่อง ปิดโหมดเงียบ (iPad: สวิตช์/ศูนย์ควบคุม) แล้วแตะใหม่อีกครั้ง</p></div>
@@ -123,7 +125,7 @@
 <section class="slide" data-title="เกม ภาพนี้คือตัวอะไร"><div class="inner">
   <h2 class="h"><span class="e">🖼️</span>เกม ภาพนี้คือ "ก ไก่" หรือตัวอะไร</h2>
   <div class="game" data-g="pic">
-    <div class="gtop"><button class="btn" data-rep>🔊 ฟังชื่อภาพ</button></div>
+    <div class="gtop"><button class="btn ghost" data-start>▶ เริ่มเกม</button><button class="btn" data-rep>🔊 ฟังชื่อภาพ</button></div>
     <div class="ask"></div>
     <div class="opts"></div>
     <div class="stat"></div>
@@ -195,10 +197,18 @@ var THV = null;
 function pickVoice() { try { var v = speechSynthesis.getVoices(); THV = v.filter(function (x) { return /^th/i.test(x.lang); })[0] || null; } catch (e) {} vmsg(); }
 function vmsg() { var m = document.getElementById('voiceMsg'); if (!m) return; m.textContent = !window.speechSynthesis ? '⚠️ เครื่องนี้อ่านออกเสียงไม่ได้ ครูอ่านให้ฟังแทนได้นะ' : THV ? '✅ พร้อมแล้ว ใช้เสียง: ' + THV.name : 'ℹ️ ถ้าเสียงอ่านไม่ชัด ให้ติดตั้งเสียงภาษาไทยในการตั้งค่าเครื่อง (การช่วยการเข้าถึง → เนื้อหาที่พูด)'; }
 if (window.speechSynthesis) { speechSynthesis.onvoiceschanged = pickVoice; pickVoice(); }
+var RATE = .7;
+try { var sr = parseFloat(localStorage.getItem('kruau-th-rate')); if (sr) RATE = sr; } catch (e) {}
 function say(t) {
   if (!window.speechSynthesis) return;
-  try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.lang = 'th-TH'; if (THV) u.voice = THV; u.rate = .8; speechSynthesis.speak(u); } catch (e) {}
+  try {
+    speechSynthesis.cancel();
+    String(t).split('|').forEach(function (part) {
+      var u = new SpeechSynthesisUtterance(part.trim()); u.lang = 'th-TH'; if (THV) u.voice = THV; u.rate = RATE; speechSynthesis.speak(u);
+    });
+  } catch (e) {}
 }
+function hush() { try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {} }
 function rnd(n) { return Math.floor(Math.random() * n); }
 function shuf(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = rnd(i + 1), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
 
@@ -218,6 +228,9 @@ Kit.quizzes.main = [
 document.addEventListener('DOMContentLoaded', function () {
   /* ปุ่ม data-say ทั่วไป */
   document.addEventListener('click', function (e) { var b = e.target.closest('[data-say]'); if (b) say(b.getAttribute('data-say')); });
+  function markRate() { Array.prototype.forEach.call(document.querySelectorAll('[data-rate]'), function (x) { x.classList.toggle('on', +x.getAttribute('data-rate') === RATE); }); }
+  document.addEventListener('click', function (e) { var b = e.target.closest('[data-rate]'); if (!b) return; RATE = +b.getAttribute('data-rate'); try { localStorage.setItem('kruau-th-rate', String(RATE)); } catch (er) {} markRate(); say('กอ ไก่'); });
+  markRate();
   /* ---- ตาราง 44 ตัว + การ์ดใหญ่ ---- */
   var chart = document.getElementById('chart'), big = document.getElementById('big'), cur = null;
   chart.innerHTML = TC.map(function (c, i) { return '<button class="' + c[3] + '" data-i="' + i + '" aria-label="' + show(c) + '">' + c[0] + '</button>'; }).join('');
@@ -236,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
     (function step() {
       if (!reading || i >= TC.length) { reading = 0; btn.textContent = '▶ อ่านทีละตัวให้ฟัง'; Array.prototype.forEach.call(bs, function (x) { x.style.outline = ''; }); return; }
       Array.prototype.forEach.call(bs, function (x, k) { x.style.outline = k === i ? '4px solid var(--main)' : ''; });
-      say(nameOf(TC[i])); i++; setTimeout(step, 1700);
+      say(nameOf(TC[i])); i++; setTimeout(step, 1300 / RATE);
     })();
   };
 
@@ -279,9 +292,10 @@ document.addEventListener('DOMContentLoaded', function () {
     el.addEventListener('click', function (e) {
       if (e.target.closest('[data-rep]') && ans) say(kind === 'pic' ? ans[1] : nameOf(ans));
       var l = e.target.closest('[data-lv]'); if (l) { lv = +l.dataset.lv; round = 0; score = 0; next(); }
-      if (e.target.closest('[data-again]')) { round = 0; score = 0; next(); }
+      if (e.target.closest('[data-again]') || e.target.closest('[data-start]')) { round = 0; score = 0; next(); }
     });
     if (kind === 'listen') { ask.innerHTML = '👂'; stat.textContent = 'เลือกระดับเพื่อเริ่มเกม'; }
+    else if (kind === 'pic') { ask.innerHTML = '🖼️'; stat.textContent = 'กด ▶ เริ่มเกม'; }
     else next();
   }
   Array.prototype.forEach.call(document.querySelectorAll('[data-g]'), game);
@@ -306,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('tSay').onclick = function () { say(nameOf(TC[ti])); };
   document.getElementById('tNext').onclick = function () { setT((ti + 1) % TC.length); say(nameOf(TC[ti])); };
   window.addEventListener('resize', draw);
-  var go = Kit.go; Kit.go = function (n, i) { go(n, i); setTimeout(draw, 60); };
+  var go = Kit.go; Kit.go = function (n, i) { if (n !== Kit.cur) { hush(); reading = 0; } go(n, i); setTimeout(draw, 60); };
   setTimeout(draw, 100);
 });
 </script>
