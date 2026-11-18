@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>อ่านออกเขียนได้ ขั้นที่ 1 พยัญชนะไทย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#F25C9A;--main-deep:#C93A75}
+.cv{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px}
+.cv button{aspect-ratio:1;border-radius:16px;border:3px solid #eee;background:#fff;font:700 clamp(30px,5vw,42px)/1 Sarabun,sans-serif;color:#333;cursor:pointer;box-shadow:0 3px 0 #e5e5e5;padding:0}
+.cv button:active{transform:translateY(2px)}
+.cv.tri .mid{background:#E8F7EE;border-color:#7BD6A0}.cv.tri .hi{background:#FFF1D6;border-color:#FFC56B}.cv.tri .lo{background:#E7EEFF;border-color:#8FB0FF}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}
+.legend span{border-radius:999px;padding:2px 12px;font-weight:700;font-size:.95rem}
+.big{position:fixed;inset:0;z-index:90;display:none;place-items:center;background:rgba(40,20,40,.45)}
+.big.show{display:grid}
+.big .bx{background:#fff;border-radius:28px;padding:22px 30px;text-align:center;min-width:min(340px,90vw);border:5px solid var(--main);box-shadow:0 10px 30px rgba(0,0,0,.25);animation:pop .3s ease-out}
+.big .L{font:700 120px/1.1 Sarabun,sans-serif;color:var(--main-deep)}
+.big .E{font-size:64px;line-height:1.1;min-height:70px}
+.big .E.w{font:700 40px/1.6 Mali,sans-serif;color:#555}
+.big .N{font:700 30px Mali,sans-serif;margin:4px 0 10px}
+@keyframes pop{0%{transform:scale(.7);opacity:0}100%{transform:none;opacity:1}}
+.groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
+.groups .card p.ls{font:700 34px/1.5 Sarabun,sans-serif;letter-spacing:4px;margin:6px 0}
+.game{display:flex;flex-direction:column;align-items:center;gap:12px}
+.gtop{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+.ask{font:700 clamp(54px,9vw,88px)/1.1 Sarabun,sans-serif;min-height:96px;display:grid;place-items:center;color:var(--main-deep)}
+.ask .em{font-size:clamp(64px,10vw,96px)}
+.ask .wd{font:700 clamp(30px,5vw,44px) Mali,sans-serif;color:#555}
+.opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:min(560px,100%)}
+.opts.o8{grid-template-columns:repeat(4,minmax(0,1fr))}
+.opts button{aspect-ratio:1.2;border-radius:18px;border:3px solid #eee;background:#fff;font:700 clamp(38px,6vw,56px)/1 Sarabun,sans-serif;cursor:pointer;box-shadow:0 4px 0 #e2e2e2;color:#333}
+.opts button.ok{background:#DFF7E8;border-color:#2DBE6C}
+.opts button.no{background:#FFE3E3;border-color:#FF5C7A;animation:shk .35s}
+@keyframes shk{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.stat{font-weight:700;color:var(--main-deep);font-size:1.1rem}
+.hearts{letter-spacing:2px}
+.trace{display:flex;flex-direction:column;align-items:center;gap:10px}
+.tbox{position:relative;width:min(440px,92vw);aspect-ratio:1;border-radius:22px;background:#fff;border:3px dashed #F6B5D0;overflow:hidden;touch-action:none}
+.tbox .gd{position:absolute;inset:0;display:grid;place-items:center;transform:translateY(-14%);font:400 min(300px,64vw)/1 Sarabun,sans-serif;color:#EDE3E8;pointer-events:none;-webkit-text-stroke:2px #F2A9C8}
+.tbox .ln{position:absolute;left:0;right:0;border-top:2px dashed #FAD3E3;pointer-events:none}
+.tbox canvas{position:absolute;inset:0;width:100%;height:100%}
+.pick{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:720px}
+.pick button{width:44px;height:44px;border-radius:12px;border:2px solid #eee;background:#fff;font:700 24px Sarabun,sans-serif;cursor:pointer}
+.pick button.on{background:var(--main);color:#fff;border-color:var(--main)}
+.voice{font-size:.95rem}
+.kru5{width:min(220px,50vw);height:auto;display:block;margin:0 auto}
+.tipk{display:flex;gap:14px;align-items:center}.tipk img{width:min(150px,30vw);height:auto;flex:none}
+.legend[hidden]{display:none}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🔤</span>
+  <div class="ttl"><b>พยัญชนะไทย 44 ตัว</b><small>อ่านออกเขียนได้ · ขั้นที่ 1</small></div>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge" style="background:var(--pink)">ภาษาไทย · อ่านออกเขียนได้ ขั้นที่ 1</span>
+  <img class="kru5" src="k5.webp" alt="ครูอู๋">
+  <h1>พยัญชนะไทย 44 ตัว</h1>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul>
+      <li><b>อ่าน</b> และ <b>บอกชื่อ</b> พยัญชนะไทยได้ครบ 44 ตัว</li>
+      <li>แยก <b>ตัวที่หน้าตาคล้ายกัน</b> ได้ เช่น ข กับ ช, บ กับ ป</li>
+      <li>รู้จัก <b>อักษร 3 หมู่</b> (กลาง สูง ต่ำ)</li>
+      <li><b>เขียน</b> พยัญชนะได้ถูกต้อง เริ่มจากหัว</li>
+    </ul>
+  </div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button>
+</div></section>
+
+<section class="slide" data-title="เปิดเสียงก่อนเรียน"><div class="inner">
+  <h2 class="h"><span class="e">🔊</span>เปิดเสียงก่อนเรียนนะ</h2>
+  <div class="card c-blue center">
+    <p>บทเรียนนี้ <b>อ่านออกเสียง</b> ให้ฟังทุกตัวอักษร แตะปุ่มด้านล่างเพื่อลองฟัง</p>
+    <button class="btn" data-say="กอ ไก่ ขอ ไข่ ขอ ขวด">🔊 ลองฟังเสียง "กอ ไก่"</button>
+    <p class="voice" id="voiceMsg"></p>
+  </div>
+  <div class="card c-yellow"><p>💡 <b>เคล็ดลับครู:</b> ถ้าไม่มีเสียง ให้เปิดเสียงเครื่อง ปิดโหมดเงียบ (iPad: สวิตช์/ศูนย์ควบคุม) แล้วแตะใหม่อีกครั้ง</p></div>
+</div></section>
+
+<section class="slide" data-title="ตารางพยัญชนะ 44 ตัว"><div class="inner">
+  <h2 class="h"><span class="e">🔤</span>พยัญชนะไทย 44 ตัว · แตะเพื่อฟังเสียง</h2>
+  <div class="row center"><button class="btn ghost" id="triBtn">🎨 แสดงสีอักษร 3 หมู่</button><button class="btn ghost" id="readAll">▶ อ่านทีละตัวให้ฟัง</button></div>
+  <div class="legend" id="legend" hidden><span style="background:#E8F7EE">🟢 อักษรกลาง 9 ตัว</span><span style="background:#FFF1D6">🟠 อักษรสูง 11 ตัว</span><span style="background:#E7EEFF">🔵 อักษรต่ำ 24 ตัว</span></div>
+  <div class="cv" id="chart"></div>
+</div></section>
+
+<section class="slide" data-title="อักษร 3 หมู่"><div class="inner">
+  <h2 class="h"><span class="e">🧩</span>อักษร 3 หมู่ (ไตรยางศ์)</h2>
+  <div class="groups">
+    <div class="card c-green"><h3>🟢 อักษรกลาง 9 ตัว</h3><p class="ls">ก จ ฎ ฏ ด ต บ ป อ</p><p>🎵 ท่องจำ: <b>ไก่ จิก เด็ก ตาย บน ปาก โอ่ง</b></p></div>
+    <div class="card c-orange"><h3>🟠 อักษรสูง 11 ตัว</h3><p class="ls">ข ฃ ฉ ฐ ถ ผ ฝ ศ ษ ส ห</p><p>🎵 ท่องจำ: <b>ผี ฝาก ถุง ข้าว สาร ให้ ฉัน</b></p></div>
+    <div class="card c-blue"><h3>🔵 อักษรต่ำ 24 ตัว</h3><p class="ls">ค ฅ ฆ ง ช ซ ฌ ญ ฑ ฒ ณ ท ธ น พ ฟ ภ ม ย ร ล ว ฬ ฮ</p><p>💡 ตัวที่ไม่อยู่ในกลางและสูง เป็น <b>อักษรต่ำ</b> ทั้งหมด</p></div>
+  </div>
+  <div class="card c-purple tipk"><img src="k3.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนจำ:</b> อักษร 3 หมู่ จะช่วยเราตอนเรียน <b>การผันวรรณยุกต์</b> ในขั้นที่ 3 นะ</p></div>
+</div></section>
+
+<section class="slide" data-title="เกม ฟังแล้วแตะ"><div class="inner">
+  <h2 class="h"><span class="e">👂</span>เกม ฟังแล้วแตะ</h2>
+  <div class="game" data-g="listen">
+    <div class="gtop"><button class="btn ghost" data-lv="4">ง่าย (4 ตัว)</button><button class="btn ghost" data-lv="8">ท้าทาย (8 ตัว)</button><button class="btn" data-rep>🔊 ฟังอีกครั้ง</button></div>
+    <div class="ask">👂</div>
+    <div class="opts"></div>
+    <div class="stat"></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เกม ภาพนี้คือตัวอะไร"><div class="inner">
+  <h2 class="h"><span class="e">🖼️</span>เกม ภาพนี้คือ "ก ไก่" หรือตัวอะไร</h2>
+  <div class="game" data-g="pic">
+    <div class="gtop"><button class="btn" data-rep>🔊 ฟังชื่อภาพ</button></div>
+    <div class="ask"></div>
+    <div class="opts"></div>
+    <div class="stat"></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เกม หาตัวที่เหมือน"><div class="inner">
+  <h2 class="h"><span class="e">🔍</span>เกม หาตัวที่เหมือน (ระวังตัวที่หน้าตาคล้ายกัน!)</h2>
+  <div class="game" data-g="look">
+    <div class="ask"></div>
+    <div class="opts"></div>
+    <div class="stat"></div>
+  </div>
+  <div class="card c-yellow"><p>👀 <b>ข้อสังเกต:</b> ข มีหัว ช มีหัวและหาง · บ ไม่มีหาง ป มีหาง · พ หัวอยู่ล่าง ฟ หางยาวขึ้นบน · ด หัวม้วนเข้า ต หัวหยัก</p></div>
+</div></section>
+
+<section class="slide" data-title="ฝึกเขียน" data-nofit><div class="inner">
+  <h2 class="h"><span class="e">✍️</span>ฝึกเขียนพยัญชนะ · เริ่มที่หัวเสมอ</h2>
+  <div class="trace">
+    <div class="pick" id="pick"></div>
+    <div class="tbox noswipe" id="tbox"><div class="ln" style="top:28%"></div><div class="ln" style="top:72%"></div><div class="gd" id="gd">ก</div><canvas id="tcv"></canvas></div>
+    <div class="row center"><button class="btn ghost" id="tSay">🔊 ฟังเสียง</button><button class="btn ghost" id="tClr">🧽 ลบ</button><button class="btn" id="tNext">ตัวถัดไป ▶</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="แบบทดสอบ"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบ (10 ข้อ)</h2>
+  <div data-quiz="main"></div>
+</div></section>
+
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปบทเรียน</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class="grid" style="--min:240px">
+    <div class="card c-pink"><h3>🔤 พยัญชนะไทย</h3><p>มีทั้งหมด <b>44 ตัว</b> แต่ละตัวมีชื่อเรียก เช่น ก ไก่ ข ไข่</p></div>
+    <div class="card c-green"><h3>🧩 อักษร 3 หมู่</h3><p>กลาง 9 · สูง 11 · ต่ำ 24</p></div>
+    <div class="card c-blue"><h3>👀 ตัวที่คล้ายกัน</h3><p>ข/ช · บ/ป · พ/ฟ · ด/ต · ผ/ฝ · ถ/ภ</p></div>
+    <div class="card c-orange"><h3>✍️ การเขียน</h3><p>เริ่มเขียนที่ <b>หัว</b> ของตัวอักษรทุกครั้ง</p></div>
+  </div>
+  <img class="kru5" src="k11.webp" alt="ครูอู๋ปรบมือ" style="width:150px">
+  <div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button><span class="muted">ขั้นต่อไป: สระและการประสมคำ</span></div>
+</div></section>
+
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+<div class="big" id="big"><div class="bx"><div class="L"></div><div class="E"></div><div class="N"></div><button class="btn" data-again>🔊 ฟังอีกครั้ง</button> <button class="btn ghost" data-close>ปิด</button></div></div>
+</div>
+<script src="kit.js"></script>
+<script>
+/* ---------- ข้อมูลพยัญชนะ: [ตัว, คำ, อีโมจิ, หมู่] ---------- */
+var TC = [
+  ['ก','ไก่','🐔','mid'],['ข','ไข่','🥚','hi'],['ฃ','ขวด','🍾','hi'],['ค','ควาย','🐃','lo'],['ฅ','คน','🧑','lo'],['ฆ','ระฆัง','🔔','lo'],['ง','งู','🐍','lo'],
+  ['จ','จาน','🍽️','mid'],['ฉ','ฉิ่ง','','hi'],['ช','ช้าง','🐘','lo'],['ซ','โซ่','⛓️','lo'],['ฌ','เฌอ','🌳','lo'],['ญ','หญิง','👩','lo'],['ฎ','ชฎา','👑','mid'],
+  ['ฏ','ปฏัก','','mid'],['ฐ','ฐาน','','hi'],['ฑ','มณโฑ','👸','lo'],['ฒ','ผู้เฒ่า','👴','lo'],['ณ','เณร','','lo'],['ด','เด็ก','🧒','mid'],['ต','เต่า','🐢','mid'],
+  ['ถ','ถุง','👝','hi'],['ท','ทหาร','💂','lo'],['ธ','ธง','🚩','lo'],['น','หนู','🐭','lo'],['บ','ใบไม้','🍃','mid'],['ป','ปลา','🐟','mid'],['ผ','ผึ้ง','🐝','hi'],
+  ['ฝ','ฝา','','hi'],['พ','พาน','','lo'],['ฟ','ฟัน','🦷','lo'],['ภ','สำเภา','⛵','lo'],['ม','ม้า','🐴','lo'],['ย','ยักษ์','👹','lo'],['ร','เรือ','🚣','lo'],
+  ['ล','ลิง','🐒','lo'],['ว','แหวน','💍','lo'],['ศ','ศาลา','🛖','hi'],['ษ','ฤๅษี','🧙','hi'],['ส','เสือ','🐯','hi'],['ห','หีบ','🧰','hi'],['ฬ','จุฬา','🪁','lo'],
+  ['อ','อ่าง','🛁','mid'],['ฮ','นกฮูก','🦉','lo']
+];
+function nameOf(c) { return c[0] + 'อ ' + c[1]; }
+function show(c) { return c[0] + ' ' + c[1]; }
+/* ---------- เสียงอ่าน (เสียงภาษาไทยของเครื่อง) ---------- */
+var THV = null;
+function pickVoice() { try { var v = speechSynthesis.getVoices(); THV = v.filter(function (x) { return /^th/i.test(x.lang); })[0] || null; } catch (e) {} vmsg(); }
+function vmsg() { var m = document.getElementById('voiceMsg'); if (!m) return; m.textContent = !window.speechSynthesis ? '⚠️ เครื่องนี้อ่านออกเสียงไม่ได้ ครูอ่านให้ฟังแทนได้นะ' : THV ? '✅ พร้อมแล้ว ใช้เสียง: ' + THV.name : 'ℹ️ ถ้าเสียงอ่านไม่ชัด ให้ติดตั้งเสียงภาษาไทยในการตั้งค่าเครื่อง (การช่วยการเข้าถึง → เนื้อหาที่พูด)'; }
+if (window.speechSynthesis) { speechSynthesis.onvoiceschanged = pickVoice; pickVoice(); }
+function say(t) {
+  if (!window.speechSynthesis) return;
+  try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.lang = 'th-TH'; if (THV) u.voice = THV; u.rate = .8; speechSynthesis.speak(u); } catch (e) {}
+}
+function rnd(n) { return Math.floor(Math.random() * n); }
+function shuf(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = rnd(i + 1), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+Kit.quizzes.main = [
+  { q: 'ไก่ เริ่มต้นด้วยพยัญชนะตัวใด', c: ['ก', 'ข', 'ค', 'ง'], a: 0, w: 'ก ไก่' },
+  { q: 'พยัญชนะไทยมีทั้งหมดกี่ตัว', c: ['44 ตัว', '32 ตัว', '21 ตัว', '50 ตัว'], a: 0, w: 'พยัญชนะไทยมี 44 ตัว ตั้งแต่ ก ถึง ฮ' },
+  { q: '"ช ช้าง" ต่างจาก "ข ไข่" อย่างไร', c: ['ช มีหาง ข ไม่มีหาง', 'ข มีหาง ช ไม่มีหาง', 'เหมือนกันทุกอย่าง', 'ช ไม่มีหัว'], a: 0, w: 'ช มีหางยื่นขึ้นด้านขวา' },
+  { q: 'ตัวใดคือ "ป ปลา"', c: ['ป', 'บ', 'ษ', 'ย'], a: 0, w: 'ป มีหางยาวขึ้นด้านบน' },
+  { q: 'ฟัน ใช้พยัญชนะตัวใด', c: ['ฟ', 'พ', 'ผ', 'ฝ'], a: 0, w: 'ฟ ฟัน หางยาวขึ้นด้านบน' },
+  { q: 'ข้อใดเป็นอักษรกลางทั้งหมด', c: ['ก จ ด ต', 'ข ฉ ถ ผ', 'ค ง ช ซ', 'ก ข ค ง'], a: 0, w: 'ไก่ จิก เด็ก ตาย บน ปาก โอ่ง' },
+  { q: 'ข้อใดเป็นอักษรสูงทั้งหมด', c: ['ผ ฝ ถ ส', 'ก จ บ ป', 'ม น ร ล', 'พ ฟ ภ ท'], a: 0, w: 'ผี ฝาก ถุง ข้าว สาร ให้ ฉัน' },
+  { q: 'พยัญชนะตัวสุดท้ายของไทยคือตัวใด', c: ['ฮ นกฮูก', 'อ อ่าง', 'ฬ จุฬา', 'ห หีบ'], a: 0, w: 'เรียงจาก ก ไก่ ถึง ฮ นกฮูก' },
+  { q: 'เวลาเขียนพยัญชนะ ควรเริ่มเขียนที่ส่วนใด', c: ['หัวของตัวอักษร', 'หางของตัวอักษร', 'ตรงกลาง', 'ที่ใดก็ได้'], a: 0, w: 'เริ่มที่หัวเสมอ' },
+  { q: 'เสือ ใช้พยัญชนะตัวใด', c: ['ส', 'ศ', 'ษ', 'ซ'], a: 0, w: 'ส เสือ' }
+];
+
+document.addEventListener('DOMContentLoaded', function () {
+  /* ปุ่ม data-say ทั่วไป */
+  document.addEventListener('click', function (e) { var b = e.target.closest('[data-say]'); if (b) say(b.getAttribute('data-say')); });
+  /* ---- ตาราง 44 ตัว + การ์ดใหญ่ ---- */
+  var chart = document.getElementById('chart'), big = document.getElementById('big'), cur = null;
+  chart.innerHTML = TC.map(function (c, i) { return '<button class="' + c[3] + '" data-i="' + i + '" aria-label="' + show(c) + '">' + c[0] + '</button>'; }).join('');
+  function open(c) {
+    cur = c; big.querySelector('.L').textContent = c[0];
+    var E = big.querySelector('.E'); E.textContent = c[2] || c[1]; E.className = 'E' + (c[2] ? '' : ' w');
+    big.querySelector('.N').textContent = show(c); big.classList.add('show'); say(nameOf(c));
+  }
+  chart.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open(TC[+b.dataset.i]); });
+  big.addEventListener('click', function (e) { if (e.target === big || e.target.closest('[data-close]')) big.classList.remove('show'); if (e.target.closest('[data-again]') && cur) say(nameOf(cur)); });
+  document.getElementById('triBtn').onclick = function () { var on = chart.classList.toggle('tri'); document.getElementById('legend').hidden = !on; };
+  var reading = 0;
+  document.getElementById('readAll').onclick = function () {
+    var btn = this; if (reading) { reading = 0; btn.textContent = '▶ อ่านทีละตัวให้ฟัง'; return; }
+    reading = 1; btn.textContent = '⏸ หยุดอ่าน'; var i = 0, bs = chart.querySelectorAll('button');
+    (function step() {
+      if (!reading || i >= TC.length) { reading = 0; btn.textContent = '▶ อ่านทีละตัวให้ฟัง'; Array.prototype.forEach.call(bs, function (x) { x.style.outline = ''; }); return; }
+      Array.prototype.forEach.call(bs, function (x, k) { x.style.outline = k === i ? '4px solid var(--main)' : ''; });
+      say(nameOf(TC[i])); i++; setTimeout(step, 1700);
+    })();
+  };
+
+  /* ---- เกม ---- */
+  var LOOK = [['ข', 'ฃ', 'ช', 'ซ'], ['ค', 'ฅ', 'ด', 'ต'], ['บ', 'ป', 'ษ', 'ย'], ['พ', 'ฟ', 'ผ', 'ฝ'], ['ถ', 'ภ', 'ฎ', 'ฏ'], ['ม', 'น', 'ห', 'ฬ'], ['ฑ', 'ท', 'ฒ', 'ณ'], ['อ', 'ฮ', 'ฮ', 'อ'], ['ร', 'ธ', 'ฐ', 'ฐ'], ['ศ', 'ส', 'ล', 'ส'], ['ง', 'จ', 'ว', 'จ'], ['ญ', 'ย', 'ฌ', 'ญ']];
+  function game(el) {
+    var kind = el.getAttribute('data-g'), lv = 4, round = 0, score = 0, ans = null, lock = false;
+    var ask = el.querySelector('.ask'), opts = el.querySelector('.opts'), stat = el.querySelector('.stat');
+    function next() {
+      lock = false; round++;
+      if (round > 10) { stat.innerHTML = '🎉 จบเกม! ได้ <b>' + score + '/10</b> ' + '⭐'.repeat(Math.max(1, Math.round(score / 3.4))) + ' <button class="btn" data-again>เล่นอีกครั้ง</button>'; opts.innerHTML = ''; ask.innerHTML = score >= 8 ? '🏆' : '💪'; if (score >= 8) Kit.confetti(); return; }
+      var pool, set;
+      if (kind === 'look') {
+        var g = LOOK[rnd(LOOK.length)], uniq = g.filter(function (x, i) { return g.indexOf(x) === i; });
+        var pickL = uniq[rnd(uniq.length)]; ans = TC.filter(function (c) { return c[0] === pickL; })[0];
+        var others = TC.filter(function (c) { return uniq.indexOf(c[0]) >= 0 && c !== ans; });
+        while (others.length < 3) { var r = TC[rnd(44)]; if (r !== ans && others.indexOf(r) < 0) others.push(r); }
+        set = shuf([ans].concat(others.slice(0, 3)));
+        ask.innerHTML = '<span>' + ans[0] + '</span>';
+      } else {
+        pool = kind === 'pic' ? TC.filter(function (c) { return c[2]; }) : TC;
+        ans = pool[rnd(pool.length)];
+        var n = kind === 'listen' ? lv : 4, oth = shuf(TC.filter(function (c) { return c !== ans; })).slice(0, n - 1);
+        set = shuf([ans].concat(oth));
+        ask.innerHTML = kind === 'pic' ? '<span class="em">' + ans[2] + '</span>' : '👂';
+        say(kind === 'pic' ? ans[1] : nameOf(ans));
+      }
+      opts.className = 'opts' + (set.length > 4 ? ' o8' : '');
+      opts.innerHTML = set.map(function (c) { return '<button data-c="' + c[0] + '">' + c[0] + '</button>'; }).join('');
+      stat.textContent = 'ข้อ ' + round + '/10 · ได้ ' + score + ' คะแนน';
+    }
+    opts.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b || lock) return;
+      if (b.dataset.c === ans[0]) {
+        lock = true; b.classList.add('ok'); score++; Kit.sound.good();
+        if (kind === 'pic') ask.innerHTML = '<span class="em">' + ans[2] + '</span><span class="wd">' + show(ans) + '</span>';
+        say(nameOf(ans)); setTimeout(next, 1500);
+      } else { b.classList.add('no'); Kit.sound.bad(); score = Math.max(0, score - 0); lock = true; setTimeout(function () { lock = false; }, 400); var right = opts.querySelector('[data-c="' + ans[0] + '"]'); if (right) setTimeout(function () { right.classList.add('ok'); }, 300); setTimeout(next, 1700); }
+    });
+    el.addEventListener('click', function (e) {
+      if (e.target.closest('[data-rep]') && ans) say(kind === 'pic' ? ans[1] : nameOf(ans));
+      var l = e.target.closest('[data-lv]'); if (l) { lv = +l.dataset.lv; round = 0; score = 0; next(); }
+      if (e.target.closest('[data-again]')) { round = 0; score = 0; next(); }
+    });
+    if (kind === 'listen') { ask.innerHTML = '👂'; stat.textContent = 'เลือกระดับเพื่อเริ่มเกม'; }
+    else next();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-g]'), game);
+
+  /* ---- ฝึกเขียน ---- */
+  var pick = document.getElementById('pick'), gd = document.getElementById('gd'), cv = document.getElementById('tcv'), ti = 0, strokes = [], curS = null;
+  pick.innerHTML = TC.map(function (c, i) { return '<button data-i="' + i + '"' + (i ? '' : ' class="on"') + '>' + c[0] + '</button>'; }).join('');
+  function setT(i) { ti = i; gd.textContent = TC[i][0]; strokes = []; draw(); Array.prototype.forEach.call(pick.children, function (b, k) { b.classList.toggle('on', k === i); }); }
+  function draw() {
+    var r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1; cv.width = r.width * d; cv.height = r.height * d;
+    var x = cv.getContext('2d'); x.lineCap = x.lineJoin = 'round'; x.strokeStyle = '#2B2B6B'; x.lineWidth = 12 * d;
+    strokes.forEach(function (s) { x.beginPath(); s.forEach(function (p, k) { if (k) x.lineTo(p[0] * cv.width, p[1] * cv.height); else x.moveTo(p[0] * cv.width, p[1] * cv.height); }); if (s.length === 1) x.lineTo(s[0][0] * cv.width + .5, s[0][1] * cv.height); x.stroke(); });
+  }
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  var penOnly = false;
+  cv.addEventListener('pointerdown', function (e) { if (e.pointerType === 'pen') penOnly = true; else if (penOnly && e.pointerType === 'touch') return; e.preventDefault(); try { cv.setPointerCapture(e.pointerId); } catch (er) {} curS = [pt(e)]; curS.id = e.pointerId; strokes.push(curS); draw(); });
+  cv.addEventListener('pointermove', function (e) { if (curS && e.pointerId === curS.id) { curS.push(pt(e)); draw(); } });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function () { curS = null; }); });
+  ['touchstart', 'touchmove'].forEach(function (t) { cv.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false }); });
+  pick.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { setT(+b.dataset.i); say(nameOf(TC[ti])); } });
+  document.getElementById('tClr').onclick = function () { strokes = []; draw(); };
+  document.getElementById('tSay').onclick = function () { say(nameOf(TC[ti])); };
+  document.getElementById('tNext').onclick = function () { setT((ti + 1) % TC.length); say(nameOf(TC[ti])); };
+  window.addEventListener('resize', draw);
+  var go = Kit.go; Kit.go = function (n, i) { go(n, i); setTimeout(draw, 60); };
+  setTimeout(draw, 100);
+});
+</script>
+<style id="kruau-tools">
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
+/* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
+.campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
+.campnl.show{display:flex}
+.campnl button{min-height:44px;border-radius:14px;border:2px solid var(--main);background:var(--glow,#FFF1E0);font-weight:700;font-size:1rem;color:var(--ink)}
+.campnl button.ghost{background:#fff;min-height:36px}
+.campnl .tip{margin:0;font-size:.88rem;line-height:1.5;color:var(--ink-soft)}
+.cambub{position:fixed;z-index:65;border-radius:50%;overflow:hidden;background:#222;border:4px solid #fff;box-shadow:0 0 0 3px var(--main),0 8px 20px rgba(0,0,0,.3);touch-action:none;cursor:grab}
+.cambub.sq{border-radius:18px}
+.cambub video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;pointer-events:none}
+.cambub .cb{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:4px;opacity:0;transition:opacity .2s}
+.cambub:hover .cb,.cambub:active .cb,.cambub:focus-within .cb{opacity:1}
+@media (hover:none){.cambub .cb{opacity:.85}}
+.cambub .cb button{width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.9);font-size:.9rem;padding:0}
+.recchip{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid #E53935;border-radius:999px;padding:4px 6px 4px 14px;font-weight:700;color:#C62828;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.recchip .dot{width:12px;height:12px;border-radius:50%;background:#E53935;animation:recb 1s infinite}
+.recchip button{border:none;background:#E53935;color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;min-height:36px}
+@keyframes recb{50%{opacity:.25}}
+@media print{.campnl,.cambub,.recchip{display:none}}
+
+/* ---- แถบด้านบนบนมือถือ ---- */
+@media (max-width:520px){.bar .tb{width:34px!important;min-width:34px;height:34px!important;font-size:15px!important;padding:0!important}.bar{gap:3px!important}.bar .ttl small{display:none}}</style>
+<script id="kruau-tools">
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
+  });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- กล้องมุมจอ + อัดวิดีโอการสอน ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit) return;
+  var md = navigator.mediaDevices || {};
+  var inFrame = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  var canRec = !!md.getDisplayMedia && !!window.MediaRecorder;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '🎥'; btn.title = 'กล้องมุมจอ / อัดวิดีโอการสอน'; btn.setAttribute('aria-label', 'กล้องและอัดวิดีโอ');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var pnl = document.createElement('div'); pnl.className = 'campnl';
+  pnl.innerHTML = '<b>🎥 สอนออนไลน์ / ทำวิดีโอ</b>' +
+    '<button data-cam>📷 เปิดกล้องมุมจอ</button>' +
+    (canRec ? '<button data-rec>🔴 อัดวิดีโอหน้าจอ + เสียง</button>' : '') +
+    '<p class="tip">' + (canRec
+      ? 'กดอัดแล้วเลือก <b>แท็บนี้</b> ระบบจะอัดสไลด์ กล้อง และเสียงครูไว้ด้วยกัน กดหยุดแล้วจะได้ไฟล์วิดีโอทันที'
+      : 'บน iPad: เปิดกล้องมุมจอ แล้วใช้ <b>การบันทึกหน้าจอ</b> ในศูนย์ควบคุม (กดค้างที่ปุ่ม ⏺ เพื่อเปิดไมโครโฟน)') + '</p>' +
+    '<button data-x class="ghost">ปิด</button>';
+  document.body.appendChild(pnl);
+  btn.onclick = function () { pnl.classList.toggle('show'); Kit.sound.tap(); };
+  pnl.querySelector('[data-x]').onclick = function () { pnl.classList.remove('show'); };
+
+  function newTab(flag) {
+    var w = window.open(location.href.split('#')[0] + '#s=' + Kit.cur + '&' + flag + '=1', '_blank');
+    if (!w) Kit.toast('เปิดแท็บใหม่ไม่ได้ ลองกดปุ่ม "เปิดในแท็บใหม่" ของเว็บครูอู๋');
+  }
+
+  /* ---- กล้อง ---- */
+  var cam = null, stream = null, SIZES = [120, 170, 240], si = 1, round = true;
+  try { var sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); if (sv.si != null) si = sv.si; if (sv.round != null) round = sv.round; } catch (e) {}
+  function save(x, y) { try { localStorage.setItem('kruau-cam', JSON.stringify({ si: si, round: round, x: x, y: y })); } catch (e) {} }
+  function place() {
+    var s = SIZES[si], h = round ? s : Math.round(s * .75);
+    cam.style.width = s + 'px'; cam.style.height = h + 'px';
+    cam.classList.toggle('sq', !round);
+    var r = cam.getBoundingClientRect();
+    var x = Math.min(Math.max(4, r.left), innerWidth - s - 4), y = Math.min(Math.max(4, r.top), innerHeight - h - 4);
+    cam.style.left = x + 'px'; cam.style.top = y + 'px';
+  }
+  function openCam() {
+    if (cam) return;
+    if (!md.getUserMedia) { Kit.toast('อุปกรณ์นี้เปิดกล้องผ่านเว็บไม่ได้'); return; }
+    md.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }).then(function (s) {
+      stream = s;
+      cam = document.createElement('div'); cam.className = 'cambub noswipe';
+      cam.innerHTML = '<video autoplay playsinline muted></video><span class="cb"><button data-sz title="ย่อ/ขยาย">⤢</button><button data-sh title="วงกลม/สี่เหลี่ยม">◐</button><button data-cl title="ปิดกล้อง">✖</button></span>';
+      document.body.appendChild(cam);
+      var v = cam.querySelector('video'); v.srcObject = s; v.play().catch(function () {});
+      var sv = {}; try { sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); } catch (e) {}
+      cam.style.left = (sv.x != null ? sv.x : innerWidth - SIZES[si] - 16) + 'px';
+      cam.style.top = (sv.y != null ? sv.y : innerHeight - SIZES[si] - 90) + 'px';
+      place();
+      cam.querySelector('[data-sz]').onclick = function (e) { e.stopPropagation(); si = (si + 1) % SIZES.length; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-sh]').onclick = function (e) { e.stopPropagation(); round = !round; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-cl]').onclick = function (e) { e.stopPropagation(); closeCam(); };
+      var drag = null;
+      cam.addEventListener('pointerdown', function (e) {
+        if (e.target.closest('button')) return;
+        drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
+      });
+      cam.addEventListener('pointermove', function (e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        cam.style.left = Math.min(Math.max(4, e.clientX - drag.dx), innerWidth - cam.offsetWidth - 4) + 'px';
+        cam.style.top = Math.min(Math.max(4, e.clientY - drag.dy), innerHeight - cam.offsetHeight - 4) + 'px';
+      });
+      cam.addEventListener('pointerup', function () { if (drag) save(cam.offsetLeft, cam.offsetTop); drag = null; });
+      pnl.querySelector('[data-cam]').textContent = '📷 ปิดกล้องมุมจอ';
+      pnl.classList.remove('show');
+      Kit.toast('📷 ลากกล้องไปวางมุมไหนก็ได้ · ⤢ ย่อ/ขยาย');
+    }).catch(function (err) {
+      if (inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่อใช้กล้อง…'); newTab('cam'); }
+      else Kit.toast('เปิดกล้องไม่ได้ — กรุณาอนุญาตให้เว็บใช้กล้อง');
+    });
+  }
+  function closeCam() {
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    if (cam) cam.remove();
+    cam = stream = null;
+    pnl.querySelector('[data-cam]').textContent = '📷 เปิดกล้องมุมจอ';
+  }
+  pnl.querySelector('[data-cam]').onclick = function () { if (cam) closeCam(); else openCam(); };
+  addEventListener('resize', function () { if (cam) place(); });
+
+  /* ---- อัดวิดีโอ (คอมพิวเตอร์: Chrome / Edge / Firefox) ---- */
+  var rec = null, chip = null, parts = [], t0 = 0, iv = 0, all = [];
+  function pickType() {
+    var c = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    for (var i = 0; i < c.length; i++) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c[i])) return c[i];
+    return '';
+  }
+  function startRec() {
+    md.getDisplayMedia({ video: { frameRate: 30 }, audio: true, preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude' }).then(function (ds) {
+      all = [ds];
+      return md.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }).then(function (mic) { all.push(mic); return [ds, mic]; }, function () { Kit.toast('ไม่ได้เปิดไมโครโฟน จะอัดแต่ภาพ'); return [ds, null]; });
+    }).then(function (r) {
+      var ds = r[0], mic = r[1], tracks = ds.getVideoTracks().slice();
+      var aud = [ds, mic].filter(function (s) { return s && s.getAudioTracks().length; });
+      if (aud.length === 1) tracks = tracks.concat(aud[0].getAudioTracks());
+      else if (aud.length > 1) {
+        var ac = new (window.AudioContext || window.webkitAudioContext)(), dst = ac.createMediaStreamDestination();
+        aud.forEach(function (s) { ac.createMediaStreamSource(s).connect(dst); });
+        tracks = tracks.concat(dst.stream.getAudioTracks());
+      }
+      var type = pickType();
+      rec = new MediaRecorder(new MediaStream(tracks), type ? { mimeType: type, videoBitsPerSecond: 3000000 } : undefined);
+      parts = [];
+      rec.ondataavailable = function (e) { if (e.data && e.data.size) parts.push(e.data); };
+      rec.onstop = finish;
+      ds.getVideoTracks()[0].addEventListener('ended', stopRec);
+      rec.start(1000); t0 = Date.now();
+      chip = document.createElement('div'); chip.className = 'recchip';
+      chip.innerHTML = '<span class="dot"></span> อัดอยู่ <span class="t">0:00</span><button>■ หยุด</button>';
+      document.body.appendChild(chip);
+      chip.querySelector('button').onclick = stopRec;
+      iv = setInterval(function () { var s = Math.floor((Date.now() - t0) / 1000); chip.querySelector('.t').textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }, 500);
+      pnl.classList.remove('show');
+      if (!cam) Kit.toast('🔴 เริ่มอัดแล้ว · เปิดกล้องมุมจอได้ที่ปุ่ม 🎥');
+    }).catch(function (err) {
+      all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+      if (err && err.name === 'NotAllowedError' && inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่ออัดวิดีโอ…'); newTab('rec'); }
+      else if (err && err.name !== 'NotAllowedError') Kit.toast('อัดวิดีโอไม่ได้: ' + err.name);
+    });
+  }
+  function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+  function finish() {
+    clearInterval(iv);
+    all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+    if (chip) chip.remove();
+    var type = (rec && rec.mimeType) || 'video/webm', ext = type.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+    var blob = new Blob(parts, { type: type }), a = document.createElement('a');
+    var d = new Date(), name = (document.title.split('·')[0].trim() || 'บทเรียน').replace(/[\\\/:*?"<>|]/g, '') + ' ' + d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    a.href = URL.createObjectURL(blob); a.download = name + '.' + ext;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+    Kit.sound.win(); Kit.toast('💾 บันทึกวิดีโอแล้ว (' + ext.toUpperCase() + ') ดูได้ในโฟลเดอร์ดาวน์โหลด');
+    rec = null;
+  }
+  var rb = pnl.querySelector('[data-rec]');
+  if (rb) rb.onclick = function () { if (rec) stopRec(); else startRec(); };
+
+  /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
+  if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
+  if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
+</body>
+</html>
