@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 7 การคูณ · คณิตศาสตร์ ป.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#14B8A6;--main-deep:#0E8C7E;--glow:#D0F5F0}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
+/* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
+.campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
+.campnl.show{display:flex}
+.campnl button{min-height:44px;border-radius:14px;border:2px solid var(--main);background:var(--glow);font-weight:700;font-size:1rem;color:var(--ink)}
+.campnl button.ghost{background:#fff;min-height:36px}
+.campnl .tip{margin:0;font-size:.88rem;line-height:1.5;color:var(--ink-soft)}
+.cambub{position:fixed;z-index:65;border-radius:50%;overflow:hidden;background:#222;border:4px solid #fff;box-shadow:0 0 0 3px var(--main),0 8px 20px rgba(0,0,0,.3);touch-action:none;cursor:grab}
+.cambub.sq{border-radius:18px}
+.cambub video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;pointer-events:none}
+.cambub .cb{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:4px;opacity:0;transition:opacity .2s}
+.cambub:hover .cb,.cambub:active .cb,.cambub:focus-within .cb{opacity:1}
+@media (hover:none){.cambub .cb{opacity:.85}}
+.cambub .cb button{width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.9);font-size:.9rem;padding:0}
+.recchip{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid #E53935;border-radius:999px;padding:4px 6px 4px 14px;font-weight:700;color:#C62828;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.recchip .dot{width:12px;height:12px;border-radius:50%;background:#E53935;animation:recb 1s infinite}
+.recchip button{border:none;background:#E53935;color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;min-height:36px}
+@keyframes recb{50%{opacity:.25}}
+@media print{.campnl,.cambub,.recchip{display:none}}
+
+/* ---- แถบด้านบนบนมือถือ ---- */
+@media (max-width:520px){.bar .tb{width:34px!important;min-width:34px;height:34px!important;font-size:15px!important;padding:0!important}.bar{gap:3px!important}.bar .ttl small{display:none}}
+
+.nav .dots{display:none}
+.nav{justify-content:space-between}
+.pslide{padding:8px clamp(8px,2vw,24px) 8px}
+.pslide .inner.pp{max-width:none;height:100%;gap:6px}
+.pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
+.ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.ppbox{position:relative;width:min(100cqw,calc(100cqh * 16 / 9));aspect-ratio:16/9;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08);overflow:hidden;box-sizing:border-box}
+.ppz{position:absolute;inset:0;transition:transform .35s ease;transform-origin:50% 50%}
+.ppz img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ppz img.ghost{transition:opacity .35s ease;pointer-events:none}
+.ppbox.can{cursor:pointer}
+.pslide.zoom .ppbox{cursor:zoom-out}
+.pslide.zoom .ppz{transform:scale(2.2)}
+.ppbox .done{position:absolute;right:10px;bottom:8px;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:kpop .5s ease-out both}
+.ppbox .done img{height:clamp(60px,14cqh,110px);width:auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.ppbox .done span{background:#fff;border:3px solid var(--main);border-radius:14px 14px 4px 14px;padding:2px 10px;font-weight:700;color:var(--main-deep);margin-bottom:30px;white-space:nowrap;font-size:clamp(.8rem,2.2vw,1rem)}
+.tools{display:flex;align-items:center;gap:6px}
+.tl{width:40px;height:40px;border-radius:12px;border:2px solid var(--main);background:#fff;font-size:1.15rem;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--glow)}
+.tl.on{background:var(--main);box-shadow:0 3px 0 var(--main-deep)}
+.timer{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:6px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:4px 6px 4px 12px;font-weight:700;box-shadow:0 4px 0 var(--main-deep);font-size:1.15rem}
+.timer.show{display:flex}
+.timer .opts{display:flex;gap:4px}
+.timer .opts button,.timer .x{border:2px solid var(--main);background:var(--glow);border-radius:999px;padding:2px 10px;font-weight:700;min-height:36px}
+.timer .t{font-variant-numeric:tabular-nums;min-width:3.2em;text-align:center;color:var(--main-deep)}
+.timer.end{animation:tshake .5s 3;background:#FFE3E3}
+@keyframes tshake{25%{transform:translateX(-50%) rotate(-4deg)}75%{transform:translateX(-50%) rotate(4deg)}}
+@media (max-width:620px){.tl{width:34px;height:34px;font-size:1rem}.pphead .secbadge{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.board{position:relative;width:min(100%,720px);container-type:inline-size;animation:kpop .55s ease-out both}
+.board img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15))}
+.chalk{position:absolute;left:56%;top:12%;width:39%;height:62%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqw;color:#fff;text-align:center;text-shadow:0 0 2px rgba(255,255,255,.5)}
+.chalk .cn{font-size:4.2cqw;color:#FFE97A;border-bottom:.4cqw dashed #FFE97A;padding:0 2cqw}
+.chalk b{font-size:4.6cqw;line-height:1.3;font-weight:700}
+.secslide .ready{font-weight:700;color:var(--ink-soft)}
+.ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
+.ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
+.ppctl .btn{min-height:44px;padding:6px 18px}
+.secslide{min-height:100%;justify-content:center;align-items:center;text-align:center}
+.secnum{display:grid;place-items:center;width:clamp(110px,18vw,150px);aspect-ratio:1;border-radius:50%;background:var(--main);color:#fff;font-weight:700;font-size:clamp(2.2rem,6vw,3.2rem);box-shadow:0 8px 0 var(--main-deep)}
+.secslide h1{color:var(--main-deep);font-size:clamp(1.7rem,5vw,2.8rem);text-shadow:0 4px 0 var(--glow)}
+.subs{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:620px;width:100%}
+.subs div{background:#fff;border:3px solid var(--main);border-radius:16px;padding:8px 14px;font-weight:700;text-align:left;font-size:clamp(1rem,2.6vw,1.2rem)}
+.subs b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--main);color:#fff;margin-right:8px}
+.secslide .kru{max-width:680px;width:100%;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">✖️</span>
+  <div class="ttl"><b>บทที่ 7 การคูณ</b><small>คณิตศาสตร์ ป.3 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m3-math-hub/" aria-label="หน้ารวม ป.3" title="หน้ารวม ป.3">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.3 · บทที่ 7</span>
+    <h1>การคูณ</h1>
+    <p class="sub">คูณ 1 หลักกับไม่เกิน 4 หลัก คูณ 2 หลักกับ 2 หลัก ตัวไม่ทราบค่า และโจทย์ปัญหา</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</li><li>7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</li><li>7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ</li><li>7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ</li><li>7.5 โจทย์ปัญหาการคูณ</li><li>7.6 การสร้างโจทย์ปัญหาการคูณ</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 7</h2>
+  <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เตรียมความพร้อม</span></button><button data-jump="7.1"><span class="e">✖️</span><span>7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span></button><button data-jump="7.2"><span class="e">🔢</span><span>7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span></button><button data-jump="7.3"><span class="e">💡</span><span>7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ</span></button><button data-jump="7.4"><span class="e">❓</span><span>7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ</span></button><button data-jump="7.5"><span class="e">📝</span><span>7.5 โจทย์ปัญหาการคูณ</span></button><button data-jump="7.6"><span class="e">✍️</span><span>7.6 การสร้างโจทย์ปัญหาการคูณ</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="0" data-src="img/s003" data-thumb="img/t003.webp" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 อุปกรณ์ 1 ชุด ประกอบด้วย บัตรภาพ บัตรโจทย์การคูณ และบัตรโจทย์ปัญหาการคูณ วิธีจัดกิจกรรม ครูแบ่งนักเรียนเป็นกลุ่ม กลุ่มละเท่า ๆ กัน และแจกอุปกรณ์กลุ่มละ 1 ชุดครูให้นักเรียนแต่ละกลุ่มทำกิจกรรมที่ 1 – 3 กิจกรรมที่ 1 เขียนประโยคสัญลักษณ์การคูณจากบัตรภาพ กิจกรรมที่ 2 หาผลคูณจากบัตรโจทย์"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s004" data-thumb="img/t004.webp" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ตัวอย่าง บัตรโจทย์การคูณ ตัวอย่างบัตรคำอ่านเศษส่วน ขุนแบ่งเงาะให้เพื่อน 20 คน คนละ 5 ผล ขุนแบ่งเงาะให้เพื่อนทั้งหมดกี่ผล บัตรภาพ 13 × 6 =  2 × 48 =  34 × 7 =  5 × 92 =  แก้วตาซื้อดินสอแท่งละ 4 บาท จำนวน 12 แท่ง แก้วตาจ่ายเงินซื้อดินสอกี่บาท ใบบัวปลูกต้นมะลิ 3 แถว แถวละ 8 ต้น ใบ"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="7.1" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 7.1</span><b>✖️ การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s006" data-thumb="img/t006.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 6"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาผลคูณของจำนวนหนึ่งหลักกับ 100, 200, ... 900 และการหาผลคูณของจำนวนหนึ่งหลักกับ 1,000, 2,000, ..., 9,0001. 01 02 03 04 05 06 ของขวัญราคากล่องละ 100 บาท ครูซื้อของขวัญ 2 กล่อง ครูต้องจ่ายเงินเท่าไร ประโยคสัญลักษณ์ 2 × 100 = ครูต้องจ่ายเงิน 2 × 100 = 100 + 100 = 200 บาท ของขวัญราคากล่องละ 100 บาท "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s007" data-thumb="img/t007.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 7"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ หาผลคูณ 4 × 300 1,200 1 8 × 200 1,600 2 9 × 600 5,400 3 700 × 6 4,200 4 01 02 03 04 05 06 จำนวนหนึ่งหลักคูณกับ 100 200 300 ... 900 หาผลคูณโดยนำจำนวนหนึ่งหลักนั้นคูณกับ 1 2 3 ... 9 แล้วเติม 0 ต่อท้าย 2 ตัว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s008" data-thumb="img/t008.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 8"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 พ่อแก้วตาซื้อกระติกน้ำร้อนบริจาคให้โรงเรียน 4 ใบ ราคาใบละ 1,000 บาท พ่อแก้วตาต้องจ่ายเงินกี่บาท ประโยคสัญลักษณ์ 4 × 1,000 = ครูต้องจ่ายเงิน 4 × 1,000 = 1,000 + 1,000 + 1,000 + 1,000 = 4,000 บาท กระติกน้ำร้อนใบละ 1,000 บาท ซื้อ 4 ใบ ร้านค้าขายหม้อหุงข้าวใบละ 3,000 บาท 2 ใบ ร้านค้าไ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s009" data-thumb="img/t009.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 9"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ หาผลคูณ 2 × 7,000 14,000 1 9,000 × 5 45,000 2 7 × 5,000 35,000 3 8 × 4,000 32,000 4 01 02 03 04 05 06 จำนวนหนึ่งหลักคูณกับ 1,000 2,000 3,000 ... 9,000 หาผลคูณโดยนำจำนวนหนึ่งหลักนั้นคูณกับ 1 2 3 ... 9 แล้วเติม 0 ต่อท้าย 3 ตัว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s010" data-thumb="img/t010.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 10"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ หาผลคูณ 2 × 300 600 1 3 × 2,000 6,000 2 4,000 × 7 28,000 3 900 × 5 4,500 4 9 × 800 7,200 5 5,000 × 6 30,000 6 8,000 × 8 64,000 7 700 × 9 6,300 8 6,000 × 4 24,000 9 8 × 500 4,000 10 01 02 03 04 05 06 7,000 × 6 =  7,000 × 6 = 42,000 ตอบ ๔๒,๐๐๐ 7 × 6 = 427,000 × 6 = 42,000"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s011" data-thumb="img/t011.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 11"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 หาผลคูณ ตรวจสอบความเข้าใจ 8 × 700 5,600 1 7 × 300 2,100 2 9 × 5,000 45,000 3 9,000 × 2 18,000 4 6 × 400 2,400 5 8,000 × 3 24,000 6"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s012" data-thumb="img/t012.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 12"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จำนวนหนึ่งหลักคูณกับ 100, 200, 300, ..., 900 หาผลคูณโดยนำจำนวนหนึ่งหลักนั้นคูณกับ 1, 2, 3, ..., 9 แล้วเติม 0 ต่อท้าย 2 ตัวจำนวนหนึ่งหลักคูณกับ 1,000, 2,000, 3,000, ..., 9,000 หาผลคูณโดยนำจำนวนหนึ่งหลักนั้นคูณกับ 1, 2, 3, ..., 9 แล้วเติม 0 ต่อท้าย 3 ตัว สิ่งที่ได้เรียนรู้ 01 02 03 04 05 06"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s013" data-thumb="img/t013.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 13"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 × 234 =  2 กลุ่ม 234 เท่ากับ 2 กลุ่มของ 200 กับ 2 กลุ่มของ 30 กับ 2 กลุ่มของ 4 = 400 + 60 + 8 การหาผลคูณของจำนวนหนึ่งหลักกับจำนวนสามหลักโดยการตั้งคูณ2. 01 02 03 04 05 06 2 × 234 = 2 × 200 + 2 × 30 + 2 × 4 = 468"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s014" data-thumb="img/t014.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 14"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หลักร้อยหลักสิบหลักหน่วย23428 หลักร้อยหลักสิบหลักหน่วย234268 × คูณในหลักหน่วย2 คูณ 4 หน่วย ได้ 8 หน่วยเขียน 8 ในหลักหน่วยขั้นที่ 1 คูณในหลักสิบ2 คูณ 3 สิบ ได้ 6 สิบเขียน 6 ในหลักสิบขั้นที่ 2 × 6 คูณในหลักร้อย2 คูณ 2 ร้อย 4 ร้อยเขียน 4 ในหลักร้อย ขั้นที่ 3 × 4 01 02 03 04 05 06 หลักร้อยหลักสิบหลักหน่"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s015" data-thumb="img/t015.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 15"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="× คูณในหลักหน่วย3 คูณ 3 หน่วย ได้ 9 หน่วยเขียน 9 ในหลักหน่วยขั้นที่ 1 คูณในหลักสิบ3 คูณ 2 สิบ ได้ 6 สิบเขียน 6 ในหลักสิบขั้นที่ 2 คูณในหลักร้อย3 คูณ 1 ร้อย 3 ร้อยเขียน 3 ในหลักร้อย ขั้นที่ 3 ตัวอย่าง123 × 3 =  1233369 × แสดงวิธีหาผลคูณ ดังนี้ วิธีทำ ตอบ ๓๖๙ 01 02 03 04 05 06 หลักร้อยหลักสิบหลักหน่ว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s016" data-thumb="img/t016.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 16"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 122 × 4 =  1 1224488 × วิธีทำ ตอบ ๔๘๘ 110 × 6 =  2 1106660 × วิธีทำ ตอบ ๖๖๐ 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s017" data-thumb="img/t017.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 17"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 4 × 211 =  3 2114844 × วิธีทำ ตอบ ๘๔๔ 401 × 2 =  4 4012802 × วิธีทำ ตอบ ๘๐๒ 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s018" data-thumb="img/t018.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 18"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 321 × 3 =  5 3213963 × วิธีทำ ตอบ ๙๖๓ 111 × 9 =  6 1119999 × วิธีทำ ตอบ ๙๙๙ 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s019" data-thumb="img/t019.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 19"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 222 × 4 =  7 2224888 × วิธีทำ ตอบ ๘๘๘ 5 × 101 =  8 1015505 × วิธีทำ ตอบ ๕๐๕ 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s020" data-thumb="img/t020.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 20"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="× คูณในหลักหน่วย4 คูณ 6 หน่วย ได้ 24 หน่วย หรือ 2 สิบ กับ 4 หน่วยเขียน 4 ในหลักหน่วยและทด 2 สิบ ไปหลักสิบขั้นที่ 1 คูณในหลักสิบ4 คูณ 1 สิบ ได้ 4 สิบ รวมกับที่ทดอีก 2 สิบ เป็น 6 สิบเขียน 6 ในหลักสิบขั้นที่ 2 คูณในหลักร้อย4 คูณ 2 ร้อย 8 ร้อยเขียน 8 ในหลักร้อย ขั้นที่ 3 ตัวอย่าง4 × 216 =  2164864 × แส"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s021" data-thumb="img/t021.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 21"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 416 × 2 =  1 4162832 × วิธีทำ ตอบ ๘๓๒ 114 × 7 =  2 1147798 × วิธีทำ ตอบ ๗๙๘ 1 2 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s022" data-thumb="img/t022.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 22"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 118 × 5 =  3 1185590 × วิธีทำ ตอบ ๕๙๐ 143 × 3 =  4 1433429 × วิธีทำ ตอบ ๔๒๙ 4 1 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s023" data-thumb="img/t023.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 23"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 121 × 8 =  5 1218968 × วิธีทำ ตอบ ๙๖๘ 464 × 2 =  6 4642928 × วิธีทำ ตอบ ๙๒๘ 1 1 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s024" data-thumb="img/t024.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 24"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 113 × 6 =  7 1136678 × วิธีทำ ตอบ ๖๗๘ 108 × 9 =  8 1089972 × วิธีทำ ตอบ ๙๗๒ 1 7 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s025" data-thumb="img/t025.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 25"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="× คูณในหลักหน่วย5 คูณ 1 หน่วย ได้ 5 หน่วยเขียน 5 ในหลักหน่วยขั้นที่ 1 คูณในหลักสิบ5 คูณ 7 สิบ ได้ 35 สิบ หรือ 3 ร้อยกับ 5 สิบเขียน 5 ในหลักสิบ และทด 3 ในหลักร้อยขั้นที่ 2 คูณในหลักร้อย5 คูณ 4 ร้อย ได้ 20 ร้อย รวมกับที่ทดอีก 3 ร้อย เป็น 23 ร้อย หรือ 2 พัน กับ 3 ร้อยเขียน 3 ในหลักร้อย และ 2 ในหลักพันข"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s026" data-thumb="img/t026.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 26"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 8 × 321 =  1 32182568 × วิธีทำ ตอบ ๒,๕๖๘ 6 × 331 =  2 33161986 × วิธีทำ ตอบ ๑,๙๘๖ 1 1 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s027" data-thumb="img/t027.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 27"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 780 × 4 =  3 78043120 × วิธีทำ ตอบ ๓,๑๒๐ 250 × 9 =  4 25092250 × วิธีทำ ตอบ ๒,๒๕๐ 3 4 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s028" data-thumb="img/t028.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 28"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 371 × 5 =  5 37151855 × วิธีทำ ตอบ ๑,๘๕๕ 7 × 351 =  6 35172457 × วิธีทำ ตอบ ๒,๔๕๗ 3 3 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s029" data-thumb="img/t029.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 29"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 884 × 2 =  7 88421768 × วิธีทำ ตอบ ๑,๗๖๘ 452 × 3 =  8 45231356 × วิธีทำ ตอบ ๑,๓๕๖ 1 1 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s030" data-thumb="img/t030.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 30"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="× คูณในหลักหน่วย8 คูณ 9 หน่วย ได้ 72 หน่วย หรือ 7 สิบ กับ 2 หน่วยเขียน 2 ในหลักหน่วย ทด 7 สิบไปหลักสิบขั้นที่ 1 คูณในหลักสิบ8 คูณ 3 สิบ ได้ 24 สิบ รวมกับที่ทดอีก 7 สิบ เป็น 31 สิบ หรือ 3 ร้อย กับ 1 สิบเขียน 1 ในหลักสิบ ทด 3 ร้อยไปหลักร้อยขั้นที่ 2 คูณในหลักร้อย8 คูณ 7 ร้อย ได้ 56 ร้อย รวมกับที่ทดอีก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s031" data-thumb="img/t031.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 31"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 436 × 5 =  1 43652180 × วิธีทำ ตอบ ๒,๑๘๐ 532 × 8 =  2 53284256 × วิธีทำ ตอบ ๔,๒๕๖ 3 1 1 2 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s032" data-thumb="img/t032.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 32"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 325 × 9 =  3 32592925 × วิธีทำ ตอบ ๒,๙๒๕ 184 × 7 =  4 18471288 × วิธีทำ ตอบ ๑,๒๘๘ 4 2 2 5 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s033" data-thumb="img/t033.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 33"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 6 × 333 =  5 33361998 × วิธีทำ ตอบ ๑,๙๙๘ 4 × 829 =  6 82943316 × วิธีทำ ตอบ ๓,๓๑๖ 1 3 1 1 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s034" data-thumb="img/t034.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 34"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="617 × 7 =  1 61774319 × วิธีทำ ตอบ ๔,๓๑๙ 3 × 589 =  2 58931767 × วิธีทำ ตอบ ๑,๗๖๗ 4 2 1 2 01 02 03 04 05 06 แสดงวิธีหาผลคูณ ตรวจสอบความเข้าใจ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-thumb="img/t035.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 35"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาผลคูณของจำนวนหนึ่งหลักกับจำนวนสามหลักต้องคูณจำนวนในหลักหน่วยก่อนแล้วคูณในหลักสิบและหลักร้อยตามลำดับ ถ้าผลคูณในหลักใดครบสิบหรือมากกว่าสิบให้ทดจำนวนที่ครบสิบไปรวมกับผลคูณในหลักถัดไปทางซ้าย สิ่งที่ได้เรียนรู้ 01 02 03 04 05 06"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s036" data-thumb="img/t036.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 36"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาผลคูณของจำนวนหนึ่งหลักกับจำนวนสี่หลักโดยการตั้งคูณ3. 384527690 × 2 × 3,845 =  1 1 วิธีทำ ตอบ ๗,๖๙๐ 01 02 03 04 05 06 ครูซื้อเครื่องทำน้ำเย็น 2 เครื่อง ราคาเครื่องละ 3,845 บาท ครูต้องจ่ายเงินกี่บาท ครูต้องจ่ายเงิน 7,690 บาท แสดงวิธีหาผลคูณ ดังนี้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s037" data-thumb="img/t037.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 37"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5927423708 × ตัวอย่าง5,927 × 4 =  2 1 วิธีทำ ตอบ ๒๓,๗๐๘ 3 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s038" data-thumb="img/t038.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 38"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 3 × 2,128 =  1 212836384 × วิธีทำ ตอบ ๖,๓๘๔ 1,419 × 5 =  2 141957095 × วิธีทำ ตอบ ๗,๐๙๕ 2 2 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s039" data-thumb="img/t039.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 39"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 6 × 4,025 =  3 4025624150 × วิธีทำ ตอบ ๑๕,๒๐๘ 1,218 × 9 =  4 1 01 02 03 04 05 06 3 1218910962 × วิธีทำ ตอบ ๑๐,๙๖๒ 1 1 7"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s040" data-thumb="img/t040.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 40"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 3 × 2,327 =  1 232736981 × วิธีทำ ตอบ ๖,๙๘๑ 2,131 × 7 =  2 2131714917 × วิธีทำ ตอบ ๑๔,๙๑๗ 2 2 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s041" data-thumb="img/t041.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 41"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 1,901 × 8 =  3 1901815208 × วิธีทำ ตอบ ๑๕,๒๐๘ 3,475 × 2 =  4 347526950 × วิธีทำ ตอบ ๖,๙๕๐ 7 1 1 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s042" data-thumb="img/t042.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 42"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 6,406 × 5 =  5 1901832030 × วิธีทำ ตอบ ๓๒,๐๓๐ 2,034 × 8 =  6 2034816272 × วิธีทำ ตอบ ๑๖,๒๗๒ 3 3 2 2 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s043" data-thumb="img/t043.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 43"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 5,819 × 4 =  7 5819423276 × วิธีทำ ตอบ ๒๓,๒๗๖ 1,620 × 7 =  8 1620711340 × วิธีทำ ตอบ ๑๑,๓๔๐ 3 1 4 3 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s044" data-thumb="img/t044.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 44"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 44 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 6 × 3,268 =  9 3268619608 × วิธีทำ ตอบ ๑๙,๖๐๘ 9 × 1,652 =  10 1652914868 × วิธีทำ ตอบ ๑๔,๘๖๘ 4 1 4 1 4 5 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s045" data-thumb="img/t045.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 45"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 2,592 × 9 =  11 2592923328 × วิธีทำ ตอบ ๒๓,๓๒๘ 2 × 4,769 =  12 476929538 × วิธีทำ ตอบ ๙,๕๓๘ 8 1 1 5 1 1 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s046" data-thumb="img/t046.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 46"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 46 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 อุปกรณ์ บัตรกิจกรรม 3 ชุด ได้แก่ชุดที่ 1 สีเขียว ระดับง่ายชุดที่ 2 สีเหลือง ระดับปานกลางชุดที่ 3 สีแดง ระดับยาก วิธีจัดกิจกรรม ครูแบ่งนักเรียนเป็นกลุ่ม แจกบัตรกิจกรรมเติมตัวเลขที่หายไปจำนวน 3 ชุด ให้นักเรียนช่วยกันเติมตัวเลขที่หายไปตัวแทนกลุ่มออกมานำเสนอ ครูและนักเรียนร่วมกันตรวจสอ"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s047" data-thumb="img/t047.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 47"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ตัวอย่างบัตรกิจกรรม ชุดที่ 1 ชุดที่ 2 ชุดที่ 3 *บางข้อมีหลายคำตอบให้เลือกตอบเพียงคำตอบเดียว 5456 2310 3367 0169 5216 3237"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s048" data-thumb="img/t048.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 48"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 48 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="6 × 1,851 =  1 2,415 × 7 =  2 01 02 03 04 05 06 แสดงวิธีหาผลคูณ ตรวจสอบความเข้าใจ 1851611106 × วิธีทำ ตอบ ๑๑,๑๐๖ 3 5 2415716905 × วิธีทำ ตอบ ๑๖,๙๐๕ 1 2 3"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s049" data-thumb="img/t049.webp" data-title="7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก · หน้า 49"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 49 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาผลคูณของจำนวนหนึ่งหลักกับจำนวนสี่หลักต้องคูณจำนวนในหลักหน่วยก่อนแล้วคูณในหลักสิบ หลักร้อย และหลักพันตามลำดับ ถ้าผลคูณในหลักใดครบสิบหรือมากกว่าสิบให้ทดจำนวนที่ครบสิบไปรวมกับผลคูณในหลักถัดไปทางซ้าย สิ่งที่ได้เรียนรู้ 01 02 03 04 05 06"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="7.2" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 7.2</span><b>🔢 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s051" data-thumb="img/t051.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 51"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 51 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาผลคูณของจำนวนสองหลักกับ 10, 20, ... 901. 01 02 03 04 05 06 แก้วตามีขนมทองเอก 12 แถว แถวละ 10 ชิ้น แก้วตามีขนมทองเอกทั้งหมดกี่ชิ้น 12 × 10 =  12 แถว แถวละ 10 เท่ากับ 10 แถว แถวละ 10 กับ 2 แถว แถวละ 10 10 แถว แถวละ 10หรือ 10 × 10 = 100 10 × 1 = 1010 × 10 = 100 2 แถว แถวละ 10หรือ 2 × 10 = 20 2 × "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="13" data-src="img/s052" data-thumb="img/t052.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 52"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 52 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ หาผลคูณ 10 × 13 130 1 37 × 13 370 2 52 × 10 520 3 89 × 10 890 4 10 × 26 260 5 10 × 94 940 6 10 × 44 440 7 81 × 10 810 8 99 × 10 990 9 75 × 10 750 10 84 × 10 840 11 10 × 65 650 12 01 02 03 04 05 06 จำนวนสองหลักคูณกับ 10 หาผลคูณโดยนำจำนวนสองหลักนั้นคูณกับ 1 แล้วเติม 0 ต่อท้าย"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/13)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s053" data-thumb="img/t053.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 53"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 53 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="13 × 20 =  13 กลุ่ม กลุ่มละ 20 เท่ากับ 10 กลุ่ม กลุ่มละ 20 กับ 3 กลุ่ม กลุ่มละ 20 13 × 20 = 200 + 60 = 260 10 กลุ่ม กลุ่มละ 20 หรือ 10 × 20 = 200 3 กลุ่ม กลุ่มละ 20 หรือ 3 × 20 = 60 13 × 2 = 2613 × 20 = 260สังเกต 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s054" data-thumb="img/t054.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 54"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 54 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จำนวนสองหลักคูณกับ 10, 20, 30, ..., 90 หาผลคูณโดยนำจำนวนสองหลักนั้นคูณกับ 1, 2, 3, ..., 9 แล้วเติม 0 ต่อท้าย 40 × 27 =  4 × 27 = 10840 × 27 = 1,080 01 02 03 04 05 06 14 × 30 = 14 × 3 = 4214 × 30 = 420 14442 1 × 274108 2 ×"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="12" data-src="img/s055" data-thumb="img/t055.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 55"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 55 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ หาผลคูณ 15 × 7 =15 × 70 = 105 1 1,050 35 × 5 =35 × 50 = 175 2 1,750 9 × 21 =90 × 21 = 189 3 1,890 48 × 6 =48 × 60 = 288 4 2,880 4 × 43 =40 × 43 = 172 5 1,720 77 × 8 =77 × 80 = 616 6 6,160 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/12)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="12" data-src="img/s056" data-thumb="img/t056.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 56"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 56 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ หาผลคูณ 10 × 49 490 1 58 × 70 4,060 2 36 × 20 720 3 11 × 90 990 4 40 × 18 720 5 20 × 25 500 6 50 × 12 600 7 80 × 42 3,360 8 15 × 90 1,350 9 35 × 30 1,050 10 22 × 60 1,320 11 71 × 40 2,840 12 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/12)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s057" data-thumb="img/t057.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 57"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 57 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ เติมตัวเลขแสดงจำนวน 1 01 02 03 04 05 06 7 × 10 = 570 5 2 38 × 0 = 760 2 3 40 × = 400 1 0 4 0 × 25 = 750 3"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s058" data-thumb="img/t058.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 58"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 58 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ หาผลคูณ 66 × 10 660 1 78 × 50 3,900 2 46 × 80 3,680 3 60 × 51 3,060 4 01 02 03 04 05 06 ตรวจสอบความเข้าใจ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s059" data-thumb="img/t059.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 59"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 59 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จำนวนสองหลักคูณกับ 10, 20, 30, ..., 90 หาผลคูณโดยนำจำนวนสองหลักนั้นคูณกับ 1, 2, 3, ..., 9 แล้วเติม 0 ต่อท้าย สิ่งที่ได้เรียนรู้ 01 02 03 04 05 06"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s060" data-thumb="img/t060.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 60"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 60 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาผลคูณของจำนวนสองหลักกับจำนวนสองหลักโดยการตั้งคูณ2. 01 02 03 04 05 06 แม่บริจาคดินสอสี 13 กล่อง กล่องละ 12 แท่ง แม่บริจาคดินสอสีทั้งหมดกี่แท่ง 13 × 12 =  13 กลุ่ม กลุ่มละ 12 เท่ากับ 10 กลุ่ม กลุ่มละ 12 กับ 3 กลุ่ม กลุ่มละ 12 10 กลุ่ม กลุ่มละ 12 หรือ 10 × 12 = 120 3 กลุ่ม กลุ่มละ 12 หรือ 3 × 12 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s061" data-thumb="img/t061.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 61"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 61 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 1 ขั้นที่ 3 12×1336 13 คือ 10 กับ 3 3 × 12 = 36 ขั้นที่ 2 12×1336120 13 คือ 10 กับ 3 10 × 12 = 120 12×1336120156 36 + 120 = 156 จะได้ 13 × 12 = 156 01 02 03 04 05 06 ดังนั้น แม่บริจาคดินสอสีทั้งหมด 156 แท่ง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s062" data-thumb="img/t062.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 62"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 62 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 12 × 13 =  12 กลุ่ม กลุ่มละ 13 เท่ากับ 10 กลุ่ม กลุ่มละ 13 กับ 2 กลุ่ม กลุ่มละ 13 10 กลุ่ม กลุ่มละ 13 หรือ 10 × 13 = 130 2 กลุ่ม กลุ่มละ 13 หรือ 2 × 13 = 26 12 × 13 = 130 + 26 = 156"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s063" data-thumb="img/t063.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 63"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 63 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขั้นที่ 1 ขั้นที่ 3 13×1226 12 คือ 10 กับ 2 2 × 13 = 26 ขั้นที่ 2 13×1326130 12 คือ 10 กับ 2 10 × 13 = 130 13×1226130156 26 + 130 = 156 จะได้ 12 × 13 = 156 01 02 03 04 05 06 สังเกต การคูณจำนวนสองหลักกับจำนวนสองหลัก หาผลคูณโดยกระจายจำนวนใดจำนวนหนึ่งตามค่าประจำหลักแล้วจึงนำไปคูณกับอีกจำนวนหนึ่ง เช่น13"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s064" data-thumb="img/t064.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 64"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 64 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="32 × 14 =  32×14128320448 ตอบ ๔๔๘ วิธีทำ 01 02 03 04 05 06 หรือ แสดงวิธีหาผลคูณ ดังนี้ 14×3228420448 ตอบ ๔๔๘ วิธีทำ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s065" data-thumb="img/t065.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 65"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 65 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 22 × 14 =  1 22×1488220308 วิธีทำ ตอบ ๓๐๘ 33 × 32 =  2 33×32669901056 วิธีทำ ตอบ ๑,๐๕๖ 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s066" data-thumb="img/t066.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 66"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 66 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="11 × 99 =  3 99×11999901089 วิธีทำ ตอบ ๓๐๘ 26 × 37 =  4 26×37182780962 วิธีทำ ตอบ ๙๖๒ 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s067" data-thumb="img/t067.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 67"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 67 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="23 × 23 =  5 23×2369460529 วิธีทำ ตอบ ๕๒๙ 15 × 43 =  6 43×15215430645 วิธีทำ ตอบ ๖๔๕ 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s068" data-thumb="img/t068.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 68"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 68 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="47 × 34 =  34×4723813601598 ตอบ ๑,๕๙๘ วิธีทำ 01 02 03 04 05 06 หรือ แสดงวิธีหาผลคูณ ดังนี้ 47×3418814101598 ตอบ ๑,๕๙๘ วิธีทำ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s069" data-thumb="img/t069.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 69"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 69 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 41 × 51 =  2 41×514120502091 วิธีทำ ตอบ ๒,๐๙๑ 54 × 21 =  1 54×215410801134 วิธีทำ ตอบ ๑,๑๓๔ 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s070" data-thumb="img/t070.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 70"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 70 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="43 × 55 =  4 43×5521521502365 วิธีทำ ตอบ ๒,๓๖๕ 52 × 36 =  3 52×3631215601872 วิธีทำ ตอบ ๑,๘๗๒ 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s071" data-thumb="img/t071.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 71"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 71 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="47 × 39 =  6 47×3942314101833 วิธีทำ ตอบ ๑,๘๓๓ 99 × 22 =  5 99×2219819802178 วิธีทำ ตอบ ๒,๑๗๘ 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="11" data-src="img/s072" data-thumb="img/t072.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 72"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 72 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เติมตัวเลขแสดงจำนวน แนวคิดขั้นที่ 1 หาว่า 3 คูณจำนวนใด ได้ผลคูณมีหลักหน่วยเป็น 6 จะได้ 2ดังนั้น วิธีทำ 84×2332611402886 8×23 2 ขั้นที่ 2 หา 3 × 82 จะได้ 6 ขั้นที่ 3 หา 20 × 82 จะได้ 1 4 ขั้นที่ 4 หา 246 + 1,640 จะได้ 8 6 2 2 4 2 4 6 0 6 0 1 8 1 8 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/11)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s073" data-thumb="img/t073.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 73"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 73 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เติมตัวเลขแสดงจำนวน 2 1 89×537819502028 3 2 1 5 0 8 48×294329601392 8 2 4 3 9 0 1 2 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s074" data-thumb="img/t074.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 74"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 74 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4 3 88×833219502828 5 4 2 4 0 2 48×964725805992 2 4 5 0 5 2 6 4 4 7 6 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s075" data-thumb="img/t075.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 75"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 75 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาผลคูณ 72 × 82 =  2 72×8214457605904 วิธีทำ ตอบ ๕,๙๐๔ 24 × 36 =  1 24×36144720864 วิธีทำ ตอบ ๘๖๔ 01 02 03 04 05 06 ตรวจสอบความเข้าใจ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s076" data-thumb="img/t076.webp" data-title="7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก · หน้า 76"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 76 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาผลคูณของจำนวนสองหลักกับจำนวนสองหลักโดยการตั้งคูณ ทำได้โดยกระจายจำนวนใดจำนวนหนึ่งตามค่าประจำหลัก แล้วนำไปคูณกับอีกจำนวนหนึ่ง โดยเริ่มจากหลักหน่วยและหลักสิบตามลำดับ แล้วนำผลคูณที่ได้มาบวกกัน สิ่งที่ได้เรียนรู้ 01 02 03 04 05 06"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="7.3" data-title="7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 7.3</span><b>💡 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s078" data-thumb="img/t078.webp" data-title="7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ · หน้า 78"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 78 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="12 × 10 = 120 12 × 11 = 13212 × 11 มากกว่า 12 × 10 ตัวอย่าง12 × 10 กับ 12 × 11 ผลคูณใดมากกว่า สังเกต 12 × 10 = 120 12 × 11 = 13211 มากกว่า 10 และ 132 มากกว่า 120ดังนั้น 12 × 11 มากกว่า 12 × 10 15 × 28 น้อยกว่า 15 × 30 เพราะ 28 น้อยกว่า 30 ตัวอย่าง15 × 30 กับ 15 × 28 ผลคูณใดน้อยกว่า เพราะเหตุใด 01 02"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s079" data-thumb="img/t079.webp" data-title="7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ · หน้า 79"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 79 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ เติมเครื่องหมาย &gt; &lt; หรือ = &lt; 1 8 × 301 9 × 301 1,203 × 5 5 × 1,203 7 × 319 4 × 319 1,345 × 5 1,445 × 7 1,006 × 2 2 × 1,006 85 × 12 65 × 11 3,400 × 8 3,480 × 9 6 × 5,372 5,732 × 7 6,920 × 4 8 × 6,920 78 × 52 77 × 25 &gt; = &lt; &lt; = &lt; &gt; &lt; &gt; 01 02 03 04 05 06 1) 3) 5) 7) 9) 2) 4) 6) 8) 10)"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s080" data-thumb="img/t080.webp" data-title="7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ · หน้า 80"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 80 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เติมตัวเลขแสดงจำนวน 2 1) 21 × 20 &gt; 21 ×3) 1,500 × 8 = × 1,5005) 45 × 19 &gt; × 457) 37 × &lt; 37 × 159) × 36 = 36 × 63 10 2) 186 × 5 &lt; 186 ×4) 347 × 6 &gt; × 3476) 798 × 5 = 5 ×8) 99 × = 99 × 1310) 1,578 × 19 &gt; 1,487 × 6 8 4 1 798 2 13 63 5"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s081" data-thumb="img/t081.webp" data-title="7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ · หน้า 81"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 81 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 อุปกรณ์ บัตรโจทย์การคูณ 5 ชุด วิธีจัดกิจกรรม ครูแบ่งนักเรียนเป็นกลุ่ม กลุ่มละเท่า ๆ กันครูแจกบัตรโจทย์การคูณทีละชุด แล้วให้นักเรียนแต่ละกลุ่มช่วยกันเรียงลำดับบัตรโจทย์การคูณที่มีผลคูณจากน้อยไปมาก หรือจากมากไปน้อย จนครบทุกชุดให้นักเรียนแต่ละกลุ่มนำเสนอ พร้อมบอกข้อสังเกตและแนวคิด ครู"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s082" data-thumb="img/t082.webp" data-title="7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ · หน้า 82"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 82 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ตัวอย่างบัตรโจทย์การคูณ ชุดที่ 1 13 × 25 16 × 25 25 × 11 ชุดที่ 2 27 × 32 12 × 24 48 × 52 ชุดที่ 3 7 × 3,015 3,015 × 5 3,015 × 3 8 × 3,015 ชุดที่ 4 1,525 × 8 1,420 × 7 1,400 × 5 10 × 1,759 ชุดที่ 5 4,156 × 4 4,150 × 4 4,200 × 4 4 × 1,750"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s083" data-thumb="img/t083.webp" data-title="7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ · หน้า 83"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 83 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เติมเครื่องหมาย &gt; หรือ &lt; ใน 2 1 01 02 03 04 05 06 ตรวจสอบความเข้าใจ 28 × 12 32 × 14 75 × 8 75 × 4 4 3 79 × 18 91 × 18 131 × 6 131 × 9 6 5 85 × 6 58 × 3 2,537 × 9 2,532 × 8 &lt; &gt; &lt; &lt; &gt; &gt;"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s084" data-thumb="img/t084.webp" data-title="7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ · หน้า 84"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 84 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จำนวนสองจำนวนคูณกันถ้าจำนวนใดจำนวนหนึ่งมากขึ้น ผลคูณของสองจำนวนนั้นจะมากขึ้นถ้าจำนวนใดจำนวนหนึ่งน้อยลง ผลคูณของสองจำนวนนั้นจะน้อยลงถ้าจำนวนทั้งสองจำนวนมากขึ้น ผลคูณจะมากขึ้นถ้าจำนวนทั้งสองจำนวนน้อยลง ผลคูณจะน้อยลง สิ่งที่ได้เรียนรู้ 01 02 03 04 05 06"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="7.4" data-title="7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 7.4</span><b>❓ การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s086" data-thumb="img/t086.webp" data-title="7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ · หน้า 86"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 86 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตัวอย่าง 12 ×  = 120 01 02 03 04 05 06 จำนวนใดคูณ 9 ได้ 63 จากสูตรคูณแม่ 9 9 × 7 ได้ 63 สูตรคูณแม่ 9 999999999×××××××××123456789=========91827364554637281 ดังนั้น × 9 = 637"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s087" data-thumb="img/t087.webp" data-title="7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ · หน้า 87"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 87 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ตัวอย่าง  × 9 = 63 12 คูณจำนวนใดได้ 120 เนื่องจาก 12 × 1 = 12 12 × 10 = 120 ดังนั้น 12 × = 12010"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s088" data-thumb="img/t088.webp" data-title="7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ · หน้า 88"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 88 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ เติมตัวเลขแสดงจำนวน 1 5 × = 30 6 2 × 3 = 27 9 3 8 × = 64 8 4 14 × = 140 10 5 × 15 = 30 2 6 11 × = 132 12 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s089" data-thumb="img/t089.webp" data-title="7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ · หน้า 89"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 89 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="× 18 = 252แสดงว่าจำนวนนั้นเป็นจำนวนที่คูณกับ 8แล้วได้ผลคูณในหลักหน่วยเป็น 2 ตัวอย่าง  × 18 = 252 01 02 03 04 05 06 จำนวนที่คูณ 18 แล้วได้ 252 จำนวนนั้นควรมากกว่า 10เพราะ 10 × 18 = 180 15 × 18 = 270 แสดงว่าจำนวนนั้น น้อยกว่า 1514 × 18 = 252ดังนั้น × 18 = 25214 10 × 18 = 180 ซึ่งน้อยกว่า 252 ดังนั้น "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s090" data-thumb="img/t090.webp" data-title="7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ · หน้า 90"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 90 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ เติมตัวเลขแสดงจำนวน 1 × 22 = 418 19 2 35 × = 560 16 3 × 75 = 825 11 4 28 × = 476 17 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s091" data-thumb="img/t091.webp" data-title="7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ · หน้า 91"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 91 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="34 × = 918แสดงว่าจำนวนนั้นเป็นจำนวนที่คูณกับ 4แล้วได้ผลคูณในหลักหน่วยเป็น 8 ตัวอย่าง 34 ×  = 918 01 02 03 04 05 06 จำนวนที่คูณ 34 แล้วได้ 918 จำนวนนั้นควรมากกว่า 20เพราะ 34 × 20 = 680 4 × = 4 × = 2 2 87 8 จำนวนนั้นอาจเป็น 22 หรือ 2734 × 22 = 74834 × 27 = 918ดังนั้น 34 × = 91827"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s092" data-thumb="img/t092.webp" data-title="7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ · หน้า 92"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 92 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ เติมตัวเลขแสดงจำนวน 1 2 36 × = 828 23 4 × 38 = 1,178 31 3 51 × = 1,479 29 5 × 42 = 1,470 35 6 71 × = 2,272 32 26 × = 624 24 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s093" data-thumb="img/t093.webp" data-title="7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ · หน้า 93"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 93 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เติมตัวเลขแสดงจำนวน 01 02 03 04 05 06 ตรวจสอบความเข้าใจ 1 21 × = 420 20 2 × 43 = 516 12"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s094" data-thumb="img/t094.webp" data-title="7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ · หน้า 94"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 94 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์แสดงการคูณ ทำได้โดยหาจำนวนมาแทนตัวไม่ทราบค่าแล้วได้ผลคูณตามที่กำหนด สิ่งที่ได้เรียนรู้ 01 02 03 04 05 06"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="7.5" data-title="7.5 โจทย์ปัญหาการคูณ"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 7.5</span><b>📝 โจทย์ปัญหาการคูณ</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s096" data-thumb="img/t096.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 96"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 96 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ร้านค้ามีดินสอ 3 กล่อง แต่ละกล่องมีดินสอ 144 แท่ง ร้านค้ามีดินสอทั้งหมดกี่แท่ง โจทย์ถาม ร้านค้ามีดินสอทั้งหมดกี่แท่ง โจทย์บอก ร้านค้ามีดินสอ 3 กล่อง แต่ละกล่องมีดินสอ 144 แท่ง หาคำตอบได้อย่างไร ดินสอ 3 กล่อง กล่องละ 144 แท่ง หาคำตอบได้จาก 3 คูณ 144 ประโยคสัญลักษณ์ 3 × 144 =  วิธีท"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s097" data-thumb="img/t097.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 97"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 97 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 แม่ซื้อน้ำดื่มแพ็กละ 12 ขวด จำนวน 48 แพ็ก แม่ซื้อน้ำดื่มทั้งหมดกี่ขวด โจทย์ถาม แม่ซื้อน้ำดื่มทั้งหมดกี่ขวด โจทย์บอก แม่ซื้อน้ำดื่มแพ็กละ 12 ขวด จำนวน 48 แพ็ก หาคำตอบได้อย่างไร น้ำ 48 แพ็ก แพ็กละ 12 ขวดหาคำตอบได้จาก 48 คูณ 12 ประโยคสัญลักษณ์ 48 × 12 =  วิธีทำ ตอบ แม่ซื้อน้ำดื่มทั้ง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s098" data-thumb="img/t098.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 98"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 98 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ แสดงวิธีหาคำตอบ วิธีทำ ตอบ พ่อค้าขายไก่ย่างได้เงิน ๓,๘๒๕ บาท 1. พ่อค้าขายไก่ย่างชิ้นละ 45 บาท ขายได้ 85 ชิ้น พ่อค้าขายไก่ย่างได้เงินเท่าไร ประโยคสัญลักษณ์ 85 × 25 =  พ่อค้าขายไก่ย่างได้85ชิ้นชิ้นละ45บาทพ่อค้าขายไก่ย่างได้เงิน85 × 25 =3,825บาท 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s099" data-thumb="img/t099.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 99"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 99 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ แสดงวิธีหาคำตอบ วิธีทำ ตอบ พ่อต้องจ่ายเงินทั้งหมด ๕,๘๕๐ บาท 2. ตั๋วรถโดยสารประจำทางปรับอากาศจากกรุงเทพฯ ถึงภูเก็ต สำหรับผู้ใหญ่ราคาใบละ 650 บาท พ่อซื้อตั๋ว 9 ใบ ต้องจ่ายเงินทั้งหมดเท่าไร ประโยคสัญลักษณ์ 9 × 650 =  พ่อซื้อตั๋วรถโดยสารประจำทางปรับอากาศจากกรุงเทพฯ ถึงภูเก็ต จำนวน9ใบราค"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s100" data-thumb="img/t100.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 100"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 100 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 แม่ของใบบัวปลูกมะนาวเป็นแถว 8 แถว แถวละ 120 ต้น แม่ของใบบัวปลูกมะนาวทั้งหมดกี่ต้น โจทย์ถาม แม่ของใบบัวปลูกมะนาวทั้งหมดกี่ต้น โจทย์บอก แม่ของใบบัวปลูกมะนาวเป็นแถว 8 แถว แถวละ 120 ต้น หาคำตอบได้อย่างไร ปลูกมะนาว 8 แถว แถวละ 120 ต้นหาคำตอบได้จาก 8 คูณ 120 ประโยคสัญลักษณ์ 8 × 120 =  ว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s101" data-thumb="img/t101.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 101"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 101 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ครูจัดนักเรียนนั่งในห้องประชุมเป็นแถว แถวละ 55 คน จัดได้ 25 แถว มีนักเรียนนั่งในห้องประชุมทั้งหมดกี่คน โจทย์ถาม มีนักเรียนนั่งในห้องประชุมทั้งหมดกี่คน โจทย์บอก ครูจัดนักเรียนนั่งในห้องประชุมเป็นแถว แถวละ 55 คน จัดได้ 25 แถว หาคำตอบได้อย่างไร 25 แถว แถวละ 55 คนหาคำตอบได้จาก 25 คูณ 5"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s102" data-thumb="img/t102.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 102"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 102 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ แสดงวิธีหาคำตอบ วิธีทำ ตอบ ครูจัดลูกเสือเข้าแถวทั้งหมด ๕๔๐ คน 1. ครูจัดลูกเสือยืนเข้าแถว 45 แถว แถวละ 12 คน ครูจัดลูกเสือเข้าแถวทั้งหมดกี่คน ประโยคสัญลักษณ์ 45 × 12 =  ครูจัดลูกเสือยืนเข้าแถว45แถวแถวละ12คนครูจัดลูกเสือเข้าแถวทั้งหมด45 × 12 =540คน 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s103" data-thumb="img/t103.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 103"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 103 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ วิธีทำ ตอบ ชาวสวนปลูกสับปะรดทั้งหมด ๑,๓๐๕ ต้น 2. ชาวสวนปลูกสับปะรดเป็นแถว แถวละ 145 ต้น จำนวน 9 แถว ชาวสวนปลูกสับปะรดทั้งหมดกี่ต้น ประโยคสัญลักษณ์ 145 × 9 =  ชาวสวนปลูกสับปะรด9แถวแถวละ145ต้นชาวสวนปลูกสับปะรดทั้งหมด9 × 145 =1,305ต้น 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s104" data-thumb="img/t104.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 104"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 104 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ เขียนประโยคสัญลักษณ์และแสดงวิธีหาคำตอบ วิธีทำ ตอบ โรงงานผลิตตุ๊กตาได้ทั้งหมด ๒๔,๗๕๐ ตัว โรงงานผลิตตุ๊กตาวันละ 2,750 ตัว เป็นเวลา 9 วัน โรงงานผลิตตุ๊กตาได้ทั้งหมดกี่ตัว ประโยคสัญลักษณ์ 9 × 2,750 =  โรงงานผลิตตุ๊กตาวันละ2,750ตัวเป็นเวลา9วันโรงงานผลิตตุ๊กตาได้ทั้งหมด9 × 2,750 =24,750ตั"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s105" data-thumb="img/t105.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 105"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 105 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ วิธีทำ ตอบ จะได้รับเงินทั้งหมด ๑๙,๙๒๐ บาท 1. โทรทัศน์ราคาเครื่องละ 4,980 บาท ร้านค้าขายไป 4 เครื่อง จะได้รับเงินทั้งหมดเท่าไร ประโยคสัญลักษณ์ 4,980 × 4 =  โทรทัศน์ราคาเครื่องละ4,980บาทร้านค้าขายไป4เครื่องจะได้รับเงินทั้งหมด4 × 4,980 =19,920บาท 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s106" data-thumb="img/t106.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 106"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 106 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ ตอบ แม่ค้าจัดน้ำผลไม้ทั้งหมด ๓๖๐ กล่อง 2. แม่ค้าจัดกล่องน้ำผลไม้ใส่ตู้แช่เย็น 15 แถว แต่ละแถวมีน้ำผลไม้ 24 กล่อง แม่ค้าจัดน้ำผลไม้ทั้งหมดกี่กล่อง ประโยคสัญลักษณ์ 15 × 24 =  แม่ค้าจัดกล่องน้ำผลไม้ใส่ตู้เย็น15แถวแต่ละแถวมีน้ำผลไม้24กล่องแม่ค้าจัดน้ำผลไม้ทั้งหมด15 × 24 =360กล่อง 01 02 03 04 05 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s107" data-thumb="img/t107.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 107"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 107 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีทำ ตอบ พ่อค้าซื้อขนมทั้งหมด ๔,๓๒๐ ห่อ 3. พ่อค้าซื้อขนมลังละ 720 ห่อ จำนวน 6 ลัง พ่อค้าซื้อขนมทั้งหมดกี่ห่อ ประโยคสัญลักษณ์ 720 × 6 =  พ่อค้าซื้อขนมลังละ720ห่อจำนวน6ลังพ่อค้าซื้อขนมทั้งหมด6 × 720 =4,320ห่อ 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s108" data-thumb="img/t108.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 108"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 108 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ กับ วิธีทำ ตอบ ชาวสวนปลูกดาวเรืองทั้งหมด ๒,๙๗๒ ต้น 4. ชาวสวนปลูกดาวเรือง 35 แถว แถวละ 85 ต้น ชาวสวนปลูกดาวเรืองทั้งหมดกี่ต้น ประโยคสัญลักษณ์ 35 × 85 =  ชาวสวนปลูกดาวเรือง35แถวแถวละ85ต้นชาวสวนปลูกดาวเรืองทั้งหมด35 × 85 =2,972ต้น 01 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s109" data-thumb="img/t109.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 109"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 109 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ตรวจสอบความเข้าใจ เขียนประโยคสัญลักษณ์และแสดงวิธีหาคำตอบ ข้าวสารหนักถุงละ 15 กิโลกรัม พ่อค้าขายข้าวสารได้ 25 ถุง พ่อค้าขายข้าวสารได้ทั้งหมดกี่กิโลกรัม วิธีทำ ตอบ พ่อค้าขายข้าวสารได้ทั้งหมด ๓๗๕ กิโลกรัม ประโยคสัญลักษณ์ 25 × 15 =  พ่อค้าขายข้าวสารได้25ถุงข้าวสารหนักถุงละ15กิโลกรัมพ่"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s110" data-thumb="img/t110.webp" data-title="7.5 โจทย์ปัญหาการคูณ · หน้า 110"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.5 โจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 110 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การแก้โจทย์ปัญหาทำได้โดยอ่านทำความเข้าใจปัญหา วางแผนแก้ปัญหา หาคำตอบ และตรวจสอบความสมเหตุสมผลของคำตอบ สิ่งที่ได้เรียนรู้ 01 02 03 04 05 06"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="7.6" data-title="7.6 การสร้างโจทย์ปัญหาการคูณ"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 7.6</span><b>✍️ การสร้างโจทย์ปัญหาการคูณ</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s112" data-thumb="img/t112.webp" data-title="7.6 การสร้างโจทย์ปัญหาการคูณ · หน้า 112"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.6 การสร้างโจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 112 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ช่วยกันสร้างโจทย์ปัญหาจากประโยคสัญลักษณ์ 12 × 72 =  โจทย์ปัญหามีส่วนที่โจทย์ถามและส่วนที่โจทย์บอก เช่น 1. ครูจัดขนมเป็นแถว 12 แถว แถวละ 72 ห่อ ครูจัดขนมทั้งหมดกี่ห่อ 2. แม่ซื้อน้ำผลไม้ 12 แพ็ก ราคาแพ็กละ 72 บาท แม่ต้องจ่ายเงินซื้อน้ำผลไม้ทั้งหมดกี่บาท 3. ขนม 1 กล่องมี 12 ชิ้น ขนมร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s113" data-thumb="img/t113.webp" data-title="7.6 การสร้างโจทย์ปัญหาการคูณ · หน้า 113"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.6 การสร้างโจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 113 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ช่วยกันสร้างโจทย์ปัญหาการคูณ และเขียนประโยคสัญลักษณ์ ปลูกมะเขือเทศแปลงละ 30 ต้น จำนวน 4 แปลง ปลูกมะเขือเทศทั้งหมดกี่ต้นประโยคสัญลักษณ์ 4 × 30 =  มีต้นหอมอยู่ 15 แถว แถวละ 90 ต้น มีต้นหอมทั้งหมดกี่ต้นประโยคสัญลักษณ์ 15 × 90 =  เก็บผักกาดไปขายได้แปลงละ 1,250 บาท มีผักกาดทั้งหมด 5 แ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s114" data-thumb="img/t114.webp" data-title="7.6 การสร้างโจทย์ปัญหาการคูณ · หน้า 114"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.6 การสร้างโจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 114 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 1 สร้างโจทย์ปัญหาจากประโยคสัญลักษณ์ 2 20 × 46 =  ใบบัวเก็บเงินวันละ 20 บาท เป็นเวลา 46 วัน ใบบัวเก็บเงินได้ทั้งหมดกี่บาท แม่ค้าขายส้มราคากิโลกรัมละ 46 บาท ขายได้ 20 กิโลกรัม แม่ค้าขายส้มได้เงินกี่บาท 8 × 399 =  เสื้อกีฬาทีมวอลเลย์บอลราคาตัวละ 399 บาท ซื้อ 8 ตัว ต้องจ่ายเงินเท่าไร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s115" data-thumb="img/t115.webp" data-title="7.6 การสร้างโจทย์ปัญหาการคูณ · หน้า 115"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.6 การสร้างโจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 115 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 สร้างโจทย์ปัญหาจากประโยคสัญลักษณ์ ตรวจสอบความเข้าใจ 1 6 × 375 =  แม่ค้าขายเสื้อราคาตัวละ 375 บาท ขายได้ 6 ตัว แม่ค้าขายเสื้อได้เงินกี่บาท"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s116" data-thumb="img/t116.webp" data-title="7.6 การสร้างโจทย์ปัญหาการคูณ · หน้า 116"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">7.6 การสร้างโจทย์ปัญหาการคูณ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 116 / 116</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การสร้างโจทย์ปัญหาต้องมีส่วนที่โจทย์บอกและส่วนที่โจทย์ถาม นอกจากนี้โจทย์ปัญหาที่สร้างต้องมีความเป็นไปได้ สิ่งที่ได้เรียนรู้ 01 02 03 04 05 06"></div></div></div>
+  
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
+  <div class="kru fig"><span class="av"><img src="k10.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>จบบทที่ 7 การคูณ</h2>
+  <div class="card c-yellow center endpic"><img src="k9.webp" alt="ครูอู๋ชูถ้วยรางวัล"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="f11.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="toc"><button data-jump="7.1"><span class="e">✖️</span><span>ทบทวน 7.1 การคูณจำนวน 1 หลักกับจำนวนไม่เกิน 4 หลัก</span></button><button data-jump="7.2"><span class="e">🔢</span><span>ทบทวน 7.2 การคูณจำนวน 2 หลักกับจำนวน 2 หลัก</span></button><button data-jump="7.3"><span class="e">💡</span><span>ทบทวน 7.3 การพัฒนาความรู้สึกเชิงจำนวนเกี่ยวกับการคูณ</span></button><button data-jump="7.4"><span class="e">❓</span><span>ทบทวน 7.4 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์การคูณ</span></button><button data-jump="7.5"><span class="e">📝</span><span>ทบทวน 7.5 โจทย์ปัญหาการคูณ</span></button><button data-jump="7.6"><span class="e">✍️</span><span>ทบทวน 7.6 การสร้างโจทย์ปัญหาการคูณ</span></button></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m3-ch6-fractions/">◀ บทก่อนหน้า</a><a class="btn" style="--c:var(--purple)" href="../m3-math-hub/">🏠 หน้ารวม ป.3</a><a class="btn ghost" href="../m3-ch8-division/">บทถัดไป ▶</a></div>
+  <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.3 สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m3-ch7-multiply", STORE_PREFIX = 'kruau-p3-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [{"q": "324 × 3 = ?", "c": ["972", "962", "927", "912"], "a": 0, "w": "300×3 + 20×3 + 4×3 = 900 + 60 + 12"}, {"q": "1,205 × 4 = ?", "c": ["4,820", "4,802", "4,020", "48,020"], "a": 0, "w": "1,000×4 + 200×4 + 5×4 = 4,000 + 800 + 20"}, {"q": "23 × 12 = ?", "c": ["276", "246", "266", "286"], "a": 0, "w": "23 × 10 = 230 และ 23 × 2 = 46 รวม 276"}, {"q": "45 × 20 = ?", "c": ["900", "90", "9,000", "650"], "a": 0, "w": "45 × 2 = 90 แล้วเติม 0 อีกหนึ่งตัว"}, {"q": "□ × 6 = 54   □ = ?", "c": ["9", "8", "48", "60"], "a": 0, "w": "6 × 9 = 54"}, {"q": "49 × 5 ใกล้เคียงกับจำนวนใดมากที่สุด", "c": ["250", "200", "450", "2,500"], "a": 0, "w": "49 ใกล้ 50 และ 50 × 5 = 250"}, {"q": "กล่องละ 24 ชิ้น 15 กล่อง มีกี่ชิ้น", "c": ["360 ชิ้น", "39 ชิ้น", "340 ชิ้น", "120 ชิ้น"], "a": 0, "w": "24 × 15 = 360"}, {"q": "ดินสอแท่งละ 8 บาท ซื้อ 125 แท่ง จ่ายเงินกี่บาท", "c": ["1,000 บาท", "133 บาท", "900 บาท", "1,250 บาท"], "a": 0, "w": "125 × 8 = 1,000"}];
+
+/* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
+var PRAISE = [['k11', 'เยี่ยมมาก!'], ['k2', 'สุดยอด!'], ['k6', 'เก่งมาก!'], ['k9', 'แชมป์เลย!'], ['k11', 'ปรบมือให้เลย!'], ['k7', 'เข้าใจแล้วใช่ไหม']];
+function ppPaint(sl, quiet) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, z = sl.querySelector('.ppz'), img = z.querySelector('img:not(.ghost)');
+  var src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (img.getAttribute('src') && img.getAttribute('src') !== src && !quiet) {
+    var g = img.cloneNode(); g.className = 'ghost'; g.removeAttribute('alt'); z.insertBefore(g, img.nextSibling);
+    var fade = function () { g.style.opacity = 0; setTimeout(function () { g.remove(); }, 400); };
+    img.onload = function () { img.onload = null; requestAnimationFrame(fade); };
+    setTimeout(fade, 900);
+  }
+  img.src = src;
+  if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
+  sl.querySelector('.ppbox').classList.toggle('can', k < n);
+  var b = sl.querySelector('[data-pstep]');
+  if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+  var d = sl.querySelector('.ppbox .done');
+  if (d) d.remove();
+  if (n && k >= n) {
+    var p = PRAISE[(+sl.getAttribute('data-src').slice(-3)) % PRAISE.length];
+    d = document.createElement('div'); d.className = 'done';
+    d.innerHTML = '<span>' + p[1] + '</span><img src="' + p[0] + '.webp" alt="">';
+    sl.querySelector('.ppbox').appendChild(d);
+    if (!quiet) { Kit.sound.good(); if (Math.random() < .35) Kit.confetti(); }
+  }
+}
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl, 1); } }
+function ppTools(sl, mode) {
+  ['zoom'].forEach(function (m) {
+    var on = m === mode && !sl.classList.contains(m);
+    sl.classList.toggle(m, on);
+    sl.querySelector('[data-' + m + ']').classList.toggle('on', on);
+  });
+  if (!sl.classList.contains('zoom')) sl.querySelector('.ppz').style.transformOrigin = '50% 50%';
+  sl.querySelector('.ppbox').classList.toggle('noswipe', sl.classList.contains('zoom'));
+}
+/* ---------- จับเวลา ---------- */
+var TM = { el: null, end: 0, iv: 0 };
+function tmShow() {
+  if (!TM.el) {
+    TM.el = document.createElement('div'); TM.el.className = 'timer';
+    document.body.appendChild(TM.el);
+  }
+  clearInterval(TM.iv); TM.el.classList.remove('end');
+  TM.el.innerHTML = '⏱️ <span class="opts"><button data-m="1">1 นาที</button><button data-m="2">2</button><button data-m="3">3</button><button data-m="5">5</button></span><button class="x" aria-label="ปิด">✖</button>';
+  TM.el.classList.add('show');
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show'); };
+  Array.prototype.forEach.call(TM.el.querySelectorAll('[data-m]'), function (b) { b.onclick = function () { tmStart(+b.getAttribute('data-m')); }; });
+}
+function tmStart(m) {
+  TM.end = Date.now() + m * 60000;
+  TM.el.innerHTML = '⏱️ <span class="t"></span><button class="x" aria-label="หยุด">✖</button>';
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show', 'end'); };
+  var t = TM.el.querySelector('.t');
+  function tick() {
+    var r = Math.max(0, Math.ceil((TM.end - Date.now()) / 1000));
+    t.textContent = Math.floor(r / 60) + ':' + ('0' + r % 60).slice(-2);
+    if (!r) { clearInterval(TM.iv); TM.el.classList.add('end'); Kit.sound.win(); Kit.toast('⏰ หมดเวลา! มาดูเฉลยกันนะ'); }
+  }
+  tick(); TM.iv = setInterval(tick, 250); Kit.sound.tap();
+}
+(function () {
+  var go = Kit.go;
+  Kit.go = function (n, instant) {
+    var cur = Kit.slides[Kit.cur];
+    if (!instant && cur && cur.classList.contains('pslide')) {
+      var N = +cur.getAttribute('data-steps'), k = cur._k || 0;
+      if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
+      if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
+    }
+    if (cur && cur.classList.contains('pslide') && n !== Kit.cur) ppTools(cur, null);
+    var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
+    go(n, instant);
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t, 1); }
+    for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+  };
+})();
+SETUP = function () {
+  setupToc();
+  Kit.slides.forEach(function (sl) {
+    if (!sl.classList.contains('pslide')) return;
+    var box = sl.querySelector('.ppbox'), z = sl.querySelector('.ppz'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
+    box.addEventListener('click', function (e) {
+      if (sl.classList.contains('zoom')) {
+        var q = box.getBoundingClientRect();
+        z.style.transformOrigin = ((e.clientX - q.left) / q.width * 100) + '% ' + ((e.clientY - q.top) / q.height * 100) + '%';
+        return;
+      }
+      adv();
+    });
+    if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+    sl.querySelector('[data-zoom]').onclick = function () { ppTools(sl, 'zoom'); Kit.sound.tap(); if (sl.classList.contains('zoom')) Kit.toast('🔎 แตะตรงที่อยากดูใกล้ ๆ'); };
+    sl.querySelector('[data-timer]').onclick = function () { tmShow(); Kit.sound.tap(); };
+  });
+};
+
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
+  });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- กล้องมุมจอ + อัดวิดีโอการสอน ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit) return;
+  var md = navigator.mediaDevices || {};
+  var inFrame = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  var canRec = !!md.getDisplayMedia && !!window.MediaRecorder;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '🎥'; btn.title = 'กล้องมุมจอ / อัดวิดีโอการสอน'; btn.setAttribute('aria-label', 'กล้องและอัดวิดีโอ');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var pnl = document.createElement('div'); pnl.className = 'campnl';
+  pnl.innerHTML = '<b>🎥 สอนออนไลน์ / ทำวิดีโอ</b>' +
+    '<button data-cam>📷 เปิดกล้องมุมจอ</button>' +
+    (canRec ? '<button data-rec>🔴 อัดวิดีโอหน้าจอ + เสียง</button>' : '') +
+    '<p class="tip">' + (canRec
+      ? 'กดอัดแล้วเลือก <b>แท็บนี้</b> ระบบจะอัดสไลด์ กล้อง และเสียงครูไว้ด้วยกัน กดหยุดแล้วจะได้ไฟล์วิดีโอทันที'
+      : 'บน iPad: เปิดกล้องมุมจอ แล้วใช้ <b>การบันทึกหน้าจอ</b> ในศูนย์ควบคุม (กดค้างที่ปุ่ม ⏺ เพื่อเปิดไมโครโฟน)') + '</p>' +
+    '<button data-x class="ghost">ปิด</button>';
+  document.body.appendChild(pnl);
+  btn.onclick = function () { pnl.classList.toggle('show'); Kit.sound.tap(); };
+  pnl.querySelector('[data-x]').onclick = function () { pnl.classList.remove('show'); };
+
+  function newTab(flag) {
+    var w = window.open(location.href.split('#')[0] + '#s=' + Kit.cur + '&' + flag + '=1', '_blank');
+    if (!w) Kit.toast('เปิดแท็บใหม่ไม่ได้ ลองกดปุ่ม "เปิดในแท็บใหม่" ของเว็บครูอู๋');
+  }
+
+  /* ---- กล้อง ---- */
+  var cam = null, stream = null, SIZES = [120, 170, 240], si = 1, round = true;
+  try { var sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); if (sv.si != null) si = sv.si; if (sv.round != null) round = sv.round; } catch (e) {}
+  function save(x, y) { try { localStorage.setItem('kruau-cam', JSON.stringify({ si: si, round: round, x: x, y: y })); } catch (e) {} }
+  function place() {
+    var s = SIZES[si], h = round ? s : Math.round(s * .75);
+    cam.style.width = s + 'px'; cam.style.height = h + 'px';
+    cam.classList.toggle('sq', !round);
+    var r = cam.getBoundingClientRect();
+    var x = Math.min(Math.max(4, r.left), innerWidth - s - 4), y = Math.min(Math.max(4, r.top), innerHeight - h - 4);
+    cam.style.left = x + 'px'; cam.style.top = y + 'px';
+  }
+  function openCam() {
+    if (cam) return;
+    if (!md.getUserMedia) { Kit.toast('อุปกรณ์นี้เปิดกล้องผ่านเว็บไม่ได้'); return; }
+    md.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }).then(function (s) {
+      stream = s;
+      cam = document.createElement('div'); cam.className = 'cambub noswipe';
+      cam.innerHTML = '<video autoplay playsinline muted></video><span class="cb"><button data-sz title="ย่อ/ขยาย">⤢</button><button data-sh title="วงกลม/สี่เหลี่ยม">◐</button><button data-cl title="ปิดกล้อง">✖</button></span>';
+      document.body.appendChild(cam);
+      var v = cam.querySelector('video'); v.srcObject = s; v.play().catch(function () {});
+      var sv = {}; try { sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); } catch (e) {}
+      cam.style.left = (sv.x != null ? sv.x : innerWidth - SIZES[si] - 16) + 'px';
+      cam.style.top = (sv.y != null ? sv.y : innerHeight - SIZES[si] - 90) + 'px';
+      place();
+      cam.querySelector('[data-sz]').onclick = function (e) { e.stopPropagation(); si = (si + 1) % SIZES.length; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-sh]').onclick = function (e) { e.stopPropagation(); round = !round; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-cl]').onclick = function (e) { e.stopPropagation(); closeCam(); };
+      var drag = null;
+      cam.addEventListener('pointerdown', function (e) {
+        if (e.target.closest('button')) return;
+        drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
+      });
+      cam.addEventListener('pointermove', function (e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        cam.style.left = Math.min(Math.max(4, e.clientX - drag.dx), innerWidth - cam.offsetWidth - 4) + 'px';
+        cam.style.top = Math.min(Math.max(4, e.clientY - drag.dy), innerHeight - cam.offsetHeight - 4) + 'px';
+      });
+      cam.addEventListener('pointerup', function () { if (drag) save(cam.offsetLeft, cam.offsetTop); drag = null; });
+      pnl.querySelector('[data-cam]').textContent = '📷 ปิดกล้องมุมจอ';
+      pnl.classList.remove('show');
+      Kit.toast('📷 ลากกล้องไปวางมุมไหนก็ได้ · ⤢ ย่อ/ขยาย');
+    }).catch(function (err) {
+      if (inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่อใช้กล้อง…'); newTab('cam'); }
+      else Kit.toast('เปิดกล้องไม่ได้ — กรุณาอนุญาตให้เว็บใช้กล้อง');
+    });
+  }
+  function closeCam() {
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    if (cam) cam.remove();
+    cam = stream = null;
+    pnl.querySelector('[data-cam]').textContent = '📷 เปิดกล้องมุมจอ';
+  }
+  pnl.querySelector('[data-cam]').onclick = function () { if (cam) closeCam(); else openCam(); };
+  addEventListener('resize', function () { if (cam) place(); });
+
+  /* ---- อัดวิดีโอ (คอมพิวเตอร์: Chrome / Edge / Firefox) ---- */
+  var rec = null, chip = null, parts = [], t0 = 0, iv = 0, all = [];
+  function pickType() {
+    var c = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    for (var i = 0; i < c.length; i++) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c[i])) return c[i];
+    return '';
+  }
+  function startRec() {
+    md.getDisplayMedia({ video: { frameRate: 30 }, audio: true, preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude' }).then(function (ds) {
+      all = [ds];
+      return md.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }).then(function (mic) { all.push(mic); return [ds, mic]; }, function () { Kit.toast('ไม่ได้เปิดไมโครโฟน จะอัดแต่ภาพ'); return [ds, null]; });
+    }).then(function (r) {
+      var ds = r[0], mic = r[1], tracks = ds.getVideoTracks().slice();
+      var aud = [ds, mic].filter(function (s) { return s && s.getAudioTracks().length; });
+      if (aud.length === 1) tracks = tracks.concat(aud[0].getAudioTracks());
+      else if (aud.length > 1) {
+        var ac = new (window.AudioContext || window.webkitAudioContext)(), dst = ac.createMediaStreamDestination();
+        aud.forEach(function (s) { ac.createMediaStreamSource(s).connect(dst); });
+        tracks = tracks.concat(dst.stream.getAudioTracks());
+      }
+      var type = pickType();
+      rec = new MediaRecorder(new MediaStream(tracks), type ? { mimeType: type, videoBitsPerSecond: 3000000 } : undefined);
+      parts = [];
+      rec.ondataavailable = function (e) { if (e.data && e.data.size) parts.push(e.data); };
+      rec.onstop = finish;
+      ds.getVideoTracks()[0].addEventListener('ended', stopRec);
+      rec.start(1000); t0 = Date.now();
+      chip = document.createElement('div'); chip.className = 'recchip';
+      chip.innerHTML = '<span class="dot"></span> อัดอยู่ <span class="t">0:00</span><button>■ หยุด</button>';
+      document.body.appendChild(chip);
+      chip.querySelector('button').onclick = stopRec;
+      iv = setInterval(function () { var s = Math.floor((Date.now() - t0) / 1000); chip.querySelector('.t').textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }, 500);
+      pnl.classList.remove('show');
+      if (!cam) Kit.toast('🔴 เริ่มอัดแล้ว · เปิดกล้องมุมจอได้ที่ปุ่ม 🎥');
+    }).catch(function (err) {
+      all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+      if (err && err.name === 'NotAllowedError' && inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่ออัดวิดีโอ…'); newTab('rec'); }
+      else if (err && err.name !== 'NotAllowedError') Kit.toast('อัดวิดีโอไม่ได้: ' + err.name);
+    });
+  }
+  function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+  function finish() {
+    clearInterval(iv);
+    all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+    if (chip) chip.remove();
+    var type = (rec && rec.mimeType) || 'video/webm', ext = type.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+    var blob = new Blob(parts, { type: type }), a = document.createElement('a');
+    var d = new Date(), name = (document.title.split('·')[0].trim() || 'บทเรียน').replace(/[\\\/:*?"<>|]/g, '') + ' ' + d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    a.href = URL.createObjectURL(blob); a.download = name + '.' + ext;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+    Kit.sound.win(); Kit.toast('💾 บันทึกวิดีโอแล้ว (' + ext.toUpperCase() + ') ดูได้ในโฟลเดอร์ดาวน์โหลด');
+    rec = null;
+  }
+  var rb = pnl.querySelector('[data-rec]');
+  if (rb) rb.onclick = function () { if (rec) stopRec(); else startRec(); };
+
+  /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
+  if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
+  if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+</script>
+</body>
+</html>

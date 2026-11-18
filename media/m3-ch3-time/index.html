@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 3 เวลา · คณิตศาสตร์ ป.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#22A6F2;--main-deep:#0B7FC2;--glow:#D3EEFF}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
+/* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
+.campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
+.campnl.show{display:flex}
+.campnl button{min-height:44px;border-radius:14px;border:2px solid var(--main);background:var(--glow);font-weight:700;font-size:1rem;color:var(--ink)}
+.campnl button.ghost{background:#fff;min-height:36px}
+.campnl .tip{margin:0;font-size:.88rem;line-height:1.5;color:var(--ink-soft)}
+.cambub{position:fixed;z-index:65;border-radius:50%;overflow:hidden;background:#222;border:4px solid #fff;box-shadow:0 0 0 3px var(--main),0 8px 20px rgba(0,0,0,.3);touch-action:none;cursor:grab}
+.cambub.sq{border-radius:18px}
+.cambub video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;pointer-events:none}
+.cambub .cb{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:4px;opacity:0;transition:opacity .2s}
+.cambub:hover .cb,.cambub:active .cb,.cambub:focus-within .cb{opacity:1}
+@media (hover:none){.cambub .cb{opacity:.85}}
+.cambub .cb button{width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.9);font-size:.9rem;padding:0}
+.recchip{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid #E53935;border-radius:999px;padding:4px 6px 4px 14px;font-weight:700;color:#C62828;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.recchip .dot{width:12px;height:12px;border-radius:50%;background:#E53935;animation:recb 1s infinite}
+.recchip button{border:none;background:#E53935;color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;min-height:36px}
+@keyframes recb{50%{opacity:.25}}
+@media print{.campnl,.cambub,.recchip{display:none}}
+
+/* ---- แถบด้านบนบนมือถือ ---- */
+@media (max-width:520px){.bar .tb{width:34px!important;min-width:34px;height:34px!important;font-size:15px!important;padding:0!important}.bar{gap:3px!important}.bar .ttl small{display:none}}
+
+.nav .dots{display:none}
+.nav{justify-content:space-between}
+.pslide{padding:8px clamp(8px,2vw,24px) 8px}
+.pslide .inner.pp{max-width:none;height:100%;gap:6px}
+.pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
+.ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.ppbox{position:relative;width:min(100cqw,calc(100cqh * 16 / 9));aspect-ratio:16/9;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08);overflow:hidden;box-sizing:border-box}
+.ppz{position:absolute;inset:0;transition:transform .35s ease;transform-origin:50% 50%}
+.ppz img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ppz img.ghost{transition:opacity .35s ease;pointer-events:none}
+.ppbox.can{cursor:pointer}
+.pslide.zoom .ppbox{cursor:zoom-out}
+.pslide.zoom .ppz{transform:scale(2.2)}
+.ppbox .done{position:absolute;right:10px;bottom:8px;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:kpop .5s ease-out both}
+.ppbox .done img{height:clamp(60px,14cqh,110px);width:auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.ppbox .done span{background:#fff;border:3px solid var(--main);border-radius:14px 14px 4px 14px;padding:2px 10px;font-weight:700;color:var(--main-deep);margin-bottom:30px;white-space:nowrap;font-size:clamp(.8rem,2.2vw,1rem)}
+.tools{display:flex;align-items:center;gap:6px}
+.tl{width:40px;height:40px;border-radius:12px;border:2px solid var(--main);background:#fff;font-size:1.15rem;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--glow)}
+.tl.on{background:var(--main);box-shadow:0 3px 0 var(--main-deep)}
+.timer{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:6px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:4px 6px 4px 12px;font-weight:700;box-shadow:0 4px 0 var(--main-deep);font-size:1.15rem}
+.timer.show{display:flex}
+.timer .opts{display:flex;gap:4px}
+.timer .opts button,.timer .x{border:2px solid var(--main);background:var(--glow);border-radius:999px;padding:2px 10px;font-weight:700;min-height:36px}
+.timer .t{font-variant-numeric:tabular-nums;min-width:3.2em;text-align:center;color:var(--main-deep)}
+.timer.end{animation:tshake .5s 3;background:#FFE3E3}
+@keyframes tshake{25%{transform:translateX(-50%) rotate(-4deg)}75%{transform:translateX(-50%) rotate(4deg)}}
+@media (max-width:620px){.tl{width:34px;height:34px;font-size:1rem}.pphead .secbadge{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.board{position:relative;width:min(100%,720px);container-type:inline-size;animation:kpop .55s ease-out both}
+.board img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15))}
+.chalk{position:absolute;left:56%;top:12%;width:39%;height:62%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqw;color:#fff;text-align:center;text-shadow:0 0 2px rgba(255,255,255,.5)}
+.chalk .cn{font-size:4.2cqw;color:#FFE97A;border-bottom:.4cqw dashed #FFE97A;padding:0 2cqw}
+.chalk b{font-size:4.6cqw;line-height:1.3;font-weight:700}
+.secslide .ready{font-weight:700;color:var(--ink-soft)}
+.ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
+.ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
+.ppctl .btn{min-height:44px;padding:6px 18px}
+.secslide{min-height:100%;justify-content:center;align-items:center;text-align:center}
+.secnum{display:grid;place-items:center;width:clamp(110px,18vw,150px);aspect-ratio:1;border-radius:50%;background:var(--main);color:#fff;font-weight:700;font-size:clamp(2.2rem,6vw,3.2rem);box-shadow:0 8px 0 var(--main-deep)}
+.secslide h1{color:var(--main-deep);font-size:clamp(1.7rem,5vw,2.8rem);text-shadow:0 4px 0 var(--glow)}
+.subs{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:620px;width:100%}
+.subs div{background:#fff;border:3px solid var(--main);border-radius:16px;padding:8px 14px;font-weight:700;text-align:left;font-size:clamp(1rem,2.6vw,1.2rem)}
+.subs b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--main);color:#fff;margin-right:8px}
+.secslide .kru{max-width:680px;width:100%;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">⏰</span>
+  <div class="ttl"><b>บทที่ 3 เวลา</b><small>คณิตศาสตร์ ป.3 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m3-math-hub/" aria-label="หน้ารวม ป.3" title="หน้ารวม ป.3">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.3 · บทที่ 3</span>
+    <h1>เวลา</h1>
+    <p class="sub">บอกเวลา อ่านเขียนเวลา ระยะเวลา เปรียบเทียบ บันทึกกิจกรรม และโจทย์ปัญหา</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>3.1 การบอกเวลาเป็นนาฬิกาและนาที</li><li>3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:)</li><li>3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</li><li>3.4 การเปรียบเทียบระยะเวลา</li><li>3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา</li><li>3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 3</h2>
+  <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เตรียมความพร้อม</span></button><button data-jump="3.1"><span class="e">🕘</span><span>3.1 การบอกเวลาเป็นนาฬิกาและนาที</span></button><button data-jump="3.2"><span class="e">⌚</span><span>3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:)</span></button><button data-jump="3.3"><span class="e">⏳</span><span>3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span></button><button data-jump="3.4"><span class="e">⚖️</span><span>3.4 การเปรียบเทียบระยะเวลา</span></button><button data-jump="3.5"><span class="e">📒</span><span>3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา</span></button><button data-jump="3.6"><span class="e">📝</span><span>3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="6" data-src="img/s003" data-thumb="img/t003.webp" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เตรียมความพร้อม 1 บอกเวลาจากนาฬิกา 1)2)3)4)5)6) 15 นาฬิกา 3 นาฬิกา 10 นาฬิกา 20 นาที 22 นาฬิกา 20 นาที 5 นาฬิกา 35 นาที 19 นาฬิกา 5 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s004" data-thumb="img/t004.webp" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 2 บอกเวลาเริ่มต้น เวลาสิ้นสุด และระยะเวลาทำกิจกรรม กิจกรรมเวลาเริ่มต้นเวลาสิ้นสุดระยะเวลา1)ขับรถไปเที่ยวทะเล2)เดินออกกำลังกาย3)ปั่นจักรยาน 6 นาฬิกา 11 นาฬิกา 5 ชั่วโมง 18 นาฬิกา 10 นาที 18 นาฬิกา 55 นาที 45 นาที 16 นาฬิกา 30 นาที 16 นาฬิกา 50 นาที 20 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="3.1" data-title="3.1 การบอกเวลาเป็นนาฬิกาและนาที"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 3.1</span><b>🕘 การบอกเวลาเป็นนาฬิกาและนาที</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="15" data-src="img/s006" data-thumb="img/t006.webp" data-title="3.1 การบอกเวลาเป็นนาฬิกาและนาที · หน้า 6"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.1 การบอกเวลาเป็นนาฬิกาและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 5 7 นาฬิกา 7 นาฬิกา 30 นาที 10 15 20 25 30 5 7 นาฬิกา 31 นาที 10 15 20 25 30 31 02 03 04 05 06 ดังนั้น ตอนนี้เป็นเวลา 7 นาฬิกา 31 นาที ตอนนี้เป็นเวลากี่นาฬิกา กี่นาที เข็มยาวเคลื่อน 1 ช่องใหญ่ ใช้เวลา 5 นาที1 ช่องใหญ่มี 5 ช่องเล็กเข็มยาวเคลื่อนที่ 1 ช่องเล็ก ใช้เวลา 1 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/15)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s007" data-thumb="img/t007.webp" data-title="3.1 การบอกเวลาเป็นนาฬิกาและนาที · หน้า 7"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.1 การบอกเวลาเป็นนาฬิกาและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บอกเวลาเป็นนาฬิกาและนาที 1 2 3 4 7 นาฬิกา 12 นาที 7 นาฬิกา 27 นาที 7 นาฬิกา 42 นาที 7 นาฬิกา 56 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s008" data-thumb="img/t008.webp" data-title="3.1 การบอกเวลาเป็นนาฬิกาและนาที · หน้า 8"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.1 การบอกเวลาเป็นนาฬิกาและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บอกเวลาเป็นนาฬิกาและนาที ตั้งแต่ 6 นาฬิกา ถึงก่อน 18 นาฬิกา เป็นเวลางกลางวันตั้งแต่ 18 นาฬิกา ถึงก่อน 6 นาฬิกา เป็นเวลากลางคืน 5 10 15 20 25 30 35 40 41 42 43 44 เวลา 15 นาฬิกา 44 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s009" data-thumb="img/t009.webp" data-title="3.1 การบอกเวลาเป็นนาฬิกาและนาที · หน้า 9"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.1 การบอกเวลาเป็นนาฬิกาและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 5 10 15 20 25 30 35 36 37 38 39 เวลา 20 นาฬิกา 39 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s010" data-thumb="img/t010.webp" data-title="3.1 การบอกเวลาเป็นนาฬิกาและนาที · หน้า 10"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.1 การบอกเวลาเป็นนาฬิกาและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บอกเวลาเป็นนาฬิกาและนาที 1 2 12 นาฬิกา 38 นาที 4 นาฬิกา 14 นาที 3 22 นาฬิกา 3 นาที 4 5 6 นาฬิกา 26 นาที 10 นาฬิกา 57 นาที 6 1 นาฬิกา 19 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s011" data-thumb="img/t011.webp" data-title="3.1 การบอกเวลาเป็นนาฬิกาและนาที · หน้า 11"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.1 การบอกเวลาเป็นนาฬิกาและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 จับคู่นาฬิกาที่แสดงเวลาเดียวกัน 1 2 3 4 5 6 ก ข ค ง จ ฉ ข้อ 1 คู่กับ ขข้อ 2 คู่กับ จข้อ 3 คู่กับ งข้อ 4 คู่กับ กข้อ 5 คู่กับ ฉข้อ 6 คู่กับ ค"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s012" data-thumb="img/t012.webp" data-title="3.1 การบอกเวลาเป็นนาฬิกาและนาที · หน้า 12"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.1 การบอกเวลาเป็นนาฬิกาและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บอกเวลาเป็นนาฬิกาและนาที ตรวจสอบความเข้าใจ 1 2 7 นาฬิกา 4 นาที 17 นาฬิกา 53 นาที 3 2 นาฬิกา 28 นาที 4 5 21 นาฬิกา 46 นาที 0 นาฬิกา 5 นาที 6 15 นาฬิกา 32 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-thumb="img/t013.webp" data-title="3.1 การบอกเวลาเป็นนาฬิกาและนาที · หน้า 13"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.1 การบอกเวลาเป็นนาฬิกาและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 การบอกเวลาเป็นนาฬิกาและนาทีถ้าเป็นนาฬิกาแบบเข็มให้พิจารณาที่ตำแหน่งเข็มสั้นและเข็มยาว เข็มสั้นบอกเวลาเป็นนาฬิกา เข็มยาวบอกเวลาเป็นนาทีถ้าเป็นนาฬิกาแบบใช้ตัวเลข ตัวเลขหน้าเครื่องหมาย : แสดงเวลาเป็นนาฬิกา ตัวเลขหลังเครื่องหมาย : แสดงเวลาเป็นนาที สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="3.2" data-title="3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:)"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 3.2</span><b>⌚ การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:)</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s015" data-thumb="img/t015.webp" data-title="3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:) · หน้า 15"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="06.30 น. อ่านว่า 6 นาฬิกา 30 นาที 01 02 03 04 05 06 12:50 น. อ่านว่า 12 นาฬิกา 50 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s016" data-thumb="img/t016.webp" data-title="3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:) · หน้า 16"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 อ่านเวลาจากรายการต่างๆ 09:00 น. อ่านว่า 9 นาฬิกาบัตรสำหรับเข้าชมท้องฟ้าจำลองกรุงเทพเวลา 9 นาฬิกา 10.15 น. อ่านว่า 10 นาฬิกา 15 นาที14.30 น. อ่านว่า 14 นาฬิกา 30 นาทีรอบการแสดงช้าง วันอังคารถึงวันศุกร์เวลา 10 นาฬิกา 15 นาที และ 14 นาฬิกา 30 นาที 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s017" data-thumb="img/t017.webp" data-title="3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:) · หน้า 17"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 7 นาฬิกา 30 นาที เขียนบอกเวลาแบบใช้มหัพภาค (.) เขียนบอกเวลาแบบใช้ทวิภาค (:) 7.30 น. หรือ 07.30 น. 7:30 น. หรือ 07:30 น. การเขียนมหัพภาค (.) หรือ ทวิภาค (:) คั่นระหว่างนาฬิกาและนาที ต้องเขียน น. ต่อท้าย อ่านว่า 9 นาฬิกา 30 นาที 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s018" data-thumb="img/t018.webp" data-title="3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:) · หน้า 18"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ร้านค้าของโรงเรียนเปิดเวลา 7 นาฬิกา 15 นาทีเขียนป้ายบอกเวลาเปิดแบบใช้มหัพภาค (.) หรือทวิภาค (:) ได้อย่างไร เขียนบอกเวลาเปิดแบบใช้มหัพภาค (.) ได้ดังนี้ ร้านค้าโรงเรียนเปิด 7.15 น. เขียนบอกเวลาเปิดแบบใช้ทวิภาค (:) ได้ดังนี้ ร้านค้าโรงเรียนเปิด 7:15 น."></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s019" data-thumb="img/t019.webp" data-title="3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:) · หน้า 19"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 อ่านเวลา 1 23 นาฬิกา 35 นาที 1) 23:35 น. 3 นาฬิกา 47 นาที 2) 03:47 น. 15 นาฬิกา 9 นาที 3) 15.09 น. 8 นาฬิกา 57 นาที 2) 8.57 น. 8.00 น. 8:00 น.หรือ 08.00 น. หรือ 08:00 น. 1) 8 นาฬิกา 9.05 น. 9:05 น.หรือ 09.05 น. หรือ 09:05 น. 2) 9 นาฬิกา 5 นาที 18.20 น. 18:20 น. 3) 18 นาฬิกา 20 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s020" data-thumb="img/t020.webp" data-title="3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:) · หน้า 20"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนบอกเวลาแบบใช้มหัพภาค (.) และทวิภาค (:) 1 2 2.43 น. 2:43 น.หรือ 02.43 น. หรือ 02:43 น. 10.00 น. 10:00 น. 3 21.04 น. 21:04 น. 4 5 00.05 น. 00:05 น.หรือ 0.05 น. หรือ 0:05 น. 19.48 น. 19:48 น. 6 15.29 น. 15:29 น."></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s021" data-thumb="img/t021.webp" data-title="3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:) · หน้า 21"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนบอกเวลาเป็นนาฬิกาและนาที ตรวจสอบความเข้าใจ 1 1) 16.55 น. 2) 4.00 น.3) 22:33 น. 4) 10:02 น. 16 นาฬิกา 55 นาที 4 นาฬิกา 22 นาฬิกา 30 นาที 10 นาฬิกา 2 นาที เขียนบอกเวลาแบบใช้มหัพภาค (.) และทวิภาค (:) 2 1) 12 นาฬิกา 6 นาที 2) 3 นาฬิกา 49 นาที3) 4) 12.06 น. 12:06 น. 3.49 น. 3:49 น."></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s022" data-thumb="img/t022.webp" data-title="3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:) · หน้า 22"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 การเขียนบอกเวลาอาจใช้มหัพภาค (.) หรือทวิภาค (:) คั่นระหว่างตัวเลขที่แสดงนาฬิกากับตัวเลขที่แสดงนาทีแล้วเขียน น. ต่อท้ายการอ่านเวลาให้อ่านตัวเลขหน้ามหัพภาค (.) หรือทวิภาค (:) เป็นนาฬิกาและอ่านตัวเลขหลังมหัพภาค (.) หรือทวิภาค (:) เป็นนาที สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="3.3" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 3.3</span><b>⏳ การบอกระยะเวลาเป็นชั่วโมงและนาที</b></div></div>
+  <div class="subs"><div><b>1</b>การบอกระยะเวลาเป็นชั่วโมง</div><div><b>2</b>การบอกระยะเวลาเป็นนาที</div><div><b>3</b>การบอกระยะเวลาเป็นชั่วโมงและนาที</div></div>
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s024" data-thumb="img/t024.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 24"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จาก 8.00 น. ถึง 9.00 น. เข็มยาวเคลื่อนที่ครบ 1 รอบ ใช้เวลา 60 นาที หรือ 1 ชั่วโมง 01 8.00 น.9.00 น. 1 ชั่วโมง หรือ 60 นาที สังเกต 8.00 น. และ 9.00 น.เวลาเป็นนาทีเท่ากัน 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s025" data-thumb="img/t025.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 25"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตัวอย่างจาก 9.30 น. ถึง 10.30 น. เป็นระยะเวลากี่ชั่วโมง ดังนั้น จาก 10.30 น. ถึง 11.30 น. เป็นระยะเวลา 30 + 30 = 60 นาที หรือ 1 ชั่วโมง 01 จาก 9.30 น. ถึง 10.00 น.เป็นระยะเวลา 30 นาที จาก 10.00 น. ถึง 10.30 น.เป็นระยะเวลา 30 นาที 10.30 น.11.00 น. 11.30 น. 30 นาที 30 นาที 1 ชั่วโมง สังเกต 10.30 น. แล"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s026" data-thumb="img/t026.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 26"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตัวอย่างจาก 12.45 น. ถึง 13.45 น. เป็นระยะเวลากี่ชั่วโมง ดังนั้น จาก 12.45 น. ถึง 13.45 น. เป็นระยะเวลา 15 + 45 = 60 นาที หรือ 1 ชั่วโมง 01 จาก 12.45 น. ถึง 13.00 น.เป็นระยะเวลา 15 นาที จาก 13.00 น. ถึง 13.45 น.เป็นระยะเวลา 45 นาที 12.45 น.13.00 น. 13.45 น. 15 นาที 45 นาที 1 ชั่วโมง สังเกต 12.45 น. "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s027" data-thumb="img/t027.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 27"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จาก 15.10 น. ถึง 19.10 น. เป็นระยะเวลากี่ชั่วโมง ตัวอย่างลุงเริ่มทำสวน 7.23 น. ทำสวนเสร็จ 10.23 น. ลุงใช้เวลาทำสวนนานเท่าไร 01 สังเกต 7.23 น. และ 10.23 น. เวลาเป็นนาทีเท่ากัน ลุงใช้เวลาทำสวน 3 ชั่วโมง 7.23 น.8.23 น. 1 ชั่วโมง 9.23 น. 10.23 น. 1 ชั่วโมง 1 ชั่วโมง 02 03 04 05 06 4 ชั่วโมง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s028" data-thumb="img/t028.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 28"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตัวอย่างพ่อเริ่มออกเดินทาง 22.00 น. ถึงปลายทาง 2.00 น. พ่อใช้เวลาเดินทางกี่ชั่วโมง 01 พ่อใช้เวลาเดินทาง4 ชั่วโมง 22.00 น.23.00 น. 1 ชั่วโมง 24.00 น.หรือ 0.00 น. 1.00 น. 1 ชั่วโมง 1 ชั่วโมง 02 03 04 05 06 2.00 น. 1 ชั่วโมง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s029" data-thumb="img/t029.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 29"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตัวอย่างคนงานเริ่มทำงาน 23.30 น. เลิกงาน 7.30 น. คนงานใช้เวลาทำงานกี่ชั่วโมง 01 23.30 น.0.30 น. 1 ชั่วโมง 1.30 น. 1 ชั่วโมง 02 03 04 05 06 2.30 น. 1 ชั่วโมง 3.30 น. 1 ชั่วโมง 4.30 น. 1 ชั่วโมง 5.30 น. 1 ชั่วโมง 6.30 น. 1 ชั่วโมง 7.30 น. 1 ชั่วโมง คนงานใช้เวลาทำงาน8 ชั่วโมง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s030" data-thumb="img/t030.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 30"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บอกระยะเวลาที่ใช้ในการทำกิจกรรม 2) กิจกรรมเวลาเริ่มกิจกรรมเวลาสิ้นสุดกิจกรรมระยะเวลา ใบบัวเที่ยวสวนสนุก10.00 น.15.00 น. พ่อทำงาน13.30 น.21.30 น. ลุงเดินทางกลับบ้าน22.00 น.4.00 น. แม่นั่งรถไฟไปต่างจังหวัด19.55 น.6.55 น. 1 2 3 4 5 ชั่วโมง 8 ชั่วโมง 6 ชั่วโมง 11 ชั่วโมง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s031" data-thumb="img/t031.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 31"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บอกระยะเวลาที่ใช้ในการทำกิจกรรม ตรวจสอบความเข้าใจ 2) กิจกรรมเวลาเริ่มกิจกรรมเวลาสิ้นสุดกิจกรรมระยะเวลา ลุงขายของที่ตลาด14.00 น.20.00 น. แม่ทำงานบ้าน6.15 น.11.15 น. พ่อไปส่งของที่ตลาด21.25 น.1.25 น. 1 2 3 6 ชั่วโมง 5 ชั่วโมง 4 ชั่วโมง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-thumb="img/t032.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 32"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 การบอกระยะเวลาอาจบอกเป็นชั่วโมง โดยนับจากเวลาเริ่มต้นจนถึงเวลาสิ้นสุด สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s033" data-thumb="img/t033.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 33"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 จาก 17.00 น. ถึง 17.48 น.เข็มยาวเคลื่อนที่ไป 48 ช่องเล็ก ใช้เวลา 48 นาทีดังนั้น ต้นกล้าใช้เวลาปั่นจักรยาน 48 นาที เริ่มปั่น 17.00 น. ปั่นเสร็จ 17.48 น. 5 46 47 10 15 20 25 30 35 40 45 48 17.00 น.17.48 น. 48 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s034" data-thumb="img/t034.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 34"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 จาก 9.25 น. ไปถึง 9.51 น.เข็มยาวเคลื่อนที่ไป 26 ช่องเล็ก ใช้เวลา 26 นาทีดังนั้น แม่อบขนมใช้เวลา 26 นาที เริ่มอบ 9.25 น. อบเสร็จ 9.51 น. 5 10 15 20 26 9.25 น.9.51 น. 26 นาที 25"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s035" data-thumb="img/t035.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 35"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตัวอย่างแก้วตาเริ่มทำการบ้าน 13.45 น. ทำการบ้านเสร็จ 14.07 น. แก้วตาใช้เวลาทำการบ้านนานเท่าไร 01 15 นาที ดังนั้น จาก 14.45 น. ถึง 15.09 น. เป็นระยะเวลา 15 + 7 = 22 นาที จาก 13.45 น. ถึง 14.00 น.เป็นระยะเวลา 15 นาที จาก 15.00 น. ถึง 15.09 น.เป็นระยะเวลา 9 นาที 13.45 น.14.00 น. 7 นาที 14.07 น. 02 03 0"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s036" data-thumb="img/t036.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 36"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตัวอย่างใบบัวใช้เวลาพับกระดาษนานเท่าไร 01 20.35 น.เริ่มพับ21.00 น. 25 นาที 21.19 น.พับเสร็จ 19 นาที จาก 20.35 น. ถึง 21.00 น.เป็นระยะเวลา 25 นาที จาก 21.00 น. ถึง 21.19 น.เป็นระยะเวลา 19 นาที จาก 20.35 น. ถึง 21.19 น. เป็นระยะเวลา 25 + 19 = 44 นาทีดังนั้น ใบบัวใช้เวลาพับกระดาษ 44 นาที 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s037" data-thumb="img/t037.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 37"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตัวอย่างขุนใช้เวลากินข้าวนานเท่าไร 01 11.53 น.เริ่มกิน12.00 น. 7 นาที 12.29 น.กินเสร็จ 0 29 นาที จาก 11.53 น. ถึง 12.00 น.เป็นระยะเวลา 7 นาที จาก 12.00 น. ถึง 12.29 น.เป็นระยะเวลา 29 นาที จาก 11.53 น. ถึง 12.29 น. เป็นระยะเวลา 7 + 29 = 36 นาทีดังนั้น ขุนใช้เวลากินข้าว 36 นาที 02 03 04 05 06"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s038" data-thumb="img/t038.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 38"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กิจกรรมเวลาเริ่มกิจกรรมเวลาสิ้นสุดกิจกรรมระยะเวลา พ่อดูโทรทัศน์22.08 น.22.32 น. แก้วตาเล่นดนตรี17.09 น.17.45 น. แม่พักผ่อน14.13 น.15.00 น. ต้นกล้าออกกำลังกาย8.20 น.9.11 น. ใบบัวอ่านหนังสือ20.29 น.21.15 น. ขุนช่วยแม่ทำงานบ้าน11.18 น.12.17 น. 01 02 03 04 05 06 บอกระยะเวลาที่ใช้ในการทำกิจกรรม 1 2 3 4 2"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s039" data-thumb="img/t039.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 39"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บอกระยะเวลาที่ใช้ในการทำกิจกรรม ตรวจสอบความเข้าใจ 2) กิจกรรมเวลาเริ่มกิจกรรมเวลาสิ้นสุดกิจกรรมระยะเวลา ขุนอ่านนิทาน10.20 น.10.42 น. ออมสินว่ายน้ำ18.49 น.19.25 น. ต้นกล้าปลูกต้นไม้17.32 น.18.05 น. 1 2 3 22 นาที 36 นาที 33 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s040" data-thumb="img/t040.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 40"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 การบอกระยะเวลาอาจบอกเป็นนาที โดยนับจากเวลาเริ่มต้นจนถึงเวลาสิ้นสุด สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s041" data-thumb="img/t041.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 41"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตัวอย่างแม่เริ่มเย็บผ้า 14.00 น. เย็บผ้าเสร็จ 15.29 น. แม่ใช้เวลาเย็บผ้านานเท่าไร 01 1 ชั่วโมง 14.00 น.เริ่มเย็บ15.00 น. 49 นาที จาก 14.00 น. ถึง 15.00 น.เป็นระยะเวลา 1 ชั่วโมง จาก 15.00 น. ถึง 15.29 น.เป็นระยะเวลา 29 นาที จาก 14.00 น. ถึง 15.29 น. เป็นระยะเวลา 1 ชั่วโมง กับ 29 นาที ดังนั้น แม่ใช้เว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s042" data-thumb="img/t042.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 42"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตัวอย่างพ่อเริ่มเดินทาง 9.50 น. ถึงชายทะเล 12.00 น. พ่อใช้เวลาเดินทางนานเท่าไร 01 1 ชั่วโมง 11.00 น. จาก 9.50 น. ถึง 10.00 น.เป็นระยะเวลา 10 นาที จาก 10.00 น. ถึง 12.00 น.เป็นระยะเวลา 2 ชั่วโมง ดังนั้น พ่อใช้เวลาเดินทาง 2 ชั่วโมง 10 นาที 10 นาที 02 03 04 05 06 9.50 น.เริ่มเดินทาง10.00 น. 12.00 น.ถึง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s043" data-thumb="img/t043.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 43"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 ตัวอย่างรถไฟขบวนนี้ใช้เวลาในการเดินทางจากสถานีคลองตันไปถึงสถานีชุมทางฉะเชิงเทรานานเท่าไร 02 03 04 05 06 56 นาที 8.56 น.ถึงสถานีชุมทางฉะเชิงเทรา จาก 7.40 น. ถึง 8.00 น.เป็นระยะเวลา 20 นาที จาก 8.00 น. ถึง 8.56 น.เป็นระยะเวลา 56 นาที 20 นาที 7.40 น.ออกจากสถานีคลองตัน8.00 น. ดังนั้น รถไฟขบวนนี้ใช้เว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s044" data-thumb="img/t044.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 44"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 44 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บอกระยะเวลาที่ใช้ในการทำกิจกรรม 2) กิจกรรมเวลาเริ่มกิจกรรมเวลาสิ้นสุดกิจกรรมระยะเวลา ต้ากล้าเดินทางไปโรงเรียน6.08 น.7.15 น. ออมสินเที่ยวสวนสนุก10.15 น.14.00 น. 1 2 1 ชั่วโมง 7 นาที 3 ชั่วโมง 45 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="11" data-src="img/s045" data-thumb="img/t045.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 45"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 21.00 น.22.00 น. 1 ชม. 23.00 น. 1 ชม. 24.00 น.หรือ 0.00 น. 1 ชม. 1.00 น. 1 ชม. 1 ชม. 1 ชม. 1 ชม. 2.00 น. 3.00 น. 4.00 น. 1 ชม. 5.00 น. 25 นาที 6.25 น. 1 ชม. 6.00 น. ใบบัวใช้เวลานอน 9 ชั่วโมง 25 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/11)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s046" data-thumb="img/t046.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 46"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 46 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กิจกรรมเวลาเริ่มกิจกรรมเวลาสิ้นสุดกิจกรรมระยะเวลา แม่อบไก่7.15 น.8.28 น. แก้วตาซ้อมดนตรี16.30 น.17.49 น. ป้าขายของที่ตลาด6.10 น.18.51 น. พ่อขึ้นรถไฟไปเชียงใหม่8.30 น.20.25 น. ต้นกล้านอน20.45 น.5.56 น. 01 02 03 04 05 06 บอกระยะเวลาที่ใช้ในการทำกิจกรรม 1 2 3 4 1 ชั่วโมง 24 นาที 1 ชั่วโมง 19 นาที 12 ชั"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s047" data-thumb="img/t047.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 47"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บอกระยะเวลาที่ใช้ในการทำกิจกรรม ตรวจสอบความเข้าใจ 2) กิจกรรมเวลาเริ่มกิจกรรมเวลาสิ้นสุดกิจกรรมระยะเวลา ต้นกล้าเล่นกีฬา18.15 น.20.00 น. เจ้าหน้าที่รักษาความปลอดภัยเข้าเวร17.30 น.01.00 น. 1 2 1 ชั่วโมง 45 นาที 7 ชั่วโมง 30 นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s048" data-thumb="img/t048.webp" data-title="3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที · หน้า 48"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 48 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 การบอกระยะเวลาอาจบอกเป็นชั่วโมงและนาที โดยนับจากเวลาเริ่มต้นจนถึงเวลาสิ้นสุด สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="3.4" data-title="3.4 การเปรียบเทียบระยะเวลา"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 3.4</span><b>⚖️ การเปรียบเทียบระยะเวลา</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s050" data-thumb="img/t050.webp" data-title="3.4 การเปรียบเทียบระยะเวลา · หน้า 50"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.4 การเปรียบเทียบระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 50 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ระยะเวลา 5 ชั่วโมง มากกว่า ระยะเวลา 3 ชั่วโมงดังนั้น ขุนใช้เวลาเดินทางมากกว่าใบบัว ขุนเดินทางไปบ้านยายใช้เวลา 5 ชั่วโมง 39 นาที ใบบัวเดินทางไปบ้านปู่ใช้เวลา 3 ชั่วโมง 58 นาที ใครใช้เวลาเดินทางมากกว่า"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s051" data-thumb="img/t051.webp" data-title="3.4 การเปรียบเทียบระยะเวลา · หน้า 51"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.4 การเปรียบเทียบระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 51 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ระยะเวลา 3 ชั่วโมง เท่ากัน แต่ระยะเวลา 8 นาที น้อยกว่าระยะเวลา 56 นาทีดังนั้น ออมสินใช้เวลาเดินทางไปเที่ยวสวนน้ำน้อยกว่าช่วยแม่ทำงานบ้าน ออมสินเดินทางไปเที่ยวสวนน้ำใช้เวลา 3 ชั่วโมง 8 นาที ออมสินช่วยแม่ทำงานบ้านใช้เวลา 3 ชั่วโมง 56 นาที ออมสินใช้เวลาเดินทางไปเที่ยวสวนน้ำมากกว่าหรือ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s052" data-thumb="img/t052.webp" data-title="3.4 การเปรียบเทียบระยะเวลา · หน้า 52"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.4 การเปรียบเทียบระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 52 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ข้อกิจกรรมระยะเวลาที่ต้นกล้าใช้ระยะเวลาที่แก้วตาใช้ทำงานบ้าน1 ชั่วโมง 15 นาที1 ชั่วโมงเที่ยวสวนสัตว์3 ชั่วโมง 12 นาที2 ชั่วโมง 40 นาทีเล่นกับเพื่อน2 ชั่วโมง 10 นาที2 ชั่วโมง 20 นาทีอ่านหนังสือ1 ชั่วโมง 5 นาที1 ชั่วโมง 30 นาทีนอน8 ชั่วโมง 49 นาที8 ชั่วโมง 34 นาที 01 02 03 04 05 06 ระยะเวลาที่ต้นกล้าใ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s053" data-thumb="img/t053.webp" data-title="3.4 การเปรียบเทียบระยะเวลา · หน้า 53"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.4 การเปรียบเทียบระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 53 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ข้อกิจกรรมระยะเวลาที่ต้นกล้าใช้ระยะเวลาที่แก้วตาใช้ดูภาพยนตร์2 ชั่วโมง 9 นาที1 ชั่วโมง 45 นาทีซ้อมการแสดง3 ชั่วโมง3 ชั่วโมง 30 นาทีเที่ยวสวนสนุก4 ชั่วโมง 13 นาที5 ชั่วโมง 25 นาทีปลูกต้นไม้2 ชั่วโมง 45 นาที1 ชั่วโมง 55 นาทีเดินทางกลับบ้าน3 ชั่วโมง 5 นาที3 ชั่วโมง 50 นาที 01 02 03 04 05 06 6 7 8 9 มาก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s054" data-thumb="img/t054.webp" data-title="3.4 การเปรียบเทียบระยะเวลา · หน้า 54"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.4 การเปรียบเทียบระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 54 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ระยะเวลา 50 นาที น้อยกว่า ระยะเวลา 1 ชั่วโมง หรือ 60 นาทีดังนั้น ต้นกล้าใช้เวลาเล่นฟุตบอลน้อยกว่าทำการบ้าน ต้นกล้าใช้เวลาเล่นฟุตบอล 50 นาที ต้นกล้าใช้เวลาทำการบ้าน 1 ชั่วโมง ต้นกล้าใช้เวลาเล่นฟุตบอลมากกว่าหรือน้อยกว่าทำการบ้าน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s055" data-thumb="img/t055.webp" data-title="3.4 การเปรียบเทียบระยะเวลา · หน้า 55"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.4 การเปรียบเทียบระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 55 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 1 ชั่วโมง เท่ากับ 60 นาที 1 ชั่วโมง 20 นาที เท่ากับ 60 + 20 = 80 นาที ระยะเวลา 80 นาที มากกว่า ระยะเวลา 75 นาทีดังนั้น แก้วตาใช้เวลาซ้อมดนตรีมากกว่าทำความสะอาดบ้าน แก้วตาใช้เวลาซ้อมดนตรี 1 ชั่วโมง 20 นาที แก้วตาใช้เวลาทำความสะอาดบ้าน 75 นาที แก้วตาใช้เวลาซ้อมดนตรีมากกว่าหรือน้อยกว่"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s056" data-thumb="img/t056.webp" data-title="3.4 การเปรียบเทียบระยะเวลา · หน้า 56"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.4 การเปรียบเทียบระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 56 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 หรือ 60 นาที เท่ากับ 1 ชั่วโมง 75 นาที เท่ากับ 1 ชั่วโมง 15 นาที ระยะเวลา 1 ชั่วโมง 20 นาที มากกว่า ระยะเวลา 1 ชั่วโมง 15 นาทีดังนั้น แก้วตาใช้เวลาซ้อมดนตรีมากกว่าทำความสะอาดบ้าน การเปรียบเทียบระยะเวลาที่มีหน่วยต่างกัน ต้องเปลี่ยนหน่วยให้เป็นหน่วยเดียวกันก่อน แล้วนำมาเปรียบเทียบกัน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s057" data-thumb="img/t057.webp" data-title="3.4 การเปรียบเทียบระยะเวลา · หน้า 57"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.4 การเปรียบเทียบระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 57 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 1 ชั่วโมง เท่ากับ 60 นาที 9 ชั่วโมง เท่ากับ 9  60 = 540 นาที 9 ชั่วโมง 25 นาที เท่ากับ 540 + 25 = 565 นาที 565 นาที มากกว่า 500 นาทีดังนั้น 9 ชั่วโมง 25 นาที มากกว่า 500 นาที 9 ชั่วโมง 25 นาที มากกว่า หรือน้อยกว่า 500 นาที หรือ 60 นาที เท่ากับ 1 ชั่วโมง 120 นาที เท่ากับ 2 ชั่วโมง "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s058" data-thumb="img/t058.webp" data-title="3.4 การเปรียบเทียบระยะเวลา · หน้า 58"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.4 การเปรียบเทียบระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 58 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ข้อกิจกรรมระยะเวลาที่ใบบัวใช้ระยะเวลาที่ขุนใช้ทำงานบ้าน1 ชั่วโมง 15 นาที85 นาทีเที่ยวสวนสัตว์210 นาที3 ชั่วโมง 10 นาทีเล่นกับเพื่อน77 นาที1 ชั่วโมง 10 นาทีอ่านหนังสือ1 ชั่วโมง 5 นาที65 นาทีนอน7 ชั่วโมง 20 นาที480 นาที 01 02 03 04 05 06 ระยะเวลาที่ใบบัวใช้ทำกิจกรรมมากกว่า น้อยกว่า หรือเท่ากับระยะเวลา"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s059" data-thumb="img/t059.webp" data-title="3.4 การเปรียบเทียบระยะเวลา · หน้า 59"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.4 การเปรียบเทียบระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 59 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ข้อกิจกรรมระยะเวลาที่ต้นกล้าใช้ระยะเวลาที่แก้วตาใช้ดูภาพยนตร์2 ชั่วโมง 9 นาที129 นาทีซ้อมดนตรี180 นาที3 ชั่วโมงเที่ยวสวนสนุก5 ชั่วโมง 13 นาที239 นาทีปลูกต้นไม้100 นาที1 ชั่วโมง 55 นาทีเดินทางกลับบ้าน3 ชั่วโมง 5 นาที190 นาที 01 02 03 04 05 06 6 7 8 9 เท่ากับ เท่ากับ มากกว่า น้อยกว่า 10 น้อยกว่า"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s060" data-thumb="img/t060.webp" data-title="3.4 การเปรียบเทียบระยะเวลา · หน้า 60"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.4 การเปรียบเทียบระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 60 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียน มากกว่า น้อยกว่า หรือเท่ากับ ใน ตรวจสอบความเข้าใจ กิจกรรมของออมสินระยะเวลาการทำกิจกรรมเล่นกับเพื่อน2 ชั่วโมง 15 นาทีดูสารคดี100 นาทีช่วยแม่ทำงานบ้าน1 ชั่วโมง 40 นาทีเที่ยวงานวัด2 ชั่วโมง 20 นาที 1 ใช้เวลาเล่นกับเพื่อน ใช้เวลาเที่ยวงานวัด น้อยกว่า 2 ใช้เวลาเที่ยวงานวัด ใช้เวลา"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s061" data-thumb="img/t061.webp" data-title="3.4 การเปรียบเทียบระยะเวลา · หน้า 61"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.4 การเปรียบเทียบระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 61 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 การเปรียบเทียบระยะเวลาเป็นชั่วโมงและนาที ถ้าจำนวนชั่วโมงไม่เท่ากัน จำนวนชั่วโมงมากกว่า ระยะเวลานั้นจะมากกว่า ถ้าจำนวนชั่วโมงเท่ากัน จำนวนนาทีมากกว่า ระยะเวลานั้นจะมากกว่าการเปรียบเทียบระยะเวลาที่มีหน่วยต่างกัน ต้องเปลี่ยนหน่วยให้เป็นหน่วยเดียวกันก่อน แล้วนำมาเปรียบเทียบกัน สิ่งที่ไ"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="3.5" data-title="3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 3.5</span><b>📒 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s063" data-thumb="img/t063.webp" data-title="3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา · หน้า 63"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 63 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 6.00 น.นั่งรถไฟไปบ้านยายที่จังหวัดฉะเชิงเทรา10.00 น.ถึงบ้านยาย12.00 น.รับประทานอาหารกลางวัน13.30 น.เดินทางไปสวนสนุก20.45 น.เข้านอนบันทึกกิจกรรมของแก้วตาวันเสาร์ที่ 13 พฤษภาคม พ.ศ. 2562 02 03 04 05 06 อ่านบันทึกกิจกรรมของแก้วตา วันเสาร์ที่ 13 เมษายน พ.ศ. 2562เวลา 6 นาฬิกา แก้วตานั่งรถไฟไปบ้านยายที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s064" data-thumb="img/t064.webp" data-title="3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา · หน้า 64"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 64 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 บันทึกการไปเที่ยวชลบุรีของขุน 02 03 04 05 06 อ่านบันทึกกิจกรรมที่ระบุเวลา และตอบคำถาม วันเสาร์ที่ 13 เมษายน 2562 8.00 น. ออกเดินทาง 9.30 น. เข้าชมพิพิธภัณฑ์สัตว์น้ำ16.20 น. เล่นน้ำทะเลวันอาทิตย์ที่ 14 เมษายน 256210.00 น. เที่ยวสวนสัตว์เปิดเขาเขียว17.25 น. กลับถึงบ้าน 1 ขุนไปเที่ยวจังหวัดอะไร 2 ขุ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s065" data-thumb="img/t065.webp" data-title="3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา · หน้า 65"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 65 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="บันทึกกิจกรรมทัศนศึกษาของนักเรียนชั้น ป. 3/2วันที่ 4 ตุลาคม 2562 6.10 น. ขึ้นรถ 7.30 น. รับประทานอาหารกลางวัน15.55 น. 01 02 03 04 05 06 ช่วยกันเขียนบันทึกกิจกรรมที่ระบุเวลา เข้าชมสวนสัตว์ 12.00 น. เดินทางกลับ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s066" data-thumb="img/t066.webp" data-title="3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา · หน้า 66"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 66 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนบันทึกกิจกรรมที่ระบุเวลา 1 7.30 น.9.00 น.12.00 น.16.45 น.ขึ้นรถออกจากบ้านเข้าชมสวนสัตว์รับประทานอาหารกลางวันกลับถึงบ้านบันทึกกิจกรรมของต้นกล้าวันเสารที่ 21 กันยายน พ.ศ. 2562(ระบุวันตามใจชอบ)"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s067" data-thumb="img/t067.webp" data-title="3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา · หน้า 67"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 67 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนบันทึกกิจกรรมที่ระบุเวลา 2 6.45 น.7.30 น.11.40 น.16.05 น.19.45 น.21.30 น.ตื่นนอนทำอาหารเช้าดูโทรทัศน์ซื้อของอ่านหนังสือเข้านอนบันทึกกิจกรรมของครูพลอยใสวันเสารที่ 21 กันยายน พ.ศ. 2562(ระบุวันตามใจชอบ)"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s068" data-thumb="img/t068.webp" data-title="3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา · หน้า 68"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 68 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 บันทึกกิจกรรมการเข้าค่ายลูกเสือของมานะวันที่ 21 มิถุนายน 2562 02 03 04 05 06 อ่านบันทึกกิจกรรมที่ระบุเวลา และตอบคำถาม 6.00 น. ออกกำลังกาย 6.50 น. 9.10 น. เดินทางไกล13.20 น.19.00 น. กิจกรรมรอบกองไฟ 1 มานะเดินทางไกลเวลาใด 2 มานะทำกิจกรรมใด ในเวลา 6 นาฬิกา 3 เวลา 19 นาฬิกา มานะทำกิจกรรมใด 4 ถ้ามานะร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s069" data-thumb="img/t069.webp" data-title="3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา · หน้า 69"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 69 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บันทึกกิจกรรมที่ระบุเวลาโดยทั่วไปประกอบด้วย ชื่อบันทึก วันที่ เดือน พ.ศ. จะอยู่ส่วนบนของบันทึก เวลาจะอยู่ด้านซ้ายของบันทึก และกิจกรรมต่างๆ จะอยู่ด้านขวาของบันทึก ซึ่งรายละเอียดของบันทึกขึ้นอยู่กับความต้องการของผู้บันทึก สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="3.6" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 3.6</span><b>📝 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s071" data-thumb="img/t071.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 71"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 71 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 แม่เดินทางไปตลาดใช้เวลา 55 นาที ใช้เวลาซื้อของ 1 ชั่วโมง 30 นาที แม่ใช้เวลาทั้งหมดเท่าไร โจทย์ถาม โจทย์บอก แม่เดินทางไปตลาดใช้เวลา 55 นาที ใช้เวลาซื้อของ 1 ชั่วโมง 30 นาที แม่ใช้เวลาทั้งหมดเท่าไร หาคำตอบได้อย่างไร นำระยะเวลาที่ใช้เดินทางไปตลาดรวมกับระยะเวลาที่ซื้อของ วิธีทำชั่วโมงน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s072" data-thumb="img/t072.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 72"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 72 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 1 ใบบัวเดินทางไปจังหวัดระยองใช้เวลา 3 ชั่วโมง 5 นาที ขากลับใช้เวลา 2 ชั่วโมง 55 นาที ใบบัวใช้เวลาเดินทางไปและกลับเท่าไร แสดงวิธีหาคำตอบ วิธีทำชั่วโมงนาทีใบบัวเดินทางไปจังหวัดระยองใช้เวลาขากลับใช้เวลาใบบัวใช้เวลาเดินทางไปและกลับหรือ325655560ตอบใบบัวใช้เวลาเดินทางไปและกลับ ๖ ชั่วโมง "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s073" data-thumb="img/t073.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 73"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 73 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 2 วันจันทร์ต้นกล้าว่ายน้ำ 1 ชั่วโมง 45 นาที วันอังคารต้นกล้าใช้เวลาว่ายน้ำมากกว่าวันจันทร์ 30 นาที วันอังคาร ต้นกล้าใช้เวลาว่ายน้ำเท่าไร วิธีทำชั่วโมงนาทีวันจันทร์ต้นกล้าว่ายน้ำวันอังคารใช้เวลาว่ายน้ำมากกว่าวันจันทร์วันอังคารใช้เวลาว่ายน้ำหรือ11245307515ตอบวันอังคารต้นกล้าใช้เวลาว่"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s074" data-thumb="img/t074.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 74"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 74 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 พี่ตูนปั่นจักรยานใช้เวลา 2 ชั่วโมง 5 นาที น้องบอมปั่นจักรยานใช้เวลา 1 ชั่วโมง 10 นาทีใครใช้เวลาปั่นจักรยานน้อยกว่าและน้อยกว่าอยู่เท่าไร โจทย์ถาม โจทย์บอก พี่ตูนปั่นจักรยานใช้เวลา 2 ชั่วโมง 5 นาที น้องบอมปั่นจักรยานใช้เวลา 1 ชั่วโมง 10 นาที ใครใช้เวลาปั่นจักรยานน้อยกว่าและน้อยกว่าอย"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s075" data-thumb="img/t075.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 75"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 75 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ต้นกล้าใช้เวลานนอน 8 ชั่วโมง 10 นาที แก้วตาใช้เวลานอน 7 ชั่วโมง 55 นาที ใครใช้เวลานอนมากกว่าและมากกว่าอยู่เท่าไร แสดงวิธีหาคำตอบ วิธีทำชั่วโมงนาทีต้นกล้าใช้เวลานอนแก้วตาใช้เวลานอนต้นกล้าใช้เวลานอนมากกว่า87105515ตอบต้นกล้าใช้เวลานอนมากกว่าแก้วตาและมากกว่าอยู่ ๑๕ นาที 70 7 -"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s076" data-thumb="img/t076.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 76"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 76 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 1 เรือแล่นจากกรุงเทพมหานครถึงพระนครศรีอยุธยาใช้เวลา 3 ชั่วโมง 50 นาที ขากลับใช้เวลาน้อยลง 33 นาที ขากลับเรือใช้เวลาแล่นกี่ชั่วโมง กี่นาที แสดงวิธีหาคำตอบ วิธีทำชั่วโมงนาทีเรือแล่นจากกรุงเทพฯ ถึงพระนครศรีอยุธยาใช้เวลาขากลับใช้เวลาน้อยลงขากลับเรือใช้เวลาแล่น33503317ตอบขากลับเรือใช้เว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s077" data-thumb="img/t077.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 77"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 77 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 2 รถไฟแล่นจากราชบุรีถึงนครปฐมใช้เวลา 1 ชั่วโมง 25 นาที จากนครปฐมถึงกรุงเทพมหานครใช้เวลา 45 นาที รถไฟแล่นจากราชบุรีถึงกรุงเทพมหานครใช้เวลาเท่าไร วิธีทำชั่วโมงนาทีรถไฟแล่นจากราชบุรีถึงนครปฐมใช้เวลาจากนครปฐมถึงกรุงเทพฯ ใช้เวลารถไฟแล่นจากราชบุรีถึงกรุงเทพฯ ใช้เวลาหรือ11225457010ตอบรถไฟ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s078" data-thumb="img/t078.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 78"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 78 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 3 รถยนต์แล่นจากกรุงเทพมหานครถึงลพบุรีใช้เวลา 2 ชั่วโมง 30 นาที รถไฟแล่นจากกรุงเทพมหานครถึงลพบุรีใช้เวลา 3 ชั่วโมง 5 นาที รถยนต์ใช้เวลามากกว่าหรือน้อยกว่ารถไฟเท่าไร วิธีทำชั่วโมงนาทีรถไฟแล่นจากกรุงเทพฯ ถึงลพบุรีใช้เวลารถยนต์แล่นจากกรุงเทพฯ ถึงลพบุรีใช้เวลารถยนต์ใช้เวลาน้อยกว่า325303"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s079" data-thumb="img/t079.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 79"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 79 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 4 ทวีทำงานเสร็จในเวลา 5 ชั่วโมง 28 นาที ประชาทำงานเสร็จในเวลา 3 ชั่วโมง 54 นาที ทวีทำงานช้ากว่าหรือเร็วกว่าประชาเป็นระยะเวลาเท่าไร วิธีทำชั่วโมงนาทีทวีทำงานเสร็จในเวลาประชาทำงานเสร็จในเวลาทวีทำงานช้ากว่าประชา531285434ตอบทวีทำงานช้ากว่าประชาเป็นเวลา ๑ ชั่วโมง ๓๔ นาที - 88 4"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s080" data-thumb="img/t080.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 80"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 80 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 5 การแข่งขันฟุตบอลครึ่งแรกใช้เวลา 45 นาที ครึ่งหลังใช้เวลาอีก 45 นาที การแข่งขันฟุตบอลใช้เวลาทั้งหมดกี่ชั่วโมง กี่นาที วิธีทำการแข่งขันฟุตบอลครึ่งแรกใช้เวลาครึ่งหลังใช้เวลาการแข่งขันฟุตบอลใช้เวลาทั้งหมดหรือ454545 + 45 = 901 ชั่วโมง 30นาทีนาทีนาทีนาทีตอบการแข่งขันฟุตบอลใช้เวลาทั้งหม"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s081" data-thumb="img/t081.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 81"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 81 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 6 แก้วตาช่วยพ่อปลูกต้นไม้ 1 ชั่วโมง 35 นาที ช่วยพ่อปลูกต้นไม้น้อยกว่าช่วยแม่ทำขนม 1 ชั่วโมง 25 นาที แก้วตาช่วยแม่ทำขนมนานเท่าไร วิธีทำชั่วโมงนาทีแก้วตาช่วยพ่อปลูกต้นไม้ช่วยพ่อปลูกต้นไม้น้อยกว่าช่วยแม่ทำขนมแก้วตาช่วยแม่ทำขนมหรือ1123352560ตอบแก้วตาช่วยแม่ทำขนมนาน ๓ ชั่วโมง +"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s082" data-thumb="img/t082.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 82"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 82 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 แสดงวิธีหาคำตอบ สมชายกับวาสนาวิ่งมินิฮาล์ฟมาราธอนระยะทาง 10 กิโลเมตร 500 เมตร วาสนาใช้เวลาวิ่ง 1 ชั่วโมง 28 นาที วาสนาใช้เวลาวิ่งมากกว่าสมชาย 37 นาที สมชายใช้เวลากี่ชั่วโมง กี่นาที ตรวจสอบความเข้าใจ วิธีทำชั่วโมงนาทีวาสนาใช้เวลาวิ่งวาสนาใช้เวลาวิ่งมากกว่าสมชายสมชายใช้เวลาวิ่ง128375"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s083" data-thumb="img/t083.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 83"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 83 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 การแก้โจทย์ปัญหาทำได้โดยอ่านทำความเข้าใจปัญหา วางแผนแก้ปัญหา หาคำตอบ และตรวจสอบความสมเหตุสมผลของคำตอบ สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s084" data-thumb="img/t084.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 84"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 84 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 สัปดาห์นี้ออมสินออกกำลังกาย 3 ครั้ง ครั้งละ 40 นาที สัปดาห์นี้ออมสินออกกำลังกายทั้งหมดเป็นระยะเวลาเท่าไร โจทย์ถาม โจทย์บอก สัปดาห์นี้ออมสินออกกำลังกาย 3 ครั้ง ครั้งละ 40 นาที สัปดาห์นี้ออมสินออกกำลังกายทั้งหมดเป็นระยะเวลาเท่าไร หาคำตอบได้อย่างไร นำระยะเวลาที่ใช้ออกกำลังกายแต่ละครั้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s085" data-thumb="img/t085.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 85"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 85 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 1 ต้นกล้าทำกิจกรรมจิตอาสาวันละ 15 นาที วันจันทร์ถึงวันศุกร์ต้นกล้าทำกิจกรรมจิตอาสาทั้งหมดกี่ชั่วโมง กี่นาที แสดงวิธีหาคำตอบ วิธีทำต้นกล้าทำกิจกรรมจิตอาสาวันละวันจันทร์ถึงวันศุกร์ใช้เวลาทำต้นกล้าทำกิจกรรมจิตอาสามทั้งหมดหรือ1555 × 15 = 751 ชั่วโมง 15นาทีวันนาทีนาทีตอบวันจันทร์ถึงวันศ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s086" data-thumb="img/t086.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 86"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 86 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 2 ขุนซ้อมดนตรีทุกวัน วันละ 45 นาที ใน 1 สัปดาห์ขุนใช้เวลาซ้อมดนตรีเท่าไร วิธีทำขุนซ้อมดนตรีวันละ1 สัปดาห์ ขุนใช้เวลาซ้อมดนตรีขุนใช้เวลาซ้อมดนตรีหรือ4577 × 45 = 3155 ชั่วโมง 15นาทีวันนาทีนาทีตอบใน 1 สัปดาห์ ขุนใช้เวลาซ้อมดนตรี ๕ ชั่วโมง ๑๕ นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s087" data-thumb="img/t087.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 87"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 87 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ทีมหมูป่าใช้เวลาซ้อมฟุตบอลวันละ 1 ชั่วโมง 45 นาที เป็นเวลา 5 วัน ทีมหมูป่าใช้เวลาซ้อมฟุตบอลทั้งหมดเท่าไร โจทย์ถาม โจทย์บอก ทีมหมูป่าใช้เวลาซ้อมฟุตบอลวันละ 1 ชั่วโมง 45 นาที เป็นเวลา 5 วัน ทีมหมูป่าใช้เวลาซ้อมฟุตบอลทั้งหมดเท่าไร หาคำตอบได้อย่างไร นำระยะเวลาที่ใช้ซ้อมฟุตบอลแต่ละวันมา"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s088" data-thumb="img/t088.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 88"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 88 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 1 ป้ารับจ้างทำงานบ้านวันละ 2 ชั่วโมง 30 นาที เวลา 6 วัน ป้าทำงานบ้านทั้งหมดกี่ชั่วโมง แสดงวิธีหาคำตอบ วิธีทำชั่วโมงนาทีป้ารับจ้างทำงานบ้านวันละเป็นเวลาป้าทำงานบ้านทั้งหมดหรือ21215306180ตอบป้าทำงานบ้านทั้งหมด ๑๕ ชั่วโมง × วัน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s089" data-thumb="img/t089.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 89"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 89 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 2 พลอยเล่นแบดมินตันสัปดาห์ละ 3 ชั่วโมง 25 นาที เป็นเวลา 4 สัปดาห์ พลอยเล่นแบดมินตันทั้งหมดกี่ชั่วโมง กี่นาที วิธีทำชั่วโมงนาทีพลอยเล่นแบดมินตันสัปดาห์ละเป็นเวลาพลอยเล่นแบดมินตันทั้งหมดหรือ3121325410040ตอบพลอยเล่นแบดมินตันทั้งหมด ๑๓ ชั่วโมง ๔๐ นาที × สัปดาห์"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s090" data-thumb="img/t090.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 90"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 90 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ในเวลา 4 สัปดาห์ แก้วตาเรียนวิชาคณิตศาสตร์ 16 ชั่วโมง ถ้าแก้วตามีเรียนคณิตศาสตร์ทุกสัปดาห์ สัปดาห์ละเท่ากัน แก้วตาใช้เวลาเรียนวิชาคณิตศาสตร์สัปดาห์ละกี่ชั่วโมง โจทย์ถาม โจทย์บอก ในเวลา 4 สัปดาห์ แก้วตาเรียนวิชาคณิตศาสตร์ 16 ชั่วโมง ถ้าแก้วตามีเรียนคณิตศาสตร์ทุกสัปดาห์ สัปดาห์ละเท่า"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s091" data-thumb="img/t091.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 91"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 91 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 1 ลูกเสือเดินทางไกล 15 กิโลเมตร ใช้เวลา 3 ชั่วโมง ถ้าเดินทางแต่ละชั่วโมงได้ระยะทางเท่ากัน ลูกเสือใช้เวลาเดินทางชั่วโมงละกี่กิโลเมตร แสดงวิธีหาคำตอบ วิธีทำลูกเสือเดินทางไกล15กิโลเมตรใช้เวลา3ชั่วโมงลูกเสือใช้เวลาเดินทางไกลชั่วโมงละ15 ÷ 3 = 15 กิโลเมตรตอบลูกเสือใช้เวลาเดินทางไกลชั่วโม"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s092" data-thumb="img/t092.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 92"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 92 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 2 ป้าทำดอกไม้ผ้าได้ 9 ดอก ใช้เวลา 81 นาที ถ้าป้าทำดอกไม้ผ้าแต่ละดอกใช้เวลาเท่ากัน ป้าทำดอกไม้ผ้าแต่ละดอกใช้เวลากี่นาที วิธีทำป้าทำดอกไม้ผ้าใช้เวลา81นาทีป้าทำดอกไม้ผ้าได้9ดอกป้าทำดอกไม้ผ้าแต่ละดอกใช้เวลา81 ÷ 9 = 9 นาทีตอบป้าทำดอกไม้ผ้าแต่ละดอกใช้เวลา ๙ นาที"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s093" data-thumb="img/t093.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 93"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 93 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 แก้วตาร้อยลูกปัด 8 เส้น ใช้เวลา 1 ชั่วโมง 20 นาที ถ้าแก้วตาร้อยลูกปัดแต่ละเส้นใช้เวลาเท่ากัน แก้วตาร้อยลูกปัดแต่ละเส้นใช้เวลากี่นาที โจทย์ถาม โจทย์บอก แก้วตาร้อยลูกปัด 8 เส้น ใช้เวลา 1 ชั่วโมง 20 นาที ถ้าแก้วตาร้อยลูกปัดแต่ละเส้นใช้เวลาเท่ากัน แก้วตาร้อยลูกปัดแต่ละเส้นใช้เวลากี่นาท"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s094" data-thumb="img/t094.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 94"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 94 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ปรีชาเดินออกกำลังกายรอบสวนสาธารณะ 6 รอบ ใช้เวลาทั้งหมด 1 ชั่วโมง 36 นาที ถ้าแต่ละรอบปรีชาใช้เวลาเดินออกกำลังกายเท่ากัน ปรีชาใช้เวลาเดินออกกำลังกายแต่ละรอบกี่นาที แสดงวิธีหาคำตอบ วิธีทำปรีชาเดินออกกำลังกายรอบสวนสาธารณะใช้เวลาทั้งหมด1 ชั่วโมง 36นาทีหรือ96นาทีปรีชาใช้เวลาเดิน6รอบปรีชา"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s095" data-thumb="img/t095.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 95"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 95 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ชุลีกรเย็บเสื้อใช้เวลาตัวละ 40 นาที เย็บเสื้อ 8 ตัว ใช้เวลากี่ชั่วโมง กี่นาที แสดงวิธีหาคำตอบ วิธีทำชุลีกรเย็บเสื้อใช้เวลาตัวละ40นาทีเย็บเสื้อ8ตัวใช้เวลา8 × 40 = 320 นาทีหรือ5 ชั่วโมง 20นาทีตอบชุลีกรใช้เวลาเย็บเสื้อ ๕ ชั่วโมง ๒๐ นาที 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s096" data-thumb="img/t096.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 96"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 96 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ขุนเดินออกกำลังกายรอบสวนสาธารณะ 7 รอบ ใช้เวลา 56 นาที ถ้าแต่ละรอบขุนใช้เวลาเดินเท่ากัน ขุนเดินรอบสวนสาธารณะแต่ละรอบใช้เวลาเท่าไร 2 วิธีทำขุนเดินออกกำลังกายรอบสวนสาธารณะใช้เวลา56นาทีเดินออกกำลังกาย7รอบขุนเดินรอบสวนสาธารณะแต่ละรอบใช้เวลา56 ÷ 7 = 8 นาทีตอบขุนเดินรอบสวนสาธารณะแต่ละรอบใ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s097" data-thumb="img/t097.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 97"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 97 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 พ่อปลูกต้นไม้ 9 ต้น ใช้เวลาทั้งหมด 1 ชั่วโมง 21 นาที ถ้าพ่อใช้เวลาปลูกต้นไม้แต่ละต้นเท่ากัน พ่อปลูกต้นไม้แต่ละต้นใช้เวลาเท่าไร วิธีทำพ่อปลูกต้นไม้ใช้เวลาทั้งหมด1 ชั่วโมง 21นาทีหรือ81นาทีปลูกต้นไม้9รอบพ่อปลูกต้นไม้แต่ละต้นใช้เวลา81 ÷ 9 = 9 นาทีตอบพ่อปลูกต้นไม้แต่ละต้นใช้เวลา ๙ นาที "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s098" data-thumb="img/t098.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 98"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 98 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 รถบรรทุกดิน 5 รอบ แต่ละรอบใช้เวลา 1 ชั่วโมง 30 นาที รถใช้เวลาบรรทุกดินทั้งหมดกี่ชั่วโมง กี่นาที 4 วิธีทำชั่วโมงนาทีรถบรรทุกดินแต่ละรอบใช้เวลารถบรรทุกดินรถใช้เวลาบรรทุกดินทั้งหมดหรือ15730515030ตอบรถใช้เวลาบรรทุกดินทั้งหมด ๗ ชั่วโมง ๓๐ นาที × รอบ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s099" data-thumb="img/t099.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 99"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 99 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 สมศักดิ์ไปฝึกงานที่ร้านซ่อมจักรยานแห่งหนึ่งวันละ 5 ชั่วโมง 45 นาที เป็นเวลา 1 สัปดาห์ สมศักดิ์ใช้เวลาฝึกงานที่ร้านซ่อมจักรยานแห่งนี้ทั้งหมดกี่ชั่วโมง กี่นาที 5 วิธีทำชั่วโมงนาทีสมศักดิ์ไปฝึกงานที่ร้านซ่อมจักรยานวันละเป็นเวลาสมศักดิ์ใช้เวลาฝึกงานทั้งหมดหรือ5354045731515ตอบสมศักดิ์ใช"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s100" data-thumb="img/t100.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 100"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 100 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 จารุวรรณไปช่วยป้าขายของที่ร้านในวันหยุดเสาร์และอาทิตย์ เป็นเวลา 4 สัปดาห์ รวม 48 ชั่วโมง ถ้าแต่ละวันจารุวรรณใช้เวลาช่วยป้าขายของเท่า ๆ กัน จารุวรรณช่วยป้าขายของวันละกี่ชั่วโมง วิธีทำจารุวรรณไปช่วยป้าขายของที่ร้าน48ชั่วโมงเป็นเวลา8วันจารุวรรณช่วยป้าขายของวันละ48 ÷ 8 = 6ชั่วโมงตอบจาร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s101" data-thumb="img/t101.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 101"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 101 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 แสดงวิธีหาคำตอบ เรือลำหนึ่งขนสินค้าข้ามฝากจากฝั่งหนึ่งไปอีกฝั่งหนึ่ง 7 เที่ยว ใช้เวลาทั้งหมด 1 ชั่วโมง 3 นาที ถ้าแต่ละเที่ยวเรือลำานี้ใช้เวลาขนสินค้าเท่า ๆ กัน เรือลำานี้ใช้เวลาขนสินค้าเที่ยวละกี่นาที ตรวจสอบความเข้าใจ วิธีทำเรือลำหนึ่งใช้เวลาขนสินค้าขนสินค้าจำนวนเรือลำนี้ใช้เวลาขน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s102" data-thumb="img/t102.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 102"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 102 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 พ่อเริ่มล้างรถเวลา 16 นาฬิกา 35 นาที ล้างเสร็จเวลา 17 นาฬิกา 23 นาที พ่อใช้เวลาล้างรถนานเท่าไร โจทย์ถาม โจทย์บอก พ่อเริ่มล้างรถเวลา 16 นาฬิกา 35 นาที ล้างเสร็จเวลา 17 นาฬิกา 23 นาที พ่อใช้เวลาล้างรถนานเท่าไร หาคำตอบได้อย่างไร วิธีทำพ่อเริ่มล้างรถเวลาล้างเสร็จเวลาจาก 16.35 น. ถึง 17"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s103" data-thumb="img/t103.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 103"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 103 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 รถตู้เริ่มออกเดินทางเวลา 10 นาฬิกา 20 นาที ถึงแม่กลองเวลา 12 นาฬิกา 45 นาที รถตู้ใช้เวลาเดินทางไปแม่กลองนานเท่าไร แสดงวิธีหาคำตอบ วิธีทำรถตู้เริ่มออกเดินทางเวลาถึงแม่กลองเวลาจาก 10.20 น. ถึง 12.20 น.จาก 12.20 น. ถึง 12.45 น.10 นาฬิกา12 นาฬิกาใช้เวลาใช้เวลา20 นาที45 นาที2 ชั่วโมง25 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s104" data-thumb="img/t104.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 104"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 104 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ออมสินเดินทางจากบ้านไปต่างจังหวัดใช้เวลา 6 ชั่วโมง 30 นาที ถ้าเริ่มออกเดินทางเวลา 21 นาฬิกา 30 นาที ออมสินจะถึงจุดหมายเวลาใด โจทย์ถาม โจทย์บอก ออมสินเดินทางจากบ้านไปต่างจังหวัดใช้เวลา 6 ชั่วโมง 30 นาที ถ้าเริ่มออกเดินทางเวลา 21 นาฬิกา 30 นาที ออมสินจะถึงจุดหมายเวลาใด หาคำตอบได้อย่า"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s105" data-thumb="img/t105.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 105"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 105 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 หรือ หาคำตอบได้อย่างไร วิธีทำจาก 21.30 น.จาก 22.00 น.ดังนั้น จาก 21.30 น.ใช้เวลา 30 นาทีใช้เวลา 6 ชั่วโมงใช้เวลา 6 ชั่วโมง 30 นาทีเป็น 22.00 น.เป็น 4.00 นเป็น 4.00 น.ตอบออมสินจะถึงจุดหมายเวลา ๔ นาฬิกา 1 ชม. 23.00 น. 1 ชม. 24.00 น.0.00 น. 1 ชม. 1.00 น. 1 ชม. 1 ชม. 1 ชม. 2.00 น. 3.00"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s106" data-thumb="img/t106.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 106"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 106 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 นักวิ่งคนหนึ่งใช้เวลาวิ่ง 1 ชั่วโมง 10 นาที และเข้าเส้นชัยเวลา 11.40 น. นักวิ่งคนนี้เริ่มวิ่งออกจากจุดเริ่มต้นเวลาใด โจทย์ถาม โจทย์บอก นักวิ่งคนหนึ่งใช้เวลาวิ่ง 1 ชั่วโมง 10 นาที และเข้าเส้นชัยเวลา 11.40 น. นักวิ่งคนนี้เริ่มวิ่งออกจากจุดเริ่มต้นเวลาใด หาคำตอบได้อย่างไร วิธีทำจาก 11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s107" data-thumb="img/t107.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 107"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 107 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ครูกำหนดเวลาสอบวิชาภาษาไทย 1 ชั่วโมง 20 นาที ถ้าสิ้นสุดการสอบเวลา 14.30 น. เริ่มสอบวิชาภาษาไทยเวลาใด แสดงวิธีหาคำตอบ วิธีทำจาก 14.30 น.ถอยไป 1 ชั่วโมงเป็น 13.30 น.จาก 13.30 น.ถอยไป 20 นาทีเป็น 13.10 น.ดังนั้น จาก 14.30 น.ถอยไป 1 ชั่วโมง 20 นาทีเป็น 13.10 น.ตอบเริ่มสอบวิชาภาษาไทยเวล"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s108" data-thumb="img/t108.webp" data-title="3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา · หน้า 108"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 108 / 108</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 แสดงวิธีหาคำตอบ เรือแล่นจากกรุงเทพฯ ไปจังหวัดพระนครศรีอยุธยาใช้เวลา 3 ชั่วโมง 46 นาที ถ้าเรือเริ่มออกจากท่าเวลา 8.30 น. เรือจะถึงจังหวัดพระนครศรีอยุธยาเวลาใด ตรวจสอบความเข้าใจ วิธีทำจาก 8.30 น.จาก 11.30 น.จาก 12.00 น.ดังนั้น จาก 8.30 น.ใช้เวลา 3 ชั่วโมงใช้เวลา 30 นาทีใช้เวลา 16 นาท"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
+  <div class="kru fig"><span class="av"><img src="k10.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>จบบทที่ 3 เวลา</h2>
+  <div class="card c-yellow center endpic"><img src="k9.webp" alt="ครูอู๋ชูถ้วยรางวัล"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="f11.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="toc"><button data-jump="3.1"><span class="e">🕘</span><span>ทบทวน 3.1 การบอกเวลาเป็นนาฬิกาและนาที</span></button><button data-jump="3.2"><span class="e">⌚</span><span>ทบทวน 3.2 การอ่านและเขียนบอกเวลาที่มีมหัพภาค (.) หรือทวิภาค (:)</span></button><button data-jump="3.3"><span class="e">⏳</span><span>ทบทวน 3.3 การบอกระยะเวลาเป็นชั่วโมงและนาที</span></button><button data-jump="3.4"><span class="e">⚖️</span><span>ทบทวน 3.4 การเปรียบเทียบระยะเวลา</span></button><button data-jump="3.5"><span class="e">📒</span><span>ทบทวน 3.5 การอ่านและเขียนบันทึกกิจกรรมที่ระบุเวลา</span></button><button data-jump="3.6"><span class="e">📝</span><span>ทบทวน 3.6 โจทย์ปัญหาเกี่ยวกับเวลาและระยะเวลา</span></button></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m3-ch2-add-sub/">◀ บทก่อนหน้า</a><a class="btn" style="--c:var(--purple)" href="../m3-math-hub/">🏠 หน้ารวม ป.3</a><a class="btn ghost" href="../m3-ch4-symmetry/">บทถัดไป ▶</a></div>
+  <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.3 สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m3-ch3-time", STORE_PREFIX = 'kruau-p3-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [{"q": "เวลา 15.20 น. คือเวลาใด", "c": ["บ่ายสามโมงยี่สิบนาที", "สามโมงเช้ายี่สิบนาที", "ห้าโมงเย็นยี่สิบนาที", "บ่ายโมงยี่สิบนาที"], "a": 0, "w": "15 นาฬิกา คือ บ่ายสามโมง"}, {"q": "8 นาฬิกา 45 นาที เขียนแบบใช้มหัพภาคได้อย่างไร", "c": ["8.45 น.", "8:45 น.", "84.5 น.", "45.8 น."], "a": 0, "w": "ใช้จุด (.) คั่นนาฬิกากับนาที แล้วตามด้วย น."}, {"q": "จาก 9.30 น. ถึง 11.30 น. เป็นระยะเวลาเท่าใด", "c": ["2 ชั่วโมง", "1 ชั่วโมง", "3 ชั่วโมง", "2 ชั่วโมง 30 นาที"], "a": 0, "w": "นับเพิ่มทีละชั่วโมง 10.30 → 11.30 ได้ 2 ชั่วโมง"}, {"q": "จาก 10.15 น. ถึง 10.50 น. เป็นระยะเวลากี่นาที", "c": ["35 นาที", "45 นาที", "25 นาที", "65 นาที"], "a": 0, "w": "50 − 15 = 35 นาที"}, {"q": "1 ชั่วโมง เท่ากับกี่นาที", "c": ["60 นาที", "100 นาที", "30 นาที", "24 นาที"], "a": 0, "w": "1 ชั่วโมง = 60 นาที"}, {"q": "ข้อใดใช้เวลานานที่สุด", "c": ["1 ชั่วโมง 10 นาที", "65 นาที", "1 ชั่วโมง", "50 นาที"], "a": 0, "w": "1 ชั่วโมง 10 นาที = 70 นาที มากที่สุด"}, {"q": "ต้นเริ่มอ่านหนังสือ 13.40 น. อ่านนาน 35 นาที เลิกอ่านเวลาใด", "c": ["14.15 น.", "14.75 น.", "13.75 น.", "14.05 น."], "a": 0, "w": "13.40 น. + 20 นาที = 14.00 น. + 15 นาที = 14.15 น."}, {"q": "รถออก 7.10 น. ถึงปลายทาง 9.25 น. ใช้เวลาเดินทางเท่าใด", "c": ["2 ชั่วโมง 15 นาที", "2 ชั่วโมง 35 นาที", "1 ชั่วโมง 15 นาที", "2 ชั่วโมง 25 นาที"], "a": 0, "w": "7.10 → 9.10 = 2 ชั่วโมง แล้วอีก 15 นาที"}];
+
+/* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
+var PRAISE = [['k11', 'เยี่ยมมาก!'], ['k2', 'สุดยอด!'], ['k6', 'เก่งมาก!'], ['k9', 'แชมป์เลย!'], ['k11', 'ปรบมือให้เลย!'], ['k7', 'เข้าใจแล้วใช่ไหม']];
+function ppPaint(sl, quiet) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, z = sl.querySelector('.ppz'), img = z.querySelector('img:not(.ghost)');
+  var src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (img.getAttribute('src') && img.getAttribute('src') !== src && !quiet) {
+    var g = img.cloneNode(); g.className = 'ghost'; g.removeAttribute('alt'); z.insertBefore(g, img.nextSibling);
+    var fade = function () { g.style.opacity = 0; setTimeout(function () { g.remove(); }, 400); };
+    img.onload = function () { img.onload = null; requestAnimationFrame(fade); };
+    setTimeout(fade, 900);
+  }
+  img.src = src;
+  if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
+  sl.querySelector('.ppbox').classList.toggle('can', k < n);
+  var b = sl.querySelector('[data-pstep]');
+  if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+  var d = sl.querySelector('.ppbox .done');
+  if (d) d.remove();
+  if (n && k >= n) {
+    var p = PRAISE[(+sl.getAttribute('data-src').slice(-3)) % PRAISE.length];
+    d = document.createElement('div'); d.className = 'done';
+    d.innerHTML = '<span>' + p[1] + '</span><img src="' + p[0] + '.webp" alt="">';
+    sl.querySelector('.ppbox').appendChild(d);
+    if (!quiet) { Kit.sound.good(); if (Math.random() < .35) Kit.confetti(); }
+  }
+}
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl, 1); } }
+function ppTools(sl, mode) {
+  ['zoom'].forEach(function (m) {
+    var on = m === mode && !sl.classList.contains(m);
+    sl.classList.toggle(m, on);
+    sl.querySelector('[data-' + m + ']').classList.toggle('on', on);
+  });
+  if (!sl.classList.contains('zoom')) sl.querySelector('.ppz').style.transformOrigin = '50% 50%';
+  sl.querySelector('.ppbox').classList.toggle('noswipe', sl.classList.contains('zoom'));
+}
+/* ---------- จับเวลา ---------- */
+var TM = { el: null, end: 0, iv: 0 };
+function tmShow() {
+  if (!TM.el) {
+    TM.el = document.createElement('div'); TM.el.className = 'timer';
+    document.body.appendChild(TM.el);
+  }
+  clearInterval(TM.iv); TM.el.classList.remove('end');
+  TM.el.innerHTML = '⏱️ <span class="opts"><button data-m="1">1 นาที</button><button data-m="2">2</button><button data-m="3">3</button><button data-m="5">5</button></span><button class="x" aria-label="ปิด">✖</button>';
+  TM.el.classList.add('show');
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show'); };
+  Array.prototype.forEach.call(TM.el.querySelectorAll('[data-m]'), function (b) { b.onclick = function () { tmStart(+b.getAttribute('data-m')); }; });
+}
+function tmStart(m) {
+  TM.end = Date.now() + m * 60000;
+  TM.el.innerHTML = '⏱️ <span class="t"></span><button class="x" aria-label="หยุด">✖</button>';
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show', 'end'); };
+  var t = TM.el.querySelector('.t');
+  function tick() {
+    var r = Math.max(0, Math.ceil((TM.end - Date.now()) / 1000));
+    t.textContent = Math.floor(r / 60) + ':' + ('0' + r % 60).slice(-2);
+    if (!r) { clearInterval(TM.iv); TM.el.classList.add('end'); Kit.sound.win(); Kit.toast('⏰ หมดเวลา! มาดูเฉลยกันนะ'); }
+  }
+  tick(); TM.iv = setInterval(tick, 250); Kit.sound.tap();
+}
+(function () {
+  var go = Kit.go;
+  Kit.go = function (n, instant) {
+    var cur = Kit.slides[Kit.cur];
+    if (!instant && cur && cur.classList.contains('pslide')) {
+      var N = +cur.getAttribute('data-steps'), k = cur._k || 0;
+      if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
+      if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
+    }
+    if (cur && cur.classList.contains('pslide') && n !== Kit.cur) ppTools(cur, null);
+    var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
+    go(n, instant);
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t, 1); }
+    for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+  };
+})();
+SETUP = function () {
+  setupToc();
+  Kit.slides.forEach(function (sl) {
+    if (!sl.classList.contains('pslide')) return;
+    var box = sl.querySelector('.ppbox'), z = sl.querySelector('.ppz'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
+    box.addEventListener('click', function (e) {
+      if (sl.classList.contains('zoom')) {
+        var q = box.getBoundingClientRect();
+        z.style.transformOrigin = ((e.clientX - q.left) / q.width * 100) + '% ' + ((e.clientY - q.top) / q.height * 100) + '%';
+        return;
+      }
+      adv();
+    });
+    if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+    sl.querySelector('[data-zoom]').onclick = function () { ppTools(sl, 'zoom'); Kit.sound.tap(); if (sl.classList.contains('zoom')) Kit.toast('🔎 แตะตรงที่อยากดูใกล้ ๆ'); };
+    sl.querySelector('[data-timer]').onclick = function () { tmShow(); Kit.sound.tap(); };
+  });
+};
+
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
+  });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- กล้องมุมจอ + อัดวิดีโอการสอน ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit) return;
+  var md = navigator.mediaDevices || {};
+  var inFrame = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  var canRec = !!md.getDisplayMedia && !!window.MediaRecorder;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '🎥'; btn.title = 'กล้องมุมจอ / อัดวิดีโอการสอน'; btn.setAttribute('aria-label', 'กล้องและอัดวิดีโอ');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var pnl = document.createElement('div'); pnl.className = 'campnl';
+  pnl.innerHTML = '<b>🎥 สอนออนไลน์ / ทำวิดีโอ</b>' +
+    '<button data-cam>📷 เปิดกล้องมุมจอ</button>' +
+    (canRec ? '<button data-rec>🔴 อัดวิดีโอหน้าจอ + เสียง</button>' : '') +
+    '<p class="tip">' + (canRec
+      ? 'กดอัดแล้วเลือก <b>แท็บนี้</b> ระบบจะอัดสไลด์ กล้อง และเสียงครูไว้ด้วยกัน กดหยุดแล้วจะได้ไฟล์วิดีโอทันที'
+      : 'บน iPad: เปิดกล้องมุมจอ แล้วใช้ <b>การบันทึกหน้าจอ</b> ในศูนย์ควบคุม (กดค้างที่ปุ่ม ⏺ เพื่อเปิดไมโครโฟน)') + '</p>' +
+    '<button data-x class="ghost">ปิด</button>';
+  document.body.appendChild(pnl);
+  btn.onclick = function () { pnl.classList.toggle('show'); Kit.sound.tap(); };
+  pnl.querySelector('[data-x]').onclick = function () { pnl.classList.remove('show'); };
+
+  function newTab(flag) {
+    var w = window.open(location.href.split('#')[0] + '#s=' + Kit.cur + '&' + flag + '=1', '_blank');
+    if (!w) Kit.toast('เปิดแท็บใหม่ไม่ได้ ลองกดปุ่ม "เปิดในแท็บใหม่" ของเว็บครูอู๋');
+  }
+
+  /* ---- กล้อง ---- */
+  var cam = null, stream = null, SIZES = [120, 170, 240], si = 1, round = true;
+  try { var sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); if (sv.si != null) si = sv.si; if (sv.round != null) round = sv.round; } catch (e) {}
+  function save(x, y) { try { localStorage.setItem('kruau-cam', JSON.stringify({ si: si, round: round, x: x, y: y })); } catch (e) {} }
+  function place() {
+    var s = SIZES[si], h = round ? s : Math.round(s * .75);
+    cam.style.width = s + 'px'; cam.style.height = h + 'px';
+    cam.classList.toggle('sq', !round);
+    var r = cam.getBoundingClientRect();
+    var x = Math.min(Math.max(4, r.left), innerWidth - s - 4), y = Math.min(Math.max(4, r.top), innerHeight - h - 4);
+    cam.style.left = x + 'px'; cam.style.top = y + 'px';
+  }
+  function openCam() {
+    if (cam) return;
+    if (!md.getUserMedia) { Kit.toast('อุปกรณ์นี้เปิดกล้องผ่านเว็บไม่ได้'); return; }
+    md.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }).then(function (s) {
+      stream = s;
+      cam = document.createElement('div'); cam.className = 'cambub noswipe';
+      cam.innerHTML = '<video autoplay playsinline muted></video><span class="cb"><button data-sz title="ย่อ/ขยาย">⤢</button><button data-sh title="วงกลม/สี่เหลี่ยม">◐</button><button data-cl title="ปิดกล้อง">✖</button></span>';
+      document.body.appendChild(cam);
+      var v = cam.querySelector('video'); v.srcObject = s; v.play().catch(function () {});
+      var sv = {}; try { sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); } catch (e) {}
+      cam.style.left = (sv.x != null ? sv.x : innerWidth - SIZES[si] - 16) + 'px';
+      cam.style.top = (sv.y != null ? sv.y : innerHeight - SIZES[si] - 90) + 'px';
+      place();
+      cam.querySelector('[data-sz]').onclick = function (e) { e.stopPropagation(); si = (si + 1) % SIZES.length; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-sh]').onclick = function (e) { e.stopPropagation(); round = !round; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-cl]').onclick = function (e) { e.stopPropagation(); closeCam(); };
+      var drag = null;
+      cam.addEventListener('pointerdown', function (e) {
+        if (e.target.closest('button')) return;
+        drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
+      });
+      cam.addEventListener('pointermove', function (e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        cam.style.left = Math.min(Math.max(4, e.clientX - drag.dx), innerWidth - cam.offsetWidth - 4) + 'px';
+        cam.style.top = Math.min(Math.max(4, e.clientY - drag.dy), innerHeight - cam.offsetHeight - 4) + 'px';
+      });
+      cam.addEventListener('pointerup', function () { if (drag) save(cam.offsetLeft, cam.offsetTop); drag = null; });
+      pnl.querySelector('[data-cam]').textContent = '📷 ปิดกล้องมุมจอ';
+      pnl.classList.remove('show');
+      Kit.toast('📷 ลากกล้องไปวางมุมไหนก็ได้ · ⤢ ย่อ/ขยาย');
+    }).catch(function (err) {
+      if (inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่อใช้กล้อง…'); newTab('cam'); }
+      else Kit.toast('เปิดกล้องไม่ได้ — กรุณาอนุญาตให้เว็บใช้กล้อง');
+    });
+  }
+  function closeCam() {
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    if (cam) cam.remove();
+    cam = stream = null;
+    pnl.querySelector('[data-cam]').textContent = '📷 เปิดกล้องมุมจอ';
+  }
+  pnl.querySelector('[data-cam]').onclick = function () { if (cam) closeCam(); else openCam(); };
+  addEventListener('resize', function () { if (cam) place(); });
+
+  /* ---- อัดวิดีโอ (คอมพิวเตอร์: Chrome / Edge / Firefox) ---- */
+  var rec = null, chip = null, parts = [], t0 = 0, iv = 0, all = [];
+  function pickType() {
+    var c = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    for (var i = 0; i < c.length; i++) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c[i])) return c[i];
+    return '';
+  }
+  function startRec() {
+    md.getDisplayMedia({ video: { frameRate: 30 }, audio: true, preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude' }).then(function (ds) {
+      all = [ds];
+      return md.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }).then(function (mic) { all.push(mic); return [ds, mic]; }, function () { Kit.toast('ไม่ได้เปิดไมโครโฟน จะอัดแต่ภาพ'); return [ds, null]; });
+    }).then(function (r) {
+      var ds = r[0], mic = r[1], tracks = ds.getVideoTracks().slice();
+      var aud = [ds, mic].filter(function (s) { return s && s.getAudioTracks().length; });
+      if (aud.length === 1) tracks = tracks.concat(aud[0].getAudioTracks());
+      else if (aud.length > 1) {
+        var ac = new (window.AudioContext || window.webkitAudioContext)(), dst = ac.createMediaStreamDestination();
+        aud.forEach(function (s) { ac.createMediaStreamSource(s).connect(dst); });
+        tracks = tracks.concat(dst.stream.getAudioTracks());
+      }
+      var type = pickType();
+      rec = new MediaRecorder(new MediaStream(tracks), type ? { mimeType: type, videoBitsPerSecond: 3000000 } : undefined);
+      parts = [];
+      rec.ondataavailable = function (e) { if (e.data && e.data.size) parts.push(e.data); };
+      rec.onstop = finish;
+      ds.getVideoTracks()[0].addEventListener('ended', stopRec);
+      rec.start(1000); t0 = Date.now();
+      chip = document.createElement('div'); chip.className = 'recchip';
+      chip.innerHTML = '<span class="dot"></span> อัดอยู่ <span class="t">0:00</span><button>■ หยุด</button>';
+      document.body.appendChild(chip);
+      chip.querySelector('button').onclick = stopRec;
+      iv = setInterval(function () { var s = Math.floor((Date.now() - t0) / 1000); chip.querySelector('.t').textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }, 500);
+      pnl.classList.remove('show');
+      if (!cam) Kit.toast('🔴 เริ่มอัดแล้ว · เปิดกล้องมุมจอได้ที่ปุ่ม 🎥');
+    }).catch(function (err) {
+      all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+      if (err && err.name === 'NotAllowedError' && inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่ออัดวิดีโอ…'); newTab('rec'); }
+      else if (err && err.name !== 'NotAllowedError') Kit.toast('อัดวิดีโอไม่ได้: ' + err.name);
+    });
+  }
+  function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+  function finish() {
+    clearInterval(iv);
+    all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+    if (chip) chip.remove();
+    var type = (rec && rec.mimeType) || 'video/webm', ext = type.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+    var blob = new Blob(parts, { type: type }), a = document.createElement('a');
+    var d = new Date(), name = (document.title.split('·')[0].trim() || 'บทเรียน').replace(/[\\\/:*?"<>|]/g, '') + ' ' + d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    a.href = URL.createObjectURL(blob); a.download = name + '.' + ext;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+    Kit.sound.win(); Kit.toast('💾 บันทึกวิดีโอแล้ว (' + ext.toUpperCase() + ') ดูได้ในโฟลเดอร์ดาวน์โหลด');
+    rec = null;
+  }
+  var rb = pnl.querySelector('[data-rec]');
+  if (rb) rb.onclick = function () { if (rec) stopRec(); else startRec(); };
+
+  /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
+  if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
+  if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 9 การวัดความยาว · คณิตศาสตร์ ป.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#8B5CF6;--main-deep:#6D28D9;--glow:#EDE4FF}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
+/* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
+.campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
+.campnl.show{display:flex}
+.campnl button{min-height:44px;border-radius:14px;border:2px solid var(--main);background:var(--glow);font-weight:700;font-size:1rem;color:var(--ink)}
+.campnl button.ghost{background:#fff;min-height:36px}
+.campnl .tip{margin:0;font-size:.88rem;line-height:1.5;color:var(--ink-soft)}
+.cambub{position:fixed;z-index:65;border-radius:50%;overflow:hidden;background:#222;border:4px solid #fff;box-shadow:0 0 0 3px var(--main),0 8px 20px rgba(0,0,0,.3);touch-action:none;cursor:grab}
+.cambub.sq{border-radius:18px}
+.cambub video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;pointer-events:none}
+.cambub .cb{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:4px;opacity:0;transition:opacity .2s}
+.cambub:hover .cb,.cambub:active .cb,.cambub:focus-within .cb{opacity:1}
+@media (hover:none){.cambub .cb{opacity:.85}}
+.cambub .cb button{width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.9);font-size:.9rem;padding:0}
+.recchip{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid #E53935;border-radius:999px;padding:4px 6px 4px 14px;font-weight:700;color:#C62828;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.recchip .dot{width:12px;height:12px;border-radius:50%;background:#E53935;animation:recb 1s infinite}
+.recchip button{border:none;background:#E53935;color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;min-height:36px}
+@keyframes recb{50%{opacity:.25}}
+@media print{.campnl,.cambub,.recchip{display:none}}
+
+/* ---- แถบด้านบนบนมือถือ ---- */
+@media (max-width:520px){.bar .tb{width:34px!important;min-width:34px;height:34px!important;font-size:15px!important;padding:0!important}.bar{gap:3px!important}.bar .ttl small{display:none}}
+
+.nav .dots{display:none}
+.nav{justify-content:space-between}
+.pslide{padding:8px clamp(8px,2vw,24px) 8px}
+.pslide .inner.pp{max-width:none;height:100%;gap:6px}
+.pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
+.ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.ppbox{position:relative;width:min(100cqw,calc(100cqh * 16 / 9));aspect-ratio:16/9;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08);overflow:hidden;box-sizing:border-box}
+.ppz{position:absolute;inset:0;transition:transform .35s ease;transform-origin:50% 50%}
+.ppz img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ppz img.ghost{transition:opacity .35s ease;pointer-events:none}
+.ppbox.can{cursor:pointer}
+.pslide.zoom .ppbox{cursor:zoom-out}
+.pslide.zoom .ppz{transform:scale(2.2)}
+.ppbox .done{position:absolute;right:10px;bottom:8px;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:kpop .5s ease-out both}
+.ppbox .done img{height:clamp(60px,14cqh,110px);width:auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.ppbox .done span{background:#fff;border:3px solid var(--main);border-radius:14px 14px 4px 14px;padding:2px 10px;font-weight:700;color:var(--main-deep);margin-bottom:30px;white-space:nowrap;font-size:clamp(.8rem,2.2vw,1rem)}
+.tools{display:flex;align-items:center;gap:6px}
+.tl{width:40px;height:40px;border-radius:12px;border:2px solid var(--main);background:#fff;font-size:1.15rem;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--glow)}
+.tl.on{background:var(--main);box-shadow:0 3px 0 var(--main-deep)}
+.timer{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:6px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:4px 6px 4px 12px;font-weight:700;box-shadow:0 4px 0 var(--main-deep);font-size:1.15rem}
+.timer.show{display:flex}
+.timer .opts{display:flex;gap:4px}
+.timer .opts button,.timer .x{border:2px solid var(--main);background:var(--glow);border-radius:999px;padding:2px 10px;font-weight:700;min-height:36px}
+.timer .t{font-variant-numeric:tabular-nums;min-width:3.2em;text-align:center;color:var(--main-deep)}
+.timer.end{animation:tshake .5s 3;background:#FFE3E3}
+@keyframes tshake{25%{transform:translateX(-50%) rotate(-4deg)}75%{transform:translateX(-50%) rotate(4deg)}}
+@media (max-width:620px){.tl{width:34px;height:34px;font-size:1rem}.pphead .secbadge{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.board{position:relative;width:min(100%,720px);container-type:inline-size;animation:kpop .55s ease-out both}
+.board img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15))}
+.chalk{position:absolute;left:56%;top:12%;width:39%;height:62%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqw;color:#fff;text-align:center;text-shadow:0 0 2px rgba(255,255,255,.5)}
+.chalk .cn{font-size:4.2cqw;color:#FFE97A;border-bottom:.4cqw dashed #FFE97A;padding:0 2cqw}
+.chalk b{font-size:4.6cqw;line-height:1.3;font-weight:700}
+.secslide .ready{font-weight:700;color:var(--ink-soft)}
+.ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
+.ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
+.ppctl .btn{min-height:44px;padding:6px 18px}
+.secslide{min-height:100%;justify-content:center;align-items:center;text-align:center}
+.secnum{display:grid;place-items:center;width:clamp(110px,18vw,150px);aspect-ratio:1;border-radius:50%;background:var(--main);color:#fff;font-weight:700;font-size:clamp(2.2rem,6vw,3.2rem);box-shadow:0 8px 0 var(--main-deep)}
+.secslide h1{color:var(--main-deep);font-size:clamp(1.7rem,5vw,2.8rem);text-shadow:0 4px 0 var(--glow)}
+.subs{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:620px;width:100%}
+.subs div{background:#fff;border:3px solid var(--main);border-radius:16px;padding:8px 14px;font-weight:700;text-align:left;font-size:clamp(1rem,2.6vw,1.2rem)}
+.subs b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--main);color:#fff;margin-right:8px}
+.secslide .kru{max-width:680px;width:100%;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">📏</span>
+  <div class="ttl"><b>บทที่ 9 การวัดความยาว</b><small>คณิตศาสตร์ ป.3 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m3-math-hub/" aria-label="หน้ารวม ป.3" title="หน้ารวม ป.3">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.3 · บทที่ 9</span>
+    <h1>การวัดความยาว</h1>
+    <p class="sub">หน่วยความยาว เครื่องมือวัด คาดคะเน เปรียบเทียบ บวก ลบ คูณ หาร และโจทย์ปัญหา</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร</li><li>9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร</li><li>9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</li><li>9.4 การคาดคะเนความยาวเป็นเมตรและเป็นเซนติเมตร</li><li>9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</li><li>9.6 การเปรียบเทียบความยาว</li><li>9.7 การบวกและการลบเกี่ยวกับความยาว</li><li>9.8 การคูณและการหารเกี่ยวกับความยาว</li><li>9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)</li><li>9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 9</h2>
+  <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="toc"><button data-jump="9.1"><span class="e">📏</span><span>9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร</span></button><button data-jump="9.2"><span class="e">🛣️</span><span>9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร</span></button><button data-jump="9.3"><span class="e">🧰</span><span>9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</span></button><button data-jump="9.4"><span class="e">🤔</span><span>9.4 การคาดคะเนความยาวเป็นเมตรและเป็นเซนติเมตร</span></button><button data-jump="9.5"><span class="e">🔗</span><span>9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</span></button><button data-jump="9.6"><span class="e">⚖️</span><span>9.6 การเปรียบเทียบความยาว</span></button><button data-jump="9.7"><span class="e">➕</span><span>9.7 การบวกและการลบเกี่ยวกับความยาว</span></button><button data-jump="9.8"><span class="e">✖️</span><span>9.8 การคูณและการหารเกี่ยวกับความยาว</span></button><button data-jump="9.9"><span class="e">📝</span><span>9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)</span></button><button data-jump="9.10"><span class="e">🧩</span><span>9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
+</div></section>
+<section class="slide" data-sec="9.1" data-title="9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 9.1</span><b>📏 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s004" data-thumb="img/t004.webp" data-title="9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร · หน้า 4"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ความยาว 1 เซนติเมตร แบ่งเป็น 10 ช่องเท่าๆ กัน แต่ละช่องยาว 1 มิลลิเมตรความยาว 10 มิลลิเมตร เท่ากับความยาว 1 เซนติเมตรเซนติเมตร ใช้อักษรย่อ ซม.มิลลิเมตร ใช้อักษรย่อ มม. 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s005" data-thumb="img/t005.webp" data-title="9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร · หน้า 5"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ยางลบยาว 2 เซนติเมตร 7 มิลลิเมตร ดินสอยาว 10 เซนติเมตร 5 มิลลิเมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s006" data-thumb="img/t006.webp" data-title="9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร · หน้า 6"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 แก้วกินยาสูง 2 เซนติเมตร 9 มิลลิเมตร แจกันสูง 8 เซนติเมตร 5 มิลลิเมตร บอกความสูงของสิ่งต่างๆ กระปุกออมสินสูง 12 เซนติเมตร 2 มิลลิเมตร กระป๋องแป้งสูง 6 เซนติเมตร 2 มิลลิเมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s007" data-thumb="img/t007.webp" data-title="9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร · หน้า 7"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 ตอบคำถาม ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 บอกความยาวของถ่านไฟฉายและสร้อยข้อมือเป็นเซนติเมตรและมิลลิเมตร 5 เซนติเมตร 4 มิลลิเมตร 9 เซนติเมตร 2 มิลลิเมตร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s008" data-thumb="img/t008.webp" data-title="9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร · หน้า 8"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 ตอบคำถาม ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 บอกความสูงของขวดซอสและกระป๋องแป้งเป็นเซนติเมตรและมิลลิเมตร 10 เซนติเมตร 4 มิลลิเมตร 5 เซนติเมตร 7 มิลลิเมตร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s009" data-thumb="img/t009.webp" data-title="9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร · หน้า 9"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบอกความยาวหรือความสูงของสิ่งต่างๆ อาจบอกเป็นเซนติเมตรและมิลลิเมตรความยาว 10 มิลลิเมตร เท่ากับ ความยาว 1 เซนติเมตร สิ่งที่ได้เรียนรู้ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="9.2" data-title="9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 9.2</span><b>🛣️ ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-thumb="img/t011.webp" data-title="9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร · หน้า 11"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สังเกต การบอกความยาวอาจบอกเป็นเซนติเมตร หรือบอกเป็นเมตรและเซนติเมตร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 สวนแนวตั้งสูง 180 เซนติเมตร 100 เซนติเมตร เท่ากับ 1 เมตร สวนแนวตั้งสูง 1 เมตร 80 เซนติเมตร สวนแนวตั้งยาว 275 เซนติเมตร 200 เซนติเมตร เท่ากับ 2 เมตร สวนแนวตั้งยาว 2 เมตร 75 เซนติเมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s012" data-thumb="img/t012.webp" data-title="9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร · หน้า 12"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ต้นกล้าเดินจากจุดเริ่มต้นถึงจุดสิ้นสุดเป็นระยะทาง 2,000 เมตร หรือ 2 กิโลเมตร ขุนเดินทางจุดเริ่มต้นถึงจุดพักเป็นระยะทาง 1,200 เมตร หรือ 1 กิโลเมตร 200 เมตร ระยะทาง 1,000 เมตร เท่ากับระยะทาง 1 กิโลเมตรเมตร ใช้อักษรย่อ ม. กิโลเมตร ใช้อักษรย่อ กม."></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-thumb="img/t013.webp" data-title="9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร · หน้า 13"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ระยะทางจากจังหวัดชุมพรถึงจังหวัดยะลา 608 กิโลเมตร ทางหลวงแผ่นดินหมายเลข 4 (ถนนเพชรเกษม) เป็นถนนเส้นหลักวิ่งลงทางภาคใต้"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s014" data-thumb="img/t014.webp" data-title="9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร · หน้า 14"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ระยะทางจากจังหวัดพิษณุโลกถึงจังหวัดเชียงราย 418 กิโลเมตร ทางหลวงแผ่นดินหมายเลข 1 (ถนนพหลโยธิน) เป็นถนนเส้นหลักวิ่งขึ้นภาคเหนือ"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s015" data-thumb="img/t015.webp" data-title="9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร · หน้า 15"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 ตอบคำถาม ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ความกว้างและความยาวของโต๊ะปิงปองเป็นกี่เมตร กี่เซนติเมตร กว้าง 1 เมตร 53 เซนติเมตร ยาว 2 เมตร 74 เซนติเมตร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s016" data-thumb="img/t016.webp" data-title="9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร · หน้า 16"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 ตอบคำถาม ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 เดินรอบสระน้ำ 1 รอบ ได้ระยะทางกี่กิโลเมตร กี่เมตร 2 กิโลเมตร 500 เมตร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s017" data-thumb="img/t017.webp" data-title="9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร · หน้า 17"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบอกความยาวของสิ่งต่างๆ อาจบอกเป็นเมตรและเซนติเมตรการบอกระยะทางอาจบอกเป็นกิโลเมตร หรือกิโลเมตรและเมตรความยาว 1,000 เมตร เท่ากับ ความยาว 1 กิโลเมตร สิ่งที่ได้เรียนรู้ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="9.3" data-title="9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 9.3</span><b>🧰 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s019" data-thumb="img/t019.webp" data-title="9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม · หน้า 19"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ไม้เมตร เครื่องมือวัดความยาว สายวัดชนิดตลับ สายวัดตัว ไม้บรรทัด"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s020" data-thumb="img/t020.webp" data-title="9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม · หน้า 20"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ถ้าต้องการวัดความยาวของห้องเรียน ควรเลือกใช้เครื่องวัดใด เพราะเหตุใด 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ใช้ไม้เมตร เพราะห้องเรียนมีความยาวมากใช้สายวัดชนิดตลับ เพราะสายวัดชนิดตลับยาวมากกว่า 1 เมตรไม้เมตร กับสายวัดชนิดตลับ เหมาะสำหรับวัดความยาวของห้องเรียน ถ้าต้องการวัดความยาวของห้องเรียน ใช้ไม้"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s021" data-thumb="img/t021.webp" data-title="9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม · หน้า 21"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การวัดส่วนต่างๆ ของร่างกาย ซึ่งมีส่วนโค้งควรวัดโดยใช้สายวัดตัว เพราะสายวัดตัวจะโค้งไปตามส่วนต่างๆ ของร่างกายได้ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ควรเลือกใช้เครื่องมือชนิดใดวัดความยาวของโต๊ะครู เพราะเหตุใด โต๊ะครูมีความยาวมากกว่า 30 เซนติเมตร หรือ 1 ไม้บรรทัดดังนั้น เลือกใช้ไม้เมตรวัดความยาวข"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s022" data-thumb="img/t022.webp" data-title="9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม · หน้า 22"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 ตอบคำถาม 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 วัดความหนาของหนังสือจะใช้เครื่องวัดความยาวชนิดใด เพราะเหตุใด ไม้บรรทัดเพราะหนังสือหนาไม่เกิน 30 เซนติเมตร 2 วัดความสูงของประตูห้องเรียนจะใช้เครื่องมือวัดความยาวชนิดใด เพราะเหตุใด สายวัดชนิดตลับเพราะประตูสูงเกิน 1 เมตร 3 วัดความยาวของผ้าปูโต๊ะจะใช้เ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-thumb="img/t023.webp" data-title="9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม · หน้า 23"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 การวัดความยาวของสิ่งใด ควรใช้หน่วยความยาวให้เหมาะสม หนังสือเรียนยาว 29 เซนติเมตร 5 มิลลิเมตร สมุดหนา 5 มิลลิเมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-thumb="img/t024.webp" data-title="9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม · หน้า 24"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 การวัดความยาวของสิ่งใด ควรใช้หน่วยความยาวให้เหมาะสม ห้องเรียนกว้าง 6 เมตร ระยะทางจากบ้านถึงโรงเรียน 5 กิโลเมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s025" data-thumb="img/t025.webp" data-title="9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม · หน้า 25"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 มิลลิเมตร เลือกหน่วยความยาวที่เหมาะสม 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 เซนติเมตร เมตร กิโลเมตร กระป๋องสูง 15 เซนติเมตร เสาธงสูง 12 3 กระเบื้องหนา 5 5 รอบข้อมือยาว 10 2 ระยะทางจากบ้านถึงวัด 8 4 หน้าต่างกว้าง 80 6 อาคารเรียนสูง 10 เมตร กิโลเมตร มิลลิเมตร เซนติเมตร เซนติเมตร เมตร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s026" data-thumb="img/t026.webp" data-title="9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม · หน้า 26"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 ตอบคำถาม ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 เลือกเครื่องวัดความยาวที่เหมาะสม ไม้เมตร สายวัดตัว 1) ความสูงของถังซีเมนต์ 2) ความยาวรอบลำต้น ไม้บรรทัด ไม้เมตร ไม้บรรทัด สายวัดตัว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s027" data-thumb="img/t027.webp" data-title="9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม · หน้า 27"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 ตอบคำถาม ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 เลือกหน่วยความยาวที่เหมาะสม 1 มิลลิเมตร เซนติเมตร เมตร กิโลเมตร โคมไฟตั้งโต๊ะสูง 35 2 ระยะทางจากจังหวัดสุพรรณบุรีถึงจังหวัดพระนครศรีอยุธยา 61 3 ชั้นวางของยาว 2 เซนติเมตร กิโลเมตร เมตร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s028" data-thumb="img/t028.webp" data-title="9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม · หน้า 28"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การวัดความยาวของสิ่งต่างๆ ควรเลือกใช้เครื่องวัดความยาวให้เหมาะสม และบอกความยาวโดยใช้หน่วยความยาวที่เหมาะสม สิ่งที่ได้เรียนรู้ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="9.4" data-title="9.4 การคาดคะเนความยาวเป็นเมตรและเป็นเซนติเมตร"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 9.4</span><b>🤔 การคาดคะเนความยาวเป็นเมตรและเป็นเซนติเมตร</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s030" data-thumb="img/t030.webp" data-title="9.4 การคาดคะเนความยาวเป็นเมตรและเป็นเซนติเมตร · หน้า 30"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.4 การคาดคะเนความยาวเป็นเมตรและเป็นเซนติเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 เครื่องเล่นล้อยางรถยนต์น่าจะยาวกี่เมตร วัดจริง เครื่องเล่นล้อยางรถยนต์ยาว 5 เมตร 20 เซนติเมตร 6 เมตร 5 เมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s031" data-thumb="img/t031.webp" data-title="9.4 การคาดคะเนความยาวเป็นเมตรและเป็นเซนติเมตร · หน้า 31"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.4 การคาดคะเนความยาวเป็นเมตรและเป็นเซนติเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ดินสอน่าจะยาวกี่เซนติเมตร ดินสอสั้นกว่าไม้บรรทัด ดินสอน่าจะยาว 20 เซนติเมตร วัดจริง ดินสอยาว 19 เซนติเมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-thumb="img/t032.webp" data-title="9.4 การคาดคะเนความยาวเป็นเมตรและเป็นเซนติเมตร · หน้า 32"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.4 การคาดคะเนความยาวเป็นเมตรและเป็นเซนติเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 โต๊ะนักเรียนน่าจะยาวกี่เซนติเมตร โต๊ะนักเรียนน่าจะยาว 2 ไม้บรรทัด เท่ากับ 60 เซนติเมตร วัดจริง โต๊ะนักเรียนยาว 65 เซนติเมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-thumb="img/t033.webp" data-title="9.4 การคาดคะเนความยาวเป็นเมตรและเป็นเซนติเมตร · หน้า 33"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.4 การคาดคะเนความยาวเป็นเมตรและเป็นเซนติเมตร</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การคาดคะเนความยาวหรือความสูงเป็นเมตร เป็นการบอกความยาวหรือความสูงเป็นเมตรให้ใกล้เคียงกับความยาวหรือความสูงจริง โดยไม่ใช้เครื่องวัดความยาว อาจเทียบกับความยาวหรือความสูง 1 เมตรการคาดคะเนความยาวหรือความสูงเป็นเซนติเมตร เป็นการบอกความยาวหรือความสูงเป็นเซนติเมตรให้ใกล้เคียงกับความยาวหรือความสูงจริง โดยไม"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="9.5" data-title="9.5 ความสัมพันธ์ระหว่างหน่วยความยาว"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 9.5</span><b>🔗 ความสัมพันธ์ระหว่างหน่วยความยาว</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s035" data-thumb="img/t035.webp" data-title="9.5 ความสัมพันธ์ระหว่างหน่วยความยาว · หน้า 35"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ความยาว 10 มิลลิเมตร เท่ากับความยาว 1 เซนติเมตร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 48 มิลลิเมตร เท่ากับกี่เซนติเมตร กี่มิลลิเมตร 10 มม. เท่ากับ 1 ซม. 40 มม. เท่ากับ 4 ซม. 48 มม. เท่ากับ 4 ซม. กับ 8 มม.ดังนั้น 48 มิลลิเมตร เท่ากับ 4 เซนติเมตร 8 มิลลิเมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-thumb="img/t036.webp" data-title="9.5 ความสัมพันธ์ระหว่างหน่วยความยาว · หน้า 36"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ความยาว 10 มิลลิเมตร เท่ากับความยาว 1 เซนติเมตร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 18 เซนติเมตร 5 มิลลิเมตร เท่ากับกี่มิลลิเมตร 1 ซม. เท่ากับ 10 มม. 18 ซม. เท่ากับ 180 มม. 18 ซม. 5 มม. เท่ากับ 185 มม.ดังนั้น 18 เซนติเมตร 5 มิลลิเมตร เท่ากับ 185 มิลลิเมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s037" data-thumb="img/t037.webp" data-title="9.5 ความสัมพันธ์ระหว่างหน่วยความยาว · หน้า 37"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 ตอบคำถาม 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 22 เซนติเมตร เท่ากับกี่มิลลิเมตร 2 73 เซนติเมตร 3 มิลลิเมตร เท่ากับกี่มิลลิเมตร 3 43 มิลลิเมตร เท่ากับกี่เซนติเมตร กี่มิลลิเมตร 4 304 มิลลิเมตร เท่ากับกี่เซนติเมตร กี่มิลลิเมตร 220 มิลลิเมตร 733 มิลลิเมตร 4 เซนติเมตร 3 มิลลิเมตร 30 เซนติเมตร 4 มิลล"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s038" data-thumb="img/t038.webp" data-title="9.5 ความสัมพันธ์ระหว่างหน่วยความยาว · หน้า 38"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ความยาว 100 เซนติเมตร เท่ากับความยาว 1 เมตร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 750 เซนติเมตร เท่ากับกี่เมตร กี่เซนติเมตร 100 ซม. เท่ากับ 1 ม. 700 ซม. เท่ากับ 7 ม. 750 ซม. เท่ากับ 7 ม. กับ 50 ซม.ดังนั้น 750 เซนติเมตร เท่ากับ 7 เมตร 50 เซนติเมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s039" data-thumb="img/t039.webp" data-title="9.5 ความสัมพันธ์ระหว่างหน่วยความยาว · หน้า 39"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ความยาว 100 เซนติเมตร เท่ากับความยาว 1 เมตร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 5 เมตร 20 เซนติเมตร เท่ากับกี่เซนติเมตร 1 ม. เท่ากับ 100 ซม. 5 ม. เท่ากับ 500 ซม. 5 ม. 20 ซม. เท่ากับ 520 ซม.ดังนั้น 5 เมตร 20 เซนติเมตร เท่ากับ 520 เซนติเมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s040" data-thumb="img/t040.webp" data-title="9.5 ความสัมพันธ์ระหว่างหน่วยความยาว · หน้า 40"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 ตอบคำถาม 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 485 เซนติเมตร เท่ากับกี่เมตร กี่เซนติเมตร 2 350 เซนติเมตร เท่ากับกี่เมตร กี่เซนติเมตร 3 6 เมตร 70 เซนติเมตร เท่ากับกี่เซนติเมตร 4 2 เมตร 72 เซนติเมตร เท่ากับกี่เซนติเมตร 4 เมตร 85 เซนติเมตร 3 เมตร 50 เซนติเมตร 670 เซนติเมตร 272 เซนติเมตร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s041" data-thumb="img/t041.webp" data-title="9.5 ความสัมพันธ์ระหว่างหน่วยความยาว · หน้า 41"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ความยาว 1,000 เมตร เท่ากับความยาว 1 กิโลเมตร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 2,500 เมตร เท่ากับกี่กิโลเมตร กี่เมตร 1,000 ม. เท่ากับ 1 กม. 2,000 ม. เท่ากับ 2 กม. 2,500 ม. เท่ากับ 2 กม. กับ 500 ม.ดังนั้น 2,500 เมตร เท่ากับ 2 กิโลเมตร 500 เมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s042" data-thumb="img/t042.webp" data-title="9.5 ความสัมพันธ์ระหว่างหน่วยความยาว · หน้า 42"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ความยาว 1,000 เมตร เท่ากับความยาว 1 กิโลเมตร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 3 กิโลเมตร 450 เมตร เท่ากับกี่เมตร 1 กม. เท่ากับ 1,000 ม. 3 กม. เท่ากับ 3,000 ม. 3 กม. 450 ม. เท่ากับ 3,450 ม.ดังนั้น 5 กิโลเมตร 450 เมตร เท่ากับ 3,450 เมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s043" data-thumb="img/t043.webp" data-title="9.5 ความสัมพันธ์ระหว่างหน่วยความยาว · หน้า 43"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 ตอบคำถาม 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 2,845 เมตร เท่ากับกี่กิโลเมตร กี่เมตร 2 1,250 เมตร เท่ากับกี่กิโลเมตร กี่เมตร 3 8 กิโลเมตร 250 เมตร เท่ากับกี่เมตร 4 4 กิโลเมตร 5 เมตร เท่ากับกี่เมตร 2 กิโลเมตร 845 เมตร 1 กิโลเมตร 250 เมตร 8,250 เมตร 4,005 เมตร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s044" data-thumb="img/t044.webp" data-title="9.5 ความสัมพันธ์ระหว่างหน่วยความยาว · หน้า 44"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 44 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตอบคำถาม ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 1 65 มิลลิเมตร เท่ากับกี่เซนติเมตร กี่มิลลิเมตร 2 9 เซนติเมตร 8 มิลลิเมตร เท่ากับกี่มิลลิเมตร 3 3 เมตร 25 เซนติเมตร เท่ากับกี่เซนติเมตร 4 5,600 เมตร เท่ากับกี่กิโลเมตร กี่เมตร 6 เซนติเมตร 5 มิลลิเมตร 98 มิลลิเมตร 325 เซนติเมตร 5 กิโ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s045" data-thumb="img/t045.webp" data-title="9.5 ความสัมพันธ์ระหว่างหน่วยความยาว · หน้า 45"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบอกความยาวของสิ่งต่างๆ อาจบอกเป็นมิลลิเมตร เซนติเมตร เมตร กิโลเมตร เซนติเมตรและมิลลิเมตร เมตรและเซนติเมตร หรือกิโลเมตรและเมตร โดยใช้ความสัมพันธ์ระหว่างหน่วยความยาว 10 มิลลิเมตร เท่ากับ 1 เซนติเมตร 100 เซนติเมตร เท่ากับ 1 เมตร 1,000 เมตร เท่ากับ 1 กิโลเมตร สิ่งที่ได้เรียนรู้ 9.1 9.2 9.3 9.4 9.5 9."></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="9.6" data-title="9.6 การเปรียบเทียบความยาว"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 9.6</span><b>⚖️ การเปรียบเทียบความยาว</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s047" data-thumb="img/t047.webp" data-title="9.6 การเปรียบเทียบความยาว · หน้า 47"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.6 การเปรียบเทียบความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แปรงสีฟันยาว 15 เซนติเมตร 4 มิลลิเมตร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 หลอดยาสีฟัน 108 มิลลิเมตร แปรงสีฟันยาว 15 เซนติเมตร 4 มิลลิเมตรหลอดยาสีฟันยาว 108 มิลลิเมตร หรือ 10 เซนติเมตร 8 มิลลิเมตรดังนั้น แปรงสีฟันยาวกว่าหลอดยาสีฟัน แปรงสีฟันยาว 15 เซนติเมตร 4 มิลลิเมตร หรือ 154 มิลลิเมตรหลอดยาสี"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s048" data-thumb="img/t048.webp" data-title="9.6 การเปรียบเทียบความยาว · หน้า 48"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.6 การเปรียบเทียบความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 48 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 ตอบคำถาม 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ขวดน้ำสูง 230 มิลลิเมตร แจกันสูง 18 เซนติเมตร 8 มิลลิเมตร สิ่งใดสูงกว่า 2 พู่กันยาว 10 เซนติเมตร 5 มิลลิเมตร กรรไกรยาว 107 มิลลิเมตร สิ่งใดสั้นกว่า ขวดน้ำ พู่กัน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s049" data-thumb="img/t049.webp" data-title="9.6 การเปรียบเทียบความยาว · หน้า 49"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.6 การเปรียบเทียบความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 49 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ม้านั่งตัวที่หนึ่งยาว 120 เซนติเมตร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ม้านั่งตัวที่สองยาว 1 เมตร 80 เซนติเมตร ม้านั่งตัวที่หนึ่งยาว 120 เซนติเมตร หรือ 1 เมตร 20 เซนติเมตรม้านั่งตัวที่สองยาว 1 เมตร 80 เซนติเมตรดังนั้น ม้านั่งตัวที่หนึ่งสั้นกว่าม้านั่งตัวที่สอง ม้านั่งตัวที่หนึ่งยาว 120 เซนติเม"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s050" data-thumb="img/t050.webp" data-title="9.6 การเปรียบเทียบความยาว · หน้า 50"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.6 การเปรียบเทียบความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 50 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 ตอบคำถาม 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 อาคารเรียนสูง 11 เมตร 23 เซนติเมตร เสาธงสูง 1,075 เซนติเมตร สิ่งใดสูงกว่า 2 เชือกยาว 203 เซนติเมตร ริบบิ้นยาว 20 เมตร 3 เซนติเมตร สิ่งใดสั้นกว่า อาคารเรียน เชือก 3 โต๊ะยาว 4 เมตร กระดานยาว 289 เซนติเมตร สิ่งใดยาวกว่า โต๊ะ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s051" data-thumb="img/t051.webp" data-title="9.6 การเปรียบเทียบความยาว · หน้า 51"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.6 การเปรียบเทียบความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 51 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ระยะทางจากบ้านถึงโรงเรียน 2 กิโลเมตร 300 เมตร ระยะทางจากบ้านถึงสนามเด็กเล่น 1,800 เมตร ระยะทางจากบ้านถึงโรงเรียนกับระยะทางจากบ้านถึงสนามเด็กเล่น ระยะทางใดยาวกว่า 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ระยะทางจากบ้านถึงโรงเรียน 2 กิโลเมตร 300 เมตร หรือ 2,300 เมตรระยะทางจากบ้านถึงสนามเด็กเล่น 1,800 "></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s052" data-thumb="img/t052.webp" data-title="9.6 การเปรียบเทียบความยาว · หน้า 52"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.6 การเปรียบเทียบความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 52 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 ตอบคำถาม 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 สะพานมิตรภาพไทย-ลาวยาว 1,170 เมตร สะพานพระราม 3 ยาว 1 กิโลเมตร860 เมตร สะพานใดยาวกว่า สะพานพระราม 3 2 ถนนมิตรภาพ 509 กิโลเมตร 100 เมตร ถนนเพชรเกษมยาว 1,270 กิโลเมตร400 เมตร ถนนใดสั้นกว่า ถนนมิตรภาพ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s053" data-thumb="img/t053.webp" data-title="9.6 การเปรียบเทียบความยาว · หน้า 53"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.6 การเปรียบเทียบความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 53 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตอบคำถาม ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 1 ปากกายาว 14 เซนติเมตร 8 มิลลิเมตร ดินสอยาว 98 มิลลิเมตร สิ่งใดยาวกว่า ปากกา 2 ระยะทางจากวัดถึงบ้าน 1,080 เมตร ระยะทางจากบ้านถึงโรงเรียน 1 กิโลเมตร120 เมตร ระยะทางใดสั้นกว่า ระยะทางจากวัดถึงบ้าน 3 ตึก A สูง 875 เซนติเมตร ตึก B สูง "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s054" data-thumb="img/t054.webp" data-title="9.6 การเปรียบเทียบความยาว · หน้า 54"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.6 การเปรียบเทียบความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 54 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การเปรียบเทียบความยาวหรือระยะทางที่มีหน่วยต่างกันต้องเปลี่ยนหน่วยให้เป็นหน่วยเดียวกันก่อนแล้วนำมาเปรียบเทียบกัน สิ่งที่ได้เรียนรู้ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="9.7" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 9.7</span><b>➕ การบวกและการลบเกี่ยวกับความยาว</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s056" data-thumb="img/t056.webp" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว · หน้า 56"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.7 การบวกและการลบเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 56 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="145 255 3100 40 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ตัวอย่าง 1 เมตร 45 เซนติเมตร บวก 2 เมตร 55 เซนติเมตร เท่ากับเท่าไร เมตร เซนติเมตร วิธีทำ + ตอบ ๔ เมตร หรือ 1 เมตร บวก 2 เมตร ได้ 3 เมตร45 เซนติเมตร บวก 55 เซนติเมตร ได้ 100 เซนติเมตร หรือ 1 เมตรดังนั้น 1 เมตร 45 เซนติเมตร บวก 2 เมตร 55 เซนติเม"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s057" data-thumb="img/t057.webp" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว · หน้า 57"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.7 การบวกและการลบเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 57 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 6 เมตร 70 เซนติเมตร บวก 8 เมตร 80 เซนติเมตร เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 670 880 14150 1550 เมตร เซนติเมตร + หรือ วิธีทำ ตอบ ๑๕ เมตร ๕๐ เซนติเมตร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s058" data-thumb="img/t058.webp" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว · หน้า 58"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.7 การบวกและการลบเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 58 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="536 248 7714 784 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ตัวอย่าง 53 เซนติเมตร 6 มิลลิเมตร บวก 24 เซนติเมตร 8 มิลลิเมตร เท่ากับเท่าไร เซนติเมตร มิลลิเมตร วิธีทำ + ตอบ ๗๘ เซนติเมตร ๔ มิลลิเมตร หรือ 10 มม. เท่ากับ 1 ซม."></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s059" data-thumb="img/t059.webp" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว · หน้า 59"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.7 การบวกและการลบเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 59 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2946 34159 361105 37105 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ตัวอย่าง 2,946 เมตร บวก 34 กิโลเมตร 159 เมตร เท่ากับเท่าไร กิโลเมตร เมตร วิธีทำ + ตอบ ๗๘ เซนติเมตร ๔ มิลลิเมตร หรือ 1,000 ม. เท่ากับ 1 กม. 2,946 เมตร เท่ากับ2 กิโลเมตร 946 เมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s060" data-thumb="img/t060.webp" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว · หน้า 60"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.7 การบวกและการลบเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 60 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 76 เซนติเมตร 3 มิลลิเมตร บวก 13 เซนติเมตร 9 มิลลิเมตร เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 763 139 8912 902 เซนติเมตร มิลลิเมตร + หรือ วิธีทำ ตอบ ๙๐ เซนติเมตร ๒ มิลลิเมตร 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s061" data-thumb="img/t061.webp" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว · หน้า 61"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.7 การบวกและการลบเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 61 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 8,753 เมตร บวก 246 กิโลเมตร 488 เมตร เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 8753 246488 2541241 255241 กิโลเมตร เมตร + หรือ วิธีทำ ตอบ ๒๕๕ กิโลเมตร ๒๔๑ เมตร 2"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s062" data-thumb="img/t062.webp" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว · หน้า 62"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.7 การบวกและการลบเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 62 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="830 325 515 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 .ตัวอย่าง 84 เซนติเมตร ลบด้วย 32 เซนติเมตร 5 มิลลิเมตร เท่ากับเท่าไร เซนติเมตร มิลลิเมตร วิธีทำ - ตอบ ๗๘ เซนติเมตร ๔ มิลลิเมตร 1 ซม. เท่ากับ 10 มม.ดังนั้น 84 ซม. เท่ากับ 83 ซม. 10 มม. 83 10"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s063" data-thumb="img/t063.webp" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว · หน้า 63"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.7 การบวกและการลบเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 63 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="72217 5349 66868 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 .ตัวอย่าง 72 กิโลเมตร 217 เมตร ลบด้วย 5,349 เมตร เท่ากับเท่าไร กิโลเมตร เมตร วิธีทำ - ตอบ ๖๖ กิโลเมตร ๘๖๘ เมตร 1 กม. เท่ากับ 1,000 ม.ดังนั้น 72 กม. 217 ม. เท่ากับ 71 กม. 1,217 ม. 71 1217 5,349 เมตร เท่ากับ 5 กิโลเมตร 349 เมตร"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s064" data-thumb="img/t064.webp" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว · หน้า 64"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.7 การบวกและการลบเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 64 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 91 เซนติเมตร 2 มิลลิเมตร ลบด้วย 278 มิลลิเมตร เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 วิธีทำ ตอบ 1 912 278 634 เซนติเมตร มิลลิเมตร - ๖๓ เซนติเมตร ๔ มิลลิเมตร 90 12"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s065" data-thumb="img/t065.webp" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว · หน้า 65"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.7 การบวกและการลบเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 65 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 48,103 เมตร ลบด้วย 23 กิโลเมตร 708 เมตร เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 วิธีทำ ตอบ 2 48103 23708 24395 กิโลเมตร เมตร - ๒๔ กิโลเมตร ๓๙๕ เมตร 47 1103"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s066" data-thumb="img/t066.webp" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว · หน้า 66"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.7 การบวกและการลบเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 66 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 45 เซนติเมตร 4 มิลลิเมตร บวก 21 เซนติเมตร 6 มิลลิเมตร เท่ากับเท่าไร 454 216 6610 67 เซนติเมตร มิลลิเมตร + หรือ วิธีทำ ตอบ ๖๗ เซนติเมตร 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s067" data-thumb="img/t067.webp" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว · หน้า 67"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.7 การบวกและการลบเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 67 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 62 กิโลเมตร 358 เมตร ลบด้วย 47 กิโลเมตร 852 เมตร เท่ากับเท่าไร 2 วิธีทำ ตอบ 62358 47852 14506 กิโลเมตร เมตร - ๑๔ กิโลเมตร ๕๐๖ เมตร 61 1358"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s068" data-thumb="img/t068.webp" data-title="9.7 การบวกและการลบเกี่ยวกับความยาว · หน้า 68"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.7 การบวกและการลบเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 68 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาผลบวกหรือผลลบเกี่ยวกับความยาว ทำได้โดยนำความยาวที่เป็นหน่วยเดียวกันมาบวกหรือลบกัน สิ่งที่ได้เรียนรู้ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="9.8" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 9.8</span><b>✖️ การคูณและการหารเกี่ยวกับความยาว</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s070" data-thumb="img/t070.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 70"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 70 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="128 3 3624 384 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ตัวอย่าง 12 เซนติเมตร 8 มิลลิเมตร คูณ 3 เท่ากับเท่าไร เซนติเมตร มิลลิเมตร วิธีทำ × ตอบ ๓๘ เซนติเมตร ๔ มิลลิเมตร หรือ 10 มม. เท่ากับ 1 ซม."></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s071" data-thumb="img/t071.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 71"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 71 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1430 12 168360 17160 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ตัวอย่าง 14 เมตร 30 เซนติเมตร คูณ 12 เท่ากับเท่าไร เมตร เซนติเมตร วิธีทำ × ตอบ ๑๗๑ เมตร ๖๐ เซนติเมตร หรือ 100 ซม. เท่ากับ 1 ม."></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s072" data-thumb="img/t072.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 72"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 72 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="25550 5 1252750 127750 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ตัวอย่าง 25 กิโลเมตร 550 เมตร คูณ 5 เท่ากับเท่าไร กิโลเมตร เมตร วิธีทำ × ตอบ ๑๒๗ กิโลเมตร ๗๕๐ เมตร หรือ 1,000 ม. เท่ากับ 1 กม."></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s073" data-thumb="img/t073.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 73"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 73 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 7 เมตร 54 เซนติเมตร คูณ 6 เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 754 6 42324 4524 เมตร เซนติเมตร × หรือ วิธีทำ ตอบ ๔๕ เมตร ๒๔ เซนติเมตร 1 7 เมตร 54 เซนติเมตร คูณ 6 เท่ากับเท่าไร 13200 9 1171800 118800 กิโลเมตร เมตร × หรือ วิธีทำ ตอบ ๑๑๘ กิโลเมตร ๘๐๐ เมตร 2"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s074" data-thumb="img/t074.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 74"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 74 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 76 เซนติเมตร 9 มิลลิเมตร คูณ 8 เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 769 8 60872 6152 เซนติเมตร มิลลิเมตร × หรือ วิธีทำ ตอบ ๖๑๕ เซนติเมตร ๒ มิลลิเมตร 3 92 เซนติเมตร 5 มิลลิเมตร คูณ 11 เท่ากับเท่าไร 925 11 101255 10175 เซนติเมตร มิลลิเมตร × หรือ วิธีทำ ตอบ ๑,๐๑๗ เซนติ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s075" data-thumb="img/t075.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 75"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 75 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 10 เมตร 50 เซนติเมตร คูณ 25 เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 1050 25 2501250 26250 เมตร เซนติเมตร × หรือ วิธีทำ ตอบ ๒๖๒ เมตร ๕๐ เซนติเมตร 5 25 กิโลเมตร 12 เมตร คูณ 10 เท่ากับเท่าไร 2512 10 250120 กิโลเมตร เมตร × วิธีทำ ตอบ ๒๕๐ กิโลเมตร ๑๒๐ เมตร 6"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s076" data-thumb="img/t076.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 76"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 76 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 34 เมตร 60 เซนติเมตร คูณ 15 เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 3460 15 510900 519 เมตร เซนติเมตร × หรือ วิธีทำ ตอบ ๕๑๙ เมตร 7 89 เซนติเมตร 7 มิลลิเมตร คูณ 21 เท่ากับเท่าไร 897 21 1869147 18837 เซนติเมตร มิลลิเมตร × หรือ วิธีทำ ตอบ ๑,๘๘๓ เซนติเมตร ๗ มิลลิเมตร 8"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s077" data-thumb="img/t077.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 77"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 77 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 75 เมตร 35 เซนติเมตร คูณ 72 เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 7535 72 54002520 542520 เมตร เซนติเมตร × หรือ วิธีทำ ตอบ ๕,๔๒๕ เมตร ๒๐ เซนติเมตร 9 92 กิโลเมตร 54 เมตร คูณ 63 เท่ากับเท่าไร 9254 63 57963402 5799402 กิโลเมตร เมตร × หรือ วิธีทำ ตอบ ๕,๗๙๙ กิโลเมตร ๔๐๒ เ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s078" data-thumb="img/t078.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 78"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 78 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="15 420 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ตัวอย่าง 4 เมตร 20 เซนติเมตร หารด้วย 4 เท่ากับเท่าไร เมตร เซนติเมตร วิธีทำ ตอบ ๑ เมตร ๕ เซนติเมตร 4"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s079" data-thumb="img/t079.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 79"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 79 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="24100 120500 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ตัวอย่าง 120 กิโลเมตร 500 เมตร หารด้วย 5 เท่ากับเท่าไร กิโลเมตร เมตร วิธีทำ ตอบ ๒๔ กิโลเมตร ๑๐๐ เมตร 5"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s080" data-thumb="img/t080.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 80"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 80 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="690 แสดงวิธีหาคำตอบ 720 เซนติเมตร 5 มิลลิเมตร หารด้วย5 เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 1 6 เมตร 90 เซนติเมตร หารด้วย 6 เท่ากับเท่าไร 2 1441 7205 เซนติเมตร มิลลิเมตร 5 วิธีทำ ตอบ ๑๔๔ เซนติเมตร ๑ มิลลิเมตร 115 เมตร เซนติเมตร 6 ตอบ ๑ เมตร ๑๕ เซนติเมตร วิธีทำ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s081" data-thumb="img/t081.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 81"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 81 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="48750 แสดงวิธีหาคำตอบ 18 กิโลเมตร 540 เมตร หารด้วย 9 เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 3 48 กิโลเมตร 750 เมตร หารด้วย 3 เท่ากับเท่าไร 4 260 18540 กิโลเมตร เมตร 9 วิธีทำ ตอบ ๒ กิโลเมตร ๖๐ เมตร 16250 กิโลเมตร เมตร 3 ตอบ ๑๖ กิโลเมตร ๒๕๐ เมตร วิธีทำ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s082" data-thumb="img/t082.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 82"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 82 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2813 19691 แสดงวิธีหาคำตอบ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 196 เมตร 91 เซนติเมตร หารด้วย 7 เท่ากับเท่าไร 5 เมตร เซนติเมตร 7 ตอบ ๒๘ เมตร ๑๓ เซนติเมตร วิธีทำ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s083" data-thumb="img/t083.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 83"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 83 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="203 1624 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ตัวอย่าง 162 เซนติเมตร 4 มิลลิเมตร หารด้วย 8 เท่ากับเท่าไร เซนติเมตร มิลลิเมตร วิธีทำ ตอบ ๒๐ เซนติเมตร ๓ มิลลิเมตร 8 2 ซม. เท่ากับ 20 มม.รวมกับ 4 มม. เป็น 24 มม. 24 162 หารด้วย 8ได้ 20 เศษ 2"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s084" data-thumb="img/t084.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 84"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 84 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="24900 124500 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ตัวอย่าง 124 กิโลเมตร 500 เมตร หารด้วย 5 เท่ากับเท่าไร กิโลเมตร เมตร วิธีทำ ตอบ ๒๔ กิโลเมตร ๙๐๐ เมตร 5 4 กม. เท่ากับ 4,000 ม.รวมกับ 500 ม. เป็น 4,500 ม. 4500 124 หารด้วย 5ได้ 24 เศษ 4"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s085" data-thumb="img/t085.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 85"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 85 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="8932 แสดงวิธีหาคำตอบ 65 เซนติเมตร 7 มิลลิเมตร หารด้วย 9 เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 1 89 เมตร 32 เซนติเมตร หารด้วย 7 เท่ากับเท่าไร 2 73 657 เซนติเมตร มิลลิเมตร 9 วิธีทำ ตอบ ๑๔๔ เซนติเมตร ๑ มิลลิเมตร 1276 เมตร เซนติเมตร 7 ตอบ ๑๒ เมตร ๗๖ เซนติเมตร วิธีทำ 27 532"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s086" data-thumb="img/t086.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 86"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 86 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="178824 แสดงวิธีหาคำตอบ 22 กิโลเมตร 50 เมตร หารด้วย 3 เท่ากับเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 3 178 กิโลเมตร 824 เมตร หารด้วย 8 เท่ากับเท่าไร 4 7350 2250 กิโลเมตร เมตร 3 วิธีทำ ตอบ ๗ กิโลเมตร ๓๕๐ เมตร 22353 กิโลเมตร เมตร 8 ตอบ ๒๒ กิโลเมตร ๓๕๓ เมตร วิธีทำ 1,050 2,824"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s087" data-thumb="img/t087.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 87"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 87 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4519 27114 แสดงวิธีหาคำตอบ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 271 เมตร 14 เซนติเมตร หารด้วย 6 เท่ากับเท่าไร 5 เมตร เซนติเมตร 6 ตอบ ๔๕ เมตร ๑๙ เซนติเมตร วิธีทำ 114"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s088" data-thumb="img/t088.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 88"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 88 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 26 เมตร 70 เซนติเมตร คูณ 6 เท่ากับเท่าไร 1 59 เซนติเมตร 4 มิลลิเมตร หารด้วย 3 เท่ากับเท่าไร 2 198 594 เซนติเมตร มิลลิเมตร 3 วิธีทำ ตอบ ๑๙ เซนติเมตร ๘ มิลลิเมตร 24 2670 6 156420 16020 เมตร เซนติเมตร × หรือ วิธีทำ ตอบ ๑๖๐ เมตร "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s089" data-thumb="img/t089.webp" data-title="9.8 การคูณและการหารเกี่ยวกับความยาว · หน้า 89"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.8 การคูณและการหารเกี่ยวกับความยาว</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 89 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาผลคูณหรือผลหารเกี่ยวกับความยาว ทำได้โดยคูณหรือหารความยาวทีละหน่วยความยาว สิ่งที่ได้เรียนรู้ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="9.9" data-title="9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 9.9</span><b>📝 โจทย์ปัญหาเกี่ยวกับความยาว (1)</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s091" data-thumb="img/t091.webp" data-title="9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1) · หน้า 91"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 91 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หรือ325 รวมสองวันทอผ้าได้2125 เมื่อวานแม่ทอผ้าได้ 1 เมตร 50 เซนติเมตร วันนี้ทอผ้าได้อีก 1 เมตร 75 เซนติเมตร รวมสองวันแม่ทอผ้าได้กี่เมตร กี่เซนติเมตร โจทย์ถาม รวมสองวันแม่ทอผ้าได้กี่เมตร กี่เซนติเมตร โจทย์บอก เมื่อวานแม่ทอผ้าได้ 1 เมตร 50 เซนติเมตร วันนี้ทอผ้าได้อีก 1 เมตร 75 เซนติเมตร หาคำตอบได้อย่า"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s092" data-thumb="img/t092.webp" data-title="9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1) · หน้า 92"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 92 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วันที่สองซ่อมผิวถนนได้ยาวกว่าวันแรก0430 วันแรกช่างซ่อมผิวถนนได้ 4 กิโลเมตร 570 เมตร วันที่สองช่างซ่อมผิวถนนได้ 5 กิโลเมตร วันที่สองช่างซ่อมผิวถนนได้ยาวกว่าวันแรกเท่าไร โจทย์ถาม วันที่สองช่างซ่อมผิวถนนได้ยาวกว่าวันแรกเท่าไร โจทย์บอก วันแรกช่างซ่อมผิวถนนได้ 4 กิโลเมตร 570 เมตร วันที่สองช่างซ่อมผิวถนนไ"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s093" data-thumb="img/t093.webp" data-title="9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1) · หน้า 93"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 93 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แก้วน้ำสูงกว่าแก้วกินยา49 แก้วน้ำสูง 9 เซนติเมตร 4 มิลลิเมตร แก้วกินยาสูง 45 มิลลิเมตร แก้วน้ำสูงกว่าแก้วกินยากี่เซนติเมตร กี่มิลลิเมตร วิธีทำ แก้วน้ำสูง94 ตอบ แก้วน้ำสูงกว่าแก้วกินยา ๔ เซนติเมตร ๙ มิลลิเมตร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 เซนติเมตร มิลลิเมตร - แก้วกินยาสูง45 45 มม. เท่ากับ"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s094" data-thumb="img/t094.webp" data-title="9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1) · หน้า 94"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 94 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 แสดงวิธีหาคำตอบ กระดาษสีขาวยาว 5 เมตร 25 เซนติเมตร กระดาษสีฟ้ายาวกว่ากระดาษสีขาว 1 เมตร 30 เซนติเมตร กระดาษสีฟ้ายาวเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 กระดาษสีฟ้ายาว655 วิธีทำ กระดาษสีขาวยาว525 ตอบ กระดาษสีฟ้ายาว ๖ เมตร ๕๕ เซนติเมตร เมตร เซนติเมตร + กระดาษสีฟ้ายาวกว่ากระดาษสีขาว130"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s095" data-thumb="img/t095.webp" data-title="9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1) · หน้า 95"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 95 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 แสดงวิธีหาคำตอบ ระยะทางจากบ้านไปวัด 5,500 เมตร ระยะทางจากบ้านไปสวนสนุก 7 กิโลเมตร 150 เมตร ระยะทางใดยาวกว่า และยาวกว่าอยู่เท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ระยะทางจากบ้านไปสวนสนุกยาวกว่า1650 วิธีทำ ระยะทางจากบ้านไปสวนสนุก7150 ตอบ ระยะทางจากบ้านไปสวนสนุกยาวกว่าและยาวกว่าอยู่ ๑ กิโลเมต"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s096" data-thumb="img/t096.webp" data-title="9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1) · หน้า 96"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 96 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 แสดงวิธีหาคำตอบ กล่องกระดาษทิชชูสูง 8 เซนติเมตร 6 มิลลิเมตร วางซ้อนกัน 2 กล่อง สูงเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 วางซ้อนกัน 2 กล่องสูง1612 วิธีทำ กล่องกระดาษทิชชูสูง86 ตอบ วางซ้อนกัน ๒ กล่องสูง ๑๗ เซนติเมตร ๒ มิลลิเมตร เซนติเมตร มิลลิเมตร + วางซ้อนกัน 2 กล่อง86 หรือ172"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s097" data-thumb="img/t097.webp" data-title="9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1) · หน้า 97"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 97 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="น้ำลงต่ำสุด61 4 แสดงวิธีหาคำตอบ ระดับนน้ำที่อ่าวสัตหีบน้ำขึ้นสูงสุด 2 เมตร 92 เซนติเมตร น้ำลงต่ำสุด 61 เซนติเมตร ระดับน้ำขึ้นสูงสุดสูงกว่าระดับน้ำลงต่ำสุดเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 ระดับน้ำขึ้นสูงสุดสูงกว่าระดับน้ำลงต่ำสุด231 วิธีทำ น้ำขึ้นสูงสุด292 ตอบ ระดับน้ำขึ้นสูงสุดสูงกว่า"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s098" data-thumb="img/t098.webp" data-title="9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1) · หน้า 98"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 98 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ ผนังห้องยาว 4 เมตร 50 เซนติเมตร นำโต๊ะทำงานยาว 1 เมตร 20 เซนติเมตร วางติดกับผนังห้อง เหลือความยาวของผนังห้องเท่าไร ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 1 นำโต๊ะทำงานวางติดผนังห้องยาว120 เหลือความยาวของผนังห้อง330 วิธีทำ ผนังห้องยาว450 ตอบ เหลือความยาวของผนังห้อง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s099" data-thumb="img/t099.webp" data-title="9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1) · หน้า 99"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 99 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ สมชายปั่นจักรยานช่วงแรกได้ 15 กิโลเมตร 350 เมตร ช่วงที่สองปั่นจักรยานได้อีก 12 กิโลเมตร 800 เมตร รวมสองช่วงสมชายปั่นจักรยานได้ระยะทางเท่าไร ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 2 รวมสองช่วงสมชายปั่นจักรยานได้271150 วิธีทำ สมชายปั่นจักรยานช่วงแรกได้15350 ตอบ รวมส"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s100" data-thumb="img/t100.webp" data-title="9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1) · หน้า 100"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 100 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การแก้โจทย์ปัญหาทำได้โดยอ่านทำความเข้าใจปัญหา วางแผนแก้ปัญหา หาคำตอบ และตรวจสอบความสมเหตุสมผลของคำตอบ สิ่งที่ได้เรียนรู้ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="9.10" data-title="9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 9.10</span><b>🧩 โจทย์ปัญหาเกี่ยวกับความยาว (2)</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s102" data-thumb="img/t102.webp" data-title="9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2) · หน้า 102"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 102 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หรือ1980 นำมาวางต่อกันจะยาว19260 ครูมีกระดาษสียาวแผ่นละ 16 เซนติเมตร 5 มิลลิเมตร จำนวน 12 แผ่น นำมาวางต่อกันจะยาวเท่าไร โจทย์ถาม นำมาวางต่อกันจะยาวเท่าไร โจทย์บอก ครูมีกระดาษสียาวแผ่นละ 16 เซนติเมตร 5 มิลลิเมตร จำนวน 12 แผ่น หาคำตอบได้อย่างไร กระดาษยาวแผ่นละ 16 เซนติเมตร 5 มิลลิเมตรวางต่อกันจำนวน 12"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s103" data-thumb="img/t103.webp" data-title="9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2) · หน้า 103"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 103 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พลอยเดินออกกำลังกายรอบสวนสาธารณะ 5 รอบ ได้ระยะทาง 16 กิโลเมตร 500 เมตร ถ้าแต่ละรอบพลอยเดินได้ระยะทางเท่ากัน พลอยเดินรอบละกี่กิโลเมตร กี่เมตร โจทย์ถาม พลอยเดินรอบละกี่กิโลเมตร กี่เมตร โจทย์บอก พลอยเดินออกกำลังกายรอบสวนสาธารณะ 5 รอบ ได้ระยะทาง 16 กิโลเมตร 500 เมตร ถ้าแต่ละรอบพลอยเดินได้ระยะทางเท่ากัน "></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s104" data-thumb="img/t104.webp" data-title="9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2) · หน้า 104"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 104 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หรือ350 สูง25100 กระเบื้องหนา 1 เซนติเมตร 4 มิลลิเมตร วางซ้อนกัน 25 แผ่น สูงเท่าไร วิธีทำ กระเบื้องหนา14 ตอบ สูง ๓๕ เซนติเมตร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 เซนติเมตร มิลลิเมตร × วางซ้อนกัน25 10 มม. เท่ากับ 1 ซม. แผ่น"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s105" data-thumb="img/t105.webp" data-title="9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2) · หน้า 105"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 105 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 แสดงวิธีหาคำตอบ พ่อขับรถ 1 ชั่วโมง ได้ระยะทาง 85 กิโลเมตร 350 เมตร ถ้าแต่ละชั่วโมงพ่อขับรถได้ระยะทางเท่ากัน ในเวลา 4 ชั่วโมง พ่อขับรถได้ระยะทางเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 หรือ341400 พ่อขับรถได้ระยะทาง3401400 วิธีทำ พ่อขับรถ 1 ชั่วโมง ได้ระยะทาง85350 ตอบ พ่อขับรถได้ระยะทาง ๓๔๑ ก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s106" data-thumb="img/t106.webp" data-title="9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2) · หน้า 106"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 106 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 แสดงวิธีหาคำตอบ กล่องขนมยาว 8 เซนติเมตร ถ้าวางกล่องขนมเรียงตามแนวยาวในตู้โชว์ที่ยาว 1 เมตร 20 เซนติเมตร จะวางกล่องขนมได้กี่กล่อง 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 วิธีทำ ตู้โชว์ยาว 1 เมตร 20 เซนติเมตร หรือ 120 เซนติเมตร กล่องขนมยาว 8 เซนติเมตร จะวางกล่องขนมได้ 120 ÷ 8 = 15 เซนติเมตรตอบ จะวา"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s107" data-thumb="img/t107.webp" data-title="9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2) · หน้า 107"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 107 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1855 3 แสดงวิธีหาคำตอบ ประเทศอิตาลีทำพิซซ่าที่ยาวที่สุดในโลกในปีพุทธศักราช 2559 ซึ่งยาว 1 กิโลเมตร 855 เมตร ถ้าแบ่งพิซซ่าเป็น 7 ส่วน ส่วนละเท่าๆ กัน แต่ละส่วนจะยาวเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 วิธีทำ พิซซ่ายาว 1 กิโลเมตร 855 เมตรแบ่งเท่าๆ กันเป็น 7 ส่วน 0265 กิโลเมตร เมตร 7 1855 แต"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s108" data-thumb="img/t108.webp" data-title="9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2) · หน้า 108"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 108 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="4 แสดงวิธีหาคำตอบ แม่ทำผ้าปูโต๊ะแต่ละผืนใช้ผ้ายาว 2 เมตร 25 เซนติเมตร ต้องการทำผ้าปูโต๊ะ 6 ผืน แม่ต้องใช้ผ้ายาวเท่าไร 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 หรือ1350 แม่ต้องใช้ผ้ายาว12150 วิธีทำ แม่ทำผ้าปูโต๊ะแต่ละผืนใช้ผ้ายาว225 ตอบ แม่ต้องใช้ผ้ายาว ๑๓ เมตร ๕๐ เซนติเมตร เมตร เซนติเมตร × ต้องการทำ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s109" data-thumb="img/t109.webp" data-title="9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2) · หน้า 109"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 109 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ ไม้ไผ่ลำหนึ่งยาว 9 เมตร 60 เซนติเมตร ตัดออกเป็น 4 ท่อน ท่อนละเท่าๆ กัน จะได้ไม้ไผ่ยาวท่อนละเท่าไร ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 1 960 วิธีทำ ไม้ไผ่ลำหนึ่งยาว 9 เมตร 60 เซนติเมตรตัดออกเป็น 4 ท่อน 240 เมตร เซนติเมตร 4 160 จะได้ไม้ไผ่ยาวท่อนละ ตอบ จะได้ไม้ไผ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s110" data-thumb="img/t110.webp" data-title="9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2) · หน้า 110"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 110 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ ช่างเทปูนถนนวันละ 2 กิโลเมตร 750 เมตร ถ้าช่างเทปูนทุกวัน ครบ 1 สัปดาห์ ช่างเทปูนได้ระยะทางเท่าไร ตรวจสอบความเข้าใจ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10 2 ช่างเทปูนได้ระยะทาง145250 วิธีทำ ช่างเทปูนถนนวันละ2750 ตอบ ช่างเทปูนได้ระยะทาง ๑๙ กิโลเมตร ๒๕๐ เมตร กิโลเมตร เมตร × ช่างเทปูนค"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s111" data-thumb="img/t111.webp" data-title="9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2) · หน้า 111"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 111 / 111</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การแก้โจทย์ปัญหาทำได้โดยอ่านทำความเข้าใจปัญหา วางแผนแก้ปัญหา หาคำตอบ และตรวจสอบความสมเหตุสมผลของคำตอบ สิ่งที่ได้เรียนรู้ 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 9.10"></div></div></div>
+  
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
+  <div class="kru fig"><span class="av"><img src="k10.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>จบบทที่ 9 การวัดความยาว</h2>
+  <div class="card c-yellow center endpic"><img src="k9.webp" alt="ครูอู๋ชูถ้วยรางวัล"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="f11.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="toc"><button data-jump="9.1"><span class="e">📏</span><span>ทบทวน 9.1 การวัดความยาวเป็นเซนติเมตรและมิลลิเมตร</span></button><button data-jump="9.2"><span class="e">🛣️</span><span>ทบทวน 9.2 ความยาวเป็นเมตรและเซนติเมตร กิโลเมตรและเมตร</span></button><button data-jump="9.3"><span class="e">🧰</span><span>ทบทวน 9.3 การเลือกเครื่องมือวัดความยาวที่เหมาะสม</span></button><button data-jump="9.4"><span class="e">🤔</span><span>ทบทวน 9.4 การคาดคะเนความยาวเป็นเมตรและเป็นเซนติเมตร</span></button><button data-jump="9.5"><span class="e">🔗</span><span>ทบทวน 9.5 ความสัมพันธ์ระหว่างหน่วยความยาว</span></button><button data-jump="9.6"><span class="e">⚖️</span><span>ทบทวน 9.6 การเปรียบเทียบความยาว</span></button><button data-jump="9.7"><span class="e">➕</span><span>ทบทวน 9.7 การบวกและการลบเกี่ยวกับความยาว</span></button><button data-jump="9.8"><span class="e">✖️</span><span>ทบทวน 9.8 การคูณและการหารเกี่ยวกับความยาว</span></button><button data-jump="9.9"><span class="e">📝</span><span>ทบทวน 9.9 โจทย์ปัญหาเกี่ยวกับความยาว (1)</span></button><button data-jump="9.10"><span class="e">🧩</span><span>ทบทวน 9.10 โจทย์ปัญหาเกี่ยวกับความยาว (2)</span></button></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m3-ch8-division/">◀ บทก่อนหน้า</a><a class="btn" style="--c:var(--purple)" href="../m3-math-hub/">🏠 หน้ารวม ป.3</a><a class="btn ghost" href="../m3-ch10-weight/">บทถัดไป ▶</a></div>
+  <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.3 สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m3-ch9-length", STORE_PREFIX = 'kruau-p3-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [{"q": "1 เซนติเมตร เท่ากับกี่มิลลิเมตร", "c": ["10 มิลลิเมตร", "100 มิลลิเมตร", "1,000 มิลลิเมตร", "5 มิลลิเมตร"], "a": 0, "w": "1 ซม. = 10 มม."}, {"q": "1 เมตร เท่ากับกี่เซนติเมตร", "c": ["100 เซนติเมตร", "10 เซนติเมตร", "1,000 เซนติเมตร", "60 เซนติเมตร"], "a": 0, "w": "1 ม. = 100 ซม."}, {"q": "1 กิโลเมตร เท่ากับกี่เมตร", "c": ["1,000 เมตร", "100 เมตร", "10 เมตร", "10,000 เมตร"], "a": 0, "w": "1 กม. = 1,000 ม."}, {"q": "3 เมตร 25 เซนติเมตร เท่ากับกี่เซนติเมตร", "c": ["325 เซนติเมตร", "3,025 เซนติเมตร", "35 เซนติเมตร", "30.25 เซนติเมตร"], "a": 0, "w": "300 + 25 = 325"}, {"q": "ควรใช้เครื่องมือใดวัดความยาวของห้องเรียน", "c": ["ตลับเมตร", "ไม้บรรทัด 15 ซม.", "เครื่องชั่ง", "ถ้วยตวง"], "a": 0, "w": "ห้องยาวหลายเมตร ใช้ตลับเมตรสะดวกที่สุด"}, {"q": "ข้อใดยาวที่สุด", "c": ["2 กิโลเมตร", "1,500 เมตร", "1 กิโลเมตร 900 เมตร", "1,999 เมตร"], "a": 0, "w": "2 กม. = 2,000 ม. มากที่สุด"}, {"q": "ผ้ายาว 4 เมตร 50 เซนติเมตร ตัดไป 1 เมตร 20 เซนติเมตร เหลือเท่าใด", "c": ["3 เมตร 30 เซนติเมตร", "5 เมตร 70 เซนติเมตร", "3 เมตร 70 เซนติเมตร", "2 เมตร 30 เซนติเมตร"], "a": 0, "w": "ลบเมตรกับเมตร เซนติเมตรกับเซนติเมตร"}, {"q": "เชือกยาว 48 เมตร แบ่งเป็น 6 เส้นยาวเท่ากัน เส้นละกี่เมตร", "c": ["8 เมตร", "6 เมตร", "42 เมตร", "54 เมตร"], "a": 0, "w": "48 ÷ 6 = 8"}];
+
+/* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
+var PRAISE = [['k11', 'เยี่ยมมาก!'], ['k2', 'สุดยอด!'], ['k6', 'เก่งมาก!'], ['k9', 'แชมป์เลย!'], ['k11', 'ปรบมือให้เลย!'], ['k7', 'เข้าใจแล้วใช่ไหม']];
+function ppPaint(sl, quiet) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, z = sl.querySelector('.ppz'), img = z.querySelector('img:not(.ghost)');
+  var src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (img.getAttribute('src') && img.getAttribute('src') !== src && !quiet) {
+    var g = img.cloneNode(); g.className = 'ghost'; g.removeAttribute('alt'); z.insertBefore(g, img.nextSibling);
+    var fade = function () { g.style.opacity = 0; setTimeout(function () { g.remove(); }, 400); };
+    img.onload = function () { img.onload = null; requestAnimationFrame(fade); };
+    setTimeout(fade, 900);
+  }
+  img.src = src;
+  if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
+  sl.querySelector('.ppbox').classList.toggle('can', k < n);
+  var b = sl.querySelector('[data-pstep]');
+  if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+  var d = sl.querySelector('.ppbox .done');
+  if (d) d.remove();
+  if (n && k >= n) {
+    var p = PRAISE[(+sl.getAttribute('data-src').slice(-3)) % PRAISE.length];
+    d = document.createElement('div'); d.className = 'done';
+    d.innerHTML = '<span>' + p[1] + '</span><img src="' + p[0] + '.webp" alt="">';
+    sl.querySelector('.ppbox').appendChild(d);
+    if (!quiet) { Kit.sound.good(); if (Math.random() < .35) Kit.confetti(); }
+  }
+}
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl, 1); } }
+function ppTools(sl, mode) {
+  ['zoom'].forEach(function (m) {
+    var on = m === mode && !sl.classList.contains(m);
+    sl.classList.toggle(m, on);
+    sl.querySelector('[data-' + m + ']').classList.toggle('on', on);
+  });
+  if (!sl.classList.contains('zoom')) sl.querySelector('.ppz').style.transformOrigin = '50% 50%';
+  sl.querySelector('.ppbox').classList.toggle('noswipe', sl.classList.contains('zoom'));
+}
+/* ---------- จับเวลา ---------- */
+var TM = { el: null, end: 0, iv: 0 };
+function tmShow() {
+  if (!TM.el) {
+    TM.el = document.createElement('div'); TM.el.className = 'timer';
+    document.body.appendChild(TM.el);
+  }
+  clearInterval(TM.iv); TM.el.classList.remove('end');
+  TM.el.innerHTML = '⏱️ <span class="opts"><button data-m="1">1 นาที</button><button data-m="2">2</button><button data-m="3">3</button><button data-m="5">5</button></span><button class="x" aria-label="ปิด">✖</button>';
+  TM.el.classList.add('show');
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show'); };
+  Array.prototype.forEach.call(TM.el.querySelectorAll('[data-m]'), function (b) { b.onclick = function () { tmStart(+b.getAttribute('data-m')); }; });
+}
+function tmStart(m) {
+  TM.end = Date.now() + m * 60000;
+  TM.el.innerHTML = '⏱️ <span class="t"></span><button class="x" aria-label="หยุด">✖</button>';
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show', 'end'); };
+  var t = TM.el.querySelector('.t');
+  function tick() {
+    var r = Math.max(0, Math.ceil((TM.end - Date.now()) / 1000));
+    t.textContent = Math.floor(r / 60) + ':' + ('0' + r % 60).slice(-2);
+    if (!r) { clearInterval(TM.iv); TM.el.classList.add('end'); Kit.sound.win(); Kit.toast('⏰ หมดเวลา! มาดูเฉลยกันนะ'); }
+  }
+  tick(); TM.iv = setInterval(tick, 250); Kit.sound.tap();
+}
+(function () {
+  var go = Kit.go;
+  Kit.go = function (n, instant) {
+    var cur = Kit.slides[Kit.cur];
+    if (!instant && cur && cur.classList.contains('pslide')) {
+      var N = +cur.getAttribute('data-steps'), k = cur._k || 0;
+      if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
+      if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
+    }
+    if (cur && cur.classList.contains('pslide') && n !== Kit.cur) ppTools(cur, null);
+    var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
+    go(n, instant);
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t, 1); }
+    for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+  };
+})();
+SETUP = function () {
+  setupToc();
+  Kit.slides.forEach(function (sl) {
+    if (!sl.classList.contains('pslide')) return;
+    var box = sl.querySelector('.ppbox'), z = sl.querySelector('.ppz'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
+    box.addEventListener('click', function (e) {
+      if (sl.classList.contains('zoom')) {
+        var q = box.getBoundingClientRect();
+        z.style.transformOrigin = ((e.clientX - q.left) / q.width * 100) + '% ' + ((e.clientY - q.top) / q.height * 100) + '%';
+        return;
+      }
+      adv();
+    });
+    if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+    sl.querySelector('[data-zoom]').onclick = function () { ppTools(sl, 'zoom'); Kit.sound.tap(); if (sl.classList.contains('zoom')) Kit.toast('🔎 แตะตรงที่อยากดูใกล้ ๆ'); };
+    sl.querySelector('[data-timer]').onclick = function () { tmShow(); Kit.sound.tap(); };
+  });
+};
+
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
+  });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- กล้องมุมจอ + อัดวิดีโอการสอน ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit) return;
+  var md = navigator.mediaDevices || {};
+  var inFrame = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  var canRec = !!md.getDisplayMedia && !!window.MediaRecorder;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '🎥'; btn.title = 'กล้องมุมจอ / อัดวิดีโอการสอน'; btn.setAttribute('aria-label', 'กล้องและอัดวิดีโอ');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var pnl = document.createElement('div'); pnl.className = 'campnl';
+  pnl.innerHTML = '<b>🎥 สอนออนไลน์ / ทำวิดีโอ</b>' +
+    '<button data-cam>📷 เปิดกล้องมุมจอ</button>' +
+    (canRec ? '<button data-rec>🔴 อัดวิดีโอหน้าจอ + เสียง</button>' : '') +
+    '<p class="tip">' + (canRec
+      ? 'กดอัดแล้วเลือก <b>แท็บนี้</b> ระบบจะอัดสไลด์ กล้อง และเสียงครูไว้ด้วยกัน กดหยุดแล้วจะได้ไฟล์วิดีโอทันที'
+      : 'บน iPad: เปิดกล้องมุมจอ แล้วใช้ <b>การบันทึกหน้าจอ</b> ในศูนย์ควบคุม (กดค้างที่ปุ่ม ⏺ เพื่อเปิดไมโครโฟน)') + '</p>' +
+    '<button data-x class="ghost">ปิด</button>';
+  document.body.appendChild(pnl);
+  btn.onclick = function () { pnl.classList.toggle('show'); Kit.sound.tap(); };
+  pnl.querySelector('[data-x]').onclick = function () { pnl.classList.remove('show'); };
+
+  function newTab(flag) {
+    var w = window.open(location.href.split('#')[0] + '#s=' + Kit.cur + '&' + flag + '=1', '_blank');
+    if (!w) Kit.toast('เปิดแท็บใหม่ไม่ได้ ลองกดปุ่ม "เปิดในแท็บใหม่" ของเว็บครูอู๋');
+  }
+
+  /* ---- กล้อง ---- */
+  var cam = null, stream = null, SIZES = [120, 170, 240], si = 1, round = true;
+  try { var sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); if (sv.si != null) si = sv.si; if (sv.round != null) round = sv.round; } catch (e) {}
+  function save(x, y) { try { localStorage.setItem('kruau-cam', JSON.stringify({ si: si, round: round, x: x, y: y })); } catch (e) {} }
+  function place() {
+    var s = SIZES[si], h = round ? s : Math.round(s * .75);
+    cam.style.width = s + 'px'; cam.style.height = h + 'px';
+    cam.classList.toggle('sq', !round);
+    var r = cam.getBoundingClientRect();
+    var x = Math.min(Math.max(4, r.left), innerWidth - s - 4), y = Math.min(Math.max(4, r.top), innerHeight - h - 4);
+    cam.style.left = x + 'px'; cam.style.top = y + 'px';
+  }
+  function openCam() {
+    if (cam) return;
+    if (!md.getUserMedia) { Kit.toast('อุปกรณ์นี้เปิดกล้องผ่านเว็บไม่ได้'); return; }
+    md.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }).then(function (s) {
+      stream = s;
+      cam = document.createElement('div'); cam.className = 'cambub noswipe';
+      cam.innerHTML = '<video autoplay playsinline muted></video><span class="cb"><button data-sz title="ย่อ/ขยาย">⤢</button><button data-sh title="วงกลม/สี่เหลี่ยม">◐</button><button data-cl title="ปิดกล้อง">✖</button></span>';
+      document.body.appendChild(cam);
+      var v = cam.querySelector('video'); v.srcObject = s; v.play().catch(function () {});
+      var sv = {}; try { sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); } catch (e) {}
+      cam.style.left = (sv.x != null ? sv.x : innerWidth - SIZES[si] - 16) + 'px';
+      cam.style.top = (sv.y != null ? sv.y : innerHeight - SIZES[si] - 90) + 'px';
+      place();
+      cam.querySelector('[data-sz]').onclick = function (e) { e.stopPropagation(); si = (si + 1) % SIZES.length; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-sh]').onclick = function (e) { e.stopPropagation(); round = !round; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-cl]').onclick = function (e) { e.stopPropagation(); closeCam(); };
+      var drag = null;
+      cam.addEventListener('pointerdown', function (e) {
+        if (e.target.closest('button')) return;
+        drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
+      });
+      cam.addEventListener('pointermove', function (e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        cam.style.left = Math.min(Math.max(4, e.clientX - drag.dx), innerWidth - cam.offsetWidth - 4) + 'px';
+        cam.style.top = Math.min(Math.max(4, e.clientY - drag.dy), innerHeight - cam.offsetHeight - 4) + 'px';
+      });
+      cam.addEventListener('pointerup', function () { if (drag) save(cam.offsetLeft, cam.offsetTop); drag = null; });
+      pnl.querySelector('[data-cam]').textContent = '📷 ปิดกล้องมุมจอ';
+      pnl.classList.remove('show');
+      Kit.toast('📷 ลากกล้องไปวางมุมไหนก็ได้ · ⤢ ย่อ/ขยาย');
+    }).catch(function (err) {
+      if (inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่อใช้กล้อง…'); newTab('cam'); }
+      else Kit.toast('เปิดกล้องไม่ได้ — กรุณาอนุญาตให้เว็บใช้กล้อง');
+    });
+  }
+  function closeCam() {
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    if (cam) cam.remove();
+    cam = stream = null;
+    pnl.querySelector('[data-cam]').textContent = '📷 เปิดกล้องมุมจอ';
+  }
+  pnl.querySelector('[data-cam]').onclick = function () { if (cam) closeCam(); else openCam(); };
+  addEventListener('resize', function () { if (cam) place(); });
+
+  /* ---- อัดวิดีโอ (คอมพิวเตอร์: Chrome / Edge / Firefox) ---- */
+  var rec = null, chip = null, parts = [], t0 = 0, iv = 0, all = [];
+  function pickType() {
+    var c = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    for (var i = 0; i < c.length; i++) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c[i])) return c[i];
+    return '';
+  }
+  function startRec() {
+    md.getDisplayMedia({ video: { frameRate: 30 }, audio: true, preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude' }).then(function (ds) {
+      all = [ds];
+      return md.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }).then(function (mic) { all.push(mic); return [ds, mic]; }, function () { Kit.toast('ไม่ได้เปิดไมโครโฟน จะอัดแต่ภาพ'); return [ds, null]; });
+    }).then(function (r) {
+      var ds = r[0], mic = r[1], tracks = ds.getVideoTracks().slice();
+      var aud = [ds, mic].filter(function (s) { return s && s.getAudioTracks().length; });
+      if (aud.length === 1) tracks = tracks.concat(aud[0].getAudioTracks());
+      else if (aud.length > 1) {
+        var ac = new (window.AudioContext || window.webkitAudioContext)(), dst = ac.createMediaStreamDestination();
+        aud.forEach(function (s) { ac.createMediaStreamSource(s).connect(dst); });
+        tracks = tracks.concat(dst.stream.getAudioTracks());
+      }
+      var type = pickType();
+      rec = new MediaRecorder(new MediaStream(tracks), type ? { mimeType: type, videoBitsPerSecond: 3000000 } : undefined);
+      parts = [];
+      rec.ondataavailable = function (e) { if (e.data && e.data.size) parts.push(e.data); };
+      rec.onstop = finish;
+      ds.getVideoTracks()[0].addEventListener('ended', stopRec);
+      rec.start(1000); t0 = Date.now();
+      chip = document.createElement('div'); chip.className = 'recchip';
+      chip.innerHTML = '<span class="dot"></span> อัดอยู่ <span class="t">0:00</span><button>■ หยุด</button>';
+      document.body.appendChild(chip);
+      chip.querySelector('button').onclick = stopRec;
+      iv = setInterval(function () { var s = Math.floor((Date.now() - t0) / 1000); chip.querySelector('.t').textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }, 500);
+      pnl.classList.remove('show');
+      if (!cam) Kit.toast('🔴 เริ่มอัดแล้ว · เปิดกล้องมุมจอได้ที่ปุ่ม 🎥');
+    }).catch(function (err) {
+      all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+      if (err && err.name === 'NotAllowedError' && inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่ออัดวิดีโอ…'); newTab('rec'); }
+      else if (err && err.name !== 'NotAllowedError') Kit.toast('อัดวิดีโอไม่ได้: ' + err.name);
+    });
+  }
+  function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+  function finish() {
+    clearInterval(iv);
+    all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+    if (chip) chip.remove();
+    var type = (rec && rec.mimeType) || 'video/webm', ext = type.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+    var blob = new Blob(parts, { type: type }), a = document.createElement('a');
+    var d = new Date(), name = (document.title.split('·')[0].trim() || 'บทเรียน').replace(/[\\\/:*?"<>|]/g, '') + ' ' + d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    a.href = URL.createObjectURL(blob); a.download = name + '.' + ext;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+    Kit.sound.win(); Kit.toast('💾 บันทึกวิดีโอแล้ว (' + ext.toUpperCase() + ') ดูได้ในโฟลเดอร์ดาวน์โหลด');
+    rec = null;
+  }
+  var rb = pnl.querySelector('[data-rec]');
+  if (rb) rb.onclick = function () { if (rec) stopRec(); else startRec(); };
+
+  /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
+  if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
+  if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+</script>
+</body>
+</html>

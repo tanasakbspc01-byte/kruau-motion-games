@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 2 การบวกและการลบจำนวนนับไม่เกิน 100,000 · คณิตศาสตร์ ป.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#F25C9A;--main-deep:#C93A75;--glow:#FFDDEB}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
+/* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
+.campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
+.campnl.show{display:flex}
+.campnl button{min-height:44px;border-radius:14px;border:2px solid var(--main);background:var(--glow);font-weight:700;font-size:1rem;color:var(--ink)}
+.campnl button.ghost{background:#fff;min-height:36px}
+.campnl .tip{margin:0;font-size:.88rem;line-height:1.5;color:var(--ink-soft)}
+.cambub{position:fixed;z-index:65;border-radius:50%;overflow:hidden;background:#222;border:4px solid #fff;box-shadow:0 0 0 3px var(--main),0 8px 20px rgba(0,0,0,.3);touch-action:none;cursor:grab}
+.cambub.sq{border-radius:18px}
+.cambub video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;pointer-events:none}
+.cambub .cb{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:4px;opacity:0;transition:opacity .2s}
+.cambub:hover .cb,.cambub:active .cb,.cambub:focus-within .cb{opacity:1}
+@media (hover:none){.cambub .cb{opacity:.85}}
+.cambub .cb button{width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.9);font-size:.9rem;padding:0}
+.recchip{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid #E53935;border-radius:999px;padding:4px 6px 4px 14px;font-weight:700;color:#C62828;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.recchip .dot{width:12px;height:12px;border-radius:50%;background:#E53935;animation:recb 1s infinite}
+.recchip button{border:none;background:#E53935;color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;min-height:36px}
+@keyframes recb{50%{opacity:.25}}
+@media print{.campnl,.cambub,.recchip{display:none}}
+
+/* ---- แถบด้านบนบนมือถือ ---- */
+@media (max-width:520px){.bar .tb{width:34px!important;min-width:34px;height:34px!important;font-size:15px!important;padding:0!important}.bar{gap:3px!important}.bar .ttl small{display:none}}
+
+.nav .dots{display:none}
+.nav{justify-content:space-between}
+.pslide{padding:8px clamp(8px,2vw,24px) 8px}
+.pslide .inner.pp{max-width:none;height:100%;gap:6px}
+.pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
+.ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.ppbox{position:relative;width:min(100cqw,calc(100cqh * 16 / 9));aspect-ratio:16/9;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08);overflow:hidden;box-sizing:border-box}
+.ppz{position:absolute;inset:0;transition:transform .35s ease;transform-origin:50% 50%}
+.ppz img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ppz img.ghost{transition:opacity .35s ease;pointer-events:none}
+.ppbox.can{cursor:pointer}
+.pslide.zoom .ppbox{cursor:zoom-out}
+.pslide.zoom .ppz{transform:scale(2.2)}
+.ppbox .done{position:absolute;right:10px;bottom:8px;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:kpop .5s ease-out both}
+.ppbox .done img{height:clamp(60px,14cqh,110px);width:auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.ppbox .done span{background:#fff;border:3px solid var(--main);border-radius:14px 14px 4px 14px;padding:2px 10px;font-weight:700;color:var(--main-deep);margin-bottom:30px;white-space:nowrap;font-size:clamp(.8rem,2.2vw,1rem)}
+.tools{display:flex;align-items:center;gap:6px}
+.tl{width:40px;height:40px;border-radius:12px;border:2px solid var(--main);background:#fff;font-size:1.15rem;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--glow)}
+.tl.on{background:var(--main);box-shadow:0 3px 0 var(--main-deep)}
+.timer{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:6px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:4px 6px 4px 12px;font-weight:700;box-shadow:0 4px 0 var(--main-deep);font-size:1.15rem}
+.timer.show{display:flex}
+.timer .opts{display:flex;gap:4px}
+.timer .opts button,.timer .x{border:2px solid var(--main);background:var(--glow);border-radius:999px;padding:2px 10px;font-weight:700;min-height:36px}
+.timer .t{font-variant-numeric:tabular-nums;min-width:3.2em;text-align:center;color:var(--main-deep)}
+.timer.end{animation:tshake .5s 3;background:#FFE3E3}
+@keyframes tshake{25%{transform:translateX(-50%) rotate(-4deg)}75%{transform:translateX(-50%) rotate(4deg)}}
+@media (max-width:620px){.tl{width:34px;height:34px;font-size:1rem}.pphead .secbadge{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.board{position:relative;width:min(100%,720px);container-type:inline-size;animation:kpop .55s ease-out both}
+.board img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15))}
+.chalk{position:absolute;left:56%;top:12%;width:39%;height:62%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqw;color:#fff;text-align:center;text-shadow:0 0 2px rgba(255,255,255,.5)}
+.chalk .cn{font-size:4.2cqw;color:#FFE97A;border-bottom:.4cqw dashed #FFE97A;padding:0 2cqw}
+.chalk b{font-size:4.6cqw;line-height:1.3;font-weight:700}
+.secslide .ready{font-weight:700;color:var(--ink-soft)}
+.ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
+.ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
+.ppctl .btn{min-height:44px;padding:6px 18px}
+.secslide{min-height:100%;justify-content:center;align-items:center;text-align:center}
+.secnum{display:grid;place-items:center;width:clamp(110px,18vw,150px);aspect-ratio:1;border-radius:50%;background:var(--main);color:#fff;font-weight:700;font-size:clamp(2.2rem,6vw,3.2rem);box-shadow:0 8px 0 var(--main-deep)}
+.secslide h1{color:var(--main-deep);font-size:clamp(1.7rem,5vw,2.8rem);text-shadow:0 4px 0 var(--glow)}
+.subs{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:620px;width:100%}
+.subs div{background:#fff;border:3px solid var(--main);border-radius:16px;padding:8px 14px;font-weight:700;text-align:left;font-size:clamp(1rem,2.6vw,1.2rem)}
+.subs b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--main);color:#fff;margin-right:8px}
+.secslide .kru{max-width:680px;width:100%;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">➕</span>
+  <div class="ttl"><b>บทที่ 2 การบวกและการลบจำนวนนับไม่เกิน 100,000</b><small>คณิตศาสตร์ ป.3 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m3-math-hub/" aria-label="หน้ารวม ป.3" title="หน้ารวม ป.3">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.3 · บทที่ 2</span>
+    <h1>การบวกและการลบจำนวนนับไม่เกิน 100,000</h1>
+    <p class="sub">หาผลบวก ผลลบ ตัวไม่ทราบค่า โจทย์ปัญหา และการสร้างโจทย์</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>2.1 การหาผลบวก</li><li>2.2 การหาผลลบ</li><li>2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</li><li>2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</li><li>2.5 การสร้างโจทย์ปัญหา</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 2</h2>
+  <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เตรียมความพร้อม</span></button><button data-jump="2.1"><span class="e">➕</span><span>2.1 การหาผลบวก</span></button><button data-jump="2.2"><span class="e">➖</span><span>2.2 การหาผลลบ</span></button><button data-jump="2.3"><span class="e">❓</span><span>2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</span></button><button data-jump="2.4"><span class="e">📝</span><span>2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span></button><button data-jump="2.5"><span class="e">✍️</span><span>2.5 การสร้างโจทย์ปัญหา</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="0" data-src="img/s003" data-thumb="img/t003.webp" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 เตรียมความพร้อม กิจกรรมจับคู่หาคำตอบ อุปกรณ์ 1 ชุด ประกอบด้วย บัตรโจทย์ปัญหา 3 บัตร บัตรประโยคสัญลักษณ์ 6 บัตร และบัตรคำตอบ 6 บัตรวิธีจัดกิจกรรม 1. ครูแบ่งนักเรียนเป็นกลุ่ม แจกอุปกรณ์กลุ่มละ 1 ชุด แต่ละชุดไม่ซ้ำกัน 2. ให้นักเรียนแต่ละกลุ่มช่วยกันจับคู่บัตรโจทย์ปัญหา บัตรประโยคสัญลักษณ"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s004" data-thumb="img/t004.webp" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แม่ค้าทำขนมตาล 405 ห่อ ทำขนมใส่ไส้ 120 ห่อ แม่ค้าทำขนมตาลและขนมใส่ไส้ทั้งหมดกี่ห่อ ตัวอย่างอุปกรณ์ 1 ชุด บัตรโจทย์ปัญหา ลุงเลี้ยงไก่ 396 ตัว ขายไป 352 ตัว ลุงเหลือไก่กี่ตัว ขุนมีเงิน 479 บาท ต้นกล้ามีเงินมากกว่าขุน 220 บาท ต้นกล้ามีเงินกี่บาท บัตรประโยคสัญลักษณ์ 405 + 120 =  396 + 35"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="2.1" data-title="2.1 การหาผลบวก"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 2.1</span><b>➕ การหาผลบวก</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s006" data-thumb="img/t006.webp" data-title="2.1 การหาผลบวก · หน้า 6"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักพันหลักร้อยหลักสิบหลักหน่วย45471420 ตัวอย่างที่ 14,547 + 1,420 =  ขั้นที่ 1 บวกในหลักหน่วย 7 หน่วย บวก 0 หน่วย ได้ 7 หน่วย + ขั้นที่ 2 บวกในหลักสิบ 4 สิบ บวก 2 สิบ ได้ 6 สิบ หลักพันหลักร้อยหลักสิบหลักหน่วย454714207 + 7 6 การหาผลบวกโดยการตั้งบวกไม่มีการทด"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s007" data-thumb="img/t007.webp" data-title="2.1 การหาผลบวก · หน้า 7"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ตัวอย่างที่ 1 ขั้นที่ 3 บวกในหลักร้อย 5 ร้อย บวก 4 ร้อย ได้ 9 ร้อย หลักพันหลักร้อยหลักสิบหลักหน่วย4547142067 + ขั้นที่ 4 บวกในหลักพัน 4 พัน บวก 1 พัน ได้ 5 พัน หลักพันหลักร้อยหลักสิบหลักหน่วย45471420967 + ดังนั้น 4,547 + 1,420 = 5,967 4,547 มากกว่า 4,000 และ 1,420 มากกว่า 1,0004,000 +"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s008" data-thumb="img/t008.webp" data-title="2.1 การหาผลบวก · หน้า 8"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักหมื่นหลักพันหลักร้อยหลักสิบหลักหน่วย12401557217973 ตัวอย่างที่ 2 12,401 + 5,572 =  เขียนเลขโดดในหลักเดียวกันให้ตรงกัน นำจำนวนในหลักเดียวกันมาบวกกัน เริ่มบวกจากหลักหน่วย หลักสิบ หลักร้อย หลักพัน และหลักหมื่น ตามลำดับ + 12401557217973 + ดังนั้น 12,401 + 5,572 = 17,973 12,401 มากกว่"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s009" data-thumb="img/t009.webp" data-title="2.1 การหาผลบวก · หน้า 9"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักหมื่นหลักพันหลักร้อยหลักสิบหลักหน่วย321385542187559 ตัวอย่างที่ 332,138 + 55,421 =  + 321385542187559 + ตอบ ๘๗,๕๕๙ แสดงวิธีหาผลบวก ดังนี้ วิธีทำ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s010" data-thumb="img/t010.webp" data-title="2.1 การหาผลบวก · หน้า 10"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาผลบวก 1 2,190 + 702 =  2 14,201 + 35,572 =  22178909022 + วิธีทำ 134459257077123 + วิธีทำ ตอบ ๒,๘๙๒ ตอบ ๔๙,๗๗๓"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s011" data-thumb="img/t011.webp" data-title="2.1 การหาผลบวก · หน้า 11"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาผลบวก 1 142 + 3,257 =  2 5,290 + 1,305 =  33213549729 + วิธีทำ 516235909055 + วิธีทำ 3377415369909 ตัวอย่าง439 + 37,160 =  + 4393716037599 + ตอบ ๓๗,๕๙๙ แสดงวิธีหาผลบวก ดังนี้ วิธีทำ ตอบ ๓,๓๙๙ ตอบ ๖,๕๙๕"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s012" data-thumb="img/t012.webp" data-title="2.1 การหาผลบวก · หน้า 12"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 3 1,243 + 2,610 =  4 6,060 + 404 =  123268415303 + วิธีทำ 66044606044 + วิธีทำ ตอบ ๓,๘๕๓ ตอบ ๖,๔๖๔ 5 15,084 + 912 =  6 22,161 + 7,532 =  1155099819426 + วิธีทำ 22279156639123 + วิธีทำ ตอบ ๑๕,๙๙๖ ตอบ ๒๙,๖๙๓"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s013" data-thumb="img/t013.webp" data-title="2.1 การหาผลบวก · หน้า 13"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 7 8,008 + 1,930 =  8 60,325 + 9,251 =  819099033808 + วิธีทำ 66099325257516 + วิธีทำ ตอบ ๙,๙๓๘ ตอบ ๖๙,๕๗๖ 9 59,251 + 638 =  10 26,058 + 62,330 =  5599268538189 + วิธีทำ 268628033538808 + วิธีทำ ตอบ ๕๙,๘๘๙ ตอบ ๘๘,๓๘๘"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s014" data-thumb="img/t014.webp" data-title="2.1 การหาผลบวก · หน้า 14"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาผลบวก 1 3,850 + 36,149 =  2 86,115 + 12,673 =  33639189459909 + วิธีทำ 819628167178538 + วิธีทำ ตอบ ๓๙,๙๙๙ ตอบ ๙๘,๗๘๘ ตรวจสอบความเข้าใจ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s015" data-thumb="img/t015.webp" data-title="2.1 การหาผลบวก · หน้า 15"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 การหาผลบวกของจำนวนสองจำนวนโดยการตั้งบวก ต้องเขียนเลขโดดในหลักเดียวกันให้ตรงกัน แล้วจึงนำจำนวนที่อยู่ในหลักเดียวกันมาบวกกัน โดยเริ่มจากหลักหน่วย หลักสิบ หลักร้อย หลักพัน และหลักหมื่นตามลำดับ สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s016" data-thumb="img/t016.webp" data-title="2.1 การหาผลบวก · หน้า 16"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักพันหลักร้อยหลักสิบหลักหน่วย462813242 หลักพันหลักร้อยหลักสิบหลักหน่วย46281324 มีเด็กผู้หญิง 4,628 คน และเด็กผู้ชาย 1,324 คน มาร่วมกิจกรรมวันเด็ก มีเด็กทั้งหมดกี่คน4,628 + 1,324 =  ขั้นที่ 1 บวกในหลักหน่วย 8 หน่วย บวก 4 หน่วย ได้ 12 หน่วย หรือ 1 สิบ กับ 2 หน่วย + ขั้นที่ 2 บวกในหลั"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s017" data-thumb="img/t017.webp" data-title="2.1 การหาผลบวก · หน้า 17"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักพันหลักร้อยหลักสิบหลักหน่วย46281324952 หลักพันหลักร้อยหลักสิบหลักหน่วย4628132452 ขั้นที่ 3 บวกในหลักร้อย 6 ร้อย บวก 3 ร้อย ได้ 9 ร้อย + ขั้นที่ 4 บวกในหลักพัน 4 พัน บวก 1 พัน ได้ 5 พัน + 1 1 4,628 มากกว่า 4,000 และ 1,324 มากกว่า 1,0004,000 + 1,000 = 5,000 จะได้ 4,628 + 1,324 มากกว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s018" data-thumb="img/t018.webp" data-title="2.1 การหาผลบวก · หน้า 18"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักหมื่นหลักพันหลักร้อยหลักสิบหลักหน่วย2542958310 ตัวอย่าง 25,429 + 58,310 =  เขียนเลขโดดในหลักเดียวกันให้ตรงกัน นำจำนวนในหลักเดียวกันมาบวกกัน เริ่มบวกจากหลักหน่วย หลักสิบ หลักร้อย หลักพัน และหลักหมื่น ตามลำดับ + 254295831083739 + ดังนั้น 23,732 + 45,981 = 69,713 23,732 มากกว่า 23,0"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="15" data-src="img/s019" data-thumb="img/t019.webp" data-title="2.1 การหาผลบวก · หน้า 19"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 550970681 ตัวอย่าง5,509 + 70,681 =  + ตอบ ๗๖,๑๙๐ 0 9 1 1 1 6 7 ถ้าผลบวกในหลักใดครบสิบหรือมากกว่าสิบให้ทดจำนวนที่ครบสิบไปรวมกับผลบวกในหลักถัดไปทางซ้าย วิธีทำ 2195030593 ตัวอย่าง21,950 + 30,593 =  + ตอบ ๕๒,๕๔๓ 3 4 1 1 5 2 5 วิธีทำ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/15)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="13" data-src="img/s020" data-thumb="img/t020.webp" data-title="2.1 การหาผลบวก · หน้า 20"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาผลบวก 1 1,066 + 519 =  2 970 + 35,500 =  11055618695 + วิธีทำ 3356594077000 + วิธีทำ 1274801493 ตัวอย่าง17,819 + 24,043 =  + ตอบ ๔๑,๘๖๒ วิธีทำ ตอบ ๓,๓๙๙ ตอบ ๓๖,๔๗๐ 2 6 1 1 8 1 4 1 1 581382590 ตัวอย่าง58,329 + 1,850 =  + ตอบ ๖๐,๑๗๙ วิธีทำ 9 7 1 1 1 0 6"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/13)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s021" data-thumb="img/t021.webp" data-title="2.1 การหาผลบวก · หน้า 21"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 3 234 + 9,902 =  4 21,954 + 1,107 =  5 4,700 + 46,599 =  6 19,511 + 53,826 =  190921033246 + วิธีทำ 22113910506471 + วิธีทำ ตอบ ๑๐,๑๓๖ ตอบ ๒๓,๐๖๑ 1 1 1 45641572909909 + วิธีทำ ตอบ ๕๑,๒๙๙ 1 1 157933583123167 + วิธีทำ ตอบ ๗๓,๓๓๗ 1 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s022" data-thumb="img/t022.webp" data-title="2.1 การหาผลบวก · หน้า 22"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 7 88,321 + 3,950 =  8 10,696 + 84,583 =  9 91,079 + 827 =  10 78,000 + 22,000 =  89832392257101 + วิธีทำ 189045652987639 + วิธีทำ ตอบ ๙๒,๒๗๑ ตอบ ๙๕,๒๗๙ 1 1 1 9911089720976 + วิธีทำ ตอบ ๙๑,๙๐๖ 1 1 1720820000000000 + วิธีทำ ตอบ ๑๐๐,๐๐๐ 1 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s023" data-thumb="img/t023.webp" data-title="2.1 การหาผลบวก · หน้า 23"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักหมื่นหลักพันหลักร้อยหลักสิบหลักหน่วย860215996 ตัวอย่าง86,021 + 5,996 =  + 86021599692017 + ตอบ ๗๑,๑๕๑ การตั้งบวก 7 1 1 1 1 0 2 9 1 1 1 วิธีทำ เขียนเลขโดดในหลักเดียวกันให้ตรงกัน นำจำนวนในหลักเดียวกันมาบวกกัน เริ่มบวกจากหลักหน่วย หลักสิบ หลักร้อย หลักพัน และหลักหมื่น ตามลำดับ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="15" data-src="img/s024" data-thumb="img/t024.webp" data-title="2.1 การหาผลบวก · หน้า 24"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 246769615 ตัวอย่าง2,467 + 69,615 =  + ตอบ ๗๒,๐๘๒ 2 8 1 1 0 2 7 ถ้าผลบวกในหลักใดครบสิบหรือมากกว่าสิบ ให้ทดจำนวนที่ครบสิบไปรวมกับผลบวกในหลักถัดไปทางซ้าย วิธีทำ 1884945382 ตัวอย่าง18,849 + 45,382 =  + ตอบ ๖๔,๒๓๑ 1 3 1 1 2 4 6 วิธีทำ 1 1 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/15)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="13" data-src="img/s025" data-thumb="img/t025.webp" data-title="2.1 การหาผลบวก · หน้า 25"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาผลบวก 1 335 + 10,685 =  2 19,187 + 954 =  1101630832550 + วิธีทำ 1290191854741 + วิธีทำ 756490295 ตัวอย่าง6,625 + 75,409 =  + ตอบ ๘๒,๓๓๔ วิธีทำ ตอบ ๑๑,๐๒๐ ตอบ ๒๐,๑๔๑ 4 3 1 1 3 2 8 1 1 1863452755 ตัวอย่าง16,425 + 83,575 =  + ตอบ ๑๐๐,๐๐๐ วิธีทำ 0 0 1 1 0 0 0 1 1 1 1 1 1 1 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/13)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s026" data-thumb="img/t026.webp" data-title="2.1 การหาผลบวก · หน้า 26"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 3 7,005 + 82,995 =  4 6,142 + 4,938 =  5 7,005 + 82,995 =  6 63,923 + 16,196 =  23853045999943 + วิธีทำ 1641190438280 + วิธีทำ ตอบ ๓๓,๕๙๓ ตอบ ๑๑,๐๘๐ 1 1 1 89270900900550 + วิธีทำ ตอบ ๙๐,๐๐๐ 1 1 618360911291369 + วิธีทำ ตอบ ๘๐,๑๑๙ 1 1 1 1 1 1 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s027" data-thumb="img/t027.webp" data-title="2.1 การหาผลบวก · หน้า 27"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 7 43,256 + 16,946 =  8 29,308 + 50,886 =  9 76,570 + 4,890 =  10 81,119 + 9,989 =  416360292540662 + วิธีทำ 258900381089864 + วิธีทำ ตอบ ๖๐,๒๐๒ ตอบ ๘๐,๑๙๔ 1 1 1 78641584796000 + วิธีทำ ตอบ ๘๑,๔๖๐ 1 1 89191191180998 + วิธีทำ ตอบ ๙๑,๑๐๘ 1 1 1 1 1 1 1 1 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s028" data-thumb="img/t028.webp" data-title="2.1 การหาผลบวก · หน้า 28"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 จับคู่ประโยคสัญลักษณ์กับคำตอบ 1 98,765 + 1,235 =  ก 38,225 2 25,817 + 12,408 =  ข 100,000 3 11,579 + 79,246 =  ค 90,825 4 37,543 + 13,478 =  ง 70,001 5 8,002 + 61,999 =  จ 90,300 6 480 + 89,820 =  ฉ 51,021 ข้อ 1 คู่กับข้อ ข ข้อ 2 คู่กับข้อ ก ข้อ 3 คู่กับข้อ ค ข้อ 4 คู่กับข้อ ฉ ข"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s029" data-thumb="img/t029.webp" data-title="2.1 การหาผลบวก · หน้า 29"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 เติมตัวเลขแสดงจำนวน 1 65081+58290910 เลขโดดที่หายไป 0 8 5 7 0 225+2309823523 2 725+395981556 3 3785+764461453 0235 13461 53179"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s030" data-thumb="img/t030.webp" data-title="2.1 การหาผลบวก · หน้า 30"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 5 6 725+5432090909 7 4 65341+346590000 79009+2099100000 87655+3465900000 1 601440 201091 35869 13425"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s031" data-thumb="img/t031.webp" data-title="2.1 การหาผลบวก · หน้า 31"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาผลบวก 1 8,647 + 22,382 =  2 39,987 + 60,013 =  23281360842279 + วิธีทำ 360900900810730 + วิธีทำ ตอบ ๓๑,๐๒๙ ตอบ ๑๐๐,๐๐๐ ตรวจสอบความเข้าใจ 1 1 1 1 1 1 1 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-thumb="img/t032.webp" data-title="2.1 การหาผลบวก · หน้า 32"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.1 การหาผลบวก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 การหาผลบวกของจำนวนสองจำนวนโดยการตั้งบวก ต้องเขียนเลขโดดในหลักเดียวกันให้ตรงกัน แล้วจึงนำจำนวนที่อยู่ในหลักเดียวกันมาบวกกัน โดยเริ่มจากหลักหน่วย หลักสิบ หลักร้อย หลักพัน และหลักหมื่นตามลำดับ ถ้าผลบวกในหลักใดครบสิบหรือมากกว่าสิบ ให้ทดจำนวนที่ครบสิบไปรวมกับผลบวกในหลักถัดไปทางซ้าย สิ่งที่"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="2.2" data-title="2.2 การหาผลลบ"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 2.2</span><b>➖ การหาผลลบ</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s034" data-thumb="img/t034.webp" data-title="2.2 การหาผลลบ · หน้า 34"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักพันหลักร้อยหลักสิบหลักหน่วย25504300 หลักพันหลักร้อยหลักสิบหลักหน่วย2550430 ตัวอย่างที่ 1 ขั้นที่ 1 ลบในหลักหน่วย 0 หน่วย ลบด้วย 0 หน่วย ได้ 0 หน่วย - ขั้นที่ 2 ลบในหลักสิบ 5 สิบ ลบด้วย 3 สิบ ได้ 2 สิบ - 0 2 การหาผลลบโดยการตั้งลบไม่มีการกระจาย กรมประมงจัดพันธุ์ปลามาให้นักเรียนช่วยก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s035" data-thumb="img/t035.webp" data-title="2.2 การหาผลลบ · หน้า 35"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักพันหลักร้อยหลักสิบหลักหน่วย2550430120 หลักพันหลักร้อยหลักสิบหลักหน่วย255043020 ขั้นที่ 3 ลบในหลักร้อย 5 ร้อย ลบด้วย 4 ร้อย ได้ 1 ร้อย - ขั้นที่ 4 ลบในหลักพัน 2 พัน ลบด้วย 0 พัน ได้ 2 พัน - สังเกต 2,120 + 430 = 2,550 ผลลบบวกตัวลบเท่ากับตัวตั้ง 1 2 ยังเหลือปลาอีก 2,120 ตัว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s036" data-thumb="img/t036.webp" data-title="2.2 การหาผลลบ · หน้า 36"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักพันหลักร้อยหลักสิบหลักหน่วย21831143 ตัวอย่าง2,183 – 1,143 =  เขียนเลขโดดในหลักเดียวกันให้ตรงกัน นำจำนวนในหลักเดียวกันมาลบกัน เริ่มลบจากหลักหน่วย หลักสิบ หลักร้อย หลักพัน และหลักหมื่น ตามลำดับ - 218311431040 - ดังนั้น 78,650 – 4,530 = 74,120 23,732 มากกว่า 23,000 และ 45,981 มากกว่"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s037" data-thumb="img/t037.webp" data-title="2.2 การหาผลลบ · หน้า 37"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ตัวอย่าง14,725 – 2,714 =  147252714 - ตอบ ๑๒,๐๑๑ สังเกต 12,011 + 2,714 = 14,725 ผลลบบวกตัวลบเท่ากับตัวตั้ง วิธีทำ 1 2 0 1 1 แสดงวิธีหาผลบวก 1 72,095 – 61,095 =  720956109511000 - วิธีทำ ตอบ ๑๑,๐๐๐ 2 19,774 – 1,704 =  19774170418070 - วิธีทำ ตอบ ๑๘,๐๗๐"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s038" data-thumb="img/t038.webp" data-title="2.2 การหาผลลบ · หน้า 38"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาผลลบ 1 12,503 – 101 =  2 53,245 – 31,022 =  1122514000312 - วิธีทำ 532312202422523 - วิธีทำ 7325354 ตัวอย่าง7,355 – 234 =  - ตอบ ๗,๑๒๑ วิธีทำ ตอบ ๑๒,๔๐๒ ตอบ ๒๒,๒๒๓ 1 2 1 7 สังเกต 7,121 + 234 = 7,355 ผลลบบวกตัวลบเท่ากับตัวตั้ง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s039" data-thumb="img/t039.webp" data-title="2.2 การหาผลลบ · หน้า 39"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 3 46,194 – 5,090 =  4 28,817 – 26,400 =  5 77,133 – 32,101 =  6 47,092 – 82 =  44651101990404 - วิธีทำ 22862844101707 - วิธีทำ ตอบ ๔๑,๑๐๔ ตอบ ๒,๔๑๗ 734725110303312 - วิธีทำ ตอบ ๔๕,๐๓๒ 447700981220 - วิธีทำ ตอบ ๔๗,๐๑๐"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s040" data-thumb="img/t040.webp" data-title="2.2 การหาผลลบ · หน้า 40"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 7 26,145 – 122 =  8 70,446 – 70,006 =  9 39,735 – 9,003 =  10 80,032 – 22 =  2666110422523 - วิธีทำ 7700404404660 - วิธีทำ ตอบ ๖๖,๐๒๓ ตอบ ๔๔๐ 33990707303532 - วิธีทำ ตอบ ๓๐,๗๓๒ 880000321220 - วิธีทำ ตอบ ๘๐,๐๑๐"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s041" data-thumb="img/t041.webp" data-title="2.2 การหาผลลบ · หน้า 41"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาผลลบ 1 21,975 – 515 =  2 33,458 – 33,248 =  2211954716550 - วิธีทำ 3333422541880 - วิธีทำ ตอบ ๒๑,๔๖๐ ตอบ ๒๑๐ ตรวจสอบความเข้าใจ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s042" data-thumb="img/t042.webp" data-title="2.2 การหาผลลบ · หน้า 42"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 การหาผลลบของจำนวนสองจำนวนโดยการตั้งลบ ต้องเขียนเลขโดดในหลักเดียวกันให้ตรงกัน แล้วจึงนำจำนวนที่อยู่ในหลักเดียวกันมาลบกัน โดยเริ่มจากหลักหน่วย หลักสิบ หลักร้อย หลักพัน และหลักหมื่นตามลำดับ สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s043" data-thumb="img/t043.webp" data-title="2.2 การหาผลลบ · หน้า 43"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 การหาผลลบโดยการตั้งบวกมีการกระจาย หลักพันหลักร้อยหลักสิบหลักหน่วย155013355 หลักพันหลักร้อยหลักสิบหลักหน่วย15501335 ตัวอย่างที่ 1 ขั้นที่ 1 ลบในหลักหน่วย ตัวตั้งน้อยกว่าตัวลบจึงต้องกระจายจากหลักสิบไป 1 สิบ หรือ 10 หน่วย 10 หน่วย ลบด้วย 5 หน่วย ได้ 5 หน่วย - ขั้นที่ 2 ลบในหลักสิบ 5 สิบ "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s044" data-thumb="img/t044.webp" data-title="2.2 การหาผลลบ · หน้า 44"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 44 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักพันหลักร้อยหลักสิบหลักหน่วย15501335215 หลักพันหลักร้อยหลักสิบหลักหน่วย1550133515 ขั้นที่ 3 ลบในหลักร้อย5 ร้อย ลบด้วย 3 ร้อย ได้ 2 ร้อย - ขั้นที่ 4 ลบในหลักพัน 1 พัน ลบด้วย 1 พัน ได้ 0 พัน - สังเกต 215 + 1,335 = 1,550 ผลลบบวกตัวลบเท่ากับตัวตั้ง 2 0 ครูต้องซื้อปลาดุกเพิ่มอีก 215 ตัว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s045" data-thumb="img/t045.webp" data-title="2.2 การหาผลลบ · หน้า 45"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักหมื่นหลักพันหลักร้อยหลักสิบหลักหน่วย12482880 ตัวอย่าง12,482 – 880 =  เขียนเลขโดดในหลักเดียวกันให้ตรงกัน นำจำนวนในหลักเดียวกันมาลบกัน เริ่มลบจากหลักหน่วย หลักสิบ หลักร้อย หลักพัน และหลักหมื่น ตามลำดับ ถ้าในหลักใดตัวตั้งน้อยกว่าตัวลบ ต้องกระจายจำนวนจากหลักถัดไปทางซ้ายมารวมกับตัวตั้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s046" data-thumb="img/t046.webp" data-title="2.2 การหาผลลบ · หน้า 46"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 46 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ตัวอย่าง15,450 – 6,348 =  154506348 - ตอบ ๒๓,๐๒๐ 4 สังเกต 23,020 + 1,785 = 24,805 ผลลบบวกตัวลบเท่ากับตัวตั้ง วิธีทำ 2 9 1 0 10 15 0"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s047" data-thumb="img/t047.webp" data-title="2.2 การหาผลลบ · หน้า 47"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาผลลบ 1 19,290 - 153 =  2 51,277 – 430 =  1199211953037 - วิธีทำ 5510248734707 - วิธีทำ 3104505400 ตัวอย่าง30,550 – 14,040 =  - ตอบ ๑๖,๕๑๐ วิธีทำ ตอบ ๑๙,๑๓๗ ตอบ ๕๐,๘๔๗ 0 1 5 6 สังเกต ผลลบบวกตัวลบเท่ากับตัวตั้ง 1 2 10 10 8 12 0"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s048" data-thumb="img/t048.webp" data-title="2.2 การหาผลลบ · หน้า 48"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 48 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 3 44,211 – 13,600 =  4 60,717 – 5,415 =  5 65,500 – 3,460 =  6 10,838 – 4,500 =  413430266101101 - วิธีทำ 65055743110752 - วิธีทำ ตอบ ๓๐,๖๑๑ ตอบ ๕๕,๓๐๒ 12 3 10 5 66532540064000 - วิธีทำ 1046853303808 - วิธีทำ ตอบ ๖๒,๐๔๐ ตอบ ๖,๓๓๘ 10 4 10 0"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s049" data-thumb="img/t049.webp" data-title="2.2 การหาผลลบ · หน้า 49"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 49 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 7 13,550 – 8,149 =  8 41,809 – 2,371 =  9 65,500 – 3,460 =  10 10,838 – 4,500 =  1385514540091 - วิธีทำ 43129834073918 - วิธีทำ ตอบ ๕,๔๐๑ ตอบ ๓๙,๔๓๘ 10 13 11 3 311046504028000 - วิธีทำ 21147834468523 - วิธีทำ ตอบ ๑๖,๔๘๐ ตอบ ๗,๔๘๓ 10 4 11 1 0 4 10 7 10 2 14 7"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s050" data-thumb="img/t050.webp" data-title="2.2 การหาผลลบ · หน้า 50"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 50 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักหมื่นหลักพันหลักร้อยหลักสิบหลักหน่วย654003460 ตัวอย่าง65,400 – 3,460 =  เขียนเลขโดดในหลักเดียวกันให้ตรงกัน นำจำนวนในหลักเดียวกันมาลบกัน เริ่มลบจากหลักหน่วย หลักสิบ หลักร้อย หลักพัน และหลักหมื่น ตามลำดับ ถ้าในหลักใดตัวตั้งน้อยกว่าตัวลบ ต้องกระจายจำนวนจากหลักถัดไปทางซ้ายมารวมกับตัว"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s051" data-thumb="img/t051.webp" data-title="2.2 การหาผลลบ · หน้า 51"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 51 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ตัวอย่าง37,520 – 36,681 =  3752036681 - ตอบ ๘๓๙ สังเกต 839 + 36,681 = 37,520 ผลลบบวกตัวลบเท่ากับตัวตั้ง วิธีทำ 9 8 3 10 1 4 6 11 14"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s052" data-thumb="img/t052.webp" data-title="2.2 การหาผลลบ · หน้า 52"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 52 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาผลลบ 1 31,299 – 2,388 =  2 46,122 – 8,302 =  32128239981981 - วิธีทำ 43687138202220 - วิธีทำ 2143545616 ตัวอย่าง24,551 – 13,466 =  - ตอบ ๑๑,๐๘๕ วิธีทำ ตอบ ๒๘,๙๑๑ ตอบ ๓๗,๘๒๐ 5 8 0 1 สังเกต ผลลบบวกตัวลบเท่ากับตัวตั้ง 1 12 0 11 5 11 4 14 4 10 2 3 15"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s053" data-thumb="img/t053.webp" data-title="2.2 การหาผลลบ · หน้า 53"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 53 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 3 14,758 – 599 =  4 51,200 – 40,320 =  5 94,500 – 83,540 =  6 45,220 – 5,320 =  1144751595899 - วิธีทำ 541100238028000 - วิธีทำ ตอบ ๑๔,๑๕๙ ตอบ ๑๐,๘๘๐ 18 4 10 1 981430559046000 - วิธีทำ 43559239220000 - วิธีทำ ตอบ ๑๐,๙๖๐ ตอบ ๓๙,๙๐๐ 10 4 4 3 14 6 11 0 3 14 12 14"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s054" data-thumb="img/t054.webp" data-title="2.2 การหาผลลบ · หน้า 54"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 54 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 7 72,300 – 8,590 =  8 21,605 – 1,785 =  9 86,205 – 6,774 =  10 93,150 – 84,660 =  76283357091000 - วิธีทำ 21119678082555 - วิธีทำ ตอบ ๖๓,๗๑๐ ตอบ ๑๙,๘๒๕ 10 1 10 5 87669274073541 - วิธีทำ 98348164569000 - วิธีทำ ตอบ ๗๙,๔๓๑ ตอบ ๘,๔๙๐ 10 1 0 8 12 6 15 0 5 11 15 2 2 11 10 1 15 7 10 12"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s055" data-thumb="img/t055.webp" data-title="2.2 การหาผลลบ · หน้า 55"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 55 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักหมื่นหลักพันหลักร้อยหลักสิบหลักหน่วย866002536 ตัวอย่าง86,600 – 2,536 =  - ดังนั้น 86,600 – 2,536 = 84,064 สังเกต 84,064 + 2,536 = 86,600 ผลลบบวกตัวลบเท่ากับตัวตั้ง หลักหมื่นหลักพันหลักร้อยหลักสิบหลักหน่วย866002536 - 4 6 0 4 8 10 10 5 9 ในหลักหน่วย ตัวตั้งน้อยกว่าตัวลบ จึงต้องกระจ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="11" data-src="img/s056" data-thumb="img/t056.webp" data-title="2.2 การหาผลลบ · หน้า 56"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 56 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาผลลบ 1 54,700 – 388 =  2 60,058 – 349 =  5544733081082 - วิธีทำ 6509037540899 - วิธีทำ 977030552 ตัวอย่าง97,005 – 7,352 =  - ตอบ ๘๙,๖๕๓ วิธีทำ ตอบ ๕๔,๓๑๒ ตอบ ๕๙,๗๐๙ 3 5 6 9 สังเกต ผลลบบวกตัวลบเท่ากับตัวตั้ง 8 10 10 18 10 10 6 10 8 9 6 4 9 9 16 10 5"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/11)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s057" data-thumb="img/t057.webp" data-title="2.2 การหาผลลบ · หน้า 57"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 57 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 3 43,005 – 1,545 =  4 30,052 – 6,948 =  5 22,300 – 13,244 =  6 19,006 – 18,336 =  44311054046550 - วิธีทำ 32063091540284 - วิธีทำ ตอบ ๔๑,๔๖๐ ตอบ ๒๓,๑๐๔ 10 10 12 4 21239320045046 - วิธีทำ 1198036037660 - วิธีทำ ตอบ ๙,๐๕๖ ตอบ ๖๗๐ 10 10 10 8 9 2 10 10 2 9 10 9 2 9 12 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s058" data-thumb="img/t058.webp" data-title="2.2 การหาผลลบ · หน้า 58"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 58 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 7 76,300 – 5,439 =  8 25,007 – 7,225 =  9 99,500 – 54,695 =  10 80,096 – 79,788 =  77650348036091 - วิธีทำ 21577027028752 - วิธีทำ ตอบ ๗๐,๘๖๑ ตอบ ๑๗,๗๘๒ 10 2 10 10 954944568090055 - วิธีทำ 8709073980688 - วิธีทำ ตอบ ๔๔,๘๐๕ ตอบ ๓๐๘ 10 10 8 7 9 5 9 4 4 9 16 10 10 12 14 1 14 8 10 9"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s059" data-thumb="img/t059.webp" data-title="2.2 การหาผลลบ · หน้า 59"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 59 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หลักแสนหลักหมื่นหลักพันหลักร้อยหลักสิบหลักหน่วย10000090700 ตัวอย่าง100,000 – 90,700 =  เริ่มลบจากหลักหน่วย หลักสิบ หลักร้อย หลักพัน หลักหมื่น และหลักแสน ตามลำดับ ถ้าในหลักใด ตัวตั้งน้อยกว่าตัวลบต้องกระจายจำนวนจากหลักถัดไปทางซ้ายมารวมกับตัวตั้งในหลักนั้น แล้วจึงลบกัน - 100000907009300"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="12" data-src="img/s060" data-thumb="img/t060.webp" data-title="2.2 การหาผลลบ · หน้า 60"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 60 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ตัวอย่าง100,000 – 25,856 =  10000025856 - ตอบ ๗๔,๑๔๔ สังเกต 74,144 + 25,856 = 100,000 ผลลบบวกตัวลบเท่ากับตัวตั้ง วิธีทำ 4 1 4 10 10 10 10 9 10 9 9 9 0 4 7"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/12)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="12" data-src="img/s061" data-thumb="img/t061.webp" data-title="2.2 การหาผลลบ · หน้า 61"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 61 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาผลลบ 1 60,003 – 1,853 =  2 50,009 – 37,668 =  65018081055330 - วิธีทำ 531072063064981 - วิธีทำ 319050405 ตัวอย่าง31,000 – 9,545 =  - ตอบ ๒๑,๔๕๕ วิธีทำ ตอบ ๕๘,๑๕๐ ตอบ ๑๒,๓๔๑ 5 5 4 1 สังเกต ผลลบบวกตัวลบเท่ากับตัวตั้ง 2 10 9 10 10 10 10 0 9 5 10 9 9 9 10 4 2 10 10 10 9"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/12)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s062" data-thumb="img/t062.webp" data-title="2.2 การหาผลลบ · หน้า 62"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 62 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 3 94,000 – 48,122 =  4 70,000 – 4,619 =  5 10,004 – 68 =  6 100,000 – 685 =  944485018027028 - วิธีทำ 76045063018091 - วิธีทำ ตอบ ๔๕,๘๗๘ ตอบ ๖๕,๓๘๑ 10 3 9 10 9 8 10 9 10 6 10 10 13 10909063486 - วิธีทำ 10909063081055 - วิธีทำ ตอบ ๙,๙๓๖ ตอบ ๙๙,๓๑๕ 14 10 9 10 9 0 10 9 10 0 10 10 9 9"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s063" data-thumb="img/t063.webp" data-title="2.2 การหาผลลบ · หน้า 63"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 63 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 7 100,000 – 19,235 =  8 25,007 – 7,225 =  9 99,500 – 54,695 =  10 80,096 – 79,788 =  1018090027036055 - วิธีทำ ตอบ ๘๐,๗๖๕ 9 10 10 9 10 0 9 10 9 10 21081045072239 - วิธีทำ ตอบ ๑,๕๒๙ 9 10 12 9 10 1 10 9 412081090027789 - วิธีทำ ตอบ ๒๑,๐๗๙ 9 10 17 9 10 3 10 9 32018072366091 - วิธีทำ "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s064" data-thumb="img/t064.webp" data-title="2.2 การหาผลลบ · หน้า 64"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 64 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาผลลบ 1 11,342 – 6,178 =  2 30,008 – 17,590 =  1165311476284 - วิธีทำ 311072054091808 - วิธีทำ ตอบ ๕,๑๖๔ ตอบ ๑๒,๔๑๘ ตรวจสอบความเข้าใจ 13 11 12 2 0 3 10 9 10 2 10 9"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s065" data-thumb="img/t065.webp" data-title="2.2 การหาผลลบ · หน้า 65"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.2 การหาผลลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 65 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 การหาผลลบของจำนวนสองจำนวนโดยการตั้งลบ ต้องเขียนเลขโดดในหลักเดียวกันให้ตรงกัน แล้วจึงนำจำนวนที่อยู่ในหลักเดียวกันมาลบกัน โดยเริ่มจากหลักหน่วย หลักสิบ หลักร้อย หลักพัน และหลักหมื่นตามลำดับ ถ้าในหลักใดตัวตั้งน้อยกว่าตัวลบ ต้องกระจายจำนวนจากหลักถัดไปทางซ้ายมารวมกับตัวตั้งในหลักนั้นแล้วจึง"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="2.3" data-title="2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 2.3</span><b>❓ การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s067" data-thumb="img/t067.webp" data-title="2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์ · หน้า 67"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 67 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ชั่งผงกาแฟพร้อมถ้วย อ่านน้ำหนักได้ 1,346 กรัม ถ้าถ้วยหนัก 255 กรัม ผงกาแฟหนักกี่กรัม ถ้วยหนัก 255 กรัม ถ้วยกับผงกาแฟหนักรวมกัน 1,346 กรัม จะได้ 255 + = 1,346 255 + = 1,346ใช้ความสัมพันธ์ของการบวกและการลบจะได้ 1,346 – 255 = 1,346 – 255 = 1,091ดังนั้น 255 + = 1,3461,091 ความสัมพันธ์ของก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s068" data-thumb="img/t068.webp" data-title="2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์ · หน้า 68"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 68 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ตัวอย่าง + 2,540 = 13,800 ใช้ความสัมพันธ์ของการบวกและการลบ ความสัมพันธ์ของการบวกและการลบ 13,800 – 2,540 = 11,260 จะได้ 13,800 – 2,540 = ดังนั้น 11,260 + 2,540 = 13,800 ตอบ ๑๑,๒๖๐ + 2,540 = 13,800 13,800 - = 2,540 13,800 – 2,540 ="></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s069" data-thumb="img/t069.webp" data-title="2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์ · หน้า 69"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 69 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 หาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์ 1 500 +  = 1,440 2 32,000 +  = 51,440 ใช้ความสัมพันธ์ของการบวกและการลบจะได้ 1,440 – 500 =  1,440 – 500 = 940ดังนั้น 500 + = 1,440ตอบ ๙๔๐ 940 ใช้ความสัมพันธ์ของการบวกและการลบจะได้ 51,440 – 32,000 =  51,440 – 32,000 = 19,440ดังนั้น 32,000 + = 5"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s070" data-thumb="img/t070.webp" data-title="2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์ · หน้า 70"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 70 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 5  + 362 = 3,487 6  + 5,000 = 100,000 ใช้ความสัมพันธ์ของการบวกและการลบจะได้ 3,487 – 362 =  3,487 – 362 = 3,125ดังนั้น + 362 = 3,487ตอบ ๓,๑๒๕ 3,125 7  + 49,378 = 53,487 8  + 9,362 = 30,000 ใช้ความสัมพันธ์ของการบวกและการลบจะได้ 100,000 – 5,000 =  100,000 – 5,000 = 95,000ดังนั้น + "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s071" data-thumb="img/t071.webp" data-title="2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์ · หน้า 71"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 71 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ใช้ความสัมพันธ์ของการบวกและการลบ ความสัมพันธ์ของการบวกและการลบ 304 + 1,000 =   - 304 = 1,000  - 1,000 = 304 ตรวจคำตอบ1,304 – 304 = 1,000 - 304 = 1,000 304 + 1,000 = 1,304 จะได้ 304 + 1,000 = ดังนั้น - 304 = 1,0001,304 ตอบ ๑,๓๐๔"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s072" data-thumb="img/t072.webp" data-title="2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์ · หน้า 72"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 72 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ใช้ความสัมพันธ์ของการบวกและการลบ ความสัมพันธ์ของการบวกและการลบ  + 128 = 5,789 5,789 -  = 128 5,789 – 128 =  ตรวจคำตอบ5,789 – 5,661 = 128 5,789 - = 128 5,789 - 128 = 5,661 จะได้ 5,789 - 128 = ดังนั้น 5,789 - = 1285,661 ตอบ ๕,๖๖๑"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s073" data-thumb="img/t073.webp" data-title="2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์ · หน้า 73"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 73 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ใช้ความสัมพันธ์ของการบวกและการลบ ความสัมพันธ์ของการบวกและการลบ  - 1,895 = 98,105 98,105 + 1,895 =   - 98,105 = 1,895 - 1,895 = 98,105 98,105 + 1,890 = 1,304 จะได้ 98,105 + 1,895 = ดังนั้น - 1,895 = 98,105100,000 ตอบ ๑๐๐,๐๐๐"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s074" data-thumb="img/t074.webp" data-title="2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์ · หน้า 74"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 74 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 1  - 375 = 8,025 2  - 1,930 = 20,000 ใช้ความสัมพันธ์ของการบวกและการลบจะได้ 8,025 + 375 =  8,025 + 375 = 8,400ดังนั้น - 375 = 8,025ตอบ ๘,๔๐๐ 8,400 3  - 28,375 = 7,590 4  - 6,375 = 89,000 ใช้ความสัมพันธ์ของการบวกและการลบจะได้ 20,000 + 1,930 =  20,000 + 1,930 = 21,930ดังนั้น - 1,93"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s075" data-thumb="img/t075.webp" data-title="2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์ · หน้า 75"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 75 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 5 1,531 -  = 1,000 6 2,445 -  = 695 ใช้ความสัมพันธ์ของการบวกและการลบจะได้ 1,531 – 1,000 =  1,531 – 1,000 = 531ดังนั้น 1,531 - = 1,000ตอบ ๕๓๑ 531 ใช้ความสัมพันธ์ของการบวกและการลบจะได้ 2,445 – 695 =  2,445 – 695 = 1,750ดังนั้น 2,445 - = 695ตอบ ๑,๗๕๐ 1,750 7 90,009 -  = 82,443 8 100"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="13" data-src="img/s076" data-thumb="img/t076.webp" data-title="2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์ · หน้า 76"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 76 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ใช้ความสัมพันธ์ของการบวกและการลบ + 1,500 = 3,000 ดังนั้น 1,500 + 1,500 = 3,000 จะได้ 3,000 – 1,500 = 1,500 ตอบ ๑,๕๐๐ 1  + 964 = 1,352 2  - 2,895 = 1,605 หาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์ 3 3,000 -  = 575 6  - 879 = 4,121 9  - 40,500 = 59,500 4 6,219 +  = 9,219 7  + 1,980 ="></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/13)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s077" data-thumb="img/t077.webp" data-title="2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์ · หน้า 77"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 77 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 สามารถใช้ความสัมพันธ์ของการบวกและการลบในการหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์แสดงการบวกและประโยคสัญลักษณ์แสดงการลบ สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="2.4" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 2.4</span><b>📝 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s079" data-thumb="img/t079.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 79"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 79 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ต้นกล้ามีเงินฝากในธนาคาร 25,730 บาท วันนี้นำเงินไปฝากอีก 3,980 บาท ต้นกล้ามีเงินฝากในธนาคารทั้งหมดกี่บาท โจทย์ถาม โจทย์บอก ต้นกล้ามีเงินฝากในธนาคาร 25,730 บาท วันนี้นำเงินไปฝากอีก 3,980 บาท ต้นกล้ามีเงินฝากในธนาคารทั้งหมดกี่บาท ประโยคสัญลักษณ์ 25,730 + 3,980 =  หาคำตอบได้อย่างไร มีอย"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s080" data-thumb="img/t080.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 80"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 80 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 วิธีทำ ตอบ ต้นกล้ามีเงินฝากในธนาคารทั้งหมด ๒๙,๗๑๐ บาท ต้นกล้ามีเงินฝากในธนาคาร25,730 บาทวันนี้ฝากอีก3,980 บาทต้นกล้ามีเงินฝากทั้งหมด25,730 + 3,980 =29,710 บาท 29,710 บาท เป็นคำตอบที่สมเหตุสมผลเพราะ 25,730 มากกว่า 25,000 และ 3,980 มากกว่า 3,00025,000 + 3,000 = 28,000 ดังนั้น คำตอบควรมา"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s081" data-thumb="img/t081.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 81"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 81 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 งานทอดผ้าป่าโรงเรียน ผู้ปกครองนักเรียนร่วมทำบุญ 48,970 บาท ครูร่วมทำบุญ 9,999 บาทผู้ปกครองนักเรียนและครูร่วมทำบุญทั้งหมดกี่บาท ประโยคสัญลักษณ์ 48,970 + 9,999 =  วิธีทำ ตอบ ผู้ปกครองนักเรียนและครูร่วมทำบุญทั้งหมด ๕๘,๙๖๙ บาท ผู้ปกครองนักเรียนร่วมทำบุญ48,970บาทครูร่วมทำบุญ9,999บาทผู้ปกค"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s082" data-thumb="img/t082.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 82"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 82 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แม่มีเงิน 50,000 บาท ซื้อคอมพิวเตอร์ราคา 24,450 บาท แม่เหลือเงินกี่บาท โจทย์ถาม โจทย์บอก แม่มีเงิน 50,000 บาท ซื้อคอมพิวเตอร์ราคา 24,450 บาท แม่เหลือเงินกี่บาท ประโยคสัญลักษณ์ 50,000 – 24,450 =  หาคำตอบได้อย่างไร มีอยู่ 50,000 ใช้ไป 24,450 หาเงินที่เหลือได้จาก 50,000 ลบด้วย 24,450 วิ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s083" data-thumb="img/t083.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 83"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 83 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ปีนี้โรงงานแห่งหนึ่งผลิตรถยนต์ได้ 65,000 คัน ปีที่แล้วผลิตได้ 61,700 คัน ปีนี้โรงงานผลิตรถยนต์ได้มากกว่าปีที่แล้วกี่คัน โจทย์ถาม โจทย์บอก ปีนี้โรงงานแห่งหนึ่งผลิตรถยนต์ได้ 65,000 คัน ปีที่แล้วผลิตได้ 61,700 คัน ปีนี้โรงงานผลิตรถยนต์ได้มากกว่าปีที่แล้วกี่คัน ประโยคสัญลักษณ์ 65,000 – 61"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s084" data-thumb="img/t084.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 84"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 84 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 1 มูลนิธิแห่งหนึ่งรับบริจาคหนังสือได้ 42,386 เล่ม นำไปมอบให้แก่โรงเรียนต่าง ๆ 35,597 เล่ม มูลนิธินี้เหลือหนังสือกี่เล่ม เขียนประโยคสัญลักษณ์และแสดงวิธีหาคำตอบ ประโยคสัญลักษณ์ 42,386 – 35,597 = วิธีทำ มูลนิธิแห่งหนึ่งรับบริจาคหนังสือได้ 42,386 เล่ม นำไปมอบให้แก่โรงเรียนต่าง ๆ 35,597 เ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s085" data-thumb="img/t085.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 85"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 85 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 3 ชาวประมงจับปลาได้ 4,876 กิโลกรัม จับหมึกได้ 1,985 กิโลกรัม ชาวประมงจับปลาและหมึกได้ทั้งหมดกี่กิโลกรัม ประโยคสัญลักษณ์ 4,876 + 1,985 = วิธีทำ ชาวประมงจับปลาได้ 4,876 กิโลกรัม จับหมึกได้ 1,985 กิโลกรัม ชาวประมงจับปลาและหมึกได้ทั้งหมด 4,876 + 1,985 = 6,861 กิโลกรัมตอบ ชาวประมงจับปลาแล"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s086" data-thumb="img/t086.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 86"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 86 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 5 เมื่อวานนี้ปั๊มน้ำมันขายน้ำมันได้ 980 ลิตร วันนี้ขายได้ 1,450 ลิตร เมื่อวานนี้ขายน้ำมันได้น้อยกว่าวันนี้กี่ลิตร ประโยคสัญลักษณ์ 1,450 – 980 = วิธีทำ วันนี้ปั๊มน้ำมันขายน้ำมันได้ 1,450 ลิตร เมื่อวานนี้ปั๊มน้ำมันขายน้ำมันได้ 980 ลิตร เมื่อวานนี้ปั๊มน้ำมันขายน้ำมันได้น้อยกว่าวันนี้ 1,"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s087" data-thumb="img/t087.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 87"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 87 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 เขียนประโยคสัญลักษณ์และแสดงวิธีหาคำตอบ ตรวจสอบความเข้าใจ วันแรกแม่ค้าขายทุเรียนได้ 28,365 บาท วันที่สองขายได้ 39,720 บาทวันที่สองขายทุเรียนได้เงินมากกว่าวันแรกกี่บาท ประโยคสัญลักษณ์ 39,720 – 28,365 = วิธีทำ วันที่สองแม่ค้าขายทุเรียนได้ 39,720 บาท วันแรกแม่ค้าขายทุเรียนได้ 28,365 บาท "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s088" data-thumb="img/t088.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 88"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 88 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 สัปดาห์แรกโรงงานขายสบู่ได้ 13,020 ก้อน สัปดาห์ที่สองขายสบู่ได้มากกว่าสัปดาห์แรก 4,700 ก้อน สัปดาห์ที่สองโรงงานขายสบู่ได้กี่ก้อน โจทย์ถาม โจทย์บอก สัปดาห์แรกโรงงานขายสบู่ได้ 13,020 ก้อน สัปดาห์ที่สองขายสบู่ได้มากกว่าสัปดาห์แรก 4,700 ก้อน สัปดาห์ที่สองโรงงานขายสบู่ได้กี่ก้อน ประโยคสัญลั"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s089" data-thumb="img/t089.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 89"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 89 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ร้านนาฬิกาแห่งหนึ่งส่งนาฬิกาไปขายที่ภาคเหนือ 27,630 เรือน ส่งนาฬิกาไปขายที่ภาคเหนือมากกว่าภาคใต้ 19,850 เรือน ร้านนาฬิกานี้ส่งนาฬิกาไปขายที่ภาคใต้กี่เรือน โจทย์ถาม โจทย์บอก ร้านนาฬิกาแห่งหนึ่งส่งนาฬิกาไปขายที่ภาคเหนือ 27,630 เรือน ส่งนาฬิกาไปขายที่ภาคเหนือมากกว่าภาคใต้ 19,850 เรือน ร้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s090" data-thumb="img/t090.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 90"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 90 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 1 ถังเก็บน้ำมีความจุ 12,000 ลิตร ถังเก็บน้ำมีความจุมากกว่าโอ่ง 9,900 ลิตร โอ่งมีความจุกี่ลิตร เขียนประโยคสัญลักษณ์และแสดงวิธีหาคำตอบ ประโยคสัญลักษณ์ 12,000 – 9,900 = วิธีทำ ถังเก็บน้ำมีความจุ 12,000 ลิตร ถังเก็บน้ำมีความจุมากกว่าโอ่ง 9,900 ลิตร โอ่งมีความจุ 12,000 – 9,000 = 2,100 ลิต"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s091" data-thumb="img/t091.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 91"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 91 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 พ่อจ่ายเงินค่าทาสีรั้ว 18,700 บาท จ่ายเงินค่าทาสีรั้วน้อยกว่าค่าทาสีบ้าน 25,000 บาทพ่อจ่ายเงินค่าทาสีบ้านกี่บาท โจทย์ถาม โจทย์บอก พ่อจ่ายเงินค่าทาสีรั้ว 18,700 บาท จ่ายเงินค่าทาสีรั้วน้อยกว่าค่าทาสีบ้าน 25,000 บาท พ่อจ่ายเงินค่าทาสีบ้านกี่บาท ประโยคสัญลักษณ์ 18,700 + 25,000 =  วิธีทำ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s092" data-thumb="img/t092.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 92"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 92 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 บริษัทแห่งหนึ่งบริจาคเงินเข้ามูลนิธิคนพิการ 35,000 บาท บริจาคเงินเข้ามูลนิธิเด็กน้อยกว่าบริจาคเงินเข้ามูลนิธิคนพิการ 6,500 บาท บริษัทนี้บริจาคเงินเข้ามูลนิธิเด็กเท่าไร โจทย์ถาม โจทย์บอก บริษัทแห่งหนึ่งบริจาคเงินเข้ามูลนิธิคนพิการ 35,000 บาท บริจาคเงินเข้ามูลนิธิเด็กน้อยกว่าบริจาคเงินเ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s093" data-thumb="img/t093.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 93"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 93 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 1 ฟาร์มแห่งหนึ่งรีดนมวัวได้สัปดาห์ละ 1,780 ลิตร รีดนมแพะได้น้อยกว่านมวัว 890 ลิตร ฟาร์มแห่งนี้รีดนมแพะได้สัปดาห์ละกี่ลิตร เขียนประโยคสัญลักษณ์และแสดงวิธีหาคำตอบ ประโยคสัญลักษณ์ 1,780 - 890 =  2 ชาวสวนขายทุเรียนได้ 34,500 บาท ขายทุเรียนได้เงินน้อยกว่าขายมังคุด 7,450 บาท ชาวสวนมังคุดได"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s094" data-thumb="img/t094.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 94"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 94 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 1 เดือนมกราคม ปี 2561 ชาวแคนาดามาเที่ยวประเทศไทย 32,382 คน ชาวออสเตรเลียมาเที่ยวประเทศไทยมากกว่าชาวแคนาดา 39,511 คน ชาวออสเตรเลียมาเที่ยวประเทศไทยกี่คน เขียนประโยคสัญลักษณ์และแสดงวิธีหาคำตอบ ประโยคสัญลักษณ์ 32,382 + 39,511 =  2 เครื่องบินแอร์บัส A380 ยาว 7,300 เซนติเมตร เครื่องบินแอร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s095" data-thumb="img/t095.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 95"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 95 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 3 ถนน A ยาวกว่าถนน B อยู่ 33,474 กิโลเมตร ถ้าถนน B ยาว 14,484 กิโลเมตร ถนน A ยาวกี่กิโลเมตร ประโยคสัญลักษณ์ 33,474 + 14,484 =  4 กิจกรรมอนุรักษ์สัตว์น้ำของโรงเรียนแห่งหนึ่ง ครูและนักเรียนช่วยกันปล่อยปลานิล 18,000 ตัว ปล่อยปลานิลน้อยกว่าปลาตะเพียน 1,550 ตัว ครูและนักเรียนปล่อยปลาตะเพี"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f3.webp" alt="">ทำกิจกรรมไปพร้อมกัน แตะดูทีละขั้น</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s096" data-thumb="img/t096.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 96"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 96 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 5 ชาวนาปลูกข้าวนาปรังได้ผลผลิต 26,534 เกวียน ปลูกข้าวนาปรังได้ผลผลิตมากกว่าปลูกข้าวนาปี 7,290 เกวียน ชาวนาปลูกข้าวนาปีได้ผลผลิตกี่เกวียน ประโยคสัญลักษณ์ 26,534 – 7,290 =  วิธีทำชาวนาปลูกข้าวนาปรังได้ผลผลิตปลูกข้าวนาปรังได้ผลผลิตมากกว่าปลูกข้าวนาปีชาวนาปลูกข้าวนาปีได้ผลผลิต26,5347,290"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s097" data-thumb="img/t097.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 97"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 97 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 เขียนประโยคสัญลักษณ์และแสดงวิธีหาคำตอบ ตรวจสอบความเข้าใจ เมื่อวานนี้โรงงานผลิตน้ำดื่มได้ 31,700 ขวด ซึ่งผลิตได้น้อยกว่าวันนี้ 14,820 ขวดวันนี้โรงงานผลิตน้ำดื่มได้กี่ขวด ประโยคสัญลักษณ์ 31,700 + 14,820 =  วิธีทำเมื่อวานนี้โรงงานผลิตน้ำดื่มได้ซึ่งผลิตได้น้อยกว่าวันนี้วันนี้โรงงานผลิตน้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s098" data-thumb="img/t098.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 98"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 98 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ขุนต้องการซื้อคอมพิวเตอร์ราคา 14,200 บาท มีเงินอยู่ 10,500 บาทขุนต้องเก็บเงินเพิ่มอีกเท่าไรจึงจะซื้อคอมพิวเตอร์ได้พอดี โจทย์ถาม โจทย์บอก ขุนต้องการซื้อคอมพิวเตอร์ราคา 14,200 บาท มีเงินอยู่ 10,500 บาท ขุนต้องเก็บเงินเพิ่มอีกเท่าไรจึงจะซื้อคอมพิวเตอร์ได้พอดี หาคำตอบได้อย่างไร 14,200 – 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s099" data-thumb="img/t099.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 99"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 99 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ตู้คอนเทนเนอร์พร้อมสิ่งของน้ำหนักรวม 30,480 กิโลกรัม ถ้าสิ่งของทั้งหมดหนัก 26,750 กิโลกรัม ตู้คอนเทนเนอร์หนักกี่กิโลกรัม โจทย์ถาม โจทย์บอก ตู้คอนเทนเนอร์พร้อมสิ่งของน้ำหนักรวม 30,480 กิโลกรัม ถ้าสิ่งของทั้งหมดหนัก 26,750 กิโลกรัม ตู้คอนเทนเนอร์หนักกี่กิโลกรัม หาคำตอบได้อย่างไร 30,480 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s100" data-thumb="img/t100.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 100"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 100 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ลุงนำเงินที่มีอยู่ซื้ออุปกรณ์ทำสวน 6,520 บาท ยังเหลือเงินอยู่ 3,480 บาทก่อนซื้ออุปกรณ์ทำสวนลุงมีเงินอยู่เท่าไร  - 6,520 = 3,480จะได้ 6,520 + 3,480 =  6,520 + 3,480 =  วิธีทำลุงนำเงินที่มีอยู่ซื้ออุปกรณ์ทำสวนยังเหลือเงินอยู่ก่อนซื้ออุปกรณ์ทำสวนลุงมีเงินอยู่6,5203,4806,520 + 3,480 = "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s101" data-thumb="img/t101.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 101"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 101 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 1 พ่อมีปั๊มน้ำมันสองปั๊ม ขายน้ำมันทั้งสองปั๊มได้ 34,150 ลิตร ปั๊มหนึ่งขายน้ำมันได้ 16,270 ลิตร อีกปั๊มหนึ่งขายน้ำมันได้กี่ลิตร แสดงวิธีหาคำตอบ 2 ฟาร์มแห่งหนึ่งเลี้ยงไก่ 12,500 ตัว เป็นไก่ตัวผู้ 145 ตัว เป็นไก่ตัวเมียกี่ตัว วิธีทำขายน้ำมันทั้งสองปั๊มได้ปั๊มหนึ่งขายน้ำมันได้อีกปั๊มหนึ่ง"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s102" data-thumb="img/t102.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 102"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 102 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 3 ชาวสวนเก็บทุเรียนได้ 3,560 กิโลกรัม ขายไปแล้วเหลือทุเรียน 155 กิโลกรัม ชาวสวนขายทุเรียนทั้งหมดกี่กิโลกรัม 4 มูลนิธิเด็กต้องการใช้เงินในการปรับปรุงห้องสมุด 78,900 บาท มีผู้บริจาคแล้ว 39,000 บาท มูลนิธิเด็กต้องรับเงินบริจาคเพิ่มอีกเท่าไรจึงจะมีเงินปรับปรุงห้องสมุดได้พอดี วิธีทำชาวสวนเ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s103" data-thumb="img/t103.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 103"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 103 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 แสดงวิธีหาคำตอบ ตรวจสอบความเข้าใจ โรงเรียนแห่งหนึ่งจัดกิจกรรมอนุรักษ์สัตว์น้ำ โดยการปล่อยปลาทั้งหมด 100,000 ตัว ปล่อยปลาไปแล้ว 79,900 ตัว จะต้องปล่อยปลาเพิ่มอีกกี่ตัว วิธีทำปล่อยปลาทั้งหมดปล่อยปลาไปแล้วจะต้องปล่อยปลาเพิ่มอีก100,00079,900100,000 – 79,900 = 20,100ตัวตัวตัวตอบจะต้องปล่อย"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s104" data-thumb="img/t104.webp" data-title="2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ · หน้า 104"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 104 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 การแก้โจทย์ปัญหาทำได้โดย อ่านทำความเข้าใจปัญหา วางแผนแก้ปัญหา หาคำตอบและตรวจสอบความสมเหตุสมผลของคำตอบ สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="2.5" data-title="2.5 การสร้างโจทย์ปัญหา"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 2.5</span><b>✍️ การสร้างโจทย์ปัญหา</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s106" data-thumb="img/t106.webp" data-title="2.5 การสร้างโจทย์ปัญหา · หน้า 106"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.5 การสร้างโจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 106 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ช่วยกันสร้างโจทย์ปัญหาจากประโยคสัญลักษณ์ 4,719 + 3,200 =  โจทย์ปัญหามีส่วนที่โจทย์ถามและส่วนที่โจทย์บอก เช่น 1. มีช้าง 4,719 ตัว มีม้าลาย 3,200 ตัว มีช้างและม้าลายทั้งหมดกี่ตัว 2. มีนกฟลามิงโก 4,719 ตัว มีนกกระจอกเทศ 3,200 ตัว มีนกฟลามิงโกและนกกระจอกเทศกี่ตัว 3. มียีราฟ 4,719 ตัว มีก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s107" data-thumb="img/t107.webp" data-title="2.5 การสร้างโจทย์ปัญหา · หน้า 107"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.5 การสร้างโจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 107 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 ช่วยกันสร้างโจทย์ปัญหาการบวก และโจทย์ปัญหาการลบ พร้อมทั้งเขียนประโยคสัญลักษณ์ โทรทัศน์ราคา 23,990 บาท พัดลมราคา 1,280 บาท โทรทัศน์ราคามากกว่าพัดลมกี่บาท ประโยคสัญลักษณ์ 23,990 – 1,280 =  แม่ซื้อตู้เย็น 17,990 บาท และโทรทัศน์ 23,990 บาท แม่จ่ายเงินซื้อตู้เย็นและโทรทัศน์กี่บาทประโยคสัญ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s108" data-thumb="img/t108.webp" data-title="2.5 การสร้างโจทย์ปัญหา · หน้า 108"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.5 การสร้างโจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 108 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 1 สร้างโจทย์ปัญหาจากประโยคสัญลักษณ์ 2 26,717 – 17,906 =  ต้นกล้าต้องการปล่อยปลานิล 26,717 ตัว ปล่อยไปแล้ว 17,906 ตัว ต้นกล้าต้องซื้อปลานิลมาปล่อยเพิ่มอีกกี่ตัว พ่อได้รับเงินเดือน 26,717 บาท จ่ายเงินสำหรับค่าใช้จ่ายในบ้าน 17,906 บาท เงินเดือนของพ่อเหลือเท่าไร 31,979 + 42,501 =  มีผู้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s109" data-thumb="img/t109.webp" data-title="2.5 การสร้างโจทย์ปัญหา · หน้า 109"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.5 การสร้างโจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 109 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 สร้างโจทย์ปัญหาจากประโยคสัญลักษณ์ ตรวจสอบความเข้าใจ 1 2 26,717 – 17,906 =  โรงสีข้าวแห่งหนึ่งมีข้าวหอมมะลิ 29,143 กิโลกรัม มีข้าวเหนียว 52,762 กิโลกรัม โรงสีข้าวแห่งนี้มีข้าวหอมมะลิและข้าวเหนียวทั้งหมดเท่าไร 31,979 + 42,501 =  ชาวสวนขายทุเรียนได้เงิน 40,197 บาท ขายมังคุดได้เงินน้อยก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s110" data-thumb="img/t110.webp" data-title="2.5 การสร้างโจทย์ปัญหา · หน้า 110"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">2.5 การสร้างโจทย์ปัญหา</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 110 / 110</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 การสร้างโจทย์ปัญหาต้องมีทั้งส่วนที่โจทย์บอกและส่วนที่โจทย์ถาม นอกจากนี้โจทย์ปัญหาที่สร้างต้องมีความเป็นไปได้ สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
+  <div class="kru fig"><span class="av"><img src="k10.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>จบบทที่ 2 การบวกและการลบจำนวนนับไม่เกิน 100,000</h2>
+  <div class="card c-yellow center endpic"><img src="k9.webp" alt="ครูอู๋ชูถ้วยรางวัล"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="f11.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="toc"><button data-jump="2.1"><span class="e">➕</span><span>ทบทวน 2.1 การหาผลบวก</span></button><button data-jump="2.2"><span class="e">➖</span><span>ทบทวน 2.2 การหาผลลบ</span></button><button data-jump="2.3"><span class="e">❓</span><span>ทบทวน 2.3 การหาค่าของตัวไม่ทราบค่าในประโยคสัญลักษณ์</span></button><button data-jump="2.4"><span class="e">📝</span><span>ทบทวน 2.4 โจทย์ปัญหาการบวกและโจทย์ปัญหาการลบ</span></button><button data-jump="2.5"><span class="e">✍️</span><span>ทบทวน 2.5 การสร้างโจทย์ปัญหา</span></button></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m3-ch1-numbers/">◀ บทก่อนหน้า</a><a class="btn" style="--c:var(--purple)" href="../m3-math-hub/">🏠 หน้ารวม ป.3</a><a class="btn ghost" href="../m3-ch3-time/">บทถัดไป ▶</a></div>
+  <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.3 สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m3-ch2-add-sub", STORE_PREFIX = 'kruau-p3-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [{"q": "24,365 + 13,522 = ?", "c": ["37,887", "37,787", "36,887", "38,887"], "a": 0, "w": "บวกทีละหลักจากหลักหน่วย ไม่มีการทด"}, {"q": "46,758 + 25,387 = ?", "c": ["72,145", "71,145", "72,045", "61,145"], "a": 0, "w": "มีการทดทุกหลัก ได้ 72,145"}, {"q": "58,000 − 23,450 = ?", "c": ["34,550", "35,450", "34,450", "35,550"], "a": 0, "w": "กระจายจากหลักพันมาให้หลักร้อยและหลักสิบ"}, {"q": "70,005 − 6,008 = ?", "c": ["63,997", "64,997", "63,007", "64,003"], "a": 0, "w": "ต้องกระจายหลายหลักเพราะมีเลข 0"}, {"q": "□ + 12,500 = 40,000   □ = ?", "c": ["27,500", "52,500", "28,500", "37,500"], "a": 0, "w": "□ = 40,000 − 12,500 = 27,500"}, {"q": "35,000 − □ = 9,000   □ = ?", "c": ["26,000", "44,000", "25,000", "16,000"], "a": 0, "w": "□ = 35,000 − 9,000 = 26,000"}, {"q": "โรงเรียนมีหนังสือ 15,240 เล่ม ซื้อเพิ่มอีก 4,860 เล่ม รวมมีกี่เล่ม", "c": ["20,100 เล่ม", "19,100 เล่ม", "10,380 เล่ม", "20,000 เล่ม"], "a": 0, "w": "15,240 + 4,860 = 20,100"}, {"q": "แม่มีเงิน 50,000 บาท ซื้อตู้เย็น 18,900 บาท เหลือเงินกี่บาท", "c": ["31,100 บาท", "32,100 บาท", "68,900 บาท", "31,900 บาท"], "a": 0, "w": "50,000 − 18,900 = 31,100"}];
+
+/* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
+var PRAISE = [['k11', 'เยี่ยมมาก!'], ['k2', 'สุดยอด!'], ['k6', 'เก่งมาก!'], ['k9', 'แชมป์เลย!'], ['k11', 'ปรบมือให้เลย!'], ['k7', 'เข้าใจแล้วใช่ไหม']];
+function ppPaint(sl, quiet) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, z = sl.querySelector('.ppz'), img = z.querySelector('img:not(.ghost)');
+  var src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (img.getAttribute('src') && img.getAttribute('src') !== src && !quiet) {
+    var g = img.cloneNode(); g.className = 'ghost'; g.removeAttribute('alt'); z.insertBefore(g, img.nextSibling);
+    var fade = function () { g.style.opacity = 0; setTimeout(function () { g.remove(); }, 400); };
+    img.onload = function () { img.onload = null; requestAnimationFrame(fade); };
+    setTimeout(fade, 900);
+  }
+  img.src = src;
+  if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
+  sl.querySelector('.ppbox').classList.toggle('can', k < n);
+  var b = sl.querySelector('[data-pstep]');
+  if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+  var d = sl.querySelector('.ppbox .done');
+  if (d) d.remove();
+  if (n && k >= n) {
+    var p = PRAISE[(+sl.getAttribute('data-src').slice(-3)) % PRAISE.length];
+    d = document.createElement('div'); d.className = 'done';
+    d.innerHTML = '<span>' + p[1] + '</span><img src="' + p[0] + '.webp" alt="">';
+    sl.querySelector('.ppbox').appendChild(d);
+    if (!quiet) { Kit.sound.good(); if (Math.random() < .35) Kit.confetti(); }
+  }
+}
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl, 1); } }
+function ppTools(sl, mode) {
+  ['zoom'].forEach(function (m) {
+    var on = m === mode && !sl.classList.contains(m);
+    sl.classList.toggle(m, on);
+    sl.querySelector('[data-' + m + ']').classList.toggle('on', on);
+  });
+  if (!sl.classList.contains('zoom')) sl.querySelector('.ppz').style.transformOrigin = '50% 50%';
+  sl.querySelector('.ppbox').classList.toggle('noswipe', sl.classList.contains('zoom'));
+}
+/* ---------- จับเวลา ---------- */
+var TM = { el: null, end: 0, iv: 0 };
+function tmShow() {
+  if (!TM.el) {
+    TM.el = document.createElement('div'); TM.el.className = 'timer';
+    document.body.appendChild(TM.el);
+  }
+  clearInterval(TM.iv); TM.el.classList.remove('end');
+  TM.el.innerHTML = '⏱️ <span class="opts"><button data-m="1">1 นาที</button><button data-m="2">2</button><button data-m="3">3</button><button data-m="5">5</button></span><button class="x" aria-label="ปิด">✖</button>';
+  TM.el.classList.add('show');
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show'); };
+  Array.prototype.forEach.call(TM.el.querySelectorAll('[data-m]'), function (b) { b.onclick = function () { tmStart(+b.getAttribute('data-m')); }; });
+}
+function tmStart(m) {
+  TM.end = Date.now() + m * 60000;
+  TM.el.innerHTML = '⏱️ <span class="t"></span><button class="x" aria-label="หยุด">✖</button>';
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show', 'end'); };
+  var t = TM.el.querySelector('.t');
+  function tick() {
+    var r = Math.max(0, Math.ceil((TM.end - Date.now()) / 1000));
+    t.textContent = Math.floor(r / 60) + ':' + ('0' + r % 60).slice(-2);
+    if (!r) { clearInterval(TM.iv); TM.el.classList.add('end'); Kit.sound.win(); Kit.toast('⏰ หมดเวลา! มาดูเฉลยกันนะ'); }
+  }
+  tick(); TM.iv = setInterval(tick, 250); Kit.sound.tap();
+}
+(function () {
+  var go = Kit.go;
+  Kit.go = function (n, instant) {
+    var cur = Kit.slides[Kit.cur];
+    if (!instant && cur && cur.classList.contains('pslide')) {
+      var N = +cur.getAttribute('data-steps'), k = cur._k || 0;
+      if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
+      if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
+    }
+    if (cur && cur.classList.contains('pslide') && n !== Kit.cur) ppTools(cur, null);
+    var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
+    go(n, instant);
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t, 1); }
+    for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+  };
+})();
+SETUP = function () {
+  setupToc();
+  Kit.slides.forEach(function (sl) {
+    if (!sl.classList.contains('pslide')) return;
+    var box = sl.querySelector('.ppbox'), z = sl.querySelector('.ppz'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
+    box.addEventListener('click', function (e) {
+      if (sl.classList.contains('zoom')) {
+        var q = box.getBoundingClientRect();
+        z.style.transformOrigin = ((e.clientX - q.left) / q.width * 100) + '% ' + ((e.clientY - q.top) / q.height * 100) + '%';
+        return;
+      }
+      adv();
+    });
+    if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+    sl.querySelector('[data-zoom]').onclick = function () { ppTools(sl, 'zoom'); Kit.sound.tap(); if (sl.classList.contains('zoom')) Kit.toast('🔎 แตะตรงที่อยากดูใกล้ ๆ'); };
+    sl.querySelector('[data-timer]').onclick = function () { tmShow(); Kit.sound.tap(); };
+  });
+};
+
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
+  });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- กล้องมุมจอ + อัดวิดีโอการสอน ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit) return;
+  var md = navigator.mediaDevices || {};
+  var inFrame = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  var canRec = !!md.getDisplayMedia && !!window.MediaRecorder;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '🎥'; btn.title = 'กล้องมุมจอ / อัดวิดีโอการสอน'; btn.setAttribute('aria-label', 'กล้องและอัดวิดีโอ');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var pnl = document.createElement('div'); pnl.className = 'campnl';
+  pnl.innerHTML = '<b>🎥 สอนออนไลน์ / ทำวิดีโอ</b>' +
+    '<button data-cam>📷 เปิดกล้องมุมจอ</button>' +
+    (canRec ? '<button data-rec>🔴 อัดวิดีโอหน้าจอ + เสียง</button>' : '') +
+    '<p class="tip">' + (canRec
+      ? 'กดอัดแล้วเลือก <b>แท็บนี้</b> ระบบจะอัดสไลด์ กล้อง และเสียงครูไว้ด้วยกัน กดหยุดแล้วจะได้ไฟล์วิดีโอทันที'
+      : 'บน iPad: เปิดกล้องมุมจอ แล้วใช้ <b>การบันทึกหน้าจอ</b> ในศูนย์ควบคุม (กดค้างที่ปุ่ม ⏺ เพื่อเปิดไมโครโฟน)') + '</p>' +
+    '<button data-x class="ghost">ปิด</button>';
+  document.body.appendChild(pnl);
+  btn.onclick = function () { pnl.classList.toggle('show'); Kit.sound.tap(); };
+  pnl.querySelector('[data-x]').onclick = function () { pnl.classList.remove('show'); };
+
+  function newTab(flag) {
+    var w = window.open(location.href.split('#')[0] + '#s=' + Kit.cur + '&' + flag + '=1', '_blank');
+    if (!w) Kit.toast('เปิดแท็บใหม่ไม่ได้ ลองกดปุ่ม "เปิดในแท็บใหม่" ของเว็บครูอู๋');
+  }
+
+  /* ---- กล้อง ---- */
+  var cam = null, stream = null, SIZES = [120, 170, 240], si = 1, round = true;
+  try { var sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); if (sv.si != null) si = sv.si; if (sv.round != null) round = sv.round; } catch (e) {}
+  function save(x, y) { try { localStorage.setItem('kruau-cam', JSON.stringify({ si: si, round: round, x: x, y: y })); } catch (e) {} }
+  function place() {
+    var s = SIZES[si], h = round ? s : Math.round(s * .75);
+    cam.style.width = s + 'px'; cam.style.height = h + 'px';
+    cam.classList.toggle('sq', !round);
+    var r = cam.getBoundingClientRect();
+    var x = Math.min(Math.max(4, r.left), innerWidth - s - 4), y = Math.min(Math.max(4, r.top), innerHeight - h - 4);
+    cam.style.left = x + 'px'; cam.style.top = y + 'px';
+  }
+  function openCam() {
+    if (cam) return;
+    if (!md.getUserMedia) { Kit.toast('อุปกรณ์นี้เปิดกล้องผ่านเว็บไม่ได้'); return; }
+    md.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }).then(function (s) {
+      stream = s;
+      cam = document.createElement('div'); cam.className = 'cambub noswipe';
+      cam.innerHTML = '<video autoplay playsinline muted></video><span class="cb"><button data-sz title="ย่อ/ขยาย">⤢</button><button data-sh title="วงกลม/สี่เหลี่ยม">◐</button><button data-cl title="ปิดกล้อง">✖</button></span>';
+      document.body.appendChild(cam);
+      var v = cam.querySelector('video'); v.srcObject = s; v.play().catch(function () {});
+      var sv = {}; try { sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); } catch (e) {}
+      cam.style.left = (sv.x != null ? sv.x : innerWidth - SIZES[si] - 16) + 'px';
+      cam.style.top = (sv.y != null ? sv.y : innerHeight - SIZES[si] - 90) + 'px';
+      place();
+      cam.querySelector('[data-sz]').onclick = function (e) { e.stopPropagation(); si = (si + 1) % SIZES.length; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-sh]').onclick = function (e) { e.stopPropagation(); round = !round; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-cl]').onclick = function (e) { e.stopPropagation(); closeCam(); };
+      var drag = null;
+      cam.addEventListener('pointerdown', function (e) {
+        if (e.target.closest('button')) return;
+        drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
+      });
+      cam.addEventListener('pointermove', function (e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        cam.style.left = Math.min(Math.max(4, e.clientX - drag.dx), innerWidth - cam.offsetWidth - 4) + 'px';
+        cam.style.top = Math.min(Math.max(4, e.clientY - drag.dy), innerHeight - cam.offsetHeight - 4) + 'px';
+      });
+      cam.addEventListener('pointerup', function () { if (drag) save(cam.offsetLeft, cam.offsetTop); drag = null; });
+      pnl.querySelector('[data-cam]').textContent = '📷 ปิดกล้องมุมจอ';
+      pnl.classList.remove('show');
+      Kit.toast('📷 ลากกล้องไปวางมุมไหนก็ได้ · ⤢ ย่อ/ขยาย');
+    }).catch(function (err) {
+      if (inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่อใช้กล้อง…'); newTab('cam'); }
+      else Kit.toast('เปิดกล้องไม่ได้ — กรุณาอนุญาตให้เว็บใช้กล้อง');
+    });
+  }
+  function closeCam() {
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    if (cam) cam.remove();
+    cam = stream = null;
+    pnl.querySelector('[data-cam]').textContent = '📷 เปิดกล้องมุมจอ';
+  }
+  pnl.querySelector('[data-cam]').onclick = function () { if (cam) closeCam(); else openCam(); };
+  addEventListener('resize', function () { if (cam) place(); });
+
+  /* ---- อัดวิดีโอ (คอมพิวเตอร์: Chrome / Edge / Firefox) ---- */
+  var rec = null, chip = null, parts = [], t0 = 0, iv = 0, all = [];
+  function pickType() {
+    var c = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    for (var i = 0; i < c.length; i++) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c[i])) return c[i];
+    return '';
+  }
+  function startRec() {
+    md.getDisplayMedia({ video: { frameRate: 30 }, audio: true, preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude' }).then(function (ds) {
+      all = [ds];
+      return md.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }).then(function (mic) { all.push(mic); return [ds, mic]; }, function () { Kit.toast('ไม่ได้เปิดไมโครโฟน จะอัดแต่ภาพ'); return [ds, null]; });
+    }).then(function (r) {
+      var ds = r[0], mic = r[1], tracks = ds.getVideoTracks().slice();
+      var aud = [ds, mic].filter(function (s) { return s && s.getAudioTracks().length; });
+      if (aud.length === 1) tracks = tracks.concat(aud[0].getAudioTracks());
+      else if (aud.length > 1) {
+        var ac = new (window.AudioContext || window.webkitAudioContext)(), dst = ac.createMediaStreamDestination();
+        aud.forEach(function (s) { ac.createMediaStreamSource(s).connect(dst); });
+        tracks = tracks.concat(dst.stream.getAudioTracks());
+      }
+      var type = pickType();
+      rec = new MediaRecorder(new MediaStream(tracks), type ? { mimeType: type, videoBitsPerSecond: 3000000 } : undefined);
+      parts = [];
+      rec.ondataavailable = function (e) { if (e.data && e.data.size) parts.push(e.data); };
+      rec.onstop = finish;
+      ds.getVideoTracks()[0].addEventListener('ended', stopRec);
+      rec.start(1000); t0 = Date.now();
+      chip = document.createElement('div'); chip.className = 'recchip';
+      chip.innerHTML = '<span class="dot"></span> อัดอยู่ <span class="t">0:00</span><button>■ หยุด</button>';
+      document.body.appendChild(chip);
+      chip.querySelector('button').onclick = stopRec;
+      iv = setInterval(function () { var s = Math.floor((Date.now() - t0) / 1000); chip.querySelector('.t').textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }, 500);
+      pnl.classList.remove('show');
+      if (!cam) Kit.toast('🔴 เริ่มอัดแล้ว · เปิดกล้องมุมจอได้ที่ปุ่ม 🎥');
+    }).catch(function (err) {
+      all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+      if (err && err.name === 'NotAllowedError' && inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่ออัดวิดีโอ…'); newTab('rec'); }
+      else if (err && err.name !== 'NotAllowedError') Kit.toast('อัดวิดีโอไม่ได้: ' + err.name);
+    });
+  }
+  function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+  function finish() {
+    clearInterval(iv);
+    all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+    if (chip) chip.remove();
+    var type = (rec && rec.mimeType) || 'video/webm', ext = type.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+    var blob = new Blob(parts, { type: type }), a = document.createElement('a');
+    var d = new Date(), name = (document.title.split('·')[0].trim() || 'บทเรียน').replace(/[\\\/:*?"<>|]/g, '') + ' ' + d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    a.href = URL.createObjectURL(blob); a.download = name + '.' + ext;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+    Kit.sound.win(); Kit.toast('💾 บันทึกวิดีโอแล้ว (' + ext.toUpperCase() + ') ดูได้ในโฟลเดอร์ดาวน์โหลด');
+    rec = null;
+  }
+  var rb = pnl.querySelector('[data-rec]');
+  if (rb) rb.onclick = function () { if (rec) stopRec(); else startRec(); };
+
+  /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
+  if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
+  if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+</script>
+</body>
+</html>

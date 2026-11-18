@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 10 การวัดน้ำหนัก · คณิตศาสตร์ ป.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#EF4444;--main-deep:#C02626;--glow:#FFE0E0}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
+/* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
+.campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
+.campnl.show{display:flex}
+.campnl button{min-height:44px;border-radius:14px;border:2px solid var(--main);background:var(--glow);font-weight:700;font-size:1rem;color:var(--ink)}
+.campnl button.ghost{background:#fff;min-height:36px}
+.campnl .tip{margin:0;font-size:.88rem;line-height:1.5;color:var(--ink-soft)}
+.cambub{position:fixed;z-index:65;border-radius:50%;overflow:hidden;background:#222;border:4px solid #fff;box-shadow:0 0 0 3px var(--main),0 8px 20px rgba(0,0,0,.3);touch-action:none;cursor:grab}
+.cambub.sq{border-radius:18px}
+.cambub video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;pointer-events:none}
+.cambub .cb{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:4px;opacity:0;transition:opacity .2s}
+.cambub:hover .cb,.cambub:active .cb,.cambub:focus-within .cb{opacity:1}
+@media (hover:none){.cambub .cb{opacity:.85}}
+.cambub .cb button{width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.9);font-size:.9rem;padding:0}
+.recchip{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid #E53935;border-radius:999px;padding:4px 6px 4px 14px;font-weight:700;color:#C62828;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.recchip .dot{width:12px;height:12px;border-radius:50%;background:#E53935;animation:recb 1s infinite}
+.recchip button{border:none;background:#E53935;color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;min-height:36px}
+@keyframes recb{50%{opacity:.25}}
+@media print{.campnl,.cambub,.recchip{display:none}}
+
+/* ---- แถบด้านบนบนมือถือ ---- */
+@media (max-width:520px){.bar .tb{width:34px!important;min-width:34px;height:34px!important;font-size:15px!important;padding:0!important}.bar{gap:3px!important}.bar .ttl small{display:none}}
+
+.nav .dots{display:none}
+.nav{justify-content:space-between}
+.pslide{padding:8px clamp(8px,2vw,24px) 8px}
+.pslide .inner.pp{max-width:none;height:100%;gap:6px}
+.pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
+.ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.ppbox{position:relative;width:min(100cqw,calc(100cqh * 16 / 9));aspect-ratio:16/9;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08);overflow:hidden;box-sizing:border-box}
+.ppz{position:absolute;inset:0;transition:transform .35s ease;transform-origin:50% 50%}
+.ppz img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ppz img.ghost{transition:opacity .35s ease;pointer-events:none}
+.ppbox.can{cursor:pointer}
+.pslide.zoom .ppbox{cursor:zoom-out}
+.pslide.zoom .ppz{transform:scale(2.2)}
+.ppbox .done{position:absolute;right:10px;bottom:8px;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:kpop .5s ease-out both}
+.ppbox .done img{height:clamp(60px,14cqh,110px);width:auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.ppbox .done span{background:#fff;border:3px solid var(--main);border-radius:14px 14px 4px 14px;padding:2px 10px;font-weight:700;color:var(--main-deep);margin-bottom:30px;white-space:nowrap;font-size:clamp(.8rem,2.2vw,1rem)}
+.tools{display:flex;align-items:center;gap:6px}
+.tl{width:40px;height:40px;border-radius:12px;border:2px solid var(--main);background:#fff;font-size:1.15rem;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--glow)}
+.tl.on{background:var(--main);box-shadow:0 3px 0 var(--main-deep)}
+.timer{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:6px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:4px 6px 4px 12px;font-weight:700;box-shadow:0 4px 0 var(--main-deep);font-size:1.15rem}
+.timer.show{display:flex}
+.timer .opts{display:flex;gap:4px}
+.timer .opts button,.timer .x{border:2px solid var(--main);background:var(--glow);border-radius:999px;padding:2px 10px;font-weight:700;min-height:36px}
+.timer .t{font-variant-numeric:tabular-nums;min-width:3.2em;text-align:center;color:var(--main-deep)}
+.timer.end{animation:tshake .5s 3;background:#FFE3E3}
+@keyframes tshake{25%{transform:translateX(-50%) rotate(-4deg)}75%{transform:translateX(-50%) rotate(4deg)}}
+@media (max-width:620px){.tl{width:34px;height:34px;font-size:1rem}.pphead .secbadge{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.board{position:relative;width:min(100%,720px);container-type:inline-size;animation:kpop .55s ease-out both}
+.board img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15))}
+.chalk{position:absolute;left:56%;top:12%;width:39%;height:62%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqw;color:#fff;text-align:center;text-shadow:0 0 2px rgba(255,255,255,.5)}
+.chalk .cn{font-size:4.2cqw;color:#FFE97A;border-bottom:.4cqw dashed #FFE97A;padding:0 2cqw}
+.chalk b{font-size:4.6cqw;line-height:1.3;font-weight:700}
+.secslide .ready{font-weight:700;color:var(--ink-soft)}
+.ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
+.ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
+.ppctl .btn{min-height:44px;padding:6px 18px}
+.secslide{min-height:100%;justify-content:center;align-items:center;text-align:center}
+.secnum{display:grid;place-items:center;width:clamp(110px,18vw,150px);aspect-ratio:1;border-radius:50%;background:var(--main);color:#fff;font-weight:700;font-size:clamp(2.2rem,6vw,3.2rem);box-shadow:0 8px 0 var(--main-deep)}
+.secslide h1{color:var(--main-deep);font-size:clamp(1.7rem,5vw,2.8rem);text-shadow:0 4px 0 var(--glow)}
+.subs{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:620px;width:100%}
+.subs div{background:#fff;border:3px solid var(--main);border-radius:16px;padding:8px 14px;font-weight:700;text-align:left;font-size:clamp(1rem,2.6vw,1.2rem)}
+.subs b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--main);color:#fff;margin-right:8px}
+.secslide .kru{max-width:680px;width:100%;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">⚖️</span>
+  <div class="ttl"><b>บทที่ 10 การวัดน้ำหนัก</b><small>คณิตศาสตร์ ป.3 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m3-math-hub/" aria-label="หน้ารวม ป.3" title="หน้ารวม ป.3">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.3 · บทที่ 10</span>
+    <h1>การวัดน้ำหนัก</h1>
+    <p class="sub">หน่วยน้ำหนัก เครื่องชั่ง คาดคะเน เปรียบเทียบ บวก ลบ คูณ หาร และโจทย์ปัญหา</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม</li><li>10.2 การเลือกเครื่องชั่งที่เหมาะสม</li><li>10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</li><li>10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1)</li><li>10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)</li><li>10.6 การเปรียบเทียบน้ำหนัก</li><li>10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</li><li>10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</li><li>10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</li><li>10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</li><li>10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 10</h2>
+  <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="toc"><button data-jump="10.1"><span class="e">⚖️</span><span>10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม</span></button><button data-jump="10.2"><span class="e">🧰</span><span>10.2 การเลือกเครื่องชั่งที่เหมาะสม</span></button><button data-jump="10.3"><span class="e">🤔</span><span>10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</span></button><button data-jump="10.4"><span class="e">🔗</span><span>10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1)</span></button><button data-jump="10.5"><span class="e">⛓️</span><span>10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)</span></button><button data-jump="10.6"><span class="e">🏋️</span><span>10.6 การเปรียบเทียบน้ำหนัก</span></button><button data-jump="10.7"><span class="e">➕</span><span>10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span></button><button data-jump="10.8"><span class="e">✖️</span><span>10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</span></button><button data-jump="10.9"><span class="e">📝</span><span>10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span></button><button data-jump="10.10"><span class="e">🧩</span><span>10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</span></button><button data-jump="10.11"><span class="e">🏆</span><span>10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
+</div></section>
+<section class="slide" data-sec="10.1" data-title="10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 10.1</span><b>⚖️ การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s004" data-thumb="img/t004.webp" data-title="10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม · หน้า 4"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ปลาหนัก 2 กิโลกรัม 6 ขีดหรือ 2 กิโลกรัม 600 กรัม เงาะเข่งนี้หนัก 50 กิโลกรัม 7 ขีด หรือ 50 กิโลกรัม 700 กรัม ปีกไก่หนัก 35 กิโลกรัม 5 ขีด หรือ 35 กิโลกรัม 500 กรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s005" data-thumb="img/t005.webp" data-title="10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม · หน้า 5"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขุนหนัก 30 กิโลกรัม 4 ขีดหรือ 30 กิโลกรัม 400 กรัม 50.7 กิโลกรัม อ่านว่า ห้าสิบจุดเจ็ดกิโลกรัมหมายถึง น้ำหนัก 50 กิโลกรัม 7 ขีดหรือ 50 กิโลกรัม 700 กรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s006" data-thumb="img/t006.webp" data-title="10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม · หน้า 6"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 6 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="9.475 กิโลกรัม อ่านว่า เก้าจุดสี่เจ็ดห้ากิโลกรัมหมายถึง น้ำหนัก 9 กิโลกรัม 475 กรัม ตัวเลขหน้าจุดบอกน้ำหนักเป็นกิโลกรัมตัวเลขหลังจุดบอกน้ำหนักเป็นกรัม กิโลกรัม (kilogram) ใช้อักษรย่อ กก. (kg)กรัม (gram) ใช้อักษรย่อ ก. (g) 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s007" data-thumb="img/t007.webp" data-title="10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม · หน้า 7"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รถบรรทุกหนัก 23,680 กิโลกรัม ท่อนเหล็กหนัก 4,880 กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s008" data-thumb="img/t008.webp" data-title="10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม · หน้า 8"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 อ่านน้ำหนัก รถบรรทุกหนัก 10,180 กิโลกรัม 2 เสาปูนหนัก 3,460 กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s009" data-thumb="img/t009.webp" data-title="10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม · หน้า 9"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 บอกน้ำหนักของสิ่งต่างๆ ตรวจสอบความเข้าใจ ทุเรียนหนัก 53 กิโลกรัม 2 ขีด เสือหนัก 30 กิโลกรัม 8 ขีด 2 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s010" data-thumb="img/t010.webp" data-title="10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม · หน้า 10"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 บอกน้ำหนักของสิ่งต่างๆ ตรวจสอบความเข้าใจ แมวหนัก 6 กิโลกรัม 103 กรัม ท่อหนัก 4,798 กิโลกรัม 4 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s011" data-thumb="img/t011.webp" data-title="10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม · หน้า 11"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบอกน้ำหนักของสิ่งต่างๆ อาจบอกเป็นกิโลกรัมและขีด กิโลกรัมและกรัม สิ่งที่ได้เรียนรู้ 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="10.2" data-title="10.2 การเลือกเครื่องชั่งที่เหมาะสม"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 10.2</span><b>🧰 การเลือกเครื่องชั่งที่เหมาะสม</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s013" data-thumb="img/t013.webp" data-title="10.2 การเลือกเครื่องชั่งที่เหมาะสม · หน้า 13"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.2 การเลือกเครื่องชั่งที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ถ้าต้องการชั่งแตงโม 1 ผล ควรใช้เครื่องชั่งสปริงหรือใช้เครื่องชั่งแบบใช้ตัวเลข 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s014" data-thumb="img/t014.webp" data-title="10.2 การเลือกเครื่องชั่งที่เหมาะสม · หน้า 14"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.2 การเลือกเครื่องชั่งที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ถ้าต้องการชั่งสิ่งของที่มีน้ำหนักมาก เช่น กระสอบข้าว ลังผลไม้ขนาดใหญ่ รถยนต์ หรือแผ่นเหล็ก ต้องใช้เครื่องชั่งที่สามารถรับน้ำหนักของสิ่งนั้นได้ หรือเครื่องชั่งที่มีพิกัดสูง เช่น เครื่องชั่งสปริงพิกัด 60 กิโลกรัม เครื่องชั่งสปริงพิกัด 300 กิโลกรัม เครื่องชั่งแบบแขวน เครื่องชั่งน้ำหนักรถ 10.1 10.2 10.3"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s015" data-thumb="img/t015.webp" data-title="10.2 การเลือกเครื่องชั่งที่เหมาะสม · หน้า 15"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.2 การเลือกเครื่องชั่งที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เครื่องชั่งน้ำหนักตัวมีทั้งแบบมีเข็มและแบบใช้ตัวเลข เช่น การวัดน้ำหนักของสิ่งต่างๆ ควรเลือกใช้เครื่องชั่งให้เหมาะสม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s016" data-thumb="img/t016.webp" data-title="10.2 การเลือกเครื่องชั่งที่เหมาะสม · หน้า 16"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.2 การเลือกเครื่องชั่งที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 16 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ก เลือกเครื่องชั่งที่เหมาะสม ข เครื่องชั่งแบบแขวนพิกัด 2,000 กิโลกรัม เครื่องชั่งแบบแขวนพิกัด 50 กิโลกรัม ค จ เครื่องชั่งน้ำหนักรถ เครื่องชั่งสปริงพิกัด 300 กิโลกรัม ง เครื่องชั่งสปริงพิกัด 3 กิโลกรัม 1 ข้าวสาร 1 กระสอบ 2 รถบรรทุกอ้อย 1 คัน จ ค 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s017" data-thumb="img/t017.webp" data-title="10.2 การเลือกเครื่องชั่งที่เหมาะสม · หน้า 17"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.2 การเลือกเครื่องชั่งที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เลือกเครื่องชั่งที่เหมาะสม 3 ข้าวสาร 1 กระสอบ 4 รถบรรทุกอ้อย 1 คัน ง ก 5 ข้าวสาร 1 กระสอบ 6 รถบรรทุกอ้อย 1 คัน ข จ 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s018" data-thumb="img/t018.webp" data-title="10.2 การเลือกเครื่องชั่งที่เหมาะสม · หน้า 18"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.2 การเลือกเครื่องชั่งที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การวัดน้ำหนักของสิ่งใด ควรใช้หน่วยน้ำหนักให้เหมาะสม ต้นกล้าหนัก 25 กิโลกรัม น้ำตาลหนัก 500 กรัม ขนมกรุบกรอบหนัก 75 กรัม แตงโมหนัก 1 กิโลกรัม 700 กรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s019" data-thumb="img/t019.webp" data-title="10.2 การเลือกเครื่องชั่งที่เหมาะสม · หน้า 19"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.2 การเลือกเครื่องชั่งที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เลือกหน่วยน้ำหนักที่เหมาะสม 1 กิโลกรัม กรัม ไก่ 10 น่อง หนัก 2 กิโลกรัม ข้าวสาร 1 ถุง หนัก 5 3 ถั่วเขียว 1 ถุง หนัก 500 5 เด็กแรกเกิดหนัก 3,200 2 จักรยาน 1 คัน หนัก 10 4 ส้มเขียวหวาน 1 ลูก หนัก 170 6 พะยูน 1 ตัวหนัก 200 กิโลกรัม กิโลกรัม กรัม กรัม กรัม กิโลกรัม 7 กะหล่ำปลี 1 หัว หนัก 330 8 สตรอว์เบอ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s020" data-thumb="img/t020.webp" data-title="10.2 การเลือกเครื่องชั่งที่เหมาะสม · หน้า 20"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.2 การเลือกเครื่องชั่งที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 ตอบคำถาม ตรวจสอบความเข้าใจ เลือกเครื่องชั่งที่เหมาะสม เครื่องชั่งสปริงพิกัด 3 กิโลกรัมเครื่องชั่งสปริงพิกัด 300 กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s021" data-thumb="img/t021.webp" data-title="10.2 การเลือกเครื่องชั่งที่เหมาะสม · หน้า 21"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.2 การเลือกเครื่องชั่งที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 ตอบคำถาม ตรวจสอบความเข้าใจ เลือกหน่วยน้ำหนักที่เหมาะสม กิโลกรัม กรัม 1) วุ้นเส้น 1 ห่อ หนัก 80 2) ตู้เย็น 1 ตู้ หนัก 56 3) ฟักทอง 1 ลูก หนัก 2 กรัม 4) จดหมาย 1 ฉบับ หนัก 15 กิโลกรัม กิโลกรัม กรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s022" data-thumb="img/t022.webp" data-title="10.2 การเลือกเครื่องชั่งที่เหมาะสม · หน้า 22"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.2 การเลือกเครื่องชั่งที่เหมาะสม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การวัดน้ำหนักของสิ่งต่างๆ ควรเลือกใช้เครื่องชั่งให้เหมาะสม และบอกน้ำหนักโดยใช้หน่วยน้ำหนักที่เหมาะสม สิ่งที่ได้เรียนรู้ 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="10.3" data-title="10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 10.3</span><b>🤔 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s024" data-thumb="img/t024.webp" data-title="10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด · หน้า 24"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กิจกรรมการคาดคะเนน้ำหนักเป็นขีด อุปกรณ์ เครื่องชั่งสปริงขวดบรรจุน้ำติดป้ายระบุน้ำหนัก 5 ขีด 10 ขีด 15 ขีด และ 20 ขีด อย่างละ 1 ขวดสิ่งของที่มีน้ำหนักแตกต่างกัน เช่น แตงโม ส้ม หนังสือ นมกล่องบัตรคำสำหรับเขียนชื่อสิ่งของ เช่นแถบกระดาษที่มีรอยขีด ดังรูป 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.1"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s025" data-thumb="img/t025.webp" data-title="10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด · หน้า 25"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีจัดกิจกรรม ครูแบ่งนักเรียนเป็นกลุ่ม และแจกอุปกรณ์ข้อ 2 ถึง 5 กลุ่มละ 1 ชุดนักเรียนวางขวดน้ำบนแถบกระดาษตามน้ำหนัก 5 ขีด 10 ขีด 15 ขีด และ 20 ขีดนักเรียนคาดคะเนน้ำหนักของสิ่งของในรายการอุปกรณ์ข้อ 3 แล้วเขียนชื่อสิ่งของบนแถบกระดาษตรงตำแหน่งของน้ำหนักตามที่คาดคะเนไว้ เช่น ส้ม แตงโม 10.1 10.2 10.3 10"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s026" data-thumb="img/t026.webp" data-title="10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด · หน้า 26"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ครูและนักเรียนร่วมกันชั่งน้ำหนักของสิ่งของที่คาดคะน้ำหนักไว้แล้วด้วยเครื่องชั่งสปริงและตรวจสอบผลการคาดคะเนน้ำหนักของแต่ละกลุ่ม การคาดคะเนน้ำหนักของสิ่งต่างๆ เป็นขีด เป็นการบอกน้ำหนักเป็นขีดโดยไม่ใช้เครื่องชั่ง อาจเทียบกับน้ำหนักของสิ่งต่างๆ ที่เราทราบน้ำหนักแล้ว 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s027" data-thumb="img/t027.webp" data-title="10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด · หน้า 27"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 27 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กิจกรรมการคาดคะเนน้ำหนักเป็นกิโลกรัม อุปกรณ์ ขวดบรรจุน้ำมีป้ายระบุน้ำหนัก 1 กิโลกรัม และ 5 กิโลกรัม อย่างละ 1 ขวดสิ่งของต่างๆ ในห้องเครื่องชั่งสปริงแบบบันทึกกิจกรรม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s028" data-thumb="img/t028.webp" data-title="10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด · หน้า 28"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีจัดกิจกรรม ครูแบ่งนักเรียนเป็นกลุ่มนักเรียนลองยกขวดบรรจุน้ำ 1 กิโลกรัม และ 5 กิโลกรัม แล้วคาดคะเนน้ำหนักของสิ่งของในห้องเป็นกิโลกรัมบันทึกน้ำหนักที่คาดคะเนลงในแบบบันทึกกิจกรรมครูและนักเรียนร่วมกันตรวจสอบผลการคาดคะเน 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s029" data-thumb="img/t029.webp" data-title="10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด · หน้า 29"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตัวอย่างแบบบันทึกกิจกรรม สิ่งของน้ำหนักที่คาดคะเน(กิโลกรัม)น้ำหนักที่ชั่งจริง(กิโลกรัม)น้ำหนักที่คาดคะเนน้อยกว่าหรือมากกว่าน้ำหนักที่ชั่งจริง การคาดคะเนน้ำหนักของสิ่งต่างๆ เป็นกิโลกรัม เป็นการบอกน้ำหนักเป็นกิโลกรัมโดยไม่ใช้เครื่องชั่ง อาจเทียบกับน้ำหนักของสิ่งต่างๆ ที่เราทราบน้ำหนักแล้ว 10.1 10.2 10"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s030" data-thumb="img/t030.webp" data-title="10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด · หน้า 30"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กิจกรรมช่วยแม่จ่ายตลาด อุปกรณ์ ผัก หรือ ผลไม้ชนิดต่างๆบัตรน้ำหนักเครื่องชั่งสปริงแบบบันทึกกิจกรรม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s031" data-thumb="img/t031.webp" data-title="10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด · หน้า 31"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="วิธีจัดกิจกรรม ครูแบ่งนักเรียนเป็นกลุ่ม และแจกบัตรน้ำหนักกลุ่มละ 1 บัตรนักเรียนแต่ละกลุ่มเลือกผักและผลไม้ให้ได้น้ำหนักตามบัตรน้ำหนัก จากนั้นตรวจสอบน้ำหนักของผักและผลไม้โดยการชั่ง และบันทึกในแบบบันทึกกิจกรรมทำกิจกรรมข้อ 2 โดยใช้บัตรน้ำหนักเดิมอีก 2 ครั้ง แล้วให้เลือกนำเสนอครั้งที่คาดคะเนน้ำหนักใกล้เค"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s032" data-thumb="img/t032.webp" data-title="10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด · หน้า 32"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตัวอย่างแบบบันทึกกิจกรรม สิ่งของน้ำหนักตามบัตรน้ำหนักน้ำหนักที่ชั่งได้ ตัวอย่างบัตรน้ำหนัก 4 กิโลกรัม 7 ขีด 12 ขีด 15 ขีด 6 กิโลกรัม 2 กิโลกรัม 5 กิโลกรัม 4 ขีด 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s033" data-thumb="img/t033.webp" data-title="10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด · หน้า 33"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="กิจกรรมหนักเท่าไร อุปกรณ์ เครื่องชั่งสปริงสิ่งของที่มีน้ำหนักเป็นกิโลกรัม และสิ่งของที่มีน้ำหนักเป็นขีด วิธีจัดกิจกรรม ครูเตรียมสิ่งของที่มีน้ำหนักเป็นกิโลกรัม และสิ่งของที่มีน้ำหนักเป็นขีดครูให้นักเรียนยกสิ่งของที่มีน้ำหนักเป็นกิโลกรัมที่ครูเตรียมไว้ เพื่อคาดคะเนน้ำหนักและบันทึกผลครูให้นักเรียนยกสิ"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-thumb="img/t034.webp" data-title="10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด · หน้า 34"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การคาดคะเนน้ำหนักของสิ่งต่างๆ เป็นการบอกน้ำหนักให้ใกล้เคียงน้ำหนักจริงโดยไม่ใช้เครื่องชั่ง อาจเทียบกับน้ำหนักของสิ่งต่างๆ ที่เราทราบน้ำหนักแล้ว สิ่งที่ได้เรียนรู้ 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="10.4" data-title="10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1)"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 10.4</span><b>🔗 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1)</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s036" data-thumb="img/t036.webp" data-title="10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1) · หน้า 36"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แผนภาพแสดงความสัมพันธ์ระหว่างกิโลกรัมกับกรัม จากแผนภาพ บอกน้ำหนักเป็นกิโลกรัม เป็นกิโลกรัมและกรัม หรือเป็นกรัม ดังนี้ เงาะ หนัก 3 กิโลกรัม หรือ 3,000 กรัม มะม่วง หนัก 2 กิโลกรัม หรือ 2,000 กรัม แตงโม หนัก 2,500 กรัม หรือ 2 กิโลกรัม 500 กรัม 1 กิโลกรัม เท่ากับ 1,000 กรัม 10.1 10.2 10.3 10.4 10.5 10.6"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s037" data-thumb="img/t037.webp" data-title="10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1) · หน้า 37"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จากแผนภาพ บอกน้ำหนักเป็นกิโลกรัมและกรัม และเป็นกรัม 1 ปลาสวายหนัก กิโลกรัม กรัม หรือ กรัม 2 ปลากะพงหนัก กิโลกรัม กรัม หรือ กรัม 1 500 1,500 2 200 2,200 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s038" data-thumb="img/t038.webp" data-title="10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1) · หน้า 38"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="น้ำหนัก 3 กิโลกรัม 756 กรัม เท่ากับน้ำหนักกี่กรัม น้ำหนัก 1 กิโลกรัม เท่ากับ น้ำหนัก 1,000 กรัมน้ำหนัก 3 กิโลกรัม เท่ากับ น้ำหนัก 3,000 กรัมดังนั้น น้ำหนัก 3 กิโลกรัม 756 กรัม เท่ากับ น้ำหนัก 3,000 + 756 = 3,756 กรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s039" data-thumb="img/t039.webp" data-title="10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1) · หน้า 39"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="น้ำหนัก 2,498 กรัม เท่ากับน้ำหนักกี่กิโลกรัม กี่กรัม น้ำหนัก 1,000 กรัม เท่ากับ น้ำหนัก 1 กิโลกรัมน้ำหนัก 2,000 กรัม เท่ากับ น้ำหนัก 2 กิโลกรัมดังนั้น น้ำหนัก 2,498 กรัม เท่ากับ น้ำหนัก 2 กิโลกรัม 498 กรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s040" data-thumb="img/t040.webp" data-title="10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1) · หน้า 40"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 บอกน้ำหนักเป็นกรัม 3 กิโลกรัม 2 5 กิโลกรัม 15 กรัม 3 6 กิโลกรัม 990 กรัม 4 9 กิโลกรัม 209 กรัม 3,000 กรัม 5,015 กรัม 6,990 กรัม 9,209 กรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s041" data-thumb="img/t041.webp" data-title="10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1) · หน้า 41"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 บอกน้ำหนักเป็นกิโลกรัมและกรัม 1,200 กรัม 2 3,209 กรัม 3 4,555 กรัม 4 10,370 กรัม 1 กิโลกรัม 200 กรัม 3 กิโลกรัม 209 กรัม 4 กิโลกรัม 555 กรัม 10 กิโลกรัม 370 กรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s042" data-thumb="img/t042.webp" data-title="10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1) · หน้า 42"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตอบคำถาม ตรวจสอบความเข้าใจ 1 2,300 กรัม เท่ากับกี่กิโลกรัม กี่กรัม 2 3,500 กรัม เท่ากับกี่กิโลกรัม กี่กรัม 3 7 กิโลกรัม 910 กรัม เท่ากับกี่กรัม 4 8 กิโลกรัม 253 กรัม เท่ากับกี่กรัม 2 กิโลกรัม 300 กรัม 3 กิโลกรัม 500 กรัม 7,910 กรัม 8,253 กรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s043" data-thumb="img/t043.webp" data-title="10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1) · หน้า 43"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบอกน้ำหนักของสิ่งต่างๆ อาจบอกเป็นกิโลกรัมและกรัม หรือบอกเป็นกรัม โดยใช้ความสัมพันธ์ 1 กิโลกรัม เท่ากับ 1,000 กรัม สิ่งที่ได้เรียนรู้ 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="10.5" data-title="10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 10.5</span><b>⛓️ ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s045" data-thumb="img/t045.webp" data-title="10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2) · หน้า 45"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เมตริกตัน เป็นหน่วยน้ำหนักน้ำหนัก 1 เมตริกตัน เท่ากับ น้ำหนัก 1,000 กิโลกรัมเมตริกตันอาจเรียกสั้นๆ ว่า ตัน ปูนซีเมนต์ถุงละ 50 กิโลกรัม จำนวน 20 ถุงหนักเท่ากับน้ำหนัก 1 ตัน รถยนต์ขนาดเล็ก 1 คัน หนักประมาณ 1,000 กิโลกรัม หรือ 1 ตัน เมตริกตัน (metric ton) หรือตัน (ton) ใช้อักษรย่อ ต. (t) 10.1 10.2 10.3"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s046" data-thumb="img/t046.webp" data-title="10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2) · หน้า 46"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 46 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จากแผนภาพ บอกน้ำหนักเป็นตัน เป็นตันและกิโลกรัม หรือเป็นกิโลกรัม ดังนี้ วาฬ หนัก 2 ตัน หรือ 2,000 กิโลกรัม ถุงทรายบิ๊กแบค หนัก 1 ตัน หรือ 1,000 กิโลกรัม รถบรรทุก หนัก 2,400 กิโลกรัม หรือ 2 ตัน 400 กิโลกรัม 1 ตัน เท่ากับ 1,000 กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s047" data-thumb="img/t047.webp" data-title="10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2) · หน้า 47"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จากแผนภาพ บอกน้ำหนักเป็นตันเป็นกิโลกรัม และเป็นกิโลกรัม 1 รถยนต์หนัก ตัน กิโลกรัม หรือ กิโลกรัม 2 รถบดถนนหนัก ตัน กิโลกรัม หรือ กิโลกรัม 1 500 1,500 3 3,000 3 รถตู้หนัก ตัน กิโลกรัม หรือ กิโลกรัม 2 200 2,200 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s048" data-thumb="img/t048.webp" data-title="10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2) · หน้า 48"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 48 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="น้ำหนัก 1 ตัน 240 กิโลกรัม เท่ากับน้ำหนักกี่กิโลกรัม น้ำหนัก 1 ตัน เท่ากับ น้ำหนัก 1,000 กิโลกรัมดังนั้น น้ำหนัก 1 ตัน 240 กิโลกรัม เท่ากับ น้ำหนัก 1,000 + 240 = 1,240 กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s049" data-thumb="img/t049.webp" data-title="10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2) · หน้า 49"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 49 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="น้ำหนัก 3,592 กิโลกรัม เท่ากับน้ำหนักกี่ตัน กี่กิโลกรัม น้ำหนัก 1,000 กิโลกรัม เท่ากับ น้ำหนัก 1 ตันน้ำหนัก 2,000 กิโลกรัม เท่ากับ น้ำหนัก 2 ตันน้ำหนัก 3,000 กิโลกรัม เท่ากับ น้ำหนัก 3 ตันดังนั้น น้ำหนัก 3,592 กิโลกรัม เท่ากับ น้ำหนัก 3 ต้น 592 กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 1"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s050" data-thumb="img/t050.webp" data-title="10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2) · หน้า 50"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 50 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 บอกน้ำหนักเป็นกิโลกรัม 9 ตัน 100 กิโลกรัม 2 13 ตัน 950 กิโลกรัม 3 21 ตัน 500 กิโลกรัม 4 34 ตัน 9,100 กิโลกรัม 13,950 กิโลกรัม 21,500 กิโลกรัม 34,000 กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s051" data-thumb="img/t051.webp" data-title="10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2) · หน้า 51"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 51 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 บอกน้ำหนักเป็นตันและกิโลกรัม 2,534 กิโลกรัม 2 11,005 กิโลกรัม 3 35,000 กิโลกรัม 4 23,089 กิโลกรัม 2 ตัน 534 กิโลกรัม 11 ตัน 5 กิโลกรัม 35 ตัน 23 ตัน 89 กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s052" data-thumb="img/t052.webp" data-title="10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2) · หน้า 52"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 52 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตอบคำถาม ตรวจสอบความเข้าใจ 1 3,300 กิโลกรัม เท่ากับกี่ตัน กี่กิโลกรัม 2 50,500 กิโลกรัม เท่ากับกี่ตัน กี่กิโลกรัม 3 7 ตัน 24 กิโลกรัม เท่ากับกี่กิโลกรัม 4 25 ตัน 250 กิโลกรัม เท่ากับกี่กิโลกรัม 3 ตัน 300 กิโลกรัม 50 ตัน 500 กิโลกรัม 7,024 กิโลกรัม 25,250 กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s053" data-thumb="img/t053.webp" data-title="10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2) · หน้า 53"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 53 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การบอกน้ำหนักของสิ่งต่างๆ อาจบอกเป็นเมตริกตันและกิโลกรัม หรือบอกเป็นกิโลกรัม โดยใช้ความสัมพันธ์ 1 เมตริกตัน เท่ากับ 1,000 กิโลกรัม สิ่งที่ได้เรียนรู้ 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="10.6" data-title="10.6 การเปรียบเทียบน้ำหนัก"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 10.6</span><b>🏋️ การเปรียบเทียบน้ำหนัก</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s055" data-thumb="img/t055.webp" data-title="10.6 การเปรียบเทียบน้ำหนัก · หน้า 55"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.6 การเปรียบเทียบน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 55 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="น้ำหนัก 2 กิโลกรัม 500 กรัม หรือ 2,500 กรัม มากกว่า น้ำหนัก 1,200 กรัม ดังนั้น องุ่น หนักกว่า กุ้งแห้ง น้ำหนัก 1,200 กรัม หรือ 1 กิโลกรัม 200 กรัม น้อยกว่า น้ำหนัก 2 กิโลกรัม 500 กรัมดังนั้น องุ่น หนักกว่า กุ้งแห้ง องุ่นหนักกว่าหรือเบากว่ากุ้งแห้ง 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 1"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s056" data-thumb="img/t056.webp" data-title="10.6 การเปรียบเทียบน้ำหนัก · หน้า 56"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.6 การเปรียบเทียบน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 56 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="น้ำหนัก 3 กิโลกรัม 450 กรัม หรือ 3,450 กรัม มากกว่า น้ำหนัก 3,120 กรัมดังนั้น 3 กิโลกรัม 450 กรัม มากกว่า 3,120 กรัม น้ำหนัก 3,120 กรัม หรือ 3 กิโลกรัม 120 กรัม น้อยกว่า น้ำหนัก 3 กิโลกรัม 450 กรัมดังนั้น 3 กิโลกรัม 450 กรัม มากกว่า 3,120 กรัม 3 กิโลกรัม 450 กรัม มากกว่าหรือน้อยกว่า 3,120 กรัม 10.1 "></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s057" data-thumb="img/t057.webp" data-title="10.6 การเปรียบเทียบน้ำหนัก · หน้า 57"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.6 การเปรียบเทียบน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 57 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="” “ การเปรียบเทียบน้ำหนักที่มีหน่วยต่างกันต้องเปลี่ยนหน่วยให้เป็นหน่วยเดียวกันก่อนแล้วจึงนำมาเปรียบเทียบกัน ถ้ามีหน่วยเป็นกิโลกรัมและกรัม สิ่งที่มีน้ำหนักเป็นกิโลกรัมมากกว่าจะหนักกว่า ถ้าน้ำหนักเป็นกิโลกรัมเท่ากัน สิ่งที่มีน้ำหนักเป็นกรัมมากกว่าจะหนักกว่า 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s058" data-thumb="img/t058.webp" data-title="10.6 การเปรียบเทียบน้ำหนัก · หน้า 58"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.6 การเปรียบเทียบน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 58 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="น้ำหนัก 8,800 กิโลกรัม หรือ 8 ตัน 800 กิโลกรัม มากกว่าน้ำหนัก 7 ตันดังนั้น รถบรรทุกคันนี้ขึ้นสะพานนี้ไม่ได้ เพราะรถบรรทุกมีน้ำหนักรวมมากกว่า 7 ตัน ป้ายนี้หมายความว่า ห้ามรถทุกชนิดที่มีน้ำหนักรวมมากกว่า 7 ตัน ใช้สะพานนี้ รถบรรทุกคันนี้สามารถขึ้นสะพานนี้ได้หรือไม่ เพราะเหตุใด การเปรียบเทียบน้ำหนักเป็น"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s059" data-thumb="img/t059.webp" data-title="10.6 การเปรียบเทียบน้ำหนัก · หน้า 59"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.6 การเปรียบเทียบน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 59 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="น้ำหนักรถบรรทุก 8,800 กิโลกรัม ป้ายกำหนดน้ำหนักไว้ 7 ตัน หรือ 7,000 กิโลกรัมดังนั้น รถบรรทุกคันนี้ขึ้นสะพานนี้ไม่ได้ เพราะรถบรรทุกมีน้ำหนักรวมมากกว่า 7 ตัน ป้ายนี้หมายความว่า ห้ามรถทุกชนิดที่มีน้ำหนักรวมมากกว่า 7 ตัน ใช้สะพานนี้ รถบรรทุกคันนี้สามารถขึ้นสะพานนี้ได้หรือไม่ เพราะเหตุใด การเปรียบเทียบน้"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s060" data-thumb="img/t060.webp" data-title="10.6 การเปรียบเทียบน้ำหนัก · หน้า 60"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.6 การเปรียบเทียบน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 60 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 ตอบคำถาม 7,000 กิโลกรัม มากกว่าหรือน้อยกว่า 9 ตัน 500 กิโลกรัม 2 5 ตัน 300 กิโลกรัม มากกว่าหรือน้อยกว่า 5,200 กิโลกรัม น้อยกว่า มากกว่า 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s061" data-thumb="img/t061.webp" data-title="10.6 การเปรียบเทียบน้ำหนัก · หน้า 61"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.6 การเปรียบเทียบน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 61 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 ตอบคำถาม น้ำหนักของตู้คอนเทนเนอร์ที่ใช้บรรจุสินค้า ตู้คอนเทนเนอร์ตู้ใดมีน้ำหนักมากที่สุดตู้คอนเทนเนอร์ตู้ใดมีน้ำหนักน้อยที่สุดเรียงลำดับน้ำหนักของตู้คอนเทนเนอร์จากน้อยไปมาก ตู้ B ตู้ A 2,850 กิโลกรัม 3 ตัน 100 กิโลกรัม 28 ตัน ตู้คอนเทนเนอร์น้ำหนักA2,850 กิโลกรัมB28 ตันC3 ตัน 100 กิโลกรัม 10.1 10.2"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s062" data-thumb="img/t062.webp" data-title="10.6 การเปรียบเทียบน้ำหนัก · หน้า 62"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.6 การเปรียบเทียบน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 62 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 ตอบคำถาม น้ำหนักแรกเกิดของสัตว์ชนิดต่างๆ สัตว์ชนิดใดมีน้ำหนักแรกเกิดน้อยที่สุดสัตว์ชนิดใดมีน้ำหนักแรกเกิดมากที่สุดเรียงลำดับน้ำหนักแรกเกิดของสัตว์ชนิดต่างๆ จากมากไปน้อย สิงโต วัว 15 กิโลกรัม 9 กิโลกรัม 500 กรัม 1,200 กรัม สัตว์ชนิดต่างๆน้ำหนักสิงโต1,200 กรัมโลมา9 กิโลกรัม 500 กรัมวัว15 กิโลกรัม 10"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s063" data-thumb="img/t063.webp" data-title="10.6 การเปรียบเทียบน้ำหนัก · หน้า 63"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.6 การเปรียบเทียบน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 63 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตอบคำถาม 1 สิ่งใดเบาที่สุด ซอสหอยนางรม ตรวจสอบความเข้าใจ ซอสหอยนางรม ผงซักฟอก ข้าวสาร 4,500 กรัม 8 กิโลกรัม 500 กรัม 20 กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s064" data-thumb="img/t064.webp" data-title="10.6 การเปรียบเทียบน้ำหนัก · หน้า 64"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.6 การเปรียบเทียบน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 64 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ตอบคำถาม 2 สิ่งใดหนักที่สุด รูปปั้นไดโนเสาร์ ตรวจสอบความเข้าใจ รถกระบะ รูปปั้นไดโนเสาร์ รถจักรยานยนต์ 1 ตัว 500 กิโลกรัม 10 ตัน 250 กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s065" data-thumb="img/t065.webp" data-title="10.6 การเปรียบเทียบน้ำหนัก · หน้า 65"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.6 การเปรียบเทียบน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 65 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ถ้ามีหน่วยต่างกันต้องเปลี่ยนหน่วยให้เป็นหน่วยเดียวกันก่อนแล้วจึงนำมาเปรียบเทียบกันถ้ามีหน่วยเป็นกิโลกรัมและกรัม สิ่งที่มีน้ำหนักเป็นกิโลกรัมมากกว่าจะหนักกว่า ถ้าน้ำหนักเป็นกิโลกรัมเท่ากัน สิ่งที่มีน้ำหนักเป็นกรัมมากกว่าจะหนักกว่าถ้ามีหน่วยเป็นตันและกิโลกรัม สิ่งที่มีน้ำหนักเป็นตันมากกว่าจะหนักกว่า ถ"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="10.7" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 10.7</span><b>➕ การบวกและการลบเกี่ยวกับน้ำหนัก</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s067" data-thumb="img/t067.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 67"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 67 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="20 1750 3750 40 ตัวอย่าง 2 ตัน บวก 1,750 กิโลกรัม เท่ากับเท่าไร ตัน กิโลกรัม วิธีทำ + ตอบ ๓ ตัน ๗๕๐ กิโลกรัม หรือ 2 ตัน บวก 1 ตัน ได้ 3 ตันดังนั้น 2 ตัน บวก 1 ตัน 750 กิโลกรัม เท่ากับ 3 ตัน 750 กิโลกรัม 1,750 กก. เท่ากับ 1 ตัน 750 กก. 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s068" data-thumb="img/t068.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 68"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 68 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 5 กิโลกรัม 600 กรัม บวก 1,900 กรัม เท่ากับเท่าไร 5600 1900 61500 7500 กิโลกรัม กรัม + หรือ วิธีทำ ตอบ ๗ กิโลกรัม ๕๐๐ กรัม 1 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s069" data-thumb="img/t069.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 69"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 69 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 3 ตัน 500 กิโลกรัม บวก 1 ตัน 500 กิโลกรัม เท่ากับเท่าไร 3500 1500 41000 5 ตัน กิโลกรัม + หรือ วิธีทำ ตอบ ๕ ตัน 2 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s070" data-thumb="img/t070.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 70"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 70 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="6400 2500 3900 .ตัวอย่าง 6 กิโลกรัม 400 กรัม ลบด้วย 2 กิโลกรัม 500 กรัม เท่ากับเท่าไร กิโลกรัม กรัม วิธีทำ - ตอบ ๓ กิโลกรัม ๙๐๐ กรัม 1 กก. เท่ากับ 1,000 ก.ดังนั้น 6 กก. 400 ก. เท่ากับ 5 กก. 1,400 ก. 5 1400 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s071" data-thumb="img/t071.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 71"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 71 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="7450 5500 1950 .ตัวอย่าง 7 ตัน 450 กิโลกรัม ลบด้วย 5 ตัน 500 กิโลกรัม เท่ากับเท่าไร ตัน กิโลกรัม วิธีทำ - ตอบ ๖๖ กิโลเมตร ๘๖๘ เมตร 1 ตัน เท่ากับ 1,000 กก.ดังนั้น 7 ตัน 450 กก. เท่ากับ 6 ตัน 1,450 กก. 6 1450 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s072" data-thumb="img/t072.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 72"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 72 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 1 ตัน 500 กิโลกรัม ลบด้วย 750 กิโลกรัม เท่ากับเท่าไร วิธีทำ ตอบ 1 1500 750 750 ตัน กิโลกรัม - ๗๕๐ กิโลกรัม 0 1500 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s073" data-thumb="img/t073.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 73"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 73 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 10 ตัน 200 กิโลกรัม ลบด้วย 7 ตัน 600 กิโลกรัม เท่ากับเท่าไร วิธีทำ ตอบ 2 10200 7600 2600 ตัน กิโลกรัม - ๒ ตัน ๖๐๐ กิโลกรัม 47 1103 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s074" data-thumb="img/t074.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 74"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 74 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 15 ตัน ลบด้วย 6,890 กิโลกรัม เท่ากับเท่าไร วิธีทำ ตอบ 1 150 6890 8110 ตัน กิโลกรัม - ๘ ตัน ๑๑๐ กิโลกรัม 14 1000 6 ตัน 200 กิโลกรัม บวก 6 ตัน 900 กิโลกรัม เท่ากับเท่าไร 2 6200 6900 121100 13100 ตัน กิโลกรัม + หรือ วิธีทำ ตอบ ๑๓ ตัน ๑๐๐ กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s075" data-thumb="img/t075.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 75"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 75 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 10 ตัน 250 กิโลกรัม ลบด้วย 7 ตัน 450 กิโลกรัม เท่ากับเท่าไร วิธีทำ ตอบ 3 10250 7450 2800 ตัน กิโลกรัม - ๒ ตัน ๘๐๐ กิโลกรัม 9 1250 20 ตัน 300 กิโลกรัม บวก 3 ตัน 700 กิโลกรัม เท่ากับเท่าไร 4 20300 3700 231000 24 ตัน กิโลกรัม + หรือ วิธีทำ ตอบ ๒๔ ตัน 10.1 10.2 10.3 10.4 10.5 10.6 10.7 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s076" data-thumb="img/t076.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 76"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 76 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 15 ตัน 600 กิโลกรัม บวก 800 กิโลกรัม เท่ากับเท่าไร 5 1 ตัน 750 กิโลกรัม ลบด้วย 790 กิโลกรัม เท่ากับเท่าไร 6 15600 800 151400 16400 ตัน กิโลกรัม + หรือ วิธีทำ ตอบ ๑๖ ตัน ๔๐๐ กิโลกรัม วิธีทำ ตอบ 1750 790 960 ตัน กิโลกรัม - ๙๖๐ กิโลกรัม 0 1750 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10."></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s077" data-thumb="img/t077.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 77"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 77 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 3 กิโลกรัม ลบด้วย 1,450 กรัม เท่ากับเท่าไร วิธีทำ ตอบ 7 30 1450 1550 กิโลกรัม กรัม - ๑ กิโลกรัม ๕๕๐ กรัม 2 1000 2,006 กรัม บวก 4 กิโลกรัม เท่ากับเท่าไร 8 26 40 66 กิโลกรัม กรัม + วิธีทำ ตอบ ๖ กิโลกรัม ๖ กรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s078" data-thumb="img/t078.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 78"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 78 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 19,450 กรัม ลบด้วย 17 กิโลกรัม 8 กรัม เท่ากับเท่าไร วิธีทำ ตอบ 9 19450 178 2442 กิโลกรัม กรัม - ๒ กิโลกรัม ๔๔๒ กรัม 5 กิโลกรัม 50 กรัม บวก 1 กิโลกรัม 85 กรัม เท่ากับเท่าไร 10 550 185 6135 กิโลกรัม กรัม + วิธีทำ ตอบ ๖ กิโลกรัม ๑๓๕ กรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s079" data-thumb="img/t079.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 79"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 79 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ ตรวจสอบความเข้าใจ 4 กิโลกรัม 800 กรัม บวก 4 กิโลกรัม 500 กรัม เท่ากับเท่าไร 4800 4500 81300 9300 กิโลกรัม กรัม + หรือ วิธีทำ ตอบ ๙ กิโลกรัม ๓๐๐ กรัม 1 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s080" data-thumb="img/t080.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 80"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 80 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ ตรวจสอบความเข้าใจ 12 ตัน ลบด้วย 7 ตัน 390 กิโลกรัม เท่ากับเท่าไร 2 วิธีทำ ตอบ 120 7390 4610 ตัน กิโลกรัม - ๔ ตัน ๖๑๐ กิโลกรัม 11 1000 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s081" data-thumb="img/t081.webp" data-title="10.7 การบวกและการลบเกี่ยวกับน้ำหนัก · หน้า 81"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 81 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาผลบวกหรือผลลบเกี่ยวกับน้ำหนัก ทำได้โดยนำน้ำหนักที่เป็นหน่วยเดียวกันมาบวกหรือลบกัน สิ่งที่ได้เรียนรู้ 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="10.8" data-title="10.8 การคูณและการหารเกี่ยวกับน้ำหนัก"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 10.8</span><b>✖️ การคูณและการหารเกี่ยวกับน้ำหนัก</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s083" data-thumb="img/t083.webp" data-title="10.8 การคูณและการหารเกี่ยวกับน้ำหนัก · หน้า 83"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 83 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="6620 9 545580 59580 ตัวอย่าง 6 กิโลกรัม 620 กรัม คูณ 9 เท่ากับเท่าไร กิโลกรัม กรัม วิธีทำ × ตอบ ๕๙ กิโลกรัม ๕๘๐ กรัม หรือ 1,000 ก. เท่ากับ 1 กก. 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s084" data-thumb="img/t084.webp" data-title="10.8 การคูณและการหารเกี่ยวกับน้ำหนัก · หน้า 84"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 84 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2393 4 81572 9572 ตัวอย่าง 2 ตัน 393 กิโลกรัม คูณ 4 เท่ากับเท่าไร ตัน กิโลกรัม วิธีทำ × ตอบ ๙ ตัน ๕๗๒ กิโลกรัม หรือ 1,000 ก. เท่ากับ 1 กก. 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s085" data-thumb="img/t085.webp" data-title="10.8 การคูณและการหารเกี่ยวกับน้ำหนัก · หน้า 85"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 85 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 20 ตัน 700 กิโลกรัม คูณ 2 เท่ากับเท่าไร 20700 2 401400 41400 ตัน กิโลกรัม × หรือ วิธีทำ ตอบ ๔๑ ตัน ๔๐๐ กิโลกรัม 1 25 กิโลกรัม 500 กรัม คูณ 8 เท่ากับเท่าไร 25500 8 2004000 204 กิโลกรัม กรัม × หรือ วิธีทำ ตอบ ๒๐๔ กิโลกรัม 2 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s086" data-thumb="img/t086.webp" data-title="10.8 การคูณและการหารเกี่ยวกับน้ำหนัก · หน้า 86"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 86 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="6300 44100 ตัวอย่าง 44 กิโลกรัม 100 กรัม หารด้วย 7 เท่ากับเท่าไร กิโลกรัม กรัม วิธีทำ ตอบ ๖ กิโลกรัม ๓๐๐ กรัม 7 2 กก. เท่ากับ 2,000 ก.รวมกับ 100 ก. เป็น 2,100 ก. 2100 44 หารด้วย 7 ได้ 6 เศษ 2 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s087" data-thumb="img/t087.webp" data-title="10.8 การคูณและการหารเกี่ยวกับน้ำหนัก · หน้า 87"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 87 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5500 16500 ตัวอย่าง 16 ตัน 500 กิโลกรัม หารด้วย 3 เท่ากับเท่าไร ตัน กิโลกรัม วิธีทำ ตอบ ๕ ตัน ๕๐๐ กิโลกรัม 3 1 ตัน เท่ากับ 1,000 กก.รวมกับ 500 กก. เป็น 1,500 กก. 1500 16 หารด้วย 3ได้ 5 เศษ 1 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s088" data-thumb="img/t088.webp" data-title="10.8 การคูณและการหารเกี่ยวกับน้ำหนัก · หน้า 88"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 88 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="11450 แสดงวิธีหาคำตอบ 9 ตัน 400 กิโลกรัม หารด้วย 4 เท่ากับเท่าไร 1 11 กิโลกรัม 450 กรัม หารด้วย 5 เท่ากับเท่าไร 2 2350 9400 ตัน กิโลกรัม 4 วิธีทำ ตอบ ๒ ตัน ๓๕๐ กิโลกรัม 2290 กิโลกรัม กรัม 5 ตอบ ๒ กิโลกรัม ๒๙๐ กรัม วิธีทำ 1400 1450 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s089" data-thumb="img/t089.webp" data-title="10.8 การคูณและการหารเกี่ยวกับน้ำหนัก · หน้า 89"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 89 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 10 กิโลกรัม 550 กรัม คูณ 6 เท่ากับเท่าไร 1 13 ตัน 300 กิโลกรัม คูณ 4 เท่ากับเท่าไร 2 10550 6 603300 63300 กิโลกรัม กรัม × หรือ วิธีทำ ตอบ ๖๓ กิโลกรัม ๓๐๐ กรัม 13300 4 521200 52200 ตัน กิโลกรัม × หรือ วิธีทำ ตอบ ๕๓ ตัน ๒๐๐ กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s090" data-thumb="img/t090.webp" data-title="10.8 การคูณและการหารเกี่ยวกับน้ำหนัก · หน้า 90"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 90 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 20 ตัน 90 กิโลกรัม คูณ 5 เท่ากับเท่าไร 3 9 ตัน 750 กิโลกรัม หารด้วย 2 เท่ากับเท่าไร 4 2090 5 100450 ตัน กิโลกรัม × วิธีทำ ตอบ ๑๐๐ ตัน ๔๕๐ กิโลกรัม 4875 9750 ตัน กิโลกรัม 2 วิธีทำ ตอบ ๔ ตัน ๘๗๕ กิโลกรัม 1750 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s091" data-thumb="img/t091.webp" data-title="10.8 การคูณและการหารเกี่ยวกับน้ำหนัก · หน้า 91"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 91 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ 40 กิโลกรัม 880 กรัม หารด้วย 7 เท่ากับเท่าไร 5 15 ตัน 570 กิโลกรัม หารด้วย 9 เท่ากับเท่าไร 6 1730 15570 ตัน กิโลกรัม 9 วิธีทำ ตอบ ๑ ตัน ๗๓๐ กิโลกรัม 6570 40880 5840 กิโลกรัม กรัม 7 ตอบ ๕ กิโลกรัม ๘๔๐ กรัม วิธีทำ 5880 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s092" data-thumb="img/t092.webp" data-title="10.8 การคูณและการหารเกี่ยวกับน้ำหนัก · หน้า 92"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 92 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ ตรวจสอบความเข้าใจ 18 กิโลกรัม 900 กรัม คูณ 3 เท่ากับเท่าไร 1 52 ตัน 600 กิโลกรัม หารด้วย 5 เท่ากับเท่าไร 2 18900 3 542700 56700 กิโลกรัม กรัม × หรือ วิธีทำ ตอบ ๕๖ กิโลกรัม ๗๐๐ กรัม 10520 52600 ตัน กิโลกรัม 5 วิธีทำ ตอบ ๑๐ ตัน ๕๒๐ กิโลกรัม 2600 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s093" data-thumb="img/t093.webp" data-title="10.8 การคูณและการหารเกี่ยวกับน้ำหนัก · หน้า 93"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 93 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การหาผลคูณหรือผลหารเกี่ยวกับน้ำหนักทำได้โดยคูณหรือหารน้ำหนักทีละหน่วยน้ำหนัก สิ่งที่ได้เรียนรู้ 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="10.9" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 10.9</span><b>📝 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s095" data-thumb="img/t095.webp" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1) · หน้า 95"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 95 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หรือ5100 ทุเรียนสองผลหนัก41100 แม่ซื้อทุเรียนผลใหญ่หนัก 3 กิโลกรัม 200 กรัม ผลเล็กหนัก 1 กิโลกรัม 900 กรัม แม่ซื้อทุเรียนหนักรวมกันเท่าไร โจทย์ถาม แม่ซื้อทุเรียนหนักรวมกันเท่าไร โจทย์บอก แม่ซื้อทุเรียนผลใหญ่หนัก 3 กิโลกรัม 200 กรัม ผลเล็กหนัก 1 กิโลกรัม 900 กรัม หาคำตอบได้อย่างไร นำ 3 กิโลกรัม 200 ก"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s096" data-thumb="img/t096.webp" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1) · หน้า 96"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 96 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ แม่มีเนื้อไก่ 900 กรัม ซื้อเพิ่มอีก 1 กิโลกรัม 500 กรัม แม่มีเนื้อไก่ทั้งหมดกี่กิโลกรัม กี่กรัม แม่มีเนื้อไก่ทั้งหมด11400 วิธีทำ แม่มีเนื้อไก่900 ตอบ แม่มีเนื้อไก่ทั้งหมด ๒ กิโลกรัม ๔๐๐ กรัม กิโลกรัม กรัม + ซื้อเพิ่มอีก1500 หรือ2400 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s097" data-thumb="img/t097.webp" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1) · หน้า 97"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 97 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="โรงงานแห่งหนึ่งติดตั้งลิฟต์ 3 ตัว ลิฟต์แต่ละตัวมีพิกัดบรรทุกแตกต่างกันดังตาราง ต้องการขนสินค้าหนัก 1,500 กิโลกรัม ควรเลือกใช้ลิฟต์ตัวใด และยังสามารถบรรทุกน้ำหนักได้อีกเท่าไร โจทย์ถาม ควรเลือกใช้ลิฟต์ตัวใด และยังสามารถบรรทุกน้ำหนักได้อีกเท่าไร โจทย์บอก โรงงานแห่งหนึ่งติดตั้งลิฟต์ 3 ตัว ลิฟต์แต่ละตัวม"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s098" data-thumb="img/t098.webp" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1) · หน้า 98"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 98 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สินค้าหนัก1500กิโลกรัม บรรทุกน้ำหนักได้อีก500กิโลกรัม บรรทุกน้ำหนักได้อีก500 วิธีทำ ลิฟต์ A บรรทุกน้ำหนักได้20 ตอบ ควรเลือกใช้ลิฟต์ A ขนสินค้า และยังสามารถบรรทุกน้ำหนักได้อีก ๕๐๐ กิโลกรัม ตัน กิโลกรัม - สินค้าหนัก1500 1,500 กก. เท่ากับ1 ตัน 500 กก. 1000 1 วิธีทำ ลิฟต์ A บรรทุกน้ำหนักได้2000กิโลกรัม "></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s099" data-thumb="img/t099.webp" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1) · หน้า 99"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 99 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รถกระบะและมะพร้าวหนักรวมกัน 4 ตัน 360 กิโลกรัม ถ้ารถกระบะหนัก 3 ตัน 500 กิโลกรัม มะพร้าวหนักเท่าไร มะพร้าวหนัก0860 วิธีทำ รถกระบะและมะพร้าวหนัก4360 ตอบ มะพร้าวหนัก ๘๖๐ กิโลกรัม ตัน กิโลกรัม - รถกระบะหนัก3500 1360 3 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s100" data-thumb="img/t100.webp" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1) · หน้า 100"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 100 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 แสดงวิธีหาคำตอบ กระเป๋านักเรียนและของในกระเป๋าหนักรวมกัน 2 กิโลกรัม 287 กรัม ถ้าของในกระเป๋าหนัก 1 กิโลกรัม 900 กรัม กระเป๋านักเรียนหนักเท่าไร กระเป๋านักเรียนหนัก387 วิธีทำ กระเป๋านักเรียนและของในกระเป๋าหนัก2287 ตอบ กระเป๋านักเรียนหนัก ๓๘๗ กรัม กิโลกรัม กรัม - ของในกระเป๋าหนัก1900 1287 1 10.1 10.2"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s101" data-thumb="img/t101.webp" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1) · หน้า 101"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 101 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หรือ17200 2 แสดงวิธีหาคำตอบ รถบรรทุกหนัก 9 ตัน 500 กิโลกรัม หินหนัก 7 ตัน 700 กิโลกรัม รถบรรทุกและหินหนักรวมกันเท่าไร รถบรรทุกและหินหนักรวมกัน161200 วิธีทำ รถบรรทุกหนัก9500 ตอบ รถบรรทุกและหินหนักรวมกัน ๑๗ ตัน ๒๐๐ กิโลกรัม ตัน กิโลกรัม + หินหนัก7700 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s102" data-thumb="img/t102.webp" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1) · หน้า 102"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 102 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 แสดงวิธีหาคำตอบ แม่ค้ามีเนื้อวัว 89 กิโลกรัม 600 กรัม ซื้อมาเพิ่มอีก 25 กิโลกรัม 500 กรัม แม่ค้ามีเนื้อวัวอยู่เท่าไร หรือ115100 แม่ค้ามีเนื้อวัวอยู่1141100 วิธีทำ แม่ค้ามีเนื้อวัว89600 ตอบ แม่ค้ามีเนื้อวัวอยู่ ๑๑๕ กิโลกรัม ๑๐๐ กรัม กิโลกรัม กรัม + ซื้อมาเพิ่มอีก25500 10.1 10.2 10.3 10.4 10.5 10.6 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s103" data-thumb="img/t103.webp" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1) · หน้า 103"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 103 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รถยนต์คันแรกหนัก2393 4 แสดงวิธีหาคำตอบ รถยนต์คันแรกหนัก 2 ตัน 393 กิโลกรัม รถยนต์คันที่สองหนัก 2 ตัน 850 กิโลกรัม รถยนต์คันใดหนักกว่าและหนักกว่าอยู่เท่าไร รถยนต์คันที่สองหนักกว่าคันแรก0457 วิธีทำ รถยนต์คันที่สองหนัก2850 ตอบ รถยนต์คันที่สองหนักกว่าและหนักกว่าอยู่ ๔๕๗ กิโลกรัม ตัน กิโลกรัม - 10.1 10.2"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s104" data-thumb="img/t104.webp" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1) · หน้า 104"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 104 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แก้วตาหนัก24890 5 แสดงวิธีหาคำตอบ ขุนหนัก 36,700 กรัม แก้วตาหนัก 24 กิโลกรัม 890 กรัม แก้วตาหนักน้อยกว่าขุนเท่าไร แก้วตาหนักน้อยกว่าขุน11810 วิธีทำ ขุนหนัก36700 ตอบ แก้วตาหนักน้อยกว่าขุน ๑๑ กิโลกรัม ๘๑๐ กรัม กิโลกรัม กรัม - 1700 35 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s105" data-thumb="img/t105.webp" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1) · หน้า 105"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 105 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ แม่ซื้อฝรั่ง 2 กิโลกรัม 650 กรัม และองุ่น 1 กิโลกรัม 450 กรัม แม่ซื้อฝรั่งและองุ่นน้ำหนักรวมกันเท่าไร ตรวจสอบความเข้าใจ 1 หรือ4100 แม่ซื้อฝรั่งและองุ่นน้ำหนักรวมกัน31100 วิธีทำ แม่ซื้อฝรั่ง2650 ตอบ แม่ซื้อฝรั่งและองุ่นน้ำหนักรวมกัน ๔ กิโลกรัม ๑๐๐ กรัม กิโลกรัม กรัม + ซื้อองุ่น1450 10"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s106" data-thumb="img/t106.webp" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1) · หน้า 106"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 106 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ รถบรรทุกและทรายหนัก 9 ตัน เททรายทั้งหมดดอก 3 ตัน 750 กิโลกรัม รถบรรทุกหนักเท่าไร ตรวจสอบความเข้าใจ 2 เททรายทั้งหมดออก3750 รถบรรทุกหนัก5250 วิธีทำ รถบรรทุกและทรายหนัก90 ตอบ รถบรรทุกหนัก ๕ ตัน ๒๕๐ กิโลกรัม ตัน กิโลกรัม - 1000 8 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s107" data-thumb="img/t107.webp" data-title="10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1) · หน้า 107"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 107 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การแก้โจทย์ปัญหาทำได้โดยอ่านทำความเข้าใจปัญหา วางแผนแก้ปัญหา หาคำตอบ และตรวจสอบความสมเหตุสมผลของคำตอบ สิ่งที่ได้เรียนรู้ 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="10.10" data-title="10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 10.10</span><b>🧩 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s109" data-thumb="img/t109.webp" data-title="10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2) · หน้า 109"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 109 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ช้างเอเชียหนัก5500 ช้างแอฟริกามีน้ำหนัก 7 ตัน ช้างเอเชียมีน้ำหนักน้อยกว่าช้างแอฟริกา 1 ตัน 500 กิโลกรัม ช้างเอเชียมีน้ำหนักเท่าไร โจทย์ถาม ช้างเอเชียมีน้ำหนักเท่าไร โจทย์บอก ช้างแอฟริกามีน้ำหนัก 7 ตัน ช้างเอเชียมีน้ำหนักน้อยกว่าช้างแอฟริกา 1 ตัน 500 กิโลกรัม วิธีทำ ช้างแอฟริกาหนัก70 ตอบ ช้างเอเชียหน"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s110" data-thumb="img/t110.webp" data-title="10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2) · หน้า 110"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 110 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หรือ56400 เดือนที่แล้วหนัก551400 เดือนนี้แม่หนัก 54.9 กิโลกรัม เดือนนี้แม่หนักน้อยกว่าเดือนที่แล้ว 1.5 กิโลกรัม เดือนที่แล้วแม่หนักเท่าไร โจทย์ถาม เดือนที่แล้วแม่หนักเท่าไร โจทย์บอก เดือนนี้แม่หนัก 54.9 กิโลกรัม เดือนนี้แม่หนักน้อยกว่าเดือนที่แล้ว 1.5 กิโลกรัม วิธีทำ เดือนนี้หนัก54900 ตอบ เดือนที่แล"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s111" data-thumb="img/t111.webp" data-title="10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2) · หน้า 111"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 111 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="รถบรรทุกหนัก 9 ตัน 600 กิโลกรัม รถบรรทุกหนักมากกว่ารถยนต์ 7 ตัน 850 กิโลกรัม รถยนต์หนักเท่าไร รถยนต์หนัก1750 วิธีทำ รถบรรทุกหนัก9600 ตอบ รถยนต์หนัก ๑ ตัน ๗๕๐ กิโลกรัม ตัน กิโลกรัม - รถบรรทุกหนักมากกว่ารถยนต์7850 1600 8 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s112" data-thumb="img/t112.webp" data-title="10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2) · หน้า 112"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 112 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="ขายฝรั่งได้มากกว่าพุทรา5800 1 แสดงวิธีหาคำตอบ ร้านขายผลไม้ ขายฝรั่งได้ 35 กิโลกรัม 500 กรัม ขายฝรั่งได้มากกว่าพุทรา 5 กิโลกรัม 800 กรัม ร้านขายผลไม้ขายพุทราได้เท่าไร ขายพุทราได้29700 วิธีทำ ร้านขายผลไม้ขายฝรั่งได้35500 ตอบ ร้านขายผลไม้ขายพุทราได้ ๒๙ กิโลกรัม ๗๐๐ กรัม กิโลกรัม กรัม - 1500 34 10.1 10."></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s113" data-thumb="img/t113.webp" data-title="10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2) · หน้า 113"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 113 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ เดือนนี้ลูกพะยูนหนัก 29 กิโลกรัม 155 กรัม หนักน้อยกว่าสองเดือนที่แล้ว 2 กิโลกรัม 890 กรัม น้ำหนักของลูกพะยูนเมื่อสองเดือนที่แล้วเป็นเท่าไร 2 หรือ3245 สองเดือนที่แล้วลูกพะยูนหนัก311045 วิธีทำ เดือนนี้ลูกพะยูนหนัก29155 ตอบ เมื่อสองเดือนที่แล้วลูกพะยูนหนัก ๓๒ กิโลกรัม ๔๕ กรัม กิโลกรัม ก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s114" data-thumb="img/t114.webp" data-title="10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2) · หน้า 114"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 114 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ รถกระบะหนัก 2 ตัน 220 กิโลกรัม รถกระบะหนักมากกว่ารถจักรยานยนต์บิ๊กไบค์ 1 ตัน 990 กิโลกรัม รถจักรยานยนต์บิ๊กไบค์หนักเท่าไร 3 รถกระบะหนักมากกว่ารถจักรยานยนต์บิ๊กไบค์1990 รถจักรยานยนต์บิ๊กไบค์หนัก0230 วิธีทำ รถกระบะหนัก2220 ตอบ รถจักรยานยนต์บิ๊กไบค์หนัก ๒๓๐ กิโลกรัม ตัน กิโลกรัม - 1220 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s115" data-thumb="img/t115.webp" data-title="10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2) · หน้า 115"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 115 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ เหล็กแผ่นหนัก 53 ตัน เหล็กเส้นหนักน้อยกว่าเหล็กแผ่น 2 ตัน 500 กิโลกรัม เหล็กเส้นหนักเท่าไร 4 เหล็กเส้นหนักน้อยกว่าเหล็กแผ่น2500 เหล็กเส้นหนัก50500 วิธีทำ เหล็กแผ่นหนัก530 ตอบ เหล็กเส้นหนัก ๕๐ ตัน ๕๐๐ กิโลกรัม ตัน กิโลกรัม - 1000 52 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s116" data-thumb="img/t116.webp" data-title="10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2) · หน้า 116"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 116 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สวนลุงแดงเก็บทุเรียนได้มากกว่าสวนป้าจิตร3300 หรือ24200 5 แสดงวิธีหาคำตอบ สวนลุงแดงเก็บทุเรียนได้มากกว่าสวนป้าจิตร 3 ตัน 300 กิโลกรัม ถ้าสวนป้าจิตรเก็บทุเรียนได้ 20 ตัน 900 กิโลกรัม สวนลุงแดงเก็บทุเรียนได้เท่าไร รถบรรทุกและหินหนักรวมกัน231200 วิธีทำ สวนป้าจิตรเก็บทุเรียนได้20900 ตอบ สวนลุงแดงเก็บทุเร"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s117" data-thumb="img/t117.webp" data-title="10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2) · หน้า 117"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 117 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ พ่อหนัก 600 กิโลกรัม 500 กรัม พ่อหนักน้อยกว่าแม่ 3 กิโลกรัม 700 กรัม แม่หนักเท่าไร ตรวจสอบความเข้าใจ 1 หรือ64200 แม่หนัก631200 วิธีทำ พ่อหนัก60500 ตอบ แม่หนัก ๖๔ กิโลกรัม ๒๐๐ กรัม กิโลกรัม กรัม + พ่อหนักน้อยกว่าแม่3700 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s118" data-thumb="img/t118.webp" data-title="10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2) · หน้า 118"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 118 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ เรือบรรทุกไม้หนัก 105 ตัน 840 กิโลกรัม เรือบรรทุกทรายหนักกว่าเรือบรรุทุกไม้ 56 ตัน 200 กิโลกรัม เรือบรรทุกทรายหนักเท่าไร ตรวจสอบความเข้าใจ 2 หรือ16240 เรือบรรทุกทรายหนัก1611040 วิธีทำ เรือบรรทุกไม้หนัก105840 ตอบ เรือบรรทุกทรายหนัก ๑๖๒ ตัน ๔๐ กิโลกรัม ตัน กิโลกรัม + เรือบรรทุกทรายหนัก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="10.11" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 10.11</span><b>🏆 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s120" data-thumb="img/t120.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 120"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 120 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="หรือ454500 น้ำหนักปุ๋ยคอกทั้งหมด4504500 พ่อบรรจุปุ๋ยคอกใส่กระสอบ 9 กระสอบ หนักกระสอบละ 50 กิโลกรัม 500 กรัม พ่อบรรจุปุ๋ยคอกทั้งหมดหนักเท่าไร โจทย์ถาม พ่อบรรจุปุ๋ยคอกทั้งหมดหนักเท่าไร โจทย์บอก พ่อบรรจุปุ๋ยคอกใส่กระสอบ 9 กระสอบ หนักกระสอบละ 50 กิโลกรัม 500 กรัม วิธีทำ ปุ๋ยคอกหนักกระสอบละ50500 ตอบ พ่อบ"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s121" data-thumb="img/t121.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 121"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 121 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ รถบรรทุกสิบล้อบรรทุกขนุนไปส่งที่ตลาดกลางเกษตร 4 เที่ยว เที่ยวละ 3 ตัน 750 กิโลกรัม รถบรรทุกสิบล้อคันนี้บรรทุกขนุนทั้งหมดหนักเท่าไร หรือ15 บรรทุกขนุนทั้งหมดหนัก123000 วิธีทำ รถบรรทุกสิบล้อบรรทุกขนุนเที่ยวละ3750 ตอบ รถบรรทุกสิบล้อคันนี้บรรทุกขนุนทั้งหมดหนัก ๑๕ ตัน ตัน กิโลกรัม × บรรทุก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s122" data-thumb="img/t122.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 122"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 122 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แม่ค้ามีมังคุด 1 ตัน 300 กิโลกรัม จัดใส่เข่ง 5 เข่ง หนักเข่งละเท่าๆ กัน มังคุดแต่ละเข่งหนักเท่าไร โจทย์ถาม มังคุดแต่ละเข่งหนักเท่าไร โจทย์บอก แม่ค้ามีมังคุด 1 ตัน 300 กิโลกรัม จัดใส่เข่ง 5 เข่ง หนักเข่งละเท่าๆ กัน วิธีทำ แม่ค้ามีมังคุด 1 ตัน 300 กิโลกรัมจัดใส่เข่ง 5 เข่ง หนักเข่งละเท่าๆ กัน 0260 130"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s123" data-thumb="img/t123.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 123"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 123 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ ครูมีถั่วเขียว 4 กิโลกรัม 500 กรัม แบ่งใส่ถุง 9 ถุง ถุงละเท่าๆ กัน ครูแบ่งถั่วเขียวถุงละเท่าไร 1 4500 วิธีทำ ครูมีถั่วเขียว 4 กิโลกรัม 500 กรัมแบ่งใส่ถุง 9 ถุง ถุงละเท่าๆ กัน 0500 กิโลกรัม กรัม 9 4500 ครูแบ่งถั่วเขียวถุงละ ตอบ ครูแบ่งถั่วเขียวถุงละ ๕๐๐ กรัม 10.1 10.2 10.3 10.4 10.5 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s124" data-thumb="img/t124.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 124"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 124 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ ร้านค้ามีลูกปัด 2 ตัน 400 กิโลกรัม จัดใส่ถุง 3 ถุง ถุงละเท่าๆ กัน จะได้ลูกปัดหนักถุงละเท่าไร 2 2400 วิธีทำ ร้านค้ามีลูกปัด 2 ตัน 400 กิโลกรัมจัดใส่ถุง 3 ถุง ถุงละเท่าๆ กัน 0800 ตัน กิโลกรัม 3 2400 จะได้ลูกปัดถุงละ ตอบ จะได้ลูกปัดหนักถุงละ ๘๐๐ กิโลกรัม 10.1 10.2 10.3 10.4 10.5 10.6 10"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s125" data-thumb="img/t125.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 125"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 125 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สินค้า 8 กล่อง มีน้ำหนักรวม 550 กิโลกรัม ถ้าแต่ละกล่องมีน้ำหนักเท่ากัน สินค้าแต่ละกล่องหนักเท่าไร วิธีทำ สินค้า 8 กล่อง มีน้ำหนักรวม 550 กิโลกรัม ถ้าแต่ละกล่องมีน้ำหนักเท่ากัน 68750 5500 กิโลกรัม กรัม 8 6000 สินค้าแต่ละกล่องหนัก ตอบ สินค้าแต่ะกล่องหนัก ๖๘ กิโลกรัม ๗๕๐ กรัม 10.1 10.2 10.3 10.4 10.5 1"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s126" data-thumb="img/t126.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 126"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 126 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1 แสดงวิธีหาคำตอบ ตู้เซฟเก็บเอกสาร 9 ตู้ หนักตู้ละ 265 กิโลกรัม ตู้เซฟเก็บเอกสารทั้งหมดหนักกี่ตัน กี่กิโลกรัม หรือ 2 ตัน 385 กิโลกรัม ตู้เซฟทั้งหมดหนัก 9× 265 =2,385กิโลกรัม วิธีทำ ตู้เก็บเอกสารหนักตู้ละ265กิโลกรัม ตอบ ตู้เซฟเก็บเอกสารทั้งหมดหนัก ๒ ตัน ๓๘๕ กิโลกรัม มีทั้งหมด9ตู้ 10.1 10.2 10.3 10.4 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s127" data-thumb="img/t127.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 127"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 127 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1053500 2 แสดงวิธีหาคำตอบ โรงงานผลิตขนมเวเฟอร์ได้ 1,053 ตัน 500 กิโลกรัม ใช้เครื่องจักรในการผลิต 7 เครื่อง ถ้าเครื่องจักรแต่ละเครื่องผลิตได้เท่ากัน เครื่องจักรหนึ่งเครื่องผลิตขนมเวเฟอร์ได้เท่าไร วิธีทำ โรงงานผลิตขนมเวเฟอร์ได้ 1,053 ตัน 500 กิโลกรัมใช้เครื่องจักรในการผลิต 7 เครื่อง แต่ละเครื่องผลิตได"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s128" data-thumb="img/t128.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 128"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 128 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="3 แสดงวิธีหาคำตอบ ตลาดกลางยางพารารับซื้อยางแผ่นรมควันวันละ 24 ตัน 450 กิโลกรัม ครบหนึ่งสัปดาห์ตลาดกลางยางพารารับซื้อยางแผ่นรมควันทั้งหมดเท่าไร หรือ171150 ตลาดกลางยางพารารับซื้อยางแผ่นรมควันทั้งหมด1683150 วิธีทำ ตลาดกลางยางพารารับซื้อยางแผ่นรมควันละ225 ตอบ ตลาดกลางยางพารารับซื้อยางแผ่นรวมควันทั้งหมด "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s129" data-thumb="img/t129.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 129"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 129 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงวิธีหาคำตอบ พ่อค้าแบ่งข้าวสาร 120 กิโลกรัม 800 กรัม ใส่ถุง 8 ถุง ถุงละเท่าๆ กัน จะได้ข้าวสารหนักถุงละเท่าไร 4 120800 วิธีทำ พ่อค้าแบ่งข้าวสาร 120 กิโลกรัม 800 กรัมใส่ถุง 8 ถุง ถุงละเท่าๆ กัน 15100 กิโลกรัม กรัม 8 จะได้ข้าวสารหนักถุงละ ตอบ จะได้ข้าวสารหนักถุงละ ๑๕ กิโลกรัม ๑๐๐ กรัม 10.1 10.2 10.3"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s130" data-thumb="img/t130.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 130"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 130 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2142 5 แสดงวิธีหาคำตอบ รถจักรยานยนต์บิ๊กไบค์ 9 คัน หนัก 2 ตัน 142 กิโลกรัม แต่ละคันหนักเท่ากัน รถจักรยานยนต์บิ๊กไบค์หนักคันละเท่าไร วิธีทำ รถจักรยานยนต์บิ๊กไบค์หนัก 2 ตัน 142 กิโลกรัมมีทั้งหมด 9 คัน แต่ละคันหนักเท่ากัน 0238 ตัน กิโลกรัม 9 2142 รถจักรยานยนต์บิ๊กไบค์หนักคันละ ตอบ รถจักรยานยนต์บิ๊กไบค์"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s131" data-thumb="img/t131.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 131"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 131 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="6 แสดงวิธีหาคำตอบ พ่อซื้อปูนซีเมนต์มาต่อเติมบ้าน 36 ถุง ถุงละ 50 กิโลกรัม พ่อซื้อปูนซีเมนต์ทั้งหมดหนักกี่ตัน กี่กิโลกรัม หรือ 1 ตัน 800 กิโลกรัม พ่อซื้อปูนซีเมนต์ทั้งหมด 36 × 50 =1,800กิโลกรัม วิธีทำ พ่อซื้อปูนซีเมนต์36ถุง ตอบ พ่อซื้อปูนซีเมนต์ทั้งหมดหนัก ๑ ตัน ๘๐๐ กิโลกรัม ถุงละ50กิโลกรัม 10.1 10.2"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s132" data-thumb="img/t132.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 132"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 132 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="7350 1 แสดงวิธีหาคำตอบ ร้านขายวัสดุก่อสร้างมีปูนซีเมนต์ทั้งหมด 7 ตัน 350 กิโลกรัม ต้องนำไปส่งร้านค้าปลีกจำนวน 3 ร้าน ร้านละเท่าๆ กัน ร้านขายวัสดุก่อสร้างส่งปูนซีเมนต์ร้านละเท่าไร วิธีทำ ร้านขายวัสดุก่อสร้างมีปูนซีเมนต์ทั้งหมด 7 ตัน 350 กิโลกรัมนำไปส่งร้านค้าปลีก 3 ร้าน ร้านละเท่าๆ กัน 2450 ตัน กิโลก"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s133" data-thumb="img/t133.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 133"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 133 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="2 แสดงวิธีหาคำตอบ ชาวสวนเก็บข้าวโพดได้ไร่ละ 2 ตัน 400 กิโลกรัม มีข้าวโพด 6 ไร่ ชาวสวนเก็บข้าวโพดได้ทั้งหมดเท่าไร หรือ14400 ชาวสวนเก็บข้าวโพดได้ทั้งหมด122400 วิธีทำ ชาวสวนเก็บข้าวโพดได้ไร่ละ2400 ตอบ ชาวสวนเก็บข้าวโพดได้ทั้งหมด ๑๔ ตัน ๔๐๐ กิโลกรัม ตัน กิโลกรัม × มีข้าวโพด6 ไร่ ตรวจสอบความเข้าใจ 10.1 1"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s134" data-thumb="img/t134.webp" data-title="10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3) · หน้า 134"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 134 / 134</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การแก้โจทย์ปัญหาทำได้โดยอ่านทำความเข้าใจปัญหา วางแผนแก้ปัญหา หาคำตอบ และตรวจสอบความสมเหตุสมผลของคำตอบ สิ่งที่ได้เรียนรู้ 10.1 10.2 10.3 10.4 10.5 10.6 10.7 10.8 10.9 10.10 10.11"></div></div></div>
+  
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
+  <div class="kru fig"><span class="av"><img src="k10.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>จบบทที่ 10 การวัดน้ำหนัก</h2>
+  <div class="card c-yellow center endpic"><img src="k9.webp" alt="ครูอู๋ชูถ้วยรางวัล"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="f11.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="toc"><button data-jump="10.1"><span class="e">⚖️</span><span>ทบทวน 10.1 การวัดน้ำหนักเป็นกิโลกรัมและขีด กิโลกรัมและกรัม</span></button><button data-jump="10.2"><span class="e">🧰</span><span>ทบทวน 10.2 การเลือกเครื่องชั่งที่เหมาะสม</span></button><button data-jump="10.3"><span class="e">🤔</span><span>ทบทวน 10.3 การคาดคะเนน้ำหนักเป็นกิโลกรัมและเป็นขีด</span></button><button data-jump="10.4"><span class="e">🔗</span><span>ทบทวน 10.4 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (1)</span></button><button data-jump="10.5"><span class="e">⛓️</span><span>ทบทวน 10.5 ความสัมพันธ์ระหว่างหน่วยน้ำหนัก (2)</span></button><button data-jump="10.6"><span class="e">🏋️</span><span>ทบทวน 10.6 การเปรียบเทียบน้ำหนัก</span></button><button data-jump="10.7"><span class="e">➕</span><span>ทบทวน 10.7 การบวกและการลบเกี่ยวกับน้ำหนัก</span></button><button data-jump="10.8"><span class="e">✖️</span><span>ทบทวน 10.8 การคูณและการหารเกี่ยวกับน้ำหนัก</span></button><button data-jump="10.9"><span class="e">📝</span><span>ทบทวน 10.9 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (1)</span></button><button data-jump="10.10"><span class="e">🧩</span><span>ทบทวน 10.10 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (2)</span></button><button data-jump="10.11"><span class="e">🏆</span><span>ทบทวน 10.11 โจทย์ปัญหาเกี่ยวกับน้ำหนัก (3)</span></button></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn ghost" href="../m3-ch9-length/">◀ บทก่อนหน้า</a><a class="btn" style="--c:var(--purple)" href="../m3-math-hub/">🏠 หน้ารวม ป.3</a><a class="btn ghost" href="../m3-ch11-volume/">บทถัดไป ▶</a></div>
+  <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.3 สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m3-ch10-weight", STORE_PREFIX = 'kruau-p3-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [{"q": "1 กิโลกรัม เท่ากับกี่ขีด", "c": ["10 ขีด", "100 ขีด", "1,000 ขีด", "12 ขีด"], "a": 0, "w": "1 กก. = 10 ขีด"}, {"q": "1 ขีด เท่ากับกี่กรัม", "c": ["100 กรัม", "10 กรัม", "1,000 กรัม", "50 กรัม"], "a": 0, "w": "1 ขีด = 100 กรัม"}, {"q": "1 กิโลกรัม เท่ากับกี่กรัม", "c": ["1,000 กรัม", "100 กรัม", "10 กรัม", "10,000 กรัม"], "a": 0, "w": "1 กก. = 1,000 ก."}, {"q": "2 กิโลกรัม 6 ขีด เท่ากับกี่กรัม", "c": ["2,600 กรัม", "260 กรัม", "2,060 กรัม", "26 กรัม"], "a": 0, "w": "2,000 + 600 = 2,600"}, {"q": "ควรใช้เครื่องชั่งแบบใดชั่งน้ำหนักตัวนักเรียน", "c": ["เครื่องชั่งน้ำหนักตัว", "เครื่องชั่งสปริงขนาดเล็ก", "ไม้บรรทัด", "ถ้วยตวง"], "a": 0, "w": "น้ำหนักตัวต้องใช้เครื่องชั่งที่รับน้ำหนักได้มาก"}, {"q": "ข้อใดหนักที่สุด", "c": ["1 กิโลกรัม 5 ขีด", "1,200 กรัม", "14 ขีด", "999 กรัม"], "a": 0, "w": "1 กก. 5 ขีด = 1,500 กรัม มากที่สุด"}, {"q": "ส้ม 3 กิโลกรัม 400 กรัม กับมะม่วง 2 กิโลกรัม 800 กรัม รวมหนักเท่าใด", "c": ["6 กิโลกรัม 200 กรัม", "5 กิโลกรัม 200 กรัม", "5 กิโลกรัม 1,200 กรัม", "6 กิโลกรัม 400 กรัม"], "a": 0, "w": "1,200 กรัม = 1 กก. 200 ก. จึงได้ 6 กก. 200 ก."}, {"q": "ข้าวสารถุงละ 5 กิโลกรัม 8 ถุง หนักกี่กิโลกรัม", "c": ["40 กิโลกรัม", "13 กิโลกรัม", "58 กิโลกรัม", "45 กิโลกรัม"], "a": 0, "w": "5 × 8 = 40"}];
+
+/* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
+var PRAISE = [['k11', 'เยี่ยมมาก!'], ['k2', 'สุดยอด!'], ['k6', 'เก่งมาก!'], ['k9', 'แชมป์เลย!'], ['k11', 'ปรบมือให้เลย!'], ['k7', 'เข้าใจแล้วใช่ไหม']];
+function ppPaint(sl, quiet) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, z = sl.querySelector('.ppz'), img = z.querySelector('img:not(.ghost)');
+  var src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (img.getAttribute('src') && img.getAttribute('src') !== src && !quiet) {
+    var g = img.cloneNode(); g.className = 'ghost'; g.removeAttribute('alt'); z.insertBefore(g, img.nextSibling);
+    var fade = function () { g.style.opacity = 0; setTimeout(function () { g.remove(); }, 400); };
+    img.onload = function () { img.onload = null; requestAnimationFrame(fade); };
+    setTimeout(fade, 900);
+  }
+  img.src = src;
+  if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
+  sl.querySelector('.ppbox').classList.toggle('can', k < n);
+  var b = sl.querySelector('[data-pstep]');
+  if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+  var d = sl.querySelector('.ppbox .done');
+  if (d) d.remove();
+  if (n && k >= n) {
+    var p = PRAISE[(+sl.getAttribute('data-src').slice(-3)) % PRAISE.length];
+    d = document.createElement('div'); d.className = 'done';
+    d.innerHTML = '<span>' + p[1] + '</span><img src="' + p[0] + '.webp" alt="">';
+    sl.querySelector('.ppbox').appendChild(d);
+    if (!quiet) { Kit.sound.good(); if (Math.random() < .35) Kit.confetti(); }
+  }
+}
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl, 1); } }
+function ppTools(sl, mode) {
+  ['zoom'].forEach(function (m) {
+    var on = m === mode && !sl.classList.contains(m);
+    sl.classList.toggle(m, on);
+    sl.querySelector('[data-' + m + ']').classList.toggle('on', on);
+  });
+  if (!sl.classList.contains('zoom')) sl.querySelector('.ppz').style.transformOrigin = '50% 50%';
+  sl.querySelector('.ppbox').classList.toggle('noswipe', sl.classList.contains('zoom'));
+}
+/* ---------- จับเวลา ---------- */
+var TM = { el: null, end: 0, iv: 0 };
+function tmShow() {
+  if (!TM.el) {
+    TM.el = document.createElement('div'); TM.el.className = 'timer';
+    document.body.appendChild(TM.el);
+  }
+  clearInterval(TM.iv); TM.el.classList.remove('end');
+  TM.el.innerHTML = '⏱️ <span class="opts"><button data-m="1">1 นาที</button><button data-m="2">2</button><button data-m="3">3</button><button data-m="5">5</button></span><button class="x" aria-label="ปิด">✖</button>';
+  TM.el.classList.add('show');
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show'); };
+  Array.prototype.forEach.call(TM.el.querySelectorAll('[data-m]'), function (b) { b.onclick = function () { tmStart(+b.getAttribute('data-m')); }; });
+}
+function tmStart(m) {
+  TM.end = Date.now() + m * 60000;
+  TM.el.innerHTML = '⏱️ <span class="t"></span><button class="x" aria-label="หยุด">✖</button>';
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show', 'end'); };
+  var t = TM.el.querySelector('.t');
+  function tick() {
+    var r = Math.max(0, Math.ceil((TM.end - Date.now()) / 1000));
+    t.textContent = Math.floor(r / 60) + ':' + ('0' + r % 60).slice(-2);
+    if (!r) { clearInterval(TM.iv); TM.el.classList.add('end'); Kit.sound.win(); Kit.toast('⏰ หมดเวลา! มาดูเฉลยกันนะ'); }
+  }
+  tick(); TM.iv = setInterval(tick, 250); Kit.sound.tap();
+}
+(function () {
+  var go = Kit.go;
+  Kit.go = function (n, instant) {
+    var cur = Kit.slides[Kit.cur];
+    if (!instant && cur && cur.classList.contains('pslide')) {
+      var N = +cur.getAttribute('data-steps'), k = cur._k || 0;
+      if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
+      if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
+    }
+    if (cur && cur.classList.contains('pslide') && n !== Kit.cur) ppTools(cur, null);
+    var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
+    go(n, instant);
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t, 1); }
+    for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+  };
+})();
+SETUP = function () {
+  setupToc();
+  Kit.slides.forEach(function (sl) {
+    if (!sl.classList.contains('pslide')) return;
+    var box = sl.querySelector('.ppbox'), z = sl.querySelector('.ppz'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
+    box.addEventListener('click', function (e) {
+      if (sl.classList.contains('zoom')) {
+        var q = box.getBoundingClientRect();
+        z.style.transformOrigin = ((e.clientX - q.left) / q.width * 100) + '% ' + ((e.clientY - q.top) / q.height * 100) + '%';
+        return;
+      }
+      adv();
+    });
+    if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+    sl.querySelector('[data-zoom]').onclick = function () { ppTools(sl, 'zoom'); Kit.sound.tap(); if (sl.classList.contains('zoom')) Kit.toast('🔎 แตะตรงที่อยากดูใกล้ ๆ'); };
+    sl.querySelector('[data-timer]').onclick = function () { tmShow(); Kit.sound.tap(); };
+  });
+};
+
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
+  });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- กล้องมุมจอ + อัดวิดีโอการสอน ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit) return;
+  var md = navigator.mediaDevices || {};
+  var inFrame = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  var canRec = !!md.getDisplayMedia && !!window.MediaRecorder;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '🎥'; btn.title = 'กล้องมุมจอ / อัดวิดีโอการสอน'; btn.setAttribute('aria-label', 'กล้องและอัดวิดีโอ');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var pnl = document.createElement('div'); pnl.className = 'campnl';
+  pnl.innerHTML = '<b>🎥 สอนออนไลน์ / ทำวิดีโอ</b>' +
+    '<button data-cam>📷 เปิดกล้องมุมจอ</button>' +
+    (canRec ? '<button data-rec>🔴 อัดวิดีโอหน้าจอ + เสียง</button>' : '') +
+    '<p class="tip">' + (canRec
+      ? 'กดอัดแล้วเลือก <b>แท็บนี้</b> ระบบจะอัดสไลด์ กล้อง และเสียงครูไว้ด้วยกัน กดหยุดแล้วจะได้ไฟล์วิดีโอทันที'
+      : 'บน iPad: เปิดกล้องมุมจอ แล้วใช้ <b>การบันทึกหน้าจอ</b> ในศูนย์ควบคุม (กดค้างที่ปุ่ม ⏺ เพื่อเปิดไมโครโฟน)') + '</p>' +
+    '<button data-x class="ghost">ปิด</button>';
+  document.body.appendChild(pnl);
+  btn.onclick = function () { pnl.classList.toggle('show'); Kit.sound.tap(); };
+  pnl.querySelector('[data-x]').onclick = function () { pnl.classList.remove('show'); };
+
+  function newTab(flag) {
+    var w = window.open(location.href.split('#')[0] + '#s=' + Kit.cur + '&' + flag + '=1', '_blank');
+    if (!w) Kit.toast('เปิดแท็บใหม่ไม่ได้ ลองกดปุ่ม "เปิดในแท็บใหม่" ของเว็บครูอู๋');
+  }
+
+  /* ---- กล้อง ---- */
+  var cam = null, stream = null, SIZES = [120, 170, 240], si = 1, round = true;
+  try { var sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); if (sv.si != null) si = sv.si; if (sv.round != null) round = sv.round; } catch (e) {}
+  function save(x, y) { try { localStorage.setItem('kruau-cam', JSON.stringify({ si: si, round: round, x: x, y: y })); } catch (e) {} }
+  function place() {
+    var s = SIZES[si], h = round ? s : Math.round(s * .75);
+    cam.style.width = s + 'px'; cam.style.height = h + 'px';
+    cam.classList.toggle('sq', !round);
+    var r = cam.getBoundingClientRect();
+    var x = Math.min(Math.max(4, r.left), innerWidth - s - 4), y = Math.min(Math.max(4, r.top), innerHeight - h - 4);
+    cam.style.left = x + 'px'; cam.style.top = y + 'px';
+  }
+  function openCam() {
+    if (cam) return;
+    if (!md.getUserMedia) { Kit.toast('อุปกรณ์นี้เปิดกล้องผ่านเว็บไม่ได้'); return; }
+    md.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }).then(function (s) {
+      stream = s;
+      cam = document.createElement('div'); cam.className = 'cambub noswipe';
+      cam.innerHTML = '<video autoplay playsinline muted></video><span class="cb"><button data-sz title="ย่อ/ขยาย">⤢</button><button data-sh title="วงกลม/สี่เหลี่ยม">◐</button><button data-cl title="ปิดกล้อง">✖</button></span>';
+      document.body.appendChild(cam);
+      var v = cam.querySelector('video'); v.srcObject = s; v.play().catch(function () {});
+      var sv = {}; try { sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); } catch (e) {}
+      cam.style.left = (sv.x != null ? sv.x : innerWidth - SIZES[si] - 16) + 'px';
+      cam.style.top = (sv.y != null ? sv.y : innerHeight - SIZES[si] - 90) + 'px';
+      place();
+      cam.querySelector('[data-sz]').onclick = function (e) { e.stopPropagation(); si = (si + 1) % SIZES.length; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-sh]').onclick = function (e) { e.stopPropagation(); round = !round; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-cl]').onclick = function (e) { e.stopPropagation(); closeCam(); };
+      var drag = null;
+      cam.addEventListener('pointerdown', function (e) {
+        if (e.target.closest('button')) return;
+        drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
+      });
+      cam.addEventListener('pointermove', function (e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        cam.style.left = Math.min(Math.max(4, e.clientX - drag.dx), innerWidth - cam.offsetWidth - 4) + 'px';
+        cam.style.top = Math.min(Math.max(4, e.clientY - drag.dy), innerHeight - cam.offsetHeight - 4) + 'px';
+      });
+      cam.addEventListener('pointerup', function () { if (drag) save(cam.offsetLeft, cam.offsetTop); drag = null; });
+      pnl.querySelector('[data-cam]').textContent = '📷 ปิดกล้องมุมจอ';
+      pnl.classList.remove('show');
+      Kit.toast('📷 ลากกล้องไปวางมุมไหนก็ได้ · ⤢ ย่อ/ขยาย');
+    }).catch(function (err) {
+      if (inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่อใช้กล้อง…'); newTab('cam'); }
+      else Kit.toast('เปิดกล้องไม่ได้ — กรุณาอนุญาตให้เว็บใช้กล้อง');
+    });
+  }
+  function closeCam() {
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    if (cam) cam.remove();
+    cam = stream = null;
+    pnl.querySelector('[data-cam]').textContent = '📷 เปิดกล้องมุมจอ';
+  }
+  pnl.querySelector('[data-cam]').onclick = function () { if (cam) closeCam(); else openCam(); };
+  addEventListener('resize', function () { if (cam) place(); });
+
+  /* ---- อัดวิดีโอ (คอมพิวเตอร์: Chrome / Edge / Firefox) ---- */
+  var rec = null, chip = null, parts = [], t0 = 0, iv = 0, all = [];
+  function pickType() {
+    var c = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    for (var i = 0; i < c.length; i++) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c[i])) return c[i];
+    return '';
+  }
+  function startRec() {
+    md.getDisplayMedia({ video: { frameRate: 30 }, audio: true, preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude' }).then(function (ds) {
+      all = [ds];
+      return md.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }).then(function (mic) { all.push(mic); return [ds, mic]; }, function () { Kit.toast('ไม่ได้เปิดไมโครโฟน จะอัดแต่ภาพ'); return [ds, null]; });
+    }).then(function (r) {
+      var ds = r[0], mic = r[1], tracks = ds.getVideoTracks().slice();
+      var aud = [ds, mic].filter(function (s) { return s && s.getAudioTracks().length; });
+      if (aud.length === 1) tracks = tracks.concat(aud[0].getAudioTracks());
+      else if (aud.length > 1) {
+        var ac = new (window.AudioContext || window.webkitAudioContext)(), dst = ac.createMediaStreamDestination();
+        aud.forEach(function (s) { ac.createMediaStreamSource(s).connect(dst); });
+        tracks = tracks.concat(dst.stream.getAudioTracks());
+      }
+      var type = pickType();
+      rec = new MediaRecorder(new MediaStream(tracks), type ? { mimeType: type, videoBitsPerSecond: 3000000 } : undefined);
+      parts = [];
+      rec.ondataavailable = function (e) { if (e.data && e.data.size) parts.push(e.data); };
+      rec.onstop = finish;
+      ds.getVideoTracks()[0].addEventListener('ended', stopRec);
+      rec.start(1000); t0 = Date.now();
+      chip = document.createElement('div'); chip.className = 'recchip';
+      chip.innerHTML = '<span class="dot"></span> อัดอยู่ <span class="t">0:00</span><button>■ หยุด</button>';
+      document.body.appendChild(chip);
+      chip.querySelector('button').onclick = stopRec;
+      iv = setInterval(function () { var s = Math.floor((Date.now() - t0) / 1000); chip.querySelector('.t').textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }, 500);
+      pnl.classList.remove('show');
+      if (!cam) Kit.toast('🔴 เริ่มอัดแล้ว · เปิดกล้องมุมจอได้ที่ปุ่ม 🎥');
+    }).catch(function (err) {
+      all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+      if (err && err.name === 'NotAllowedError' && inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่ออัดวิดีโอ…'); newTab('rec'); }
+      else if (err && err.name !== 'NotAllowedError') Kit.toast('อัดวิดีโอไม่ได้: ' + err.name);
+    });
+  }
+  function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+  function finish() {
+    clearInterval(iv);
+    all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+    if (chip) chip.remove();
+    var type = (rec && rec.mimeType) || 'video/webm', ext = type.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+    var blob = new Blob(parts, { type: type }), a = document.createElement('a');
+    var d = new Date(), name = (document.title.split('·')[0].trim() || 'บทเรียน').replace(/[\\\/:*?"<>|]/g, '') + ' ' + d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    a.href = URL.createObjectURL(blob); a.download = name + '.' + ext;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+    Kit.sound.win(); Kit.toast('💾 บันทึกวิดีโอแล้ว (' + ext.toUpperCase() + ') ดูได้ในโฟลเดอร์ดาวน์โหลด');
+    rec = null;
+  }
+  var rb = pnl.querySelector('[data-rec]');
+  if (rb) rb.onclick = function () { if (rec) stopRec(); else startRec(); };
+
+  /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
+  if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
+  if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+</script>
+</body>
+</html>

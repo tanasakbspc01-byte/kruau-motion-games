@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>บทที่ 1 จำนวนนับไม่เกิน 100,000 · คณิตศาสตร์ ป.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--main:#9B6CF0;--main-deep:#7343D6;--glow:#E6DAFF}
+/* ---- สไตล์ครูอู๋ (ติว O-NET ป.6) ---- */
+.cover h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow)}
+.cover .badge{background:var(--main)}
+.cover .ind{max-width:680px;width:100%;text-align:left;background:#fff;border:3px dashed var(--main);border-radius:16px;padding:10px 14px;font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.6}
+.cover .ind b{color:var(--main-deep)}
+.cover .kru{max-width:680px;width:100%;text-align:left}
+.credit{font-size:.9rem;color:var(--ink-soft)}
+.kru{display:flex;gap:12px;align-items:flex-start}
+.kru .av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--glow);border:3px solid var(--main);display:grid;place-items:center;font-size:2rem}
+.kru .bub{position:relative;flex:1;min-width:0;background:#fff;border:3px solid var(--main);border-radius:6px 20px 20px 20px;padding:10px 14px;font-size:clamp(1rem,2.5vw,1.14rem);line-height:1.65;box-shadow:0 4px 0 var(--glow)}
+.kru .bub .nm{display:block;color:var(--main-deep);font-size:.92em}
+.trap{background:#FFE9EC;border-left:8px solid var(--red);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.trap b.t{color:#D63A55}
+.chant{background:linear-gradient(120deg,var(--glow),#FFF3C4);border:3px solid var(--main);border-radius:22px;padding:14px 18px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;color:var(--main-deep)}
+.chant small{display:block;font-size:.62em;color:var(--ink-soft);font-weight:600}
+.onet{display:inline-block;background:var(--purple);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem;vertical-align:middle}
+.eq{font-size:clamp(1.1rem,3.2vw,1.45rem);font-weight:700;line-height:1.8}
+.calc{display:grid;gap:8px}
+.calc>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line);font-size:clamp(1.02rem,2.8vw,1.25rem);line-height:1.6}
+.calc>div .pill{margin-right:6px}
+.tag2{display:inline-block;border-radius:10px;padding:1px 8px;font-weight:700;background:var(--c,var(--yellow));color:#fff}
+.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl.mini td,.tbl.mini th{padding:8px;text-align:center}
+.svgbox{background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px;display:flex;justify-content:center}
+.svgbox svg{width:100%;height:auto;max-height:380px}
+/* ฝึกคิดไม่รู้จบ */
+.drill{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink-soft);flex-wrap:wrap}
+.dinput{width:min(9em,60vw);height:2.3em;border:3px solid var(--blue);border-radius:14px;text-align:center;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.5rem);background:#F4FAFF;font-family:inherit}
+.dinput.ok{border-color:var(--good);background:#DDF7E7}
+.dinput.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.dunit{font-weight:700;font-size:clamp(1.05rem,3vw,1.3rem)}
+.dch{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dch button{border:3px solid var(--line);background:#fff;border-radius:16px;min-width:64px;min-height:56px;padding:8px 16px;font-weight:700;font-size:clamp(1.1rem,3vw,1.35rem);box-shadow:0 4px 0 var(--line)}
+.dch button.ok{border-color:var(--good);background:#DDF7E7}
+.dch button.no{border-color:var(--bad);background:#FFE1E4;animation:shake .4s}
+.how{background:#F4F0FF;border:3px dashed var(--purple);border-radius:16px;padding:10px 14px;line-height:1.75;font-size:clamp(1rem,2.6vw,1.15rem)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:620px){.kru .av{width:44px;height:44px;font-size:1.5rem}}
+
+.bar a.tb{text-decoration:none}
+.drill .qq{text-align:center}
+.qq .svgbox svg{max-height:250px}
+/* ---- ป.4 รูปครูอู๋ ---- */
+.kru .av{overflow:hidden;padding:0;background:var(--glow)}
+.kru .av img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.cover4{display:grid;grid-template-columns:1fr minmax(160px,34%);gap:18px;align-items:end;width:100%;max-width:980px;text-align:left}
+.cover4 .txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cover4 .pic{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:240px}
+.cover4 .pic::before{display:none;content:"";position:absolute;inset:18% 4% 0 4%;border-radius:50% 50% 24px 24px;background:radial-gradient(circle at 50% 35%,#fff,var(--glow) 70%);border:4px solid var(--main)}
+.cover4 .pic img{position:relative;width:100%;max-width:330px;max-height:min(56vh,440px);object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+.cover4 .pic .name{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--main);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--main-deep);font-size:.95rem}
+.cover4 h1{color:var(--main-deep);text-shadow:0 4px 0 var(--glow);font-size:clamp(1.8rem,5vw,3rem)}
+@media (max-width:700px){.cover4{grid-template-columns:1fr;text-align:center}.cover4 .txt{align-items:center}.cover4 .pic{min-height:200px;order:-1}.cover4 .pic img{max-height:30vh}}
+.toc{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.toc button{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px 14px;font-weight:700;font-size:clamp(1rem,2.6vw,1.15rem);box-shadow:0 4px 0 var(--main);color:var(--ink)}
+.toc button .e{font-size:1.8rem}
+.toc button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--main)}
+.secbadge{display:inline-block;background:var(--main);color:#fff;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;align-self:flex-start}
+table.vt{border-collapse:collapse;margin:0 auto;font-size:clamp(1.25rem,3.6vw,1.7rem);font-weight:700;font-variant-numeric:tabular-nums}
+table.vt td{width:1.05em;text-align:center;padding:1px 0;line-height:1.35}
+table.vt td.op{width:1.4em;color:var(--main-deep)}
+table.vt tr.cy td{font-size:.6em;color:#E85D25;line-height:1}
+table.vt tr.ans td{border-top:3px solid var(--ink);border-bottom:6px double var(--ink);color:var(--main-deep)}
+.endpic{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.endpic img{width:auto;height:clamp(130px,22vh,180px);object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));animation:kbob 2.4s ease-in-out infinite}
+table.vt tr.sep td{border-top:3px solid var(--ink)}
+.card p.eq,.card .eq{font-size:clamp(1.15rem,3.2vw,1.5rem)}
+.kru .av{width:60px;height:60px}
+.kru.fig{align-items:flex-end}
+.kru.fig .av{width:auto;height:auto;border:none;background:none;border-radius:0;overflow:visible}
+.kru.fig .av img{height:clamp(120px,22vh,170px);width:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.kru.fig .bub{border-radius:20px 20px 20px 6px;margin-bottom:10px}
+
+/* ---- ครูอู๋การ์ตูน: ขยับเบา ๆ ---- */
+@keyframes kbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1.5deg)}}
+@keyframes kpop{0%{transform:scale(.6) translateY(20px);opacity:0}70%{transform:scale(1.05)}100%{transform:none;opacity:1}}
+.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:kpop .55s ease-out both,kbob 3s ease-in-out .6s infinite}
+.cover4 .pic img{max-width:380px}
+@media (prefers-reduced-motion:reduce){.endpic img,.slide.on .cover4 .pic img,.slide.on .kru.fig .av img{animation:none}}
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
+/* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
+.campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
+.campnl.show{display:flex}
+.campnl button{min-height:44px;border-radius:14px;border:2px solid var(--main);background:var(--glow);font-weight:700;font-size:1rem;color:var(--ink)}
+.campnl button.ghost{background:#fff;min-height:36px}
+.campnl .tip{margin:0;font-size:.88rem;line-height:1.5;color:var(--ink-soft)}
+.cambub{position:fixed;z-index:65;border-radius:50%;overflow:hidden;background:#222;border:4px solid #fff;box-shadow:0 0 0 3px var(--main),0 8px 20px rgba(0,0,0,.3);touch-action:none;cursor:grab}
+.cambub.sq{border-radius:18px}
+.cambub video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;pointer-events:none}
+.cambub .cb{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:4px;opacity:0;transition:opacity .2s}
+.cambub:hover .cb,.cambub:active .cb,.cambub:focus-within .cb{opacity:1}
+@media (hover:none){.cambub .cb{opacity:.85}}
+.cambub .cb button{width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.9);font-size:.9rem;padding:0}
+.recchip{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid #E53935;border-radius:999px;padding:4px 6px 4px 14px;font-weight:700;color:#C62828;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.recchip .dot{width:12px;height:12px;border-radius:50%;background:#E53935;animation:recb 1s infinite}
+.recchip button{border:none;background:#E53935;color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;min-height:36px}
+@keyframes recb{50%{opacity:.25}}
+@media print{.campnl,.cambub,.recchip{display:none}}
+
+/* ---- แถบด้านบนบนมือถือ ---- */
+@media (max-width:520px){.bar .tb{width:34px!important;min-width:34px;height:34px!important;font-size:15px!important;padding:0!important}.bar{gap:3px!important}.bar .ttl small{display:none}}
+
+.nav .dots{display:none}
+.nav{justify-content:space-between}
+.pslide{padding:8px clamp(8px,2vw,24px) 8px}
+.pslide .inner.pp{max-width:none;height:100%;gap:6px}
+.pphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.ppno{font-weight:700;color:var(--ink-soft);font-size:.9rem;white-space:nowrap}
+.ppframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.ppbox{position:relative;width:min(100cqw,calc(100cqh * 16 / 9));aspect-ratio:16/9;background:#fff;border-radius:18px;border:4px solid var(--main);box-shadow:0 6px 0 var(--glow),0 10px 26px rgba(0,0,0,.08);overflow:hidden;box-sizing:border-box}
+.ppz{position:absolute;inset:0;transition:transform .35s ease;transform-origin:50% 50%}
+.ppz img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ppz img.ghost{transition:opacity .35s ease;pointer-events:none}
+.ppbox.can{cursor:pointer}
+.pslide.zoom .ppbox{cursor:zoom-out}
+.pslide.zoom .ppz{transform:scale(2.2)}
+.ppbox .done{position:absolute;right:10px;bottom:8px;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:kpop .5s ease-out both}
+.ppbox .done img{height:clamp(60px,14cqh,110px);width:auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.ppbox .done span{background:#fff;border:3px solid var(--main);border-radius:14px 14px 4px 14px;padding:2px 10px;font-weight:700;color:var(--main-deep);margin-bottom:30px;white-space:nowrap;font-size:clamp(.8rem,2.2vw,1rem)}
+.tools{display:flex;align-items:center;gap:6px}
+.tl{width:40px;height:40px;border-radius:12px;border:2px solid var(--main);background:#fff;font-size:1.15rem;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--glow)}
+.tl.on{background:var(--main);box-shadow:0 3px 0 var(--main-deep)}
+.timer{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:6px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:4px 6px 4px 12px;font-weight:700;box-shadow:0 4px 0 var(--main-deep);font-size:1.15rem}
+.timer.show{display:flex}
+.timer .opts{display:flex;gap:4px}
+.timer .opts button,.timer .x{border:2px solid var(--main);background:var(--glow);border-radius:999px;padding:2px 10px;font-weight:700;min-height:36px}
+.timer .t{font-variant-numeric:tabular-nums;min-width:3.2em;text-align:center;color:var(--main-deep)}
+.timer.end{animation:tshake .5s 3;background:#FFE3E3}
+@keyframes tshake{25%{transform:translateX(-50%) rotate(-4deg)}75%{transform:translateX(-50%) rotate(4deg)}}
+@media (max-width:620px){.tl{width:34px;height:34px;font-size:1rem}.pphead .secbadge{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.board{position:relative;width:min(100%,720px);container-type:inline-size;animation:kpop .55s ease-out both}
+.board img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15))}
+.chalk{position:absolute;left:56%;top:12%;width:39%;height:62%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqw;color:#fff;text-align:center;text-shadow:0 0 2px rgba(255,255,255,.5)}
+.chalk .cn{font-size:4.2cqw;color:#FFE97A;border-bottom:.4cqw dashed #FFE97A;padding:0 2cqw}
+.chalk b{font-size:4.6cqw;line-height:1.3;font-weight:700}
+.secslide .ready{font-weight:700;color:var(--ink-soft)}
+.ppctl{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;flex-wrap:wrap}
+.ppctl .tip{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-soft);font-size:.95rem}
+.ppctl .tip img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:50% 12%;border:3px solid var(--main);background:var(--glow)}
+.ppctl .btn{min-height:44px;padding:6px 18px}
+.secslide{min-height:100%;justify-content:center;align-items:center;text-align:center}
+.secnum{display:grid;place-items:center;width:clamp(110px,18vw,150px);aspect-ratio:1;border-radius:50%;background:var(--main);color:#fff;font-weight:700;font-size:clamp(2.2rem,6vw,3.2rem);box-shadow:0 8px 0 var(--main-deep)}
+.secslide h1{color:var(--main-deep);font-size:clamp(1.7rem,5vw,2.8rem);text-shadow:0 4px 0 var(--glow)}
+.subs{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:620px;width:100%}
+.subs div{background:#fff;border:3px solid var(--main);border-radius:16px;padding:8px 14px;font-weight:700;text-align:left;font-size:clamp(1rem,2.6vw,1.2rem)}
+.subs b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--main);color:#fff;margin-right:8px}
+.secslide .kru{max-width:680px;width:100%;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🔢</span>
+  <div class="ttl"><b>บทที่ 1 จำนวนนับไม่เกิน 100,000</b><small>คณิตศาสตร์ ป.3 · สไตล์ครูอู๋</small></div>
+  <a class="tb" href="../m3-math-hub/" aria-label="หน้ารวม ป.3" title="หน้ารวม ป.3">📚</a>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+<section class="slide" data-title="หน้าปก"><div class="inner cover"><div class="cover4">
+  <div class="txt">
+    <span class="badge">คณิตศาสตร์ ป.3 · บทที่ 1</span>
+    <h1>จำนวนนับไม่เกิน 100,000</h1>
+    <p class="sub">อ่าน เขียน หลักและค่า เปรียบเทียบ เรียงลำดับ และแบบรูปของจำนวน</p>
+    <div class="card c-yellow goals" style="width:100%"><h3>📚 เรื่องที่จะเรียนในบทนี้</h3><ul><li>1.1 จำนวนนับไม่เกิน 10,000</li><li>1.2 จำนวนนับไม่เกิน 100,000</li><li>1.3 หลักและค่าของเลขโดดในแต่ละหลัก</li><li>1.4 การเปรียบเทียบจำนวน</li><li>1.5 การเรียงลำดับจำนวน</li><li>1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</li></ul></div>
+    <div class="row"><button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button></div>
+  </div>
+  <div class="pic"><img src="k5.webp" alt="ครูอู๋ ธนศักดิ์ แก้วถาวร"><span class="name">ครูอู๋ ธนศักดิ์ แก้วถาวร</span></div>
+</div></div></section>
+<section class="slide" data-title="สารบัญ"><div class="inner">
+  <h2 class="h"><span class="e">🗺️</span>เส้นทางการเรียนบทที่ 1</h2>
+  <div class="kru fig"><span class="av"><img src="k1.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชวนเรียน</b>แตะหัวข้อที่อยากเรียนได้เลย ในแต่ละหน้า กด <b>ถัดไป ▶</b> หรือแตะที่รูปเพื่อดูเฉลยทีละขั้น เหมือนเปิด PowerPoint ในห้องเรียน 👇</div></div>
+  <div class="toc"><button data-jump="pre"><span class="e">🧩</span><span>เตรียมความพร้อม</span></button><button data-jump="1.1"><span class="e">🔟</span><span>1.1 จำนวนนับไม่เกิน 10,000</span></button><button data-jump="1.2"><span class="e">💯</span><span>1.2 จำนวนนับไม่เกิน 100,000</span></button><button data-jump="1.3"><span class="e">🏠</span><span>1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span></button><button data-jump="1.4"><span class="e">⚖️</span><span>1.4 การเปรียบเทียบจำนวน</span></button><button data-jump="1.5"><span class="e">📶</span><span>1.5 การเรียงลำดับจำนวน</span></button><button data-jump="1.6"><span class="e">🔁</span><span>1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span></button><button data-jump="quiz"><span class="e">📝</span><span>แบบทดสอบท้ายบท (8 ข้อ)</span></button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-sec="pre" data-steps="2" data-src="img/s003" data-thumb="img/t003.webp" data-title="เตรียมความพร้อม · หน้า 3"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 3 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เตรียมความพร้อม 1 เขียนตัวเลขฮินดูอารบิก ตัวเลขไทย และตัวหนังสือแสดงจำนวน 1) 2) ตัวเลขฮินดูอารบิก 147ตัวเลขไทย ๑๔๗ตัวหนังสือ หนึ่งร้อยสี่สิบเจ็ด ตัวเลขฮินดูอารบิก 260ตัวเลขไทย ๒๖๐ตัวหนังสือ สองร้อยหกสิบ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s004" data-thumb="img/t004.webp" data-title="เตรียมความพร้อม · หน้า 4"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 4 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 3) 2) ตัวเลขฮินดูอารบิก 405ตัวเลขไทย ๔๐๕ตัวหนังสือ สี่ร้อยห้า ตัวเลขฮินดูอารบิก 293ตัวเลขไทย ๒๙๓ตัวหนังสือ สองร้อยเก้าสิบสาม"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s005" data-thumb="img/t005.webp" data-title="เตรียมความพร้อม · หน้า 5"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">เตรียมความพร้อม</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 5 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 2 เปรียบเทียบราคาของสินค้าต่อไปนี้ 1) ร่ม กับ หมวก 2) เสื้อ กับ แว่นตา 3) พวงกุญแจ กับ แว่นตา 4) หมวก กับ พวงกุญแจ 285 &gt; 199 849 &lt; 865 59 &lt; 865 199 &gt; 59"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide" data-sec="1.1" data-title="1.1 จำนวนนับไม่เกิน 10,000"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 1.1</span><b>🔟 จำนวนนับไม่เกิน 10,000</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s007" data-thumb="img/t007.webp" data-title="1.1 จำนวนนับไม่เกิน 10,000 · หน้า 7"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 จำนวนนับไม่เกิน 10,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 7 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จำนวนผู้เข้าร่วมขบวนพาเหรดหนึ่งพันสองร้อยสี่สิบแปดคน 01 02 03 04 05 06 เขียนตัวเลขและตัวหนังสือแสดงจำนวน ดังนี้ตัวเลขฮินดูอารบิก 1,248ตัวเลขไทย ๑,๒๔๘ตัวหนังสือ หนึ่งพันสองร้อยสี่สิบแปด การเขียนตัวเลขแสดงจำนวนตั้งแต่สี่หลัก นิยมเขียนเครื่องหมายจุลภาค (,) คั่นระหว่างตัวเลขในหลักร้อยและหลักพัน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s008" data-thumb="img/t008.webp" data-title="1.1 จำนวนนับไม่เกิน 10,000 · หน้า 8"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 จำนวนนับไม่เกิน 10,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 8 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนตัวเลขฮินดูอารบิก ตัวเลขไทย และตัวหนังสือแสดงจำนวน 1 2 ตัวเลขฮินดูอารบิก 1,167ตัวเลขไทย ๑,๑๖๗ตัวหนังสือ หนึ่งพันหนึ่งร้อยหกสิบเจ็ด ตัวเลขฮินดูอารบิก 3,570ตัวเลขไทย ๓,๕๗๐ตัวหนังสือ สามพันห้าร้อยเจ็ดสิบ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s009" data-thumb="img/t009.webp" data-title="1.1 จำนวนนับไม่เกิน 10,000 · หน้า 9"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 จำนวนนับไม่เกิน 10,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 9 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แสดงจำนวนสี่พันสองร้อยห้าสิบสี่ 01 02 03 04 05 06 เขียนตัวเลขและตัวหนังสือแสดงจำนวน ดังนี้ตัวเลขฮินดูอารบิก 4,254ตัวเลขไทย ๔,๒๕๔ตัวหนังสือ สี่พันสองร้อยห้าสิบสี่ อาจแสดงจำนวนสี่พันสองร้อยห้าสิบสี่ โดยใช้หลักลูกคิด ดังนี้ 4254"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s010" data-thumb="img/t010.webp" data-title="1.1 จำนวนนับไม่เกิน 10,000 · หน้า 10"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 จำนวนนับไม่เกิน 10,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 10 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนตัวเลขและตัวหนังสือแสดงจำนวน ดังนี้ตัวเลขฮินดูอารบิก 9,021ตัวเลขไทย ๙,๐๒๑ตัวหนังสือ เก้าพันยี่สิบเอ็ด 9021"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s011" data-thumb="img/t011.webp" data-title="1.1 จำนวนนับไม่เกิน 10,000 · หน้า 11"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 จำนวนนับไม่เกิน 10,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 11 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนตัวเลขและตัวหนังสือแสดงจำนวน ดังนี้ตัวเลขฮินดูอารบิก 10,000ตัวเลขไทย ๑๐,๐๐๐ตัวหนังสือ หนึ่งหมื่น"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s012" data-thumb="img/t012.webp" data-title="1.1 จำนวนนับไม่เกิน 10,000 · หน้า 12"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 จำนวนนับไม่เกิน 10,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 12 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนตัวเลขฮินดูอารบิก ตัวเลขไทย และตัวหนังสือแสดงจำนวน 1 2 ตัวเลขฮินดูอารบิก 2,283ตัวเลขไทย ๒,๒๘๓ตัวหนังสือ สองพันสองร้อยแปดสิบสาม ตัวเลขฮินดูอารบิก 3,620ตัวเลขไทย ๓,๖๒๐ตัวหนังสือ สามพันหกร้อยยี่สิบ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s013" data-thumb="img/t013.webp" data-title="1.1 จำนวนนับไม่เกิน 10,000 · หน้า 13"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 จำนวนนับไม่เกิน 10,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 13 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 3 4 ตัวเลขฮินดูอารบิก 7,301ตัวเลขไทย ๗,๓๐๑ตัวหนังสือ เจ็ดพันสามร้อยเอ็ด ตัวเลขฮินดูอารบิก 6,400ตัวเลขไทย ๖,๔๐๐ตัวหนังสือ หกพันสี่ร้อย"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s014" data-thumb="img/t014.webp" data-title="1.1 จำนวนนับไม่เกิน 10,000 · หน้า 14"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 จำนวนนับไม่เกิน 10,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 14 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 1 ตัวเลขฮินดูอารบิก 3,001ตัวเลขไทย ๓,๐๐๑ตัวหนังสือ สามพันเอ็ด ตัวเลขฮินดูอารบิก 5,030ตัวเลขไทย ๕,๐๓๐ตัวหนังสือ ห้าพันสามสิบ 2 เขียนตัวเลขฮินดูอารบิก ตัวเลขไทย และตัวหนังสือแสดงจำนวน ตรวจสอบความเข้าใจ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s015" data-thumb="img/t015.webp" data-title="1.1 จำนวนนับไม่เกิน 10,000 · หน้า 15"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.1 จำนวนนับไม่เกิน 10,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 15 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สามารถเขียนตัวเลขฮินดูอารบิก ตัวเลขไทย และตัวหนังสือแสดงจำนวน สิ่งที่ได้เรียนรู้ 01 02 03 04 05 06 สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="1.2" data-title="1.2 จำนวนนับไม่เกิน 100,000"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 1.2</span><b>💯 จำนวนนับไม่เกิน 100,000</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s017" data-thumb="img/t017.webp" data-title="1.2 จำนวนนับไม่เกิน 100,000 · หน้า 17"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 จำนวนนับไม่เกิน 100,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 17 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนตัวเลขและตัวหนังสือแสดงจำนวน ดังนี้ตัวเลขฮินดูอารบิก 34,286ตัวเลขไทย ๓๔,๒๘๖ตัวหนังสือ สามหมื่นสี่พันสองร้อยแปดสิบหก การเขียนตัวเลขแสดงจำนวนตั้งแต่สี่หลัก นิยมเขียนเครื่องหมายจุลภาค (,) คั่นระหว่างตัวเลขในหลักร้อยและหลักพัน แสดงจำนวนสามหมื่นสี่พันสองร้อยแปดสิบหกโดยใช้หลักลูกคิด"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s018" data-thumb="img/t018.webp" data-title="1.2 จำนวนนับไม่เกิน 100,000 · หน้า 18"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 จำนวนนับไม่เกิน 100,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 18 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนตัวเลขและตัวหนังสือแสดงจำนวน ดังนี้ตัวเลขฮินดูอารบิก 46,007ตัวเลขไทย ๔๖,๐๐๗ตัวหนังสือ สี่หมื่นหกพันเจ็ด จากหลักลูกคิด สามารถเขียนตัวเลขและตัวหนังสือแสดงจำนวนได้ ดังนี้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s019" data-thumb="img/t019.webp" data-title="1.2 จำนวนนับไม่เกิน 100,000 · หน้า 19"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 จำนวนนับไม่เกิน 100,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 19 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนตัวเลขและตัวหนังสือแสดงจำนวน ดังนี้ตัวเลขฮินดูอารบิก 100,000ตัวเลขไทย ๑๐๐,๐๐๐ตัวหนังสือ หนึ่งแสน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s020" data-thumb="img/t020.webp" data-title="1.2 จำนวนนับไม่เกิน 100,000 · หน้า 20"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 จำนวนนับไม่เกิน 100,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 20 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนตัวเลขฮินดูอารบิก ตัวเลขไทย และตัวหนังสือแสดงจำนวน 1 2 ตัวเลขฮินดูอารบิก 15,124ตัวเลขไทย ๑๕,๑๒๔ตัวหนังสือ หนึ่งหมื่นห้าพันหนึ่งร้อยยี่สิบสี่ ตัวเลขฮินดูอารบิก 24,070ตัวเลขไทย ๒๔,๐๗๐ตัวหนังสือ สองหมื่นสี่พันเจ็ดสิบ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s021" data-thumb="img/t021.webp" data-title="1.2 จำนวนนับไม่เกิน 100,000 · หน้า 21"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 จำนวนนับไม่เกิน 100,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 21 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 3 4 ตัวเลขฮินดูอารบิก 60,802ตัวเลขไทย ๖๐,๘๐๒ตัวหนังสือ หกหมื่นแปดร้อยสอง ตัวเลขฮินดูอารบิก 95,101ตัวเลขไทย ๙๕,๑๐๑ตัวหนังสือ เก้าหมื่นห้าพันหนึ่งร้อยเอ็ด"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s022" data-thumb="img/t022.webp" data-title="1.2 จำนวนนับไม่เกิน 100,000 · หน้า 22"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 จำนวนนับไม่เกิน 100,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 22 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ลูกคิดบอกจำนวน กิจกรรม อุปกรณ์ 1 ชุด ประกอบด้วย หลักลูกคิด ลูกคิด และแบบบันทึกกิจกรรมวิธีจัดกิจกรรม 1. ครูแบ่งนักเรียนเป็นกลุ่ม กลุ่มละเท่า ๆ กัน และแจกอุปกรณ์กลุ่มละ 1 ชุด 2. ครูสาธิตการแสดงจำนวนนับไม่เกิน 100,000 โดยใช้หลักลูกคิด 3. ครูยกตัวอย่างสถานการณ์การแข่งขันฟุตบอล การแข่งข"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s023" data-thumb="img/t023.webp" data-title="1.2 จำนวนนับไม่เกิน 100,000 · หน้า 23"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 จำนวนนับไม่เกิน 100,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 23 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 4. ให้นักเรียนแต่ละกลุ่มแสดงจำนวนผู้เข้าชมของแต่ละทีมโดยใช้หลักลูกคิดแล้วระบายสีลูกคิดพร้อมทั้งเขียนตัวเลขและตัวหนังสือแสดงจำนวนในแบบบันทึกกิจกรรม 5. ให้นักเรียนแต่ละกลุ่มนำเสนอผลงงาน ตัวอย่างแบบบันทึกกิจกรรม จำนวนผู้เข้าชมของทีม ตัวเลขฮินดูอารบิก ตัวเลขไทย ตัวหนังสือ"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s024" data-thumb="img/t024.webp" data-title="1.2 จำนวนนับไม่เกิน 100,000 · หน้า 24"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 จำนวนนับไม่เกิน 100,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 24 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 1 ตัวเลขฮินดูอารบิก 30,352ตัวเลขไทย ๓๐,๓๕๒ตัวหนังสือ สามหมื่นสามร้อยห้าสิบสอง เขียนตัวเลขฮินดูอารบิก ตัวเลขไทย และตัวหนังสือแสดงจำนวน ตรวจสอบความเข้าใจ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s025" data-thumb="img/t025.webp" data-title="1.2 จำนวนนับไม่เกิน 100,000 · หน้า 25"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 จำนวนนับไม่เกิน 100,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 25 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="1) เจ็ดหมื่นสองพันหกร้อยห้าสิบสาม 3) สี่หมื่นสามร้อยเอ็ด 2) แปดหมื่นเก้าพันสองร้อยเก้าสิบ 01 02 03 04 05 06 2 ตัวเลขฮินดูอารบิก 72,653ตัวเลขไทย ๗๒,๖๕๓ เขียนตัวเลขฮินดูอารบิก และตัวเลขไทยแสดงจำนวน ตัวเลขฮินดูอารบิก 89,290ตัวเลขไทย ๘๙,๒๙๐ ตัวเลขฮินดูอารบิก 40,301ตัวเลขไทย ๔๐,๓๐๑"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s026" data-thumb="img/t026.webp" data-title="1.2 จำนวนนับไม่เกิน 100,000 · หน้า 26"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.2 จำนวนนับไม่เกิน 100,000</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 26 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="สามารถเขียนตัวเลขฮินดูอารบิก ตัวเลขไทย และตัวหนังสือแสดงจำนวน 01 02 03 04 05 06 สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="1.3" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 1.3</span><b>🏠 หลักและค่าของเลขโดดในแต่ละหลัก</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s028" data-thumb="img/t028.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 28"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 28 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 หลักพันหลักร้อยหลักสิบหลักหน่วย3523 3,523 คือ 3 พัน กับ 5 ร้อย กับ 2 สิบ กับ 3 หน่วย 3523ในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่า3,000500203 เขียนในรูปกระจาย 3,523 = 3,000 + 500 + 20 + 3 3,523 เป็นจำนวนสี่หลักหลักพันอยู่ถัดไปทางซ้ายของหลักร้อย"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s029" data-thumb="img/t029.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 29"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 29 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนในรูปกระจาย 6,066 = 6,000 + 0 + 60 + 6 หรือ 6,066 = 6,000 + 60 + 6 6,066 6066ในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่า6,0000606 ค่าของเลขโดดในแต่ละหลัก"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s030" data-thumb="img/t030.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 30"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 30 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บอกค่าของเลขโดดในแต่ละหลัก และเขียนแสดงจำนวนในรูปกระจาย 1 2 7,009 9,108 เขียนในรูปกระจาย 7,009 = 7,000 + 0 + 0 + 9 หรือ7,009 = 7,000 + 9 7009ในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่า7,000009 เขียนในรูปกระจาย 9,108 = 9,000 + 100 + 0 + 8 หรือ9,108 = 9,000 + 100 + 8 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s031" data-thumb="img/t031.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 31"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 31 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 3 4 5,320 4,531 เขียนในรูปกระจาย 5,320 = 5,000 + 300 + 20 + 0 หรือ5,320 = 5,000 + 300 + 20 5320ในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่า5,000300200 เขียนในรูปกระจาย 4,531 = 4,000 + 500 + 30 + 1 4531ในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่า5,00030"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s032" data-thumb="img/t032.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 32"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 32 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 5 8,102 เขียนในรูปกระจาย 8,102 = 8,000 + 100 + 0 + 2 หรือ 8,102 = 8,000 + 100 + 2 8102ในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่า8,00010002"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s033" data-thumb="img/t033.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 33"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 33 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 หลักหมื่นหลักพันหลักร้อยหลักสิบหลักหน่วย52402 54,402 คือ 5 หมื่น กับ 2 พัน กับ 4 ร้อย กับ 2 หน่วย 52402ในหลักหมื่นในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่ามีค่า50,0002,00040002 เขียนในรูปกระจาย 52,402 = 50,000 + 2,000 + 400 + 0 + 2 หรือ 52,402 = 50,000 + 2,000 + 4"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s034" data-thumb="img/t034.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 34"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 34 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เขียนในรูปกระจาย 15,076 = 10,000 + 5,000 + 0 + 70 + 6 หรือ 15,076 = 10,000 + 5,000 + 70 + 6 15,076 15076ในหลักหมื่นในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่ามีค่า10,0005,0000706"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s035" data-thumb="img/t035.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 35"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 35 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บอกค่าของเลขโดดในแต่ละหลัก และเขียนแสดงจำนวนในรูปกระจาย 1 2 70,314 50,052 เขียนในรูปกระจาย 70,314 = 70,000 + 0 + 300 + 10 + 4หรือ 70,314 = 70,000 + 300 + 10 + 4 70314ในหลักหมื่นในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่ามีค่า70,0000300104 เขียนในรูปกระจาย 50,052 = 5"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s036" data-thumb="img/t036.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 36"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 36 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 3 4 81,091 90,009 เขียนในรูปกระจาย 81,091 = 80,000 + 1,000 + 0 + 90 + 1หรือ 81,091 = 80,000 + 1,000 + 90 + 1 81091ในหลักหมื่นในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่ามีค่า80,0001,0000901 เขียนในรูปกระจาย 90,009 = 90,000 + 0 + 0 + 0 + 9หรือ 90,009 = 90,000 + 9 9000"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s037" data-thumb="img/t037.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 37"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 37 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 5 40,404 เขียนในรูปกระจาย 40,404 = 40,000 + 0 + 400 + 0 + 4หรือ 40,404 = 40,000 + 400 + 4 40404ในหลักหมื่นในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่ามีค่า40,000040004"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s038" data-thumb="img/t038.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 38"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 38 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 หลักแสนหลักหมื่นหลักพันหลักร้อยหลักสิบหลักหน่วย100000 100,000 คือ 1 แสน กับ 0 หมื่น กับ 0 พัน กับ 0 ร้อย กับ 0 สิบ กับ 0 หน่วย 100000ในหลักแสนในหลักหมื่นในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่ามีค่ามีค่า100,00000000 100,000 เป็นจำนวนหกหลักหลักแสนอยู่ถัดไปทางซ้ายข"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s039" data-thumb="img/t039.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 39"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 39 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บอกค่าของเลขโดดในแต่ละหลัก และเขียนแสดงจำนวนในรูปกระจาย 1 1) 6,241 2) 74,019 เขียนในรูปกระจาย 6,241 = 6,000 + 200 + 40 + 1 6241ในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่า6,000200401 เขียนในรูปกระจาย 74,019 = 70,000 + 4,000 + 0 + 10 + 9หรือ 74,019 = 70,000 + 4,000 + "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s040" data-thumb="img/t040.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 40"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 40 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 3) 90,006 4) 82,300 เขียนในรูปกระจาย 90,009 = 90,000 + 0 + 0 + 0 + 6หรือ 90,009 = 90,000 + 6 90006ในหลักหมื่นในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามีค่ามีค่า90,0000006 เขียนในรูปกระจาย 82,300 = 80,000 + 2,000 + 300 + 0 + 0หรือ 82,300 = 80,000 + 2,000 + 300 82300ในหล"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s041" data-thumb="img/t041.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 41"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 41 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เลขโดดที่ขีดเส้นใต้อยู่ในหลักใดและมีค่าเท่าไร 2 1) 9,008 2) 64,110 0 ในหลักร้อยมีค่า 00 ในหลักสิบมีค่า 0 4 ในหลักพันมีค่า 4,0001 ในหลักสิบมีค่า 10 3) 60,006 4) 12,323 6 ในหลักหมื่นมีค่า 60,0006 ในหลักหน่วยมีค่า 6 1 ในหลักหมื่นมีค่า 10,0003 ในหลักร้อยมีค่า 300 7,120 7 อยู่ในหลักพัน "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="1" data-src="img/s042" data-thumb="img/t042.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 42"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 42 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 บอกค่าของเลขโดดในแต่ละหลักของจำนวนผู้เข้าวิ่งมาราธอนการกุศล พร้อมทั้งเขียนแสดงจำนวนในรูปกระจาย ตรวจสอบความเข้าใจ จำนวนผู้เข้าวิ่งมาราธอนการกุศล 93,968 คน เขียนในรูปกระจาย 93,968 = 90,000 + 3,000 + 900 + 60 + 8 93968ในหลักหมื่นในหลักพันในหลักร้อยในหลักสิบในหลักหน่วยมีค่ามีค่ามีค่ามี"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/1)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s043" data-thumb="img/t043.webp" data-title="1.3 หลักและค่าของเลขโดดในแต่ละหลัก · หน้า 43"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 43 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จำนวนสี่หลัก ถ้าเลขโดด 0 1 2 3 4 5 6 7 8 9 อยู่ในหลักหน่วยมีค่าเป็น 0 1 2 3 4 5 6 7 8 9 ถ้าอยู่ในหลักสิบมีค่าเป็น 0 10 20 30 40 ... 90 ถ้าอยู่ในหลักร้อยมีค่าเป็น 0 100 200 300 ... 900 และเลขโดด 1 2 3 4 5 6 7 8 9 ถ้าอยู่ในหลักพันมีค่าเป็น 1,000 2,000 3,000 ... 9,000 ตามลำดับจำนวนห้าหลัก ถ้าเลขโดด 0 1"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="1.4" data-title="1.4 การเปรียบเทียบจำนวน"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 1.4</span><b>⚖️ การเปรียบเทียบจำนวน</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s045" data-thumb="img/t045.webp" data-title="1.4 การเปรียบเทียบจำนวน · หน้า 45"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การเปรียบเทียบจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 45 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 สนามฟุตบอลแห่งหนึ่งแบ่งที่นั่งตามโซน ดังนี้ โซน A มีความจุ 8,505 ที่นั่ง โซน B มีความจุ 3,600 ที่นั่ง โซน C มีความจุ 12,245 ที่นั่ง"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s046" data-thumb="img/t046.webp" data-title="1.4 การเปรียบเทียบจำนวน · หน้า 46"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การเปรียบเทียบจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 46 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบจำนวนที่นั่งของโซน A กับโซน C 01 02 03 04 05 06 เปรียบเทียบ 8,505 กับ 12,2458,505 เป็นจำนวนสี่หลัก หลักที่อยู่ซ้ายสุดคือหลักพัน 8 ในหลักพัน มีค่า 8,000 จะได้ 8,000 &lt; 10,000 10,000 คือ 10 พันดังนั้น 8 พัน น้อยกว่า 10 พัน ดังนั้น 8,505 &lt; 12,245 หรือ 12,245 &gt; 8,505 จำนวนที่นั่งโซน A น้อยกว่า"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s047" data-thumb="img/t047.webp" data-title="1.4 การเปรียบเทียบจำนวน · หน้า 47"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การเปรียบเทียบจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 47 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ 100,000 กับ 98,789 01 02 03 04 05 06 100,000 เป็นจำนวนหกหลัก หลักที่อยู่ซ้ายสุดคือหลักแสน 1 ในหลักแสน มีค่า 100,000 จะได้ 100,000 &gt; 90,000 ดังนั้น 100,000 &gt; 98,789 หรือ 98,789 &lt; 100,000 98,789 เป็นจำนวนห้าหลัก หลักที่อยู่ซ้ายสุดคือหลักหมื่น 9 ในหลักหมื่น มีค่า 90,000 จำนวนที่มีจำนวนหลักม"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s048" data-thumb="img/t048.webp" data-title="1.4 การเปรียบเทียบจำนวน · หน้า 48"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การเปรียบเทียบจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 48 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เปรียบเทียบจำนวน 1) 8,567 กับ 10,007 8,567 เป็นจำนวนสี่หลัก 10,007 เป็นจำนวนห้าหลักดังนั้น 8,567 &lt; 10,007 45,780 กับ 9,987 45,780 เป็นจำนวนห้าหลัก 9,987 เป็นจำนวนสี่หลัก ดังนั้น 45,780 &gt; 9,987 2) 100,000 กับ 99,999 100,000 เป็นจำนวนหกหลัก 99,999 เป็นจำนวนห้าหลักดังนั้น 100,000 &gt; 99"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s049" data-thumb="img/t049.webp" data-title="1.4 การเปรียบเทียบจำนวน · หน้า 49"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การเปรียบเทียบจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 49 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 จำนวนเหรียญรางวัลรวมของการแข่งขันกีฬาซีเกมส์ จนถึงครั้งที่ 28 พ.ศ. 2558 ของ 5 ประเทศ ดังนี้ กีฬาแหลมทอง (Southeast Asian Peninsular Games) หรือเซียปเกมส์ (SEAP Games) เริ่มขึ้นเมื่อปี พ.ศ. 2502 เพื่อแข่งขันกีฬาระหว่างประเทศในเอเชียตะวันออกเฉียงใต้ต่อมาได้เปลี่ยนชื่อเป็นซีเกมส์ (SEA"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s050" data-thumb="img/t050.webp" data-title="1.4 การเปรียบเทียบจำนวน · หน้า 50"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การเปรียบเทียบจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 50 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="จำนวนเหรียญรางวัลรวมของประเทศไทยมากกว่าหรือน้อยกว่าประเทศอินโดนีเซีย 01 02 03 04 05 06 เปรียบเทียบ 5,558 กับ 4,8525,558 กับ 4,852 เป็นจำนวนสี่หลักเหมือนกัน หลักที่อยู่ซ้ายสุดคือหลักพันพิจารณาเลขโดดในหลักพัน 5,000 &gt; 4,000 จะได้ 5,558 &gt; 4,852 ดังนั้น จำนวนเหรียญรางวัลรวมของประเทศไทย มากกว่าประเทศอินโด"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="10" data-src="img/s051" data-thumb="img/t051.webp" data-title="1.4 การเปรียบเทียบจำนวน · หน้า 51"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การเปรียบเทียบจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 51 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="เปรียบเทียบ 43,230 กับ 43,195 01 02 03 04 05 06 43,230 กับ 43,195 เป็นจำนวนห้าหลักเหมือนกัน หลักที่อยู่ซ้ายสุดคือหลักหมื่น4 ในหลักหมื่น มีค่า 40,000 เท่ากัน และหลักถัดไปทางขวาคือหลักพัน3 ในหลักพัน มีค่า 3,000 เท่ากัน 200 &gt; 100 จะได้ 43,230 &gt; 43,195 จึงพิจารณาค่าของเลขโดดในหลักร้อย 2 ในหลักร้อย มีค่า"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/10)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s052" data-thumb="img/t052.webp" data-title="1.4 การเปรียบเทียบจำนวน · หน้า 52"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การเปรียบเทียบจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 52 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เปรียบเทียบจำนวน 1) 8,926 กับ 4,397 8 9 2 6 8 ในหลักพัน มีค่า 8,000 4 3 9 7 4 ในหลักพัน มีค่า 4,000 8,000 &gt; 4,000ดังนั้น 8,926 &gt; 4,397 2) 5,882 กับ 5,889 5 8 8 2 2 ในหลักหน่วย มีค่า 2 5 8 8 9 9 ในหลักหน่วย มีค่า 9 2 &lt; 9ดังนั้น 5,882 &lt; 5,889 3) 10,000 กับ 10,011 1 0 0 0 0 0 ในหลักสิ"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s053" data-thumb="img/t053.webp" data-title="1.4 การเปรียบเทียบจำนวน · หน้า 53"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การเปรียบเทียบจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 53 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 มากกว่าหรือน้อยกว่า กิจกรรม อุปกรณ์ บัตรตัวเลขแสดงจำนวนสี่หลัก จำนวนห้าหลัก และจำนวนหกหลัก ตัวอย่างบัตรตัวเลขแสดงจำนวน 70,876 19,896 25,000 8,786 4,521 81,469 26,409 56,000 9,207 2,900 83,278 45,218 98,000 6,159 9,814 90,987 50,987 99,000 5,679 100,000"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s054" data-thumb="img/t054.webp" data-title="1.4 การเปรียบเทียบจำนวน · หน้า 54"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การเปรียบเทียบจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 54 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 วิธีจัดกิจกรรม 1. ครูแบ่งนักเรียนเป็นกลุ่ม กลุ่มละเท่า ๆ กัน และแจกบัตรตัวเลขแสดงจำนวนกลุ่มละ 5 บัตร 2. ครูเขียนจำนวนบนกระดาน เช่น 20,900 เก้าพันสิบสาม แล้วให้นักเรียนหาบัตรตัวเลขแสดงจำนวนที่มากกว่าหรือน้อยกว่าจำนวนที่ครูกำหนดและแยกเป็นกองไว้ 3. ครูให้นักเรียนแต่ละกลุ่มชูบัตรตัวเลข"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s055" data-thumb="img/t055.webp" data-title="1.4 การเปรียบเทียบจำนวน · หน้า 55"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การเปรียบเทียบจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 55 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 1 เติมเครื่องหมาย &gt; หรือ &lt; ตรวจสอบความเข้าใจ 1) 4,571 5,4713) 19,002 9,2005) 34,500 34,510 2) 5,091 5,9104) 80,552 80,4626) 100,000 99,999 2 เติมตัวเลขแสดงจำนวน 1) &lt; 3,6782) ๑๐,๖๕๐ &gt; 3) &gt; 30,217 &lt; &lt; &gt; &gt; &lt; &gt; 3,000 10,000 40,000 (คำตอบมีหลากหลาย)"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s056" data-thumb="img/t056.webp" data-title="1.4 การเปรียบเทียบจำนวน · หน้า 56"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.4 การเปรียบเทียบจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 56 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การเปรียบเทียบจำนวนสองจำนวนถ้าจำนวนหลักไม่เท่ากัน จำนวนที่มีจำนวนหลักมากกว่าจะมากกว่าถ้าจำนวนหลักเท่ากัน- จำนวนที่ค่าของเลขโดดในหลักที่อยู่ซ้ายสุดมากกว่าจะมากกว่า- ถ้าเลขโดดในหลักที่อยู่ซ้ายสุดมีค่าเท่ากัน ให้พิจารณาค่าของเลขโดดในหลักถัดไปทางขวาทีละหลัก ค่าของเลขโดดของจำนวนใดมากกว่าจำนวนนั้นจะมากกว่"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="1.5" data-title="1.5 การเรียงลำดับจำนวน"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 1.5</span><b>📶 การเรียงลำดับจำนวน</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s058" data-thumb="img/t058.webp" data-title="1.5 การเรียงลำดับจำนวน · หน้า 58"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 การเรียงลำดับจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 58 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5,990 6,090 5,890 เป็นจำนวนสี่หลัก พิจารณาค่าของเลขโดดในหลักพัน ดังนี้ 01 02 03 04 05 06 จักรยานรุ่นนี้ ร้านไหนราคาถูกที่สุด เรียงลำดับราคาจักรยานจากน้อยไปมาก 5 ในหลักพัน มีค่า 5,000 6 ในหลักพัน มีค่า 6,000 6,090 5 ในหลักพัน มีค่า 6,000 5,890 จะได้ 6,090 มากที่สุด 5,990"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="5" data-src="img/s059" data-thumb="img/t059.webp" data-title="1.5 การเรียงลำดับจำนวน · หน้า 59"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 การเรียงลำดับจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 59 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="5,990 5,890 เป็นจำนวนสี่หลัก เลขโดดในหลักพันมีค่า 5,000 เท่ากันจึงพิจารณาเลขโดดในหลักร้อย 01 02 03 04 05 06 9 ในหลักร้อย มีค่า 900 8 ในหลักร้อย มีค่า 800 จะได้ 5,990 มากกว่า 5,890 5,990 5,890 ดังนั้น เรียงลำดับจำนวนจากน้อยไปมาก ดังนี้ 5,890 5,990 6,090"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/5)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s060" data-thumb="img/t060.webp" data-title="1.5 การเรียงลำดับจำนวน · หน้า 60"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 การเรียงลำดับจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 60 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณา 16,990 6,890 42,670 46,782 01 02 03 04 05 06 เรียงลำดับ 16,990 6,890 42,670 46,782 จากน้อยไปมาก 1 ในหลักหมื่น มีค่า 10,000 4 ในหลักหมื่น มีค่า 40,000 42,670 4 ในหลักหมื่น มีค่า 40,000 จะได้ 16,990 น้อยที่สุด 16,990 6,890 เป็นจำนวนสี่หลัก และ 16,990 42,670 46,782 เป็นจำนวนห้าหลัก จะได้ 6,890 "></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s061" data-thumb="img/t061.webp" data-title="1.5 การเรียงลำดับจำนวน · หน้า 61"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 การเรียงลำดับจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 61 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 จะได้ 42,670 น้อยกว่า 46,782 ดังนั้น เรียงลำดับจำนวนจากน้อยไปมาก ดังนี้ 6,890 16,990 42,670 46,782 ดังนั้น 6,890 16,990 พิจารณา 42,670 46,782 เลขโดดที่อยู่ซ้ายสุดมีค่า 40,000 เท่ากัน 2 ในหลักพัน มีค่า 2,000 42,670 6 ในหลักพัน มีค่า 6,000 46,782 จึงพิจารณาเลขโดดในหลักพัน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s062" data-thumb="img/t062.webp" data-title="1.5 การเรียงลำดับจำนวน · หน้า 62"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 การเรียงลำดับจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 62 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เรียงลำดับจำนวนจากมากไปน้อย 1) 8,349 2,560 4,9182) 35,678 33,129 35,6803) 5,628 13,141 25,680 9,7804) 80,875 69,200 88,900 69,772 1 8,349 4,918 2,560 35,680 35,678 33,129 25,680 13,141 9,780 5,628 88,900 80,875 69,772 69,200"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s063" data-thumb="img/t063.webp" data-title="1.5 การเรียงลำดับจำนวน · หน้า 63"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 การเรียงลำดับจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 63 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เรียงลำดับจำนวนจากน้อยไปมาก 1) 10,875 11,213 8,9182) 89,178 89,120 90,6803) 18,009 10,560 18,918 9,2904) 67,692 66,900 67,689 69,772 2 8,918 10,875 11,213 89,120 89,178 90,680 9,290 10,560 18,009 18,918 66,900 67,689 67,692 69,772"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="9" data-src="img/s064" data-thumb="img/t064.webp" data-title="1.5 การเรียงลำดับจำนวน · หน้า 64"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 การเรียงลำดับจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 64 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="พิจารณา 80,078 67,355 6,819 67,957 100,000 01 02 03 04 05 06 เรียงลำดับ 80,078 67,355 6,819 67,957 100,000 จากมากไปน้อย 8 ในหลักหมื่น มีค่า 80,000 6 ในหลักหมื่น มีค่า 60,000 67,355 6 ในหลักหมื่น มีค่า 60,000 จะได้ 80,078 มากที่สุด 80,078 100,000 เป็นจำนวนหกหลัก 80,078 67,355 6,819 67,957 เป็นจำนวนห้"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/9)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="8" data-src="img/s065" data-thumb="img/t065.webp" data-title="1.5 การเรียงลำดับจำนวน · หน้า 65"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 การเรียงลำดับจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 65 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 จะได้ 67,957 มากกว่า 67,355 ดังนั้น เรียงลำดับจำนวนจากมากไปน้อย ดังนี้ 100,000 80,078 67,657 67,355 6,819 ดังนั้น 100,000 80,078 6,819 67,355 67,957 เลขโดดที่อยู่ซ้ายสุด มีค่า 60,000 เท่ากัน และเลขโดดในหลักพันมีค่า 7,000 เท่ากัน จึงพิจารณาค่าของเลขโดดในหลักร้อย 3 ในหลักร้อย มีค่า 3"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/8)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s066" data-thumb="img/t066.webp" data-title="1.5 การเรียงลำดับจำนวน · หน้า 66"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 การเรียงลำดับจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 66 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เรียงลำดับจำนวนจากมากไปน้อย 1) 17,239 7,939 19,8912) 28,020 46,890 29,810 48,1093) 87,180 76,999 76,810 80,095 72,419 1 19,891 17,239 7,939 48,109 46,890 29,810 28,020 87,180 80,095 76,999 76,810 72,419"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s067" data-thumb="img/t067.webp" data-title="1.5 การเรียงลำดับจำนวน · หน้า 67"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 การเรียงลำดับจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 67 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เรียงลำดับจำนวนจากน้อยไปมาก 1) 57,239 52,939 5,9972) 18,100 8,890 19,612 18,2063) 57,180 96,650 37,428 97,095 37,210 2 5,997 52,939 57,239 8,890 18,100 18,206 19,612 37,210 37,428 57,180 96,650 97,095"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s068" data-thumb="img/t068.webp" data-title="1.5 การเรียงลำดับจำนวน · หน้า 68"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 การเรียงลำดับจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 68 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ตอบคำถาม จำนวนเที่ยวบิน จากท่าอากาศยานต่าง ๆ พ.ศ. 2560 3 2) เรียงลำดับจำนวนเที่ยวบินจากท่าอากาศยานนครพนม กระบี่ เชียงใหม่ และสมุย จากมากไปน้อย3) เรียงลำดับจำนวนเที่ยวบินจากท่าอากาศยานกระบี่ เชียงใหม่ สมัย อุบลราชธานี และขอนแก่น จากน้อยไปมาก 1) เรียงลำดับจำนวนเที่ยวบินจากท่าอากาศยาน"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s069" data-thumb="img/t069.webp" data-title="1.5 การเรียงลำดับจำนวน · หน้า 69"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 การเรียงลำดับจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 69 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 1 เรียงลำดับจำนวนจากน้อยไปมาก ตรวจสอบความเข้าใจ 45,230 10,453 81,720 9,875 2 เรียงลำดับจำนวนจากมากไปน้อย 89,000 8,716 8,920 90,895 89,062 9,875 10,453 45,230 81,720 90,895 89,062 89,000 8,920 8,716"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s070" data-thumb="img/t070.webp" data-title="1.5 การเรียงลำดับจำนวน · หน้า 70"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.5 การเรียงลำดับจำนวน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 70 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="การเรียงลำดับจำนวนอาจทำได้โดยหาจำนวนที่มากที่สุดและน้อยที่สุดก่อน จากนั้นนำจำนวนมาเรียงลำดับจากมากไปน้อยหรือจากน้อยไปมาก 01 02 03 04 05 06 สิ่งที่ได้เรียนรู้สิ่งที่ได้เรียนรู้"></div></div></div>
+  
+</div></section>
+<section class="slide" data-sec="1.6" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน"><div class="inner secslide">
+  <div class="board"><img src="k3.webp" alt="ครูอู๋ชี้กระดาน"><div class="chalk"><span class="cn">เรื่องที่ 1.6</span><b>🔁 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</b></div></div>
+  
+  <p class="ready">พร้อมแล้วกด <b>ถัดไป ▶</b> ได้เลย!</p>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="7" data-src="img/s072" data-thumb="img/t072.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 72"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 72 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 รูปที่ 1รูปที่ 2รูปที่ 3รูปที่ 4 รูป 5 จะมีลักษณะอย่างไร และมี กี่รูป สังเกตการเพิ่ม ทีละ 3 รูป ดังนี้ รูปที่ 1 รูปที่ 2 รูปที่ 3 รูปที่ 4 รูปที่ 5 ดังนั้น รูป 5 มี จำนวน 18 รูป"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/7)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="6" data-src="img/s073" data-thumb="img/t073.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 73"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 73 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 สังเกตการเพิ่ม ทีละ 3 รูป ดังนี้ รูปที่ 1 รูปที่ 2 รูปที่ 3 รูปที่ 4 รูปที่ 5 ดังนั้น รูป 5 มี จำนวน 18 รูป"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/6)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s074" data-thumb="img/t074.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 74"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 74 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 162 166 170 174 178 เป็นแบบรูปของจำนวนที่เพิ่มขึ้นทีละ 2 ตัวอย่างที่ 1 162 166 170 174 178 +4 +4 +4 +4 +4 ดังนั้น จำนวนถัดไป คือ 182 เพราะ 178 เพิ่มขึ้นทีละ 4 ได้ 182 182"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s075" data-thumb="img/t075.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 75"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 75 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 117 113 109 105 101 เป็นแบบรูปของจำนวนที่ลดลงทีละ 4 ตัวอย่างที่ 2 117 113 109 105 101 -4 -4 -4 -4 -4 ดังนั้น จำนวนถัดไป คือ 97 เพราะ 101 ลดลง 4 ได้ 97 97"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="4" data-src="img/s076" data-thumb="img/t076.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 76"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 76 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 จำนวนถัดไปในแบบรูปคือจำนวนใด 1 1,015 1,000 985 970 2 240 265 290 315 3 341 350 359 368 377 4 112 101 90 79 68 995 340 386 57"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/4)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s077" data-thumb="img/t077.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 77"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 77 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 94 102 110 118 126 เป็นแบบรูปของจำนวนที่เพิ่มขึ้นทีละ 8 ตัวอย่างที่ 1 94 102 +8 +8 +8 +8 ดังนั้น จำนวนที่หายไป คือ 118 เพราะ 110 เพิ่มขึ้น 8 ได้ 118 118 110 126"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s078" data-thumb="img/t078.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 78"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 78 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 87 80 73 66 59 52 เป็นแบบรูปของจำนวนที่ลดลงทีละ 7 ตัวอย่างที่ 2 87 -7 -7 -7 -7 -7 ดังนั้น จำนวนถัดไป คือ 80 เพราะ 87 ลดลง 7 ได้ 80 80 113 109 105 101"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="2" data-src="img/s079" data-thumb="img/t079.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 79"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 79 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 จำนวนที่หายไปในแบบรูปคือจำนวนใด 1 525 550 575 625 2 120 100 80 40 600 650 60 20"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/2)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s080" data-thumb="img/t080.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 80"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 80 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 แบบรูปต่อไปนี้เป็นแบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่าไร และจำนวนที่หายไปในแบบรูปคือจำนวนใด 1 76 68 60 52 36 28 2 512 524 536 560 572 3 224 220 216 212 204 200 เป็นแบบรูปของจำนวนที่ลดลงทีละ 8 เป็นแบบรูปของจำนวนที่เพิ่มขึ้นทีละ 12 เป็นแบบรูปของจำนวนที่ลดลงทีละ 4 44 548 584 208"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s081" data-thumb="img/t081.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 81"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 81 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 4 350 400 450 500 5 405 390 375 360 315 6 12,300 12,600 12,900 เป็นแบบรูปของจำนวนที่เพิ่มขึ้นทีละ 50 เป็นแบบรูปของจำนวนที่ลดลงทีละ 15 เป็นแบบรูปของจำนวนที่เพิ่มขึ้นที 300 250 300 550 345 330 13,200 13,500"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f5.webp" alt="">แตะรูปหรือกดถัดไป เพื่อดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s082" data-thumb="img/t082.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 82"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 82 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ไม้ขีดเสริมปัญญา กิจกรรม อุปกรณ์ 1 ชุดประกอบด้วย ไม้ขีด 55 ก้าน และกระดาษ 4 แผ่นวิธีจัดกิจกรรม 1. ครูแบ่งนักเรียนเป็นกลุ่ม กลุ่มละเท่า ๆ กัน แจกอุปกรณ์กลุ่มละ 1 ชุด 2. ครูติดแถบแบบรูปการณ์วางไม้ขีดบนกระดาน ให้นักเรียนแต่ละกลุ่มช่วยกันวางไม้ขีดเพื่อแสดงรูป 4 ในแต่ละแบบรูปที่ครูกำหนด"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s083" data-thumb="img/t083.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 83"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 83 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 ตัวอย่างแบบรูป รูป 1 รูป 2 รูป 3 รูป 4 รูป 1 รูป 2 รูป 3 รูป 4 รูป 1 รูป 2 รูป 3 รูป 4"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s084" data-thumb="img/t084.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 84"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 84 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 เฉลย รูป 4 4 7 10 13 เป็นแบบรูปที่เพิ่มขึ้นทีละ 3 รูป 4 21 16 11 6 เป็นแบบรูปที่ลดลงทีละ 5 รูป 4 9 7 5 3 เป็นแบบรูปที่ลดลงทีละ 2"></div></div></div>
+  
+</div></section>
+<section class="slide pslide" data-nofit data-steps="3" data-src="img/s085" data-thumb="img/t085.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 85"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 85 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="01 02 03 04 05 06 แบบรูปต่อไปนี้เป็นแบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่าไร และจำนวนที่หายไปในแบบรูปคือจำนวนใด ตรวจสอบความเข้าใจ 1 930 900 870 840 2 1,123 1,323 1,523 1,923 3 2,720 2,600 2,480 2,360 เป็นแบบรูปของจำนวนที่ลดลงทีละ 30 เป็นแบบรูปของจำนวนที่เพิ่มขึ้นทีละ 200 เป็นแบบรูปของจำนวนที่ลดล"></div></div></div>
+  <div class="ppctl"><span class="tip"><img src="f7.webp" alt="">ลองทำเองก่อน แล้วค่อยแตะดูเฉลย</span><button class="btn" data-pstep>👆 แสดงต่อ / เฉลย (0/3)</button><button class="btn ghost" data-preset aria-label="เริ่มหน้านี้ใหม่">↺ เริ่มใหม่</button></div>
+</div></section>
+<section class="slide pslide" data-nofit data-steps="0" data-src="img/s086" data-thumb="img/t086.webp" data-title="1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน · หน้า 86"><div class="inner pp">
+  <div class="pphead"><span class="secbadge">1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span><span class="tools"><button class="tl" data-zoom title="แว่นขยาย แตะตรงที่อยากดูใกล้ ๆ" aria-label="ขยาย">🔎</button><button class="tl" data-timer title="จับเวลาทำแบบฝึกหัด" aria-label="จับเวลา">⏱️</button><span class="ppno">หน้า 86 / 86</span></span></div>
+  <div class="ppframe"><div class="ppbox"><div class="ppz"><img alt="แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน เป็นชุดของจำนวนที่มีความสัมพันธ์กันอย่างต่อเนื่องในลักษณะของการเพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน สิ่งที่ได้เรียนรู้ 01 02 03 04 05 06"></div></div></div>
+  
+</div></section>
+<section class="slide" data-title="แบบทดสอบท้ายบท" data-sec="quiz"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายบท (8 ข้อ)</h2>
+  <div class="kru fig"><span class="av"><img src="k10.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋เป็นกำลังใจ</b>ใช้กระดาษทดคิดก่อนเลือกคำตอบนะ ตอบผิดไม่เป็นไร อ่านเหตุผลแล้วจำไว้ สู้ ๆ 💪</div></div>
+  <div data-quiz="main"></div>
+</div></section>
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>จบบทที่ 1 จำนวนนับไม่เกิน 100,000</h2>
+  <div class="card c-yellow center endpic"><img src="k9.webp" alt="ครูอู๋ชูถ้วยรางวัล"><div data-score></div></div>
+  <div class="kru"><span class="av"><img src="f11.webp" alt="ครูอู๋"></span><div class="bub"><b class="nm">ครูอู๋ชม</b>เก่งมาก! เรื่องไหนยังไม่แน่ใจ แตะทบทวนได้เลย</div></div>
+  <div class="toc"><button data-jump="1.1"><span class="e">🔟</span><span>ทบทวน 1.1 จำนวนนับไม่เกิน 10,000</span></button><button data-jump="1.2"><span class="e">💯</span><span>ทบทวน 1.2 จำนวนนับไม่เกิน 100,000</span></button><button data-jump="1.3"><span class="e">🏠</span><span>ทบทวน 1.3 หลักและค่าของเลขโดดในแต่ละหลัก</span></button><button data-jump="1.4"><span class="e">⚖️</span><span>ทบทวน 1.4 การเปรียบเทียบจำนวน</span></button><button data-jump="1.5"><span class="e">📶</span><span>ทบทวน 1.5 การเรียงลำดับจำนวน</span></button><button data-jump="1.6"><span class="e">🔁</span><span>ทบทวน 1.6 แบบรูปของจำนวนที่เพิ่มขึ้นหรือลดลงทีละเท่า ๆ กัน</span></button></div>
+  <div class="row center"><button class="btn ghost" onclick="Kit.go(1)">🗺️ กลับสารบัญ</button><a class="btn" style="--c:var(--purple)" href="../m3-math-hub/">🏠 หน้ารวม ป.3</a><a class="btn ghost" href="../m3-ch2-add-sub/">บทถัดไป ▶</a></div>
+  <p class="credit center">ตกแต่งและจัดทำสื่อโดย ครูอู๋ ธนศักดิ์ แก้วถาวร · KruAu ห้องเรียนแสนสนุก · เนื้อหาตามหนังสือเรียนคณิตศาสตร์ ป.3 สสวท.</p>
+</div></section>
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+var LESSON_ID = "m3-ch1-numbers", STORE_PREFIX = 'kruau-p3-';
+/* ---------- ตัวช่วยสไตล์ครูอู๋ (ใช้ร่วมทุกสื่อติว O-NET ป.6) ---------- */
+function R(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function C(n) {
+  var s = String(Math.round(n * 1000) / 1000), p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+function lcm(a, b) { return a / gcd(a, b) * b; }
+var DRILLS = {}, SETUP = null;
+
+/* ฝึกคิดไม่รู้จบ: ตัวสร้างโจทย์คืนค่า {q, a(ตัวเลข) หรือ c(ตัวเลือก)+a(ลำดับ), u, h(วิธีคิด)} */
+function Drill(el, gens) {
+  var cur, streak = 0, ok = 0, done = 0, locked;
+  function num(s) { return parseFloat(String(s).replace(/[,\s]/g, '')); }
+  function next() { cur = pick(gens)(); locked = false; render(); }
+  function head() {
+    return '<div class="dhead"><span>🔥 ถูกติดกัน ' + streak + ' ข้อ</span><span>✅ ถูก ' + ok + ' / ทำ ' + done + ' ข้อ</span></div>';
+  }
+  function render() {
+    var ans = cur.c
+      ? '<div class="dch">' + cur.c.map(function (t, k) { return '<button data-k="' + k + '">' + Kit.fx(t) + '</button>'; }).join('') + '</div>'
+      : '<div class="row center"><input class="dinput" inputmode="decimal" autocomplete="off" aria-label="พิมพ์คำตอบ" placeholder="คำตอบ"><span class="dunit">' + (cur.u || '') + '</span></div>';
+    el.innerHTML = head() + '<div class="qq pop">' + Kit.fx(cur.q) + '</div>' + ans +
+      '<div class="row center">' + (cur.c ? '' : '<button class="btn" data-chk>ตรวจคำตอบ ✔</button>') +
+      '<button class="btn ghost" data-how>💡 วิธีคิดแบบครูอู๋</button><button class="btn ghost" data-new>🎲 โจทย์ใหม่</button></div>' +
+      '<div class="feedback center"></div><div class="how hidden"></div>';
+    var inp = el.querySelector('.dinput'), fb = el.querySelector('.feedback');
+    function judge(good, btn) {
+      if (locked) return;
+      if (good) {
+        locked = true; done++; ok++; streak++;
+        Kit.sound.good(); if (streak && streak % 5 === 0) { Kit.confetti(); Kit.sound.win(); }
+        fb.innerHTML = '<span class="t-green">🎉 ถูกต้อง! ' + (streak >= 3 ? 'ถูกติดกัน ' + streak + ' ข้อแล้ว เก่งมาก!' : 'เยี่ยมเลย') + '</span>';
+        if (inp) inp.className = 'dinput ok';
+        if (btn) btn.classList.add('ok');
+        showHow();
+        el.querySelector('.dhead').outerHTML = head();
+      } else {
+        Kit.sound.bad(); streak = 0;
+        fb.innerHTML = '<span class="t-red">❌ ยังไม่ถูก ลองคิดอีกครั้ง หรือกด 💡 ดูวิธีคิด</span>';
+        if (inp) { inp.className = 'dinput'; void inp.offsetWidth; inp.className = 'dinput no'; }
+        if (btn) { btn.classList.add('no'); setTimeout(function () { btn.classList.remove('no'); }, 450); }
+      }
+    }
+    function showHow() { var h = el.querySelector('.how'); h.innerHTML = '👨‍🏫 ' + Kit.fx(cur.h); h.classList.remove('hidden'); }
+    if (inp) {
+      el.querySelector('[data-chk]').onclick = function () {
+        if (inp.value.trim() === '') { Kit.toast('พิมพ์คำตอบก่อนนะ ✏️'); inp.focus(); return; }
+        judge(Math.abs(num(inp.value) - cur.a) < 1e-6);
+      };
+      inp.onkeydown = function (e) { if (e.key === 'Enter') el.querySelector('[data-chk]').click(); };
+    } else {
+      Array.prototype.forEach.call(el.querySelectorAll('.dch button'), function (b) {
+        b.onclick = function () { judge(+b.getAttribute('data-k') === cur.a, b); };
+      });
+    }
+    el.querySelector('[data-how]').onclick = function () {
+      if (!locked) { done++; streak = 0; locked = true; el.querySelector('.dhead').outerHTML = head(); }
+      showHow(); Kit.sound.tap();
+    };
+    el.querySelector('[data-new]').onclick = next;
+  }
+  next();
+}
+
+/* จำดาวที่ได้ไว้ให้หน้ารวมแสดง */
+(function () {
+  var fin = Kit.final;
+  Kit.final = function (sl) {
+    fin(sl);
+    try {
+      var t = Kit.totals(); if (!t[1]) return;
+      var k = STORE_PREFIX + LESSON_ID, old = JSON.parse(localStorage.getItem(k) || 'null'), s = Kit.starsFor(t[0], t[1]);
+      if (!old || t[0] / t[1] > old.g / old.n) localStorage.setItem(k, JSON.stringify({ s: s, g: t[0], n: t[1] }));
+    } catch (e) { /* เก็บไม่ได้ก็ไม่เป็นไร */ }
+  };
+  Kit.setup = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drill]'), function (el) {
+      var g = DRILLS[el.getAttribute('data-drill')]; if (g) Drill(el, g);
+    });
+    if (SETUP) SETUP();
+  };
+})();
+
+/* ---------- ตัวช่วยเพิ่มเติม ป.4 ---------- */
+var TH_DIG = '๐๑๒๓๔๕๖๗๘๙';
+function thaiNum(s) { return String(s).replace(/[0-9]/g, function (d) { return TH_DIG[+d]; }); }
+/* อ่านจำนวนนับเป็นภาษาไทย */
+function thaiWords(n) {
+  n = Math.floor(n);
+  if (n === 0) return 'ศูนย์';
+  var D = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'], P = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
+  function six(x, whole) {
+    var s = String(x), out = '', L = s.length;
+    for (var i = 0; i < L; i++) {
+      var d = +s[i], p = L - 1 - i;
+      if (!d) continue;
+      if (p === 1 && d === 1) out += 'สิบ';
+      else if (p === 1 && d === 2) out += 'ยี่สิบ';
+      else if (p === 0 && d === 1 && (L > 1 || whole)) out += 'เอ็ด';
+      else out += D[d] + P[p];
+    }
+    return out;
+  }
+  if (n < 1000000) return six(n, false);
+  var hi = Math.floor(n / 1000000), lo = n % 1000000;
+  return thaiWords(hi) + 'ล้าน' + (lo ? six(lo, true) : '');
+}
+var PLACE = ['หน่วย', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน', 'สิบล้าน', 'ร้อยล้าน', 'พันล้าน'];
+/* ตั้งบวก/ลบ/คูณแบบแนวตั้ง: rows = [บรรทัดตัวเลข], op = เครื่องหมาย, ans = ผลลัพธ์ */
+function vert(rows, op, ans, carry) {
+  var all = rows.concat([ans]).map(String), w = Math.max.apply(null, all.map(function (x) { return x.length; })) + 1;
+  function cells(s, cls) { s = String(s); var pad = w - s.length, h = ''; for (var i = 0; i < w; i++) { var ch = i < pad ? '' : s[i - pad]; h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + ch + '</td>'; } return h; }
+  var h = '<table class="vt">';
+  if (carry) h += '<tr class="cy">' + cells(carry) + '<td></td></tr>';
+  rows.forEach(function (r, i) { h += '<tr>' + cells(r) + '<td class="op">' + (i === rows.length - 1 ? op : '') + '</td></tr>'; });
+  h += '<tr class="ans">' + cells(ans) + '<td></td></tr></table>';
+  return h;
+}
+/* ขั้นตอนหารยาว: หาร คูณ ลบ ดึงลง */
+function longDivSteps(a, d) {
+  var s = String(a), cur = 0, q = '', steps = [], started = false;
+  for (var i = 0; i < s.length; i++) {
+    cur = cur * 10 + (+s[i]);
+    var k = Math.floor(cur / d);
+    if (!started && k === 0 && i < s.length - 1) { steps.push('ดึง ' + s[i] + ' มารวม: ' + cur + ' น้อยกว่า ' + d + ' ยังหารไม่ได้ ดึงหลักถัดไปมาด้วย'); continue; }
+    started = true; q += k;
+    steps.push('<b>' + cur + ' ÷ ' + d + '</b> ได้ <b>' + k + '</b> → ' + k + ' × ' + d + ' = ' + (k * d) + ' → ' + cur + ' − ' + (k * d) + ' = <b>' + (cur - k * d) + '</b>' + (i < s.length - 1 ? ' แล้วดึง ' + s[i + 1] + ' ลงมา' : ''));
+    cur = cur - k * d;
+  }
+  return { steps: steps, q: Math.floor(a / d), r: a % d };
+}
+/* สารบัญ: ปุ่ม data-jump="หมายเลขส่วน" ไปสไลด์แรกของส่วนนั้น */
+function setupToc() {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function (b) {
+    b.onclick = function () {
+      var k = b.getAttribute('data-jump'), i = Kit.slides.findIndex(function (s) { return s.getAttribute('data-sec') === k; });
+      if (i >= 0) { Kit.sound.tap(); Kit.go(i); }
+    };
+  });
+}
+
+Kit.quizzes.main = [{"q": "45,302 อ่านว่าอย่างไร", "c": ["สี่หมื่นห้าพันสามร้อยสอง", "สี่หมื่นห้าพันสามร้อยยี่สิบ", "สี่พันห้าร้อยสามสิบสอง", "สี่หมื่นห้าร้อยสามสิบสอง"], "a": 0, "w": "สี่หมื่น ห้าพัน สามร้อย (หลักสิบเป็น 0) สอง"}, {"q": "เลขโดด 7 ใน 27,481 มีค่าเท่าใด", "c": ["7,000", "700", "70,000", "7"], "a": 0, "w": "7 อยู่ในหลักพัน จึงมีค่า 7,000"}, {"q": "60,000 + 3,000 + 50 + 8 เขียนเป็นตัวเลขได้เท่าใด", "c": ["63,058", "63,508", "6,358", "60,358"], "a": 0, "w": "หลักร้อยไม่มีค่า จึงเป็น 0 → 63,058"}, {"q": "ข้อใดถูกต้อง", "c": ["38,915 > 38,519", "38,915 < 38,519", "38,915 = 38,519", "38,519 > 38,915"], "a": 0, "w": "หลักหมื่นและหลักพันเท่ากัน หลักร้อย 9 > 5"}, {"q": "จำนวนใดมากที่สุด", "c": ["70,001", "9,999", "69,999", "70,000"], "a": 0, "w": "เปรียบเทียบหลักหมื่นก่อน 7 มากที่สุด แล้วดูหลักหน่วย 1 > 0"}, {"q": "เรียงจากน้อยไปมาก ข้อใดถูก", "c": ["12,340  13,240  21,340", "21,340  13,240  12,340", "13,240  12,340  21,340", "12,340  21,340  13,240"], "a": 0, "w": "ดูหลักหมื่น แล้วหลักพัน 12 < 13 < 21"}, {"q": "5,000  10,000  15,000  ___  จำนวนถัดไปคือ", "c": ["20,000", "25,000", "16,000", "30,000"], "a": 0, "w": "เพิ่มขึ้นทีละ 5,000"}, {"q": "80,000  78,000  76,000  ___  จำนวนถัดไปคือ", "c": ["74,000", "72,000", "75,000", "70,000"], "a": 0, "w": "ลดลงทีละ 2,000"}];
+
+/* ---------- สไลด์ต้นฉบับ: เฉลยทีละขั้น (ถัดไป = แสดงขั้นต่อไปก่อน แล้วค่อยไปหน้าถัดไป) ---------- */
+var PRAISE = [['k11', 'เยี่ยมมาก!'], ['k2', 'สุดยอด!'], ['k6', 'เก่งมาก!'], ['k9', 'แชมป์เลย!'], ['k11', 'ปรบมือให้เลย!'], ['k7', 'เข้าใจแล้วใช่ไหม']];
+function ppPaint(sl, quiet) {
+  var n = +sl.getAttribute('data-steps'), k = sl._k || 0, z = sl.querySelector('.ppz'), img = z.querySelector('img:not(.ghost)');
+  var src = sl.getAttribute('data-src') + '-' + k + '.webp';
+  if (img.getAttribute('src') && img.getAttribute('src') !== src && !quiet) {
+    var g = img.cloneNode(); g.className = 'ghost'; g.removeAttribute('alt'); z.insertBefore(g, img.nextSibling);
+    var fade = function () { g.style.opacity = 0; setTimeout(function () { g.remove(); }, 400); };
+    img.onload = function () { img.onload = null; requestAnimationFrame(fade); };
+    setTimeout(fade, 900);
+  }
+  img.src = src;
+  if (k < n) { var pre = new Image(); pre.src = sl.getAttribute('data-src') + '-' + (k + 1) + '.webp'; }
+  sl.querySelector('.ppbox').classList.toggle('can', k < n);
+  var b = sl.querySelector('[data-pstep]');
+  if (b) { b.innerHTML = k < n ? '👆 แสดงต่อ / เฉลย (' + k + '/' + n + ')' : '✅ แสดงครบแล้ว (' + n + '/' + n + ')'; b.disabled = k >= n; }
+  var d = sl.querySelector('.ppbox .done');
+  if (d) d.remove();
+  if (n && k >= n) {
+    var p = PRAISE[(+sl.getAttribute('data-src').slice(-3)) % PRAISE.length];
+    d = document.createElement('div'); d.className = 'done';
+    d.innerHTML = '<span>' + p[1] + '</span><img src="' + p[0] + '.webp" alt="">';
+    sl.querySelector('.ppbox').appendChild(d);
+    if (!quiet) { Kit.sound.good(); if (Math.random() < .35) Kit.confetti(); }
+  }
+}
+function ppLoad(i) { var sl = Kit.slides[i]; if (sl && sl.classList.contains('pslide') && !sl._ld) { sl._ld = 1; sl._k = sl._k || 0; ppPaint(sl, 1); } }
+function ppTools(sl, mode) {
+  ['zoom'].forEach(function (m) {
+    var on = m === mode && !sl.classList.contains(m);
+    sl.classList.toggle(m, on);
+    sl.querySelector('[data-' + m + ']').classList.toggle('on', on);
+  });
+  if (!sl.classList.contains('zoom')) sl.querySelector('.ppz').style.transformOrigin = '50% 50%';
+  sl.querySelector('.ppbox').classList.toggle('noswipe', sl.classList.contains('zoom'));
+}
+/* ---------- จับเวลา ---------- */
+var TM = { el: null, end: 0, iv: 0 };
+function tmShow() {
+  if (!TM.el) {
+    TM.el = document.createElement('div'); TM.el.className = 'timer';
+    document.body.appendChild(TM.el);
+  }
+  clearInterval(TM.iv); TM.el.classList.remove('end');
+  TM.el.innerHTML = '⏱️ <span class="opts"><button data-m="1">1 นาที</button><button data-m="2">2</button><button data-m="3">3</button><button data-m="5">5</button></span><button class="x" aria-label="ปิด">✖</button>';
+  TM.el.classList.add('show');
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show'); };
+  Array.prototype.forEach.call(TM.el.querySelectorAll('[data-m]'), function (b) { b.onclick = function () { tmStart(+b.getAttribute('data-m')); }; });
+}
+function tmStart(m) {
+  TM.end = Date.now() + m * 60000;
+  TM.el.innerHTML = '⏱️ <span class="t"></span><button class="x" aria-label="หยุด">✖</button>';
+  TM.el.querySelector('.x').onclick = function () { clearInterval(TM.iv); TM.el.classList.remove('show', 'end'); };
+  var t = TM.el.querySelector('.t');
+  function tick() {
+    var r = Math.max(0, Math.ceil((TM.end - Date.now()) / 1000));
+    t.textContent = Math.floor(r / 60) + ':' + ('0' + r % 60).slice(-2);
+    if (!r) { clearInterval(TM.iv); TM.el.classList.add('end'); Kit.sound.win(); Kit.toast('⏰ หมดเวลา! มาดูเฉลยกันนะ'); }
+  }
+  tick(); TM.iv = setInterval(tick, 250); Kit.sound.tap();
+}
+(function () {
+  var go = Kit.go;
+  Kit.go = function (n, instant) {
+    var cur = Kit.slides[Kit.cur];
+    if (!instant && cur && cur.classList.contains('pslide')) {
+      var N = +cur.getAttribute('data-steps'), k = cur._k || 0;
+      if (n === Kit.cur + 1 && k < N) { cur._k = k + 1; ppPaint(cur); Kit.sound.tap(); return; }
+      if (n === Kit.cur - 1 && k > 0) { cur._k = k - 1; ppPaint(cur); Kit.sound.tap(); return; }
+    }
+    if (cur && cur.classList.contains('pslide') && n !== Kit.cur) ppTools(cur, null);
+    var back = !instant && n === Kit.cur - 1, t = Kit.slides[n];
+    go(n, instant);
+    if (back && t && t.classList.contains('pslide')) { t._k = +t.getAttribute('data-steps'); t._ld = 1; ppPaint(t, 1); }
+    for (var j = n - 1; j <= n + 2; j++) ppLoad(j);
+  };
+})();
+SETUP = function () {
+  setupToc();
+  Kit.slides.forEach(function (sl) {
+    if (!sl.classList.contains('pslide')) return;
+    var box = sl.querySelector('.ppbox'), z = sl.querySelector('.ppz'), b = sl.querySelector('[data-pstep]'), r = sl.querySelector('[data-preset]');
+    function adv() { var N = +sl.getAttribute('data-steps'); if ((sl._k || 0) < N) { sl._k = (sl._k || 0) + 1; ppPaint(sl); Kit.sound.tap(); } }
+    box.addEventListener('click', function (e) {
+      if (sl.classList.contains('zoom')) {
+        var q = box.getBoundingClientRect();
+        z.style.transformOrigin = ((e.clientX - q.left) / q.width * 100) + '% ' + ((e.clientY - q.top) / q.height * 100) + '%';
+        return;
+      }
+      adv();
+    });
+    if (b) b.onclick = adv;
+    if (r) r.onclick = function () { sl._k = 0; ppPaint(sl); Kit.sound.tap(); };
+    sl.querySelector('[data-zoom]').onclick = function () { ppTools(sl, 'zoom'); Kit.sound.tap(); if (sl.classList.contains('zoom')) Kit.toast('🔎 แตะตรงที่อยากดูใกล้ ๆ'); };
+    sl.querySelector('[data-timer]').onclick = function () { tmShow(); Kit.sound.tap(); };
+  });
+};
+
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
+  });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- กล้องมุมจอ + อัดวิดีโอการสอน ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit) return;
+  var md = navigator.mediaDevices || {};
+  var inFrame = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  var canRec = !!md.getDisplayMedia && !!window.MediaRecorder;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '🎥'; btn.title = 'กล้องมุมจอ / อัดวิดีโอการสอน'; btn.setAttribute('aria-label', 'กล้องและอัดวิดีโอ');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var pnl = document.createElement('div'); pnl.className = 'campnl';
+  pnl.innerHTML = '<b>🎥 สอนออนไลน์ / ทำวิดีโอ</b>' +
+    '<button data-cam>📷 เปิดกล้องมุมจอ</button>' +
+    (canRec ? '<button data-rec>🔴 อัดวิดีโอหน้าจอ + เสียง</button>' : '') +
+    '<p class="tip">' + (canRec
+      ? 'กดอัดแล้วเลือก <b>แท็บนี้</b> ระบบจะอัดสไลด์ กล้อง และเสียงครูไว้ด้วยกัน กดหยุดแล้วจะได้ไฟล์วิดีโอทันที'
+      : 'บน iPad: เปิดกล้องมุมจอ แล้วใช้ <b>การบันทึกหน้าจอ</b> ในศูนย์ควบคุม (กดค้างที่ปุ่ม ⏺ เพื่อเปิดไมโครโฟน)') + '</p>' +
+    '<button data-x class="ghost">ปิด</button>';
+  document.body.appendChild(pnl);
+  btn.onclick = function () { pnl.classList.toggle('show'); Kit.sound.tap(); };
+  pnl.querySelector('[data-x]').onclick = function () { pnl.classList.remove('show'); };
+
+  function newTab(flag) {
+    var w = window.open(location.href.split('#')[0] + '#s=' + Kit.cur + '&' + flag + '=1', '_blank');
+    if (!w) Kit.toast('เปิดแท็บใหม่ไม่ได้ ลองกดปุ่ม "เปิดในแท็บใหม่" ของเว็บครูอู๋');
+  }
+
+  /* ---- กล้อง ---- */
+  var cam = null, stream = null, SIZES = [120, 170, 240], si = 1, round = true;
+  try { var sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); if (sv.si != null) si = sv.si; if (sv.round != null) round = sv.round; } catch (e) {}
+  function save(x, y) { try { localStorage.setItem('kruau-cam', JSON.stringify({ si: si, round: round, x: x, y: y })); } catch (e) {} }
+  function place() {
+    var s = SIZES[si], h = round ? s : Math.round(s * .75);
+    cam.style.width = s + 'px'; cam.style.height = h + 'px';
+    cam.classList.toggle('sq', !round);
+    var r = cam.getBoundingClientRect();
+    var x = Math.min(Math.max(4, r.left), innerWidth - s - 4), y = Math.min(Math.max(4, r.top), innerHeight - h - 4);
+    cam.style.left = x + 'px'; cam.style.top = y + 'px';
+  }
+  function openCam() {
+    if (cam) return;
+    if (!md.getUserMedia) { Kit.toast('อุปกรณ์นี้เปิดกล้องผ่านเว็บไม่ได้'); return; }
+    md.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }).then(function (s) {
+      stream = s;
+      cam = document.createElement('div'); cam.className = 'cambub noswipe';
+      cam.innerHTML = '<video autoplay playsinline muted></video><span class="cb"><button data-sz title="ย่อ/ขยาย">⤢</button><button data-sh title="วงกลม/สี่เหลี่ยม">◐</button><button data-cl title="ปิดกล้อง">✖</button></span>';
+      document.body.appendChild(cam);
+      var v = cam.querySelector('video'); v.srcObject = s; v.play().catch(function () {});
+      var sv = {}; try { sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); } catch (e) {}
+      cam.style.left = (sv.x != null ? sv.x : innerWidth - SIZES[si] - 16) + 'px';
+      cam.style.top = (sv.y != null ? sv.y : innerHeight - SIZES[si] - 90) + 'px';
+      place();
+      cam.querySelector('[data-sz]').onclick = function (e) { e.stopPropagation(); si = (si + 1) % SIZES.length; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-sh]').onclick = function (e) { e.stopPropagation(); round = !round; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-cl]').onclick = function (e) { e.stopPropagation(); closeCam(); };
+      var drag = null;
+      cam.addEventListener('pointerdown', function (e) {
+        if (e.target.closest('button')) return;
+        drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
+      });
+      cam.addEventListener('pointermove', function (e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        cam.style.left = Math.min(Math.max(4, e.clientX - drag.dx), innerWidth - cam.offsetWidth - 4) + 'px';
+        cam.style.top = Math.min(Math.max(4, e.clientY - drag.dy), innerHeight - cam.offsetHeight - 4) + 'px';
+      });
+      cam.addEventListener('pointerup', function () { if (drag) save(cam.offsetLeft, cam.offsetTop); drag = null; });
+      pnl.querySelector('[data-cam]').textContent = '📷 ปิดกล้องมุมจอ';
+      pnl.classList.remove('show');
+      Kit.toast('📷 ลากกล้องไปวางมุมไหนก็ได้ · ⤢ ย่อ/ขยาย');
+    }).catch(function (err) {
+      if (inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่อใช้กล้อง…'); newTab('cam'); }
+      else Kit.toast('เปิดกล้องไม่ได้ — กรุณาอนุญาตให้เว็บใช้กล้อง');
+    });
+  }
+  function closeCam() {
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    if (cam) cam.remove();
+    cam = stream = null;
+    pnl.querySelector('[data-cam]').textContent = '📷 เปิดกล้องมุมจอ';
+  }
+  pnl.querySelector('[data-cam]').onclick = function () { if (cam) closeCam(); else openCam(); };
+  addEventListener('resize', function () { if (cam) place(); });
+
+  /* ---- อัดวิดีโอ (คอมพิวเตอร์: Chrome / Edge / Firefox) ---- */
+  var rec = null, chip = null, parts = [], t0 = 0, iv = 0, all = [];
+  function pickType() {
+    var c = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    for (var i = 0; i < c.length; i++) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c[i])) return c[i];
+    return '';
+  }
+  function startRec() {
+    md.getDisplayMedia({ video: { frameRate: 30 }, audio: true, preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude' }).then(function (ds) {
+      all = [ds];
+      return md.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }).then(function (mic) { all.push(mic); return [ds, mic]; }, function () { Kit.toast('ไม่ได้เปิดไมโครโฟน จะอัดแต่ภาพ'); return [ds, null]; });
+    }).then(function (r) {
+      var ds = r[0], mic = r[1], tracks = ds.getVideoTracks().slice();
+      var aud = [ds, mic].filter(function (s) { return s && s.getAudioTracks().length; });
+      if (aud.length === 1) tracks = tracks.concat(aud[0].getAudioTracks());
+      else if (aud.length > 1) {
+        var ac = new (window.AudioContext || window.webkitAudioContext)(), dst = ac.createMediaStreamDestination();
+        aud.forEach(function (s) { ac.createMediaStreamSource(s).connect(dst); });
+        tracks = tracks.concat(dst.stream.getAudioTracks());
+      }
+      var type = pickType();
+      rec = new MediaRecorder(new MediaStream(tracks), type ? { mimeType: type, videoBitsPerSecond: 3000000 } : undefined);
+      parts = [];
+      rec.ondataavailable = function (e) { if (e.data && e.data.size) parts.push(e.data); };
+      rec.onstop = finish;
+      ds.getVideoTracks()[0].addEventListener('ended', stopRec);
+      rec.start(1000); t0 = Date.now();
+      chip = document.createElement('div'); chip.className = 'recchip';
+      chip.innerHTML = '<span class="dot"></span> อัดอยู่ <span class="t">0:00</span><button>■ หยุด</button>';
+      document.body.appendChild(chip);
+      chip.querySelector('button').onclick = stopRec;
+      iv = setInterval(function () { var s = Math.floor((Date.now() - t0) / 1000); chip.querySelector('.t').textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }, 500);
+      pnl.classList.remove('show');
+      if (!cam) Kit.toast('🔴 เริ่มอัดแล้ว · เปิดกล้องมุมจอได้ที่ปุ่ม 🎥');
+    }).catch(function (err) {
+      all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+      if (err && err.name === 'NotAllowedError' && inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่ออัดวิดีโอ…'); newTab('rec'); }
+      else if (err && err.name !== 'NotAllowedError') Kit.toast('อัดวิดีโอไม่ได้: ' + err.name);
+    });
+  }
+  function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+  function finish() {
+    clearInterval(iv);
+    all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+    if (chip) chip.remove();
+    var type = (rec && rec.mimeType) || 'video/webm', ext = type.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+    var blob = new Blob(parts, { type: type }), a = document.createElement('a');
+    var d = new Date(), name = (document.title.split('·')[0].trim() || 'บทเรียน').replace(/[\\\/:*?"<>|]/g, '') + ' ' + d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    a.href = URL.createObjectURL(blob); a.download = name + '.' + ext;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+    Kit.sound.win(); Kit.toast('💾 บันทึกวิดีโอแล้ว (' + ext.toUpperCase() + ') ดูได้ในโฟลเดอร์ดาวน์โหลด');
+    rec = null;
+  }
+  var rb = pnl.querySelector('[data-rec]');
+  if (rb) rb.onclick = function () { if (rec) stopRec(); else startRec(); };
+
+  /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
+  if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
+  if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+</script>
+</body>
+</html>
