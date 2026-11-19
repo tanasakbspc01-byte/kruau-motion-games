@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>อ่านออกเขียนได้ ขั้นที่ 6 ตัวการันต์และคำที่ใช้ รร</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+
+:root{--main:#0EA5A0;--main-deep:#0B7A76}
+.mt{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:760px){.mt{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.mc{background:#fff;border:3px solid var(--tc);border-radius:20px;box-shadow:0 4px 0 var(--tc);padding:10px 8px;text-align:center}
+.mc h3{margin:0;font:700 1.15rem Mali,sans-serif;color:var(--tc)}
+.mc .fl{font:700 30px/1.25 Sarabun,sans-serif;letter-spacing:2px;min-height:40px}
+.mc .fl.many{font-size:22px;letter-spacing:1px}
+.mc .ws{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px}
+.mc .ws button,.wbtn{border:2px solid #e5e5e5;background:#fff;border-radius:14px;padding:4px 10px;font:700 26px Sarabun,sans-serif;cursor:pointer}
+.mc .ws button span,.wbtn span{font-size:24px}
+.tag{display:inline-block;font:700 .85rem Mali,sans-serif;border-radius:999px;padding:2px 10px;color:#fff}
+.t-ok{background:#2DBE6C}.t-no{background:#FF7A45}
+.build{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:760px){.build{grid-template-columns:1fr}}
+.pal{display:flex;flex-wrap:wrap;gap:6px}
+.pal button{min-width:46px;height:46px;border-radius:12px;border:2px solid #CDEFED;background:#fff;font:700 24px Sarabun,sans-serif;cursor:pointer;padding:0 8px}
+.pal button.on{background:var(--main);color:#fff;border-color:var(--main)}
+.pal button small{font:600 12px Mali,sans-serif;display:block;line-height:1}
+.res{display:grid;place-items:center;gap:6px;background:#fff;border:4px dashed #A6E3DF;border-radius:24px;padding:14px;min-height:240px}
+.res .eq{font:700 clamp(22px,3.6vw,32px) Sarabun,sans-serif;color:#555;text-align:center}
+.res .eq b{color:var(--main-deep)}
+.res .sy{font:700 clamp(70px,12vw,120px)/1.05 Sarabun,sans-serif;color:var(--main-deep)}
+.res .fin{color:#E8478B}
+.game{display:flex;flex-direction:column;align-items:center;gap:12px}
+.gtop{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+.ask{font:700 clamp(54px,9vw,88px)/1.1 Sarabun,sans-serif;min-height:96px;display:grid;place-items:center;color:var(--main-deep);text-align:center}
+.ask .em{font-size:clamp(60px,10vw,92px)}
+.ask .wd{font:700 clamp(22px,3.6vw,30px) Mali,sans-serif;color:#555;display:block}
+.opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:min(640px,100%)}
+@media (max-width:520px){.opts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.opts button{min-height:84px;border-radius:18px;border:3px solid #eee;background:#fff;font:700 clamp(28px,5vw,44px)/1.1 Sarabun,sans-serif;cursor:pointer;box-shadow:0 4px 0 #e2e2e2;color:#333;padding:6px}
+.opts button.tn{font:700 clamp(18px,2.6vw,24px)/1.25 Mali,sans-serif}
+.opts button.tn small{display:block;font:700 20px Sarabun,sans-serif;color:#888}
+.opts button.ok{background:#DFF7E8;border-color:#2DBE6C}
+.opts button.no{background:#FFE3E3;border-color:#FF5C7A;animation:shk .35s}
+@keyframes shk{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.stat{font-weight:700;color:var(--main-deep);font-size:1.1rem}
+.voice{font-size:.95rem}
+[data-rate].on{background:var(--main);color:#fff;border-color:var(--main)}
+.trace{display:flex;flex-direction:column;align-items:center;gap:10px}
+.tbox{position:relative;width:min(520px,92vw);aspect-ratio:1.3;border-radius:22px;background:#fff;border:3px dashed #A6E3DF;overflow:hidden;touch-action:none}
+.tbox .gd{position:absolute;inset:0;display:grid;place-items:center;transform:translateY(-10%);font:400 min(200px,40vw)/1 Sarabun,sans-serif;color:#E6F7F6;-webkit-text-stroke:2px #8FD8D3;pointer-events:none;white-space:nowrap}
+.tbox .ln{position:absolute;left:0;right:0;border-top:2px dashed #CDEFED;pointer-events:none}
+.tbox canvas{position:absolute;inset:0;width:100%;height:100%}
+.kru5{width:min(220px,50vw);height:auto;display:block;margin:0 auto}
+.tipk{display:flex;gap:14px;align-items:center}.tipk img{width:min(130px,26vw);height:auto;flex:none}
+.big{font:700 40px Sarabun,sans-serif}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px}
+.cmp button{background:#fff;border:3px solid #FFD2B8;border-radius:18px;padding:8px;cursor:pointer;font:inherit}
+.cmp button .w{font:700 40px/1.1 Sarabun,sans-serif;display:block}
+.cmp button .w u{color:#E8478B;text-decoration-thickness:3px}
+.cmp button small{font:600 .95rem Mali,sans-serif;color:#555}
+
+:root{--main:#E86A2C;--main-deep:#B84A12}
+.wc{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:10px}
+.wc button{background:#fff;border:3px solid var(--tc,#FFD9BF);border-radius:18px;padding:8px 6px;cursor:pointer;font:inherit;box-shadow:0 4px 0 var(--tc,#FFD9BF)}
+.wc button .e{font-size:34px;display:block;line-height:1.1}
+.wc button .w{font:700 36px/1.2 Sarabun,sans-serif;display:block}
+.wc button .w s{color:#bbb;text-decoration:none}
+.wc button .w b{color:#E8478B}
+.wc button small{font:600 .95rem Mali,sans-serif;color:#555}
+.vs{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;font:700 clamp(30px,5vw,46px) Sarabun,sans-serif}
+.vs .x{color:#E8478B}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+@media (max-width:700px){.days{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.days button{border-radius:14px;border:3px solid var(--dc);background:#fff;padding:6px 2px;font:700 22px Sarabun,sans-serif;cursor:pointer}
+.days button small{display:block;font:600 13px Mali,sans-serif;color:#666}
+.opts.three{grid-template-columns:repeat(3,minmax(0,1fr));width:min(620px,100%)}
+@media (max-width:520px){.opts.three{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="bar">
+  <span class="logo">🤐</span>
+  <div class="ttl"><b>ตัวการันต์และคำที่ใช้ รร</b><small>อ่านออกเขียนได้ · ขั้นที่ 6</small></div>
+  <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
+  <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
+  <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
+  <button class="tb" data-fs aria-label="เต็มจอ" title="เต็มจอ">⛶</button>
+</header>
+<div class="prog"><i></i></div>
+<main class="stage">
+
+<section class="slide" data-title="หน้าปก"><div class="inner cover">
+  <span class="badge" style="background:var(--orange)">ภาษาไทย · อ่านออกเขียนได้ ขั้นที่ 6</span>
+  <img class="kru5" src="k5.webp" alt="ครูอู๋">
+  <h1>ตัวการันต์และคำที่ใช้ รร</h1>
+  <div class="card c-yellow goals">
+    <h3>🎯 เรียนจบแล้ว หนูจะ…</h3>
+    <ul>
+      <li>รู้ว่า <b>ตัวการันต์</b> ( ์ ) ทำให้ตัวอักษร <b>ไม่ออกเสียง</b></li>
+      <li>อ่านคำที่มีตัวการันต์ เช่น <b>การ์ตูน จันทร์ รถยนต์</b> ได้</li>
+      <li>อ่านคำที่ใช้ <b>รร (ร หัน)</b> เช่น <b>กรรไกร ธรรม</b> ได้ถูกต้อง</li>
+      <li><b>เขียน</b> คำเหล่านี้ได้ไม่ตกตัวการันต์</li>
+    </ul>
+  </div>
+  <button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button>
+</div></section>
+
+<section class="slide" data-title="เปิดเสียงก่อนเรียน"><div class="inner">
+  <h2 class="h"><span class="e">🔊</span>เปิดเสียงก่อนเรียนนะ</h2>
+  <div class="card c-blue center">
+    <p>บทเรียนนี้ <b>อ่านออกเสียง</b> ให้ฟัง แตะปุ่มเพื่อลองฟัง แล้วเลือกความเร็วที่เด็กฟังทัน</p>
+    <button class="btn" data-say="การ์ตูน|จันทร์|กรรไกร">🔊 ลองฟัง "การ์ตูน จันทร์ กรรไกร"</button>
+    <div class="row center" style="margin-top:8px"><span>ความเร็วเสียงอ่าน:</span><button class="btn ghost" data-rate=".55">🐢 ช้ามาก</button><button class="btn ghost" data-rate=".7">🐌 ช้า</button><button class="btn ghost" data-rate=".9">🐇 ปกติ</button></div>
+    <p class="voice" id="voiceMsg"></p>
+  </div>
+  <div class="card c-yellow"><p>💡 ถ้าไม่มีเสียง ให้เปิดเสียงเครื่องและปิดโหมดเงียบ แล้วแตะใหม่อีกครั้ง</p></div>
+</div></section>
+
+<section class="slide" data-title="ตัวการันต์คืออะไร"><div class="inner">
+  <h2 class="h"><span class="e">🤐</span>ตัวการันต์คืออะไร</h2>
+  <div class="card c-orange center">
+    <p>เครื่องหมาย <b class="big">◌์</b> เรียกว่า <b>ไม้ทัณฑฆาต</b> วางบนตัวอักษรตัวใด ตัวนั้นเรียกว่า <b>ตัวการันต์</b> และ <b>ไม่ต้องออกเสียง</b></p>
+    <div class="vs"><button class="wbtn" data-say="การ์ตูน">การ<span class="x">์</span>ตูน</button><span>→</span><button class="wbtn" data-say="การ์ตูน">กา-ตูน</button></div>
+  </div>
+  <div class="grid" style="--min:220px;margin-top:10px">
+    <div class="card c-blue center"><h3>🔤 การันต์ 1 ตัว</h3><p><b class="big">สัตว์</b> → สัด<br><b class="big">รถยนต์</b> → รด-ยน</p></div>
+    <div class="card c-pink center"><h3>🔤🔤 การันต์ 2 ตัว</h3><p><b class="big">จันทร์</b> → จัน (ไม่อ่าน ทร)<br><b class="big">ศาสตร์</b> → สาด (ไม่อ่าน ตร)</p></div>
+  </div>
+  <div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>เคล็ดลับครูอู๋:</b> ตัวการันต์ <b>อ่านไม่ออกเสียง แต่ต้องเขียนเสมอ</b> ถ้าลืมเขียน คำจะผิดทันที เช่น "รถยนต" ❌</p></div>
+</div></section>
+
+<section class="slide" data-title="คำที่มีตัวการันต์"><div class="inner">
+  <h2 class="h"><span class="e">🔤</span>คำที่มีตัวการันต์ · ตัวสีเทาคือตัวที่ไม่ออกเสียง</h2>
+  <div class="wc" id="kw"></div>
+  <h3 style="margin:12px 0 6px">📅 วันในสัปดาห์ (แตะเพื่อฟัง)</h3>
+  <div class="days" id="days"></div>
+</div></section>
+
+<section class="slide" data-title="รร อ่านว่า อัน"><div class="inner">
+  <h2 class="h"><span class="e">🔁</span>คำที่ใช้ รร (ร หัน) แบบที่ 1 · ไม่มีตัวสะกดตาม → อ่านว่า "อัน"</h2>
+  <div class="card c-purple center"><div class="vs"><span>ก</span><span class="x">รร</span><span>+ ไกร</span><span>→</span><button class="wbtn" data-say="กรรไกร">กัน-ไกร</button></div><p>รร ทำหน้าที่เหมือน <b>สระอะ + น สะกด</b></p></div>
+  <div class="wc" id="ra" style="margin-top:8px"></div>
+</div></section>
+
+<section class="slide" data-title="รร มีตัวสะกด"><div class="inner">
+  <h2 class="h"><span class="e">🔁</span>คำที่ใช้ รร แบบที่ 2 · มีตัวสะกดตาม → อ่านเสียง "อะ" + ตัวสะกด</h2>
+  <div class="card c-green center"><div class="vs"><span>ธ</span><span class="x">รร</span><span>ม</span><span>→</span><button class="wbtn" data-say="ธรรม">ทำ</button></div><p>รร ทำหน้าที่เหมือน <b>สระอะ</b> แล้วใช้ตัวที่ตามมาเป็นตัวสะกด</p></div>
+  <div class="wc" id="rm" style="margin-top:8px"></div>
+</div></section>
+
+<section class="slide" data-title="คัดแยกคำ"><div class="inner">
+  <h2 class="h"><span class="e">🗂️</span>คัดแยกคำ: มีตัวการันต์ · รร อ่าน "อัน" · รร มีตัวสะกด</h2>
+  <div data-sorter="kind"></div>
+</div></section>
+
+<section class="slide" data-title="เกม ตัวไหนไม่ออกเสียง"><div class="inner">
+  <h2 class="h"><span class="e">🤫</span>เกม คำนี้ ตัวไหนไม่ออกเสียง</h2>
+  <div class="game" data-g="mute">
+    <div class="gtop"><button class="btn ghost" data-start>▶ เริ่มเกม</button><button class="btn" data-rep>🔊 ฟังคำ</button></div>
+    <div class="ask">🤫</div>
+    <div class="opts"></div>
+    <div class="stat">กด ▶ เริ่มเกม</div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เกม อ่านอย่างไร"><div class="inner">
+  <h2 class="h"><span class="e">🗣️</span>เกม คำนี้อ่านอย่างไร</h2>
+  <div class="game" data-g="read">
+    <div class="gtop"><button class="btn ghost" data-start>▶ เริ่มเกม</button><button class="btn" data-rep>🔊 ฟังคำ</button></div>
+    <div class="ask">🗣️</div>
+    <div class="opts three"></div>
+    <div class="stat">กด ▶ เริ่มเกม</div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="เกม ดูภาพเลือกคำ"><div class="inner">
+  <h2 class="h"><span class="e">🖼️</span>เกม ดูภาพ แล้วเลือกคำที่เขียนถูก</h2>
+  <div class="game" data-g="pic">
+    <div class="gtop"><button class="btn ghost" data-start>▶ เริ่มเกม</button><button class="btn" data-rep>🔊 ฟังคำ</button></div>
+    <div class="ask">🖼️</div>
+    <div class="opts"></div>
+    <div class="stat">กด ▶ เริ่มเกม</div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="ฝึกเขียนคำ" data-nofit><div class="inner">
+  <h2 class="h"><span class="e">✍️</span>ฝึกเขียนคำ · อย่าลืมเขียนตัวการันต์ ( ์ )</h2>
+  <div class="trace">
+    <div class="pal" id="tpick" style="justify-content:center"></div>
+    <div class="tbox noswipe"><div class="ln" style="top:30%"></div><div class="ln" style="top:70%"></div><div class="gd" id="gd"></div><canvas id="tcv"></canvas></div>
+    <div class="row center"><button class="btn ghost" id="tSay">🔊 ฟังเสียง</button><button class="btn ghost" id="tClr">🧽 ลบ</button><button class="btn" id="tNext">คำถัดไป ▶</button></div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="แบบทดสอบ"><div class="inner">
+  <h2 class="h"><span class="e">📝</span>แบบทดสอบ (10 ข้อ)</h2>
+  <div data-quiz="main"></div>
+</div></section>
+
+<section class="slide" data-title="สรุป" data-final><div class="inner">
+  <h2 class="h"><span class="e">🌟</span>สรุปบทเรียน</h2>
+  <div class="card c-yellow center" data-score></div>
+  <div class="grid" style="--min:240px">
+    <div class="card c-orange"><h3>🤐 ตัวการันต์</h3><p>ตัวที่มี <b>์</b> ไม่ออกเสียง เช่น <b>การ์ตูน</b> = กา-ตูน, <b>จันทร์</b> = จัน</p></div>
+    <div class="card c-purple"><h3>🔁 รร ไม่มีตัวสะกด</h3><p>อ่านว่า <b>อัน</b> เช่น <b>กรรไกร</b> = กัน-ไกร</p></div>
+    <div class="card c-green"><h3>🔁 รร มีตัวสะกด</h3><p>อ่านเสียง <b>อะ</b> + ตัวสะกด เช่น <b>ธรรม</b> = ทำ, <b>พรรค</b> = พัก</p></div>
+    <div class="card c-blue"><h3>✍️ เวลาเขียน</h3><p>เขียน <b>ตัวการันต์</b> และ <b>รร</b> ให้ครบเสมอ</p></div>
+  </div>
+  <img class="kru5" src="k11.webp" alt="ครูอู๋ปรบมือ" style="width:150px">
+  <div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button><span class="muted">ขั้นต่อไป: คำที่มักเขียนผิด (ใ ไม้ม้วน ฤ ๆ ฯ)</span></div>
+</div></section>
+
+</main>
+<nav class="nav">
+  <button class="nb prev" data-prev>◀ ก่อนหน้า</button>
+  <div class="dots"></div>
+  <span class="count"></span>
+  <button class="nb" data-nextslide>ถัดไป ▶</button>
+</nav>
+</div>
+<script src="kit.js"></script>
+<script>
+/* [คำ, ภาพ, ส่วนที่ไม่ออกเสียง (รวมเครื่องหมาย), อ่านว่า] */
+var KW = [['การ์ตูน', '🦸', 'ร์', 'กา-ตูน'], ['จันทร์', '🌙', 'ทร์', 'จัน'], ['รถยนต์', '🚗', 'ต์', 'รด-ยน'], ['สัตว์', '🐾', 'ว์', 'สัด'], ['โทรศัพท์', '📱', 'ท์', 'โท-ระ-สับ'], ['อาทิตย์', '☀️', 'ย์', 'อา-ทิด'], ['ไปรษณีย์', '📮', 'ย์', 'ไปร-สะ-นี'], ['ฟิล์ม', '🎞️', 'ล์', 'ฟิม'], ['หงส์', '🦢', 'ส์', 'หง'], ['คอมพิวเตอร์', '💻', 'ร์', 'คอม-พิว-เตอ'], ['พิมพ์', '🖨️', 'พ์', 'พิม'], ['กอล์ฟ', '⛳', 'ล์', 'กอฟ']];
+var DAYS = [['อาทิตย์', '#E53935'], ['จันทร์', '#F9C80E'], ['อังคาร', '#EC407A'], ['พุธ', '#43A047'], ['พฤหัสบดี', '#FB8C00'], ['ศุกร์', '#1E88E5'], ['เสาร์', '#8E24AA']];
+var RA = [['กรรไกร', '✂️', 'กัน-ไกร'], ['ไม้บรรทัด', '📏', 'ไม้-บัน-ทัด'], ['ภรรยา', '👰', 'พัน-ยา'], ['บรรจุ', '📦', 'บัน-จุ'], ['จรรยา', '😇', 'จัน-ยา'], ['สรรหา', '🔍', 'สัน-หา'], ['กรรเชียง', '🚣', 'กัน-เชียง'], ['พรรษา', '🙏', 'พัน-สา']];
+var RM = [['ธรรม', '☸️', 'ทำ'], ['กรรม', '⚖️', 'กำ'], ['ธรรมชาติ', '🌳', 'ทำ-มะ-ชาด'], ['พรรค', '🗳️', 'พัก'], ['วรรณ', '🎨', 'วัน'], ['สรรพ', '🧺', 'สับ'], ['กรรมกร', '👷', 'กำ-มะ-กอน'], ['ธรรมดา', '🙂', 'ทำ-มะ-ดา']];
+var MUTE = KW.map(function (w) { return [w[0], w[2].replace('์', '')]; }).concat([['ศาสตร์', 'ตร'], ['เสาร์', 'ร'], ['ศุกร์', 'ร'], ['องค์', 'ค']]);
+var READ = [['การ์ตูน', 'กา-ตูน', 'กา-ระ-ตูน', 'กาน-ตูน'], ['จันทร์', 'จัน', 'จัน-ทะ', 'จัน-ทอ-ระ'], ['อาทิตย์', 'อา-ทิด', 'อา-ทิด-ยะ', 'อา-ทิ-ตะ-ยะ'], ['สัตว์', 'สัด', 'สัด-วะ', 'สะ-ตะ-วะ'], ['รถยนต์', 'รด-ยน', 'รด-ยน-ตะ', 'รด-ยะ-นะ'], ['เสาร์', 'เสา', 'เสา-ระ', 'เสาน'], ['ศุกร์', 'สุก', 'สุ-กะ', 'สุก-ระ'],
+  ['กรรไกร', 'กัน-ไกร', 'กอ-ระ-ไกร', 'กะ-ระ-ไกร'], ['ภรรยา', 'พัน-ยา', 'พอ-ระ-ยา', 'พะ-ระ-ยา'], ['บรรจุ', 'บัน-จุ', 'บอ-ระ-จุ', 'บะ-ระ-จุ'], ['ธรรม', 'ทำ', 'ทัน', 'ทอ-ระ-มะ'], ['กรรม', 'กำ', 'กัน', 'กอ-ระ-มะ'], ['พรรค', 'พัก', 'พัน-คะ', 'พอ-ระ-คะ'], ['ธรรมชาติ', 'ทำ-มะ-ชาด', 'ทัน-มะ-ชาด', 'ทอ-ระ-มะ-ชาด']];
+var PIC = [['การ์ตูน', '🦸', ['การตูน', 'กาตูน', 'การ์ตูร']], ['จันทร์', '🌙', ['จันท์', 'จันร์', 'จันทร']], ['รถยนต์', '🚗', ['รถยนต', 'รถยน', 'รถยนส์']], ['สัตว์', '🐾', ['สัตว', 'สัด', 'สัตร์']], ['โทรศัพท์', '📱', ['โทรศัพ', 'โทรสัพท์', 'โทรศัพย์']], ['อาทิตย์', '☀️', ['อาทิตย', 'อาทิด', 'อาทิตร์']], ['ไปรษณีย์', '📮', ['ไปรษณี', 'ไปรสณีย์', 'ไปรษณีร์']], ['ฟิล์ม', '🎞️', ['ฟิลม์', 'ฟิม', 'ฟีล์ม']], ['หงส์', '🦢', ['หงษ์', 'หง', 'หงศ์']], ['คอมพิวเตอร์', '💻', ['คอมพิวเตอ', 'คอมพิวเตอร', 'คอมพิวเต้อร์']],
+  ['กรรไกร', '✂️', ['กันไกร', 'กรันไกร', 'กรรไก']], ['ไม้บรรทัด', '📏', ['ไม้บันทัด', 'ไม้บรันทัด', 'ไม้บรรทัต']], ['ธรรมชาติ', '🌳', ['ทำมะชาติ', 'ธรรมชาด', 'ธัมชาติ']], ['ภรรยา', '👰', ['พรรยา', 'ภันยา', 'ภรรญา']]];
+var KIND = { k: 'มีตัวการันต์', a: 'รร อ่านว่า "อัน"', m: 'รร มีตัวสะกด' };
+var TRACE = ['การ์ตูน', 'จันทร์', 'สัตว์', 'รถยนต์', 'อาทิตย์', 'เสาร์', 'หงส์', 'กรรไกร', 'ธรรม', 'ภรรยา'];
+/* ---------- เสียงอ่าน ---------- */
+var THV = null, RATE = .7;
+try { var sr = parseFloat(localStorage.getItem('kruau-th-rate')); if (sr) RATE = sr; } catch (e) {}
+function pickVoice() { try { var v = speechSynthesis.getVoices(); THV = v.filter(function (x) { return /^th/i.test(x.lang); })[0] || null; } catch (e) {} vmsg(); }
+function vmsg() { var m = document.getElementById('voiceMsg'); if (!m) return; m.textContent = !window.speechSynthesis ? '⚠️ เครื่องนี้อ่านออกเสียงไม่ได้ ครูอ่านให้ฟังแทนได้นะ' : THV ? '✅ พร้อมแล้ว ใช้เสียง: ' + THV.name : 'ℹ️ ถ้าเสียงอ่านไม่ชัด ให้ติดตั้งเสียงภาษาไทยในการตั้งค่าเครื่อง (การช่วยการเข้าถึง → เนื้อหาที่พูด)'; }
+if (window.speechSynthesis) { speechSynthesis.onvoiceschanged = pickVoice; pickVoice(); }
+function say(t) {
+  if (!window.speechSynthesis) return;
+  try { speechSynthesis.cancel(); String(t).split('|').forEach(function (p) { var u = new SpeechSynthesisUtterance(p.trim()); u.lang = 'th-TH'; if (THV) u.voice = THV; u.rate = RATE; speechSynthesis.speak(u); }); } catch (e) {}
+}
+function hush() { try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {} }
+function rnd(n) { return Math.floor(Math.random() * n); }
+function shuf(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = rnd(i + 1), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+Kit.sorters.kind = {
+  bins: [{ k: 'k', t: '🤐 มีตัวการันต์', c: 'var(--orange)' }, { k: 'a', t: '🔁 รร อ่าน "อัน"', c: 'var(--purple)' }, { k: 'm', t: '🔁 รร มีตัวสะกด', c: '#2DBE6C' }],
+  items: [['การ์ตูน', 'k'], ['จันทร์', 'k'], ['สัตว์', 'k'], ['รถยนต์', 'k'], ['กรรไกร', 'a'], ['ภรรยา', 'a'], ['บรรจุ', 'a'], ['จรรยา', 'a'], ['ธรรม', 'm'], ['กรรม', 'm'], ['พรรค', 'm'], ['วรรณ', 'm']].map(function (x) { return { t: x[0], k: x[1], w: x[0] + ' : ' + KIND[x[1]] }; })
+};
+Kit.quizzes.main = [
+  { q: 'เครื่องหมาย "◌์" มีชื่อว่าอะไร', c: ['ไม้ทัณฑฆาต', 'ไม้ยมก', 'ไม้ไต่คู้', 'ไปยาลน้อย'], a: 0, w: 'วางบนตัวอักษรที่ไม่ออกเสียง' },
+  { q: 'ตัวการันต์ คือตัวอักษรแบบใด', c: ['ตัวที่มีไม้ทัณฑฆาตกำกับ ไม่ออกเสียง', 'ตัวที่ออกเสียงดังที่สุด', 'ตัวสะกดทุกตัว', 'สระทุกตัว'], a: 0, w: 'เช่น ร์ ใน การ์ตูน' },
+  { q: 'คำว่า "การ์ตูน" อ่านว่าอย่างไร', c: ['กา-ตูน', 'กา-ระ-ตูน', 'กาน-ตูน', 'การ-ตูน'], a: 0, w: 'ร์ ไม่ออกเสียง' },
+  { q: 'คำว่า "จันทร์" ตัวใดไม่ออกเสียง', c: ['ท และ ร', 'จ', 'น', 'ร เท่านั้น'], a: 0, w: 'ทร์ ไม่ออกเสียงทั้งสองตัว อ่านว่า จัน' },
+  { q: 'คำใดเขียนถูกต้อง', c: ['รถยนต์', 'รถยนต', 'รถยน', 'รดยนต์'], a: 0, w: 'ต้องมี ต์ เสมอ' },
+  { q: 'วันใดมีตัวการันต์', c: ['เสาร์', 'อังคาร', 'พุธ', 'พฤหัสบดี'], a: 0, w: 'เสาร์ มี ร์ (อาทิตย์ จันทร์ ศุกร์ ก็มี)' },
+  { q: 'คำว่า "กรรไกร" อ่านว่าอย่างไร', c: ['กัน-ไกร', 'กอ-ระ-ไกร', 'กะ-ระ-ไกร', 'กร-ไกร'], a: 0, w: 'รร ไม่มีตัวสะกดตาม อ่านว่า อัน' },
+  { q: 'คำว่า "ธรรม" อ่านว่าอย่างไร', c: ['ทำ', 'ทัน', 'ทอ-ระ-มะ', 'ทัม-มะ'], a: 0, w: 'รร มี ม สะกด อ่านเสียง อะ + ม = ทำ' },
+  { q: 'คำใดใช้ รร แล้วอ่านว่า "อัน"', c: ['ภรรยา', 'ธรรม', 'กรรม', 'พรรค'], a: 0, w: 'ภรรยา = พัน-ยา' },
+  { q: 'คำว่า "สัตว์" อ่านว่าอย่างไร', c: ['สัด', 'สัด-วะ', 'สะ-ตะ-วะ', 'สัน'], a: 0, w: 'ว์ ไม่ออกเสียง' }
+];
+
+function strike(w, part) { var i = w.lastIndexOf(part); return i < 0 ? w : w.slice(0, i) + '<s>' + part + '</s>' + w.slice(i + part.length); }
+function hlrr(w) { return w.replace('รร', '<b>รร</b>'); }
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  document.addEventListener('click', function (e) { var b = e.target.closest('[data-say]'); if (b) say(b.getAttribute('data-say')); });
+  function markRate() { Array.prototype.forEach.call(document.querySelectorAll('[data-rate]'), function (x) { x.classList.toggle('on', +x.getAttribute('data-rate') === RATE); }); }
+  document.addEventListener('click', function (e) { var b = e.target.closest('[data-rate]'); if (!b) return; RATE = +b.getAttribute('data-rate'); try { localStorage.setItem('kruau-th-rate', String(RATE)); } catch (er) {} markRate(); say('การ์ตูน|จันทร์'); });
+  markRate();
+  $('kw').innerHTML = KW.map(function (w) { return '<button data-say="' + w[0] + '"><span class="e">' + w[1] + '</span><span class="w">' + strike(w[0], w[2]) + '</span><small>อ่านว่า <b>' + w[3] + '</b></small></button>'; }).join('');
+  $('days').innerHTML = DAYS.map(function (d) { var k = KW.concat([['ศุกร์', '', 'ร์'], ['เสาร์', '', 'ร์']]).filter(function (w) { return w[0] === d[0]; })[0]; return '<button style="--dc:' + d[1] + '" data-say="วัน' + d[0] + '">' + d[0] + '<small>' + (/์/.test(d[0]) ? '🤐 มีการันต์' : '&nbsp;') + '</small></button>'; }).join('');
+  function rcards(id, L, col) { $(id).innerHTML = L.map(function (w) { return '<button style="--tc:' + col + '" data-say="' + w[0] + '"><span class="e">' + w[1] + '</span><span class="w">' + hlrr(w[0]) + '</span><small>อ่านว่า <b>' + w[2] + '</b></small></button>'; }).join(''); }
+  rcards('ra', RA, '#E2D9FF'); rcards('rm', RM, '#BDEFD0');
+
+  function game(el) {
+    var kind = el.getAttribute('data-g'), round = 0, score = 0, ans = null, lock = false;
+    var ask = el.querySelector('.ask'), stat = el.querySelector('.stat'), opts = el.querySelector('.opts');
+    function next() {
+      lock = false; round++;
+      if (round > 10) { stat.innerHTML = '🎉 จบเกม! ได้ <b>' + score + '/10</b> ' + '⭐'.repeat(Math.max(1, Math.round(score / 3.4))) + ' <button class="btn" data-start>เล่นอีกครั้ง</button>'; opts.innerHTML = ''; ask.innerHTML = score >= 8 ? '🏆' : '💪'; if (score >= 8) Kit.confetti(); return; }
+      if (kind === 'mute') {
+        var m = MUTE[rnd(MUTE.length)], w = m[0].replace(/[^ก-ฮ]/g, ''), pool = [];
+        w.split('').forEach(function (c) { if (m[1].indexOf(c) < 0 && pool.indexOf(c) < 0) pool.push(c); });
+        ['ร', 'ท', 'ย', 'น'].forEach(function (c) { if (c !== m[1] && pool.indexOf(c) < 0) pool.push(c); });
+        ans = { ok: m[1], say: m[0], fix: m[0] + '|' + m[1].split('').map(function (c) { return c + 'อ'; }).join(' ') + ' ไม่ออกเสียง' };
+        ask.innerHTML = '<span>' + m[0] + '</span><span class="wd">ตัวไหนไม่ออกเสียง</span>';
+        opts.innerHTML = shuf([m[1]].concat(shuf(pool).slice(0, 3))).map(function (x) { return '<button data-a="' + x + '">' + x + '</button>'; }).join('');
+      } else if (kind === 'read') {
+        var r = READ[rnd(READ.length)];
+        ans = { ok: r[1], say: r[0], fix: r[0] };
+        ask.innerHTML = '<span>' + r[0] + '</span><span class="wd">อ่านอย่างไร</span>';
+        opts.innerHTML = shuf([r[1], r[2], r[3]]).map(function (x) { return '<button class="tn" data-a="' + x + '">' + x + '</button>'; }).join('');
+      } else {
+        var p = PIC[rnd(PIC.length)];
+        ans = { ok: p[0], say: p[0], fix: p[0] };
+        ask.innerHTML = '<span class="em">' + p[1] + '</span>';
+        opts.innerHTML = shuf([p[0]].concat(p[2])).map(function (x) { return '<button class="tn" style="font:700 clamp(22px,3.6vw,34px) Sarabun,sans-serif" data-a="' + x + '">' + x + '</button>'; }).join('');
+      }
+      stat.textContent = 'ข้อ ' + round + '/10 · ได้ ' + score + ' คะแนน';
+      if (kind !== 'pic') say(ans.say);
+    }
+    function right(btn) { lock = true; btn.classList.add('ok'); score++; Kit.sound.good(); say(ans.fix); setTimeout(next, 1900); }
+    function wrong(btn) { lock = true; btn.classList.add('no'); Kit.sound.bad(); setTimeout(function () { Array.prototype.forEach.call(opts.children, function (b) { if (b.dataset.a === ans.ok) b.classList.add('ok'); }); say(ans.fix); }, 300); setTimeout(next, 2600); }
+    el.addEventListener('click', function (e) {
+      if (e.target.closest('[data-start]')) { round = 0; score = 0; next(); return; }
+      if (e.target.closest('[data-rep]')) { if (ans) say(ans.say); return; }
+      var b = e.target.closest('.opts button'); if (!b || lock || !ans) return;
+      if (b.dataset.a === ans.ok) right(b); else wrong(b);
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-g="mute"],[data-g="read"],[data-g="pic"]'), game);
+
+  var tp = $('tpick'), gd = $('gd'), cv = $('tcv'), ti = 0, strokes = [], curS = null, penOnly = false;
+  tp.innerHTML = TRACE.map(function (w, i) { return '<button data-i="' + i + '"' + (i ? '' : ' class="on"') + '>' + w + '</button>'; }).join('');
+  function setT(i) { ti = i; gd.textContent = TRACE[i]; gd.style.fontSize = TRACE[i].length > 6 ? 'min(150px,30vw)' : ''; strokes = []; draw(); Array.prototype.forEach.call(tp.children, function (b, k) { b.classList.toggle('on', k === i); }); }
+  function draw() {
+    var r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1; if (!r.width) return; cv.width = r.width * d; cv.height = r.height * d;
+    var x = cv.getContext('2d'); x.lineCap = x.lineJoin = 'round'; x.strokeStyle = '#7A2E0B'; x.lineWidth = 11 * d;
+    strokes.forEach(function (s) { x.beginPath(); s.forEach(function (p, k) { if (k) x.lineTo(p[0] * cv.width, p[1] * cv.height); else x.moveTo(p[0] * cv.width, p[1] * cv.height); }); if (s.length === 1) x.lineTo(s[0][0] * cv.width + .5, s[0][1] * cv.height); x.stroke(); });
+  }
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  cv.addEventListener('pointerdown', function (e) { if (e.pointerType === 'pen') penOnly = true; else if (penOnly && e.pointerType === 'touch') return; e.preventDefault(); try { cv.setPointerCapture(e.pointerId); } catch (er) {} curS = [pt(e)]; curS.id = e.pointerId; strokes.push(curS); draw(); });
+  cv.addEventListener('pointermove', function (e) { if (curS && e.pointerId === curS.id) { curS.push(pt(e)); draw(); } });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function () { curS = null; }); });
+  ['touchstart', 'touchmove'].forEach(function (t) { cv.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false }); });
+  tp.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { setT(+b.dataset.i); say(TRACE[ti]); } });
+  $('tClr').onclick = function () { strokes = []; draw(); };
+  $('tSay').onclick = function () { say(TRACE[ti]); };
+  $('tNext').onclick = function () { setT((ti + 1) % TRACE.length); say(TRACE[ti]); };
+  setT(0);
+  window.addEventListener('resize', draw);
+  var go = Kit.go; Kit.go = function (n, i) { if (n !== Kit.cur) hush(); go(n, i); setTimeout(draw, 60); };
+});
+</script>
+<style id="kruau-tools">
+/* ---- ปากกาเขียนบนสไลด์ ---- */
+.drawcv{position:absolute;inset:0;width:100%;height:100%;z-index:30;pointer-events:none;touch-action:none}
+body.drawing .drawcv{pointer-events:auto;cursor:crosshair}
+body.drawing,body.drawing *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.stage img{-webkit-touch-callout:none;-webkit-user-drag:none}
+.stage{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.stage input,.stage textarea{-webkit-user-select:text;user-select:text}
+.drawbar{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:7px;align-items:center;background:#fff;border:3px solid var(--main);border-radius:24px;padding:8px 6px;box-shadow:0 5px 0 var(--main-deep),0 8px 20px rgba(0,0,0,.15)}
+body.drawing .drawbar{display:flex}
+.drawbar button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;padding:0;font-size:1.1rem;background:#fff;color:var(--ink)}
+.drawbar button.hl{background:linear-gradient(135deg,#FFE45C,#FFD400)}
+.drawbar button.sel{box-shadow:0 0 0 3px var(--ink)}
+.drawbar .cl{width:auto;height:auto;border-radius:16px;padding:6px 4px;line-height:1.2;font-size:.85rem;background:var(--main);color:#fff;font-weight:700;box-shadow:0 3px 0 var(--main-deep)}
+.bar .tb.on{background:#fff;color:var(--main-deep);box-shadow:inset 0 0 0 3px var(--main-deep)}
+@media print{.drawcv,.drawbar{display:none}}
+/* ---- เลือกหน้าสไลด์ ---- */
+.picker{position:fixed;inset:0;z-index:80;background:rgba(30,20,50,.45);display:none;align-items:center;justify-content:center;padding:12px}
+.picker.show{display:flex}
+.pk-box{background:#fff;border-radius:22px;width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);border:4px solid var(--main)}
+.pk-head{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--main);color:#fff;flex-wrap:wrap}
+.pk-head b{font-size:1.15rem;flex:1}
+.pk-go{font-weight:700}
+.pk-go input{width:70px;font:inherit;font-size:1.05rem;padding:4px 8px;border-radius:10px;border:none;text-align:center}
+.pk-x{border:none;background:rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.1rem}
+.pk-list{flex:1 1 auto;min-height:0;grid-auto-rows:max-content;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+.pk-list h4{grid-column:1/-1;margin:10px 0 0;color:var(--main-deep);font-size:1.02rem;border-bottom:2px dashed var(--line,#eee);padding-bottom:4px}
+.pk-it{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:4px;border:2px solid var(--line,#e6e0f0);background:#fff;border-radius:14px;padding:6px;text-align:left;font:inherit;color:var(--ink);min-height:64px}
+.pk-it img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f6f6f6;border-radius:8px}
+.pk-it .n{position:absolute;top:4px;left:4px;background:var(--main);color:#fff;border-radius:8px;padding:0 7px;font-weight:700;font-size:.85rem}
+.pk-it:not(.th) .n{position:static;align-self:flex-start}
+.pk-it .t{font-size:.86rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk-it.cur{border-color:var(--main);box-shadow:0 0 0 3px var(--main)}
+.nav .count.pk-open{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.resume{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--main);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);white-space:nowrap;font-size:1rem}
+.resume button{border:none;border-radius:999px;padding:6px 14px;font-weight:700;min-height:38px;background:var(--main);color:#fff}
+.resume [data-n]{background:#eee;color:#555;padding:6px 10px}
+@media print{.picker,.resume{display:none}}
+/* ---- กล้องมุมจอ + อัดวิดีโอ ---- */
+.campnl{position:fixed;right:10px;top:70px;z-index:70;display:none;flex-direction:column;gap:8px;width:min(300px,calc(100vw - 20px));background:#fff;border:3px solid var(--main);border-radius:18px;padding:12px;box-shadow:0 6px 0 var(--main-deep),0 10px 26px rgba(0,0,0,.18)}
+.campnl.show{display:flex}
+.campnl button{min-height:44px;border-radius:14px;border:2px solid var(--main);background:var(--glow,#FFF1E0);font-weight:700;font-size:1rem;color:var(--ink)}
+.campnl button.ghost{background:#fff;min-height:36px}
+.campnl .tip{margin:0;font-size:.88rem;line-height:1.5;color:var(--ink-soft)}
+.cambub{position:fixed;z-index:65;border-radius:50%;overflow:hidden;background:#222;border:4px solid #fff;box-shadow:0 0 0 3px var(--main),0 8px 20px rgba(0,0,0,.3);touch-action:none;cursor:grab}
+.cambub.sq{border-radius:18px}
+.cambub video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;pointer-events:none}
+.cambub .cb{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:4px;opacity:0;transition:opacity .2s}
+.cambub:hover .cb,.cambub:active .cb,.cambub:focus-within .cb{opacity:1}
+@media (hover:none){.cambub .cb{opacity:.85}}
+.cambub .cb button{width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.9);font-size:.9rem;padding:0}
+.recchip{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:8px;background:#fff;border:3px solid #E53935;border-radius:999px;padding:4px 6px 4px 14px;font-weight:700;color:#C62828;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.recchip .dot{width:12px;height:12px;border-radius:50%;background:#E53935;animation:recb 1s infinite}
+.recchip button{border:none;background:#E53935;color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;min-height:36px}
+@keyframes recb{50%{opacity:.25}}
+@media print{.campnl,.cambub,.recchip{display:none}}
+
+/* ---- แถบด้านบนบนมือถือ ---- */
+@media (max-width:520px){.bar .tb{width:34px!important;min-width:34px;height:34px!important;font-size:15px!important;padding:0!important}.bar{gap:3px!important}.bar .ttl small{display:none}}</style>
+<script id="kruau-tools">
+/* ---------- ปากกาเขียนบนสไลด์ (ใช้ได้ทั้งนิ้วและ Apple Pencil) ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar'), stage = document.querySelector('.stage');
+  if (!bar || !stage || !window.Kit) return;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '✏️'; btn.title = 'ปากกาเขียนบนสไลด์'; btn.setAttribute('aria-label', 'ปากกาเขียนบนสไลด์');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var cv = document.createElement('canvas'); cv.className = 'drawcv'; stage.appendChild(cv);
+  var pb = document.createElement('div'); pb.className = 'drawbar';
+  var COLORS = [['#E53935', 'แดง'], ['#1E66F5', 'น้ำเงิน'], ['#16A34A', 'เขียว'], ['#111111', 'ดำ'], ['hl', 'ปากกาเน้นข้อความ']];
+  pb.innerHTML = COLORS.map(function (c, i) {
+    return '<button data-c="' + c[0] + '" class="' + (i ? '' : 'sel') + (c[0] === 'hl' ? ' hl' : '') + '" style="' + (c[0] === 'hl' ? '' : 'background:' + c[0]) + '" aria-label="' + c[1] + '" title="' + c[1] + '"></button>';
+  }).join('') + '<button data-undo title="ย้อนเส้นล่าสุด" aria-label="ย้อน">↶</button><button data-clear title="ลบทั้งหน้า" aria-label="ลบทั้งหน้า">🧽</button><button data-close class="cl">✔<br>เสร็จ</button>';
+  document.body.appendChild(pb);
+  var strokes = {}, on = false, color = '#E53935', cur = null, penSeen = false;
+  function list() { return strokes[Kit.cur] || (strokes[Kit.cur] = []); }
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    var x = cv.getContext('2d'); x.clearRect(0, 0, w, h); x.lineCap = x.lineJoin = 'round';
+    list().forEach(function (st) {
+      var hl = st.c === 'hl';
+      x.globalAlpha = hl ? .35 : 1; x.strokeStyle = hl ? '#FFD400' : st.c; x.lineWidth = (hl ? 18 : 4) * dpr;
+      x.beginPath();
+      st.p.forEach(function (q, i) { if (i) x.lineTo(q[0] * w, q[1] * h); else x.moveTo(q[0] * w, q[1] * h); });
+      if (st.p.length === 1) x.lineTo(st.p[0][0] * w + .5, st.p[0][1] * h);
+      x.stroke();
+    });
+    x.globalAlpha = 1;
+  }
+  function setOn(v) {
+    on = v; document.body.classList.toggle('drawing', on); btn.classList.toggle('on', on);
+    if (on && window.getSelection) try { window.getSelection().removeAllRanges(); } catch (e) {}
+    cv.classList.toggle('noswipe', on);
+    if (on) Kit.toast(penSeen ? '✏️ เขียนด้วย Apple Pencil ได้เลย วางมือบนจอได้' : '✏️ เขียนบนสไลด์ได้เลย (ใช้ Apple Pencil แล้ววางมือบนจอได้)');
+  }
+  btn.onclick = function () { setOn(!on); Kit.sound.tap(); };
+  function pt(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; }
+  try { penSeen = localStorage.getItem('kruau-pencil') === '1'; } catch (e) {}
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on) return;
+    e.preventDefault();
+    if (e.pointerType === 'pen') {
+      if (!penSeen) { penSeen = true; try { localStorage.setItem('kruau-pencil', '1'); } catch (er) {} }
+      if (cur && cur.t === 'touch') { var L = list(), k = L.indexOf(cur); if (k >= 0) L.splice(k, 1); } /* เส้นจากฝ่ามือที่วางก่อนปากกา → ลบทิ้ง */
+    } else if (e.pointerType === 'touch') {
+      if (penSeen) return; /* ใช้ Apple Pencil อยู่ → นิ้ว/ฝ่ามือไม่วาด */
+      if (cur || e.width > 40 || e.height > 40) return; /* แตะหลายจุด หรือพื้นที่สัมผัสใหญ่ = ฝ่ามือ */
+    }
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    cur = { c: color, p: [pt(e)], id: e.pointerId, t: e.pointerType }; list().push(cur); draw();
+  });
+  /* กันไอแพดเลือกข้อความ (แถบสีฟ้า) / ขยายแว่น / เลื่อนจอ ขณะวางมือเขียน */
+  ['touchstart', 'touchmove'].forEach(function (t) {
+    cv.addEventListener(t, function (e) { if (on) e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener('selectstart', function (e) { if (on) e.preventDefault(); });
+  cv.addEventListener('pointermove', function (e) {
+    if (!cur || e.pointerId !== cur.id) return;
+    var ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    (ev.length ? ev : [e]).forEach(function (q) { cur.p.push(pt(q)); });
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (t) { cv.addEventListener(t, function (e) { if (cur && e.pointerId === cur.id) cur = null; }); });
+  Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (b) {
+    b.onclick = function () {
+      color = b.getAttribute('data-c');
+      Array.prototype.forEach.call(pb.querySelectorAll('[data-c]'), function (o) { o.classList.toggle('sel', o === b); });
+    };
+  });
+  pb.querySelector('[data-undo]').onclick = function () { list().pop(); draw(); };
+  pb.querySelector('[data-clear]').onclick = function () { strokes[Kit.cur] = []; draw(); Kit.sound.tap(); };
+  pb.querySelector('[data-close]').onclick = function () { setOn(false); Kit.sound.tap(); };
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); cur = null; draw(); };
+  window.addEventListener('resize', draw);
+  draw();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- กล้องมุมจอ + อัดวิดีโอการสอน ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit) return;
+  var md = navigator.mediaDevices || {};
+  var inFrame = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  var canRec = !!md.getDisplayMedia && !!window.MediaRecorder;
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '🎥'; btn.title = 'กล้องมุมจอ / อัดวิดีโอการสอน'; btn.setAttribute('aria-label', 'กล้องและอัดวิดีโอ');
+  bar.insertBefore(btn, bar.querySelector('[data-fit]') || bar.querySelector('[data-sound]'));
+  var pnl = document.createElement('div'); pnl.className = 'campnl';
+  pnl.innerHTML = '<b>🎥 สอนออนไลน์ / ทำวิดีโอ</b>' +
+    '<button data-cam>📷 เปิดกล้องมุมจอ</button>' +
+    (canRec ? '<button data-rec>🔴 อัดวิดีโอหน้าจอ + เสียง</button>' : '') +
+    '<p class="tip">' + (canRec
+      ? 'กดอัดแล้วเลือก <b>แท็บนี้</b> ระบบจะอัดสไลด์ กล้อง และเสียงครูไว้ด้วยกัน กดหยุดแล้วจะได้ไฟล์วิดีโอทันที'
+      : 'บน iPad: เปิดกล้องมุมจอ แล้วใช้ <b>การบันทึกหน้าจอ</b> ในศูนย์ควบคุม (กดค้างที่ปุ่ม ⏺ เพื่อเปิดไมโครโฟน)') + '</p>' +
+    '<button data-x class="ghost">ปิด</button>';
+  document.body.appendChild(pnl);
+  btn.onclick = function () { pnl.classList.toggle('show'); Kit.sound.tap(); };
+  pnl.querySelector('[data-x]').onclick = function () { pnl.classList.remove('show'); };
+
+  function newTab(flag) {
+    var w = window.open(location.href.split('#')[0] + '#s=' + Kit.cur + '&' + flag + '=1', '_blank');
+    if (!w) Kit.toast('เปิดแท็บใหม่ไม่ได้ ลองกดปุ่ม "เปิดในแท็บใหม่" ของเว็บครูอู๋');
+  }
+
+  /* ---- กล้อง ---- */
+  var cam = null, stream = null, SIZES = [120, 170, 240], si = 1, round = true;
+  try { var sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); if (sv.si != null) si = sv.si; if (sv.round != null) round = sv.round; } catch (e) {}
+  function save(x, y) { try { localStorage.setItem('kruau-cam', JSON.stringify({ si: si, round: round, x: x, y: y })); } catch (e) {} }
+  function place() {
+    var s = SIZES[si], h = round ? s : Math.round(s * .75);
+    cam.style.width = s + 'px'; cam.style.height = h + 'px';
+    cam.classList.toggle('sq', !round);
+    var r = cam.getBoundingClientRect();
+    var x = Math.min(Math.max(4, r.left), innerWidth - s - 4), y = Math.min(Math.max(4, r.top), innerHeight - h - 4);
+    cam.style.left = x + 'px'; cam.style.top = y + 'px';
+  }
+  function openCam() {
+    if (cam) return;
+    if (!md.getUserMedia) { Kit.toast('อุปกรณ์นี้เปิดกล้องผ่านเว็บไม่ได้'); return; }
+    md.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }).then(function (s) {
+      stream = s;
+      cam = document.createElement('div'); cam.className = 'cambub noswipe';
+      cam.innerHTML = '<video autoplay playsinline muted></video><span class="cb"><button data-sz title="ย่อ/ขยาย">⤢</button><button data-sh title="วงกลม/สี่เหลี่ยม">◐</button><button data-cl title="ปิดกล้อง">✖</button></span>';
+      document.body.appendChild(cam);
+      var v = cam.querySelector('video'); v.srcObject = s; v.play().catch(function () {});
+      var sv = {}; try { sv = JSON.parse(localStorage.getItem('kruau-cam') || '{}'); } catch (e) {}
+      cam.style.left = (sv.x != null ? sv.x : innerWidth - SIZES[si] - 16) + 'px';
+      cam.style.top = (sv.y != null ? sv.y : innerHeight - SIZES[si] - 90) + 'px';
+      place();
+      cam.querySelector('[data-sz]').onclick = function (e) { e.stopPropagation(); si = (si + 1) % SIZES.length; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-sh]').onclick = function (e) { e.stopPropagation(); round = !round; place(); save(cam.offsetLeft, cam.offsetTop); };
+      cam.querySelector('[data-cl]').onclick = function (e) { e.stopPropagation(); closeCam(); };
+      var drag = null;
+      cam.addEventListener('pointerdown', function (e) {
+        if (e.target.closest('button')) return;
+        drag = { dx: e.clientX - cam.offsetLeft, dy: e.clientY - cam.offsetTop, id: e.pointerId };
+        try { cam.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault();
+      });
+      cam.addEventListener('pointermove', function (e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        cam.style.left = Math.min(Math.max(4, e.clientX - drag.dx), innerWidth - cam.offsetWidth - 4) + 'px';
+        cam.style.top = Math.min(Math.max(4, e.clientY - drag.dy), innerHeight - cam.offsetHeight - 4) + 'px';
+      });
+      cam.addEventListener('pointerup', function () { if (drag) save(cam.offsetLeft, cam.offsetTop); drag = null; });
+      pnl.querySelector('[data-cam]').textContent = '📷 ปิดกล้องมุมจอ';
+      pnl.classList.remove('show');
+      Kit.toast('📷 ลากกล้องไปวางมุมไหนก็ได้ · ⤢ ย่อ/ขยาย');
+    }).catch(function (err) {
+      if (inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่อใช้กล้อง…'); newTab('cam'); }
+      else Kit.toast('เปิดกล้องไม่ได้ — กรุณาอนุญาตให้เว็บใช้กล้อง');
+    });
+  }
+  function closeCam() {
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    if (cam) cam.remove();
+    cam = stream = null;
+    pnl.querySelector('[data-cam]').textContent = '📷 เปิดกล้องมุมจอ';
+  }
+  pnl.querySelector('[data-cam]').onclick = function () { if (cam) closeCam(); else openCam(); };
+  addEventListener('resize', function () { if (cam) place(); });
+
+  /* ---- อัดวิดีโอ (คอมพิวเตอร์: Chrome / Edge / Firefox) ---- */
+  var rec = null, chip = null, parts = [], t0 = 0, iv = 0, all = [];
+  function pickType() {
+    var c = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    for (var i = 0; i < c.length; i++) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c[i])) return c[i];
+    return '';
+  }
+  function startRec() {
+    md.getDisplayMedia({ video: { frameRate: 30 }, audio: true, preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude' }).then(function (ds) {
+      all = [ds];
+      return md.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }).then(function (mic) { all.push(mic); return [ds, mic]; }, function () { Kit.toast('ไม่ได้เปิดไมโครโฟน จะอัดแต่ภาพ'); return [ds, null]; });
+    }).then(function (r) {
+      var ds = r[0], mic = r[1], tracks = ds.getVideoTracks().slice();
+      var aud = [ds, mic].filter(function (s) { return s && s.getAudioTracks().length; });
+      if (aud.length === 1) tracks = tracks.concat(aud[0].getAudioTracks());
+      else if (aud.length > 1) {
+        var ac = new (window.AudioContext || window.webkitAudioContext)(), dst = ac.createMediaStreamDestination();
+        aud.forEach(function (s) { ac.createMediaStreamSource(s).connect(dst); });
+        tracks = tracks.concat(dst.stream.getAudioTracks());
+      }
+      var type = pickType();
+      rec = new MediaRecorder(new MediaStream(tracks), type ? { mimeType: type, videoBitsPerSecond: 3000000 } : undefined);
+      parts = [];
+      rec.ondataavailable = function (e) { if (e.data && e.data.size) parts.push(e.data); };
+      rec.onstop = finish;
+      ds.getVideoTracks()[0].addEventListener('ended', stopRec);
+      rec.start(1000); t0 = Date.now();
+      chip = document.createElement('div'); chip.className = 'recchip';
+      chip.innerHTML = '<span class="dot"></span> อัดอยู่ <span class="t">0:00</span><button>■ หยุด</button>';
+      document.body.appendChild(chip);
+      chip.querySelector('button').onclick = stopRec;
+      iv = setInterval(function () { var s = Math.floor((Date.now() - t0) / 1000); chip.querySelector('.t').textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }, 500);
+      pnl.classList.remove('show');
+      if (!cam) Kit.toast('🔴 เริ่มอัดแล้ว · เปิดกล้องมุมจอได้ที่ปุ่ม 🎥');
+    }).catch(function (err) {
+      all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+      if (err && err.name === 'NotAllowedError' && inFrame) { Kit.toast('กำลังเปิดในแท็บใหม่เพื่ออัดวิดีโอ…'); newTab('rec'); }
+      else if (err && err.name !== 'NotAllowedError') Kit.toast('อัดวิดีโอไม่ได้: ' + err.name);
+    });
+  }
+  function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+  function finish() {
+    clearInterval(iv);
+    all.forEach(function (s) { s.getTracks().forEach(function (t) { t.stop(); }); });
+    if (chip) chip.remove();
+    var type = (rec && rec.mimeType) || 'video/webm', ext = type.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+    var blob = new Blob(parts, { type: type }), a = document.createElement('a');
+    var d = new Date(), name = (document.title.split('·')[0].trim() || 'บทเรียน').replace(/[\\\/:*?"<>|]/g, '') + ' ' + d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    a.href = URL.createObjectURL(blob); a.download = name + '.' + ext;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+    Kit.sound.win(); Kit.toast('💾 บันทึกวิดีโอแล้ว (' + ext.toUpperCase() + ') ดูได้ในโฟลเดอร์ดาวน์โหลด');
+    rec = null;
+  }
+  var rb = pnl.querySelector('[data-rec]');
+  if (rb) rb.onclick = function () { if (rec) stopRec(); else startRec(); };
+
+  /* เปิดจากปุ่มในกรอบเว็บครูอู๋ → เริ่มให้เลย */
+  if (/[#&]cam=1/.test(location.hash)) setTimeout(openCam, 400);
+  if (/[#&]rec=1/.test(location.hash)) setTimeout(function () { pnl.classList.add('show'); Kit.toast('กด 🔴 อัดวิดีโอ ได้เลย'); }, 400);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/* ---------- เลือกหน้าสไลด์ + เปิดต่อจากหน้าที่สอนค้างไว้ ---------- */
+(function () {
+function start() {
+  var bar = document.querySelector('.bar');
+  if (!bar || !window.Kit || !Kit.slides || Kit.slides.length < 3) return;
+  var S = Kit.slides;
+  function title(s, i) {
+    var t = s.getAttribute('data-title');
+    if (!t) { var h = s.querySelector('h1,h2,h3'); t = h ? h.textContent : ''; }
+    return (t || ('หน้า ' + (i + 1))).replace(/\s+/g, ' ').trim();
+  }
+  var btn = document.createElement('button');
+  btn.className = 'tb'; btn.textContent = '📑'; btn.title = 'เลือกหน้าสไลด์'; btn.setAttribute('aria-label', 'เลือกหน้าสไลด์');
+  var first = bar.querySelector('.tb');
+  if (first) first.parentNode.insertBefore(btn, first); else bar.appendChild(btn);
+  var pv = document.createElement('div'); pv.className = 'picker';
+  var html = '<div class="pk-box"><div class="pk-head"><b>📑 เลือกหน้า</b>' +
+    '<label class="pk-go">ไปหน้า <input type="number" inputmode="numeric" min="1" max="' + S.length + '"> / ' + S.length + '</label>' +
+    '<button class="pk-x" aria-label="ปิด">✖</button></div><div class="pk-list">';
+  var grp = '';
+  S.forEach(function (s, i) {
+    var t = title(s, i);
+    if (s.getAttribute('data-sec') && grp !== t) { grp = t; html += '<h4>' + t + '</h4>'; }
+    var th = s.getAttribute('data-thumb');
+    html += '<button class="pk-it' + (th ? ' th' : '') + '" data-i="' + i + '">' +
+      (th ? '<img loading="lazy" alt="" data-src="' + th + '">' : '') +
+      '<span class="n">' + (i + 1) + '</span><span class="t">' + t.replace(/</g, '&lt;') + '</span></button>';
+  });
+  pv.innerHTML = html + '</div></div>';
+  document.body.appendChild(pv);
+  var list = pv.querySelector('.pk-list'), inp = pv.querySelector('input');
+  function open() {
+    pv.classList.add('show');
+    Array.prototype.forEach.call(pv.querySelectorAll('img[data-src]'), function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); });
+    Array.prototype.forEach.call(pv.querySelectorAll('.pk-it'), function (b) { b.classList.toggle('cur', +b.getAttribute('data-i') === Kit.cur); });
+    var c = pv.querySelector('.pk-it.cur');
+    if (c) list.scrollTop = c.offsetTop - list.offsetTop - list.clientHeight / 3;
+    inp.value = '';
+  }
+  function close() { pv.classList.remove('show'); }
+  btn.onclick = function () { open(); Kit.sound.tap(); };
+  pv.querySelector('.pk-x').onclick = close;
+  pv.addEventListener('click', function (e) {
+    if (e.target === pv) return close();
+    var b = e.target.closest('.pk-it');
+    if (b) { close(); Kit.go(+b.getAttribute('data-i'), true); }
+  });
+  function jump() { var n = parseInt(inp.value, 10); if (n >= 1 && n <= S.length) { close(); Kit.go(n - 1, true); } }
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') jump(); });
+  inp.addEventListener('change', jump);
+  var cnt = document.querySelector('.nav .count');
+  if (cnt) { cnt.classList.add('pk-open'); cnt.title = 'แตะเพื่อเลือกหน้า'; cnt.addEventListener('click', open); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ---- จำหน้าที่สอนค้างไว้ ---- */
+  var KEY = 'kruau-last:' + location.pathname;
+  var go = Kit.go;
+  Kit.go = function (n, instant) { go(n, instant); try { localStorage.setItem(KEY, String(Kit.cur)); } catch (e) {} };
+  var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  if (last > 0 && last < S.length && Kit.cur === 0 && !/[#&]s=/.test(location.hash)) {
+    var r = document.createElement('div'); r.className = 'resume';
+    r.innerHTML = '📍 ครั้งก่อนสอนถึง <b>หน้า ' + (last + 1) + '</b> <button data-y>ไปต่อเลย ▶</button><button data-n aria-label="ปิด">✖</button>';
+    document.body.appendChild(r);
+    r.querySelector('[data-y]').onclick = function () { r.remove(); Kit.go(last, true); };
+    r.querySelector('[data-n]').onclick = function () { r.remove(); };
+    setTimeout(function () { if (r.parentNode) r.remove(); }, 12000);
+  }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
+</body>
+</html>
