@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ใบงานคิดคล่องสูตรคูณ · ครูอู๋</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@500;700&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--main:#F59E0B;--deep:#C77C00;--ink:#2A2418;--soft:#6B6150;--line:#EADFC8;--red:#D93A2F;--bg:#FFF7E8}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 Sarabun,system-ui,sans-serif}
+.tool{position:sticky;top:0;z-index:5;background:#fff;border-bottom:3px solid var(--main);box-shadow:0 4px 14px rgba(0,0,0,.06);padding:10px max(3vw,10px)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row+.row{margin-top:8px}
+.tool h1{font:700 20px Mali,sans-serif;color:var(--deep);margin:0 auto 0 0}
+.tool label.lb{font-weight:700;color:var(--soft);font-size:15px;margin-right:2px}
+.tool button,.tool select{font:600 16px Sarabun,sans-serif;min-height:44px;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink);padding:4px 12px;cursor:pointer}
+.tool button.pri{background:var(--main);border-color:var(--main);color:#fff;box-shadow:0 3px 0 var(--deep)}
+.tool button.key.on{background:var(--red);border-color:var(--red);color:#fff}
+.mul{display:flex;flex-wrap:wrap;gap:4px}
+.mul button{min-width:44px;padding:0 6px;font-weight:700}
+.mul button.on{background:#FFE7B8;border-color:var(--main);color:#8A5300}
+.hint{font-size:14px;color:var(--soft)}
+.sheets{padding:18px max(2vw,8px) 60px}
+.page{width:min(210mm,100%);margin:0 auto 18px;background:#fff;border-radius:8px;box-shadow:0 6px 24px rgba(60,40,0,.12);padding:8mm 7mm;display:grid;gap:5mm;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr))}
+.strip{border:2px dashed #999;border-radius:14px;padding:3mm 3mm 2mm;position:relative;display:flex;flex-direction:column}
+.strip .who{font-size:12.5px;line-height:1.75;color:#333}
+.strip .who i{display:inline-block;border-bottom:1.2px dotted #777;min-width:20mm;vertical-align:baseline}
+.strip .who i.s{min-width:9mm}
+.strip .set{position:absolute;right:3mm;top:2.5mm;border:1.6px solid #333;border-radius:999px;padding:0 8px;font:700 12px Mali,sans-serif;background:#fff}
+.strip h2{margin:4px 0 4px;text-align:center;font:700 15px/1.25 Mali,sans-serif;background:#222;color:#fff;border-radius:999px;padding:3px 8px}
+.strip h2 small{display:block;font:600 11px Sarabun,sans-serif;color:#FFD27A}
+.strip ol{list-style:none;margin:0;padding:0;display:grid;gap:0;flex:1}
+.strip li{display:grid;grid-template-columns:22px minmax(0,1fr);align-items:center;font:600 16px/1 Sarabun,sans-serif;border-bottom:1px solid #eee;min-height:7.6mm}
+.strip li .n{width:19px;height:19px;border-radius:50%;background:#222;color:#fff;font:700 10.5px/19px Sarabun,sans-serif;text-align:center}
+.strip li .q{white-space:nowrap;padding-left:4px;letter-spacing:.3px}
+.bl{display:inline-block;min-width:13mm;border-bottom:1.4px solid #444;height:1.1em;vertical-align:bottom;text-align:center}
+.key .bl::after{content:attr(data-a);color:var(--red);font-weight:700}
+.key .bl{border-bottom-color:var(--red)}
+.page.c2 .strip li{font-size:19px;min-height:7.7mm}
+@media screen and (max-width:640px){.page{grid-template-columns:1fr!important;padding:4mm}}
+/* ตารางสูตรคูณ */
+.page.tb{display:block;padding:12mm}
+.tb h2{font:700 22px Mali,sans-serif;margin:0 0 4px;color:var(--deep)}
+.tb .who{font-size:15px;margin-bottom:8px}.tb .who i{display:inline-block;border-bottom:1.2px dotted #777;min-width:45mm}
+table.mt{border-collapse:collapse;width:100%;table-layout:fixed;font:700 18px Sarabun,sans-serif}
+table.mt th,table.mt td{border:1.6px solid #444;text-align:center;height:16mm}
+table.mt th{background:#FFE7B8}
+table.mt td.g{background:#f3f3f3;color:#555}
+.key table.mt td.k::after{content:attr(data-a);color:var(--red)}
+@media print{
+  @page{size:A4 portrait;margin:0}
+  body{background:#fff}
+  .tool{display:none}
+  .sheets{padding:0}
+  .page{width:210mm;height:297mm;margin:0;border-radius:0;box-shadow:none;page-break-after:always;break-after:page}
+  .page:last-child{page-break-after:auto;break-after:auto}
+}
+</style>
+</head>
+<body>
+<div class="tool">
+  <div class="row"><h1>✖️ ใบงานคิดคล่องสูตรคูณ</h1>
+    <button class="pri" id="rnd" type="button">🎲 สุ่มชุดใหม่</button>
+    <button class="key" id="key" type="button">🔑 เฉลย</button>
+    <button id="prt" type="button">🖨️ พิมพ์ / บันทึก PDF</button>
+  </div>
+  <div class="row"><label class="lb">แม่:</label><div class="mul" id="mul"></div>
+    <button type="button" data-pre="2-12">ทั้งหมด</button><button type="button" data-pre="2-6">2–6</button><button type="button" data-pre="6-9">6–9</button><button type="button" data-pre="7-12">7–12</button></div>
+  <div class="row">
+    <label class="lb" for="typ">แบบ:</label><select id="typ"><option value="x">7 × 8 = __</option><option value="m">7 × __ = 56</option><option value="d">56 ÷ 7 = __</option><option value="mix">ผสมทุกแบบ</option><option value="tb">ตารางสูตรคูณเติมช่อง</option></select>
+    <label class="lb" for="num">ข้อ/แถบ:</label><select id="num"><option>20</option><option selected>30</option></select>
+    <label class="lb" for="lay">แถบ/หน้า:</label><select id="lay"><option value="3" selected>3 แถบ (ตัดแจก 3 คน)</option><option value="2">2 แถบ (ตัวใหญ่)</option></select>
+    <label class="lb" for="pg">จำนวนหน้า:</label><select id="pg"><option>1</option><option>2</option><option>3</option><option>5</option><option>10</option></select>
+    <span class="hint" id="info"></span>
+  </div>
+</div>
+<div class="sheets" id="sheets"></div>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var S = { seed: 0, m: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], t: 'x', n: 30, l: 3, p: 1 };
+  function rng(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function readHash() {
+    var h = location.hash.slice(1).split('&'), o = {};
+    h.forEach(function (kv) { var p = kv.split('='); if (p[0]) o[p[0]] = decodeURIComponent(p[1] || ''); });
+    if (o.s) S.seed = +o.s || 1;
+    if (o.m) { var mm = o.m.split(',').map(Number).filter(function (x) { return x >= 2 && x <= 12; }); if (mm.length) S.m = mm; }
+    if (o.t && /^(x|m|d|mix|tb)$/.test(o.t)) S.t = o.t;
+    if (o.n && /^(20|30)$/.test(o.n)) S.n = +o.n;
+    if (o.l && /^(2|3)$/.test(o.l)) S.l = +o.l;
+    if (o.p && /^(1|2|3|5|10)$/.test(o.p)) S.p = +o.p;
+    if (!S.seed) S.seed = 1 + Math.floor(Math.random() * 9998);
+  }
+  function writeHash() { history.replaceState(null, '', '#s=' + S.seed + '&m=' + S.m.join(',') + '&t=' + S.t + '&n=' + S.n + '&l=' + S.l + '&p=' + S.p); }
+  function title() { var a = S.m.slice().sort(function (x, y) { return x - y; }); var cont = a.length > 1 && a[a.length - 1] - a[0] === a.length - 1; return 'สูตรคูณแม่ ' + (a.length === 1 ? a[0] : cont ? a[0] + '–' + a[a.length - 1] : a.join(', ')); }
+  var TN = { x: 'หาผลคูณ', m: 'หาตัวที่หายไป', d: 'หาผลหาร', mix: 'ผสมทุกแบบ' };
+  function strip(R, no) {
+    var pool = []; S.m.forEach(function (a) { for (var b = 1; b <= 12; b++) pool.push([a, b]); });
+    var out = [], bag = [], last = '';
+    while (out.length < S.n) {
+      if (!bag.length) { bag = pool.slice(); for (var i = bag.length - 1; i > 0; i--) { var j = Math.floor(R() * (i + 1)), t = bag[i]; bag[i] = bag[j]; bag[j] = t; } }
+      var pr = bag.pop(), a = pr[0], b = pr[1];
+      if (R() < .5) { var tmp = a; a = b; b = tmp; }
+      var k = a + 'x' + b; if (k === last && bag.length) { bag.unshift(pr); continue; } last = k;
+      var ty = S.t === 'mix' ? ['x', 'x', 'm', 'd'][Math.floor(R() * 4)] : S.t, q;
+      var B = function (v) { return '<span class="bl" data-a="' + v + '"></span>'; };
+      if (ty === 'x') q = a + ' × ' + b + ' = ' + B(a * b);
+      else if (ty === 'm') q = R() < .5 ? a + ' × ' + B(b) + ' = ' + a * b : B(a) + ' × ' + b + ' = ' + a * b;
+      else q = a * b + ' ÷ ' + a + ' = ' + B(b);
+      out.push(q);
+    }
+    return '<div class="strip"><span class="set">ชุดที่ ' + S.seed + '-' + no + '</span><div class="who">ชื่อ <i></i><br>เริ่ม <i class="s"></i> น. สิ้นสุด <i class="s"></i> น.<br>ใช้เวลา <i class="s"></i> นาที คะแนน <i class="s"></i>/' + S.n + '</div><h2>คิดคล่อง ' + title() + '<small>' + TN[S.t] + '</small></h2><ol>' +
+      out.map(function (q, i) { return '<li><span class="n">' + (i + 1) + '</span><span class="q">' + q + '</span></li>'; }).join('') + '</ol></div>';
+  }
+  function table(R, no) {
+    var rows = S.m.slice().sort(function (x, y) { return x - y; }), h = '<tr><th>×</th>';
+    for (var c = 1; c <= 12; c++) h += '<th>' + c + '</th>';
+    h += '</tr>';
+    rows.forEach(function (r) {
+      h += '<tr><th>' + r + '</th>';
+      for (var c = 1; c <= 12; c++) { var show = R() < .25; h += show ? '<td class="g">' + r * c + '</td>' : '<td class="k" data-a="' + r * c + '"></td>'; }
+      h += '</tr>';
+    });
+    return '<div class="page tb"><h2>✖️ ตารางสูตรคูณเติมช่อง · ' + title() + '</h2><div class="who">ชื่อ <i></i> ชั้น <i style="min-width:20mm"></i> ชุดที่ ' + S.seed + '-' + no + ' &nbsp; คะแนน <i style="min-width:15mm"></i></div><table class="mt">' + h + '</table><p class="hint">เติมผลคูณลงในช่องว่าง (แถว × คอลัมน์) ช่องสีเทาคือตัวช่วย</p></div>';
+  }
+  function render() {
+    S.seed = S.seed || 1; var R = rng(S.seed * 7919 + S.m.length * 31 + S.t.length * 101 + S.n), html = '', k = 1;
+    for (var p = 0; p < S.p; p++) {
+      if (S.t === 'tb') { html += table(R, k++); continue; }
+      var st = ''; for (var i = 0; i < S.l; i++) st += strip(R, k++);
+      html += '<div class="page' + (S.l === 2 ? ' c2' : '') + '" style="--cols:' + S.l + '">' + st + '</div>';
+    }
+    $('sheets').innerHTML = html;
+    Array.prototype.forEach.call($('mul').children, function (b) { b.classList.toggle('on', S.m.indexOf(+b.dataset.m) >= 0); });
+    $('typ').value = S.t; $('num').value = String(S.n); $('lay').value = String(S.l); $('pg').value = String(S.p);
+    $('num').disabled = $('lay').disabled = S.t === 'tb';
+    $('info').textContent = 'ชุดที่ ' + S.seed + ' · บันทึกลิงก์หน้านี้ไว้ จะได้ชุดเดิม';
+    writeHash();
+  }
+  var mh = ''; for (var m = 2; m <= 12; m++) mh += '<button type="button" data-m="' + m + '">' + m + '</button>';
+  $('mul').innerHTML = mh;
+  $('mul').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return; var v = +b.dataset.m, i = S.m.indexOf(v);
+    if (i >= 0) { if (S.m.length > 1) S.m.splice(i, 1); } else S.m.push(v);
+    render();
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-pre]'), function (b) {
+    b.addEventListener('click', function () { var p = b.dataset.pre.split('-').map(Number); S.m = []; for (var x = p[0]; x <= p[1]; x++) S.m.push(x); render(); });
+  });
+  $('typ').onchange = function () { S.t = this.value; render(); };
+  $('num').onchange = function () { S.n = +this.value; render(); };
+  $('lay').onchange = function () { S.l = +this.value; render(); };
+  $('pg').onchange = function () { S.p = +this.value; render(); };
+  $('rnd').onclick = function () { S.seed = 1 + Math.floor(Math.random() * 9998); render(); };
+  $('key').onclick = function () { var on = $('sheets').classList.toggle('key'); this.classList.toggle('on', on); this.textContent = on ? '🔑 ซ่อนเฉลย' : '🔑 เฉลย'; };
+  $('prt').onclick = function () { window.print(); };
+  readHash(); render();
+})();
+</script>
+</body>
+</html>

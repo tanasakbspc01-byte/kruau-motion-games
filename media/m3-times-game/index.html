@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>เกมท้าเวลาสูตรคูณ · ครูอู๋</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@600;700&family=Sarabun:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--main:#F59E0B;--deep:#C77C00;--ink:#2A2418;--bg:#FFF7E8;--A:#2E8BEF;--Ad:#1B63B5;--B:#E8478B;--Bd:#B8236A;--ok:#2DBE6C;--no:#FF5C7A}
+*{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:radial-gradient(circle at 20% 0,#FFE9B8,transparent 50%),radial-gradient(circle at 100% 100%,#FFD6E5,transparent 45%),var(--bg);color:var(--ink);font:18px/1.4 Sarabun,system-ui,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.scr{position:fixed;inset:0;display:none;flex-direction:column;padding:max(10px,env(safe-area-inset-top)) 12px max(10px,env(safe-area-inset-bottom))}
+.scr.on{display:flex}
+.top{display:flex;align-items:center;gap:8px}
+.top h1{font:700 clamp(20px,3.4vw,30px) Mali,sans-serif;margin:0 auto 0 0;color:var(--deep)}
+.ib{width:46px;height:46px;border-radius:14px;border:2px solid #f0dcb5;background:#fff;font-size:22px;cursor:pointer}
+/* setup */
+#setup{overflow:auto}
+.box{background:#fff;border-radius:22px;box-shadow:0 6px 0 #f0dcb5;padding:14px 16px;margin:10px auto 0;width:min(820px,100%)}
+.box h2{margin:0 0 8px;font:700 19px Mali,sans-serif}
+.mul{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:6px}
+@media (max-width:600px){.mul{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.mul button,.pre button,.tm button{height:52px;border-radius:14px;border:3px solid #f0dcb5;background:#fff;font:700 22px Sarabun,sans-serif;cursor:pointer;color:var(--ink)}
+.mul button.on{background:var(--main);border-color:var(--deep);color:#fff}
+.pre,.tm{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pre button,.tm button{font-size:17px;padding:0 14px;height:44px}
+.tm button.on{background:#222;border-color:#222;color:#fff}
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px;margin-top:4px}
+.mode{border:0;border-radius:22px;padding:16px;color:#fff;font:700 24px Mali,sans-serif;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.18);text-align:left}
+.mode small{display:block;font:600 15px Sarabun,sans-serif;opacity:.95;margin-top:4px}
+.mode.solo{background:linear-gradient(135deg,#F59E0B,#F97316)}
+.mode.duo{background:linear-gradient(135deg,var(--A) 0 50%,var(--B) 50% 100%)}
+.best{font-size:16px;color:#6B6150;margin-top:8px}
+/* play */
+.bar{height:14px;border-radius:999px;background:#fff;overflow:hidden;box-shadow:inset 0 0 0 2px #f0dcb5;margin:8px 0}
+.bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#2DBE6C,#F59E0B,#FF5C7A);transform-origin:left;transition:transform .2s linear}
+.clock{font:700 26px Mali,sans-serif;min-width:70px;text-align:center}
+.arena{flex:1;display:grid;gap:12px;grid-template-columns:1fr;min-height:0}
+#play.duo .arena{grid-template-columns:1fr 1fr}
+.side{display:flex;flex-direction:column;gap:10px;background:#fff;border-radius:24px;padding:12px;box-shadow:0 6px 0 #f0dcb5;min-height:0;position:relative}
+.side.A{--c:var(--A);--cd:var(--Ad)}.side.B{--c:var(--B);--cd:var(--Bd)}.side.S{--c:var(--main);--cd:var(--deep)}
+.side .tname{font:700 20px Mali,sans-serif;color:var(--cd);display:flex;justify-content:space-between;align-items:center}
+.side .tname b{font-size:28px}
+.q{flex:1;display:grid;place-items:center;font:700 clamp(46px,9vw,110px)/1 Sarabun,sans-serif;color:var(--ink);text-align:center;border-radius:18px;background:#FFFBF2;min-height:90px}
+#play.duo .q{font-size:clamp(40px,6.5vw,84px)}
+.q .ans{display:inline-block;min-width:1.6em;border-bottom:6px solid var(--c);color:var(--cd)}
+.q.ok{background:#DFF7E8}.q.no{background:#FFE3E3;animation:shk .35s}
+@keyframes shk{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.q small{display:block;font:700 22px Mali,sans-serif;color:var(--no)}
+.pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pad button{height:clamp(52px,8.5vh,78px);border-radius:16px;border:0;background:var(--c);color:#fff;font:700 clamp(26px,4vw,36px) Sarabun,sans-serif;box-shadow:0 5px 0 var(--cd);cursor:pointer}
+.pad button:active{transform:translateY(3px);box-shadow:0 2px 0 var(--cd)}
+.pad button.fn{background:#fff;color:var(--cd);border:3px solid var(--c);box-shadow:0 5px 0 #eee}
+.combo{position:absolute;right:14px;top:46px;font:700 18px Mali,sans-serif;color:#F97316}
+.ready{position:fixed;inset:0;display:none;place-items:center;background:rgba(255,247,232,.92);z-index:9;font:700 min(40vw,220px) Mali,sans-serif;color:var(--deep)}
+.ready.on{display:grid}
+/* result */
+#result{overflow:auto;align-items:center}
+.res{width:min(820px,100%);margin-top:10px}
+.big{font:700 clamp(54px,12vw,110px)/1 Mali,sans-serif;text-align:center;color:var(--deep)}
+.stars{font-size:46px;text-align:center;letter-spacing:6px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cmp .side{align-items:center;text-align:center}
+.miss{display:flex;flex-wrap:wrap;gap:6px}
+.miss span{background:#FFE3E3;border-radius:10px;padding:4px 10px;font-weight:700}
+.btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:14px 0}
+.btn{border:0;border-radius:16px;padding:12px 22px;font:700 20px Mali,sans-serif;background:var(--main);color:#fff;box-shadow:0 5px 0 var(--deep);cursor:pointer}
+.btn.gh{background:#fff;color:var(--deep);box-shadow:0 5px 0 #f0dcb5}
+.conf{position:fixed;top:-20px;width:12px;height:16px;z-index:20;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+
+<section class="scr on" id="setup">
+  <div class="top"><h1>⚡ เกมท้าเวลาสูตรคูณ</h1><button class="ib" id="snd" title="เสียง">🔊</button><button class="ib" data-fs title="เต็มจอ">⛶</button></div>
+  <div class="box"><h2>1️⃣ เลือกแม่สูตรคูณ</h2><div class="mul" id="mul"></div>
+    <div class="pre"><button data-pre="2-12">ทั้งหมด</button><button data-pre="2-5">2–5</button><button data-pre="6-9">6–9</button><button data-pre="10-12">10–12</button></div></div>
+  <div class="box"><h2>2️⃣ เวลา</h2><div class="tm" id="tm"><button data-t="30">30 วินาที</button><button data-t="60">60 วินาที</button><button data-t="90">90 วินาที</button></div>
+    <div class="best" id="best"></div></div>
+  <div class="box"><h2>3️⃣ เลือกโหมด</h2><div class="modes">
+    <button class="mode solo" data-mode="S">⏱️ ท้าเวลา<small>คนเดียว ตอบให้ได้มากที่สุด แข่งกับสถิติตัวเอง (ใช้คีย์บอร์ดได้)</small></button>
+    <button class="mode duo" data-mode="D">👥 แข่ง 2 ทีม<small>จอเดียวกัน ทีมฟ้า vs ทีมชมพู โจทย์ของใครของมัน</small></button>
+  </div></div>
+</section>
+
+<section class="scr" id="play">
+  <div class="top"><button class="ib" id="quit" title="ออก">✕</button><h1 id="ptitle"></h1><span class="clock" id="clock">60</span></div>
+  <div class="bar"><i id="tbar"></i></div>
+  <div class="arena" id="arena"></div>
+</section>
+
+<section class="scr" id="result">
+  <div class="res" id="resbox"></div>
+</section>
+<div class="ready" id="ready">3</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var ST = { m: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], t: 60, mode: 'S', sound: true };
+  try { var sv = JSON.parse(localStorage.getItem('kruau-times') || '{}'); if (sv.m && sv.m.length) ST.m = sv.m; if (sv.t) ST.t = sv.t; if (sv.sound === false) ST.sound = false; } catch (e) {}
+  function save() { try { localStorage.setItem('kruau-times', JSON.stringify({ m: ST.m, t: ST.t, sound: ST.sound })); } catch (e) {} }
+  function key() { return 'kruau-times-best:' + ST.m.slice().sort(function (a, b) { return a - b; }).join(',') + ':' + ST.t; }
+  function getBest() { try { return +localStorage.getItem(key()) || 0; } catch (e) { return 0; } }
+  function setBest(v) { try { localStorage.setItem(key(), String(v)); } catch (e) {} }
+  function label() { var a = ST.m.slice().sort(function (x, y) { return x - y; }); var c = a.length > 1 && a[a.length - 1] - a[0] === a.length - 1; return 'แม่ ' + (a.length === 1 ? a[0] : c ? a[0] + '–' + a[a.length - 1] : a.join(', ')); }
+  /* ---------- เสียง ---------- */
+  var AC = null;
+  function tone(f, d, type, when) {
+    if (!ST.sound) return;
+    try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); var t = AC.currentTime + (when || 0), o = AC.createOscillator(), g = AC.createGain(); o.type = type || 'sine'; o.frequency.value = f; g.gain.setValueAtTime(.18, t); g.gain.exponentialRampToValueAtTime(.001, t + d); o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + d); } catch (e) {}
+  }
+  var good = function () { tone(880, .12); tone(1320, .14, 'sine', .07); }, bad = function () { tone(200, .25, 'square'); }, tick = function () { tone(660, .08, 'triangle'); }, fan = function () { [523, 659, 784, 1046].forEach(function (f, i) { tone(f, .25, 'triangle', i * .13); }); };
+  /* ---------- หน้าตั้งค่า ---------- */
+  var mh = ''; for (var i = 2; i <= 12; i++) mh += '<button data-m="' + i + '">' + i + '</button>';
+  $('mul').innerHTML = mh;
+  function paint() {
+    Array.prototype.forEach.call($('mul').children, function (b) { b.classList.toggle('on', ST.m.indexOf(+b.dataset.m) >= 0); });
+    Array.prototype.forEach.call($('tm').children, function (b) { b.classList.toggle('on', +b.dataset.t === ST.t); });
+    var bs = getBest(); $('best').textContent = bs ? '🏆 สถิติดีที่สุดของ ' + label() + ' (' + ST.t + ' วินาที): ' + bs + ' ข้อ' : '🏆 ยังไม่มีสถิติของ ' + label() + ' (' + ST.t + ' วินาที) มาสร้างสถิติแรกกัน!';
+    $('snd').textContent = ST.sound ? '🔊' : '🔇'; save();
+  }
+  $('mul').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; var v = +b.dataset.m, k = ST.m.indexOf(v); if (k >= 0) { if (ST.m.length > 1) ST.m.splice(k, 1); } else ST.m.push(v); tick(); paint(); });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-pre]'), function (b) { b.onclick = function () { var p = b.dataset.pre.split('-').map(Number); ST.m = []; for (var x = p[0]; x <= p[1]; x++) ST.m.push(x); tick(); paint(); }; });
+  $('tm').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { ST.t = +b.dataset.t; tick(); paint(); } });
+  $('snd').onclick = function () { ST.sound = !ST.sound; paint(); };
+  Array.prototype.forEach.call(document.querySelectorAll('[data-fs]'), function (b) { b.onclick = function () { try { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen(); } catch (e) {} }; });
+  paint();
+  /* ---------- เกม ---------- */
+  var G = null, timer = null;
+  function show(id) { Array.prototype.forEach.call(document.querySelectorAll('.scr'), function (s) { s.classList.toggle('on', s.id === id); }); }
+  function newQ(p) {
+    var a, b, k, n = 0;
+    do { a = ST.m[Math.floor(Math.random() * ST.m.length)]; b = 1 + Math.floor(Math.random() * 12); if (Math.random() < .5) { k = a; a = b; b = k; } n++; } while (p.last === a + 'x' + b && n < 20);
+    p.last = a + 'x' + b; p.a = a; p.b = b; p.ans = a * b; p.inp = ''; p.lock = false; drawQ(p);
+  }
+  function drawQ(p, cls, note) {
+    var q = p.el.querySelector('.q'); q.className = 'q' + (cls ? ' ' + cls : '');
+    q.innerHTML = '<div>' + p.a + ' × ' + p.b + ' = <span class="ans">' + (p.inp || '&nbsp;') + '</span>' + (note ? '<small>' + note + '</small>' : '') + '</div>';
+    p.el.querySelector('.tname b').textContent = p.score;
+    var c = p.el.querySelector('.combo'); c.textContent = p.streak >= 3 ? '🔥 ' + p.streak + ' ติด' : '';
+  }
+  function press(p, k) {
+    if (!G || !G.run || p.lock) return;
+    if (k === 'del') { p.inp = p.inp.slice(0, -1); drawQ(p); return; }
+    if (k === 'ok') { if (p.inp) check(p); return; }
+    if (p.inp.length >= 3) return;
+    p.inp += k; drawQ(p);
+    if (p.inp.length >= String(p.ans).length) check(p);
+  }
+  function check(p) {
+    p.lock = true;
+    if (+p.inp === p.ans) { p.score++; p.streak++; good(); drawQ(p, 'ok'); setTimeout(function () { if (G && G.run) newQ(p); }, 260); }
+    else { p.streak = 0; bad(); p.miss.push(p.a + ' × ' + p.b + ' = ' + p.ans); var right = p.ans; p.inp = String(right); drawQ(p, 'no', 'คำตอบคือ ' + right); setTimeout(function () { if (G && G.run) newQ(p); }, 1100); }
+  }
+  function sideHTML(t, name) {
+    var keys = ['7', '8', '9', '4', '5', '6', '1', '2', '3', 'del', '0', 'ok'];
+    return '<div class="side ' + t + '"><div class="tname">' + name + ' <span>คะแนน <b>0</b></span></div><span class="combo"></span><div class="q"></div><div class="pad">' +
+      keys.map(function (k) { return '<button data-k="' + k + '"' + (k === 'del' || k === 'ok' ? ' class="fn"' : '') + '>' + (k === 'del' ? '⌫' : k === 'ok' ? '✔' : k) + '</button>'; }).join('') + '</div></div>';
+  }
+  function start(mode) {
+    ST.mode = mode; save();
+    $('play').classList.toggle('duo', mode === 'D');
+    $('ptitle').textContent = (mode === 'D' ? '👥 แข่ง 2 ทีม · ' : '⏱️ ท้าเวลา · ') + label();
+    $('arena').innerHTML = mode === 'D' ? sideHTML('A', '🔵 ทีมฟ้า') + sideHTML('B', '🩷 ทีมชมพู') : sideHTML('S', '⭐ คะแนน');
+    var P = Array.prototype.map.call($('arena').children, function (el) { return { el: el, score: 0, streak: 0, miss: [], inp: '', last: '' }; });
+    G = { P: P, run: false, left: ST.t };
+    P.forEach(function (p) {
+      p.el.querySelector('.pad').addEventListener('pointerdown', function (e) { var b = e.target.closest('button'); if (!b) return; e.preventDefault(); press(p, b.dataset.k); });
+      p.a = '?'; p.b = '?'; drawQ(p);
+    });
+    show('play'); $('tbar').style.transform = 'scaleX(1)'; $('clock').textContent = ST.t;
+    var n = 3, r = $('ready'); r.textContent = n; r.classList.add('on'); tick();
+    var cd = setInterval(function () {
+      n--; if (n > 0) { r.textContent = n; tick(); return; }
+      clearInterval(cd); r.textContent = 'เริ่ม!'; tone(988, .3);
+      setTimeout(function () { r.classList.remove('on'); go(); }, 450);
+    }, 800);
+    G.cd = cd;
+  }
+  function go() {
+    if (!G) return; G.run = true; G.end = Date.now() + ST.t * 1000;
+    G.P.forEach(newQ);
+    timer = setInterval(function () {
+      var left = Math.max(0, G.end - Date.now()), s = Math.ceil(left / 1000);
+      if ($('clock').textContent !== String(s)) { $('clock').textContent = s; if (s <= 5 && s > 0) tick(); }
+      $('tbar').style.transform = 'scaleX(' + (left / (ST.t * 1000)) + ')';
+      if (left <= 0) finish();
+    }, 100);
+  }
+  function stop() { if (timer) clearInterval(timer); timer = null; if (G && G.cd) clearInterval(G.cd); $('ready').classList.remove('on'); if (G) G.run = false; }
+  function confetti() { var C = ['#F59E0B', '#2E8BEF', '#E8478B', '#2DBE6C', '#8B5CF6']; for (var i = 0; i < 60; i++) { var d = document.createElement('i'); d.className = 'conf'; d.style.left = Math.random() * 100 + 'vw'; d.style.background = C[i % 5]; d.style.animationDuration = 1.6 + Math.random() * 1.6 + 's'; d.style.animationDelay = Math.random() * .5 + 's'; document.body.appendChild(d); setTimeout(function (x) { x.remove(); }.bind(null, d), 4000); } }
+  function missHTML(p) {
+    var u = {}; p.miss.forEach(function (m) { u[m] = 1; }); var L = Object.keys(u);
+    return L.length ? '<h3 style="margin:10px 0 6px">📌 ข้อที่ควรฝึกเพิ่ม</h3><div class="miss">' + L.map(function (m) { return '<span>' + m + '</span>'; }).join('') + '</div>' : '<p>🎯 ไม่ผิดเลยสักข้อ เก่งมาก!</p>';
+  }
+  function finish() {
+    stop(); fan(); confetti();
+    var h = '';
+    if (ST.mode === 'S') {
+      var p = G.P[0], b = getBest(), nb = p.score > b; if (nb) setBest(p.score);
+      var tot = p.score + p.miss.length, acc = tot ? Math.round(p.score * 100 / tot) : 0;
+      var st = p.score >= ST.t / 2 ? 3 : p.score >= ST.t / 4 ? 2 : p.score > 0 ? 1 : 0;
+      h = '<div class="box" style="text-align:center"><h2>⏱️ หมดเวลา! · ' + label() + ' · ' + ST.t + ' วินาที</h2><div class="big">' + p.score + ' ข้อ</div><div class="stars">' + '⭐'.repeat(st) + '☆'.repeat(3 - st) + '</div>' +
+        '<p>' + (nb ? (b ? '🏆 <b>ทำลายสถิติใหม่!</b> (เดิม ' + b + ' ข้อ)' : '🏆 <b>สถิติแรกของหนู!</b> ครั้งหน้าลองทำให้ได้มากกว่านี้นะ') : '🏆 สถิติดีที่สุด: ' + b + ' ข้อ') + ' · ถูก ' + acc + '%</p></div><div class="box">' + missHTML(p) + '</div>';
+    } else {
+      var A = G.P[0], B = G.P[1], w = A.score === B.score ? '🤝 เสมอกัน!' : A.score > B.score ? '🏆 ทีมฟ้าชนะ!' : '🏆 ทีมชมพูชนะ!';
+      h = '<div class="box" style="text-align:center"><h2>⏱️ หมดเวลา! · ' + label() + '</h2><div class="big" style="font-size:clamp(40px,9vw,80px)">' + w + '</div></div><div class="cmp">' +
+        [[A, 'A', '🔵 ทีมฟ้า'], [B, 'B', '🩷 ทีมชมพู']].map(function (x) { return '<div class="side ' + x[1] + '"><div class="tname" style="justify-content:center">' + x[2] + '</div><div class="big" style="color:var(--cd)">' + x[0].score + '</div>' + missHTML(x[0]) + '</div>'; }).join('') + '</div>';
+    }
+    h += '<div class="btns"><button class="btn" id="again">🔁 เล่นอีกครั้ง</button><button class="btn gh" id="back">⚙️ เปลี่ยนแม่ / โหมด</button></div>';
+    $('resbox').innerHTML = h; show('result');
+    $('again').onclick = function () { start(ST.mode); };
+    $('back').onclick = function () { G = null; paint(); show('setup'); };
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-mode]'), function (b) { b.onclick = function () { start(b.dataset.mode); }; });
+  $('quit').onclick = function () { stop(); G = null; paint(); show('setup'); };
+  document.addEventListener('keydown', function (e) {
+    if (!G || !G.run || ST.mode !== 'S') return; var p = G.P[0];
+    if (/^[0-9]$/.test(e.key)) press(p, e.key); else if (e.key === 'Backspace') press(p, 'del'); else if (e.key === 'Enter') press(p, 'ok'); else return;
+    e.preventDefault();
+  });
+  document.addEventListener('dblclick', function (e) { e.preventDefault(); }, { passive: false });
+})();
+</script>
+</body>
+</html>
