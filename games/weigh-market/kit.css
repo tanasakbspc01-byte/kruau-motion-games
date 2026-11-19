@@ -111,9 +111,9 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .frac .d{padding:.06em .18em 0}
 
 /* modals */
-.modal{position:fixed;inset:0;background:rgba(74,58,48,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}
+.modal{position:fixed;inset:0;background:rgba(74,58,48,.45);display:none;align-items:flex-start;justify-content:center;padding:16px;z-index:20;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .modal.open{display:flex}
-.sheet{background:var(--card);border-radius:28px;padding:22px;max-width:440px;width:100%;text-align:center;box-shadow:0 8px 0 rgba(0,0,0,.12);display:flex;flex-direction:column;gap:10px;align-items:center}
+.sheet{margin:auto;flex:none;background:var(--card);border-radius:28px;padding:22px;max-width:440px;width:100%;text-align:center;box-shadow:0 8px 0 rgba(0,0,0,.12);display:flex;flex-direction:column;gap:10px;align-items:center}
 .sheet h2{font-size:1.6rem}
 .stars{font-size:2.4rem;letter-spacing:.1em}
 .stars .off{filter:grayscale(1);opacity:.35}
@@ -165,5 +165,5 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .review li b{display:block;color:#2C8A52}
 .review .btn{width:100%}
 .all-good{text-align:center;font-weight:700;color:#2C8A52;margin:8px 0}
-.sheet.practice{max-width:640px;width:calc(100% - 24px);max-height:92vh;overflow:auto}
+.sheet.practice{max-width:640px;width:calc(100% - 24px)}
 .sheet.practice .choices{margin-top:10px}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>กล่องสุ่มนับเลข</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.boxwrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px 0}
+.blind{position:relative;width:200px;height:200px;border:none;border-radius:28px;background:var(--b);box-shadow:0 10px 0 rgba(0,0,0,.15),inset 0 -14px 0 rgba(0,0,0,.08);animation:wiggle 1.2s ease-in-out infinite;cursor:pointer}
+.blind .lid{position:absolute;top:-30px;left:50%;transform:translateX(-50%);font-size:3.4rem}
+.blind .qm{font-size:6rem;font-weight:700;color:#fff;text-shadow:0 4px 0 rgba(0,0,0,.15)}
+.tap{font-weight:700;color:var(--ink-soft);font-size:1.2rem;animation:blink .8s infinite alternate}
+.opened{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-content:center;min-height:150px;padding:18px;border-radius:26px;background:#fff;border:6px solid var(--b);box-shadow:0 8px 0 var(--b)}
+.opened.pop{animation:open .45s cubic-bezier(.3,1.6,.5,1)}
+.toy{font-size:clamp(2.2rem,8vw,3.2rem);line-height:1;animation:bob 1.6s ease-in-out infinite}
+.toy:nth-child(2n){animation-delay:.3s}.toy:nth-child(3n){animation-delay:.6s}
+.empty{font-size:1.6rem;font-weight:700;color:var(--ink-soft)}
+.twin{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.twin .opened{min-height:170px}
+.twin .toy{font-size:clamp(1.6rem,6vw,2.4rem)}
+.line{display:grid;grid-template-columns:repeat(11,1fr);gap:4px}
+.line span{display:grid;place-items:center;aspect-ratio:1;border-radius:12px;background:#fff;border:3px solid var(--line);font-weight:700;font-size:clamp(1rem,4vw,1.6rem)}
+.line span.me{background:#FFE7C2;border-color:var(--orange)}
+.choices .choice{font-size:clamp(1.5rem,6vw,2.2rem)}
+@keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(-6deg)}40%{transform:rotate(6deg)}60%{transform:rotate(-3deg)}}
+@keyframes open{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+@keyframes bob{50%{transform:translateY(-6px)}}
+@keyframes blink{to{opacity:.4}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, thaiWords, thaiDigits} = KIT;
+const N = 8;
+const TOYS = ["🐰","🐻","🦄","🐱","🐶","🐥","🐸","🐼","🦊","🐨"];
+const BOXC = ["#F7B6C8","#B7A4EE","#86D9F0","#F6CD6B","#7FD39A","#F2A65A"];
+function near(ans, lo, hi, k=3){
+  const s = new Set([ans]);
+  for (const d of shuffle([1,-1,2,-2,3,-3])) if (s.size < k && ans+d >= lo && ans+d <= hi) s.add(ans+d);
+  while (s.size < k) s.add(rand(lo, hi));
+  return shuffle([...s]);
+}
+const toys = (n, t) => n ? Array.from({length:n}, () => `<span class="toy">${t}</span>`).join("") : `<span class="empty">ว่างเปล่า!</span>`;
+/* kinds: count, thai, word, compare, after, before */
+const PLAN = {1:["count","count","thai","count","zero","count","thai","count"], 2:["count","thai","word","zero","count","word","thai","count"], 3:["compare","after","thai","before","word","compare","zero","after"]};
+
+KIT.mount({
+  key:"g1-box", title:"กล่องสุ่มนับเลข", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 1 จำนวนนับ 1 ถึง 10 และ 0",
+  heroHTML:"แกะ<em>กล่องสุ่ม</em> นับน้องอาร์ตทอย 🎁", heroDesc:"กล่องสุ่มมาแล้ว! แตะเพื่อแกะกล่อง แล้วนับว่าข้างในมีน้องกี่ตัว บางกล่องอาจว่างเปล่าด้วยนะ",
+  progIcon:"🎁",
+  howto:["แตะกล่องสุ่มเพื่อแกะ","นับน้องที่อยู่ในกล่อง","แตะคำตอบที่ถูก กด 🔊 เพื่อฟังโจทย์อีกครั้ง","ด่านยาก: เปรียบเทียบกล่อง และหาจำนวนที่อยู่ก่อน-หลัง"],
+  note:"กล่องว่าง ไม่มีของเลย แทนด้วยเลข 0 อ่านว่า ศูนย์ · เลขไทย ๑ ๒ ๓ ๔ ๕ ๖ ๗ ๘ ๙ ๑๐",
+  levels:{
+    1:{pill:N+" กล่อง", color:"var(--green)", desc:"นับ 0 ถึง 5 และเลขไทย"},
+    2:{pill:N+" กล่อง", color:"var(--blue)", desc:"นับ 0 ถึง 10 เลขไทย และตัวหนังสือ"},
+    3:{pill:N+" กล่อง", color:"var(--purple)", desc:"มากกว่า น้อยกว่า และจำนวนก่อน-หลัง"}
+  },
+  play(level, ctx){
+    const max = level === 1 ? 5 : 10;
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 120}); return; }
+      const kind = PLAN[level][idx], t = pick(TOYS), col = BOXC[idx % BOXC.length];
+      const n = kind === "zero" ? 0 : rand(1, max);
+      if (kind === "compare"){
+        let a = rand(1,10), b; do { b = rand(1,10); } while (b === a);
+        const more = Math.random() < .5, t2 = pick(TOYS.filter(x => x !== t));
+        const say = more ? "กล่องไหนมีน้องมากกว่า" : "กล่องไหนมีน้องน้อยกว่า";
+        ctx.stage.innerHTML = `<div class="twin"><div class="opened" style="--b:${col}">${toys(a,t)}</div><div class="opened" style="--b:${BOXC[(idx+2)%6]}">${toys(b,t2)}</div></div><div id="q"></div>`;
+        const ans = (more ? a > b : a < b) ? 0 : 1;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`กล่องที่ ${idx+1} จาก ${N}`, html:`กล่องไหนมีน้อง<b>${more ? "มากกว่า" : "น้อยกว่า"}</b>`, say,
+          options:[`กล่องซ้าย ${t}`, `กล่องขวา ${t2}`], answer:ans, cols:2, explain:`กล่องซ้ายมี ${a} กล่องขวามี ${b} · ${Math.max(a,b)} มากกว่า ${Math.min(a,b)}`, onNext:done});
+        return;
+      }
+      if (kind === "after" || kind === "before"){
+        const x = kind === "after" ? rand(0,9) : rand(1,10), ans = kind === "after" ? x+1 : x-1;
+        const say = kind === "after" ? `จำนวนที่อยู่ถัดจาก ${x} คือเท่าไร` : `จำนวนที่อยู่ก่อน ${x} คือเท่าไร`;
+        const opts = near(ans, 0, 10);
+        ctx.stage.innerHTML = `<div class="line">${[...Array(11).keys()].map(k => `<span class="${k === x ? "me" : ""}">${k === ans ? "?" : k}</span>`).join("")}</div><div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`กล่องที่ ${idx+1} จาก ${N}`, html: kind === "after" ? `จำนวนที่อยู่<b>ถัดจาก</b> ${x} คือ` : `จำนวนที่อยู่<b>ก่อน</b> ${x} คือ`, say,
+          options:opts.map(String), answer:opts.indexOf(ans), cols:3, explain: kind === "after" ? `ถัดจาก ${x} คือ ${ans} (มากกว่า ${x} อยู่ 1)` : `ก่อน ${x} คือ ${ans} (น้อยกว่า ${x} อยู่ 1)`, onNext:done});
+        return;
+      }
+      ctx.stage.innerHTML = `<div class="boxwrap"><button class="blind" type="button" id="bx" style="--b:${col}" aria-label="แกะกล่อง"><span class="lid">🎀</span><span class="qm">?</span></button><div class="tap">แตะเพื่อแกะกล่อง!</div></div>`;
+      KIT.speak("แตะเพื่อแกะกล่องสุ่ม");
+      ctx.stage.querySelector("#bx").onclick = () => {
+        KIT.sfx.pop();
+        ctx.stage.innerHTML = `<div class="opened pop" style="--b:${col}">${toys(n,t)}</div><div id="q"></div>`;
+        let html, say, opts, ans, explain;
+        if (kind === "count" || kind === "zero"){ html = "ในกล่องมีน้องกี่ตัว"; say = html; opts = near(n, 0, max); ans = opts.indexOf(n); explain = n ? `นับได้ ${n} ตัว` : "ไม่มีเลย แทนด้วย 0 อ่านว่า ศูนย์"; opts = opts.map(String); }
+        else if (kind === "thai"){ html = "จำนวนน้องในกล่อง เขียนเป็น<b>เลขไทย</b>ได้แบบไหน"; say = "จำนวนน้องในกล่อง เขียนเป็นเลขไทยได้แบบไหน"; const o = near(n, 0, max); ans = o.indexOf(n); opts = o.map(v => thaiDigits(v)); explain = `${n} เขียนเป็นเลขไทยว่า ${thaiDigits(n)}`; }
+        else { html = "จำนวนน้องในกล่อง <b>อ่านว่า</b>อย่างไร"; say = "จำนวนน้องในกล่อง อ่านว่าอย่างไร"; const o = near(n, 0, max); ans = o.indexOf(n); opts = o.map(v => thaiWords(v)); explain = `${n} อ่านว่า ${thaiWords(n)}`; }
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`กล่องที่ ${idx+1} จาก ${N}`, html, say, options:opts, answer:ans, cols:3, explain, onNext:done});
+      };
+    }
+    ctx.progress(0, N); ctx.say("กล่องสุ่มมาแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

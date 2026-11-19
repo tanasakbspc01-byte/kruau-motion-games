@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>กระดานหกหนักเบา</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.park{background:linear-gradient(#DDF0FF 0 70%,#9BD58A 70%);border-radius:26px;border:4px solid #fff;box-shadow:0 6px 0 rgba(91,184,120,.3);padding:16px 10px 10px}
+.saw{position:relative;height:190px;width:100%;max-width:520px;margin:0 auto}
+.saw.sm{height:150px}
+.plank{position:absolute;left:4%;right:4%;top:110px;height:16px;border-radius:10px;background:#E08A3C;box-shadow:0 4px 0 #B0662A;transition:transform .8s cubic-bezier(.3,1.5,.5,1);animation:settle .9s cubic-bezier(.3,1.5,.5,1)}
+.saw.sm .plank{top:84px}
+.seat{position:absolute;bottom:14px;width:46%;display:flex;justify-content:center;align-items:flex-end}
+.seat.l{left:0}.seat.r{right:0}
+.pivot{position:absolute;left:50%;top:124px;width:0;height:0;margin-left:-30px;border-left:30px solid transparent;border-right:30px solid transparent;border-bottom:52px solid #7A5A44}
+.saw.sm .pivot{top:98px;margin-left:-24px;border-left-width:24px;border-right-width:24px;border-bottom-width:40px}
+.obj{font-size:clamp(3rem,13vw,4.6rem);line-height:1}
+.saw.sm .obj{font-size:clamp(2.2rem,9vw,3.2rem)}
+.stack{display:flex;flex-wrap:wrap-reverse;justify-content:center;gap:2px;max-width:150px}
+.blk{width:24px;height:24px;border-radius:5px;background:#F6CD6B;box-shadow:inset 0 -4px 0 #D8A93A,0 0 0 2px #B98A26}
+.saw.sm .blk{width:18px;height:18px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@keyframes settle{from{transform:rotate(0)}}
+@media (max-width:520px){.pair{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const THINGS = [["แตงโม","🍉"],["สับปะรด","🍍"],["ฟักทอง","🎃"],["มะพร้าว","🥥"],["แอปเปิล","🍎"],["กล้วย","🍌"],["ลูกบอล","⚽"],["ตุ๊กตาหมี","🧸"],["หนังสือ","📚"],["ส้ม","🍊"]];
+function near(ans, lo, hi){ const s = new Set([ans]); for (const d of shuffle([1,-1,2,-2])) if (s.size < 3 && ans+d >= lo && ans+d <= hi) s.add(ans+d); while (s.size < 3) s.add(rand(lo,hi)); return shuffle([...s]); }
+const blocks = n => Array(n).fill(`<i class="blk"></i>`).join("");
+function seesaw(L, R, tilt, small){
+  return `<div class="saw${small ? " sm" : ""}"><div class="plank" style="transform:rotate(${tilt}deg)"><div class="seat l">${L}</div><div class="seat r">${R}</div></div><div class="pivot"></div></div>`;
+}
+const PLAN = {1:["heavy","light","heavy","unit","light","heavy","unit","light"], 2:["unit","heavy","unit","cmp","light","unit","cmp","heavy"], 3:["order","unit","cmp","order","more","order","cmp","more"]};
+
+KIT.mount({
+  key:"g1-seesaw", title:"กระดานหกหนักเบา", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 7 การวัดน้ำหนัก",
+  heroHTML:"ดู<em>กระดานหก</em> ใครหนัก ใครเบา ⚖️", heroDesc:"ของที่หนักกว่าจะทำให้กระดานหกเอียงลง ของที่เบากว่าจะลอยขึ้น ลองสังเกตแล้วตอบว่าอะไรหนักกว่า และหนักเท่ากับก้อนไม้กี่ก้อน",
+  progIcon:"⚖️",
+  howto:["ข้างที่ต่ำลง = หนักกว่า · ข้างที่ลอยขึ้น = เบากว่า","ถ้ากระดานตรง แปลว่าหนักเท่ากัน","นับก้อนไม้เพื่อบอกว่าของหนักเท่ากับกี่ก้อน","กด 🔊 ฟังโจทย์ได้"],
+  note:"การวัดน้ำหนักโดยใช้หน่วยที่ไม่ใช่หน่วยมาตรฐาน เช่น ก้อนไม้ · ถ้า ก หนักกว่า ข และ ข หนักกว่า ค แล้ว ก หนักที่สุด",
+  levels:{
+    1:{pill:N+" ข้อ", color:"var(--green)", desc:"หนักกว่า เบากว่า และนับก้อนไม้"},
+    2:{pill:N+" ข้อ", color:"var(--blue)", desc:"เทียบน้ำหนักจากจำนวนก้อนไม้"},
+    3:{pill:N+" ข้อ", color:"var(--purple)", desc:"เรียงหนักที่สุด เบาที่สุด และหนักกว่ากี่ก้อน"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 140}); return; }
+      const kind = PLAN[level][idx], [A, B, C] = shuffle(THINGS.slice()).slice(0, 3);
+      let pre, html, say, opts, ans, explain;
+      if (kind === "heavy" || kind === "light"){
+        const leftHeavy = Math.random() < .5, heavy = leftHeavy ? A : B, light = leftHeavy ? B : A;
+        pre = seesaw(`<span class="obj">${A[1]}</span>`, `<span class="obj">${B[1]}</span>`, leftHeavy ? -12 : 12);
+        html = `อะไร<b>${kind === "heavy" ? "หนักกว่า" : "เบากว่า"}</b>`; say = `${A[0]} กับ ${B[0]} อะไร${kind === "heavy" ? "หนักกว่า" : "เบากว่า"}`;
+        opts = [`${A[1]} ${A[0]}`, `${B[1]} ${B[0]}`]; ans = (kind === "heavy" ? heavy : light) === A ? 0 : 1;
+        explain = `ข้าง${heavy[0]}ต่ำลง จึงหนักกว่า ${light[0]}จึงเบากว่า`;
+      } else if (kind === "unit"){
+        const n = rand(level === 1 ? 2 : 3, level === 1 ? 6 : 10);
+        pre = seesaw(`<span class="obj">${A[1]}</span>`, `<span class="stack">${blocks(n)}</span>`, 0);
+        html = `${A[0]}หนักเท่ากับก้อนไม้กี่ก้อน`; say = `กระดานหกตรงพอดี ${A[0]}หนักเท่ากับก้อนไม้กี่ก้อน`;
+        const o = near(n, 1, 12); opts = o.map(String); ans = o.indexOf(n); explain = `กระดานตรง แปลว่าหนักเท่ากัน ${A[0]}หนักเท่ากับ ${n} ก้อน`;
+      } else if (kind === "cmp" || kind === "more"){
+        let a = rand(2, 10), b; do { b = rand(2, 10); } while (b === a);
+        pre = `<div class="pair">${seesaw(`<span class="obj">${A[1]}</span>`, `<span class="stack">${blocks(a)}</span>`, 0, true)}${seesaw(`<span class="obj">${B[1]}</span>`, `<span class="stack">${blocks(b)}</span>`, 0, true)}</div>`;
+        if (kind === "cmp"){ html = `อะไร<b>หนักกว่า</b>`; say = `${A[0]} หนัก ${a} ก้อน ${B[0]} หนัก ${b} ก้อน อะไรหนักกว่า`; opts = [`${A[1]} ${A[0]}`, `${B[1]} ${B[0]}`]; ans = a > b ? 0 : 1; explain = `${A[0]} ${a} ก้อน ${B[0]} ${b} ก้อน · ${a > b ? A[0] : B[0]}หนักกว่า`; }
+        else { const big = a > b ? A : B, sm = a > b ? B : A, d = Math.abs(a - b); html = `${big[0]}หนักกว่า${sm[0]}กี่ก้อน`; say = html; const o = near(d, 1, 9); opts = o.map(String); ans = o.indexOf(d); explain = `${Math.max(a,b)} − ${Math.min(a,b)} = ${d} ก้อน`; }
+      } else {
+        const wantHeavy = Math.random() < .5;
+        pre = `<div class="pair">${seesaw(`<span class="obj">${A[1]}</span>`, `<span class="obj">${B[1]}</span>`, -12, true)}${seesaw(`<span class="obj">${B[1]}</span>`, `<span class="obj">${C[1]}</span>`, -12, true)}</div>`;
+        html = `อะไร<b>${wantHeavy ? "หนักที่สุด" : "เบาที่สุด"}</b>`; say = `ดูกระดานหกสองอัน อะไร${wantHeavy ? "หนักที่สุด" : "เบาที่สุด"}`;
+        const three = shuffle([A, B, C]); opts = three.map(x => `${x[1]} ${x[0]}`); ans = three.indexOf(wantHeavy ? A : C);
+        explain = `${A[0]}หนักกว่า${B[0]} และ${B[0]}หนักกว่า${C[0]} ดังนั้น${A[0]}หนักที่สุด ${C[0]}เบาที่สุด`;
+      }
+      ctx.stage.innerHTML = `<div class="park">${pre}</div><div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ข้อ ${idx+1} จาก ${N}`, html, say, options:opts, answer:ans, cols: opts.length === 2 ? 2 : 3, explain, onNext:done});
+    }
+    ctx.progress(0, N); ctx.say("ขึ้นกระดานหกกันเลย!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

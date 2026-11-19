@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ฮิปโปจอมหิว</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.zoo{display:flex;align-items:center;gap:12px;background:linear-gradient(#DFF3FF,#CDEBD3);border-radius:26px;padding:14px;border:3px solid #fff;box-shadow:0 6px 0 rgba(127,211,154,.35)}
+.hip{width:min(36%,210px);flex:none}
+.hip svg{width:100%;display:block}
+.hip .open{display:none}
+.hip.chomp .open{display:block;animation:chomp .25s 3 alternate}
+.hip.chomp .mouth{display:none}
+.hip.chomp svg{animation:happy .8s}
+.plates{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.plates.big{font-size:5rem}
+.plate{min-width:110px;min-height:110px;max-width:230px;padding:12px;border-radius:50%;background:#fff;border:5px solid #E9DCCB;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:2px}
+.plate span{font-size:clamp(1.5rem,5vw,2.1rem);transition:transform .3s,opacity .3s}
+.plate span.eaten{transform:translate(-80px,0) scale(.2);opacity:0}
+.plate em{color:var(--ink-soft);font-weight:700}
+.plus{font-size:2.6rem;font-weight:700;color:var(--orange-deep)}
+.sent{font-size:clamp(2rem,8vw,3rem);font-weight:700;letter-spacing:.05em}
+.hole{display:inline-grid;place-items:center;min-width:1.4em;border-radius:14px;background:#FFE7C2;color:var(--orange-deep);padding:0 .15em}
+.choices .choice{font-size:clamp(1.7rem,7vw,2.4rem)}
+@keyframes chomp{to{transform:scaleY(.4);transform-origin:50% 80%}}
+@keyframes happy{50%{transform:translateY(-10px) rotate(-3deg)}}
+@media (max-width:520px){.zoo{flex-direction:column}.hip{width:150px}.plate{min-width:90px;min-height:90px}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const FOOD = ["🍉","🍎","🥕","🍌","🍓","🥬"];
+const HIPPO = `<svg viewBox="0 0 220 170" aria-hidden="true">
+  <ellipse cx="112" cy="128" rx="92" ry="38" fill="#9A8C9E"/>
+  <ellipse cx="110" cy="92" rx="78" ry="62" fill="#B7A8B8" stroke="#5E5262" stroke-width="4"/>
+  <ellipse cx="60" cy="40" rx="12" ry="10" fill="#B7A8B8" stroke="#5E5262" stroke-width="4"/><ellipse cx="160" cy="40" rx="12" ry="10" fill="#B7A8B8" stroke="#5E5262" stroke-width="4"/>
+  <circle cx="82" cy="70" r="9" fill="#3A3040"/><circle cx="138" cy="70" r="9" fill="#3A3040"/><circle cx="85" cy="67" r="3" fill="#fff"/><circle cx="141" cy="67" r="3" fill="#fff"/>
+  <ellipse cx="66" cy="94" rx="11" ry="7" fill="#F2A7B8" opacity=".8"/><ellipse cx="154" cy="94" rx="11" ry="7" fill="#F2A7B8" opacity=".8"/>
+  <g class="mouth"><ellipse cx="110" cy="118" rx="44" ry="20" fill="#C9B7C9" stroke="#5E5262" stroke-width="4"/><circle cx="96" cy="112" r="3.5" fill="#5E5262"/><circle cx="124" cy="112" r="3.5" fill="#5E5262"/></g>
+  <path class="open" d="M74 120 q36 34 72 0 z" fill="#8E3B52" stroke="#5E5262" stroke-width="4"/></svg>`;
+function near(ans, lo, hi){ const s = new Set([ans]); for (const d of shuffle([1,-1,2,-2])) if (s.size < 3 && ans+d >= lo && ans+d <= hi) s.add(ans+d); while (s.size < 3) s.add(rand(lo,hi)); return shuffle([...s]); }
+const pile = (n, f) => n ? Array.from({length:n}, () => `<span>${f}</span>`).join("") : `<em>ว่าง</em>`;
+
+KIT.mount({
+  key:"g1-hippo", title:"ฮิปโปจอมหิว", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 2 การบวกจำนวนสองจำนวนที่ผลบวกไม่เกิน 10",
+  heroHTML:"ป้อนอาหาร<em>ฮิปโปแคระ</em>ตัวกลม 🦛", heroDesc:"น้องฮิปโปหิวมาก! นับผลไม้สองจานรวมกัน บอกให้ถูกว่าน้องจะได้กินทั้งหมดกี่ชิ้น ตอบถูกน้องจะงับอร่อยเลย",
+  progIcon:"🍉",
+  howto:["ดูผลไม้จานซ้ายและจานขวา","นับรวมกันทั้งหมด (การบวก)","แตะคำตอบที่ถูก กด 🔊 ฟังโจทย์ได้","ด่านยาก: หาจำนวนที่หายไป เช่น 3 + ? = 7"],
+  note:"การบวก คือ การนำจำนวนมารวมกัน · 3 + 2 = 5 อ่านว่า สามบวกสองเท่ากับห้า",
+  levels:{
+    1:{pill:N+" มื้อ", color:"var(--green)", desc:"ผลบวกไม่เกิน 5 มีรูปให้นับ"},
+    2:{pill:N+" มื้อ", color:"var(--blue)", desc:"ผลบวกไม่เกิน 10 มีรูปและประโยคสัญลักษณ์"},
+    3:{pill:N+" มื้อ", color:"var(--purple)", desc:"ประโยคสัญลักษณ์ หาตัวที่หายไป และบวกศูนย์"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 120}); return; }
+      const f = pick(FOOD), max = level === 1 ? 5 : 10;
+      let a, b, html, say, ans, lo = 0, hi = 10, pics = level < 3 || idx < 3;
+      a = rand(level === 3 && idx % 4 === 3 ? 0 : 1, max - 1); b = rand(level === 3 && idx % 4 === 2 ? 0 : 1, max - a);
+      const missing = level === 3 && idx % 3 === 1;
+      if (missing){ ans = b; html = `<span class="sent">${a} + <b class="hole">?</b> = ${a+b}</span>`; say = `${a} บวกเท่าไร ได้ ${a+b}`; pics = false; }
+      else { ans = a + b; html = level === 1 ? "ฮิปโปจะได้กินทั้งหมดกี่ชิ้น" : `<span class="sent">${a} + ${b} = <b class="hole">?</b></span>`; say = level === 1 ? `จานซ้ายมี ${a} จานขวามี ${b} รวมกันกี่ชิ้น` : `${a} บวก ${b} เท่ากับเท่าไร`; }
+      const opts = near(ans, lo, hi);
+      ctx.stage.innerHTML = `<div class="zoo"><div class="hip" id="hp">${HIPPO}</div>
+        ${pics ? `<div class="plates"><div class="plate">${pile(a,f)}</div><span class="plus">+</span><div class="plate">${pile(b,f)}</div></div>` : `<div class="plates big">${f}</div>`}</div><div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`มื้อที่ ${idx+1} จาก ${N}`, html, say, options:opts.map(String), answer:opts.indexOf(ans), cols:3,
+        explain: missing ? `${a} + ${b} = ${a+b} จำนวนที่หายไปคือ ${b}` : `${a} + ${b} = ${a+b}`,
+        onNext: ok => {
+          const hp = ctx.stage.querySelector("#hp");
+          if (ok && hp){ hp.classList.add("chomp"); ctx.stage.querySelectorAll(".plate span").forEach((s,i) => setTimeout(() => s.classList.add("eaten"), i*60)); KIT.sfx.pop(); }
+          ctx.after(ok ? 800 : 100, () => { idx++; ctx.progress(idx, N); next(); });
+        }});
+    }
+    ctx.progress(0, N); ctx.say("น้องฮิปโปหิวแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

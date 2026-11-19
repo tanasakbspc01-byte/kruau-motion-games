@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>นินจาฟันรูปทรง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.arena{position:relative;height:360px;border-radius:26px;background:radial-gradient(circle at 50% 120%,#3E3A6E,#1E1B3A);border:4px solid #fff;box-shadow:0 6px 0 rgba(30,27,58,.3);overflow:hidden}
+.score{position:absolute;top:10px;left:0;right:0;text-align:center;color:#fff;font-weight:700;font-size:1.1rem;z-index:2;pointer-events:none}
+.fly{position:absolute;bottom:-110px;width:96px;height:96px;padding:0;border:none;background:none;animation-name:toss;animation-timing-function:cubic-bezier(.25,.6,.5,1);animation-fill-mode:forwards;cursor:pointer}
+.fly svg{width:100%;height:100%;filter:drop-shadow(0 4px 0 rgba(0,0,0,.3))}
+.fly .emo{font-size:4.2rem;line-height:1}
+.fly.cut{pointer-events:none}
+.fly.cut svg,.fly.cut .emo{animation:slice .45s forwards}
+.fly.no svg,.fly.no .emo{animation:nope .45s forwards}
+.tgt{color:#E8708F;font-size:1.3em}
+.mini{display:inline-block;width:40px;height:40px;vertical-align:middle;background:#E8708F;border-radius:10px;padding:4px}
+.mini svg{width:100%;height:100%}
+.seq{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;margin-bottom:8px}
+.seq span{width:58px;height:58px;display:grid;place-items:center}
+.seq span svg{width:100%;height:100%}
+.seq .qm{border:4px dashed var(--orange);border-radius:14px;font-size:2rem;font-weight:700;color:var(--orange-deep)}
+.opt{display:block;width:60px;height:60px;margin:0 auto 4px}
+.opt svg{width:100%;height:100%}
+@keyframes toss{0%{transform:translateY(0) rotate(0)}55%{transform:translateY(-330px) rotate(var(--rot))}100%{transform:translateY(-120px) rotate(calc(var(--rot)*2));opacity:.2}}
+@keyframes slice{to{transform:scale(1.4) rotate(25deg);opacity:0;filter:drop-shadow(0 0 12px #FFE07A)}}
+@keyframes nope{40%{transform:translateX(-8px)}70%{transform:translateX(8px)}to{opacity:0}}
+@media (max-width:520px){.arena{height:320px}.fly{width:80px;height:80px}.seq span{width:44px;height:44px}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const COLS = ["#E8708F","#86B6F0","#7FD39A","#F6CD6B","#B7A4EE","#F2A65A"];
+const S2 = {
+  "วงกลม": c => `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="${c}" stroke="#4A3A30" stroke-width="5"/></svg>`,
+  "สามเหลี่ยม": c => `<svg viewBox="0 0 100 100"><polygon points="50,8 94,90 6,90" fill="${c}" stroke="#4A3A30" stroke-width="5" stroke-linejoin="round"/></svg>`,
+  "สี่เหลี่ยม": c => `<svg viewBox="0 0 100 100"><rect x="${pick([10,4])}" y="${pick([10,22])}" width="${pick([80,92])}" height="${pick([80,56])}" fill="${c}" stroke="#4A3A30" stroke-width="5" rx="4"/></svg>`,
+  "วงรี": c => `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="46" ry="28" fill="${c}" stroke="#4A3A30" stroke-width="5"/></svg>`
+};
+const S3 = {"ทรงกลม":["⚽","🏀","🍊","🌍","🔮","🎱"], "ทรงกระบอก":["🥫","🔋","🥁","🧻","🕯️"], "ทรงสี่เหลี่ยมมุมฉาก":["📦","🎁","🧱","📕","🧊"]};
+const ROUNDS = 8;
+const PLAN = {1:["A","A","P","A","A","P","A","A"], 2:["A","A","P","A","P","A","A","P"], 3:["B","B","P","B","A","P","B","P"]};
+function patternQ(level){
+  const names = level === 1 ? ["วงกลม","สามเหลี่ยม","สี่เหลี่ยม"] : Object.keys(S2);
+  const [a, b, c] = shuffle(names.slice());
+  const unit = level === 1 ? [a, b] : pick([[a, b], [a, a, b], [a, b, c]]);
+  const seq = []; while (seq.length < unit.length*2 + 1) seq.push(unit[seq.length % unit.length]);
+  const ans = unit[seq.length % unit.length];
+  const col = {}; names.forEach((n, i) => col[n] = COLS[i]);
+  const opts = shuffle([...new Set([ans, ...shuffle(names.filter(n => n !== ans)).slice(0, 2)])]);
+  return {html:`<div class="seq">${seq.map(n => `<span>${S2[n](col[n])}</span>`).join("")}<span class="qm">?</span></div>รูปต่อไปคือรูปอะไร`, say:"รูปต่อไปคือรูปอะไร",
+    options:opts.map(n => `<span class="opt">${S2[n](col[n])}</span>รูป${n}`), answer:opts.indexOf(ans), explain:`แบบรูปซ้ำกันทีละชุด: ${unit.map(n => "รูป" + n).join(" ")} ต่อไปจึงเป็นรูป${ans}`};
+}
+
+KIT.mount({
+  key:"g1-ninja", title:"นินจาฟันรูปทรง", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 9 รูปเรขาคณิต",
+  heroHTML:"ฟันให้ถูก<em>รูปทรง</em>! 🥷", heroDesc:"รูปเรขาคณิตลอยขึ้นมาเต็มจอ! แตะฟันเฉพาะรูปที่สั่ง ระวังอย่าฟันผิดรูปนะ แล้วมีด่านพิเศษให้เดาแบบรูปถัดไปด้วย",
+  progIcon:"🥷",
+  howto:["ดูคำสั่งว่าต้องฟันรูปอะไร กด 🔊 ฟังซ้ำได้","แตะรูปที่ถูกก่อนที่จะลอยหายไป","แตะผิดรูปเสียคะแนน","ด่านแบบรูป: ดูว่ารูปซ้ำกันอย่างไร แล้วเลือกรูปต่อไป"],
+  note:"รูปสามเหลี่ยม รูปสี่เหลี่ยม รูปวงกลม รูปวงรี · ทรงกลม ทรงกระบอก ทรงสี่เหลี่ยมมุมฉาก",
+  levels:{
+    1:{pill:ROUNDS+" รอบ", color:"var(--green)", desc:"วงกลม สามเหลี่ยม สี่เหลี่ยม และแบบรูปง่าย"},
+    2:{pill:ROUNDS+" รอบ", color:"var(--blue)", desc:"เพิ่มวงรี เร็วขึ้น แบบรูปซับซ้อนขึ้น"},
+    3:{pill:ROUNDS+" รอบ", color:"var(--purple)", desc:"ทรงกลม ทรงกระบอก ทรงสี่เหลี่ยมมุมฉาก จากของรอบตัว"}
+  },
+  play(level, ctx){
+    let r = 0;
+    const done = () => { r++; ctx.progress(r, ROUNDS); next(); };
+    function next(){
+      if (r >= ROUNDS){ ctx.finish({targetSec: 0}); return; }
+      const kind = PLAN[level][r];
+      if (kind === "P"){ const P = patternQ(level); ctx.stage.innerHTML = `<div id="q"></div>`; KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`รอบที่ ${r+1} · แบบรูป`, ...P, cols:3, onNext:done}); return; }
+      action(kind === "B");
+    }
+    function action(solid){
+      const pool = solid ? Object.keys(S3) : level === 1 ? ["วงกลม","สามเหลี่ยม","สี่เหลี่ยม"] : Object.keys(S2);
+      const target = pick(pool), total = 9, nTarget = 4, speed = level === 1 ? 3600 : level === 2 ? 3000 : 3200;
+      const kinds = shuffle([...Array(nTarget).fill(target), ...Array(total - nTarget).fill(0).map(() => pick(pool.filter(p => p !== target)))]);
+      let hit = 0, bad = 0, spawned = 0, gone = 0;
+      const label = solid ? target : "รูป" + target, say = `ฟันเฉพาะ${label}`;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(say)}<div class="qlabel">รอบที่ ${r+1} จาก ${ROUNDS}</div><div class="qtext">ฟันเฉพาะ <b class="tgt">${label}</b> ${solid ? S3[target][0] : `<span class="mini">${S2[target]("#fff")}</span>`}</div></div>
+        <div class="arena" id="ar"><div class="score" id="sc">ฟันได้ 0 / ${nTarget}</div></div>`;
+      KIT.speak(say);
+      const ar = ctx.stage.querySelector("#ar");
+      const endRound = () => {
+        const score = hit === nTarget && !bad ? 1 : hit >= nTarget/2 ? .5 : 0;
+        ctx.record({q:`ฟันเฉพาะ${label}`, a:`มี${label} ${nTarget} ชิ้น ฟันได้ ${hit} ชิ้น ฟันผิด ${bad} ครั้ง`, score});
+        if (score === 1) ctx.say(`เพอร์เฟกต์! ฟัน${label}ครบ ${nTarget} ชิ้น`, "good"); else ctx.reveal(`📖 รอบนี้มี${label} ${nTarget} ชิ้น ฟันได้ ${hit} ชิ้น${bad ? ` ฟันผิด ${bad} ครั้ง` : ""}`);
+        ctx.after(score === 1 ? 1200 : 2600, done);
+      };
+      const spawn = () => {
+        if (!ctx.alive() || spawned >= total) return;
+        const k = kinds[spawned++], el = document.createElement("button");
+        el.type = "button"; el.className = "fly"; el.dataset.ok = k === target ? "1" : "0";
+        el.innerHTML = solid ? `<span class="emo">${pick(S3[k])}</span>` : S2[k](pick(COLS));
+        el.style.left = rand(4, 78) + "%"; el.style.animationDuration = speed + "ms"; el.style.setProperty("--rot", rand(-40, 40) + "deg");
+        el.onclick = () => {
+          if (el.classList.contains("cut")) return;
+          el.classList.add("cut");
+          if (el.dataset.ok === "1"){ hit++; ctx.correct(25, hit === nTarget ? "ครบแล้ว!" : "ฉับ! ✂️"); }
+          else { bad++; el.classList.add("no"); ctx.wrong(`นั่นไม่ใช่${label}นะ`, 10); }
+          ctx.stage.querySelector("#sc").textContent = `ฟันได้ ${hit} / ${nTarget}`;
+        };
+        el.addEventListener("animationend", () => { el.remove(); gone++; if (gone >= total) endRound(); });
+        ar.appendChild(el);
+        ctx.after(level === 1 ? 900 : 700, spawn);
+      };
+      ctx.after(1200, spawn);
+    }
+    ctx.progress(0, ROUNDS); ctx.say("เตรียมดาบให้พร้อม!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

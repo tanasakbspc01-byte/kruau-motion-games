@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คาปิบาร่าแช่น้ำอุ่น</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.pond{position:relative;border-radius:30px;padding:30px 14px 14px;background:radial-gradient(ellipse at 50% 60%,#8FD6E8 0 55%,#B9E6EF 56% 64%,#D9C3A0 65%);border:4px solid #fff;box-shadow:0 6px 0 rgba(127,196,234,.35);min-height:200px;overflow:hidden}
+.steam{position:absolute;top:4px;left:0;right:0;text-align:center;opacity:.7;letter-spacing:2em;animation:rise 2s ease-in-out infinite}
+.herd{display:flex;flex-wrap:wrap;gap:4px 8px;justify-content:center;align-items:flex-end}
+.cp{width:clamp(56px,15vw,86px);transition:transform .6s,opacity .6s;animation:float 2.4s ease-in-out infinite}
+.cp:nth-child(2n){animation-delay:.6s}
+.cp svg{width:100%;display:block}
+.cp.left{animation:none;transform:translate(160px,-60px) rotate(18deg);opacity:.18}
+.cp.solo{width:120px}
+.tag{margin-top:8px;text-align:center;font-weight:700;font-size:1.15rem;background:rgba(255,255,255,.85);border-radius:14px;padding:4px 10px;display:block;width:max-content;margin-inline:auto}
+.sent{font-size:clamp(2rem,8vw,3rem);font-weight:700;letter-spacing:.05em}
+.hole{display:inline-grid;place-items:center;min-width:1.4em;border-radius:14px;background:#FFE7C2;color:var(--orange-deep);padding:0 .15em}
+.choices .choice{font-size:clamp(1.7rem,7vw,2.4rem)}
+@keyframes float{50%{transform:translateY(-4px)}}
+@keyframes rise{50%{transform:translateY(-4px);opacity:.4}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, shuffle} = KIT;
+const N = 8;
+const CAPY = `<svg viewBox="0 0 120 90" aria-hidden="true"><ellipse cx="62" cy="58" rx="46" ry="28" fill="#B07A4C" stroke="#5A3A22" stroke-width="3"/>
+  <rect x="70" y="22" width="40" height="34" rx="16" fill="#B07A4C" stroke="#5A3A22" stroke-width="3"/>
+  <circle cx="96" cy="36" r="3.4" fill="#2A1A10"/><ellipse cx="108" cy="46" rx="4" ry="3" fill="#5A3A22"/><circle cx="78" cy="22" r="5" fill="#8E5E38"/>
+  <circle cx="88" cy="12" r="10" fill="#F2A33A" stroke="#C97A1E" stroke-width="2"/><path d="M88 2 q4 -4 8 -1" stroke="#4E9A3A" stroke-width="3" fill="none"/></svg>`;
+function near(ans, lo, hi){ const s = new Set([ans]); for (const d of shuffle([1,-1,2,-2])) if (s.size < 3 && ans+d >= lo && ans+d <= hi) s.add(ans+d); while (s.size < 3) s.add(rand(lo,hi)); return shuffle([...s]); }
+
+KIT.mount({
+  key:"g1-capy", title:"คาปิบาร่าแช่น้ำอุ่น", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 3 การลบจำนวนสองจำนวนที่ตัวตั้งไม่เกิน 10",
+  heroHTML:"<em>คาปิบาร่า</em>ชิลล์ในบ่อน้ำอุ่น ♨️", heroDesc:"แก๊งคาปิบาร่าแช่น้ำอุ่นสบาย ๆ แล้วก็มีบางตัวขึ้นจากบ่อไป ช่วยนับหน่อยว่ายังเหลือในบ่อกี่ตัว",
+  progIcon:"♨️",
+  howto:["ดูว่าตอนแรกในบ่อมีคาปิบาร่ากี่ตัว","ดูว่าขึ้นจากบ่อไปกี่ตัว (การลบ = เอาออก)","แตะคำตอบว่ายังเหลือกี่ตัว กด 🔊 ฟังโจทย์ได้","ด่านยาก: ประโยคสัญลักษณ์ และหาตัวที่หายไป"],
+  note:"การลบ คือ การเอาออก · 7 − 3 = 4 อ่านว่า เจ็ดลบสามเท่ากับสี่",
+  levels:{
+    1:{pill:N+" บ่อ", color:"var(--green)", desc:"ตัวตั้งไม่เกิน 5 มีรูปให้นับ"},
+    2:{pill:N+" บ่อ", color:"var(--blue)", desc:"ตัวตั้งไม่เกิน 10 มีรูปและประโยคสัญลักษณ์"},
+    3:{pill:N+" บ่อ", color:"var(--purple)", desc:"ประโยคสัญลักษณ์ ลบศูนย์ ลบหมด และหาตัวที่หายไป"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 130}); return; }
+      const max = level === 1 ? 5 : 10;
+      let a = rand(2, max), b = rand(1, a - 1);
+      if (level === 3 && idx === 2) b = 0;
+      if (level === 3 && idx === 5) b = a;
+      const missing = level === 3 && idx % 3 === 1, pics = level < 3 || !missing;
+      const ans = missing ? b : a - b;
+      const html = missing ? `<span class="sent">${a} − <b class="hole">?</b> = ${a-b}</span>` : level === 1 ? "ยังเหลือในบ่อกี่ตัว" : `<span class="sent">${a} − ${b} = <b class="hole">?</b></span>`;
+      const say = missing ? `${a} ลบเท่าไร เหลือ ${a-b}` : level === 1 ? `ในบ่อมี ${a} ตัว ขึ้นจากบ่อไป ${b} ตัว ยังเหลือกี่ตัว` : `${a} ลบ ${b} เท่ากับเท่าไร`;
+      ctx.stage.innerHTML = `<div class="pond"><div class="steam">♨️ ♨️ ♨️</div><div class="herd">${pics ? Array.from({length:a}, (_, i) => `<span class="cp${i >= a - b ? " go" : ""}">${CAPY}</span>`).join("") : `<span class="cp solo">${CAPY}</span>`}</div>
+        ${pics ? `<div class="tag">มี <b>${a}</b> ตัว · ขึ้นจากบ่อ <b>${b}</b> ตัว</div>` : ""}</div><div id="q"></div>`;
+      if (pics) ctx.after(700, () => ctx.stage.querySelectorAll(".cp.go").forEach((c,i) => setTimeout(() => c.classList.add("left"), i*150)));
+      const opts = near(ans, 0, 10);
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`บ่อที่ ${idx+1} จาก ${N}`, html, say, options:opts.map(String), answer:opts.indexOf(ans), cols:3,
+        explain: missing ? `${a} − ${b} = ${a-b} จำนวนที่หายไปคือ ${b}` : `${a} − ${b} = ${a-b}${b === 0 ? " (ลบด้วยศูนย์ ได้เท่าเดิม)" : b === a ? " (ลบตัวเอง ได้ศูนย์)" : ""}`,
+        onNext: () => { idx++; ctx.progress(idx, N); next(); }});
+    }
+    ctx.progress(0, N); ctx.say("ลงบ่อกันเลย!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

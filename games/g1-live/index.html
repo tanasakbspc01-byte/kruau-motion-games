@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ไลฟ์สดขายของ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.live{position:relative;border-radius:24px;padding:42px 14px 14px;background:linear-gradient(135deg,#FF8FB1,#B78CFF);box-shadow:0 6px 0 rgba(183,140,255,.4)}
+.rec{position:absolute;top:10px;left:14px;background:#FF3B5C;color:#fff;font-weight:700;border-radius:8px;padding:2px 10px;font-size:.9rem;animation:blink 1s infinite alternate}
+.view{position:absolute;top:10px;right:14px;background:rgba(0,0,0,.25);color:#fff;font-weight:700;border-radius:8px;padding:2px 10px;font-size:.9rem}
+.feed{display:grid;gap:8px}
+.cm{position:relative;background:rgba(255,255,255,.95);border-radius:16px;padding:10px 14px;font-size:1.1rem;box-shadow:0 3px 0 rgba(0,0,0,.08)}
+.cm b{color:#B0408A}
+.cm.big{font-size:1.3rem;padding-right:64px;animation:pop .35s}
+.cm .num{display:inline-block;font-size:1.8rem;font-weight:700;color:#E8467C;vertical-align:middle;margin:0 4px}
+.cm .say-btn{top:50%;transform:translateY(-50%)}
+.table{display:flex;flex-wrap:wrap;align-items:flex-end;gap:6px;justify-content:center;min-height:120px;padding:14px;border-radius:22px;background:#FFF6EA;border:4px solid #fff;box-shadow:0 6px 0 #E9D3B6}
+.table.empty{align-items:center;color:var(--ink-soft);font-weight:700}
+.pk{position:relative;width:46px;height:74px;border-radius:8px;background:#FFE07A;box-shadow:inset 0 -6px 0 #E5B93A,0 0 0 3px #C99A1E;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pk b{font-size:1.1rem}.pk i{font-style:normal;font-size:1.3rem}
+.one{font-size:1.7rem;line-height:1}
+.now{text-align:center;font-weight:700;font-size:1.1rem;color:var(--ink-soft)}
+.tools{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.tb{border:none;border-radius:18px;padding:14px 6px;font-size:1.2rem;font-weight:700;color:#fff;background:#E5A21E;box-shadow:0 5px 0 #B07A10}
+.tb:nth-child(2){background:#B78CFF;box-shadow:0 5px 0 #8A5ED8}
+.tb.ghost{background:#fff;color:var(--ink);box-shadow:0 5px 0 var(--line),0 0 0 3px var(--line) inset}
+.tb small{display:block;font-size:.85rem;opacity:.85}
+.seqn{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.seqn span{min-width:64px;padding:10px 6px;text-align:center;border-radius:14px;background:#fff;border:3px solid var(--line);font-weight:700;font-size:1.7rem}
+.seqn span.h{background:#FFE7C2;border-color:var(--orange);color:var(--orange-deep)}
+.choices .choice{font-size:clamp(1.3rem,5.4vw,2rem)}
+@keyframes blink{to{opacity:.55}}
+@keyframes pop{from{transform:translateY(16px);opacity:0}}
+@media (max-width:520px){.pk{width:36px;height:60px}.one{font-size:1.4rem}.tb{font-size:1rem}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, thaiWords, thaiDigits} = KIT;
+const N = 8;
+const BUYERS = ["น้องมะปราง","พี่ต้นข้าว","คุณยายสมใจ","น้องภูผา","ป้าแจ่มใส","น้องใบเตย","ลุงเอก","น้องข้าวหอม"];
+const ITEMS = [["สติกเกอร์","⭐"],["ยางลบ","🧽"],["ลูกอม","🍬"],["ดินสอ","✏️"]];
+const pack = it => `<span class="pk"><b>10</b><i>${it[1]}</i></span>`;
+const ones = (k, it) => Array(k).fill(`<span class="one">${it[1]}</span>`).join("");
+function near(ans, lo, hi){ const s = new Set([ans]); for (const d of shuffle([1,-1,10,-10,2,9,-9])) if (s.size < 3 && ans+d >= lo && ans+d <= hi) s.add(ans+d); while (s.size < 3) s.add(rand(lo,hi)); return shuffle([...s]); }
+const PLAN = {1:["build","count","build","tens","count","build","tens","build"], 2:["build","thai","count","word","build","tens","build","thai"], 3:["compare","build","skip","after","build","before","compare","skip"]};
+
+KIT.mount({
+  key:"g1-live", title:"ไลฟ์สดขายของ", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 10 จำนวนนับ 21 ถึง 100",
+  heroHTML:"ไลฟ์สด! ลูกค้า<em> CF </em>รัว ๆ 📱", heroDesc:"เธอเป็นแม่ค้าไลฟ์สด! ลูกค้าคอมเมนต์สั่งของเข้ามาเรื่อย ๆ ของแพ็กละ 10 ชิ้น หยิบแพ็กกับชิ้นเดี่ยวให้ตรงกับที่ลูกค้า CF แล้วกดแพ็กส่ง",
+  progIcon:"📱",
+  howto:["1 แพ็ก = 10 ชิ้น (1 สิบ) ชิ้นเดี่ยว = 1 (1 หน่วย)","อ่านคอมเมนต์ที่ลูกค้า CF แล้วหยิบให้ครบ","กด \"แพ็กส่ง\" เมื่อจัดเสร็จ","กด 🔊 ฟังคอมเมนต์ได้"],
+  note:"47 = 4 สิบ กับ 7 หน่วย · 100 = 10 สิบ · นับทีละ 10: 10 20 30 ... 100",
+  levels:{
+    1:{pill:N+" ออเดอร์", color:"var(--green)", desc:"21 ถึง 50 นับแพ็ก และสิบ-หน่วย"},
+    2:{pill:N+" ออเดอร์", color:"var(--blue)", desc:"21 ถึง 100 เลขไทย และตัวหนังสือ"},
+    3:{pill:N+" ออเดอร์", color:"var(--purple)", desc:"เปรียบเทียบ ก่อน-หลัง และนับทีละ 10"}
+  },
+  play(level, ctx){
+    const hi = level === 1 ? 50 : 100;
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ออเดอร์ที่ ${idx+1} จาก ${N}`;
+    const show = (n, it) => `<div class="table">${pack(it).repeat(Math.floor(n/10))}${ones(n%10, it)}</div>`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 170}); return; }
+      const kind = PLAN[level][idx], it = ITEMS[idx % ITEMS.length], who = pick(BUYERS);
+      let n = rand(21, kind === "build" ? hi : Math.min(hi, 99));
+      if (kind === "build") return build(n, it, who);
+      let pre = show(Math.min(n, 99), it), html, say, opts, ans, explain;
+      if (kind === "count"){ n = Math.min(n, 99); html = `บนโต๊ะมี${it[0]}ทั้งหมดกี่ชิ้น`; say = html; const o = near(n, 20, 100); opts = o.map(String); ans = o.indexOf(n); explain = `${Math.floor(n/10)} แพ็ก (${Math.floor(n/10)} สิบ) กับ ${n%10} ชิ้น (${n%10} หน่วย) = ${n}`; }
+      else if (kind === "tens"){ n = Math.min(n, 99); pre = ""; html = `<b>${Math.floor(n/10)} สิบ</b> กับ <b>${n%10} หน่วย</b> คือจำนวนใด`; say = `${Math.floor(n/10)} สิบ กับ ${n%10} หน่วย คือจำนวนใด`; const o = near(n, 20, 100); opts = o.map(String); ans = o.indexOf(n); explain = `${Math.floor(n/10)} สิบ กับ ${n%10} หน่วย = ${n}`; }
+      else if (kind === "thai"){ n = Math.min(n, 99); html = `จำนวน${it[0]}บนโต๊ะ เขียนเป็น<b>เลขไทย</b>ได้แบบไหน`; say = `จำนวน${it[0]}บนโต๊ะ เขียนเป็นเลขไทยได้แบบไหน`; const o = near(n, 20, 100); opts = o.map(v => thaiDigits(v)); ans = o.indexOf(n); explain = `${n} = ${thaiDigits(n)}`; }
+      else if (kind === "word"){ n = Math.min(n, 99); html = `จำนวน${it[0]}บนโต๊ะ <b>อ่านว่า</b>อย่างไร`; say = `จำนวน${it[0]}บนโต๊ะ อ่านว่าอย่างไร`; const o = near(n, 20, 100); opts = o.map(v => thaiWords(v)); ans = o.indexOf(n); explain = `${n} อ่านว่า ${thaiWords(n)}`; }
+      else if (kind === "compare"){
+        let m; do { m = rand(21, 99); } while (m === n || Math.floor(m/10) === Math.floor(n/10) && Math.random() < .3);
+        n = Math.min(n, 99); const w2 = pick(BUYERS.filter(b => b !== who)), more = Math.random() < .5;
+        pre = `<div class="feed"><div class="cm"><b>${who}</b> CF ${n} ชิ้นค่ะ</div><div class="cm"><b>${w2}</b> CF ${m} ชิ้นครับ</div></div>`;
+        html = `ใครสั่ง<b>${more ? "มากกว่า" : "น้อยกว่า"}</b>`; say = `${who} สั่ง ${n} ชิ้น ${w2} สั่ง ${m} ชิ้น ใครสั่ง${more ? "มากกว่า" : "น้อยกว่า"}`;
+        opts = [who, w2]; ans = (more ? n > m : n < m) ? 0 : 1; explain = `${n} กับ ${m}: เทียบหลักสิบก่อน ${Math.max(n,m)} มากกว่า ${Math.min(n,m)}`;
+      } else if (kind === "skip"){
+        const step = 10, start = rand(0, 5) * 10 + (Math.random() < .5 ? 0 : rand(1, 9)), seq = [0,1,2,3,4].map(k => start + k*step).filter(v => v <= 100);
+        const hole = rand(1, seq.length - 1), a2 = seq[hole];
+        pre = `<div class="seqn">${seq.map((v, i) => `<span class="${i === hole ? "h" : ""}">${i === hole ? "?" : v}</span>`).join("")}</div>`;
+        html = "นับเพิ่มทีละ 10 จำนวนที่หายไปคือ"; say = "นับเพิ่มทีละสิบ จำนวนที่หายไปคือเท่าไร"; const o = near(a2, 0, 100); opts = o.map(String); ans = o.indexOf(a2); explain = `นับเพิ่มทีละ 10: ${seq.join(", ")}`;
+      } else {
+        const after = kind === "after", x = after ? rand(21, 99) : rand(22, 100), a2 = after ? x + 1 : x - 1;
+        pre = `<div class="seqn"><span>${after ? x : "?"}</span><span>${after ? "?" : x}</span></div>`;
+        html = after ? `จำนวนที่อยู่<b>ถัดจาก</b> ${x} คือ` : `จำนวนที่อยู่<b>ก่อน</b> ${x} คือ`; say = after ? `จำนวนที่อยู่ถัดจาก ${x} คือเท่าไร` : `จำนวนที่อยู่ก่อน ${x} คือเท่าไร`;
+        const o = near(a2, 20, 100); opts = o.map(String); ans = o.indexOf(a2); explain = after ? `ถัดจาก ${x} คือ ${a2}` : `ก่อน ${x} คือ ${a2}`;
+      }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html, say, options:opts, answer:ans, cols: opts.length === 2 ? 2 : 3, explain, onNext:done});
+    }
+    function build(n, it, who){
+      const style = level === 1 ? "num" : level === 2 ? pick(["thai","word","num"]) : pick(["tens","word"]);
+      const order = style === "thai" ? thaiDigits(n) : style === "word" ? thaiWords(n) : style === "tens" ? `${Math.floor(n/10)} สิบ ${n%10} หน่วย` : String(n);
+      const say = `${who} ซีเอฟ ${style === "tens" ? `${Math.floor(n/10)} สิบ ${n%10} หน่วย` : n} ชิ้น`;
+      let p = 0, o = 0, miss = 0, lock = false;
+      ctx.stage.innerHTML = `<div class="live"><span class="rec">● LIVE</span><span class="view">👀 ${rand(120, 980)}</span>
+        <div class="feed"><div class="cm big">${KIT.sayBtn(say)}<b>${who}</b> CF ${it[0]} <span class="num">${order}</span> ชิ้น ${pick(["ค่ะ","ครับ","จ้า"])} 💕</div></div></div>
+        <div id="tb"></div><div class="now" id="now"></div>
+        <div class="tools"><button class="tb" type="button" data-a="p">+ 1 แพ็ก <small>(10)</small></button><button class="tb" type="button" data-a="o">+ 1 ชิ้น <small>(1)</small></button><button class="tb ghost" type="button" data-a="u">↩️ เอาออก</button></div>
+        <div class="row"><button class="btn" type="button" id="send">📦 แพ็กส่ง!</button></div>`;
+      KIT.speak(say);
+      const $ = s => ctx.stage.querySelector(s), hist = [];
+      const draw = () => { $("#tb").innerHTML = (p || o) ? show(p*10 + o, it) : `<div class="table empty">หยิบของใส่โต๊ะได้เลย</div>`; $("#now").textContent = `ตอนนี้: ${p} แพ็ก กับ ${o} ชิ้น`; };
+      draw();
+      ctx.stage.querySelector(".tools").onclick = e => {
+        const b = e.target.closest(".tb"); if (!b || lock) return;
+        if (b.dataset.a === "p"){ if (p >= 10) return; p++; hist.push("p"); }
+        else if (b.dataset.a === "o"){ if (o >= 9){ ctx.say("ชิ้นเดี่ยวครบ 10 แล้ว ใช้ + 1 แพ็ก แทนนะ"); return; } o++; hist.push("o"); }
+        else { const h = hist.pop(); if (h === "p") p--; else if (h === "o") o--; }
+        KIT.sfx.tap(); draw();
+      };
+      $("#send").onclick = () => {
+        if (lock) return;
+        const v = p*10 + o, qq = `${who} CF ${order} ชิ้น`, aa = `${n} = ${Math.floor(n/10)} แพ็ก กับ ${n%10} ชิ้น`;
+        if (v === n){ lock = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); ctx.correct(miss ? 50 : 100, `ส่งของให้${who}เรียบร้อย! 📦`); ctx.after(1100, () => { idx++; ctx.progress(idx, N); next(); }); return; }
+        miss++;
+        if (miss < 2){ ctx.wrong(`ตอนนี้มี ${v} ชิ้น ${v < n ? "ยังน้อยไป" : "มากเกินไป"} (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; p = Math.floor(n/10); o = n % 10; draw(); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0});
+        ctx.reveal(`📖 เฉลย: ${n} คือ ${p} แพ็ก (${p} สิบ) กับ ${o} ชิ้น (${o} หน่วย)`); ctx.after(3600, () => { idx++; ctx.progress(idx, N); next(); });
+      };
+    }
+    ctx.progress(0, N); ctx.say("เริ่มไลฟ์แล้ว! สวัสดีค่า~");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

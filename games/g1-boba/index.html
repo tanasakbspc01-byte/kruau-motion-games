@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ร้านชานมไข่มุก</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.bar{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;gap:8px;min-height:150px;padding:16px;border-radius:26px;background:linear-gradient(#FFF6EA,#F6E6D2);border:4px solid #fff;box-shadow:0 6px 0 #E9D3B6}
+.bar.build{min-height:160px}
+.bar.empty{align-items:center;color:var(--ink-soft);font-weight:700}
+.cup{position:relative;width:70px;height:110px;border-radius:8px 8px 22px 22px;background:var(--t);border:4px solid #fff;box-shadow:0 0 0 3px #C9A57A;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.cup::before{content:"";position:absolute;top:-30px;left:38px;width:9px;height:50px;background:#F28C6B;border-radius:4px;transform:rotate(12deg)}
+.cup i{position:absolute;inset:auto 4px 4px 4px;height:46px;background:radial-gradient(circle,#3A2416 0 6px,transparent 7px) 0 0/14px 14px}
+.cup b{position:relative;margin-bottom:54px;background:#fff;border-radius:10px;padding:0 6px;font-size:.95rem}
+.pearl{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#7A5A44,#2E1B10 70%);box-shadow:0 2px 0 rgba(0,0,0,.2);animation:pp .3s}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.duo .bar{min-height:130px;padding:10px;gap:5px}
+.duo .cup{width:52px;height:84px}.duo .cup b{margin-bottom:40px}.duo .pearl{width:20px;height:20px}
+.who{text-align:center;font-weight:700;margin-bottom:4px}
+.order{display:inline-block;font-size:2.2rem;font-weight:700;color:#E8708F;background:#FFF0F4;border-radius:14px;padding:0 12px;vertical-align:middle}
+.now{text-align:center;font-weight:700;font-size:1.1rem;color:var(--ink-soft)}
+.tools{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.tb{border:none;border-radius:18px;padding:16px 6px;font-size:1.25rem;font-weight:700;color:#fff;background:#C98A5A;box-shadow:0 5px 0 #9A6238}
+.tb:nth-child(2){background:#5A3A28;box-shadow:0 5px 0 #2E1B10}
+.tb.ghost{background:#fff;color:var(--ink);box-shadow:0 5px 0 var(--line),0 0 0 3px var(--line) inset}
+.tb small{display:block;font-size:.85rem;opacity:.85}
+.line{display:grid;grid-template-columns:repeat(11,1fr);gap:4px}
+.line span{display:grid;place-items:center;aspect-ratio:1;border-radius:12px;background:#fff;border:3px solid var(--line);font-weight:700;font-size:clamp(.9rem,3.6vw,1.5rem)}
+.line span.me{background:#FFE7C2;border-color:var(--orange)}
+.choices .choice{font-size:clamp(1.5rem,6vw,2.2rem)}
+@keyframes pp{from{transform:scale(0)}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, thaiWords, thaiDigits} = KIT;
+const N = 8;
+const TEA = ["#E8C9A0","#F7B6C8","#B7E4C7","#CBB8F0","#F6D98B"];
+const cup = col => `<span class="cup" style="--t:${col}"><i></i><b>10</b></span>`;
+const pearls = k => Array.from({length:k}, () => `<span class="pearl"></span>`).join("");
+function near(ans, lo, hi){ const s = new Set([ans]); for (const d of shuffle([1,-1,2,-2,10,-10])) if (s.size < 3 && ans+d >= lo && ans+d <= hi) s.add(ans+d); while (s.size < 3) s.add(rand(lo,hi)); return shuffle([...s]); }
+const PLAN = {1:["count","build","count","tens","build","count","build","tens"], 2:["count","thai","build","word","tens","build","thai","count"], 3:["compare","build","after","word","before","build","compare","thai"]};
+
+KIT.mount({
+  key:"g1-boba", title:"ร้านชานมไข่มุก", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 4 จำนวนนับ 11 ถึง 20",
+  heroHTML:"เปิดร้าน<em>ชานมไข่มุก</em> นับเม็ดไข่มุก 🧋", heroDesc:"ไข่มุก 10 เม็ด ใส่ได้ 1 แก้วพอดี! นับแก้วที่เต็ม (สิบ) กับไข่มุกที่เหลือ (หน่วย) แล้วชงให้ตรงกับที่ลูกค้าสั่ง",
+  progIcon:"🧋",
+  howto:["1 แก้ว = ไข่มุก 10 เม็ด (1 สิบ)","นับแก้วก่อน แล้วนับเม็ดที่เหลือ","ข้อที่ให้ชง: แตะ \"+ แก้ว\" และ \"+ ไข่มุก\" ให้ได้จำนวนตามสั่ง แล้วกดเสิร์ฟ","กด 🔊 ฟังโจทย์ได้"],
+  note:"13 = 1 สิบ กับ 3 หน่วย · 20 = 2 สิบ · เลขไทย ๑๑ ๑๒ ... ๒๐",
+  levels:{
+    1:{pill:N+" ออเดอร์", color:"var(--green)", desc:"นับและชง 11 ถึง 15"},
+    2:{pill:N+" ออเดอร์", color:"var(--blue)", desc:"11 ถึง 20 เลขไทย และตัวหนังสือ"},
+    3:{pill:N+" ออเดอร์", color:"var(--purple)", desc:"เปรียบเทียบ จำนวนก่อน-หลัง และชงจากคำอ่าน"}
+  },
+  play(level, ctx){
+    const hi = level === 1 ? 15 : 20;
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ออเดอร์ที่ ${idx+1} จาก ${N}`;
+    const show = (n, col) => `<div class="bar">${cup(col).repeat(Math.floor(n/10))}${pearls(n%10)}</div>`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 150}); return; }
+      const kind = PLAN[level][idx], col = TEA[idx % TEA.length], n = rand(11, kind === "tens" ? Math.min(hi, 19) : hi);
+      if (kind === "build") return build(n, col);
+      let pre = show(n, col), html, say, opts, ans, explain;
+      if (kind === "count"){ html = "มีไข่มุกทั้งหมดกี่เม็ด"; say = html; const o = near(n, 10, 20); opts = o.map(String); ans = o.indexOf(n); explain = `${Math.floor(n/10)} แก้ว (${Math.floor(n/10)} สิบ) กับ ${n%10} เม็ด (${n%10} หน่วย) = ${n}`; }
+      else if (kind === "tens"){ html = `<b>1 สิบ</b> กับ <b>${n-10} หน่วย</b> คือจำนวนใด`; say = `หนึ่งสิบ กับ ${n-10} หน่วย คือจำนวนใด`; const o = near(n, 10, 20); opts = o.map(String); ans = o.indexOf(n); explain = `1 สิบ กับ ${n-10} หน่วย = ${n}`; }
+      else if (kind === "thai"){ html = "จำนวนไข่มุก เขียนเป็น<b>เลขไทย</b>ได้แบบไหน"; say = "จำนวนไข่มุก เขียนเป็นเลขไทยได้แบบไหน"; const o = near(n, 10, 20); opts = o.map(v => thaiDigits(v)); ans = o.indexOf(n); explain = `${n} = ${thaiDigits(n)}`; }
+      else if (kind === "word"){ html = "จำนวนไข่มุก <b>อ่านว่า</b>อย่างไร"; say = "จำนวนไข่มุก อ่านว่าอย่างไร"; const o = near(n, 10, 20); opts = o.map(v => thaiWords(v)); ans = o.indexOf(n); explain = `${n} อ่านว่า ${thaiWords(n)}`; }
+      else if (kind === "compare"){
+        let m; do { m = rand(11, 20); } while (m === n);
+        const more = Math.random() < .5;
+        pre = `<div class="duo"><div><div class="who">ร้านซ้าย</div>${show(n, col)}</div><div><div class="who">ร้านขวา</div>${show(m, TEA[(idx+2)%5])}</div></div>`;
+        html = `ร้านไหนมีไข่มุก<b>${more ? "มากกว่า" : "น้อยกว่า"}</b>`; say = `ร้านไหนมีไข่มุก${more ? "มากกว่า" : "น้อยกว่า"}`;
+        opts = ["ร้านซ้าย","ร้านขวา"]; ans = (more ? n > m : n < m) ? 0 : 1; explain = `ร้านซ้าย ${n} ร้านขวา ${m} · ${Math.max(n,m)} มากกว่า ${Math.min(n,m)}`;
+      } else {
+        const after = kind === "after", x = after ? rand(10, 19) : rand(11, 20), a2 = after ? x + 1 : x - 1;
+        pre = `<div class="line">${Array.from({length:11}, (_, k) => k + 10).map(k => `<span class="${k === x ? "me" : ""}">${k === a2 ? "?" : k}</span>`).join("")}</div>`;
+        html = after ? `จำนวนที่อยู่<b>ถัดจาก</b> ${x} คือ` : `จำนวนที่อยู่<b>ก่อน</b> ${x} คือ`; say = after ? `จำนวนที่อยู่ถัดจาก ${x} คือเท่าไร` : `จำนวนที่อยู่ก่อน ${x} คือเท่าไร`;
+        const o = near(a2, 9, 21); opts = o.map(String); ans = o.indexOf(a2); explain = after ? `ถัดจาก ${x} คือ ${a2}` : `ก่อน ${x} คือ ${a2}`;
+      }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html, say, options:opts, answer:ans, cols: opts.length === 2 ? 2 : 3, explain, onNext:done});
+    }
+    function build(n, col){
+      const style = level === 3 ? "word" : level === 2 ? pick(["num","thai"]) : "num";
+      const order = style === "word" ? thaiWords(n) : style === "thai" ? thaiDigits(n) : String(n);
+      let c = 0, p = 0, miss = 0, lock = false;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(`ลูกค้าสั่งไข่มุก ${n} เม็ด`)}<div class="qlabel">${lbl()} · ชงให้ลูกค้า</div><div class="qtext">ลูกค้าสั่งไข่มุก <span class="order">${order}</span> เม็ด</div></div>
+        <div class="counter" id="ct"></div><div class="now" id="now"></div>
+        <div class="tools"><button class="tb" type="button" data-a="c">+ แก้ว <small>(10)</small></button><button class="tb" type="button" data-a="p">+ ไข่มุก <small>(1)</small></button><button class="tb ghost" type="button" data-a="u">↩️ เอาออก</button></div>
+        <div class="row"><button class="btn" type="button" id="serve">🧋 เสิร์ฟ!</button></div>`;
+      KIT.speak(`ลูกค้าสั่งไข่มุก ${n} เม็ด`);
+      const $ = s => ctx.stage.querySelector(s);
+      const hist = [];
+      const draw = () => { $("#ct").innerHTML = (c || p) ? show(c*10 + p, col).replace('class="bar"', 'class="bar build"') : `<div class="bar build empty">ยังว่างอยู่ แตะปุ่มด้านล่างเลย</div>`; $("#now").textContent = `ตอนนี้: ${c} แก้ว กับ ${p} เม็ด`; };
+      draw();
+      ctx.stage.querySelector(".tools").onclick = e => {
+        const b = e.target.closest(".tb"); if (!b || lock) return;
+        const a = b.dataset.a;
+        if (a === "c"){ if (c >= 2) { ctx.say("แก้วเต็มเคาน์เตอร์แล้ว!"); return; } c++; hist.push("c"); }
+        else if (a === "p"){ if (p >= 9){ ctx.say("ไข่มุกครบ 10 เม็ดแล้ว ใช้ + แก้ว แทนนะ"); return; } p++; hist.push("p"); }
+        else { const h = hist.pop(); if (h === "c") c--; else if (h === "p") p--; }
+        KIT.sfx.tap(); draw();
+      };
+      $("#serve").onclick = () => {
+        if (lock) return;
+        const v = c*10 + p, qq = `ชงไข่มุก ${order} เม็ด`, aa = `${n} = ${Math.floor(n/10)} แก้ว กับ ${n%10} เม็ด`;
+        if (v === n){ lock = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); ctx.correct(miss ? 50 : 100, `เสิร์ฟ ${n} เม็ดพอดี! 🧋`); ctx.after(1100, () => { idx++; ctx.progress(idx, N); next(); }); return; }
+        miss++;
+        if (miss < 2){ ctx.wrong(`ตอนนี้มี ${v} เม็ด ${v < n ? "ยังน้อยไป" : "มากเกินไป"} (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; c = Math.floor(n/10); p = n % 10; draw(); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0});
+        ctx.reveal(`📖 เฉลย: ${n} คือ ${c} แก้ว (${c} สิบ) กับ ${p} เม็ด (${p} หน่วย)`); ctx.after(3400, () => { idx++; ctx.progress(idx, N); next(); });
+      };
+    }
+    ctx.progress(0, N); ctx.say("ร้านเปิดแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตู้คีบตุ๊กตา</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.machine{position:relative;padding:70px 14px 16px;border-radius:26px;background:linear-gradient(#E9F6FF,#D6ECFF);border:8px solid #E8708F;box-shadow:0 8px 0 #C4506F;display:grid;gap:10px;overflow:hidden}
+.rail{position:absolute;left:0;right:0;top:0;height:16px;background:#C4506F}
+.claw{position:absolute;left:50%;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;transition:left .45s ease;z-index:3}
+.claw .cord{width:4px;height:30px;background:#555;transition:height .4s ease}
+.claw.down .cord{height:var(--drop,60px)}
+.claw .hook{font-size:1.8rem;line-height:1;margin-top:-4px}
+.shelf{display:flex;justify-content:space-between;gap:6px;padding:8px 6px;border-bottom:8px solid #F2B8C6;border-radius:6px}
+.doll{flex:1;min-width:0;border:none;background:none;padding:2px 0;display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.doll span{font-size:clamp(1.6rem,6.5vw,3.4rem);line-height:1.05;transition:transform .3s}
+.doll small{font-weight:700;color:var(--ink-soft);font-size:.8rem;opacity:.55}
+.doll:disabled{cursor:default}
+.doll.got span{transform:translateY(-60px) scale(1.2);opacity:.9}
+.doll.slip span{animation:slip .45s}
+.doll.glow span{animation:glow .6s infinite alternate}
+@keyframes slip{30%{transform:translateY(-20px) rotate(-12deg)}100%{transform:none}}
+@keyframes glow{to{transform:scale(1.18);filter:drop-shadow(0 0 10px #FFD54A)}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const TOYS = [["กระต่าย","🐰"],["หมี","🐻"],["ยูนิคอร์น","🦄"],["แมว","🐱"],["ลูกหมา","🐶"],["ลูกเจี๊ยบ","🐥"],["กบ","🐸"],["แพนด้า","🐼"],["หมู","🐷"],["ไดโนเสาร์","🦖"]];
+const PLAN = {1:["L","L","rank","L","left","L","rank","right"], 2:["L","R","between","rank","R","left","between","right"], 3:["R","between","above","rankR","below","R","between","above"]};
+
+KIT.mount({
+  key:"g1-claw", title:"ตู้คีบตุ๊กตา", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 8 การบอกตำแหน่งและอันดับที่",
+  heroHTML:"คีบให้ถูก<em>ตัว</em> ตามคำสั่ง! 🕹️", heroDesc:"ตู้คีบตุ๊กตาสุดฮิต! ฟังคำสั่งให้ดีว่าต้องคีบตัวที่เท่าไร อยู่ซ้าย ขวา บน ล่าง หรือระหว่างตัวไหน แล้วแตะตุ๊กตาตัวนั้น",
+  progIcon:"🕹️",
+  howto:["ฟังหรืออ่านคำสั่ง กด 🔊 ฟังซ้ำได้","นับจากซ้าย ให้เริ่มนับตัวที่อยู่ทางซ้ายสุดเป็นที่ 1","แตะตุ๊กตาที่ต้องการ ที่คีบจะลงไปคีบให้","ด่านยาก: ตู้มี 2 ชั้น บน กับ ล่าง"],
+  note:"อันดับที่ บอกลำดับ เช่น ที่ 1 ที่ 2 ที่ 3 · ต้องดูว่านับจากทางไหน (ซ้าย หรือ ขวา)",
+  levels:{
+    1:{pill:N+" ตา", color:"var(--green)", desc:"ตุ๊กตา 5 ตัว นับจากซ้าย ซ้าย-ขวาของ"},
+    2:{pill:N+" ตา", color:"var(--blue)", desc:"ตุ๊กตา 7 ตัว นับจากขวา และระหว่าง"},
+    3:{pill:N+" ตา", color:"var(--purple)", desc:"ตู้ 2 ชั้น บน ล่าง และนับจากขวา"}
+  },
+  play(level, ctx){
+    const k = level === 1 ? 5 : level === 2 ? 7 : 5, rows = level === 3 ? 2 : 1;
+    let idx = 0;
+    const next = () => {
+      if (idx >= N){ ctx.finish({targetSec: 140}); return; }
+      const kind = PLAN[level][idx], pool = shuffle(TOYS.slice()).slice(0, k * rows);
+      const grid = []; for (let r = 0; r < rows; r++) grid.push(pool.slice(r*k, r*k + k));
+      let tr = rows - 1, tc, text;
+      const nm = t => `${t[1]} ${t[0]}`;
+      if (kind === "L" || kind === "rank"){ tc = rand(0, k-1); text = `คีบตุ๊กตา<b>ตัวที่ ${tc+1}</b> นับจาก<b>ซ้าย</b>`; }
+      else if (kind === "R" || kind === "rankR"){ tc = rand(0, k-1); text = `คีบตุ๊กตา<b>ตัวที่ ${k-tc}</b> นับจาก<b>ขวา</b>`; }
+      else if (kind === "left"){ tc = rand(0, k-2); text = `คีบตุ๊กตาที่อยู่<b>ทางซ้าย</b>ของ ${nm(grid[tr][tc+1])} ติดกัน`; }
+      else if (kind === "right"){ tc = rand(1, k-1); text = `คีบตุ๊กตาที่อยู่<b>ทางขวา</b>ของ ${nm(grid[tr][tc-1])} ติดกัน`; }
+      else if (kind === "between"){ tc = rand(1, k-2); text = `คีบตุ๊กตาที่อยู่<b>ระหว่าง</b> ${nm(grid[tr][tc-1])} กับ ${nm(grid[tr][tc+1])}`; }
+      else if (kind === "above"){ tr = 0; tc = rand(0, k-1); text = `คีบตุ๊กตาที่อยู่<b>ข้างบน</b> ${nm(grid[1][tc])}`; }
+      else { tr = 1; tc = rand(0, k-1); text = `คีบตุ๊กตาที่อยู่<b>ข้างล่าง</b> ${nm(grid[0][tc])}`; }
+      const target = grid[tr][tc], say = text.replace(/<[^>]+>/g, "").replace(/[^฀-๿0-9 ]/g, " ");
+      const box = `<div class="machine"><div class="rail"><div class="claw" id="cl"><span class="cord"></span><span class="hook">🪝</span></div></div>
+        ${grid.map((row, r) => `<div class="shelf">${row.map((t, c) => `<button class="doll" type="button" data-r="${r}" data-c="${c}" aria-label="${t[0]}"><span>${t[1]}</span>${rows === 1 && level === 1 ? `<small>${c+1}</small>` : ""}</button>`).join("")}</div>`).join("")}</div>`;
+      if (kind === "rank" || kind === "rankR"){
+        const fromR = kind === "rankR", ans = fromR ? k - tc : tc + 1;
+        const o = new Set([ans]); for (const d of shuffle([1,-1,2,-2])) if (o.size < 3 && ans+d >= 1 && ans+d <= k) o.add(ans+d);
+        const opts = shuffle([...o]);
+        ctx.stage.innerHTML = box.replace(/<small>\d+<\/small>/g, "") + `<div id="q"></div>`;
+        ctx.stage.querySelectorAll(".doll").forEach(d => { d.disabled = true; if (+d.dataset.r === tr && +d.dataset.c === tc) d.classList.add("glow"); });
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ตาที่ ${idx+1} จาก ${N}`, html:`${nm(target)} อยู่<b>ลำดับที่เท่าไร</b> นับจาก${fromR ? "ขวา" : "ซ้าย"}`, say:`${target[0]} อยู่ลำดับที่เท่าไร นับจาก${fromR ? "ขวา" : "ซ้าย"}`,
+          options:opts.map(v => `ที่ ${v}`), answer:opts.indexOf(ans), cols:3, explain:`นับจาก${fromR ? "ขวา" : "ซ้าย"} ${target[0]}อยู่ลำดับที่ ${ans}`, onNext:() => { idx++; ctx.progress(idx, N); next(); }});
+        return;
+      }
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(say)}<div class="qlabel">ตาที่ ${idx+1} จาก ${N}</div><div class="qtext">${text}</div></div>${box}`;
+      KIT.speak(say);
+      let miss = 0, lock = false;
+      const $ = s => ctx.stage.querySelector(s), qq = text.replace(/<[^>]+>/g, ""), aa = nm(target);
+      const grab = (btn, cb) => {
+        const m = $(".machine").getBoundingClientRect(), b = btn.getBoundingClientRect(), cl = $("#cl");
+        cl.style.left = (b.left - m.left + b.width/2) + "px";
+        ctx.after(500, () => { cl.style.setProperty("--drop", (b.top - m.top - 10) + "px"); cl.classList.add("down"); });
+        ctx.after(1000, () => { cl.classList.remove("down"); cb(); });
+      };
+      $(".machine").onclick = e => {
+        const d = e.target.closest(".doll"); if (!d || lock) return;
+        lock = true; KIT.sfx.tap();
+        const ok = +d.dataset.r === tr && +d.dataset.c === tc;
+        grab(d, () => {
+          if (ok){ d.classList.add("got"); ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); ctx.correct(miss ? 50 : 100, `คีบได้ ${target[0]}! 🎉`); ctx.after(900, () => { idx++; ctx.progress(idx, N); next(); }); return; }
+          miss++; d.classList.add("slip");
+          if (miss < 2){ ctx.wrong(`หลุด! ตัวนี้คือ${d.getAttribute("aria-label")} ลองอ่านคำสั่งอีกครั้ง (เหลืออีก 1 ครั้ง)`); ctx.after(500, () => { d.classList.remove("slip"); lock = false; }); return; }
+          ctx.wrong(null); ctx.record({q:qq, a:aa, score:0});
+          const right = ctx.stage.querySelector(`.doll[data-r="${tr}"][data-c="${tc}"]`); right.classList.add("glow");
+          ctx.reveal(`📖 เฉลย: ตัวที่ถูกคือ ${aa} (กระพริบอยู่)`);
+          ctx.after(1200, () => grab(right, () => { right.classList.add("got"); ctx.after(1200, () => { idx++; ctx.progress(idx, N); next(); }); }));
+        });
+      };
+    };
+    ctx.progress(0, N); ctx.say("หยอดเหรียญแล้ว เริ่มคีบได้!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

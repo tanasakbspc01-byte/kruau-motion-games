@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โพลขนมไวรัล</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.pchart{background:#fff;border-radius:24px;border:4px solid var(--line);box-shadow:0 6px 0 var(--line);padding:12px 14px;display:grid;gap:6px}
+.ptitle{text-align:center;font-weight:700;font-size:1.15rem;color:var(--orange-deep)}
+.prow{display:flex;align-items:center;gap:8px;border-bottom:2px dashed var(--line);padding:4px 0;min-height:50px}
+.prow.bad{background:#FDE3E3;border-radius:12px}
+.pname{flex:none;width:76px;font-weight:700;font-size:1.05rem}
+.picons{display:flex;flex-wrap:wrap;gap:2px;flex:1}
+.picons i{font-style:normal;font-size:clamp(1.5rem,6vw,2.1rem);animation:pin .25s}
+.pkey{text-align:right;font-size:.9rem;color:var(--ink-soft);font-weight:700}
+.pm{flex:none;width:44px;height:44px;border-radius:50%;border:none;font-size:1.6rem;font-weight:700;background:#F3E8DA;color:var(--ink)}
+.pm.plus{background:#7FD39A;color:#fff}
+.tally{width:100%;border-collapse:separate;border-spacing:4px;text-align:center}
+.tally th{background:#FFE7C2;border-radius:10px;padding:6px 2px;font-size:.95rem}
+.tally td{background:#fff;border:3px solid var(--line);border-radius:10px;font-size:1.6rem;font-weight:700}
+@keyframes pin{from{transform:scale(0)}}
+@media (max-width:520px){.pname{width:58px;font-size:.9rem}.pm{width:38px;height:38px}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const SETS = [
+  {title:"ขนมไวรัลที่เพื่อนชอบ", unit:"คน", items:[["โดนัท","🍩"],["ไอศกรีม","🍦"],["คัพเค้ก","🧁"],["คุกกี้","🍪"]]},
+  {title:"สัตว์เลี้ยงของเพื่อนในห้อง", unit:"ตัว", items:[["แมว","🐱"],["หมา","🐶"],["ปลา","🐟"],["กระต่าย","🐰"]]},
+  {title:"ผลไม้ที่ขายได้วันนี้", unit:"ผล", items:[["แตงโม","🍉"],["มะม่วง","🥭"],["องุ่น","🍇"],["ส้ม","🍊"]]},
+  {title:"ของเล่นในกล่องของเล่น", unit:"ชิ้น", items:[["ตุ๊กตา","🧸"],["ลูกบอล","⚽"],["รถ","🚗"],["ว่าว","🪁"]]}
+];
+function near(ans, lo, hi){ const s = new Set([ans]); for (const d of shuffle([1,-1,2,-2])) if (s.size < 3 && ans+d >= lo && ans+d <= hi) s.add(ans+d); while (s.size < 3) s.add(rand(lo,hi)); return shuffle([...s]); }
+function makeData(k, max){
+  for (let g = 0; g < 200; g++){ const v = Array.from({length:k}, () => rand(1, max)); const mx = Math.max(...v), mn = Math.min(...v);
+    if (v.filter(x => x === mx).length === 1 && v.filter(x => x === mn).length === 1) return v; }
+  return [3,5,2,4].slice(0,k);
+}
+const chart = (S, v, k) => `<div class="pchart"><div class="ptitle">${S.title}</div>${S.items.slice(0,k).map((it, i) => `<div class="prow"><span class="pname">${it[0]}</span><span class="picons">${Array(v[i]).fill(`<i>${it[1]}</i>`).join("")}</span></div>`).join("")}<div class="pkey">กำหนด 1 รูป แทน 1 ${S.unit}</div></div>`;
+const PLAN = {1:["count","count","most","count","least","count","most","count"], 2:["count","most","least","more","count","more","least","total"], 3:["build","more","total","build","least","more","build","total"]};
+
+KIT.mount({
+  key:"g1-chart", title:"โพลขนมไวรัล", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 6 แผนภูมิรูปภาพ",
+  heroHTML:"อ่าน<em>แผนภูมิรูปภาพ</em> ใครฮิตที่สุด? 📊", heroDesc:"เพื่อน ๆ โหวตของที่ชอบแล้วนำมาทำเป็นแผนภูมิรูปภาพ ช่วยอ่านผลโหวตหน่อยว่าอะไรฮิตที่สุด และบางข้อต้องช่วยวาดแผนภูมิเองด้วย",
+  progIcon:"📊",
+  howto:["1 รูป แทน 1 หน่วย นับรูปในแต่ละแถว","แตะคำตอบที่ถูก กด 🔊 ฟังโจทย์ได้","ด่านยาก: ช่วยทำแผนภูมิ แตะ + − ให้จำนวนรูปตรงกับตาราง","ดูว่าแถวไหนยาวที่สุด แถวนั้นมากที่สุด"],
+  note:"แผนภูมิรูปภาพ ใช้รูปแทนจำนวน · แถวที่มีรูปมากที่สุด คือ มากที่สุด",
+  levels:{
+    1:{pill:N+" ข้อ", color:"var(--green)", desc:"นับรูป และหามากที่สุด น้อยที่สุด"},
+    2:{pill:N+" ข้อ", color:"var(--blue)", desc:"มากกว่ากี่หน่วย และรวมกัน"},
+    3:{pill:N+" ข้อ", color:"var(--purple)", desc:"ทำแผนภูมิเอง และเปรียบเทียบ"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ข้อ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 150}); return; }
+      const S = SETS[idx % SETS.length], k = level === 1 ? 3 : 4, v = makeData(k, level === 1 ? 6 : 8), kind = PLAN[level][idx];
+      if (kind === "build") return build(S, v, k);
+      const names = S.items.slice(0, k).map(x => x[0]);
+      let html, say, opts, ans, explain;
+      if (kind === "count"){ const i = rand(0, k-1); html = `<b>${names[i]}</b> มีกี่${S.unit}`; say = `${names[i]} มีกี่${S.unit}`; const o = near(v[i], 0, 10); opts = o.map(String); ans = o.indexOf(v[i]); explain = `นับรูป${names[i]}ได้ ${v[i]} รูป = ${v[i]} ${S.unit}`; }
+      else if (kind === "most" || kind === "least"){ const t = kind === "most" ? Math.max(...v) : Math.min(...v), i = v.indexOf(t); html = `อะไร<b>${kind === "most" ? "มากที่สุด" : "น้อยที่สุด"}</b>`; say = `อะไร${kind === "most" ? "มากที่สุด" : "น้อยที่สุด"}`; opts = names.map((n, j) => `${S.items[j][1]} ${n}`); ans = i; explain = `${names[i]} มี ${t} ${S.unit} ${kind === "most" ? "มากที่สุด" : "น้อยที่สุด"}`; }
+      else if (kind === "more"){ let i, j; do { i = rand(0,k-1); j = rand(0,k-1); } while (i === j || v[i] === v[j]); if (v[i] < v[j]) [i, j] = [j, i]; const d = v[i] - v[j];
+        html = `<b>${names[i]}</b> มากกว่า <b>${names[j]}</b> กี่${S.unit}`; say = `${names[i]} มากกว่า ${names[j]} กี่${S.unit}`; const o = near(d, 0, 10); opts = o.map(String); ans = o.indexOf(d); explain = `${v[i]} − ${v[j]} = ${d}`; }
+      else { const i = 0, j = 1, t = v[i] + v[j]; html = `<b>${names[i]}</b> กับ <b>${names[j]}</b> รวมกันกี่${S.unit}`; say = `${names[i]} กับ ${names[j]} รวมกันกี่${S.unit}`; const o = near(t, 0, 20); opts = o.map(String); ans = o.indexOf(t); explain = `${v[i]} + ${v[j]} = ${t}`; }
+      ctx.stage.innerHTML = `${chart(S, v, k)}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html, say, options:opts, answer:ans, cols: opts.length === 4 ? 2 : 3, explain, onNext:done});
+    }
+    function build(S, v, k){
+      const cur = Array(k).fill(0); let miss = 0, lock = false;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn("ทำแผนภูมิรูปภาพให้ตรงกับตาราง")}<div class="qlabel">${lbl()} · ทำแผนภูมิเอง</div><div class="qtext">ทำแผนภูมิรูปภาพให้ตรงกับตาราง</div></div>
+        <table class="tally"><tr>${S.items.slice(0,k).map(it => `<th>${it[1]} ${it[0]}</th>`).join("")}</tr><tr>${v.map(x => `<td>${x}</td>`).join("")}</tr></table>
+        <div class="pchart edit" id="ed"></div><div class="row"><button class="btn" type="button" id="ok">✅ เสร็จแล้ว</button></div>`;
+      KIT.speak("ทำแผนภูมิรูปภาพให้ตรงกับตาราง");
+      const $ = s => ctx.stage.querySelector(s);
+      const draw = (bad=[]) => { $("#ed").innerHTML = `<div class="ptitle">${S.title}</div>` + S.items.slice(0,k).map((it, i) => `<div class="prow${bad.includes(i) ? " bad" : ""}"><span class="pname">${it[0]}</span><button class="pm" type="button" data-i="${i}" data-d="-1">−</button><span class="picons">${Array(cur[i]).fill(`<i>${it[1]}</i>`).join("")}</span><button class="pm plus" type="button" data-i="${i}" data-d="1">+</button></div>`).join(""); };
+      draw();
+      $("#ed").onclick = e => { const b = e.target.closest(".pm"); if (!b || lock) return; const i = +b.dataset.i; cur[i] = Math.max(0, Math.min(10, cur[i] + +b.dataset.d)); KIT.sfx.tap(); draw(); };
+      $("#ok").onclick = () => {
+        if (lock) return;
+        const bad = v.map((x, i) => x === cur[i] ? -1 : i).filter(i => i >= 0), qq = `ทำแผนภูมิรูปภาพ: ${S.title}`, aa = S.items.slice(0,k).map((it,i) => `${it[0]} ${v[i]}`).join(", ");
+        if (!bad.length){ lock = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); ctx.correct(miss ? 60 : 120, "แผนภูมิถูกต้องทุกแถว!"); ctx.after(1100, () => { idx++; ctx.progress(idx, N); next(); }); return; }
+        miss++; draw(bad);
+        if (miss < 2){ ctx.wrong(`แถวสีแดงยังไม่ตรงกับตาราง (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; v.forEach((x, i) => cur[i] = x); ctx.after(900, draw); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0});
+        ctx.reveal(`📖 เฉลย: ${aa} (1 รูป แทน 1 ${S.unit})`); ctx.after(3600, () => { idx++; ctx.progress(idx, N); next(); });
+      };
+    }
+    ctx.progress(0, N); ctx.say("ผลโหวตมาแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

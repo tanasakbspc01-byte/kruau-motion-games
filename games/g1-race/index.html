@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ไฟเขียววิ่งฉิว</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.track{position:relative;border-radius:24px;padding:10px 14px 10px 66px;background:#7FC48A;border:4px solid #fff;box-shadow:0 6px 0 rgba(91,184,120,.35);display:grid;gap:8px}
+.lane{position:relative;height:54px;border-radius:14px;background:repeating-linear-gradient(90deg,#E9A46A 0 40px,#EFB47E 40px 80px);box-shadow:inset 0 -4px 0 rgba(0,0,0,.08)}
+.lane.me{outline:4px solid #FFE07A}
+.who{position:absolute;left:-54px;top:50%;transform:translateY(-50%);font-weight:700;color:#fff;font-size:.95rem}
+.runner{position:absolute;top:50%;left:0;transform:translateY(-50%) scaleX(-1);font-size:2.4rem;line-height:1;transition:left .5s cubic-bezier(.3,1.3,.5,1)}
+.runner.dash{animation:dash .5s}
+.flag{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:1.8rem}
+.light{justify-self:center;display:flex;gap:8px;padding:6px 10px;border-radius:14px;background:#333;margin-left:-56px}
+.light i{display:block;width:30px;height:30px;border-radius:50%;background:#555}
+.light i.r.on{background:#FF4D4D;box-shadow:0 0 14px #FF4D4D}
+.light i.g.on{background:#4DFF7A;box-shadow:0 0 14px #4DFF7A}
+.sent{font-size:clamp(2rem,8vw,3rem);font-weight:700;letter-spacing:.04em}
+.hole{display:inline-grid;place-items:center;min-width:1.4em;border-radius:14px;background:#FFE7C2;color:var(--orange-deep);padding:0 .15em}
+.choices .choice{font-size:clamp(1.7rem,7vw,2.4rem)}
+@keyframes dash{50%{transform:translateY(-70%) scaleX(-1) rotate(-10deg)}}
+@media (max-width:520px){.track{padding-left:58px}.lane{height:44px}.runner{font-size:1.9rem}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 10;
+const RUNNERS = ["🐹","🐧","🦖","🐙","🦦"];
+function near(ans){ const s = new Set([ans]); for (const d of shuffle([1,-1,2,-2,10])) if (s.size < 3 && ans+d >= 0 && ans+d <= 20) s.add(ans+d); while (s.size < 3) s.add(rand(0,20)); return shuffle([...s]); }
+function genQ(level, i){
+  let a, b, op, ans, missing = false;
+  if (level === 1){ op = "+"; a = rand(10, 15); b = rand(1, 19 - a); if (i % 2){ op = "−"; a = rand(12, 19); b = rand(1, a - 10); } }
+  else if (level === 2){ op = i % 2 ? "−" : "+"; if (op === "+"){ a = rand(2, 9); b = rand(11 - a, 9); } else { a = rand(11, 18); b = rand(a - 9, 9); } }
+  else { op = pick(["+","−"]); if (op === "+"){ a = rand(3, 12); b = rand(Math.max(1, 10 - a), 20 - a); } else { a = rand(11, 20); b = rand(2, a - 1); } missing = i % 3 === 2; }
+  ans = op === "+" ? a + b : a - b;
+  return missing ? {html:`${a} ${op} <b class="hole">?</b> = ${ans}`, say:`${a} ${op === "+" ? "บวก" : "ลบ"} เท่าไร ได้ ${ans}`, ans:b, ex:`${a} ${op} ${b} = ${ans}`}
+                 : {html:`${a} ${op} ${b} = <b class="hole">?</b>`, say:`${a} ${op === "+" ? "บวก" : "ลบ"} ${b} เท่ากับเท่าไร`, ans, ex:`${a} ${op} ${b} = ${ans}`};
+}
+
+KIT.mount({
+  key:"g1-race", title:"ไฟเขียววิ่งฉิว", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 5 การบวก การลบจำนวนนับไม่เกิน 20",
+  heroHTML:"ตอบถูก <em>ไฟเขียว</em> วิ่งฉิวเข้าเส้นชัย! 🚦", heroDesc:"แข่งวิ่งกับเพื่อนสัตว์ ตอบโจทย์บวกลบถูก ไฟเขียวจะให้วิ่งไปข้างหน้า ตอบผิดไฟแดงต้องหยุดรอ ใครถึงเส้นชัยก่อนชนะ!",
+  progIcon:"🚦",
+  howto:["เลือกตัววิ่งของเธอ","ตอบโจทย์บวกลบ ถ้าถูก ไฟเขียว วิ่งไปข้างหน้า","ตอบผิด ไฟแดง หยุดอยู่กับที่ เพื่อนอาจแซงได้","กด 🔊 ฟังโจทย์ได้"],
+  note:"บวก = รวมเพิ่ม · ลบ = เอาออก · ลองนับต่อหรือนับถอยหลังจากตัวที่มากกว่า",
+  levels:{
+    1:{pill:N+" ข้อ", color:"var(--green)", desc:"บวกลบไม่มีทด เช่น 12 + 5, 17 − 4"},
+    2:{pill:N+" ข้อ", color:"var(--blue)", desc:"บวกข้ามสิบ เช่น 8 + 7 และลบข้ามสิบ เช่น 15 − 8"},
+    3:{pill:N+" ข้อ", color:"var(--purple)", desc:"บวกลบคละ ไม่เกิน 20 และหาตัวที่หายไป"}
+  },
+  play(level, ctx){
+    const me = pick(RUNNERS), bots = shuffle(RUNNERS.filter(r => r !== me)).slice(0, 2);
+    const pos = [0, 0, 0];
+    let idx = 0;
+    ctx.stage.innerHTML = `<div class="track"><div class="light" id="lt"><i class="r"></i><i class="g on"></i></div>
+      ${[me, ...bots].map((r, i) => `<div class="lane${i === 0 ? " me" : ""}"><span class="who">${i === 0 ? "เธอ" : ""}</span><span class="runner" id="r${i}">${r}</span><span class="flag">🏁</span></div>`).join("")}</div><div id="q"></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    const draw = () => pos.forEach((p, i) => { $("#r" + i).style.left = `calc(${p / N * 100}% * .86)`; });
+    const light = g => { $("#lt .r").classList.toggle("on", !g); $("#lt .g").classList.toggle("on", g); };
+    draw();
+    function next(){
+      if (idx >= N){
+        const rank = 1 + pos.slice(1).filter(p => p > pos[0]).length;
+        ctx.say(rank === 1 ? "🥇 ชนะที่ 1!" : rank === 2 ? "🥈 ได้ที่ 2 เก่งมาก!" : "🥉 ได้ที่ 3 สู้ ๆ นะ!", "good");
+        ctx.after(900, () => ctx.finish({targetSec: 150})); return;
+      }
+      const Q = genQ(level, idx), opts = near(Q.ans);
+      light(true);
+      KIT.mcq(ctx, $("#q"), {label:`ข้อ ${idx+1} จาก ${N}`, html:`<span class="sent">${Q.html}</span>`, say:Q.say, options:opts.map(String), answer:opts.indexOf(Q.ans), cols:3, explain:Q.ex,
+        onNext: ok => {
+          if (ok){ pos[0]++; $("#r0").classList.add("dash"); ctx.after(500, () => $("#r0").classList.remove("dash")); }
+          else light(false);
+          pos[1] += Math.random() < .55 ? 1 : 0; pos[2] += Math.random() < .45 ? 1 : 0;
+          draw(); idx++; ctx.progress(idx, N);
+          ctx.after(ok ? 450 : 700, next);
+        }});
+    }
+    ctx.progress(0, N); ctx.say("3… 2… 1… ไป!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>
