@@ -1,0 +1,213 @@
+/* KruAu สื่อการสอน — ชุดหน้าตาใช้ร่วมกัน (แต่ละโฟลเดอร์มีสำเนาของตัวเอง) */
+:root{
+  --paper:#FFF8EC;
+  --card:#FFFFFF;
+  --ink:#3B2E5A;
+  --ink-soft:#6E6390;
+  --main:#FF7A45;
+  --main-deep:#E85D25;
+  --red:#FF5C7A;
+  --orange:#FF9F43;
+  --yellow:#FFC93C;
+  --green:#2ECC71;
+  --teal:#1ABC9C;
+  --blue:#3FA9F5;
+  --purple:#9B6CF0;
+  --pink:#FF7EB6;
+  --line:#F0E0C8;
+  --good:#22B35E;
+  --bad:#EF4F5F;
+  --font:"Mali","Sarabun","Leelawadee UI","Thonburi",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:var(--font);color:var(--ink);background:var(--paper);-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;overflow:hidden;
+  background-image:radial-gradient(rgba(255,159,67,.18) 1.4px,transparent 1.5px);background-size:24px 24px}
+button,input,select{font-family:inherit;color:inherit;font-size:inherit}
+button{cursor:pointer;touch-action:manipulation}
+:focus-visible{outline:3px solid var(--main-deep);outline-offset:3px}
+h1,h2,h3,h4{margin:0;text-wrap:balance;line-height:1.3}
+p{margin:0;line-height:1.65}
+.hidden{display:none !important}
+
+/* ---------- โครงหน้า ---------- */
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh}
+.bar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--main);color:#fff;box-shadow:0 4px 0 var(--main-deep);z-index:3;flex:none}
+.bar .logo{font-size:1.7rem;line-height:1}
+.bar .ttl{min-width:0;flex:1}
+.bar .ttl b{display:block;font-size:clamp(1rem,2.6vw,1.25rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .ttl small{display:block;font-size:clamp(.72rem,1.9vw,.85rem);opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .tb{border:0;background:rgba(255,255,255,.22);color:#fff;border-radius:12px;min-width:44px;height:44px;font-size:1.25rem;display:grid;place-items:center;padding:0 10px}
+.bar .tb:active{transform:scale(.94)}
+.prog{height:7px;background:rgba(0,0,0,.08);flex:none}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--yellow),var(--green));transition:width .35s}
+
+.stage{flex:1;min-height:0;position:relative;overflow:hidden}
+.slide{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px clamp(12px,3vw,32px) 28px;opacity:0;visibility:hidden;transform:translateX(30px);transition:opacity .3s,transform .3s,visibility 0s .3s}
+.slide.on{opacity:1;visibility:visible;transform:none;transition:opacity .3s,transform .3s}
+.slide.left{transform:translateX(-30px)}
+.inner{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+
+.nav{display:flex;align-items:center;gap:10px;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:#fff;border-top:3px solid var(--line);flex:none}
+.nav .nb{border:0;border-radius:16px;height:52px;padding:0 18px;font-weight:700;font-size:1.05rem;background:var(--main);color:#fff;box-shadow:0 4px 0 var(--main-deep);white-space:nowrap}
+.nav .nb.prev{background:#EFE7FF;color:var(--purple);box-shadow:0 4px 0 #D5C6F7}
+.nav .nb:disabled{opacity:.35;box-shadow:none}
+.nav .nb:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 var(--main-deep)}
+.dots{flex:1;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;min-width:0}
+.dots button{width:14px;height:14px;border-radius:50%;border:0;padding:0;background:#E7DCCB}
+.dots button.on{background:var(--main);transform:scale(1.3)}
+.dots button.done{background:var(--green)}
+.count{font-weight:700;color:var(--ink-soft);font-size:.95rem;white-space:nowrap}
+@media (max-width:620px){ .dots{display:none} .nav{justify-content:space-between} .nav .nb{padding:0 14px} }
+
+/* จอเตี้ย (iPad แนวนอนในกรอบเว็บ) — ย่อแถบบน/ล่างให้เหลือที่ให้สไลด์มากขึ้น */
+@media (max-height:760px){
+  .bar{padding:4px 10px;gap:8px;box-shadow:0 3px 0 var(--main-deep)}
+  .bar .logo{font-size:1.3rem}
+  .bar .ttl small{display:none}
+  .bar .tb{min-width:40px;height:38px;font-size:1.1rem}
+  .prog{height:5px}
+  .nav{padding:5px 10px calc(5px + env(safe-area-inset-bottom))}
+  .nav .nb{height:44px;font-size:1rem}
+  .slide{padding-top:10px;padding-bottom:12px}
+  .inner{gap:12px}
+}
+.slide.fitted{overflow-x:hidden}
+
+/* ---------- ส่วนประกอบเนื้อหา ---------- */
+.h{font-size:clamp(1.45rem,4vw,2.1rem);color:var(--main-deep);display:flex;align-items:center;gap:10px}
+.h .e{font-size:1.3em}
+.sub{font-size:clamp(1rem,2.6vw,1.2rem);color:var(--ink-soft)}
+.card{background:var(--card);border-radius:22px;padding:16px 18px;box-shadow:0 5px 0 var(--c,var(--line));border:3px solid var(--c,var(--line))}
+.card h3{font-size:clamp(1.12rem,3vw,1.35rem);color:var(--c2,var(--ink));margin-bottom:6px}
+.card p,.card li{font-size:clamp(1rem,2.5vw,1.15rem)}
+.card ul,.card ol{margin:4px 0 0;padding-left:1.4em;line-height:1.7}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--min,240px)),1fr))}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.center{text-align:center;justify-content:center}
+.big,.inner .big,.card p.big{font-size:clamp(1.4rem,4.5vw,2.2rem);font-weight:700;line-height:1.5}
+.note{background:#FFF3C4;border-left:8px solid var(--yellow);border-radius:14px;padding:12px 14px;font-size:clamp(1rem,2.5vw,1.12rem);line-height:1.6}
+.key{background:linear-gradient(120deg,#E4F7FF,#EFE7FF);border-radius:18px;padding:14px 16px;border:3px dashed var(--blue);font-size:clamp(1.02rem,2.6vw,1.2rem);line-height:1.65}
+.key b{color:var(--purple)}
+.pill{display:inline-block;border-radius:999px;padding:3px 12px;font-weight:700;color:#fff;background:var(--c,var(--main));font-size:.92rem}
+.hl{background:linear-gradient(transparent 55%,rgba(255,201,60,.7) 55%);font-weight:700;padding:0 2px}
+.c-red{--c:var(--red)} .c-orange{--c:var(--orange)} .c-yellow{--c:var(--yellow)} .c-green{--c:var(--green)} .c-teal{--c:var(--teal)} .c-blue{--c:var(--blue)} .c-purple{--c:var(--purple)} .c-pink{--c:var(--pink)}
+.t-red{color:var(--red)} .t-green{color:var(--good)} .t-blue{color:var(--blue)} .t-purple{color:var(--purple)} .t-orange{color:#E8701A}
+.emoji-xl{font-size:clamp(3rem,10vw,5rem);line-height:1}
+
+/* หน้าปก */
+.cover{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
+.cover .badge{background:var(--purple);color:#fff;border-radius:999px;padding:6px 16px;font-weight:700}
+.cover h1{font-size:clamp(2rem,7vw,3.4rem);color:var(--main-deep);text-shadow:0 4px 0 #FFE1A8}
+.cover .goals{text-align:left;max-width:640px;width:100%}
+.btn{border:0;border-radius:18px;padding:12px 22px;font-weight:700;font-size:clamp(1.02rem,2.8vw,1.2rem);background:var(--c,var(--main));color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.18);min-height:50px}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.btn.ghost{background:#fff;color:var(--ink);border:3px solid var(--line);box-shadow:0 4px 0 var(--line)}
+.btn:disabled{opacity:.45}
+
+/* เศษส่วนแบบตั้ง */
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.1;margin:0 .12em;font-weight:700}
+.fr>span{padding:0 .18em}
+.fr>span:first-child{border-bottom:.09em solid currentColor}
+.mx{display:inline-flex;align-items:center;gap:.06em;vertical-align:middle;font-weight:700}
+
+/* แถบเศษส่วน */
+.fbar{display:flex;border:3px solid var(--ink);border-radius:10px;overflow:hidden;height:46px;background:#fff;width:100%}
+.fbar i{flex:1;border-right:2px solid var(--ink);transition:background .25s}
+.fbar i:last-child{border-right:0}
+.fbar i.on{background:var(--c,var(--orange))}
+
+/* ขั้นตอนเปิดทีละขั้น */
+.steps .step{display:none}
+.steps .step.show{display:block;animation:stepIn .35s both}
+@keyframes stepIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.line3{display:grid;gap:8px;font-size:clamp(1.05rem,3vw,1.35rem)}
+.line3>div{background:#fff;border-radius:14px;padding:10px 14px;border:3px solid var(--line)}
+
+/* การ์ดพลิก */
+.flip{perspective:900px;border:0;background:none;padding:0;min-height:var(--fh,150px);text-align:center}
+.flip .fi{position:relative;width:100%;height:100%;min-height:var(--fh,150px);transition:transform .5s;transform-style:preserve-3d}
+.flip.open .fi{transform:rotateY(180deg)}
+.flip .fa,.flip .fb{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;gap:6px;border:3px solid var(--c,var(--blue));box-shadow:0 5px 0 var(--c,var(--blue))}
+.flip .fa{background:var(--c,var(--blue));color:#fff;font-weight:700;font-size:clamp(1.05rem,2.8vw,1.25rem)}
+.flip .fa .e{font-size:2.4rem}
+.flip .fa small{font-weight:600;opacity:.9;font-size:.85rem}
+.flip .fb{background:#fff;transform:rotateY(180deg);font-size:clamp(.98rem,2.4vw,1.1rem);line-height:1.55}
+
+/* แบบทดสอบ */
+.quiz{display:flex;flex-direction:column;gap:14px}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:700;color:var(--ink-soft)}
+.qq{background:#fff;border-radius:22px;padding:18px;border:3px solid var(--purple);box-shadow:0 5px 0 var(--purple);font-size:clamp(1.15rem,3.2vw,1.45rem);font-weight:700;line-height:1.6}
+.qc{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.qc button{border:3px solid var(--line);background:#fff;border-radius:18px;padding:14px;font-size:clamp(1.05rem,3vw,1.3rem);font-weight:700;box-shadow:0 4px 0 var(--line);min-height:64px;text-align:left;display:flex;gap:10px;align-items:center;line-height:1.45}
+.qc button .k{flex:none;width:34px;height:34px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;font-size:1rem}
+.qc button.ok{border-color:var(--good);background:#DDF7E7;box-shadow:0 4px 0 var(--good)}
+.qc button.no{border-color:var(--bad);background:#FFE1E4;box-shadow:0 4px 0 var(--bad);animation:shake .4s}
+.qc button:disabled{cursor:default}
+.why{border-radius:16px;padding:12px 16px;font-size:clamp(1rem,2.6vw,1.15rem);line-height:1.6}
+.why.good{background:#DDF7E7;border:3px solid var(--good)}
+.why.bad{background:#FFF0D6;border:3px solid var(--orange)}
+.result{text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+.stars{font-size:clamp(2.4rem,8vw,3.6rem);letter-spacing:.1em}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.pop{animation:pop .4s both}
+
+/* กิจกรรมคัดแยก (แตะการ์ด → แตะกล่อง) */
+.sorter{display:flex;flex-direction:column;gap:14px}
+.pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:60px;padding:10px;border-radius:18px;background:#fff;border:3px dashed var(--line)}
+.chip{border:3px solid var(--ink);background:#fff;border-radius:16px;padding:10px 14px;font-weight:700;font-size:clamp(1rem,2.8vw,1.2rem);box-shadow:0 4px 0 var(--ink);min-height:52px;display:inline-flex;align-items:center;gap:6px}
+.chip.sel{background:var(--yellow);transform:translateY(-3px)}
+.chip.no{animation:shake .4s;border-color:var(--bad)}
+.bins{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.bin{border:3px solid var(--c);border-radius:20px;background:#fff;min-height:120px;padding:10px;display:flex;flex-direction:column;gap:8px;align-items:stretch;text-align:center}
+.bin>b{background:var(--c);color:#fff;border-radius:12px;padding:6px;font-size:clamp(1rem,2.6vw,1.15rem)}
+.bin .got{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.bin .got span{background:#F2FBF5;border:2px solid var(--good);border-radius:12px;padding:4px 8px;font-weight:600;font-size:.95rem}
+.bin.ready{background:#FFFBEA;transform:scale(1.02)}
+
+/* กิจกรรมเรียงลำดับ */
+.order{display:grid;gap:10px}
+.order button{border:3px solid var(--line);background:#fff;border-radius:16px;padding:12px 14px;text-align:left;font-size:clamp(1rem,2.6vw,1.15rem);font-weight:600;display:flex;gap:10px;align-items:center;box-shadow:0 4px 0 var(--line);min-height:56px;line-height:1.45}
+.order button .n{flex:none;width:36px;height:36px;border-radius:50%;background:#EEE;display:grid;place-items:center;font-weight:700}
+.order button.done{border-color:var(--good);background:#E9FAEF}
+.order button.done .n{background:var(--good);color:#fff}
+.order button.no{animation:shake .4s;border-color:var(--bad)}
+
+/* ช่องกรอกตัวเลข */
+.ninput{width:3.2em;height:2em;border:3px solid var(--blue);border-radius:12px;text-align:center;font-weight:700;font-size:clamp(1.1rem,3.2vw,1.4rem);background:#F4FAFF}
+.ninput.ok{border-color:var(--good);background:#DDF7E7}
+.ninput.no{border-color:var(--bad);background:#FFE1E4}
+.fin{display:inline-flex;flex-direction:column;align-items:center;gap:4px;vertical-align:middle}
+.fin hr{width:100%;border:0;border-top:3px solid var(--ink);margin:0}
+.feedback{font-weight:700;min-height:1.6em;font-size:clamp(1rem,2.6vw,1.15rem)}
+
+/* ตัวเลื่อน */
+input[type=range]{width:100%;height:36px;accent-color:var(--main)}
+.ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-weight:700}
+.step-btn{width:48px;height:48px;border-radius:14px;border:0;background:var(--blue);color:#fff;font-size:1.5rem;font-weight:700;box-shadow:0 4px 0 #2B86C7}
+.step-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #2B86C7}
+.val{min-width:2.2em;text-align:center;font-size:1.4rem;font-weight:700}
+
+/* ตาราง */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:16px;overflow:hidden;border:3px solid var(--c,var(--blue));font-size:clamp(.95rem,2.4vw,1.1rem)}
+.tbl th{background:var(--c,var(--blue));color:#fff;padding:10px;text-align:left}
+.tbl td{padding:10px;border-top:2px solid var(--line);vertical-align:top;line-height:1.55}
+
+/* ยิงพลุ */
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}
+.confetti i{position:absolute;top:-20px;width:10px;height:16px;border-radius:3px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:14px;font-weight:700;z-index:60;animation:pop .3s}
+
+@media print{
+  body{overflow:visible;background:#fff}
+  .app{height:auto}
+  .bar,.nav,.prog,.noprint{display:none !important}
+  .stage{overflow:visible}
+  .slide{position:static;opacity:1;visibility:visible;transform:none;overflow:visible;page-break-after:always}
+  .steps .step{display:block}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
