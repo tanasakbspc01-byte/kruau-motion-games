@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>วัดส่วนสูงเข้าสวนสนุก</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.park{background:linear-gradient(#FFF6E8,#FDE8F0);border-radius:24px;border:4px solid #fff;box-shadow:0 6px 0 rgba(232,112,143,.25);padding:10px;display:flex;justify-content:center}
+.board{width:100%;max-width:440px;max-height:340px}
+.rul{width:100%;padding:16px 10px 4px}
+.obj{height:30px;background:linear-gradient(90deg,#F6CD6B 0 85%,#F7B6C8 85%);border-radius:4px 14px 14px 4px;position:relative;display:flex;align-items:center;justify-content:flex-end;font-size:1.2rem;margin-bottom:4px}
+.ticks{display:grid;grid-template-columns:repeat(15,1fr);border-top:4px solid #8A6A4A;background:#FFF3DC}
+.ticks span{border-left:2px solid #8A6A4A;height:22px;font-size:.75rem;font-weight:700;padding-left:2px;color:#8A6A4A}
+.ticks span:last-child{display:none}
+.big{display:inline-block;font-size:2rem;font-weight:700;color:var(--orange-deep)}
+.choices .choice{font-size:clamp(1.2rem,5vw,1.8rem)}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const KIDS = [["น้องกุ้ง","🧒","#86B6F0"],["น้องปู","👧","#F7B6C8"],["น้องหมึก","👦","#7FD39A"],["น้องหอย","🧒","#F6CD6B"],["น้องปลา","👧","#B7A4EE"]];
+const RIDES = [["🎢","รถไฟเหาะ",120],["🎡","ชิงช้าสวรรค์",100],["🚀","จรวดหมุน",130],["🌊","ล่องแก่ง",110],["🎠","ม้าหมุน",90]];
+function near(ans, lo, hi){ const s = new Set([ans]); for (const d of shuffle([1,-1,5,-5,10,-10])) if (s.size < 3 && ans+d >= lo && ans+d <= hi) s.add(ans+d); while (s.size < 3) s.add(rand(lo,hi)); return shuffle([...s]); }
+function board(kids, minor, req){
+  const H = 170, top = 10, px = v => top + (H - v) * 1.6;
+  let t = "";
+  for (let v = 0; v <= H; v += minor){ const major = v % 10 === 0; t += `<line x1="${major ? 30 : 40}" x2="54" y1="${px(v)}" y2="${px(v)}" stroke="#8A6A4A" stroke-width="${major ? 2.4 : 1.2}"/>${major ? `<text x="26" y="${px(v)+4}" text-anchor="end" font-size="11" font-weight="700" fill="#8A6A4A">${v}</text>` : ""}`; }
+  const w = 60, kidsSvg = kids.map((k, i) => { const x = 70 + i * 80, h = k.h; return `<g><rect x="${x}" y="${px(h)+18}" width="${w}" height="${(h)*1.6 - 18}" rx="18" fill="${k.c}"/><circle cx="${x + w/2}" cy="${px(h)+18}" r="18" fill="#FFE0BD" stroke="#C99A6A" stroke-width="2"/><text x="${x + w/2}" y="${px(h)+24}" text-anchor="middle" font-size="16">${k.e}</text><line x1="54" x2="${x + w}" y1="${px(h)}" y2="${px(h)}" stroke="#E8708F" stroke-width="2" stroke-dasharray="4 4"/><text x="${x + w/2}" y="${px(0)+16}" text-anchor="middle" font-size="12" font-weight="700" fill="#4A3A30">${k.n}</text></g>`; }).join("");
+  const reqLine = req ? `<line x1="30" x2="${70 + kids.length*80}" y1="${px(req)}" y2="${px(req)}" stroke="#2C8A52" stroke-width="3"/><text x="${72 + kids.length*80}" y="${px(req)+4}" font-size="11" font-weight="700" fill="#2C8A52">ต้องสูง ${req}</text>` : "";
+  const W = 70 + kids.length * 80 + (req ? 80 : 20);
+  return `<svg class="board" viewBox="0 0 ${W} ${H*1.6 + 40}"><rect x="30" y="${top}" width="24" height="${H*1.6}" fill="#FFF3DC" stroke="#8A6A4A" stroke-width="2"/>${t}${reqLine}${kidsSvg}</svg>`;
+}
+const PLAN = {1:["read","ride","read","ruler","ride","read","ruler","diff"], 2:["read","conv","ride","diff","conv2","read","ride","conv"], 3:["conv","diff","sum","conv2","read","ride","sum","diff"]};
+
+KIT.mount({
+  key:"g2-ride", title:"วัดส่วนสูงเข้าสวนสนุก", subtitle:"คณิตศาสตร์ ป.2 · บทที่ 3 การวัดความยาว",
+  heroHTML:"สูงพอเล่น<em>เครื่องเล่น</em>หรือยัง? 🎢", heroDesc:"เครื่องเล่นในสวนสนุกต้องสูงถึงเกณฑ์ก่อนนะ! อ่านไม้วัดส่วนสูงเป็นเซนติเมตร เทียบกับป้าย และแปลงเมตรเป็นเซนติเมตร",
+  progIcon:"🎢",
+  howto:["อ่านตัวเลขบนไม้วัด ตรงเส้นประสีชมพูที่ระดับศีรษะ","เส้นยาวมีตัวเลขทุก 10 เซนติเมตร เส้นสั้นทุก 5 (ด่านยากทุก 1)","1 เมตร = 100 เซนติเมตร","กด 🔊 ฟังโจทย์ได้"],
+  note:"1 ม. = 100 ซม. · 1 ม. 25 ซม. = 125 ซม. · วัดสิ่งของต้องเริ่มที่ 0",
+  levels:{
+    1:{pill:N+" ข้อ", color:"var(--green)", desc:"อ่านไม้วัด (ทุก 5 ซม.) และไม้บรรทัด"},
+    2:{pill:N+" ข้อ", color:"var(--blue)", desc:"เมตรและเซนติเมตร เปรียบเทียบส่วนสูง"},
+    3:{pill:N+" ข้อ", color:"var(--purple)", desc:"อ่านละเอียดทุก 1 ซม. บวกลบความยาว"}
+  },
+  play(level, ctx){
+    const minor = level === 3 ? 1 : 5, step = level === 3 ? 1 : 5;
+    const hgt = () => rand(85 / step, 160 / step) * step;
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 180}); return; }
+      const kind = PLAN[level][idx], [k1, k2] = shuffle(KIDS.slice());
+      let pre = "", html, say, opts, ans, explain, cols = 3;
+      if (kind === "read"){ const h = hgt(); pre = board([{n:k1[0], e:k1[1], c:k1[2], h}], minor); html = `${k1[0]}สูงกี่เซนติเมตร`; say = html; const o = near(h, 70, 170); opts = o.map(v => `${v} ซม.`); ans = o.indexOf(h); explain = `ระดับศีรษะตรงกับ ${h} ซม.`; }
+      else if (kind === "ride"){ const R = pick(RIDES), h = Math.random() < .5 ? R[2] + rand(1, 4)*step : R[2] - rand(1, 4)*step; pre = board([{n:k1[0], e:k1[1], c:k1[2], h}], minor, R[2]);
+        html = `${R[0]} ${R[1]} ต้องสูงอย่างน้อย ${R[2]} ซม.<br>${k1[0]}เล่นได้ไหม`; say = `${R[1]} ต้องสูงอย่างน้อย ${R[2]} เซนติเมตร ${k1[0]}เล่นได้ไหม`; opts = ["✅ เล่นได้","❌ ยังเล่นไม่ได้"]; ans = h >= R[2] ? 0 : 1; cols = 2; explain = `${k1[0]}สูง ${h} ซม. ${h >= R[2] ? "สูงกว่าเกณฑ์ เล่นได้" : `ยังขาดอีก ${R[2] - h} ซม.`}`; }
+      else if (kind === "ruler"){ const n = rand(3, 14); pre = `<div class="rul"><div class="obj" style="width:${n / 15 * 100}%">✏️</div><div class="ticks">${[...Array(16).keys()].map(k => `<span>${k}</span>`).join("")}</div></div>`; html = "ดินสอยาวกี่เซนติเมตร"; say = html; const o = near(n, 1, 15); opts = o.map(v => `${v} ซม.`); ans = o.indexOf(n); explain = `ปลายดินสอตรงกับ ${n} โดยเริ่มที่ 0 จึงยาว ${n} ซม.`; }
+      else if (kind === "diff"){ let a = hgt(), b; do { b = hgt(); } while (Math.abs(a - b) < step); pre = board([{n:k1[0], e:k1[1], c:k1[2], h:a}, {n:k2[0], e:k2[1], c:k2[2], h:b}], minor);
+        const t = a > b ? k1 : k2, s = a > b ? k2 : k1, d = Math.abs(a - b); html = `${t[0]}สูงกว่า${s[0]}กี่เซนติเมตร`; say = html; const o = near(d, 1, 80); opts = o.map(v => `${v} ซม.`); ans = o.indexOf(d); explain = `${Math.max(a,b)} − ${Math.min(a,b)} = ${d} ซม.`; }
+      else if (kind === "conv"){ const m = 1, c = rand(1, 19) * (level === 3 ? 1 : 5), v = m*100 + c; html = `<span class="big">${m} ม. ${c} ซม.</span><br>เท่ากับกี่เซนติเมตร`; say = `${m} เมตร ${c} เซนติเมตร เท่ากับกี่เซนติเมตร`; const o = [...new Set([v, m*10 + c, v + 10])]; const u = shuffle(o); opts = u.map(x => `${x} ซม.`); ans = u.indexOf(v); explain = `1 ม. = 100 ซม. · 100 + ${c} = ${v} ซม.`; }
+      else if (kind === "conv2"){ const v = rand(101, 199); html = `<span class="big">${v} ซม.</span><br>เท่ากับกี่เมตร กี่เซนติเมตร`; say = `${v} เซนติเมตร เท่ากับกี่เมตร กี่เซนติเมตร`; const right = `1 ม. ${v - 100} ซม.`; const u = shuffle([right, `${Math.floor(v/10)} ม. ${v % 10} ซม.`, `10 ม. ${v - 100} ซม.`]); opts = u; ans = u.indexOf(right); cols = 1; explain = `${v} = 100 + ${v - 100} = 1 ม. ${v - 100} ซม.`; }
+      else { const a = rand(20, 80), b = rand(15, 60), plus = Math.random() < .5, r = plus ? a + b : Math.abs(a - b);
+        html = plus ? `ริบบิ้นสีแดงยาว ${a} ซม. สีฟ้ายาว ${b} ซม.<br>ต่อกันยาวกี่เซนติเมตร` : `เชือกยาว ${Math.max(a,b)} ซม. ตัดออก ${Math.min(a,b)} ซม.<br>เหลือยาวกี่เซนติเมตร`; say = html.replace("<br>", " ");
+        const o = near(r, 1, 160); opts = o.map(v => `${v} ซม.`); ans = o.indexOf(r); explain = plus ? `${a} + ${b} = ${r} ซม.` : `${Math.max(a,b)} − ${Math.min(a,b)} = ${r} ซม.`; }
+      ctx.stage.innerHTML = `${pre ? `<div class="park">${pre}</div>` : ""}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ข้อ ${idx+1} จาก ${N}`, html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    ctx.progress(0, N); ctx.say("ยินดีต้อนรับสู่สวนสนุก!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

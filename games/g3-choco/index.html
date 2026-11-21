@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ช็อกโกแลตแท่งแบ่งกัน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.bar{display:grid;grid-template-columns:repeat(var(--d),1fr);gap:4px;padding:10px;border-radius:14px;background:#4A2E1A;box-shadow:0 6px 0 #2E1B10;max-width:520px;margin:0 auto;width:100%}
+.pc{height:86px;border:none;border-radius:8px;background:var(--a);box-shadow:inset 0 -6px 0 rgba(0,0,0,.25),inset 0 4px 0 rgba(255,255,255,.12);padding:0;cursor:pointer}
+.pc.on{background:linear-gradient(var(--b) 0 45%,var(--a) 45%);box-shadow:inset 0 -6px 0 rgba(0,0,0,.25)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center}
+.two .pc{height:56px}
+.two p{margin:6px 0 0;font-weight:700}
+.box{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:14px;border-radius:22px;background:#fff;border:3px solid var(--line);box-shadow:0 5px 0 var(--line)}
+.box span{font-size:2.2rem;filter:grayscale(.9) brightness(1.15)}
+.box span.pink{filter:none}
+.bigf{display:inline-block;font-size:1.8rem;vertical-align:middle;color:#8A5A34}
+.sent{font-size:clamp(1.6rem,7vw,2.4rem);font-weight:700}
+.now{text-align:center;font-weight:700;color:var(--ink-soft)}
+.choices .choice{font-size:clamp(1.3rem,5.4vw,1.9rem)}
+@media (max-width:520px){.pc{height:64px}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, frac} = KIT;
+const N = 8;
+const FLAV = [["ช็อกโกแลตพิสตาชิโอ","#6B4A2E","#9BC46A"],["ช็อกโกแลตสตรอว์เบอร์รี","#6B4A2E","#F28CA8"],["ช็อกโกแลตนม","#8A5A34","#D9A36A"],["ช็อกโกแลตขาว","#E9D7B9","#F6CD6B"]];
+const bar = (d, n, F, id) => `<div class="bar" ${id ? `id="${id}"` : ""} style="--d:${d}">${Array.from({length:d}, (_, i) => `<button class="pc${i < n ? " on" : ""}" type="button" data-i="${i}" style="--a:${F[1]};--b:${F[2]}"></button>`).join("")}</div>`;
+const ft = (n, d) => `${n}/${d}`;
+const PLAN = {1:["read","build","read","word","build","read","compare","build"], 2:["read","build","compare","set","add","build","sub","compare"], 3:["add","sub","set","build","compare","add","sub","set"]};
+function opt3(n, d){ const s = new Set([`${n}/${d}`]); for (const c of shuffle([`${d - n}/${d}`, `${d}/${n}`, `${n}/${d + 1}`, `${n + 1}/${d}`])) if (s.size < 3 && !c.startsWith("0/") && !c.endsWith("/0")) s.add(c); return shuffle([...s]); }
+const show = s => { const [a, b] = s.split("/"); return frac(+a, +b); };
+
+KIT.mount({
+  key:"g3-choco", title:"ช็อกโกแลตแท่งแบ่งกัน", subtitle:"คณิตศาสตร์ ป.3 · บทที่ 6 เศษส่วน",
+  heroHTML:"หัก<em>ช็อกโกแลต</em>เป็นเศษส่วน 🍫", heroDesc:"ช็อกโกแลตแท่งสุดฮิตแบ่งเป็นชิ้นเท่า ๆ กัน! บอกให้ได้ว่ากินไปกี่ส่วนของแท่ง ระบายตามเศษส่วนที่สั่ง เปรียบเทียบ และบวกลบเศษส่วน",
+  progIcon:"🍫",
+  howto:["ตัวส่วน = แบ่งทั้งแท่งเป็นกี่ชิ้นเท่า ๆ กัน","ตัวเศษ = จำนวนชิ้นที่ระบาย (ชิ้นที่มีหน้าท็อปปิ้ง)","ข้อที่ให้ระบาย: แตะชิ้นช็อกโกแลตให้ตรงตามเศษส่วน แล้วกดตรวจ","ตัวส่วนเท่ากัน ตัวเศษมากกว่า เศษส่วนนั้นมากกว่า"],
+  note:"3/5 อ่านว่า เศษสามส่วนห้า · ตัวส่วนเท่ากัน บวกลบเฉพาะตัวเศษ เช่น 2/7 + 3/7 = 5/7",
+  levels:{
+    1:{pill:N+" แท่ง", color:"var(--green)", desc:"อ่าน เขียน ระบายเศษส่วน"},
+    2:{pill:N+" แท่ง", color:"var(--blue)", desc:"เปรียบเทียบ เศษส่วนของกลุ่ม บวกลบเบื้องต้น"},
+    3:{pill:N+" แท่ง", color:"var(--purple)", desc:"บวกลบเศษส่วน และเศษส่วนของกลุ่มสิ่งของ"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `แท่งที่ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 200}); return; }
+      const kind = PLAN[level][idx], F = FLAV[idx % FLAV.length], d = rand(3, level === 1 ? 8 : 10), n = rand(1, d - 1);
+      if (kind === "build") return build(d, n, F);
+      let pre = "", html, say, opts, ans, explain, cols = 3;
+      if (kind === "read"){ pre = bar(d, n, F); html = `ส่วนที่มีท็อปปิ้ง เป็นเศษส่วนเท่าไรของทั้งแท่ง`; say = html; const o = opt3(n, d); opts = o.map(show); ans = o.indexOf(ft(n, d)); explain = `แบ่ง ${d} ชิ้นเท่า ๆ กัน มีท็อปปิ้ง ${n} ชิ้น = ${n}/${d}`; }
+      else if (kind === "word"){ html = `<span class="bigf">${frac(n, d)}</span> อ่านว่าอย่างไร`; say = "เศษส่วนนี้อ่านว่าอย่างไร"; const T = KIT.thaiWords; const right = `เศษ${T(n)}ส่วน${T(d)}`; const u = shuffle([right, `เศษ${T(d)}ส่วน${T(n)}`, `${T(n)}ส่วน${T(d)}เศษ`]); opts = u; ans = u.indexOf(right); cols = 1; explain = `${n}/${d} อ่านว่า ${right}`; }
+      else if (kind === "compare"){ let m; do { m = rand(1, d - 1); } while (m === n); pre = `<div class="two"><div>${bar(d, n, F)}<p>แท่ง ก</p></div><div>${bar(d, m, FLAV[(idx + 1) % 4])}<p>แท่ง ข</p></div></div>`;
+        const more = Math.random() < .5; html = `${frac(n, d)} กับ ${frac(m, d)} แท่งไหนมีท็อปปิ้ง<b>${more ? "มากกว่า" : "น้อยกว่า"}</b>`; say = `เศษ ${n} ส่วน ${d} กับ เศษ ${m} ส่วน ${d} อันไหน${more ? "มากกว่า" : "น้อยกว่า"}`; opts = ["แท่ง ก","แท่ง ข"]; ans = (more ? n > m : n < m) ? 0 : 1; cols = 2; explain = `ตัวส่วนเท่ากัน (${d}) เทียบตัวเศษ ${Math.max(n, m)} > ${Math.min(n, m)}`; }
+      else if (kind === "set"){ const tot = rand(4, 10), k = rand(1, tot - 1); pre = `<div class="box">${Array(tot).fill(0).map((_, i) => `<span class="${i < k ? "pink" : ""}">🍬</span>`).join("")}</div>`;
+        html = `ลูกอมสีชมพูเป็นเศษส่วนเท่าไรของลูกอมทั้งหมด`; say = html; const o = opt3(k, tot); opts = o.map(show); ans = o.indexOf(ft(k, tot)); explain = `ลูกอมทั้งหมด ${tot} เม็ด สีชมพู ${k} เม็ด = ${k}/${tot}`; }
+      else { const plus = kind === "add"; let a, b; if (plus){ a = rand(1, d - 2); b = rand(1, d - 1 - a); } else { a = rand(2, d - 1); b = rand(1, a - 1); }
+        const r = plus ? a + b : a - b; pre = bar(d, plus ? a : a, F);
+        html = `<span class="sent">${frac(a, d)} ${plus ? "+" : "−"} ${frac(b, d)} = ?</span>`; say = `เศษ ${a} ส่วน ${d} ${plus ? "บวก" : "ลบ"} เศษ ${b} ส่วน ${d} เท่ากับเท่าไร`;
+        const right = ft(r, d), u = shuffle([...new Set([right, `${r}/${d * 2}`, `${plus ? r + 1 : r === 1 ? 2 : r - 1}/${d}`])]); opts = u.map(show); ans = u.indexOf(right); explain = `ตัวส่วนเท่ากัน ${plus ? "บวก" : "ลบ"}เฉพาะตัวเศษ ${a} ${plus ? "+" : "−"} ${b} = ${r} ได้ ${r}/${d}`; }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    function build(d, n, F){
+      let cur = new Set(), miss = 0, lock = false;
+      const text = `ระบายท็อปปิ้งให้ได้ เศษ ${n} ส่วน ${d} ของแท่ง`;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(text)}<div class="qlabel">${lbl()} · ระบายท็อปปิ้ง</div><div class="qtext">ระบายท็อปปิ้งให้ได้ <span class="bigf">${frac(n, d)}</span> ของแท่ง</div></div>
+        ${bar(d, 0, F, "bb")}<div class="now" id="now">ระบายแล้ว 0 ชิ้น จาก ${d} ชิ้น</div><div class="row"><button class="btn" type="button" id="ok">✅ ตรวจ</button></div>`;
+      KIT.speak(text);
+      const $ = s => ctx.stage.querySelector(s);
+      const draw = () => { ctx.stage.querySelectorAll("#bb .pc").forEach((p, i) => p.classList.toggle("on", cur.has(i))); $("#now").textContent = `ระบายแล้ว ${cur.size} ชิ้น จาก ${d} ชิ้น`; };
+      $("#bb").onclick = e => { const p = e.target.closest(".pc"); if (!p || lock) return; const i = +p.dataset.i; cur.has(i) ? cur.delete(i) : cur.add(i); KIT.sfx.tap(); draw(); };
+      $("#ok").onclick = () => {
+        if (lock) return;
+        const qq = `ระบาย ${n}/${d} ของแท่ง`, aa = `ระบาย ${n} ชิ้น จาก ${d} ชิ้น`;
+        if (cur.size === n){ lock = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); ctx.correct(miss ? 50 : 100, `ถูกต้อง! ${n}/${d} 🍫`); ctx.after(1000, done); return; }
+        miss++;
+        if (miss < 2){ ctx.wrong(`ระบาย ${cur.size} ชิ้น ${cur.size < n ? "ยังน้อยไป" : "มากเกินไป"} ตัวเศษคือ ${n} (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; cur = new Set([...Array(n).keys()]); draw(); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 เฉลย: ${n}/${d} คือ ระบาย ${n} ชิ้น จากทั้งหมด ${d} ชิ้นที่แบ่งเท่า ๆ กัน`); ctx.after(3200, done);
+      };
+    }
+    ctx.progress(0, N); ctx.say("ช็อกโกแลตมาแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

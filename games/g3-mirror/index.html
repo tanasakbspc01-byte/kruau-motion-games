@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>พิกเซลอาร์ตกระจกเงา</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.pix{position:relative;display:grid;grid-template-columns:repeat(var(--n),1fr);gap:3px;width:100%;max-width:400px;margin:0 auto;padding:10px;background:#E9DCCB;border-radius:18px;box-shadow:0 5px 0 #D6C3AA}
+.pix::after{content:"";position:absolute;pointer-events:none}
+.pix.v::after{top:4px;bottom:4px;left:50%;border-left:4px dashed #E8467C;margin-left:-2px}
+.pix.h::after{left:4px;right:4px;top:50%;border-top:4px dashed #E8467C;margin-top:-2px}
+.px{aspect-ratio:1;border:none;border-radius:5px;background:#FFFDF8;padding:0}
+.px.fx{background:#F3ECE2}
+.px.on{background:var(--c);box-shadow:inset 0 -4px 0 rgba(0,0,0,.15)}
+.px.bad{outline:3px solid #E53935;outline-offset:-3px}
+.pix.win{animation:fold .9s}
+.shapebox{display:flex;justify-content:center;background:#fff;border-radius:24px;border:4px solid var(--line);box-shadow:0 6px 0 var(--line);padding:12px}
+.shapebox svg{width:min(220px,60vw)}
+.choices .choice{font-size:clamp(1.2rem,5vw,1.8rem)}
+@keyframes fold{40%{transform:scaleX(.08)}100%{transform:none}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const PAL = ["#E8708F","#86B6F0","#7FD39A","#F6CD6B","#B7A4EE","#F2A65A"];
+const AX = (x1, y1, x2, y2) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#E8467C" stroke-width="3" stroke-dasharray="7 6"/>`;
+const SH = [
+  [`<path d="M50 85 C10 55 15 20 35 20 C45 20 50 30 50 35 C50 30 55 20 65 20 C85 20 90 55 50 85Z" fill="#F7B6C8" stroke="#4A3A30" stroke-width="3"/>`, AX(50,5,50,95), true, "รูปหัวใจ เส้นแนวตั้ง"],
+  [`<path d="M50 85 C10 55 15 20 35 20 C45 20 50 30 50 35 C50 30 55 20 65 20 C85 20 90 55 50 85Z" fill="#F7B6C8" stroke="#4A3A30" stroke-width="3"/>`, AX(5,50,95,50), false, "รูปหัวใจ เส้นแนวนอน"],
+  [`<rect x="20" y="20" width="60" height="60" fill="#86B6F0" stroke="#4A3A30" stroke-width="3"/>`, AX(15,15,85,85), true, "รูปสี่เหลี่ยมจัตุรัส เส้นทแยงมุม"],
+  [`<rect x="10" y="30" width="80" height="40" fill="#7FD39A" stroke="#4A3A30" stroke-width="3"/>`, AX(8,28,92,72), false, "รูปสี่เหลี่ยมผืนผ้า เส้นทแยงมุม"],
+  [`<rect x="10" y="30" width="80" height="40" fill="#7FD39A" stroke="#4A3A30" stroke-width="3"/>`, AX(50,20,50,80), true, "รูปสี่เหลี่ยมผืนผ้า เส้นแนวตั้งตรงกลาง"],
+  [`<polygon points="50,12 88,85 12,85" fill="#F6CD6B" stroke="#4A3A30" stroke-width="3"/>`, AX(50,5,50,95), true, "รูปสามเหลี่ยมหน้าจั่ว เส้นแนวตั้ง"],
+  [`<polygon points="20,15 90,85 15,85" fill="#F6CD6B" stroke="#4A3A30" stroke-width="3"/>`, AX(52,5,52,95), false, "รูปสามเหลี่ยมด้านไม่เท่า"],
+  [`<circle cx="50" cy="50" r="36" fill="#B7A4EE" stroke="#4A3A30" stroke-width="3"/>`, AX(14,86,86,14), true, "รูปวงกลม เส้นผ่านจุดศูนย์กลาง"],
+  [`<path d="M20 50 L55 20 L55 38 L85 38 L85 62 L55 62 L55 80 Z" fill="#F2A65A" stroke="#4A3A30" stroke-width="3"/>`, AX(5,50,95,50), true, "รูปลูกศร เส้นแนวนอน"],
+  [`<path d="M20 50 L55 20 L55 38 L85 38 L85 62 L55 62 L55 80 Z" fill="#F2A65A" stroke="#4A3A30" stroke-width="3"/>`, AX(52,5,52,95), false, "รูปลูกศร เส้นแนวตั้ง"]
+];
+const PLAN = {1:["mirror","axis","mirror","axis","mirror","axis","mirror","axis"], 2:["mirror","axis","mirror","count","mirror","axis","mirror","axis"], 3:["mirrorH","axis","mirror","count","mirrorH","axis","mirror","count"]};
+
+KIT.mount({
+  key:"g3-mirror", title:"พิกเซลอาร์ตกระจกเงา", subtitle:"คณิตศาสตร์ ป.3 · บทที่ 4 รูปเรขาคณิต (แกนสมมาตร)",
+  heroHTML:"วาด<em>พิกเซลอาร์ต</em>ให้สมมาตร 🪞", heroDesc:"ครึ่งหนึ่งของภาพวาดไว้แล้ว! ระบายอีกครึ่งให้เหมือนเงาในกระจก พับตามเส้นประแล้วต้องทับกันสนิท และฝึกดูว่าเส้นไหนเป็นแกนสมมาตร",
+  progIcon:"🪞",
+  howto:["เส้นประสีชมพูคือแกนสมมาตร (เหมือนกระจกเงา)","แตะช่องฝั่งว่างให้เป็นภาพสะท้อนของอีกฝั่ง ช่องที่ห่างจากเส้นเท่ากันต้องสีเหมือนกัน","แตะซ้ำเพื่อลบสี แล้วกด \"พับดู\"","ข้อแกนสมมาตร: ถ้าพับตามเส้นแล้วสองข้างทับกันสนิท เป็นแกนสมมาตร"],
+  note:"แกนสมมาตร คือ เส้นที่แบ่งรูปเป็น 2 ส่วน ที่พับแล้วทับกันสนิท · รูปบางรูปมีแกนสมมาตรมากกว่า 1 แกน",
+  levels:{
+    1:{pill:N+" ภาพ", color:"var(--green)", desc:"ตาราง 6 × 6 แกนแนวตั้ง"},
+    2:{pill:N+" ภาพ", color:"var(--blue)", desc:"ตาราง 8 × 8 และนับจำนวนแกนสมมาตร"},
+    3:{pill:N+" ภาพ", color:"var(--purple)", desc:"แกนแนวนอนด้วย ลวดลายซับซ้อนขึ้น"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ภาพที่ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 240}); return; }
+      const kind = PLAN[level][idx];
+      if (kind === "mirror" || kind === "mirrorH") return mirror(kind === "mirrorH");
+      if (kind === "axis"){ const S = pick(SH);
+        ctx.stage.innerHTML = `<div class="shapebox"><svg viewBox="0 0 100 100">${S[0]}${S[1]}</svg></div><div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:"เส้นประนี้เป็น<b>แกนสมมาตร</b>หรือไม่", say:"เส้นประนี้เป็นแกนสมมาตรหรือไม่", options:["✅ เป็นแกนสมมาตร","❌ ไม่เป็น"], answer:S[2] ? 0 : 1, cols:2,
+          explain:`${S[3]}: ${S[2] ? "พับตามเส้นแล้วทับกันสนิท จึงเป็นแกนสมมาตร" : "พับตามเส้นแล้วไม่ทับกันสนิท จึงไม่เป็นแกนสมมาตร"}`, onNext:done}); return; }
+      const C = pick([["รูปสี่เหลี่ยมจัตุรัส", `<rect x="20" y="20" width="60" height="60" fill="#86B6F0" stroke="#4A3A30" stroke-width="3"/>`, 4], ["รูปสี่เหลี่ยมผืนผ้า", `<rect x="10" y="30" width="80" height="40" fill="#7FD39A" stroke="#4A3A30" stroke-width="3"/>`, 2], ["รูปสามเหลี่ยมด้านเท่า", `<polygon points="50,12 92,85 8,85" fill="#F6CD6B" stroke="#4A3A30" stroke-width="3"/>`, 3], ["รูปหัวใจ", SH[0][0], 1]]);
+      ctx.stage.innerHTML = `<div class="shapebox"><svg viewBox="0 0 100 100">${C[1]}</svg></div><div id="q"></div>`;
+      const o = shuffle([...new Set([C[2], C[2] + 1, Math.max(0, C[2] - 1), 0])]).slice(0, 3); if (!o.includes(C[2])) o[0] = C[2];
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html:`${C[0]} มีแกนสมมาตรกี่แกน`, say:`${C[0]} มีแกนสมมาตรกี่แกน`, options:o.map(v => `${v} แกน`), answer:o.indexOf(C[2]), cols:3, explain:`${C[0]} มีแกนสมมาตร ${C[2]} แกน`, onNext:done});
+    }
+    function mirror(horiz){
+      const n = level === 1 ? 6 : 8, half = n / 2, col = PAL[idx % PAL.length], fill = level === 3 ? .5 : .4;
+      const grid = Array.from({length:n}, () => Array(n).fill(0));
+      for (let r = 0; r < n; r++) for (let c = 0; c < n; c++){
+        const given = horiz ? r < half : c < half;
+        if (given && Math.random() < fill) grid[r][c] = 1;
+      }
+      if (!grid.flat().some(Boolean)) grid[0][0] = 1;
+      const want = (r, c) => horiz ? grid[n - 1 - r][c] : grid[r][n - 1 - c];
+      const cur = grid.map(row => row.slice());
+      let miss = 0, lock = false;
+      const text = `ระบายอีกครึ่งให้สมมาตรกับแกน${horiz ? "แนวนอน" : "แนวตั้ง"}`;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(text)}<div class="qlabel">${lbl()} · วาดภาพสะท้อน</div><div class="qtext">${text}</div></div>
+        <div class="pix ${horiz ? "h" : "v"}" id="px" style="--n:${n};--c:${col}"></div><div class="row"><button class="btn" type="button" id="ok">🪞 พับดู</button></div>`;
+      KIT.speak(text);
+      const $ = s => ctx.stage.querySelector(s), editable = (r, c) => horiz ? r >= half : c >= half;
+      const draw = (bad = new Set()) => { $("#px").innerHTML = cur.map((row, r) => row.map((v, c) => `<button class="px${v ? " on" : ""}${editable(r, c) ? " ed" : " fx"}${bad.has(r*n + c) ? " bad" : ""}" type="button" data-r="${r}" data-c="${c}" ${editable(r, c) ? "" : "disabled"}></button>`).join("")).join(""); };
+      draw();
+      $("#px").onclick = e => { const b = e.target.closest(".px.ed"); if (!b || lock) return; const r = +b.dataset.r, c = +b.dataset.c; cur[r][c] = cur[r][c] ? 0 : 1; KIT.sfx.tap(); draw(); };
+      $("#ok").onclick = () => {
+        if (lock) return;
+        const bad = new Set(); for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (editable(r, c) && cur[r][c] !== want(r, c)) bad.add(r*n + c);
+        const qq = `วาดภาพสะท้อน ${n} × ${n}`, aa = "ช่องที่ห่างจากแกนเท่ากันมีสีเหมือนกัน";
+        if (!bad.size){ lock = true; $("#px").classList.add("win"); ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); ctx.correct(miss ? 60 : 120, "สมมาตรเป๊ะ! พับแล้วทับกันสนิท 🪞"); ctx.after(1300, done); return; }
+        miss++; draw(bad);
+        if (miss < 2){ ctx.wrong(`ยังมี ${bad.size} ช่องที่ไม่ตรง (สีแดง) (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (editable(r, c)) cur[r][c] = want(r, c);
+        ctx.after(800, () => { draw(); $("#px").classList.add("win"); }); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0});
+        ctx.reveal("📖 เฉลย: ดูภาพที่เติมให้ ช่องที่อยู่ห่างจากเส้นประเท่ากันต้องมีสีเหมือนกัน"); ctx.after(3800, done);
+      };
+    }
+    ctx.progress(0, N); ctx.say("เตรียมกระจกเงาวิเศษ!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ห้องปริศนาหนีให้รอด</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.hall{display:flex;justify-content:space-between;padding:8px 12px;border-radius:18px;background:#2E2A3E;box-shadow:0 5px 0 rgba(0,0,0,.2);font-size:1.5rem}
+.hall .here{animation:bob 1s infinite}
+.note{background:#FFF8DC;border-radius:16px;border:3px dashed #E5B93A;padding:12px 14px;font-size:1.12rem;line-height:1.6}
+.door{display:grid;gap:10px;border-radius:24px;background:linear-gradient(#8A5A34,#6A4420);padding:16px;box-shadow:0 8px 0 #4A2E16;transition:transform .6s}
+.door.open{transform:perspective(600px) rotateY(-28deg);transform-origin:left}
+.door.buzz{animation:buzz .35s}
+.plate{position:relative;background:#FFF6EA;border-radius:18px;padding:12px 60px 12px 14px;text-align:center}
+.plate .ex{font-size:clamp(1.8rem,8vw,2.6rem);font-weight:700;letter-spacing:.03em}
+.door .kp-screen{text-align:center;letter-spacing:.2em}
+@keyframes bob{50%{transform:translateY(-4px)}}
+@keyframes buzz{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 8;
+function exprQ(level){
+  const t = rand(0, level === 1 ? 2 : 4);
+  let e, v, how;
+  if (t === 0){ const a = rand(10, 60), b = rand(2, 30), c = rand(2, 9); e = `(${a} + ${b}) − ${c}`; v = a + b - c; how = `${a} + ${b} = ${a + b} แล้ว ${a + b} − ${c} = ${v}`; }
+  else if (t === 1){ const c = rand(2, 9), q = rand(2, 12), b = rand(1, 20), a = c * q + b; e = `(${a} − ${b}) ÷ ${c}`; v = q; how = `${a} − ${b} = ${a - b} แล้ว ${a - b} ÷ ${c} = ${q}`; }
+  else if (t === 2){ const a = rand(2, 9), b = rand(2, 9), c = rand(1, 9); e = `${a} × (${b} + ${c})`; v = a * (b + c); how = `${b} + ${c} = ${b + c} แล้ว ${a} × ${b + c} = ${v}`; }
+  else if (t === 3){ const b = rand(2, 9), c = rand(2, 9), a = rand(b * c + 1, b * c + 40); e = `${a} − ${b} × ${c}`; v = a - b * c; how = `คูณก่อน ${b} × ${c} = ${b * c} แล้ว ${a} − ${b * c} = ${v}`; }
+  else { const c = rand(2, 9), q = rand(2, 9), a = rand(5, 40); e = `${a} + ${c * q} ÷ ${c}`; v = a + q; how = `หารก่อน ${c * q} ÷ ${c} = ${q} แล้ว ${a} + ${q} = ${v}`; }
+  return {e, v, how};
+}
+const WORDS = [
+  () => { const a = rand(3, 8), b = rand(4, 9), c = rand(5, 20); return {t:`ซื้อดินสอ ${a} กล่อง กล่องละ ${b} แท่ง แล้วได้แถมอีก ${c} แท่ง มีดินสอทั้งหมดกี่แท่ง`, e:`${a} × ${b} + ${c}`, w:[`${a} + ${b} × ${c}`, `(${a} + ${b}) × ${c}`], v:a * b + c}; },
+  () => { const c = rand(3, 6), q = rand(4, 9), a = rand(10, 30), n = c * q + a; return {t:`มีลูกอม ${n} เม็ด แจกเพื่อนไป ${a} เม็ด ที่เหลือแบ่งใส่ถุง ${c} ถุงเท่า ๆ กัน ได้ถุงละกี่เม็ด`, e:`(${n} − ${a}) ÷ ${c}`, w:[`${n} − ${a} ÷ ${c}`, `(${n} + ${a}) ÷ ${c}`], v:q}; },
+  () => { const a = rand(20, 60), b = rand(10, 40), c = rand(2, 5); return {t:`ห้องเรียนมีนักเรียนชาย ${a} คน หญิง ${b} คน แบ่งเป็น ${c} ... นั่งรถคันละเท่า ๆ กัน`.replace(" ... นั่งรถคันละเท่า ๆ กัน", ""), e:null}; },
+  () => { const p = rand(15, 45), n = rand(2, 4), paid = 100 + (p * n > 100 ? 100 : 0); return {t:`ซื้อขนมราคาชิ้นละ ${p} บาท ${n} ชิ้น จ่ายเงิน ${paid} บาท ได้เงินทอนกี่บาท`, e:`${paid} − ${p} × ${n}`, w:[`(${paid} − ${p}) × ${n}`, `${paid} + ${p} × ${n}`], v:paid - p * n}; },
+  () => { const a = rand(12, 30), b = rand(12, 30), c = rand(2, 4); return {t:`วันจันทร์อ่านหนังสือได้ ${a} หน้า วันอังคารอ่านได้ ${b} หน้า วันพุธอ่านได้ ${c} เท่าของวันจันทร์ วันพุธอ่านได้กี่หน้า`, e:`${a} × ${c}`, w:[`${a} + ${b}`, `(${a} + ${b}) × ${c}`], v:a * c}; },
+  () => { const a = rand(4, 9), b = rand(4, 9), c = rand(2, 6); return {t:`จัดเก้าอี้ ${a} แถว แถวละ ${b} ตัว มีคนมานั่ง ${a * b - c} คน เหลือเก้าอี้ว่างกี่ตัว`, e:`${a} × ${b} − ${a * b - c}`, w:[`${a} + ${b} − ${a * b - c}`, `${a} × (${b} − ${a * b - c})`], v:c}; }
+].filter((f, i) => i !== 2);
+
+KIT.mount({
+  key:"g3-escape", title:"ห้องปริศนาหนีให้รอด", subtitle:"คณิตศาสตร์ ป.3 · บทที่ 13 การบวก ลบ คูณ หารระคน",
+  heroHTML:"ไขรหัสประตู <em>หนีออกจากห้องปริศนา</em> 🚪", heroDesc:"ติดอยู่ในห้องปริศนา 8 ห้อง! ประตูแต่ละบานล็อกด้วยรหัสที่เป็นคำตอบของโจทย์ระคน คิดให้ถูกลำดับ แล้วกดรหัสเปิดประตู",
+  progIcon:"🚪",
+  howto:["ทำในวงเล็บก่อนเสมอ","ถ้าไม่มีวงเล็บ ทำคูณหารก่อน แล้วค่อยบวกลบ","กดรหัส (คำตอบ) บนแป้น แล้วกด \"เปิดประตู\"","ห้องโจทย์ปัญหา: เลือกประโยคสัญลักษณ์ก่อน แล้วกดรหัส"],
+  note:"(20 − 8) ÷ 4: ทำในวงเล็บก่อน 20 − 8 = 12 แล้ว 12 ÷ 4 = 3 · 30 − 4 × 5: คูณก่อน = 30 − 20 = 10",
+  levels:{
+    1:{pill:N+" ห้อง", color:"var(--green)", desc:"มีวงเล็บ คิดในวงเล็บก่อน"},
+    2:{pill:N+" ห้อง", color:"var(--blue)", desc:"วงเล็บ และลำดับการคูณหารก่อนบวกลบ"},
+    3:{pill:N+" ห้อง", color:"var(--purple)", desc:"โจทย์ปัญหา เลือกประโยคสัญลักษณ์แล้วไขรหัส"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const go = () => { idx++; ctx.progress(idx, N); next(); };
+    const rooms = () => `<div class="hall">${[...Array(N)].map((_, k) => `<span class="${k < idx ? "out" : k === idx ? "here" : ""}">${k < idx ? "🔓" : k === idx ? "🚪" : "🔒"}</span>`).join("")}</div>`;
+    function next(){
+      if (idx >= N){ ctx.say("🎉 หนีออกมาได้แล้ว!", "good"); ctx.after(700, () => ctx.finish({targetSec: 260})); return; }
+      const word = level === 3 && idx % 2 === 1, W = word ? pick(WORDS)() : null, X = word ? {e:W.e, v:W.v, how:`${W.e} = ${W.v}`} : exprQ(level);
+      if (word){
+        const u = shuffle([W.e, ...W.w]);
+        ctx.stage.innerHTML = `${rooms()}<div class="note">📜 ${W.t}</div><div id="q"></div>`;
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ห้องที่ ${idx+1} · เลือกประโยคสัญลักษณ์`, html:"ข้อใดเป็นประโยคสัญลักษณ์ที่ถูกต้อง", say:W.t + " ข้อใดเป็นประโยคสัญลักษณ์ที่ถูกต้อง", options:u.map(x => `${x} = ▢`), answer:u.indexOf(W.e), cols:1, explain:`ประโยคสัญลักษณ์คือ ${W.e} = ▢`, onNext:() => lock(X, W.t)});
+        return;
+      }
+      lock(X, null);
+    }
+    function lock(X, story){
+      let val = "", miss = 0, done = false;
+      const say = `${X.e.replace(/×/g, "คูณ").replace(/÷/g, "หาร").replace(/−/g, "ลบ").replace(/\+/g, "บวก").replace(/\(/g, " วงเล็บเปิด ").replace(/\)/g, " วงเล็บปิด ")} เท่ากับเท่าไร`;
+      ctx.stage.innerHTML = `${rooms()}${story ? `<div class="note">📜 ${story}</div>` : ""}<div class="door"><div class="plate">${KIT.sayBtn(say)}<div class="qlabel">ห้องที่ ${idx+1} จาก ${N}</div><div class="ex">${X.e} = ?</div></div>
+        <div class="kp-screen" id="scr">_</div><div class="kp" id="kp">${[7,8,9,4,5,6,1,2,3].map(x => `<button type="button" data-k="${x}">${x}</button>`).join("")}<button type="button" data-k="C">ล้าง</button><button type="button" data-k="0">0</button><button type="button" data-k="B">⌫</button><button type="button" class="kp-ok" data-k="OK">🔑 เปิดประตู</button></div></div>`;
+      if (!story) KIT.speak(say);
+      const $ = s => ctx.stage.querySelector(s);
+      const press = k => {
+        if (done) return;
+        if (k !== "OK"){ if (k === "C") val = ""; else if (k === "B") val = val.slice(0, -1); else if (/^\d$/.test(k) && val.length < 5) val += k; $("#scr").textContent = val || "_"; KIT.sfx.tap(); return; }
+        if (!val) return;
+        const v = +val, qq = `${X.e} = ?`, aa = `${X.v}`;
+        if (v === X.v){ done = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); ctx.stage.querySelector(".door").classList.add("open"); ctx.correct(miss ? 50 : 100, "แกร๊ก! ประตูเปิดแล้ว 🔓"); ctx.after(1200, go); return; }
+        miss++; ctx.stage.querySelector(".door").classList.add("buzz"); ctx.after(400, () => { const d = ctx.stage.querySelector(".door"); if (d) d.classList.remove("buzz"); });
+        if (miss < 2){ ctx.wrong(`รหัสผิด! ${X.e.includes("(") ? "ทำในวงเล็บก่อนนะ" : "คูณหารก่อนบวกลบนะ"} (เหลืออีก 1 ครั้ง)`); val = ""; $("#scr").textContent = "_"; return; }
+        done = true; $("#scr").textContent = X.v; ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 เฉลย: ${X.how}`); ctx.after(3600, go);
+      };
+      $("#kp").onclick = e => { const b = e.target.closest("[data-k]"); if (b) press(b.dataset.k); };
+      KIT._kp = press;
+    }
+    ctx.progress(0, N); ctx.say("🔒 ประตูล็อกอยู่! หาทางออกให้ได้");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ผจญภัยเกาะร้าง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.isle{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:20px;background:linear-gradient(#8FD6E8,#F3DDA6);border:4px solid #fff;box-shadow:0 5px 0 rgba(143,214,232,.4);font-size:1.6rem}
+.isle .now{animation:bob 1s infinite}
+.story{display:flex;gap:14px;align-items:center;background:#fff;border-radius:22px;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);padding:14px 16px;font-size:1.18rem;line-height:1.6}
+.story .ic{font-size:3rem;flex:none}
+.sent{font-size:clamp(1.7rem,7vw,2.5rem);font-weight:700;letter-spacing:.03em}
+.hole{display:inline-grid;place-items:center;min-width:1.4em;border-radius:14px;background:#FFE7C2;color:var(--orange-deep);padding:0 .15em}
+.choices .choice{font-size:clamp(1.2rem,5vw,1.8rem)}
+@keyframes bob{50%{transform:translateY(-5px)}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 6;
+/* each template returns {ic, text, s1:[expr, val], s2:[expr, val], full, unit} */
+const TPL = [
+  L => { const a = rand(2, L > 1 ? 6 : 4), b = rand(2, 5), c = rand(1, a*b - 1); return {ic:"🥥", text:`เก็บมะพร้าวจาก ${a} ต้น ต้นละ ${b} ลูก กินไป ${c} ลูก เหลือมะพร้าวกี่ลูก`, s1:[`${a} × ${b}`, a*b, "มะพร้าวทั้งหมด"], s2:[`${a*b} − ${c}`, a*b - c], full:`${a} × ${b} − ${c}`, unit:"ลูก"}; },
+  L => { const b = rand(2, 5), q = rand(2, L > 1 ? 9 : 5), c = rand(1, 5), n = b*q; return {ic:"🐟", text:`จับปลาได้ ${n} ตัว แบ่งให้ ${b} คนเท่า ๆ กัน แล้วแต่ละคนจับเพิ่มได้อีก ${c} ตัว แต่ละคนมีปลากี่ตัว`, s1:[`${n} ÷ ${b}`, q, "แบ่งได้คนละ"], s2:[`${q} + ${c}`, q + c], full:`${n} ÷ ${b} + ${c}`, unit:"ตัว"}; },
+  L => { const c = rand(2, 5), k = rand(2, L > 1 ? 8 : 5), a = rand(1, c*k - 1), b = c*k - a; return {ic:"🎋", text:`มีไม้ไผ่ ${a} ลำ หาเพิ่มได้อีก ${b} ลำ ใช้ทำแพแพละ ${c} ลำ ทำแพได้กี่แพ`, s1:[`${a} + ${b}`, a + b, "ไม้ไผ่ทั้งหมด"], s2:[`${a + b} ÷ ${c}`, k], full:`(${a} + ${b}) ÷ ${c}`, unit:"แพ"}; },
+  L => { const a = rand(10, L > 1 ? 60 : 20), b = rand(5, 20), c = rand(5, a + b - 1); return {ic:"🐚", text:`มีเปลือกหอย ${a} ชิ้น เก็บเพิ่มอีก ${b} ชิ้น แล้วนำไปแลกของ ${c} ชิ้น เหลือเปลือกหอยกี่ชิ้น`, s1:[`${a} + ${b}`, a + b, "เปลือกหอยทั้งหมด"], s2:[`${a + b} − ${c}`, a + b - c], full:`${a} + ${b} − ${c}`, unit:"ชิ้น"}; },
+  L => { const a = rand(2, 5), b = rand(L > 1 ? 6 : 2, L > 1 ? 15 : 9), c = pick([50, 100].filter(x => x > a*b)) || 100; return {ic:"🧃", text:`ซื้อน้ำมะพร้าว ${a} ขวด ขวดละ ${b} บาท จ่ายเงิน ${c} บาท ได้เงินทอนกี่บาท`, s1:[`${a} × ${b}`, a*b, "ราคาน้ำทั้งหมด"], s2:[`${c} − ${a*b}`, c - a*b], full:`${c} − ${a} × ${b}`, unit:"บาท"}; },
+  L => { const b = rand(2, 4), c = rand(2, 5), a = rand(2, 6); return {ic:"🦀", text:`มีปู ${a} ตะกร้า ตะกร้าละ ${b} ตัว แล้วจับได้เพิ่มอีก ${c} ตัว มีปูทั้งหมดกี่ตัว`, s1:[`${a} × ${b}`, a*b, "ปูในตะกร้า"], s2:[`${a*b} + ${c}`, a*b + c], full:`${a} × ${b} + ${c}`, unit:"ตัว"}; }
+];
+function near(ans){ const s = new Set([ans]); for (const d of shuffle([1,-1,2,-2,5,10])) if (s.size < 3 && ans+d >= 0) s.add(ans+d); return shuffle([...s]); }
+
+KIT.mount({
+  key:"g2-island", title:"ผจญภัยเกาะร้าง", subtitle:"คณิตศาสตร์ ป.2 · บทที่ 10 การบวก ลบ คูณ หารระคน",
+  heroHTML:"เอาตัวรอดบน<em>เกาะร้าง</em> ด้วยคณิตศาสตร์ 🏝️", heroDesc:"เรือเกยตื้นที่เกาะร้าง! ต้องหาอาหาร สร้างแพ และแลกของ ทุกภารกิจเป็นโจทย์ 2 ขั้นตอน ทำทีละขั้นแล้วจะรอดกลับบ้าน",
+  progIcon:"🏝️",
+  howto:["อ่านโจทย์ กด 🔊 ฟังได้","ขั้นที่ 1: หาสิ่งที่ต้องรู้ก่อน","ขั้นที่ 2: นำผลจากขั้นที่ 1 ไปคิดต่อ","ด่านยาก: เลือกประโยคสัญลักษณ์รวมก่อน แล้วหาคำตอบ"],
+  note:"โจทย์ระคนมีมากกว่า 1 ขั้นตอน · คิดในวงเล็บก่อน · คูณหารก่อนบวกลบ",
+  levels:{
+    1:{pill:N+" ภารกิจ", color:"var(--green)", desc:"2 ขั้นตอน มีตัวช่วยทีละขั้น จำนวนน้อย"},
+    2:{pill:N+" ภารกิจ", color:"var(--blue)", desc:"2 ขั้นตอน มีตัวช่วย จำนวนมากขึ้น"},
+    3:{pill:N+" ภารกิจ", color:"var(--purple)", desc:"เลือกประโยคสัญลักษณ์รวม แล้วหาคำตอบ"}
+  },
+  play(level, ctx){
+    const order = shuffle(TPL.slice());
+    let idx = 0;
+    const map = () => `<div class="isle">${[...Array(N)].map((_, k) => `<span class="${k < idx ? "ok" : k === idx ? "now" : ""}">${k < idx ? "✅" : k === idx ? "🧭" : "🌴"}</span>`).join("")}<span>🚢</span></div>`;
+    const go = () => { idx++; ctx.progress(idx, N); next(); };
+    function next(){
+      if (idx >= N){ ctx.say("🚢 สร้างแพสำเร็จ กลับบ้านได้แล้ว!", "good"); ctx.after(800, () => ctx.finish({targetSec: 240})); return; }
+      const P = order[idx](level), head = `${map()}<div class="story"><span class="ic">${P.ic}</span><div>${P.text}</div></div><div id="q"></div>`;
+      ctx.stage.innerHTML = head;
+      const final = () => { const o = near(P.s2[1]); KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ภารกิจที่ ${idx+1} · ${level === 3 ? "หาคำตอบ" : "ขั้นที่ 2"}`, html:`<span class="sent">${level === 3 ? P.full : P.s2[0]} = <b class="hole">?</b></span>`, say:`${level === 3 ? P.full : P.s2[0]} เท่ากับเท่าไร`, options:o.map(v => `${v} ${P.unit}`), answer:o.indexOf(P.s2[1]), cols:3, explain:`${P.s1[0]} = ${P.s1[1]} · ${P.s2[0]} = ${P.s2[1]} ตอบ ${P.s2[1]} ${P.unit}`, onNext:go}); };
+      if (level === 3){
+        const wrong1 = P.full.includes("×") ? P.full.replace("×", "+") : P.full.includes("÷") ? P.full.replace("÷", "×") : P.full.replace("+", "×");
+        const wrong2 = P.full.includes("−") ? P.full.replace("−", "+") : P.full.replace(/\+(?!.*\+)/, "−");
+        const u = shuffle([...new Set([P.full, wrong1, wrong2])]);
+        KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ภารกิจที่ ${idx+1} · เลือกประโยคสัญลักษณ์`, html:"ข้อใดเป็น<b>ประโยคสัญลักษณ์</b>ของโจทย์นี้", say:P.text + " ข้อใดเป็นประโยคสัญลักษณ์ของโจทย์นี้", options:u.map(x => `${x} = ▢`), answer:u.indexOf(P.full), cols:1, explain:`หา${P.s1[2]}ก่อน (${P.s1[0]}) แล้วคิดต่อ → ${P.full}`, onNext:() => { ctx.stage.querySelector("#q").innerHTML = ""; final(); }});
+        return;
+      }
+      const o = near(P.s1[1]);
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ภารกิจที่ ${idx+1} · ขั้นที่ 1`, html:`หา<b>${P.s1[2]}</b>ก่อน<br><span class="sent">${P.s1[0]} = <b class="hole">?</b></span>`, say:P.text + ` ขั้นที่ 1 หา${P.s1[2]}ก่อน ${P.s1[0]} เท่ากับเท่าไร`, options:o.map(String), answer:o.indexOf(P.s1[1]), cols:3, explain:`${P.s1[0]} = ${P.s1[1]}`, onNext:() => { ctx.stage.querySelector("#q").innerHTML = ""; final(); }});
+    }
+    ctx.progress(0, N); ctx.say("🏝️ เรือเกยตื้นแล้ว! เริ่มภารกิจ");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

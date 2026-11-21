@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>กีฬาสีสรุปผล</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.pchart{background:#fff;border-radius:24px;border:4px solid var(--line);box-shadow:0 6px 0 var(--line);padding:12px 14px;display:grid;gap:6px}
+.ptitle{text-align:center;font-weight:700;font-size:1.15rem;color:var(--orange-deep)}
+.prow{display:flex;align-items:center;gap:8px;border-bottom:2px dashed var(--line);padding:4px 0;min-height:50px}
+.prow.bad{background:#FDE3E3;border-radius:12px}
+.pname{flex:none;width:76px;font-weight:700;font-size:1.05rem}
+.picons{display:flex;flex-wrap:wrap;gap:2px;flex:1}
+.picons i{font-style:normal;font-size:clamp(1.5rem,6vw,2.1rem);animation:pin .25s}
+.pkey{text-align:right;font-size:.9rem;color:var(--ink-soft);font-weight:700}
+.pm{flex:none;width:44px;height:44px;border-radius:50%;border:none;font-size:1.6rem;font-weight:700;background:#F3E8DA;color:var(--ink)}
+.pm.plus{background:#7FD39A;color:#fff}
+.tally{width:100%;border-collapse:separate;border-spacing:4px;text-align:center}
+.tally th{background:#FFE7C2;border-radius:10px;padding:6px 2px;font-size:.95rem}
+.tally td{background:#fff;border:3px solid var(--line);border-radius:10px;font-size:1.6rem;font-weight:700}
+@keyframes pin{from{transform:scale(0)}}
+@media (max-width:520px){.pname{width:58px;font-size:.9rem}.pm{width:38px;height:38px}}
+.picons i.half{display:inline-block;width:.55em;overflow:hidden;vertical-align:bottom}
+.one{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:18px;overflow:hidden;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);font-size:1.15rem}
+.one caption{font-weight:700;color:var(--orange-deep);padding:6px}
+.one th{background:#FFE7C2;padding:8px}
+.one td{padding:8px 12px;border-top:2px dashed var(--line);font-weight:700}
+.one td:last-child{text-align:center;font-size:1.4rem}
+.one td i,.tbox .who i{display:inline-block;width:16px;height:16px;border-radius:50%;margin-right:8px;vertical-align:-2px}
+.tbox{background:#fff;border-radius:22px;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);padding:14px;text-align:center}
+.tbox .who{font-weight:700;font-size:1.2rem;margin-bottom:6px}
+.marks{font-size:2.4rem;letter-spacing:.06em;font-weight:700;color:#4A3A30;font-family:monospace}
+.marks .t5{position:relative;margin-right:18px;display:inline-block}
+.marks .t5::after{content:"";position:absolute;left:-6px;right:-6px;top:50%;border-top:4px solid #E8467C;transform:rotate(-20deg)}
+.choices .choice{font-size:clamp(1.2rem,5vw,1.8rem)}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const TEAMS = [["สีแดง","#E85A5A"],["สีเหลือง","#F2C14E"],["สีเขียว","#4FAE6E"],["สีฟ้า","#4FA9D8"]];
+const ITEMS = [["เหรียญรางวัล","🏅","เหรียญ"],["คะแนนเชียร์","📣","คะแนน"],["ลูกโป่ง","🎈","ลูก"],["ธง","🚩","ผืน"]];
+function near(ans, st){ const s = new Set([ans]); for (const d of shuffle([st, -st, 2*st, 1, -1])) if (s.size < 3 && ans + d >= 0) s.add(ans + d); return shuffle([...s]); }
+const tally = n => { let s = ""; for (let i = 0; i < Math.floor(n/5); i++) s += `<span class="t5">||||</span>`; return s + `<span class="t">${"|".repeat(n % 5)}</span>`; };
+const PLAN = {1:["table","table","most","tally","table","total","tally","diff"], 2:["pict","table","pict","tally","diff","pict","total","most"], 3:["pictH","diff","pictH","total","tally","pictH","diff","most"]};
+
+KIT.mount({
+  key:"g3-sport", title:"กีฬาสีสรุปผล", subtitle:"คณิตศาสตร์ ป.3 · บทที่ 5 แผนภูมิรูปภาพและตารางทางเดียว",
+  heroHTML:"สรุปผล<em>กีฬาสี</em> จากตารางและแผนภูมิ 🏆", heroDesc:"กีฬาสีจบแล้ว! ฝ่ายสถิติต้องอ่านตารางทางเดียว นับรอยขีด และอ่านแผนภูมิรูปภาพ ที่บางรูปแทน 10 และครึ่งรูปแทน 5",
+  progIcon:"🏆",
+  howto:["ตารางทางเดียว: อ่านจำนวนในช่องของแต่ละสี","รอยขีด: |||| (มีขีดขวาง) = 5 นับทีละ 5 แล้วนับที่เหลือ","แผนภูมิรูปภาพ: ดูที่กำหนดว่า 1 รูปแทนเท่าไร ครึ่งรูปแทนครึ่งหนึ่ง","กด 🔊 ฟังโจทย์ได้"],
+  note:"ตารางทางเดียว คือ ตารางที่จำแนกข้อมูลตามลักษณะเดียว · กำหนด 1 รูป แทน 10 ครึ่งรูปแทน 5",
+  levels:{
+    1:{pill:N+" ข้อ", color:"var(--green)", desc:"ตารางทางเดียว และรอยขีด"},
+    2:{pill:N+" ข้อ", color:"var(--blue)", desc:"แผนภูมิรูปภาพ 1 รูปแทน 10"},
+    3:{pill:N+" ข้อ", color:"var(--purple)", desc:"แผนภูมิที่มีครึ่งรูป และเปรียบเทียบ"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 200}); return; }
+      const kind = PLAN[level][idx], I = ITEMS[idx % ITEMS.length];
+      const half = kind === "pictH" || (level === 3 && kind !== "tally");
+      const k = level === 1 && kind !== "pict" ? 1 : 10;
+      let v; do { v = TEAMS.map(() => k === 1 ? rand(3, 24) : rand(2, 9) * 10 + (half && Math.random() < .5 ? 5 : 0)); } while (new Set(v).size < 4);
+      const table = `<table class="one"><caption>${I[1]} จำนวน${I[0]}ของแต่ละสี</caption><tr><th>สี</th><th>จำนวน (${I[2]})</th></tr>${TEAMS.map((t, i) => `<tr><td><i style="background:${t[1]}"></i>${t[0]}</td><td>${v[i]}</td></tr>`).join("")}</table>`;
+      const pict = `<div class="pchart"><div class="ptitle">จำนวน${I[0]}ของแต่ละสี</div>${TEAMS.map((t, i) => `<div class="prow"><span class="pname">${t[0]}</span><span class="picons">${Array(Math.floor(v[i]/10)).fill(`<i>${I[1]}</i>`).join("")}${v[i] % 10 ? `<i class="half">${I[1]}</i>` : ""}</span></div>`).join("")}<div class="pkey">กำหนด ${I[1]} 1 รูป แทน 10 ${I[2]}${half ? ` · ครึ่งรูป แทน 5 ${I[2]}` : ""}</div></div>`;
+      const useP = kind.startsWith("pict") || (level >= 2 && kind !== "tally" && kind !== "table");
+      let pre = useP ? pict : table, html, say, opts, ans, explain, cols = 3;
+      const i = rand(0, 3);
+      if (kind === "tally"){ const n = rand(7, 23); pre = `<div class="tbox"><div class="who"><i style="background:${TEAMS[i][1]}"></i>${TEAMS[i][0]}</div><div class="marks">${tally(n)}</div></div>`;
+        html = `รอยขีดนี้แสดงจำนวนเท่าไร`; say = `${TEAMS[i][0]} ได้${I[0]} ตามรอยขีด เป็นจำนวนเท่าไร`; const o = near(n, 5); opts = o.map(String); ans = o.indexOf(n); explain = `${Math.floor(n/5)} กลุ่ม × 5 = ${Math.floor(n/5)*5} และอีก ${n % 5} ขีด รวม ${n}`; }
+      else if (kind === "table" || kind.startsWith("pict")){ html = `<b>${TEAMS[i][0]}</b> ได้${I[0]}กี่${I[2]}`; say = `${TEAMS[i][0]} ได้${I[0]}กี่${I[2]}`; const o = near(v[i], k === 1 ? 1 : 5); opts = o.map(String); ans = o.indexOf(v[i]);
+        explain = useP ? `${Math.floor(v[i]/10)} รูป × 10 = ${Math.floor(v[i]/10)*10}${v[i] % 10 ? ` และครึ่งรูป = 5 รวม ${v[i]}` : ""}` : `ดูในตาราง ${TEAMS[i][0]} ได้ ${v[i]}`; }
+      else if (kind === "most"){ const t = Math.max(...v), w = v.indexOf(t); html = `สีไหนได้${I[0]}<b>มากที่สุด</b>`; say = html.replace(/<[^>]+>/g, ""); opts = TEAMS.map(x => x[0]); ans = w; cols = 2; explain = `${TEAMS[w][0]} ได้ ${t} มากที่สุด`; }
+      else if (kind === "total"){ const t = v.reduce((a, b) => a + b, 0); html = `ทุกสีรวมกันได้${I[0]}กี่${I[2]}`; say = html; const o = near(t, k === 1 ? 1 : 10); opts = o.map(String); ans = o.indexOf(t); explain = `${v.join(" + ")} = ${t}`; }
+      else { let a, b; do { a = rand(0, 3); b = rand(0, 3); } while (a === b); if (v[a] < v[b]) [a, b] = [b, a]; const d = v[a] - v[b];
+        html = `<b>${TEAMS[a][0]}</b> ได้มากกว่า <b>${TEAMS[b][0]}</b> กี่${I[2]}`; say = `${TEAMS[a][0]} ได้มากกว่า ${TEAMS[b][0]} กี่${I[2]}`; const o = near(d, k === 1 ? 1 : 5); opts = o.map(String); ans = o.indexOf(d); explain = `${v[a]} − ${v[b]} = ${d}`; }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ข้อ ${idx+1} จาก ${N}`, html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    ctx.progress(0, N); ctx.say("ประกาศผลกีฬาสี!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

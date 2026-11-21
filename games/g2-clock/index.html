@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>นาฬิกาปลุกน้องหมีขี้เซา</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.room{position:relative;display:flex;justify-content:center;background:linear-gradient(#EAF4FF,#FFF4E6);border-radius:24px;border:4px solid #fff;box-shadow:0 6px 0 rgba(134,182,240,.3);padding:12px}
+.act{position:absolute;left:14px;top:12px;font-size:2.6rem}
+.clk{width:150px}
+.clk.big{width:min(240px,64vw)}
+.duo2{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:linear-gradient(#EAF4FF,#FFF4E6);border-radius:24px;border:4px solid #fff;box-shadow:0 6px 0 rgba(134,182,240,.3);padding:12px;text-align:center}
+.duo2 .clk{width:100%;max-width:170px}
+.duo2 p{margin:4px 0 0;font-weight:700}
+.set{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.st{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:8px;background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px 10px;font-weight:700}
+.st button{min-width:52px;height:48px;border:none;border-radius:14px;font-size:1.3rem;font-weight:700;color:#fff;background:#86B6F0;box-shadow:0 4px 0 #5C8FCF}
+.st:first-child button{background:#E8708F;box-shadow:0 4px 0 #C4506F}
+.choices .choice{font-size:clamp(1.2rem,5vw,1.8rem)}
+@media (max-width:520px){.set{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const ROUTINE = [["⏰","ตื่นนอน"],["🪥","แปรงฟัน"],["🍳","กินข้าวเช้า"],["🚌","ขึ้นรถไปโรงเรียน"],["🏫","เข้าแถวเคารพธงชาติ"],["📚","เรียนคณิตศาสตร์"],["⚽","พักเล่นฟุตบอล"],["🍱","กินข้าวกลางวัน"]];
+const fmtT = (h, m) => `${h}.${String(m).padStart(2, "0")} น.`;
+const sayT = (h, m) => `${h} นาฬิกา${m ? ` ${m} นาที` : ""}`;
+function clock(h, m, big){
+  const cx = 100, cy = 100, R = 88, ha = ((h % 12) + m / 60) * 30 - 90, ma = m * 6 - 90, rad = a => a * Math.PI / 180;
+  let t = "";
+  for (let i = 0; i < 60; i++){ const a = rad(i*6 - 90), M = i % 5 === 0, r1 = M ? R - 12 : R - 6; t += `<line x1="${(cx + R*Math.cos(a)).toFixed(1)}" y1="${(cy + R*Math.sin(a)).toFixed(1)}" x2="${(cx + r1*Math.cos(a)).toFixed(1)}" y2="${(cy + r1*Math.sin(a)).toFixed(1)}" stroke="#4A3A30" stroke-width="${M ? 3 : 1.2}"/>`; }
+  for (let i = 1; i <= 12; i++){ const a = rad(i*30 - 90); t += `<text x="${(cx + (R-26)*Math.cos(a)).toFixed(1)}" y="${(cy + (R-26)*Math.sin(a) + 6).toFixed(1)}" text-anchor="middle" font-size="17" font-weight="700" fill="#4A3A30">${i}</text>`; }
+  return `<svg viewBox="0 0 200 200" class="clk${big ? " big" : ""}"><circle cx="${cx}" cy="${cy}" r="${R+6}" fill="#fff" stroke="#86B6F0" stroke-width="10"/>${t}
+    <line x1="${cx}" y1="${cy}" x2="${(cx + 46*Math.cos(rad(ha))).toFixed(1)}" y2="${(cy + 46*Math.sin(rad(ha))).toFixed(1)}" stroke="#E8708F" stroke-width="8" stroke-linecap="round"/>
+    <line x1="${cx}" y1="${cy}" x2="${(cx + 70*Math.cos(rad(ma))).toFixed(1)}" y2="${(cy + 70*Math.sin(rad(ma))).toFixed(1)}" stroke="#3A6FB0" stroke-width="5" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="6" fill="#4A3A30"/></svg>`;
+}
+const PLAN = {1:["read","read","set","read","dur","read","set","read"], 2:["read","set","read","dur","read","set","later","read"], 3:["read","set","dur","later","set","dur","read","later"]};
+
+KIT.mount({
+  key:"g2-clock", title:"นาฬิกาปลุกน้องหมีขี้เซา", subtitle:"คณิตศาสตร์ ป.2 · บทที่ 7 เวลา",
+  heroHTML:"ช่วย<em>น้องหมีขี้เซา</em>ให้ทันเวลา ⏰", heroDesc:"น้องหมีชอบตื่นสาย! ช่วยอ่านนาฬิกา ตั้งนาฬิกาปลุก และบอกว่ากิจกรรมแต่ละอย่างใช้เวลานานเท่าไร",
+  progIcon:"⏰",
+  howto:["เข็มสั้น (สีชมพู) บอกชั่วโมง เข็มยาว (สีฟ้า) บอกนาที","เข็มยาวชี้ตัวเลข 1 = 5 นาที, 2 = 10 นาที, 3 = 15 นาที …","ข้อที่ให้ตั้งเวลา: กดปุ่ม + − ชั่วโมงและนาที","เขียนเวลา 8 นาฬิกา 15 นาที ว่า 8.15 น."],
+  note:"1 ชั่วโมง = 60 นาที · เข็มยาวเดิน 1 ช่องใหญ่ = 5 นาที · ครบ 1 รอบ = 60 นาที",
+  levels:{
+    1:{pill:N+" ข้อ", color:"var(--green)", desc:"เวลาเต็มชั่วโมง และ 30 นาที"},
+    2:{pill:N+" ข้อ", color:"var(--blue)", desc:"อ่านและตั้งเวลาทีละ 5 นาที"},
+    3:{pill:N+" ข้อ", color:"var(--purple)", desc:"ระยะเวลา และเวลาไหนก่อน-หลัง"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const tm = () => [rand(6, 11), level === 1 ? pick([0, 30]) : rand(0, 11) * 5];
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 190}); return; }
+      const kind = PLAN[level][idx], R = ROUTINE[idx % ROUTINE.length];
+      if (kind === "set") return setter(R);
+      let pre = "", html, say, opts, ans, explain, cols = 3;
+      if (kind === "read"){ const [h, m] = tm(); pre = `<div class="room"><span class="act">${R[0]}</span>${clock(h, m, true)}</div>`; html = `น้องหมี${R[1]}เวลาเท่าไร`; say = html;
+        const right = fmtT(h, m), cands = [...new Set([fmtT(h + 1, m), fmtT(h, (m + 30) % 60), fmtT(h, (m + 15) % 60), fmtT(h - 1, m)])].filter(x => x !== right);
+        opts = shuffle([right, ...shuffle(cands).slice(0, 2)]); ans = opts.indexOf(right); explain = `เข็มสั้นชี้ที่ ${h}${m ? ` (เลย ${h} ไปนิด)` : ""} เข็มยาวชี้ที่ ${m ? m / 5 : 12} = ${m} นาที → ${sayT(h, m)} (${right})`; }
+      else if (kind === "dur"){ const h1 = rand(7, 10), m1 = level === 1 ? 0 : pick([0, 30]), d = level === 1 ? rand(1, 3) * 60 : pick([30, 60, 90, 120]), e = h1*60 + m1 + d, h2 = Math.floor(e/60), m2 = e % 60;
+        pre = `<div class="duo2"><div>${clock(h1, m1)}<p>เริ่ม ${fmtT(h1, m1)}</p></div><div>${clock(h2, m2)}<p>เสร็จ ${fmtT(h2, m2)}</p></div></div>`;
+        html = `น้องหมี${R[1]}ใช้เวลานานเท่าไร`; say = `เริ่ม ${sayT(h1, m1)} เสร็จ ${sayT(h2, m2)} ใช้เวลานานเท่าไร`;
+        const lab = x => x % 60 === 0 ? `${x/60} ชั่วโมง` : x < 60 ? `${x} นาที` : `${Math.floor(x/60)} ชั่วโมง ${x % 60} นาที`;
+        const o = [...new Set([d, d + 30, d >= 60 ? d - 30 : d + 60])]; const u = shuffle(o); opts = u.map(lab); ans = u.indexOf(d); cols = 1; explain = `จาก ${fmtT(h1, m1)} ถึง ${fmtT(h2, m2)} = ${lab(d)}`; }
+      else { let [h1, m1] = tm(), [h2, m2] = tm(); if (h1 === h2 && m1 === m2) m2 = (m2 + 15) % 60; const R2 = ROUTINE[(idx + 3) % ROUTINE.length];
+        pre = `<div class="duo2"><div>${clock(h1, m1)}<p>${R[0]} ${R[1]}</p></div><div>${clock(h2, m2)}<p>${R2[0]} ${R2[1]}</p></div></div>`;
+        const first = h1*60 + m1 < h2*60 + m2; html = "กิจกรรมไหน<b>เกิดก่อน</b>"; say = "กิจกรรมไหนเกิดก่อน"; opts = [R[1], R2[1]]; ans = first ? 0 : 1; cols = 2; explain = `${R[1]} ${fmtT(h1, m1)} · ${R2[1]} ${fmtT(h2, m2)}`; }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ข้อ ${idx+1} จาก ${N}`, html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    function setter(R){
+      const [th, tmm] = tm();
+      let h = 12, m = 0, miss = 0, lock = false;
+      const text = `ตั้งนาฬิกาปลุกให้น้องหมี${R[1]} เวลา ${fmtT(th, tmm)}`;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(`ตั้งนาฬิกาเป็นเวลา ${sayT(th, tmm)}`)}<div class="qlabel">ข้อ ${idx+1} จาก ${N} · ตั้งนาฬิกา</div><div class="qtext">${R[0]} ${text}</div></div>
+        <div class="room" id="ck"></div>
+        <div class="set"><div class="st"><span>ชั่วโมง</span><button type="button" data-w="h" data-d="-1">−</button><button type="button" data-w="h" data-d="1">+</button></div>
+          <div class="st"><span>นาที</span><button type="button" data-w="m" data-d="-5">−5</button><button type="button" data-w="m" data-d="5">+5</button></div></div>
+        <div class="row"><button class="btn" type="button" id="ok">⏰ ตั้งปลุก</button></div>`;
+      KIT.speak(`ตั้งนาฬิกาเป็นเวลา ${sayT(th, tmm)}`);
+      const $ = s => ctx.stage.querySelector(s), draw = () => { $("#ck").innerHTML = `<span class="act">${R[0]}</span>` + clock(h, m, true); };
+      draw();
+      ctx.stage.querySelector(".set").onclick = e => { const b = e.target.closest("[data-w]"); if (!b || lock) return; const d = +b.dataset.d;
+        if (b.dataset.w === "h") h = ((h - 1 + d + 12) % 12) + 1; else { m += d; if (m >= 60){ m -= 60; h = h % 12 + 1; } if (m < 0){ m += 60; h = ((h - 2 + 12) % 12) + 1; } } KIT.sfx.tap(); draw(); };
+      $("#ok").onclick = () => {
+        if (lock) return;
+        const ok = h === ((th - 1) % 12) + 1 && m === tmm, qq = text, aa = `เข็มสั้นที่ ${th} เข็มยาวที่ ${tmm ? tmm / 5 : 12}`;
+        if (ok){ lock = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); ctx.correct(miss ? 50 : 100, "ตั้งปลุกเรียบร้อย! ⏰"); ctx.after(1100, done); return; }
+        miss++;
+        if (miss < 2){ ctx.wrong(`ตอนนี้ ${fmtT(h, m)} ยังไม่ตรง ${h !== ((th - 1) % 12) + 1 ? "ลองดูเข็มชั่วโมง" : "ลองดูเข็มนาที"} (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; h = th; m = tmm; draw(); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 เฉลย: ${fmtT(th, tmm)} คือ ${aa}`); ctx.after(3400, done);
+      };
+    }
+    ctx.progress(0, N); ctx.say("น้องหมียังหลับอยู่ ช่วยหน่อย!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

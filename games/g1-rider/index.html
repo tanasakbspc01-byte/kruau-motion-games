@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ไรเดอร์คนเก่ง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.road{position:relative;height:70px;border-radius:20px;background:linear-gradient(#9BD58A 0 30%,#6E6A80 30% 85%,#9BD58A 85%);border:4px solid #fff;box-shadow:0 5px 0 rgba(0,0,0,.08);overflow:hidden}
+.road::after{content:"";position:absolute;left:0;right:0;top:54%;border-top:4px dashed #FFE07A}
+.bike{position:absolute;top:14px;font-size:2.4rem;transform:scaleX(-1);transition:left .8s;z-index:2}
+.stop{position:absolute;top:4px;font-size:1.3rem;transform:translateX(-50%)}
+.story{display:flex;gap:14px;align-items:center;background:#fff;border-radius:22px;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);padding:14px 16px;font-size:1.2rem;line-height:1.6}
+.story .ic{font-size:3rem;flex:none}
+.sent{font-size:clamp(1.8rem,7vw,2.6rem);font-weight:700;letter-spacing:.04em}
+.hole{display:inline-grid;place-items:center;min-width:1.4em;border-radius:14px;background:#FFE7C2;color:var(--orange-deep);padding:0 .15em}
+.choices .choice{font-size:clamp(1.3rem,5.4vw,1.9rem)}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 6;
+const T = [
+  ["+","🍗","ร้านไก่ทอดมีไก่ {a} ชิ้น ทอดเพิ่มอีก {b} ชิ้น ร้านมีไก่ทอดทั้งหมดกี่ชิ้น","ชิ้น"],
+  ["+","🛵","ไรเดอร์ส่งของตอนเช้า {a} ที่ ตอนบ่าย {b} ที่ วันนี้ส่งของทั้งหมดกี่ที่","ที่"],
+  ["+","🍊","แม่ซื้อส้ม {a} ผล ป้าให้มาอีก {b} ผล แม่มีส้มทั้งหมดกี่ผล","ผล"],
+  ["+","🎈","ร้านมีลูกโป่งสีแดง {a} ลูก สีฟ้า {b} ลูก มีลูกโป่งทั้งหมดกี่ลูก","ลูก"],
+  ["-","🧋","ร้านมีชานม {a} แก้ว ขายไป {b} แก้ว เหลือชานมกี่แก้ว","แก้ว"],
+  ["-","📦","ไรเดอร์ต้องส่งกล่อง {a} กล่อง ส่งไปแล้ว {b} กล่อง ยังไม่ได้ส่งอีกกี่กล่อง","กล่อง"],
+  ["-","🍕","พิซซ่ามี {a} ชิ้น เพื่อน ๆ กินไป {b} ชิ้น เหลือพิซซ่ากี่ชิ้น","ชิ้น"],
+  ["c","⭐","ต้นมีสติกเกอร์ {a} แผ่น ฝนมี {b} แผ่น ต้นมีมากกว่าฝนกี่แผ่น","แผ่น"],
+  ["c","🧒","ห้องเรียนมีนักเรียน {a} คน เป็นนักเรียนชาย {b} คน เป็นนักเรียนหญิงกี่คน","คน"]
+];
+function nums(level, op){
+  for (let g = 0; g < 500; g++){
+    let a, b;
+    if (level === 1){ if (op === "+"){ a = rand(3, 12); b = rand(2, 20 - a); } else { a = rand(8, 20); b = rand(2, a - 2); } }
+    else { if (op === "+"){ a = rand(12, 70); b = rand(5, 99 - a); } else { a = rand(25, 99); b = rand(5, a - 5); } }
+    const reg = op === "+" ? (a % 10) + (b % 10) >= 10 : (a % 10) < (b % 10);
+    if (level === 2 && reg) continue;
+    if (level === 3 && !reg) continue;
+    if (b < 1) continue;
+    return [a, b];
+  }
+  return op === "+" ? [24, 13] : [48, 25];
+}
+
+KIT.mount({
+  key:"g1-rider", title:"ไรเดอร์คนเก่ง", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 14 โจทย์ปัญหาการบวก และโจทย์ปัญหาการลบ",
+  heroHTML:"ขี่ <em>มอเตอร์ไซค์ส่งของ</em> แก้โจทย์ปัญหา 🛵", heroDesc:"เธอเป็นไรเดอร์ส่งของ! ทุกจุดส่งมีโจทย์ปัญหา อ่านให้ดีว่าต้องบวกหรือลบ เลือกประโยคสัญลักษณ์ แล้วหาคำตอบเพื่อส่งของให้สำเร็จ",
+  progIcon:"🛵",
+  howto:["อ่านโจทย์ (กด 🔊 ฟังได้)","ขั้นที่ 1: เลือกประโยคสัญลักษณ์ที่ถูก (บวก หรือ ลบ)","ขั้นที่ 2: เลือกคำตอบ","คำว่า \"ทั้งหมด เพิ่ม รวม\" มักเป็นการบวก · \"เหลือ ขายไป มากกว่ากี่\" มักเป็นการลบ"],
+  note:"โจทย์ปัญหา: อ่าน → หาว่าโจทย์ให้อะไร ถามอะไร → เขียนประโยคสัญลักษณ์ → หาคำตอบ",
+  levels:{
+    1:{pill:N+" จุดส่ง", color:"var(--green)", desc:"จำนวนไม่เกิน 20"},
+    2:{pill:N+" จุดส่ง", color:"var(--blue)", desc:"จำนวนไม่เกิน 100 ไม่มีทด ไม่มีกระจาย"},
+    3:{pill:N+" จุดส่ง", color:"var(--purple)", desc:"มีทดและกระจาย และโจทย์เปรียบเทียบ"}
+  },
+  play(level, ctx){
+    const pool = level === 1 ? T.filter(t => t[0] !== "c") : T;
+    const picks = shuffle(pool.slice()).slice(0, N);
+    let idx = 0;
+    const road = () => `<div class="road"><span class="bike" style="left:${idx / N * 82}%">🛵</span>${[...Array(N)].map((_, k) => `<span class="stop${k < idx ? " done" : ""}" style="left:${(k + 1) / N * 82 + 6}%">${k < idx ? "✅" : "🏠"}</span>`).join("")}</div>`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 220}); return; }
+      const [kind, ic, tpl, unit] = picks[idx], op = kind === "+" ? "+" : "-";
+      let [a, b] = nums(level, op);
+      if (kind === "c" && b === a) b--;
+      const text = tpl.replace("{a}", a).replace("{b}", b), ans = op === "+" ? a + b : a - b;
+      const sym = op === "+" ? "+" : "−", wrongSym = op === "+" ? "−" : "+";
+      const s1 = [`${a} ${sym} ${b} = ▢`, `${a} ${wrongSym} ${b} = ▢`, op === "+" ? `${a} + ▢ = ${b}` : `${b} − ${a} = ▢`];
+      const o1 = shuffle(s1.slice());
+      ctx.stage.innerHTML = `${road()}<div class="story"><span class="ic">${ic}</span><div>${text}</div></div><div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`จุดส่งที่ ${idx+1} จาก ${N} · ขั้นที่ 1`, html:"เลือก<b>ประโยคสัญลักษณ์</b>ที่ถูกต้อง", say:text + " เลือกประโยคสัญลักษณ์ที่ถูกต้อง",
+        options:o1, answer:o1.indexOf(s1[0]), cols:1, explain: op === "+" ? "โจทย์ถามจำนวนทั้งหมด ต้องนำมารวมกัน จึงใช้การบวก" : kind === "c" ? "โจทย์ถามมากกว่ากี่ หรือหาส่วนที่เหลือ ใช้การลบ (จำนวนมาก − จำนวนน้อย)" : "โจทย์ถามว่าเหลือเท่าไร ใช้การลบ",
+        onNext: () => {
+          const near = new Set([ans]); for (const d of shuffle([1,-1,10,-10,2])) if (near.size < 3 && ans + d >= 0) near.add(ans + d);
+          const o2 = shuffle([...near]);
+          ctx.stage.querySelector("#q").innerHTML = "";
+          KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`จุดส่งที่ ${idx+1} จาก ${N} · ขั้นที่ 2`, html:`<span class="sent">${s1[0].replace("▢", '<b class="hole">?</b>')}</span><br>ตอบ: ได้กี่${unit}`, say:`${a} ${op === "+" ? "บวก" : "ลบ"} ${b} เท่ากับเท่าไร`,
+            options:o2.map(v => `${v} ${unit}`), answer:o2.indexOf(ans), cols:3, explain:`${a} ${sym} ${b} = ${ans} ตอบ ${ans} ${unit}`,
+            onNext: ok => { if (ok) KIT.sfx.pop(); idx++; ctx.progress(idx, N); ctx.after(200, next); }});
+        }});
+    }
+    ctx.progress(0, N); ctx.say("รับออเดอร์แรกแล้ว ออกเดินทาง!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

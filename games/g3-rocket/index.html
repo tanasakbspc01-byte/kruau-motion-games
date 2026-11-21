@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แบ่งเสบียงขึ้นยานอวกาศ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.story{position:relative;display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,#1E1B3A,#3E3488);color:#fff;border-radius:22px;padding:14px 64px 14px 16px;font-size:1.12rem;line-height:1.6;box-shadow:0 5px 0 rgba(30,27,58,.3)}
+.story .ic{font-size:2.6rem;flex:none}
+.story .say-btn{top:50%;transform:translateY(-50%)}
+.ld{display:flex;justify-content:center;align-items:flex-start;gap:0;background:#fff;border-radius:22px;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);padding:14px 10px;font-variant-numeric:tabular-nums;overflow-x:auto}
+.dv{font-size:2rem;font-weight:700;padding:44px 10px 0 0;border-right:4px solid var(--ink);height:44px;margin-top:44px;padding-top:0;line-height:44px}
+.gridw{display:grid;gap:0}
+.lr{display:grid;grid-template-columns:repeat(var(--L),36px);height:44px}
+.lr span{display:grid;place-items:center;font-size:1.9rem;font-weight:700}
+.lr.q span{color:#2C8A52}
+.lr.q span.now{color:var(--orange-deep);background:#FFE7C2;border-radius:8px;animation:blink .8s infinite alternate}
+.lr.q span.auto{color:#E53935}
+.lr.d{border-top:4px solid var(--ink)}
+.lr.p span{color:#5C8FCF}
+.lr.p{border-bottom:3px solid #5C8FCF}
+.lr.r span.r{color:#E8467C}
+.ask{text-align:center;font-weight:700;font-size:1.2rem;min-height:1.6em}
+.kp.mini{grid-template-columns:repeat(5,1fr)}
+@keyframes blink{to{opacity:.55}}
+@media (max-width:520px){.lr{grid-template-columns:repeat(var(--L),30px);height:38px}.lr span{font-size:1.5rem}.dv{font-size:1.6rem;margin-top:38px;height:38px;line-height:38px}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 6;
+const CARGO = [["🥫","อาหารกระป๋อง","กระป๋อง"],["💧","ขวดน้ำ","ขวด"],["🔋","แบตเตอรี่","ก้อน"],["🌱","ต้นกล้า","ต้น"],["🧪","หลอดทดลอง","หลอด"],["🔧","เครื่องมือ","ชิ้น"]];
+function gen(level){
+  for (let g = 0; g < 2000; g++){
+    const d = rand(2, 9);
+    let n;
+    if (level === 1){ n = d * rand(12, 99); if (n > 999) continue; }
+    else if (level === 2){ n = rand(100, 4999); }
+    else { const q = +[rand(1, 9), 0, rand(0, 9), rand(1, 9)].join(""); n = q * d + rand(0, d - 1); if (n > 9999 || String(q).indexOf("0") < 0) continue; }
+    return {n, d, q:Math.floor(n / d), r:n % d};
+  }
+}
+
+KIT.mount({
+  key:"g3-rocket", title:"แบ่งเสบียงขึ้นยานอวกาศ", subtitle:"คณิตศาสตร์ ป.3 · บทที่ 8 การหาร (หารยาว)",
+  heroHTML:"หารยาวแบ่ง<em>เสบียง</em>ขึ้นยาน 🚀", heroDesc:"ยานอวกาศหลายลำรอขนเสบียง! แบ่งเสบียงใส่ยานเท่า ๆ กันด้วยการหารยาว ใส่ผลหารทีละหลัก เกมจะคูณลบให้ดูทีละขั้น",
+  progIcon:"🚀",
+  howto:["ดูว่าตัวตั้งหลักแรก ๆ หารด้วยตัวหารได้กี่ครั้ง","กดตัวเลขผลหารทีละหลัก เกมจะ คูณ → ลบ → ดึงหลักถัดไปลงมาให้","ถ้าหารไม่ได้ ใส่ 0 ในผลหาร","สุดท้ายใส่เศษ (ถ้าลงตัวใส่ 0)"],
+  note:"หารยาว: หาร → คูณ → ลบ → ดึงลง ทำซ้ำ · ตรวจ: ผลหาร × ตัวหาร + เศษ = ตัวตั้ง",
+  levels:{
+    1:{pill:N+" ยาน", color:"var(--green)", desc:"สามหลักหารด้วยหนึ่งหลัก หารลงตัว"},
+    2:{pill:N+" ยาน", color:"var(--blue)", desc:"สี่หลักหารด้วยหนึ่งหลัก มีเศษ"},
+    3:{pill:N+" ยาน", color:"var(--purple)", desc:"ผลหารมี 0 อยู่ตรงกลาง"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 300}); return; }
+      const Q = gen(level), C = CARGO[idx % CARGO.length], D = String(Q.n), L = D.length;
+      let p0 = 0, cur = +D[0]; while (cur < Q.d && p0 < L - 1){ p0++; cur = cur * 10 + +D[p0]; }
+      const steps = []; let part = cur;
+      for (let i = p0; i < L; i++){ if (i > p0) part = part * 10 + +D[i]; const q = Math.floor(part / Q.d); steps.push({i, part, q, prod:q * Q.d, rem:part - q * Q.d}); part = part - q * Q.d; }
+      const text = `มี${C[1]} ${fmt(Q.n)} ${C[2]} แบ่งใส่ยาน ${Q.d} ลำ ลำละเท่า ๆ กัน`;
+      let k = 0, miss = 0, auto = false, total = 0, phase = "q";
+      const qd = Array(L).fill("");
+      ctx.stage.innerHTML = `<div class="story"><span class="ic">${C[0]}</span><div>${text}<br><b>ได้ลำละกี่${C[2]} เหลือกี่${C[2]}</b></div>${KIT.sayBtn(text + ` ได้ลำละกี่${C[2]} เหลือกี่${C[2]}`)}</div>
+        <div class="ld" id="ld"></div><div class="ask" id="ask"></div>
+        <div class="kp mini" id="kp">${[1,2,3,4,5,6,7,8,9,0].map(x => `<button type="button" data-k="${x}">${x}</button>`).join("")}</div>`;
+      KIT.speak(text);
+      const $ = s => ctx.stage.querySelector(s);
+      const draw = () => {
+        const rows = [];
+        const put = (row, str, endCol, cls = "") => { for (let j = 0; j < str.length; j++){ const c = endCol - (str.length - 1 - j); if (c >= 0) row[c] = {t:str[j], cls}; } };
+        const blank = () => Array(L).fill(null);
+        const qrow = blank(); qd.forEach((x, j) => { if (x !== "") qrow[j] = {t:x, cls: x.cls || ""}; }); if (phase === "q" && k < steps.length) qrow[steps[k].i] = {t:"?", cls:"now"};
+        rows.push({cells:qrow, kind:"q"});
+        const drow = blank(); put(drow, D, L - 1); rows.push({cells:drow, kind:"d"});
+        for (let s = 0; s < k; s++){ const st = steps[s]; const pr = blank(); put(pr, String(st.prod), st.i, "m"); rows.push({cells:pr, kind:"p"});
+          const rr = blank(); const remStr = String(st.rem) + (s + 1 < steps.length ? D[steps[s + 1].i] : ""); put(rr, remStr, s + 1 < steps.length ? steps[s + 1].i : st.i, s + 1 < steps.length ? "" : "r"); rows.push({cells:rr, kind:"r"}); }
+        $("#ld").innerHTML = `<div class="dv">${Q.d}</div><div class="gridw" style="--L:${L}">${rows.map(r => `<div class="lr ${r.kind}">${r.cells.map(c => `<span class="${c ? c.cls : ""}">${c ? c.t : ""}</span>`).join("")}</div>`).join("")}</div>`;
+        if (phase === "q") $("#ask").innerHTML = k < steps.length ? `${steps[k].part} ÷ ${Q.d} ได้กี่ครั้ง? กดตัวเลขผลหาร` : "";
+        else if (phase === "r") $("#ask").innerHTML = `เหลือเศษเท่าไร? (ลงตัวกด 0)`;
+      };
+      draw();
+      const finish = () => {
+        const score = auto ? 0 : total ? .5 : 1, qq = `${fmt(Q.n)} ÷ ${Q.d}`, aa = `${fmt(Q.q)}${Q.r ? ` เศษ ${Q.r}` : ""}`;
+        ctx.record({q:qq, a:aa, score});
+        phase = "done"; $("#ask").innerHTML = `✅ ได้ลำละ <b>${fmt(Q.q)}</b> ${C[2]} ${Q.r ? `เหลือ <b>${Q.r}</b> ${C[2]}` : "พอดี ไม่เหลือ"} · ตรวจ: ${fmt(Q.q)} × ${Q.d} + ${Q.r} = ${fmt(Q.n)}`;
+        if (score) ctx.correct(score === 1 ? 150 : 75, "เสบียงขึ้นยานครบ! 🚀"); else ctx.reveal(`📖 เฉลย: ${qq} = ${aa}`);
+        ctx.after(score ? 2200 : 3800, () => { idx++; ctx.progress(idx, N); next(); });
+      };
+      KIT._kp = key => { const b = $(`#kp [data-k="${key}"]`); if (b) b.click(); };
+      $("#kp").onclick = e => {
+        const b = e.target.closest("[data-k]"); if (!b || phase === "done") return;
+        const v = +b.dataset.k;
+        if (phase === "q"){
+          const st = steps[k];
+          if (v === st.q){ qd[st.i] = String(v); k++; miss = 0; KIT.sfx.pop(); if (k >= steps.length) phase = "r"; draw(); return; }
+          miss++; total++;
+          if (miss < 2){ ctx.wrong(`${st.part} ÷ ${Q.d} ลองใหม่: ${Q.d} × ${v} = ${Q.d * v} ${Q.d * v > st.part ? "มากเกินไป" : `เหลือ ${st.part - Q.d * v} ยังหารได้อีก`} (เหลืออีก 1 ครั้ง)`, 5); return; }
+          auto = true; ctx.wrong(`ใส่ให้แล้ว: ${st.part} ÷ ${Q.d} ได้ ${st.q}`, 5); qd[st.i] = Object.assign(new String(st.q), {cls:"auto"}); k++; miss = 0; if (k >= steps.length) phase = "r"; draw(); return;
+        }
+        if (phase === "r"){
+          if (v === Q.r){ KIT.sfx.pop(); finish(); return; }
+          miss++; total++;
+          if (miss < 2){ ctx.wrong(`ดูบรรทัดสุดท้าย เศษคือจำนวนที่เหลือ (เหลืออีก 1 ครั้ง)`, 5); return; }
+          auto = true; finish();
+        }
+      };
+    }
+    ctx.progress(0, N); ctx.say("🚀 ยานพร้อมรับเสบียง!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>งูน้อยยืดยาว</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.field{background:#EAF7E6;border-radius:24px;border:4px solid #fff;box-shadow:0 6px 0 rgba(127,211,154,.35);padding:14px 14px 10px;display:grid;gap:10px;background-image:radial-gradient(#D4EDCC 1.5px,transparent 2px);background-size:16px 16px}
+.lane{position:relative;padding-top:20px}
+.tag{position:absolute;top:0;left:0;font-weight:700;font-size:.9rem;color:var(--ink-soft)}
+.body{display:flex;margin-left:calc(var(--s) * 100% / var(--g));width:calc(var(--n) * 100% / var(--g));height:34px;position:relative}
+.body i{flex:1;background:var(--c1);border:2px solid var(--c2);border-right:none;box-shadow:inset 0 -6px 0 rgba(0,0,0,.08)}
+.body i:first-child{border-radius:18px 0 0 18px}
+.body i:last-of-type{border-right:2px solid var(--c2);border-radius:0 18px 18px 0}
+.body .head{position:absolute;right:2px;top:2px;font-size:1.15rem;line-height:1}
+.body.yay{animation:wig .5s 2}
+.ruler{display:grid;grid-template-columns:repeat(var(--g),1fr);border-top:4px solid #8A6A4A;margin-right:calc(100% / var(--g) * -0)}
+.ruler span{font-size:.8rem;font-weight:700;color:#8A6A4A;border-left:2px solid #8A6A4A;padding-left:2px;height:18px}
+.ruler span:last-child{display:none}
+.tb{border:none;border-radius:18px;padding:12px 16px;font-size:1.2rem;font-weight:700;color:#fff;background:#E85A5A;box-shadow:0 5px 0 #B83A3A}
+.tb.ghost{background:#fff;color:var(--ink);box-shadow:0 5px 0 var(--line),0 0 0 3px var(--line) inset}
+@keyframes wig{25%{transform:translateY(-4px)}75%{transform:translateY(4px)}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const SKINS = [["#7FD39A","#4FAE6E"],["#F2A65A","#D07F2E"],["#B7A4EE","#8C75E0"],["#F7B6C8","#E8708F"],["#86D9F0","#4FA9D8"]];
+const NAMES = ["งูเขียว","งูส้ม","งูม่วง","งูชมพู","งูฟ้า"];
+function near(ans, lo, hi){ const s = new Set([ans]); for (const d of shuffle([1,-1,2,-2])) if (s.size < 3 && ans+d >= lo && ans+d <= hi) s.add(ans+d); while (s.size < 3) s.add(rand(lo,hi)); return shuffle([...s]); }
+const snake = (n, i, start=0, grid=12) => `<div class="lane" style="--g:${grid}"><span class="tag">${NAMES[i]}</span><div class="body" style="--s:${start};--n:${n};--c1:${SKINS[i][0]};--c2:${SKINS[i][1]}">${Array(n).fill('<i></i>').join("")}<b class="head">👀</b></div></div>`;
+const ruler = (grid) => `<div class="ruler" style="--g:${grid}">${[...Array(grid+1).keys()].map(k => `<span>${k}</span>`).join("")}</div>`;
+const PLAN = {1:["measure","longer","measure","shorter","build","measure","longer","build"], 2:["measure","order","longer","build","shorter","order","measure","build"], 3:["offset","diff","order","build","offset","diff","order","build"]};
+
+KIT.mount({
+  key:"g1-snake", title:"งูน้อยยืดยาว", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 11 การวัดความยาว",
+  heroHTML:"วัดความยาว<em>งูน้อย</em>เป็นช่อง 🐍", heroDesc:"แก๊งงูน้อยกินแอปเปิลแล้วตัวยืดยาวขึ้น! นับช่องเพื่อวัดว่างูยาวกี่ช่อง เทียบว่าตัวไหนยาวกว่า สั้นกว่า และช่วยป้อนแอปเปิลให้งูยาวตามสั่ง",
+  progIcon:"🐍",
+  howto:["นับช่องบนตัวงู 1 ช่อง = 1 หน่วย","งูที่มีช่องมากกว่า ยาวกว่า","ข้อที่ให้ป้อน: แตะ 🍎 ให้งูยาวขึ้นทีละช่อง แล้วกดเสร็จ","ด่านยาก: งูไม่ได้เริ่มที่ 0 ต้องนับจากหัวถึงหาง"],
+  note:"การวัดความยาว ต้องเริ่มวัดที่จุดเริ่มต้นเดียวกัน · บอกความยาวเป็นจำนวนหน่วย เช่น ยาว 7 ช่อง",
+  levels:{
+    1:{pill:N+" ข้อ", color:"var(--green)", desc:"วัดความยาว ยาวกว่า สั้นกว่า"},
+    2:{pill:N+" ข้อ", color:"var(--blue)", desc:"เรียงยาวที่สุด สั้นที่สุด"},
+    3:{pill:N+" ข้อ", color:"var(--purple)", desc:"วัดไม่เริ่มที่ 0 และยาวกว่ากี่ช่อง"}
+  },
+  play(level, ctx){
+    const grid = 12;
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ข้อ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 140}); return; }
+      const kind = PLAN[level][idx], ids = shuffle([0,1,2,3,4]);
+      if (kind === "build") return build(ids[0]);
+      let pre, html, say, opts, ans, explain;
+      if (kind === "measure" || kind === "offset"){
+        const n = rand(3, level === 1 ? 9 : 11), s = kind === "offset" ? rand(1, grid - n) : 0, i = ids[0];
+        pre = snake(n, i, s, grid) + ruler(grid);
+        html = `${NAMES[i]}ยาวกี่ช่อง`; say = html; const o = near(n, 1, 12); opts = o.map(String); ans = o.indexOf(n);
+        explain = s ? `หัวอยู่ที่ ${s + n} หางอยู่ที่ ${s} ยาว ${s + n} − ${s} = ${n} ช่อง` : `นับได้ ${n} ช่อง`;
+      } else if (kind === "longer" || kind === "shorter" || kind === "diff"){
+        let a = rand(3, 11), b; do { b = rand(3, 11); } while (Math.abs(a - b) < (level === 1 ? 2 : 1));
+        const [i, j] = ids;
+        pre = snake(a, i, 0, grid) + snake(b, j, 0, grid) + ruler(grid);
+        if (kind === "diff"){ const L = a > b ? i : j, S = a > b ? j : i, d = Math.abs(a - b); html = `${NAMES[L]}ยาวกว่า${NAMES[S]}กี่ช่อง`; say = html; const o = near(d, 1, 9); opts = o.map(String); ans = o.indexOf(d); explain = `${Math.max(a,b)} − ${Math.min(a,b)} = ${d} ช่อง`; }
+        else { const longer = kind === "longer"; html = `งูตัวไหน<b>${longer ? "ยาวกว่า" : "สั้นกว่า"}</b>`; say = `งูตัวไหน${longer ? "ยาวกว่า" : "สั้นกว่า"}`; opts = [NAMES[i], NAMES[j]]; ans = (longer ? a > b : a < b) ? 0 : 1; explain = `${NAMES[i]} ${a} ช่อง ${NAMES[j]} ${b} ช่อง`; }
+      } else {
+        const lens = shuffle([rand(3,5), rand(6,8), rand(9,11)]), want = pick(["ยาวที่สุด","สั้นที่สุด"]), [i, j, k] = ids;
+        pre = snake(lens[0], i, 0, grid) + snake(lens[1], j, 0, grid) + snake(lens[2], k, 0, grid) + ruler(grid);
+        const t = want === "ยาวที่สุด" ? Math.max(...lens) : Math.min(...lens), w = lens.indexOf(t);
+        html = `งูตัวไหน<b>${want}</b>`; say = `งูตัวไหน${want}`; opts = [NAMES[i], NAMES[j], NAMES[k]]; ans = w; explain = `${opts[w]} ยาว ${t} ช่อง ${want}`;
+      }
+      ctx.stage.innerHTML = `<div class="field">${pre}</div><div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html, say, options:opts, answer:ans, cols: opts.length === 2 ? 2 : 3, explain, onNext:done});
+    }
+    function build(i){
+      const ref = level > 1 && Math.random() < .6, n = rand(4, 10), other = pick([0,1,2,3,4].filter(x => x !== i)), extra = level === 3 ? rand(1, 2) : 0;
+      const target = ref ? Math.min(12, n + extra) : n;
+      const text = ref ? (extra ? `ป้อนแอปเปิลให้${NAMES[i]}ยาวกว่า${NAMES[other]} ${extra} ช่อง` : `ป้อนแอปเปิลให้${NAMES[i]}ยาวเท่ากับ${NAMES[other]}`) : `ป้อนแอปเปิลให้${NAMES[i]}ยาว ${n} ช่อง`;
+      let cur = 1, miss = 0, lock = false;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(text)}<div class="qlabel">${lbl()} · ป้อนอาหาร</div><div class="qtext">${text}</div></div>
+        <div class="field">${ref ? snake(n, other, 0, 12) : ""}<div id="me"></div>${ruler(12)}</div>
+        <div class="row"><button class="tb apple" type="button" id="add">🍎 ป้อน</button><button class="tb ghost" type="button" id="sub">✂️ ตัดออก</button><button class="btn" type="button" id="ok" style="--c:var(--green)">✅ เสร็จ</button></div>`;
+      KIT.speak(text);
+      const $ = s => ctx.stage.querySelector(s), draw = () => { $("#me").innerHTML = snake(cur, i, 0, 12); };
+      draw();
+      $("#add").onclick = () => { if (lock || cur >= 12) return; cur++; KIT.sfx.pop(); draw(); };
+      $("#sub").onclick = () => { if (lock || cur <= 1) return; cur--; KIT.sfx.tap(); draw(); };
+      $("#ok").onclick = () => {
+        if (lock) return;
+        const qq = text, aa = `ยาว ${target} ช่อง`;
+        if (cur === target){ lock = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); $("#me .body").classList.add("yay"); ctx.correct(miss ? 50 : 100, `ยาว ${target} ช่องพอดี! 🐍`); ctx.after(1100, done); return; }
+        miss++;
+        if (miss < 2){ ctx.wrong(`ตอนนี้ยาว ${cur} ช่อง ${cur < target ? "ยังสั้นไป" : "ยาวเกินไป"} (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; cur = target; draw(); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0});
+        ctx.reveal(`📖 เฉลย: ต้องยาว ${target} ช่อง${ref ? ` (${NAMES[other]}ยาว ${n} ช่อง${extra ? ` บวกอีก ${extra}` : ""})` : ""}`); ctx.after(3400, done);
+      };
+    }
+    ctx.progress(0, N); ctx.say("แก๊งงูน้อยมาแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

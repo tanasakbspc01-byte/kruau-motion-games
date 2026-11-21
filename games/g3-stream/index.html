@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตารางไลฟ์เกมเมอร์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.studio{position:relative;display:flex;justify-content:center;align-items:center;gap:10px;background:linear-gradient(135deg,#2B2250,#5B3A8A);border-radius:24px;border:4px solid #fff;box-shadow:0 6px 0 rgba(91,58,138,.3);padding:16px}
+.studio .tag{position:absolute;top:10px;left:12px;background:#FFE07A;border-radius:10px;padding:2px 10px;font-weight:700;font-size:.9rem}
+.studio .sh{font-size:3rem}
+.clk{width:min(220px,58vw)}
+.sched{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:1.1rem}
+.sched th{background:#B78CFF;color:#fff;padding:8px;text-align:left}
+.sched th:first-child{border-radius:12px 0 0 12px}.sched th:last-child{border-radius:0 12px 12px 0}
+.sched td{background:#fff;padding:10px 8px;font-weight:700;border-top:2px solid var(--line);border-bottom:2px solid var(--line)}
+.sched td:first-child{border-left:2px solid var(--line);border-radius:12px 0 0 12px}.sched td:last-child{border-right:2px solid var(--line);border-radius:0 12px 12px 0}
+.big{display:inline-block;font-size:1.9rem;font-weight:700;color:var(--orange-deep)}
+.choices .choice{font-size:clamp(1.1rem,4.6vw,1.7rem)}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const SHOWS = [["🎮","ไลฟ์เกมผจญภัย"],["🍳","ไลฟ์ทำอาหาร"],["🎨","ไลฟ์วาดรูป"],["🎤","ไลฟ์ร้องเพลง"],["📚","ไลฟ์ติวการบ้าน"],["🧩","ไลฟ์ต่อจิ๊กซอว์"]];
+const T = m => `${Math.floor(m/60)}.${String(m%60).padStart(2,"0")} น.`;
+const dur = d => d < 60 ? `${d} นาที` : d % 60 ? `${Math.floor(d/60)} ชั่วโมง ${d % 60} นาที` : `${d/60} ชั่วโมง`;
+function clock(m){
+  const h = Math.floor(m/60) % 12, mm = m % 60, cx = 100, cy = 100, R = 88, rad = a => a * Math.PI / 180, ha = (h + mm/60) * 30 - 90, ma = mm * 6 - 90;
+  let t = ""; for (let i = 0; i < 60; i++){ const a = rad(i*6 - 90), M = i % 5 === 0, r1 = M ? R - 12 : R - 6; t += `<line x1="${(cx + R*Math.cos(a)).toFixed(1)}" y1="${(cy + R*Math.sin(a)).toFixed(1)}" x2="${(cx + r1*Math.cos(a)).toFixed(1)}" y2="${(cy + r1*Math.sin(a)).toFixed(1)}" stroke="#4A3A30" stroke-width="${M ? 3 : 1.3}"/>`; }
+  for (let i = 1; i <= 12; i++){ const a = rad(i*30 - 90); t += `<text x="${(cx + (R-26)*Math.cos(a)).toFixed(1)}" y="${(cy + (R-26)*Math.sin(a) + 6).toFixed(1)}" text-anchor="middle" font-size="17" font-weight="700" fill="#4A3A30">${i}</text>`; }
+  return `<svg viewBox="0 0 200 200" class="clk"><circle cx="${cx}" cy="${cy}" r="${R+6}" fill="#fff" stroke="#B78CFF" stroke-width="10"/>${t}<line x1="${cx}" y1="${cy}" x2="${(cx + 46*Math.cos(rad(ha))).toFixed(1)}" y2="${(cy + 46*Math.sin(rad(ha))).toFixed(1)}" stroke="#E8708F" stroke-width="8" stroke-linecap="round"/><line x1="${cx}" y1="${cy}" x2="${(cx + 70*Math.cos(rad(ma))).toFixed(1)}" y2="${(cy + 70*Math.sin(rad(ma))).toFixed(1)}" stroke="#3A6FB0" stroke-width="5" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="6" fill="#4A3A30"/></svg>`;
+}
+const PLAN = {1:["read","dur","conv","read","end","dur","read","conv"], 2:["read","dur","conv2","end","read","conv","dur","end"], 3:["read","conv2","dur","end","read","compare","conv","dur"]};
+
+KIT.mount({
+  key:"g3-stream", title:"ตารางไลฟ์เกมเมอร์", subtitle:"คณิตศาสตร์ ป.3 · บทที่ 3 เวลา",
+  heroHTML:"วางแผนตาราง<em>ไลฟ์สด</em>ให้ทันเวลา 📺", heroDesc:"สตรีมเมอร์ตัวน้อยมีตารางไลฟ์ทั้งวัน! อ่านนาฬิกา คำนวณว่าไลฟ์นานเท่าไร จบกี่โมง และแปลงชั่วโมงเป็นนาที",
+  progIcon:"📺",
+  howto:["เวลาตอนบ่ายและเย็น นับต่อจาก 12 เช่น บ่าย 3 โมง = 15.00 น.","ระยะเวลา = เวลาจบ − เวลาเริ่ม","1 ชั่วโมง = 60 นาที","กด 🔊 ฟังโจทย์ได้"],
+  note:"เขียนเวลา 15 นาฬิกา 30 นาที ว่า 15.30 น. · 2 ชั่วโมง 15 นาที = 120 + 15 = 135 นาที",
+  levels:{
+    1:{pill:N+" ไลฟ์", color:"var(--green)", desc:"อ่านเวลาทีละ 5 นาที ระยะเวลาเต็มชั่วโมง"},
+    2:{pill:N+" ไลฟ์", color:"var(--blue)", desc:"ระยะเวลาเป็นชั่วโมงและนาที แปลงหน่วย"},
+    3:{pill:N+" ไลฟ์", color:"var(--purple)", desc:"อ่านเวลาทีละ 1 นาที เปรียบเทียบระยะเวลา"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const step = level === 3 ? 1 : 5;
+    const tm = (lo = 8, hi = 20) => rand(lo, hi) * 60 + rand(0, 59 / step | 0) * step;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 220}); return; }
+      const kind = PLAN[level][idx], S = SHOWS[idx % SHOWS.length];
+      let pre = "", html, say, opts, ans, explain, cols = 2;
+      if (kind === "read"){ const m = tm(13, 20), pm = true; pre = `<div class="studio"><span class="tag">☀️ ตอนบ่าย-เย็น</span>${clock(m)}<span class="sh">${S[0]}</span></div>`;
+        html = `${S[1]}เริ่มเวลาเท่าไร`; say = `${S[1]} เริ่มตอนบ่าย ตามนาฬิกานี้ เวลาเท่าไร`;
+        const right = T(m), u = shuffle([...new Set([right, T(m - 12*60), T(m + 60), T(Math.floor(m/60)*60 + ((m % 60) + 30) % 60)])]).slice(0, 4); if (!u.includes(right)) u[0] = right;
+        opts = shuffle(u); ans = opts.indexOf(right); explain = `เข็มสั้นชี้ ${Math.floor(m/60) - 12} เข็มยาวชี้นาทีที่ ${m % 60} ตอนบ่ายบวก 12 → ${right}`; }
+      else if (kind === "dur" || kind === "compare"){
+        const mk = () => { const s = tm(8, 17), d = level === 1 ? rand(1, 3) * 60 : rand(2, 30) * 5 + (level === 3 ? rand(0, 4) : 0); return [s, s + d, d]; };
+        const [s, e, d] = mk();
+        if (kind === "dur"){ pre = `<table class="sched"><tr><th>รายการ</th><th>เริ่ม</th><th>จบ</th></tr><tr><td>${S[0]} ${S[1]}</td><td>${T(s)}</td><td>${T(e)}</td></tr></table>`;
+          html = `${S[1]}ใช้เวลานานเท่าไร`; say = `${S[1]} เริ่ม ${T(s)} จบ ${T(e)} ใช้เวลานานเท่าไร`;
+          const u = shuffle([...new Set([d, d + 60, Math.abs(d - 10) || d + 10, d + 30])]).slice(0, 3); if (!u.includes(d)) u[0] = d; opts = u.map(dur); ans = u.indexOf(d); cols = 1; explain = `${T(e)} − ${T(s)} = ${dur(d)}`; }
+        else { const S2 = SHOWS[(idx + 2) % SHOWS.length]; let [s2, e2, d2] = mk(); if (d2 === d) { e2 += 5; d2 += 5; }
+          pre = `<table class="sched"><tr><th>รายการ</th><th>เริ่ม</th><th>จบ</th></tr><tr><td>${S[0]} ${S[1]}</td><td>${T(s)}</td><td>${T(e)}</td></tr><tr><td>${S2[0]} ${S2[1]}</td><td>${T(s2)}</td><td>${T(e2)}</td></tr></table>`;
+          html = "รายการไหน<b>ใช้เวลานานกว่า</b>"; say = "รายการไหนใช้เวลานานกว่า"; opts = [S[1], S2[1]]; ans = d > d2 ? 0 : 1; explain = `${S[1]} ${dur(d)} · ${S2[1]} ${dur(d2)}`; } }
+      else if (kind === "end"){ const s = tm(9, 16), d = level === 1 ? rand(1, 3) * 60 : rand(3, 20) * 5, e = s + d;
+        html = `${S[1]}เริ่ม ${T(s)} ไลฟ์นาน ${dur(d)}<br>จะจบเวลาเท่าไร`; say = html.replace("<br>", " ");
+        const u = shuffle([...new Set([e, e + 60, e - 10 > s ? e - 10 : e + 10, s + d % 60])]).slice(0, 3); if (!u.includes(e)) u[0] = e; opts = u.map(T); ans = u.indexOf(e); cols = 3; explain = `${T(s)} + ${dur(d)} = ${T(e)}`; }
+      else if (kind === "conv"){ const h = rand(1, 4), m = rand(1, 11) * 5, v = h*60 + m; html = `<span class="big">${h} ชั่วโมง ${m} นาที</span><br>เท่ากับกี่นาที`; say = `${h} ชั่วโมง ${m} นาที เท่ากับกี่นาที`;
+        const u = shuffle([...new Set([v, h*100 + m, h*10 + m])]); opts = u.map(x => `${x} นาที`); ans = u.indexOf(v); cols = 3; explain = `1 ชั่วโมง = 60 นาที · ${h} × 60 + ${m} = ${v} นาที`; }
+      else { const v = rand(61, 280); html = `<span class="big">${v} นาที</span><br>เท่ากับกี่ชั่วโมงกี่นาที`; say = `${v} นาที เท่ากับกี่ชั่วโมงกี่นาที`;
+        const right = `${Math.floor(v/60)} ชั่วโมง ${v % 60} นาที`, u = shuffle([...new Set([right, `${Math.floor(v/100)} ชั่วโมง ${v % 100} นาที`, `${Math.floor(v/60) + 1} ชั่วโมง ${v % 60} นาที`])]); opts = u; ans = u.indexOf(right); cols = 1; explain = `${v} = ${Math.floor(v/60)} × 60 + ${v % 60} → ${right}`; }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ไลฟ์ที่ ${idx+1} จาก ${N}`, html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    ctx.progress(0, N); ctx.say("🔴 กำลังจะเริ่มไลฟ์!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

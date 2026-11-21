@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>นักสำรวจแมลงจิ๋ว</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.garden{background:linear-gradient(#E8F6E0,#D2EDC4);border-radius:24px;border:4px solid #fff;box-shadow:0 6px 0 rgba(127,211,154,.35);padding:10px;overflow-x:auto}
+.rul{width:100%;display:block}
+.map{text-align:center;font-weight:700;font-size:1.15rem;background:#FFF6EA;border-radius:22px;border:4px solid #fff;box-shadow:0 6px 0 #E9D3B6;padding:18px 10px;line-height:2}
+.big{display:inline-block;font-size:1.9rem;font-weight:700;color:var(--orange-deep)}
+.choices .choice{font-size:clamp(1.1rem,4.6vw,1.7rem)}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 8;
+const BUGS = [["🐛","หนอนผีเสื้อ"],["🐜","มด"],["🐞","เต่าทอง"],["🦗","จิ้งหรีด"],["🐝","ผึ้ง"],["🪲","ด้วง"],["🦋","ผีเสื้อ"],["🐌","หอยทาก"]];
+function ruler(startMM, lenMM, ic){
+  const W = 12, px = mm => 14 + mm * 4.4; let t = "";
+  for (let mm = 0; mm <= W * 10; mm++){ const big = mm % 10 === 0, mid = mm % 5 === 0; t += `<line x1="${px(mm)}" x2="${px(mm)}" y1="60" y2="${big ? 84 : mid ? 76 : 70}" stroke="#5A4335" stroke-width="${big ? 2 : 1}"/>${big ? `<text x="${px(mm)}" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#5A4335">${mm / 10}</text>` : ""}`; }
+  const x1 = px(startMM), x2 = px(startMM + lenMM);
+  return `<svg viewBox="0 0 ${px(W*10) + 14} 110" class="rul"><rect x="4" y="58" width="${px(W*10) + 6}" height="50" rx="6" fill="#FFE7A8" stroke="#C99A1E" stroke-width="2"/>${t}
+    <rect x="${x1}" y="26" width="${x2 - x1}" height="22" rx="11" fill="#9BD58A" stroke="#4FAE6E" stroke-width="2"/><text x="${(x1 + x2) / 2}" y="22" text-anchor="middle" font-size="20">${ic}</text>
+    <line x1="${x1}" x2="${x1}" y1="26" y2="70" stroke="#E8467C" stroke-dasharray="3 3"/><line x1="${x2}" x2="${x2}" y1="26" y2="70" stroke="#E8467C" stroke-dasharray="3 3"/></svg>`;
+}
+const lab = mm => mm % 10 === 0 ? `${mm / 10} ซม.` : mm < 10 ? `${mm} มม.` : `${Math.floor(mm / 10)} ซม. ${mm % 10} มม.`;
+const PLAN = {1:["cm","cm","conv1","unit","cm","conv1","cm","unit"], 2:["mm","conv1","mm","conv2","unit","mm","conv3","sum"], 3:["off","conv3","mm","sum","off","conv2","unit","sum"]};
+
+KIT.mount({
+  key:"g3-bugs", title:"นักสำรวจแมลงจิ๋ว", subtitle:"คณิตศาสตร์ ป.3 · บทที่ 9 การวัดความยาว",
+  heroHTML:"วัดความยาว<em>แมลงจิ๋ว</em>ด้วยไม้บรรทัด 🔍", heroDesc:"นักสำรวจตัวน้อยออกเก็บข้อมูลแมลงในสวน! วัดความยาวแมลงเป็นเซนติเมตรและมิลลิเมตร แปลงหน่วย และคำนวณระยะทางเป็นกิโลเมตร",
+  progIcon:"🔍",
+  howto:["ตัวเลขบนไม้บรรทัดเป็นเซนติเมตร ขีดเล็ก 1 ขีด = 1 มิลลิเมตร","ดูเส้นประสีชมพูที่หัวและหางแมลง","ถ้าแมลงไม่ได้เริ่มที่ 0 ให้นำปลายลบด้วยต้น","1 ซม. = 10 มม. · 1 ม. = 100 ซม. · 1 กม. = 1,000 ม."],
+  note:"เลือกหน่วยให้เหมาะ: มม. วัดของเล็กมาก · ซม. วัดของชิ้นเล็ก · ม. วัดของยาว · กม. วัดระยะทาง",
+  levels:{
+    1:{pill:N+" ตัว", color:"var(--green)", desc:"วัดเป็นเซนติเมตร เลือกหน่วยที่เหมาะสม"},
+    2:{pill:N+" ตัว", color:"var(--blue)", desc:"เซนติเมตรกับมิลลิเมตร แปลงหน่วย"},
+    3:{pill:N+" ตัว", color:"var(--purple)", desc:"วัดไม่เริ่มที่ 0 กิโลเมตรกับเมตร"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 200}); return; }
+      const kind = PLAN[level][idx], B = BUGS[idx % BUGS.length];
+      let pre = "", html, say, opts, ans, explain, cols = 3;
+      if (kind === "cm" || kind === "mm" || kind === "off"){
+        const len = kind === "cm" ? rand(2, 9) * 10 : rand(15, 95), st = kind === "off" ? rand(1, 110 - len) : 0;
+        pre = `<div class="garden">${ruler(st, len, B[0])}</div>`; html = `${B[1]}ยาวเท่าไร`; say = html;
+        const u = shuffle([...new Set([len, len + 10, len - 10 > 0 ? len - 10 : len + 5, st ? st + len : len + 1])]).slice(0, 3); if (!u.includes(len)) u[0] = len;
+        opts = u.map(lab); ans = u.indexOf(len); explain = st ? `หางอยู่ที่ ${lab(st)} หัวอยู่ที่ ${lab(st + len)} ยาว ${lab(len)}` : `เริ่มที่ 0 ปลายตรงกับ ${lab(len)}`; }
+      else if (kind === "conv1"){ const c = rand(2, 15), m = level === 1 ? 0 : rand(1, 9); html = `<span class="big">${c} ซม.${m ? ` ${m} มม.` : ""}</span><br>เท่ากับกี่มิลลิเมตร`; say = `${c} เซนติเมตร${m ? ` ${m} มิลลิเมตร` : ""} เท่ากับกี่มิลลิเมตร`; const v = c * 10 + m, u = shuffle([...new Set([v, c * 100 + m, c + m])]); opts = u.map(x => `${x} มม.`); ans = u.indexOf(v); explain = `1 ซม. = 10 มม. · ${c} × 10${m ? ` + ${m}` : ""} = ${v} มม.`; }
+      else if (kind === "conv2"){ const m = rand(1, 9), c = rand(5, 95), v = m * 100 + c; html = `<span class="big">${m} ม. ${c} ซม.</span><br>เท่ากับกี่เซนติเมตร`; say = `${m} เมตร ${c} เซนติเมตร เท่ากับกี่เซนติเมตร`; const u = shuffle([...new Set([v, m * 10 + c, m * 1000 + c])]); opts = u.map(x => `${fmt(x)} ซม.`); ans = u.indexOf(v); explain = `1 ม. = 100 ซม. · ${m} × 100 + ${c} = ${v} ซม.`; }
+      else if (kind === "conv3"){ const k = rand(1, 9), m = rand(1, 9) * 100 + (Math.random() < .5 ? rand(1, 99) : 0), v = k * 1000 + m; html = `<span class="big">${k} กม. ${m} ม.</span><br>เท่ากับกี่เมตร`; say = `${k} กิโลเมตร ${m} เมตร เท่ากับกี่เมตร`; const u = shuffle([...new Set([v, k * 100 + m, k * 10000 + m])]); opts = u.map(x => `${fmt(x)} ม.`); ans = u.indexOf(v); cols = 1; explain = `1 กม. = 1,000 ม. · ${fmt(k * 1000)} + ${m} = ${fmt(v)} ม.`; }
+      else if (kind === "unit"){ const T = pick([["ความยาวของมด","มิลลิเมตร"],["ความยาวของดินสอ","เซนติเมตร"],["ความสูงของเสาธง","เมตร"],["ระยะทางจากบ้านไปตลาดในอำเภอ","กิโลเมตร"],["ความหนาของเหรียญ","มิลลิเมตร"],["ความกว้างของห้องเรียน","เมตร"]]);
+        html = `${T[0]} ควรวัดเป็นหน่วยใด`; say = html; const u = shuffle(["มิลลิเมตร","เซนติเมตร","เมตร","กิโลเมตร"]); opts = u; ans = u.indexOf(T[1]); cols = 2; explain = `${T[0]} เหมาะกับหน่วย ${T[1]}`; }
+      else { const a = rand(1, 4), am = rand(1, 9) * 100, b = rand(1, 3), bm = rand(1, 9) * 100, tot = (a + b) * 1000 + am + bm;
+        pre = `<div class="map">🏠 ── ${a} กม. ${am} ม. ── 🌳 ── ${b} กม. ${bm} ม. ── 🏞️</div>`;
+        html = "จากบ้านเดินผ่านสวนไปถึงบึง ระยะทางรวมเท่าไร"; say = `จากบ้านไปสวน ${a} กิโลเมตร ${am} เมตร จากสวนไปบึง ${b} กิโลเมตร ${bm} เมตร รวมเท่าไร`;
+        const lab2 = x => `${Math.floor(x / 1000)} กม. ${x % 1000} ม.`; const u = shuffle([...new Set([tot, tot - 1000, tot + 100])]); opts = u.map(lab2); ans = u.indexOf(tot); cols = 1; explain = `${a + b} กม. ${am + bm} ม.${am + bm >= 1000 ? ` (${am + bm} ม. = 1 กม. ${am + bm - 1000} ม.)` : ""} = ${lab2(tot)}`; }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ตัวที่ ${idx+1} จาก ${N}`, html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    ctx.progress(0, N); ctx.say("หยิบแว่นขยาย ออกสำรวจ!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

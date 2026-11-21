@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ท่าเรือยักษ์ขนสินค้า</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.dock{position:relative;display:flex;justify-content:center;background:linear-gradient(#CDEBFF 0 60%,#7FB8DA 60%);border-radius:24px;border:4px solid #fff;box-shadow:0 6px 0 rgba(79,169,216,.3);padding:10px}
+.dock .g{position:absolute;left:16px;top:12px;font-size:3rem}
+.dial{width:min(250px,70vw)}
+.truck{text-align:center;font-size:1.4rem;background:#FFF6EA;border-radius:22px;border:4px solid #fff;box-shadow:0 6px 0 #E9D3B6;padding:18px}
+.truck b{color:#E8467C}
+.big{display:inline-block;font-size:1.9rem;font-weight:700;color:var(--orange-deep)}
+.choices .choice{font-size:clamp(1.2rem,5vw,1.8rem)}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 8;
+const GOODS = [["📦","กล่องพัสดุ"],["🍚","กระสอบข้าว"],["🍊","ลังส้ม"],["🧱","อิฐ"],["🛢️","ถังน้ำมัน"],["🍉","แตงโม"]];
+function dial(v, max, maj, min, unit){
+  const cx = 110, cy = 112, R = 92, ang = x => (-225 + x / max * 270) * Math.PI / 180, steps = Math.round(max / min), per = Math.round(maj / min);
+  let t = "";
+  for (let i = 0; i <= steps; i++){ const x = i * min, M = i % per === 0, a = ang(x), r1 = M ? R - 14 : R - 7;
+    t += `<line x1="${(cx + R*Math.cos(a)).toFixed(1)}" y1="${(cy + R*Math.sin(a)).toFixed(1)}" x2="${(cx + r1*Math.cos(a)).toFixed(1)}" y2="${(cy + r1*Math.sin(a)).toFixed(1)}" stroke="#4A3A30" stroke-width="${M ? 3 : 1.3}"/>`;
+    if (M) t += `<text x="${(cx + (R-30)*Math.cos(a)).toFixed(1)}" y="${(cy + (R-30)*Math.sin(a) + 5).toFixed(1)}" text-anchor="middle" font-size="${max >= 1000 ? 11 : 14}" font-weight="700" fill="#4A3A30">${fmt(x)}</text>`; }
+  const a = ang(v);
+  return `<svg viewBox="0 0 220 210" class="dial"><circle cx="${cx}" cy="${cy}" r="${R+8}" fill="#fff" stroke="#4FA9D8" stroke-width="8"/>${t}<text x="${cx}" y="${cy + 62}" text-anchor="middle" font-size="14" font-weight="700" fill="#4FA9D8">${unit}</text>
+    <line x1="${cx}" y1="${cy}" x2="${(cx + (R-20)*Math.cos(a)).toFixed(1)}" y2="${(cy + (R-20)*Math.sin(a)).toFixed(1)}" stroke="#D9534F" stroke-width="4" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="8" fill="#D9534F"/></svg>`;
+}
+const PLAN = {1:["dialkg","conv1","unit","dialkg","sum","conv1","dialkg","unit"], 2:["dialg","conv1","conv2","sum","dialg","diff","unit","conv2"], 3:["dialg","conv2","diff","truck","conv1","truck","sum","diff"]};
+
+KIT.mount({
+  key:"g3-port", title:"ท่าเรือยักษ์ขนสินค้า", subtitle:"คณิตศาสตร์ ป.3 · บทที่ 10 การวัดน้ำหนัก",
+  heroHTML:"ชั่ง<em>สินค้า</em>ขึ้นเรือ กรัม กิโลกรัม ตัน 🚢", heroDesc:"ท่าเรือยักษ์มีสินค้ามาไม่หยุด! อ่านตาชั่ง แปลงหน่วย กรัม กิโลกรัม ตัน และคำนวณว่ารถบรรทุกขนไหวไหม",
+  progIcon:"🚢",
+  howto:["ดูว่าตัวเลขบนตาชั่งห่างกันเท่าไร และช่องเล็กมีค่าเท่าไร","1 กิโลกรัม = 1,000 กรัม · 1 ตัน = 1,000 กิโลกรัม","ของเบามากใช้กรัม ของทั่วไปใช้กิโลกรัม ของหนักมากใช้ตัน","กด 🔊 ฟังโจทย์ได้"],
+  note:"2 กก. 350 ก. = 2,350 ก. · 3 ตัน 200 กก. = 3,200 กก.",
+  levels:{
+    1:{pill:N+" ลัง", color:"var(--green)", desc:"ตาชั่งกิโลกรัม แปลง กก.–ก. เลือกหน่วย"},
+    2:{pill:N+" ลัง", color:"var(--blue)", desc:"ตาชั่งกรัม แปลงตัน บวกลบน้ำหนัก"},
+    3:{pill:N+" ลัง", color:"var(--purple)", desc:"โจทย์รถบรรทุก บวกลบหลายหน่วย"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 200}); return; }
+      const kind = PLAN[level][idx], G = GOODS[idx % GOODS.length];
+      let pre = "", html, say, opts, ans, explain, cols = 3;
+      const near = (v, st, u) => { const s = new Set([v]); for (const d of shuffle([st, -st, 2*st])) if (s.size < 3 && v + d > 0) s.add(v + d); const o = shuffle([...s]); opts = o.map(x => `${fmt(x)} ${u}`); ans = o.indexOf(v); };
+      if (kind === "dialkg"){ const v = rand(1, 19); pre = `<div class="dock"><span class="g">${G[0]}</span>${dial(v, 20, 2, 1, "กิโลกรัม")}</div>`; html = `${G[1]}หนักกี่กิโลกรัม`; say = html; near(v, 1, "กก."); explain = `ช่องเล็ก 1 ช่อง = 1 กก. เข็มชี้ ${v} กก.`; }
+      else if (kind === "dialg"){ const max = pick([1000, 2000]), v = rand(1, max / 50 - 1) * 50; pre = `<div class="dock"><span class="g">${G[0]}</span>${dial(v, max, max === 1000 ? 100 : 200, 50, "กรัม")}</div>`; html = `${G[1]}หนักกี่กรัม`; say = html; near(v, 50, "ก."); explain = `ช่องเล็ก 1 ช่อง = 50 ก. เข็มชี้ ${fmt(v)} ก.`; }
+      else if (kind === "conv1"){ const k = rand(1, 9), g = rand(1, 19) * 50, v = k * 1000 + g; html = `<span class="big">${k} กก. ${g} ก.</span><br>เท่ากับกี่กรัม`; say = `${k} กิโลกรัม ${g} กรัม เท่ากับกี่กรัม`; const o = shuffle([...new Set([v, k * 100 + g, k + g])]); opts = o.map(x => `${fmt(x)} ก.`); ans = o.indexOf(v); cols = 1; explain = `1 กก. = 1,000 ก. · ${fmt(k * 1000)} + ${g} = ${fmt(v)} ก.`; }
+      else if (kind === "conv2"){ const t = rand(1, 9), k = rand(1, 9) * 100 + (Math.random() < .5 ? rand(1, 99) : 0), v = t * 1000 + k; html = `<span class="big">${t} ตัน ${k} กก.</span><br>เท่ากับกี่กิโลกรัม`; say = `${t} ตัน ${k} กิโลกรัม เท่ากับกี่กิโลกรัม`; const o = shuffle([...new Set([v, t * 100 + k, t * 10000 + k])]); opts = o.map(x => `${fmt(x)} กก.`); ans = o.indexOf(v); cols = 1; explain = `1 ตัน = 1,000 กก. · ${fmt(t * 1000)} + ${k} = ${fmt(v)} กก.`; }
+      else if (kind === "unit"){ const T = pick([["ช้างหนึ่งตัว","ตัน"],["ขนมปังหนึ่งก้อน","กรัม"],["นักเรียนหนึ่งคน","กิโลกรัม"],["รถบรรทุกพร้อมสินค้า","ตัน"],["ยางลบหนึ่งก้อน","กรัม"],["กระสอบข้าวสาร","กิโลกรัม"]]); html = `${T[0]} ควรชั่งเป็นหน่วยใด`; say = html; const u = shuffle(["กรัม","กิโลกรัม","ตัน"]); opts = u; ans = u.indexOf(T[1]); explain = `${T[0]} เหมาะกับหน่วย ${T[1]}`; }
+      else if (kind === "sum"){ const a = rand(2, 30), b = rand(2, 30); html = `${G[1]}หนัก ${a} กก. อีกลังหนัก ${b} กก.<br>รวมกันหนักกี่กิโลกรัม`; say = html.replace("<br>", " "); near(a + b, level === 1 ? 1 : 10, "กก."); explain = `${a} + ${b} = ${a + b} กก.`; }
+      else if (kind === "diff"){ const a = rand(2, 8) * 1000 + rand(1, 9) * 100, b = rand(1, 9) * 100 + rand(1, 9) * 10; html = `${G[1]}หนัก ${fmt(a)} ก. นำออกไป ${fmt(b)} ก.<br>เหลือหนักกี่กรัม`; say = html.replace("<br>", " "); near(a - b, 100, "ก."); explain = `${fmt(a)} − ${fmt(b)} = ${fmt(a - b)} ก.`; }
+      else { const cap = rand(3, 8), n = rand(4, 9), w = rand(3, 9) * 100, tot = n * w, ok = tot <= cap * 1000;
+        pre = `<div class="truck">🚚 รับน้ำหนักได้ไม่เกิน <b>${cap} ตัน</b></div>`; html = `ขน${G[1]} ${n} ชิ้น ชิ้นละ ${w} กก. รถคันนี้ขนไหวไหม`; say = `รถรับน้ำหนักได้ไม่เกิน ${cap} ตัน ขน${G[1]} ${n} ชิ้น ชิ้นละ ${w} กิโลกรัม ขนไหวไหม`;
+        opts = ["✅ ขนไหว","❌ หนักเกินไป"]; ans = ok ? 0 : 1; cols = 2; explain = `${n} × ${w} = ${fmt(tot)} กก. · ${cap} ตัน = ${fmt(cap * 1000)} กก. → ${ok ? "ไม่เกิน ขนไหว" : "เกิน ขนไม่ไหว"}`; }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ลังที่ ${idx+1} จาก ${N}`, html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    ctx.progress(0, N); ctx.say("🚢 เรือเทียบท่าแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

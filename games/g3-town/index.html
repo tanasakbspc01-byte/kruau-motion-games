@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เมืองบล็อกของฉัน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.city{border-radius:24px;overflow:hidden;border:4px solid #fff;box-shadow:0 6px 0 rgba(127,196,234,.35)}
+.sky{min-height:90px;background:linear-gradient(#9FD8FF,#DFF2FF);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;gap:4px;padding:10px 10px 0}
+.sky span{font-size:2.6rem;line-height:1;animation:rise .5s cubic-bezier(.3,1.6,.5,1)}
+.sky em{color:#5C8FCF;font-weight:700;align-self:center}
+.ground{height:20px;background:repeating-linear-gradient(90deg,#7FBF6A 0 20px,#6EAF5A 20px 40px)}
+.story{display:flex;gap:14px;align-items:center;background:#fff;border-radius:22px;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);padding:12px 16px;font-size:1.15rem;line-height:1.6}
+.story .ic{font-size:2.6rem;flex:none}
+.sent{font-size:clamp(1.5rem,6.4vw,2.3rem);font-weight:700}
+.hole{display:inline-grid;place-items:center;min-width:1.4em;border-radius:14px;background:#FFE7C2;color:var(--orange-deep);padding:0 .15em}
+.choices .choice{font-size:clamp(1.3rem,5.4vw,1.9rem)}
+@keyframes rise{from{transform:translateY(40px);opacity:0}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 8;
+const BUILD = [["🏠","บ้าน"],["🏫","โรงเรียน"],["🏥","โรงพยาบาล"],["🏪","ร้านค้า"],["🏰","ปราสาท"],["🎡","สวนสนุก"],["🗼","หอคอย"],["🏟️","สนามกีฬา"]];
+const RES = [["🧱","อิฐ","ก้อน"],["🪵","ไม้","ท่อน"],["🪙","เหรียญ","เหรียญ"],["💎","เพชร","เม็ด"]];
+function regroups(a, b, op){
+  let c = 0, n = 0;
+  for (let i = 0; i < 5; i++){ const x = Math.floor(a / 10**i) % 10, y = Math.floor(b / 10**i) % 10;
+    if (op === "+"){ const s = x + y + c; c = s >= 10 ? 1 : 0; n += c; } else { const s = x - y - c; c = s < 0 ? 1 : 0; n += c; } }
+  return n;
+}
+function gen(level, i){
+  for (let g = 0; g < 3000; g++){
+    const op = i % 2 ? "−" : "+";
+    let a = rand(level === 1 ? 1000 : 10000, 89999), b = rand(level === 1 ? 100 : 1000, level === 3 ? 49999 : 9999);
+    if (level === 3 && i % 4 === 3 && op === "−"){ a = pick([20000, 30000, 50000, 60000, 80000, 40500]); }
+    if (op === "+" && a + b > 100000) continue;
+    if (op === "−" && b >= a) continue;
+    const r = regroups(a, b, op === "+" ? "+" : "-");
+    if (level === 1 && r) continue;
+    if (level === 2 && r !== 1) continue;
+    if (level === 3 && r < 2) continue;
+    return {a, b, op, ans: op === "+" ? a + b : a - b, r};
+  }
+}
+function near(ans){ const s = new Set([ans]); for (const d of shuffle([10, -10, 100, -100, 1000, -1000, 1])) if (s.size < 4 && ans + d >= 0) s.add(ans + d); return shuffle([...s]); }
+
+KIT.mount({
+  key:"g3-town", title:"เมืองบล็อกของฉัน", subtitle:"คณิตศาสตร์ ป.3 · บทที่ 2 การบวกและการลบจำนวนนับไม่เกิน 100,000",
+  heroHTML:"สร้าง<em>เมืองบล็อก</em> ด้วยการบวกลบ 🏗️", heroDesc:"ทรัพยากรในเมืองมีเป็นหมื่น ๆ ชิ้น! คำนวณว่าเก็บได้เพิ่มเป็นเท่าไร ใช้ไปเหลือเท่าไร ตอบถูกได้สร้างอาคารใหม่ในเมือง",
+  progIcon:"🏗️",
+  howto:["ตั้งหลักให้ตรงกัน หน่วย สิบ ร้อย พัน หมื่น","บวก: หลักไหนรวมได้ตั้งแต่ 10 ทด 1 ไปหลักถัดไป","ลบ: หลักไหนลบไม่ได้ กระจายจากหลักถัดไป (ถ้าเป็น 0 ต้องกระจายต่อไปอีก)","ตอบถูก เมืองของเธอจะมีอาคารใหม่"],
+  note:"ตรวจคำตอบการลบด้วยการบวก: ผลลบ + ตัวลบ = ตัวตั้ง",
+  levels:{
+    1:{pill:N+" อาคาร", color:"var(--green)", desc:"ไม่มีทด ไม่มีกระจาย"},
+    2:{pill:N+" อาคาร", color:"var(--blue)", desc:"ทดหรือกระจาย 1 ครั้ง"},
+    3:{pill:N+" อาคาร", color:"var(--purple)", desc:"ทดหรือกระจายหลายครั้ง และลบจากจำนวนที่มี 0"}
+  },
+  play(level, ctx){
+    const town = [];
+    let idx = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 220}); return; }
+      const Q = gen(level, idx), R = RES[idx % RES.length], B = BUILD[idx % BUILD.length];
+      const text = Q.op === "+" ? `มี${R[1]} ${fmt(Q.a)} ${R[2]} เก็บเพิ่มได้อีก ${fmt(Q.b)} ${R[2]} ตอนนี้มี${R[1]}กี่${R[2]}` : `มี${R[1]} ${fmt(Q.a)} ${R[2]} ใช้สร้าง${B[1]}ไป ${fmt(Q.b)} ${R[2]} เหลือ${R[1]}กี่${R[2]}`;
+      const o = near(Q.ans);
+      ctx.stage.innerHTML = `<div class="city"><div class="sky">${town.map(t => `<span>${t}</span>`).join("") || "<em>ยังไม่มีอาคาร</em>"}</div><div class="ground"></div></div>
+        <div class="story"><span class="ic">${R[0]}</span><div>${text}</div></div><div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`อาคารที่ ${idx+1} จาก ${N}`, html:`<span class="sent">${fmt(Q.a)} ${Q.op} ${fmt(Q.b)} = <b class="hole">?</b></span>`, say:text,
+        options:o.map(fmt), answer:o.indexOf(Q.ans), cols:2,
+        hint: Q.r ? `ระวังการ${Q.op === "+" ? "ทด" : "กระจาย"}นะ ทำทีละหลักจากหลักหน่วย (เหลืออีก 1 ครั้ง)` : null,
+        explain:`${fmt(Q.a)} ${Q.op} ${fmt(Q.b)} = ${fmt(Q.ans)}${Q.op === "−" ? ` (ตรวจ: ${fmt(Q.ans)} + ${fmt(Q.b)} = ${fmt(Q.a)})` : ""}`,
+        onNext: ok => { town.push(ok ? B[0] : "🏚️"); idx++; ctx.progress(idx, N); next(); }});
+    }
+    ctx.progress(0, N); ctx.say("เริ่มสร้างเมืองกันเลย!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

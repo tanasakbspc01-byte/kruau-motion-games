@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>นักขุดเพชรแผนภูมิ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.pchart{background:#fff;border-radius:24px;border:4px solid var(--line);box-shadow:0 6px 0 var(--line);padding:12px 14px;display:grid;gap:6px}
+.ptitle{text-align:center;font-weight:700;font-size:1.15rem;color:var(--orange-deep)}
+.prow{display:flex;align-items:center;gap:8px;border-bottom:2px dashed var(--line);padding:4px 0;min-height:50px}
+.prow.bad{background:#FDE3E3;border-radius:12px}
+.pname{flex:none;width:76px;font-weight:700;font-size:1.05rem}
+.picons{display:flex;flex-wrap:wrap;gap:2px;flex:1}
+.picons i{font-style:normal;font-size:clamp(1.5rem,6vw,2.1rem);animation:pin .25s}
+.pkey{text-align:right;font-size:.9rem;color:var(--ink-soft);font-weight:700}
+.pm{flex:none;width:44px;height:44px;border-radius:50%;border:none;font-size:1.6rem;font-weight:700;background:#F3E8DA;color:var(--ink)}
+.pm.plus{background:#7FD39A;color:#fff}
+.tally{width:100%;border-collapse:separate;border-spacing:4px;text-align:center}
+.tally th{background:#FFE7C2;border-radius:10px;padding:6px 2px;font-size:.95rem}
+.tally td{background:#fff;border:3px solid var(--line);border-radius:10px;font-size:1.6rem;font-weight:700}
+@keyframes pin{from{transform:scale(0)}}
+@media (max-width:520px){.pname{width:58px;font-size:.9rem}.pm{width:38px;height:38px}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const SETS = [
+  {title:"เพชรที่ขุดได้ในแต่ละวัน", ic:"💎", unit:"ชิ้น", rows:["จันทร์","อังคาร","พุธ","พฤหัสบดี"]},
+  {title:"เหรียญทองที่เก็บได้ของแต่ละคน", ic:"🪙", unit:"เหรียญ", rows:["มะปราง","ต้นข้าว","ภูผา","ใบเตย"]},
+  {title:"ผู้ติดตามช่องของแต่ละห้อง", ic:"⭐", unit:"คน", rows:["ป.2/1","ป.2/2","ป.2/3","ป.2/4"]},
+  {title:"ไข่ที่เก็บได้จากฟาร์มแต่ละเล้า", ic:"🥚", unit:"ฟอง", rows:["เล้า ก","เล้า ข","เล้า ค","เล้า ง"]}
+];
+function near(ans, st){ const s = new Set([ans]); for (const d of shuffle([st, -st, 1, -1, 2*st])) if (s.size < 3 && ans+d >= 0) s.add(ans+d); return shuffle([...s]); }
+const PLAN = {1:["count","count","most","build","count","least","build","count"], 2:["count","more","total","build","most","count","build","more"], 3:["more","total","build","count","least","more","build","total"]};
+
+KIT.mount({
+  key:"g2-gems", title:"นักขุดเพชรแผนภูมิ", subtitle:"คณิตศาสตร์ ป.2 · บทที่ 11 แผนภูมิรูปภาพ",
+  heroHTML:"อ่านแผนภูมิ <em>1 รูป แทนหลายชิ้น</em> 💎", heroDesc:"นักขุดเพชรจดผลงานเป็นแผนภูมิรูปภาพ แต่ 1 รูปไม่ได้แทน 1 ชิ้นนะ! ดูที่กำหนดให้ดีว่า 1 รูปแทนเท่าไร แล้วคูณให้ถูก",
+  progIcon:"💎",
+  howto:["ดู \"กำหนด\" ใต้แผนภูมิ ว่า 1 รูปแทนกี่หน่วย","นับรูป แล้วคูณด้วยค่าของ 1 รูป","ข้อที่ให้ทำแผนภูมิ: กด + − จำนวนรูปให้ถูก (จำนวน ÷ ค่าของ 1 รูป)","กด 🔊 ฟังโจทย์ได้"],
+  note:"กำหนด 1 รูป แทน 5 ชิ้น · มี 4 รูป = 4 × 5 = 20 ชิ้น · มี 30 ชิ้น ต้องวาด 30 ÷ 5 = 6 รูป",
+  levels:{
+    1:{pill:N+" ข้อ", color:"var(--green)", desc:"1 รูป แทน 2 หน่วย"},
+    2:{pill:N+" ข้อ", color:"var(--blue)", desc:"1 รูป แทน 5 หน่วย"},
+    3:{pill:N+" ข้อ", color:"var(--purple)", desc:"1 รูป แทน 10 หน่วย และคละ"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const chart = (S, v, k) => `<div class="pchart"><div class="ptitle">${S.title}</div>${S.rows.map((r, i) => `<div class="prow"><span class="pname">${r}</span><span class="picons">${Array(v[i]).fill(`<i>${S.ic}</i>`).join("")}</span></div>`).join("")}<div class="pkey">กำหนด ${S.ic} 1 รูป แทน ${k} ${S.unit}</div></div>`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 180}); return; }
+      const S = SETS[idx % SETS.length], k = level === 1 ? 2 : level === 2 ? 5 : pick([10, 5, 2, 10]), kind = PLAN[level][idx];
+      let v; do { v = S.rows.map(() => rand(1, 8)); } while (new Set(v).size < 4);
+      if (kind === "build") return build(S, k);
+      let html, say, opts, ans, explain;
+      if (kind === "count"){ const i = rand(0, 3), t = v[i]*k; html = `<b>${S.rows[i]}</b> มีกี่${S.unit}`; say = `${S.rows[i]} มีกี่${S.unit}`; const o = near(t, k); opts = o.map(String); ans = o.indexOf(t); explain = `${v[i]} รูป × ${k} = ${t} ${S.unit}`; }
+      else if (kind === "most" || kind === "least"){ const t = kind === "most" ? Math.max(...v) : Math.min(...v), i = v.indexOf(t); html = `ข้อใด<b>${kind === "most" ? "มากที่สุด" : "น้อยที่สุด"}</b> และมีกี่${S.unit}`; say = `ข้อใด${kind === "most" ? "มากที่สุด" : "น้อยที่สุด"} และมีกี่${S.unit}`;
+        const right = `${S.rows[i]} ${t*k} ${S.unit}`, u = shuffle([right, `${S.rows[i]} ${t} ${S.unit}`, `${S.rows[(i+1)%4]} ${v[(i+1)%4]*k} ${S.unit}`]); opts = u; ans = u.indexOf(right); explain = `${S.rows[i]} มี ${t} รูป × ${k} = ${t*k} ${S.unit}`; }
+      else if (kind === "more"){ let i, j; do { i = rand(0, 3); j = rand(0, 3); } while (i === j); if (v[i] < v[j]) [i, j] = [j, i]; const d = (v[i] - v[j]) * k;
+        html = `<b>${S.rows[i]}</b> มากกว่า <b>${S.rows[j]}</b> กี่${S.unit}`; say = `${S.rows[i]} มากกว่า ${S.rows[j]} กี่${S.unit}`; const o = near(d, k); opts = o.map(String); ans = o.indexOf(d); explain = `${v[i]*k} − ${v[j]*k} = ${d} (หรือ ต่างกัน ${v[i] - v[j]} รูป × ${k})`; }
+      else { const t = v.reduce((a, b) => a + b, 0) * k; html = `รวมทั้งหมดกี่${S.unit}`; say = html; const o = near(t, k); opts = o.map(String); ans = o.indexOf(t); explain = `รวม ${v.reduce((a, b) => a + b, 0)} รูป × ${k} = ${t} ${S.unit}`; }
+      ctx.stage.innerHTML = `${chart(S, v, k)}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ข้อ ${idx+1} จาก ${N}`, html, say, options:opts, answer:ans, cols: opts[0].length > 8 ? 1 : 3, explain, onNext:done});
+    }
+    function build(S, k){
+      const target = S.rows.slice(0, 3).map(() => rand(1, 7) * k), cur = [0, 0, 0];
+      let miss = 0, lock = false;
+      const text = `ทำแผนภูมิรูปภาพ กำหนด 1 รูป แทน ${k} ${S.unit}`;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(text)}<div class="qlabel">ข้อ ${idx+1} จาก ${N} · ทำแผนภูมิ</div><div class="qtext">${text}</div></div>
+        <table class="tally"><tr>${S.rows.slice(0,3).map(r => `<th>${r}</th>`).join("")}</tr><tr>${target.map(x => `<td>${x}</td>`).join("")}</tr></table>
+        <div class="pchart" id="ed"></div><div class="row"><button class="btn" type="button" id="ok">✅ เสร็จแล้ว</button></div>`;
+      KIT.speak(text);
+      const $ = s => ctx.stage.querySelector(s);
+      const draw = (bad=[]) => { $("#ed").innerHTML = `<div class="ptitle">${S.title}</div>` + S.rows.slice(0,3).map((r, i) => `<div class="prow${bad.includes(i) ? " bad" : ""}"><span class="pname">${r}</span><button class="pm" type="button" data-i="${i}" data-d="-1">−</button><span class="picons">${Array(cur[i]).fill(`<i>${S.ic}</i>`).join("")}</span><button class="pm plus" type="button" data-i="${i}" data-d="1">+</button></div>`).join("") + `<div class="pkey">กำหนด ${S.ic} 1 รูป แทน ${k} ${S.unit}</div>`; };
+      draw();
+      $("#ed").onclick = e => { const b = e.target.closest(".pm"); if (!b || lock) return; const i = +b.dataset.i; cur[i] = Math.max(0, Math.min(10, cur[i] + +b.dataset.d)); KIT.sfx.tap(); draw(); };
+      $("#ok").onclick = () => {
+        if (lock) return;
+        const bad = target.map((t, i) => t / k === cur[i] ? -1 : i).filter(i => i >= 0), qq = text, aa = S.rows.slice(0,3).map((r, i) => `${r} ${target[i]} ÷ ${k} = ${target[i]/k} รูป`).join(", ");
+        if (!bad.length){ lock = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); ctx.correct(miss ? 60 : 120, "แผนภูมิถูกต้องทุกแถว!"); ctx.after(1100, done); return; }
+        miss++; draw(bad);
+        if (miss < 2){ ctx.wrong(`แถวสีแดงยังไม่ถูก ลองหาร ${k} ดูนะ (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; target.forEach((t, i) => cur[i] = t / k); ctx.after(800, draw); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 เฉลย: ${aa}`); ctx.after(3800, done);
+      };
+    }
+    ctx.progress(0, N); ctx.say("ลงเหมืองกันเลย!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

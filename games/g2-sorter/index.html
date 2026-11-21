@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โรงงานคัดแยกรูปทรง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.belt{position:relative;height:170px;border-radius:24px;background:#3E4A5C;border:4px solid #fff;box-shadow:0 6px 0 rgba(62,74,92,.3);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.belt::after{content:"";position:absolute;left:0;right:0;bottom:16px;height:26px;background:repeating-linear-gradient(90deg,#596780 0 24px,#6E7D98 24px 48px)}
+.belt.run::after{animation:roll .6s linear infinite}
+.item{width:130px;height:130px;position:relative;z-index:1}
+.item svg{width:100%;height:100%;filter:drop-shadow(0 6px 0 rgba(0,0,0,.25))}
+.item.in{animation:slidein .7s cubic-bezier(.3,1.4,.5,1)}
+.item.drop{transition:transform .6s,opacity .6s;transform:translateY(140px) scale(.5);opacity:0}
+.bins{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.bin{border:none;border-radius:18px;padding:10px 4px;background:#FFE7C2;font-weight:700;font-size:1.05rem;box-shadow:0 5px 0 #E5B97A;display:flex;flex-direction:column;align-items:center}
+.bin span{font-size:2rem}
+.bin.ok{background:#CDEFD7;box-shadow:0 5px 0 #7FD39A}
+.bin.no{opacity:.4}
+.bin.show{outline:4px dashed #2C8A52}
+.stampbox{display:flex;align-items:center;justify-content:center;gap:12px;background:#FFF6EA;border-radius:24px;border:4px solid #fff;box-shadow:0 6px 0 #E9D3B6;padding:20px;font-size:1.3rem;font-weight:700}
+.solid{font-size:3.6rem}
+.paper{width:80px;height:80px;display:grid;place-items:center;background:#fff;border:3px dashed #C9B8A8;border-radius:8px;font-size:2.4rem;color:#C9B8A8}
+.choices .choice{font-size:clamp(1.2rem,5vw,1.7rem)}
+@keyframes roll{to{background-position:48px 0}}
+@keyframes slidein{from{transform:translateX(-260px) rotate(-30deg)}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 10;
+const COLS = ["#E8708F","#86B6F0","#7FD39A","#F6CD6B","#B7A4EE","#F2A65A"];
+function poly(sides, col, irregular){
+  if (sides === 0) return `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="${col}" stroke="#4A3A30" stroke-width="5"/></svg>`;
+  if (sides === -1) return `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="44" ry="26" fill="${col}" stroke="#4A3A30" stroke-width="5"/></svg>`;
+  const rot = rand(0, 359) * Math.PI / 180, pts = [];
+  for (let i = 0; i < sides; i++){ const a = rot + i * 2 * Math.PI / sides + (irregular ? (Math.random() - .5) * .5 : 0), r = irregular ? 30 + Math.random() * 12 : 40; pts.push(`${(50 + r*Math.cos(a)).toFixed(1)},${(50 + r*Math.sin(a)).toFixed(1)}`); }
+  return `<svg viewBox="0 0 100 100"><polygon points="${pts.join(" ")}" fill="${col}" stroke="#4A3A30" stroke-width="5" stroke-linejoin="round"/></svg>`;
+}
+const NAME = {3:"รูปสามเหลี่ยม",4:"รูปสี่เหลี่ยม",5:"รูปห้าเหลี่ยม",6:"รูปหกเหลี่ยม",0:"รูปวงกลม","-1":"รูปวงรี"};
+const SOLIDS = [["🥫","ทรงกระบอก",["รูปวงกลม","รูปสี่เหลี่ยม"]],["📦","ทรงสี่เหลี่ยมมุมฉาก",["รูปสี่เหลี่ยม"]],["⚽","ทรงกลม",[]],["🍦","กรวย",["รูปวงกลม"]],["🧀","ปริซึมสามเหลี่ยม",["รูปสามเหลี่ยม","รูปสี่เหลี่ยม"]]];
+const PLAN = {1:["sort","sort","sides","sort","sort","name","sort","sides","sort","sort"], 2:["sort","corners","sort","name","sort","sides","stamp","sort","corners","sort"], 3:["sort","stamp","corners","sort","stamp","name","sort","sides","stamp","sort"]};
+
+KIT.mount({
+  key:"g2-sorter", title:"โรงงานคัดแยกรูปทรง", subtitle:"คณิตศาสตร์ ป.2 · บทที่ 9 รูปเรขาคณิต",
+  heroHTML:"คัดแยก<em>รูปทรง</em>บนสายพาน 🏭", heroDesc:"สายพานในโรงงานส่งรูปเรขาคณิตมาไม่หยุด! นับด้าน นับมุม แล้วส่งลงกล่องให้ถูก มีภารกิจปั๊มหมึกดูหน้าตัดของทรงสามมิติด้วย",
+  progIcon:"🏭",
+  howto:["นับจำนวนด้าน (เส้นตรงรอบรูป) และจำนวนมุม","แตะกล่องที่ตรงกับรูปบนสายพาน","รูปวงกลม และรูปวงรี ไม่มีด้านตรง ไม่มีมุม","ภารกิจปั๊มหมึก: ทรงสามมิติปั๊มลงกระดาษแล้วได้รูปอะไร"],
+  note:"รูปหลายเหลี่ยมมีด้านและมุมเท่ากัน เช่น ห้าเหลี่ยม มี 5 ด้าน 5 มุม · รูปวงกลมและวงรีเป็นเส้นโค้ง",
+  levels:{
+    1:{pill:N+" ชิ้น", color:"var(--green)", desc:"สามเหลี่ยม สี่เหลี่ยม วงกลม วงรี"},
+    2:{pill:N+" ชิ้น", color:"var(--blue)", desc:"เพิ่มห้าเหลี่ยม หกเหลี่ยม นับมุม ปั๊มหมึก"},
+    3:{pill:N+" ชิ้น", color:"var(--purple)", desc:"รูปบิดเบี้ยว และหน้าตัดทรงสามมิติ"}
+  },
+  play(level, ctx){
+    const kinds = level === 1 ? [3,4,0,-1] : [3,4,5,6,0,-1];
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ชิ้นที่ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 180}); return; }
+      const kind = PLAN[level][idx], s = pick(kinds), col = COLS[idx % COLS.length], irr = level === 3 && s > 0;
+      if (kind === "sort") return sort(s, col, irr);
+      let pre = `<div class="belt"><div class="item">${poly(kind === "stamp" ? 4 : s, col, irr)}</div></div>`, html, say, opts, ans, explain, cols = 3;
+      if (kind === "sides" || kind === "corners"){ const S = s > 0 ? s : pick([3,4,5]); pre = `<div class="belt"><div class="item">${poly(S, col, irr)}</div></div>`; const w = kind === "sides" ? "ด้าน" : "มุม";
+        html = `รูปนี้มีกี่${w}`; say = html; const o = shuffle([...new Set([S, S + 1, S - 1])]); opts = o.map(v => `${v} ${w}`); ans = o.indexOf(S); explain = `${NAME[S]} มี ${S} ด้าน ${S} มุม`; }
+      else if (kind === "name"){ html = "รูปนี้ชื่อว่าอะไร"; say = html; const o = shuffle([...new Set([s, ...shuffle(kinds.filter(k => k !== s)).slice(0, 2)])]); opts = o.map(v => NAME[v]); ans = o.indexOf(s); cols = 1; explain = s > 0 ? `มี ${s} ด้าน ${s} มุม จึงเป็น${NAME[s]}` : `เป็นเส้นโค้งปิด ${s === 0 ? "กลมเท่ากันทุกด้าน" : "รี ๆ ยาวกว่ากว้าง"} คือ${NAME[s]}`; }
+      else { const So = pick(SOLIDS.filter(x => x[2].length)), right = pick(So[2]), all = ["รูปวงกลม","รูปสามเหลี่ยม","รูปสี่เหลี่ยม","รูปวงรี"];
+        pre = `<div class="stampbox"><span class="solid">${So[1]}</span><span class="arrow">➜ 🖋️ ➜</span><span class="paper">?</span></div>`;
+        html = `นำ<b>${So[1]}</b>ไปจุ่มหมึกแล้วปั๊ม จะได้รูปใด`; say = `นำ${So[1]} ไปจุ่มหมึกแล้วปั๊ม จะได้รูปใด`;
+        const o = shuffle([right, ...shuffle(all.filter(a => !So[2].includes(a))).slice(0, 2)]); opts = o; ans = o.indexOf(right); cols = 1; explain = `${So[1]} มีหน้าเป็น ${So[2].join(" และ ")}`; }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    function sort(s, col, irr){
+      let miss = 0, lock = false;
+      const bins = kinds.map(k => `<button class="bin" type="button" data-k="${k}"><span>📦</span>${NAME[k].replace("รูป", "")}</button>`).join("");
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn("ส่งรูปนี้ลงกล่องให้ถูก")}<div class="qlabel">${lbl()} · คัดแยก</div><div class="qtext">ส่งรูปนี้ลงกล่องที่ถูกต้อง</div></div>
+        <div class="belt run"><div class="item in" id="it">${poly(s, col, irr)}</div></div><div class="bins">${bins}</div>`;
+      const $ = s2 => ctx.stage.querySelector(s2);
+      ctx.stage.querySelector(".bins").onclick = e => {
+        const b = e.target.closest(".bin"); if (!b || lock || b.disabled) return;
+        const k = +b.dataset.k, qq = "คัดแยกรูปเรขาคณิต", aa = NAME[s];
+        if (k === s){ lock = true; b.classList.add("ok"); $("#it").classList.add("drop"); ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); ctx.correct(miss ? 50 : 100, `${NAME[s]} ลงกล่องถูกแล้ว!`); ctx.after(900, done); return; }
+        miss++; b.disabled = true; b.classList.add("no");
+        const hint = s > 0 ? `ลองนับด้านอีกครั้ง` : "รูปนี้ไม่มีด้านตรงเลยนะ";
+        if (miss < 2){ ctx.wrong(`ยังไม่ใช่ ${hint} (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.stage.querySelector(`.bin[data-k="${s}"]`).classList.add("show");
+        ctx.reveal(`📖 เฉลย: ${NAME[s]}${s > 0 ? ` (มี ${s} ด้าน ${s} มุม)` : ""}`); ctx.after(3000, done);
+      };
+    }
+    ctx.progress(0, N); ctx.say("เปิดสายพาน!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

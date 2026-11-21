@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ไขรหัสหีบสมบัติ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.clue{display:inline-block;color:#B0408A;font-weight:700;font-size:1.25rem;line-height:1.5}
+.chest{position:relative;border-radius:24px;background:linear-gradient(#B9773A,#8A5524);border:6px solid #E5B93A;box-shadow:0 8px 0 #6A4420;padding:44px 12px 16px}
+.lid{position:absolute;top:-34px;left:50%;transform:translateX(-50%);font-size:3.4rem;transition:transform .4s}
+.lid.open{transform:translateX(-50%) translateY(-10px) scale(1.25);animation:shine 1s}
+.wheels{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.wh{display:flex;flex-direction:column;align-items:center;gap:4px;background:#2E2018;border-radius:14px;padding:6px 2px}
+.wh button{width:100%;border:none;background:#E5B93A;border-radius:10px;font-size:1.1rem;padding:6px 0;color:#5A3A10}
+.wh b{font-size:2.2rem;color:#fff;font-variant-numeric:tabular-nums;background:#111;border-radius:8px;width:80%;text-align:center}
+.wh small{color:#FFE07A;font-weight:700;font-size:.8rem}
+.big{display:inline-block;font-size:2rem;font-weight:700;color:var(--orange-deep);letter-spacing:.03em}
+.choices .choice{font-size:clamp(1.05rem,4.4vw,1.6rem)}
+@keyframes shine{50%{filter:drop-shadow(0 0 18px #FFE07A)}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, thaiWords, thaiDigits, fmt} = KIT;
+const N = 8;
+const PLACES = ["หมื่น","พัน","ร้อย","สิบ","หน่วย"];
+const expand = n => String(n).padStart(5, "0").split("").map((d, i) => +d * 10 ** (4 - i)).filter(v => v).map(fmt).join(" + ");
+const byPlace = n => String(n).padStart(5, "0").split("").map((d, i) => `หลัก${PLACES[i]} ${d}`).join(" ");
+function near(ans){ const s = new Set([ans]); for (const d of shuffle([1, -1, 10, 100, 1000, -1000, 10000])) if (s.size < 3 && ans + d > 0 && ans + d <= 100000) s.add(ans + d); return shuffle([...s]); }
+const PLAN = {1:["lock","value","lock","thai","lock","value","lock","compare"], 2:["lock","word","value","lock","compare","word","lock","expand"], 3:["lock","riddle","order","lock","word","riddle","lock","compare"]};
+
+KIT.mount({
+  key:"g3-chest", title:"ไขรหัสหีบสมบัติ", subtitle:"คณิตศาสตร์ ป.3 · บทที่ 1 จำนวนนับไม่เกิน 100,000",
+  heroHTML:"หมุนวงล้อ <em>ไขรหัส</em> เปิดหีบสมบัติ 🗝️", heroDesc:"หีบสมบัติล็อกด้วยรหัส 5 หลัก! อ่านคำใบ้แล้วหมุนวงล้อหลักหมื่น พัน ร้อย สิบ หน่วย ให้ถูก หีบจะเปิดออก",
+  progIcon:"🗝️",
+  howto:["วงล้อเรียงจากซ้าย: หลักหมื่น พัน ร้อย สิบ หน่วย","แตะ ▲ ▼ เพื่อหมุนวงล้อแต่ละหลัก แล้วกด \"เปิดหีบ\"","ถ้าหลักไหนไม่มีค่า ให้หมุนเป็น 0","กด 🔊 ฟังคำใบ้ได้"],
+  note:"45,207 = 4 หมื่น 5 พัน 2 ร้อย 0 สิบ 7 หน่วย = 40,000 + 5,000 + 200 + 7 อ่านว่า สี่หมื่นห้าพันสองร้อยเจ็ด",
+  levels:{
+    1:{pill:N+" หีบ", color:"var(--green)", desc:"ตัวเลขฮินดูอารบิก เลขไทย ค่าของเลขโดด"},
+    2:{pill:N+" หีบ", color:"var(--blue)", desc:"ตัวหนังสือ และรูปกระจาย"},
+    3:{pill:N+" หีบ", color:"var(--purple)", desc:"คำใบ้ปริศนา เปรียบเทียบ เรียงลำดับ"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `หีบที่ ${idx+1} จาก ${N}`;
+    const num = () => { const n = rand(10001, 99999); return level > 1 && Math.random() < .4 ? +String(n).replace(/\d/g, (d, i) => i && Math.random() < .3 ? "0" : d) : n; };
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 220}); return; }
+      const kind = PLAN[level][idx], n = num();
+      if (kind === "lock") return lock(n);
+      let html, say, opts, ans, explain, cols = 3;
+      if (kind === "value"){ const s = String(n), p = pick([0,1,2,3].filter(k => s[k] !== "0")), v = +s[p] * 10 ** (4 - p);
+        html = `<span class="big">${fmt(n)}</span><br>เลขโดด <b>${s[p]}</b> ในหลัก${PLACES[p]} มีค่าเท่าไร`; say = `${fmt(n)} เลขโดด ${s[p]} ในหลัก${PLACES[p]} มีค่าเท่าไร`;
+        const u = shuffle([...new Set([v, +s[p] * 10 ** (3 - p) || +s[p], +s[p] * 10 ** Math.min(4, 5 - p)])]); opts = u.map(fmt); ans = u.indexOf(v); explain = `${s[p]} ในหลัก${PLACES[p]} มีค่า ${fmt(v)}`; }
+      else if (kind === "thai"){ html = `<span class="big">${fmt(n)}</span><br>เขียนเป็น<b>เลขไทย</b>ได้แบบไหน`; say = "เขียนเป็นเลขไทยได้แบบไหน"; const u = near(n); opts = u.map(v => thaiDigits(fmt(v))); ans = u.indexOf(n); cols = 1; explain = `${fmt(n)} = ${thaiDigits(fmt(n))}`; }
+      else if (kind === "word"){ html = `<span class="big">${fmt(n)}</span><br><b>อ่านว่า</b>อย่างไร`; say = "ตัวเลขนี้อ่านว่าอย่างไร"; const u = near(n); opts = u.map(thaiWords); ans = u.indexOf(n); cols = 1; explain = `${fmt(n)} อ่านว่า ${thaiWords(n)}`; }
+      else if (kind === "expand"){ html = `<span class="big">${fmt(n)}</span><br>เขียนใน<b>รูปกระจาย</b>ได้แบบไหน`; say = "เขียนในรูปกระจายได้แบบไหน"; const u = near(n); opts = u.map(expand); ans = u.indexOf(n); cols = 1; explain = `${fmt(n)} = ${expand(n)}`; }
+      else if (kind === "compare"){ let m; do { m = level === 3 ? n + pick([-1, 1]) * pick([1, 10, 100, 1000]) : num(); } while (m === n || m > 99999 || m < 10000);
+        const more = Math.random() < .5; html = `<span class="big">${fmt(n)}</span> กับ <span class="big">${fmt(m)}</span><br>จำนวนไหน<b>${more ? "มากกว่า" : "น้อยกว่า"}</b>`; say = `${fmt(n)} กับ ${fmt(m)} จำนวนไหน${more ? "มากกว่า" : "น้อยกว่า"}`;
+        opts = [fmt(n), fmt(m)]; ans = (more ? n > m : n < m) ? 0 : 1; cols = 2; explain = `เทียบจากหลักซ้ายสุด หลักไหนต่างกันก่อน ตัดสินที่หลักนั้น · ${fmt(Math.max(n,m))} > ${fmt(Math.min(n,m))}`; }
+      else if (kind === "order"){ const v = shuffle([n, n + rand(1, 9) * 100, n - rand(1, 9) * 1000].filter(x => x > 9999 && x < 100000)); while (v.length < 3) v.push(v[0] + 7);
+        const asc = Math.random() < .5, sorted = v.slice().sort((a, b) => asc ? a - b : b - a), right = sorted.map(fmt).join(", ");
+        const u = shuffle([...new Set([right, sorted.slice().reverse().map(fmt).join(", "), [sorted[1], sorted[0], sorted[2]].map(fmt).join(", ")])]);
+        html = `เรียง <b>${v.map(fmt).join(", ")}</b><br>จาก<b>${asc ? "น้อยไปมาก" : "มากไปน้อย"}</b>`; say = `เรียงจำนวนจาก${asc ? "น้อยไปมาก" : "มากไปน้อย"}`; opts = u; ans = u.indexOf(right); cols = 1; explain = `เรียงได้ ${right}`; }
+      else { const kindR = pick(["more1","less1","more100"]), base = kindR === "more1" ? n - 1 : kindR === "less1" ? n + 1 : n - 100;
+        html = `ฉันคือจำนวนที่${kindR === "more1" ? `มากกว่า ${fmt(base)} อยู่ 1` : kindR === "less1" ? `น้อยกว่า ${fmt(base)} อยู่ 1` : `มากกว่า ${fmt(base)} อยู่ 100`}<br>ฉันคือจำนวนใด`; say = html.replace("<br>", " ");
+        const u = near(n); opts = u.map(fmt); ans = u.indexOf(n); explain = `คำตอบคือ ${fmt(n)}`; }
+      ctx.stage.innerHTML = `<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    function lock(n){
+      const style = level === 1 ? pick(["num","thai"]) : level === 2 ? pick(["word","expand"]) : pick(["place","word","expand"]);
+      const clue = style === "num" ? fmt(n) : style === "thai" ? thaiDigits(fmt(n)) : style === "word" ? thaiWords(n) : style === "expand" ? expand(n) : byPlace(n);
+      const d = [0,0,0,0,0], target = String(n).padStart(5, "0").split("").map(Number);
+      let miss = 0, done2 = false;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(`รหัสคือ ${thaiWords(n)}`)}<div class="qlabel">${lbl()} · หมุนรหัส</div><div class="qtext">📜 คำใบ้: <span class="clue">${clue}</span></div></div>
+        <div class="chest"><div class="lid" id="lid">🎁</div><div class="wheels">${PLACES.map((p, i) => `<div class="wh"><button type="button" data-i="${i}" data-d="1">▲</button><b id="w${i}">0</b><button type="button" data-i="${i}" data-d="-1">▼</button><small>${p}</small></div>`).join("")}</div></div>
+        <div class="row"><button class="btn" type="button" id="ok">🗝️ เปิดหีบ</button></div>`;
+      const $ = s => ctx.stage.querySelector(s), draw = () => d.forEach((v, i) => $("#w" + i).textContent = v);
+      ctx.stage.querySelector(".wheels").onclick = e => { const b = e.target.closest("[data-i]"); if (!b || done2) return; const i = +b.dataset.i; d[i] = (d[i] + +b.dataset.d + 10) % 10; KIT.sfx.tap(); draw(); };
+      $("#ok").onclick = () => {
+        if (done2) return;
+        const v = +d.join(""), qq = `ตั้งรหัส: ${clue}`, aa = fmt(n);
+        if (v === n){ done2 = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); $("#lid").textContent = "💰"; $("#lid").classList.add("open"); ctx.correct(miss ? 60 : 120, `หีบเปิดแล้ว! รหัส ${fmt(n)} 💰`); ctx.after(1300, done); return; }
+        miss++;
+        const wrong = d.map((x, i) => x !== target[i] ? PLACES[i] : null).filter(Boolean);
+        if (miss < 2){ ctx.wrong(`ยังเปิดไม่ได้ ลองดูหลัก${wrong.join(", หลัก")} อีกครั้ง (เหลืออีก 1 ครั้ง)`); return; }
+        done2 = true; target.forEach((x, i) => d[i] = x); draw(); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 เฉลย: ${fmt(n)} = ${byPlace(n)}`); ctx.after(3600, done);
+      };
+    }
+    ctx.progress(0, N); ctx.say("พบหีบสมบัติแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

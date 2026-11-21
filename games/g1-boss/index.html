@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ศึกล้มบอส HP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.arena{position:relative;height:240px;border-radius:26px;background:radial-gradient(circle at 50% 110%,#5B4B8A,#231C40);border:4px solid #fff;box-shadow:0 6px 0 rgba(35,28,64,.3);overflow:hidden}
+.hpbox{position:absolute;top:12px;left:16px;right:16px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;color:#fff;font-weight:700}
+.hp{height:18px;border-radius:10px;background:rgba(255,255,255,.2);overflow:hidden;border:2px solid #fff}
+.hp i{display:block;height:100%;background:linear-gradient(90deg,#FF4D6D,#FFB347);transition:width .8s cubic-bezier(.3,1.2,.5,1)}
+.boss{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);font-size:6.5rem;line-height:1;animation:hover 1.6s ease-in-out infinite}
+.boss.ouch{animation:ouch .5s}
+.hit{position:absolute;left:58%;top:30%;font-size:2.2rem;font-weight:700;color:#FFE07A;opacity:0;text-shadow:0 3px 0 #C4506F}
+.hit.show{animation:dmg 1s forwards}
+.wpn{position:absolute;left:12%;bottom:12%;font-size:3rem;transition:transform .35s}
+.wpn.swing{transform:translate(160px,-60px) rotate(60deg)}
+.arena.counter{animation:shake .45s}
+.sent{font-size:clamp(2rem,8vw,3rem);font-weight:700;letter-spacing:.04em}
+.hole{display:inline-grid;place-items:center;min-width:1.4em;border-radius:14px;background:#FFE7C2;color:var(--orange-deep);padding:0 .15em}
+.choices .choice{font-size:clamp(1.7rem,7vw,2.4rem)}
+@keyframes hover{50%{transform:translate(-50%,-56%)}}
+@keyframes ouch{30%{transform:translate(-46%,-50%) rotate(8deg);filter:brightness(2)}60%{transform:translate(-54%,-50%) rotate(-8deg)}100%{transform:translate(-50%,-50%)}}
+@keyframes dmg{20%{opacity:1}100%{opacity:0;transform:translateY(-40px)}}
+@keyframes shake{25%{transform:translate(-8px,4px)}50%{transform:translate(8px,-4px)}75%{transform:translate(-6px,2px)}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const BOSSES = [["👾","สไลม์อวกาศ"],["🐲","มังกรน้อย"],["🤖","หุ่นยนต์ซ่า"],["🦑","หมึกยักษ์"],["👻","ผีจอมป่วน"],["🎃","ฟักทองหลอน"],["🦖","ไดโนจอมพลัง"],["🐙","ปลาหมึกแปดขา"]];
+const WEAPONS = [["🗡️","ดาบ"],["🏹","ธนู"],["🪄","ไม้กายสิทธิ์"],["🔨","ค้อน"],["⚡","สายฟ้า"]];
+function gen(level, i){
+  for (let g = 0; g < 500; g++){
+    let a, b;
+    if (level === 1){ if (i % 3 === 2){ a = rand(3, 9)*10; b = rand(1, a/10 - 1)*10; } else { a = rand(21, 99); b = rand(1, 9); } }
+    else if (level === 2){ a = rand(35, 99); b = rand(11, a - 10); }
+    else { a = rand(31, 99); b = rand(i % 3 === 0 ? 3 : 12, i % 3 === 0 ? 9 : a - 10); }
+    const borrow = (a % 10) < (b % 10);
+    if (level < 3 && borrow) continue;
+    if (level === 3 && !borrow) continue;
+    if (b >= a) continue;
+    return {a, b, r:a - b, borrow};
+  }
+  return {a:85, b:23, r:62, borrow:false};
+}
+function near(ans){ const s = new Set([ans]); for (const d of shuffle([10,-10,1,-1,2,9,-9])) if (s.size < 4 && ans+d >= 0 && ans+d <= 99) s.add(ans+d); while (s.size < 4) s.add(rand(0,99)); return shuffle([...s]); }
+
+KIT.mount({
+  key:"g1-boss", title:"ศึกล้มบอส HP", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 13 การลบที่ตัวตั้งไม่เกิน 100",
+  heroHTML:"โจมตี<em>บอส</em> คำนวณ HP ที่เหลือ ⚔️", heroDesc:"บอสบุกมาแล้ว! โจมตีบอสแล้วคำนวณว่า HP ของบอสเหลือเท่าไร ตอบถูกพลังโจมตีเต็ม ๆ ตอบผิดบอสสวนกลับนะ",
+  progIcon:"⚔️",
+  howto:["HP ตอนแรก ลบด้วย พลังโจมตี = HP ที่เหลือ","ลบหลักหน่วยก่อน แล้วค่อยลบหลักสิบ","ถ้าหลักหน่วยตัวตั้งน้อยกว่า ต้องกระจาย (ยืม) 1 สิบมาเป็น 10 หน่วย","กด 🔊 ฟังโจทย์ได้"],
+  note:"52 − 17: 2 ลบ 7 ไม่ได้ กระจาย 52 เป็น 40 กับ 12 · 12 − 7 = 5 · 4 − 1 = 3 → 35",
+  levels:{
+    1:{pill:N+" บอส", color:"var(--green)", desc:"สองหลักลบหนึ่งหลัก และลบจำนวนเต็มสิบ"},
+    2:{pill:N+" บอส", color:"var(--blue)", desc:"สองหลักลบสองหลัก ไม่มีการกระจาย"},
+    3:{pill:N+" บอส", color:"var(--purple)", desc:"ลบแบบมีการกระจาย (ยืม)"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 180}); return; }
+      const Q = gen(level, idx), B = BOSSES[idx % BOSSES.length], W = pick(WEAPONS), opts = near(Q.r);
+      const say = `${B[1]} มี HP ${Q.a} โดน${W[1]}โจมตี ${Q.b} HP จะเหลือเท่าไร`;
+      ctx.stage.innerHTML = `<div class="arena"><div class="hpbox"><span class="bn">${B[1]}</span><div class="hp"><i id="hb" style="width:${Q.a}%"></i></div><b id="hn">HP ${Q.a}</b></div>
+          <div class="boss" id="bs">${B[0]}</div><div class="hit" id="ht">−${Q.b}</div><div class="wpn" id="wp">${W[0]}</div></div>
+        <div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`บอสตัวที่ ${idx+1} จาก ${N}`, html:`<span class="sent">${Q.a} − ${Q.b} = <b class="hole">?</b></span>`, say,
+        options:opts.map(String), answer:opts.indexOf(Q.r), cols:2,
+        hint: Q.borrow ? `หลักหน่วย ${Q.a % 10} ลบ ${Q.b % 10} ไม่ได้ ต้องกระจาย 1 สิบมาก่อน (เหลืออีก 1 ครั้ง)` : `ลบหลักหน่วยก่อน ${Q.a % 10} − ${Q.b % 10} (เหลืออีก 1 ครั้ง)`,
+        explain: Q.borrow ? `กระจาย ${Q.a} เป็น ${Math.floor(Q.a/10)*10 - 10} กับ ${10 + Q.a % 10} · ${10 + Q.a % 10} − ${Q.b % 10} = ${10 + Q.a % 10 - Q.b % 10} · ${Math.floor(Q.a/10) - 1} − ${Math.floor(Q.b/10)} = ${Math.floor(Q.r/10)} → ${Q.r}` : `${Q.a} − ${Q.b} = ${Q.r}`,
+        onNext: ok => {
+          const $ = s => ctx.stage.querySelector(s);
+          if ($("#wp")) $("#wp").classList.add("swing");
+          ctx.after(350, () => { if (!$("#bs")) return; $("#bs").classList.add("ouch"); $("#ht").classList.add("show"); $("#hb").style.width = Q.r + "%"; $("#hn").textContent = `HP ${Q.r}`; KIT.sfx.pop(); });
+          if (!ok) ctx.after(700, () => { const a = ctx.stage.querySelector(".arena"); if (a) a.classList.add("counter"); });
+          ctx.after(1500, () => { idx++; ctx.progress(idx, N); next(); });
+        }});
+    }
+    ctx.progress(0, N); ctx.say("⚔️ บอสปรากฏตัว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

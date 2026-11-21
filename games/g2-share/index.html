@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แจกการ์ดสะสม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.table{background:radial-gradient(ellipse at 50% 40%,#3FA36B,#2E7D50);border-radius:28px;border:6px solid #8A5A2B;box-shadow:0 7px 0 #6A4420;padding:14px;display:grid;gap:12px}
+.pile{display:flex;align-items:center;justify-content:center;gap:2px;min-height:60px;position:relative}
+.pile i,.hand i{display:block;width:26px;height:36px;border-radius:5px;background:var(--c);border:2px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.pile i{margin-left:-14px}
+.pile b{margin-left:14px;color:#fff;font-weight:700;background:rgba(0,0,0,.25);border-radius:10px;padding:2px 10px}
+.friends{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.fr{display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(255,255,255,.18);border-radius:16px;padding:6px 8px;min-width:76px}
+.face{font-size:2.2rem;line-height:1}
+.hand{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;max-width:90px;min-height:38px}
+.hand i{width:18px;height:26px;animation:fly .35s backwards}
+.sent{font-size:clamp(1.8rem,7vw,2.6rem);font-weight:700;letter-spacing:.04em}
+.hole{display:inline-grid;place-items:center;min-width:1.4em;border-radius:14px;background:#FFE7C2;color:var(--orange-deep);padding:0 .15em}
+.choices .choice{font-size:clamp(1.15rem,4.8vw,1.7rem)}
+@keyframes fly{from{transform:translateY(-60px) rotate(-20deg);opacity:0}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const FRIENDS = ["🐶","🐱","🐼","🦊","🐸","🐰","🐯","🐨","🐵"];
+const CARDS = ["#F7B6C8","#86B6F0","#7FD39A","#F6CD6B","#B7A4EE"];
+function near(ans, lo, hi){ const s = new Set([ans]); for (const d of shuffle([1,-1,2,-2])) if (s.size < 3 && ans+d >= lo && ans+d <= hi) s.add(ans+d); while (s.size < 3) s.add(rand(lo,hi)); return shuffle([...s]); }
+const PLAN = {1:["deal","deal","fact","deal","group","deal","fact","deal"], 2:["deal","fact","group","dealR","rel","dealR","fact","word"], 3:["dealR","factR","rel","word","dealR","factR","wordR","rel"]};
+
+KIT.mount({
+  key:"g2-share", title:"แจกการ์ดสะสม", subtitle:"คณิตศาสตร์ ป.2 · บทที่ 6 การหาร",
+  heroHTML:"แจก<em>การ์ดสะสม</em>ให้เพื่อนเท่า ๆ กัน 🃏", heroDesc:"ได้การ์ดสะสมมาเป็นกอง! แจกให้เพื่อนทีละใบวนไปจนแจกต่อไม่ได้ ดูว่าได้คนละกี่ใบ เหลือกี่ใบ นี่แหละคือการหาร",
+  progIcon:"🃏",
+  howto:["กด \"แจก 1 รอบ\" เพื่อแจกให้เพื่อนทุกคนคนละ 1 ใบ","แจกไปเรื่อย ๆ จนการ์ดไม่พอแจกครบทุกคน","ตอบว่าได้คนละกี่ใบ และเหลือกี่ใบ","กด 🔊 ฟังโจทย์ได้"],
+  note:"12 ÷ 3 = 4 อ่านว่า สิบสองหารด้วยสามเท่ากับสี่ · ถ้าหารไม่ลงตัว จะมีเศษ เช่น 14 ÷ 3 = 4 เศษ 2 · 3 × 4 = 12 จึงได้ 12 ÷ 3 = 4",
+  levels:{
+    1:{pill:N+" กอง", color:"var(--green)", desc:"แบ่งเท่า ๆ กัน หารลงตัว"},
+    2:{pill:N+" กอง", color:"var(--blue)", desc:"หารลงตัวและมีเศษ ความสัมพันธ์การคูณ-การหาร"},
+    3:{pill:N+" กอง", color:"var(--purple)", desc:"ผลหารและเศษ โจทย์ปัญหาการหาร"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `กองที่ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 200}); return; }
+      const kind = PLAN[level][idx], col = CARDS[idx % CARDS.length];
+      if (kind === "deal" || kind === "dealR") return deal(kind === "dealR", col);
+      let html, say, opts, ans, explain, cols = 3;
+      const d = rand(2, 9), q = rand(2, 9), r = kind.endsWith("R") ? rand(1, d - 1) : 0, n = d*q + r;
+      if (kind === "fact" || kind === "factR"){
+        html = `<span class="sent">${n} ÷ ${d} = <b class="hole">?</b></span>`; say = `${n} หารด้วย ${d} เท่ากับเท่าไร`;
+        if (r){ const right = `${q} เศษ ${r}`, u = shuffle([...new Set([right, `${q+1} เศษ ${r}`, `${q} เศษ ${r === d-1 ? r-1 : r+1}`])]); opts = u; ans = u.indexOf(right); explain = `${d} × ${q} = ${d*q} เหลืออีก ${r} จึงได้ ${q} เศษ ${r}`; }
+        else { const o = near(q, 1, 12); opts = o.map(String); ans = o.indexOf(q); explain = `${d} × ${q} = ${n} ดังนั้น ${n} ÷ ${d} = ${q}`; }
+      } else if (kind === "group"){
+        html = `การ์ด ${n} ใบ ใส่ซองละ ${d} ใบ ได้กี่ซอง`; say = html; const o = near(q, 1, 12); opts = o.map(String); ans = o.indexOf(q); explain = `${n} ÷ ${d} = ${q} ซอง`;
+      } else if (kind === "rel"){
+        const m = d*q; html = `จาก <b>${d} × ${q} = ${m}</b><br>ข้อใดถูกต้อง`; say = `จาก ${d} คูณ ${q} เท่ากับ ${m} ข้อใดถูกต้อง`;
+        const right = `${m} ÷ ${d} = ${q}`, u = shuffle([right, `${m} ÷ ${q} = ${d+1}`, `${d} ÷ ${q} = ${m}`]); opts = u; ans = u.indexOf(right); cols = 1; explain = `การหารเป็นการกลับกันของการคูณ: ${m} ÷ ${d} = ${q} และ ${m} ÷ ${q} = ${d}`;
+      } else {
+        const rr = kind === "wordR" ? r || rand(1, d - 1) : 0, nn = d*q + rr;
+        html = `มีการ์ด ${nn} ใบ แบ่งให้เพื่อน ${d} คน เท่า ๆ กัน<br>ได้คนละกี่ใบ${rr ? " เหลือกี่ใบ" : ""}`; say = html.replace("<br>", " ");
+        if (rr){ const right = `คนละ ${q} ใบ เหลือ ${rr} ใบ`, u = shuffle([right, `คนละ ${q+1} ใบ เหลือ ${rr} ใบ`, `คนละ ${q} ใบ เหลือ ${d} ใบ`]); opts = u; ans = u.indexOf(right); cols = 1; }
+        else { const o = near(q, 1, 12); opts = o.map(v => `คนละ ${v} ใบ`); ans = o.indexOf(q); }
+        explain = `${nn} ÷ ${d} = ${q}${rr ? ` เศษ ${rr}` : ""}`;
+      }
+      ctx.stage.innerHTML = `<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    function deal(withR, col){
+      const d = rand(2, level === 1 ? 4 : 5), q = rand(2, level === 1 ? 4 : 6), r = withR ? rand(1, d - 1) : 0, n = d*q + r;
+      const fr = shuffle(FRIENDS.slice()).slice(0, d);
+      let pile = n, each = 0, phase = "deal";
+      const text = `มีการ์ด ${n} ใบ แบ่งให้เพื่อน ${d} คนเท่า ๆ กัน`;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(text + " กดแจกทีละรอบ")}<div class="qlabel">${lbl()} · แจกการ์ด</div><div class="qtext">${text}</div></div>
+        <div class="table"><div class="pile" id="pl"></div><div class="friends">${fr.map((f, i) => `<div class="fr"><span class="face">${f}</span><div class="hand" id="h${i}"></div></div>`).join("")}</div></div>
+        <div class="row"><button class="btn" type="button" id="deal">🃏 แจก 1 รอบ</button></div><div id="q"></div>`;
+      KIT.speak(text + " กดแจกทีละรอบ");
+      const $ = s => ctx.stage.querySelector(s);
+      const drawPile = () => { $("#pl").innerHTML = `${Array(Math.min(pile, 12)).fill(`<i style="--c:${col}"></i>`).join("")}<b>เหลือ ${pile} ใบ</b>`; };
+      drawPile();
+      $("#deal").onclick = () => {
+        if (phase !== "deal") return;
+        if (pile < d){ ctx.say(`เหลือ ${pile} ใบ ไม่พอแจกครบ ${d} คนแล้ว`); return; }
+        pile -= d; each++; KIT.sfx.pop();
+        fr.forEach((_, i) => { const c = document.createElement("i"); c.style.setProperty("--c", col); c.style.animationDelay = (i*0.08) + "s"; $("#h" + i).appendChild(c); });
+        drawPile();
+        if (pile < d){
+          phase = "ask"; $("#deal").disabled = true;
+          ctx.say(pile ? `แจกต่อไม่ได้แล้ว เหลือ ${pile} ใบ` : "แจกหมดพอดี!", "good");
+          const right = r ? `คนละ ${q} ใบ เหลือ ${r} ใบ` : `คนละ ${q} ใบ`;
+          const u = r ? shuffle([right, `คนละ ${q} ใบ เหลือ ${r === 1 ? 2 : r - 1} ใบ`, `คนละ ${q+1} ใบ เหลือ ${r} ใบ`]) : shuffle([right, `คนละ ${q+1} ใบ`, `คนละ ${q-1} ใบ`]);
+          KIT.mcq(ctx, $("#q"), {label:"สรุปการแจก", html:`<span class="sent">${n} ÷ ${d} = ?</span><br>ได้คนละกี่ใบ${r ? " เหลือกี่ใบ" : ""}`, say:`${n} หารด้วย ${d} ได้คนละกี่ใบ${r ? " เหลือกี่ใบ" : ""}`,
+            options:u, answer:u.indexOf(right), cols:1, explain:`${n} ÷ ${d} = ${q}${r ? ` เศษ ${r}` : ""} (${d} × ${q} = ${d*q}${r ? ` เหลือ ${r}` : ""})`, onNext:done});
+        }
+      };
+    }
+    ctx.progress(0, N); ctx.say("ได้การ์ดมาแล้ว แจกเพื่อนกัน!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตู้เกมสะสมตั๋ว</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.pile{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;gap:6px;min-height:120px;padding:14px;border-radius:22px;background:linear-gradient(135deg,#2B2250,#4B3A8A);border:4px solid #fff;box-shadow:0 6px 0 rgba(75,58,138,.35)}
+.pile em{color:#fff;font-weight:700}
+.roll{width:62px;height:62px;border-radius:50%;background:radial-gradient(circle,#4B3A8A 0 22%,#FF6F91 23% 100%);border:4px dashed #FFD3DE;display:grid;place-items:center}
+.roll b{background:#fff;border-radius:8px;padding:0 4px;font-size:.8rem;color:#C4506F}
+.strip{width:22px;height:84px;border-radius:4px;background:repeating-linear-gradient(#FFD54A 0 7px,#E5B93A 7px 8.4px);display:flex;align-items:center;justify-content:center}
+.strip b{writing-mode:vertical-rl;font-size:.7rem;color:#8A6A10}
+.tk{width:18px;height:12px;border-radius:2px;background:#7FD3C8;box-shadow:0 0 0 1px #4FA9A0}
+.big{display:inline-block;font-size:2.4rem;font-weight:700;color:var(--orange-deep);letter-spacing:.04em}
+.prize{font-size:2.2rem;vertical-align:middle}
+.price{display:inline-block;font-size:1.5rem;font-weight:700;color:#E8708F;background:#FFF0F4;border-radius:12px;padding:0 10px}
+.now{text-align:center;font-weight:700;color:var(--ink-soft)}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tg{display:grid;grid-template-columns:1fr 44px;gap:6px}
+.tb{border:none;border-radius:16px;padding:12px 4px;font-size:1.1rem;font-weight:700;color:#fff;background:#FF6F91;box-shadow:0 5px 0 #C4506F}
+.tg:nth-child(2) .tb.up{background:#E5B93A;box-shadow:0 5px 0 #A88316}
+.tg:nth-child(3) .tb.up{background:#4FB8AE;box-shadow:0 5px 0 #2E8A82}
+.tb.dn{background:#fff;color:var(--ink);box-shadow:0 5px 0 var(--line),0 0 0 3px var(--line) inset;font-size:1.4rem}
+.tb small{display:block;font-size:.8rem;opacity:.85}
+.seqn{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:8px}
+.seqn span{min-width:58px;padding:8px 4px;border-radius:12px;background:#fff;border:3px solid var(--line);font-weight:700;font-size:1.4rem}
+.seqn span.h{background:#FFE7C2;border-color:var(--orange)}
+.choices .choice{font-size:clamp(1.2rem,5vw,1.8rem)}
+@media (max-width:520px){.tools{grid-template-columns:1fr}.tg{grid-template-columns:1fr 60px}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, thaiWords, thaiDigits} = KIT;
+const N = 8;
+const PRIZES = [["🧸","ตุ๊กตาหมี",0],["🎮","เกมกด",0],["🪀","โยโย่",0],["🦄","ยูนิคอร์น",0],["🚀","จรวดของเล่น",0],["🎧","หูฟัง",0],["🛹","สเกตบอร์ด",0],["⌚","นาฬิกา",0]];
+const roll = () => `<span class="roll"><b>100</b></span>`, strip = () => `<span class="strip"><b>10</b></span>`, tick = () => `<span class="tk"></span>`;
+const show = n => `<div class="pile">${roll().repeat(Math.floor(n/100))}${strip().repeat(Math.floor(n/10)%10)}${tick().repeat(n%10)}${n === 0 ? "<em>ไม่มีตั๋วเลย</em>" : ""}</div>`;
+function near(ans, lo, hi){ const s = new Set([ans]); for (const d of shuffle([1,-1,10,-10,100,-100])) if (s.size < 3 && ans+d >= lo && ans+d <= hi) s.add(ans+d); while (s.size < 3) s.add(rand(lo,hi)); return shuffle([...s]); }
+const swapDigits = n => { const s = String(n); return s.length === 3 && s[1] !== s[2] ? +(s[0] + s[2] + s[1]) : n + 10; };
+const PLAN = {1:["count","build","place","build","count","word","build","oddeven"], 2:["build","thai","word","compare","build","skip","place","oddeven"], 3:["build","compare","order","skip","word","build","place","compare"]};
+
+KIT.mount({
+  key:"g2-arcade", title:"ตู้เกมสะสมตั๋ว", subtitle:"คณิตศาสตร์ ป.2 · บทที่ 1 จำนวนนับไม่เกิน 1,000 และ 0",
+  heroHTML:"สะสม<em>ตั๋วเกม</em> แลกของรางวัล 🎟️", heroDesc:"ร้านเกมให้ตั๋วเป็นม้วน (100 ใบ) แถบ (10 ใบ) และใบเดี่ยว นับตั๋วให้ถูก จัดตั๋วไปแลกของรางวัลให้ครบตามราคา",
+  progIcon:"🎟️",
+  howto:["1 ม้วน = 100 ใบ (1 ร้อย) · 1 แถบ = 10 ใบ (1 สิบ) · ใบเดี่ยว = 1 (1 หน่วย)","ข้อที่ให้จัดตั๋ว: แตะ + ม้วน + แถบ + ใบ ให้ครบตามราคาของรางวัล","เปรียบเทียบ: ดูหลักร้อยก่อน ถ้าเท่ากันดูหลักสิบ แล้วหลักหน่วย","กด 🔊 ฟังโจทย์ได้"],
+  note:"356 = 3 ร้อย 5 สิบ 6 หน่วย = 300 + 50 + 6 · จำนวนคู่ ลงท้ายด้วย 0 2 4 6 8 · จำนวนคี่ ลงท้ายด้วย 1 3 5 7 9",
+  levels:{
+    1:{pill:N+" ข้อ", color:"var(--green)", desc:"ไม่เกิน 500 นับตั๋ว หลักและค่าของเลขโดด"},
+    2:{pill:N+" ข้อ", color:"var(--blue)", desc:"ไม่เกิน 1,000 เลขไทย ตัวหนังสือ คู่-คี่"},
+    3:{pill:N+" ข้อ", color:"var(--purple)", desc:"เปรียบเทียบ เรียงลำดับ นับเพิ่มทีละ 5, 10, 100"}
+  },
+  play(level, ctx){
+    const hi = level === 1 ? 500 : 1000;
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ข้อ ${idx+1} จาก ${N}`;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 200}); return; }
+      const kind = PLAN[level][idx];
+      let n = rand(101, Math.min(hi, 999));
+      if (kind === "build") return build(rand(100, hi), PRIZES[idx % PRIZES.length]);
+      let pre = "", html, say, opts, ans, explain;
+      if (kind === "count"){ n = rand(100, Math.min(hi, 499)); pre = show(n); html = "มีตั๋วทั้งหมดกี่ใบ"; say = html; const o = near(n, 0, 1000); opts = o.map(String); ans = o.indexOf(n); explain = `${Math.floor(n/100)} ร้อย ${Math.floor(n/10)%10} สิบ ${n%10} หน่วย = ${n}`; }
+      else if (kind === "place"){ const s = String(n), p = pick([0,1,2].filter(k => s[k] !== "0")), name = ["หลักร้อย","หลักสิบ","หลักหน่วย"][p], v = +s[p] * [100,10,1][p];
+        html = `<span class="big">${n}</span><br>เลขโดด <b>${s[p]}</b> อยู่ใน${name} มีค่าเท่าไร`; say = `${n} เลขโดด ${s[p]} อยู่ใน${name} มีค่าเท่าไร`;
+        const o = [...new Set([v, +s[p], +s[p]*10, +s[p]*100])].slice(0, 3); opts = shuffle(o).map(String); ans = opts.indexOf(String(v)); explain = `${s[p]} ใน${name} มีค่า ${v}`; }
+      else if (kind === "thai"){ html = `<span class="big">${n}</span><br>เขียนเป็น<b>เลขไทย</b>ได้แบบไหน`; say = `${n} เขียนเป็นเลขไทยได้แบบไหน`; const o = [n, swapDigits(n), n + 100 <= 1000 ? n + 100 : n - 100]; const u = shuffle([...new Set(o)]); opts = u.map(v => thaiDigits(v)); ans = u.indexOf(n); explain = `${n} = ${thaiDigits(n)}`; }
+      else if (kind === "word"){ html = `<span class="big">${n}</span><br><b>อ่านว่า</b>อย่างไร`; say = `ตัวเลขนี้อ่านว่าอย่างไร`; const u = shuffle([...new Set([n, swapDigits(n), n + 10 <= 1000 ? n + 10 : n - 10])]); opts = u.map(v => thaiWords(v)); ans = u.indexOf(n); explain = `${n} อ่านว่า ${thaiWords(n)}`; }
+      else if (kind === "compare"){ let m; do { m = level === 3 && Math.random() < .6 ? Math.floor(n/100)*100 + rand(0, 99) : rand(101, 999); } while (m === n);
+        const more = Math.random() < .5; html = `<span class="big">${n}</span> กับ <span class="big">${m}</span><br>จำนวนไหน<b>${more ? "มากกว่า" : "น้อยกว่า"}</b>`; say = `${n} กับ ${m} จำนวนไหน${more ? "มากกว่า" : "น้อยกว่า"}`;
+        opts = [String(n), String(m)]; ans = (more ? n > m : n < m) ? 0 : 1; explain = `เทียบหลักร้อยก่อน ถ้าเท่ากันเทียบหลักสิบ · ${Math.max(n,m)} > ${Math.min(n,m)}`; }
+      else if (kind === "order"){ const base = rand(1, 8)*100, v = shuffle([base + rand(0,99), base + rand(0,99), rand(101, 999)]); while (new Set(v).size < 3) v[2]++;
+        const asc = Math.random() < .5, sorted = v.slice().sort((x,y) => asc ? x - y : y - x), right = sorted.join(", ");
+        const wrong1 = sorted.slice().reverse().join(", "), wrong2 = [sorted[1], sorted[0], sorted[2]].join(", ");
+        const u = shuffle([right, wrong1, wrong2]); html = `เรียง <b>${v.join(", ")}</b><br>จาก<b>${asc ? "น้อยไปมาก" : "มากไปน้อย"}</b>`; say = `เรียงจำนวนจาก${asc ? "น้อยไปมาก" : "มากไปน้อย"}`; opts = u; ans = u.indexOf(right); explain = `เรียงได้ ${right}`; }
+      else if (kind === "skip"){ const step = pick(level === 3 ? [5, 10, 100] : [2, 5, 10]), start = step === 100 ? rand(1, 4)*100 + rand(0, 9)*10 : rand(10, 80)*5, seq = [0,1,2,3,4].map(k => start + k*step), h = rand(2, 4);
+        html = `<div class="seqn">${seq.map((x, k) => `<span class="${k === h ? "h" : ""}">${k === h ? "?" : x}</span>`).join("")}</div>นับเพิ่มทีละ ${step} จำนวนที่หายไปคือ`; say = `นับเพิ่มทีละ ${step} จำนวนที่หายไปคือเท่าไร`;
+        const o = near(seq[h], 0, 1000); opts = o.map(String); ans = o.indexOf(seq[h]); explain = `${seq.join(", ")} (เพิ่มทีละ ${step})`; }
+      else { html = `<span class="big">${n}</span><br>เป็นจำนวนคู่ หรือจำนวนคี่`; say = `${n} เป็นจำนวนคู่ หรือจำนวนคี่`; opts = ["จำนวนคู่","จำนวนคี่"]; ans = n % 2; explain = `${n} ลงท้ายด้วย ${n % 10} จึงเป็น${n % 2 ? "จำนวนคี่" : "จำนวนคู่"}`; }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html, say, options:opts, answer:ans, cols: opts.length === 2 ? 2 : kind === "order" || kind === "word" ? 1 : 3, explain, onNext:done});
+    }
+    function build(n, P){
+      const style = level === 1 ? "num" : pick(level === 2 ? ["num","thai","word"] : ["word","place"]);
+      const price = style === "thai" ? thaiDigits(n) : style === "word" ? thaiWords(n) : style === "place" ? `${Math.floor(n/100)} ร้อย ${Math.floor(n/10)%10} สิบ ${n%10} หน่วย` : String(n);
+      const say = `${P[1]} ราคา ${style === "place" ? price : n} ตั๋ว จัดตั๋วให้ครบ`;
+      let c = [0, 0, 0], miss = 0, lock = false;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(say)}<div class="qlabel">${lbl()} · แลกของรางวัล</div><div class="qtext"><span class="prize">${P[0]}</span> ${P[1]} ราคา <span class="price">${price}</span> ตั๋ว</div></div>
+        <div id="pl"></div><div class="now" id="now"></div>
+        <div class="tools">${[["ม้วน","100",0],["แถบ","10",1],["ใบ","1",2]].map(([nm, v, i]) => `<div class="tg"><button class="tb up" type="button" data-i="${i}" data-d="1">+ ${nm}<small>(${v})</small></button><button class="tb dn" type="button" data-i="${i}" data-d="-1">−</button></div>`).join("")}</div>
+        <div class="row"><button class="btn" type="button" id="ok">🎁 แลกเลย!</button></div>`;
+      KIT.speak(say);
+      const $ = s => ctx.stage.querySelector(s), val = () => c[0]*100 + c[1]*10 + c[2];
+      const draw = () => { $("#pl").innerHTML = show(val()); $("#now").textContent = `ตอนนี้: ${c[0]} ม้วน ${c[1]} แถบ ${c[2]} ใบ = ${val()} ใบ`; };
+      draw();
+      ctx.stage.querySelector(".tools").onclick = e => { const b = e.target.closest(".tb"); if (!b || lock) return; const i = +b.dataset.i, d = +b.dataset.d; const lim = [10, 9, 9][i]; c[i] = Math.max(0, Math.min(lim, c[i] + d)); KIT.sfx.tap(); draw(); };
+      $("#ok").onclick = () => {
+        if (lock) return;
+        const v = val(), qq = `จัดตั๋ว ${price} ใบ`, aa = `${n} = ${Math.floor(n/100)} ม้วน ${Math.floor(n/10)%10} แถบ ${n%10} ใบ`;
+        if (v === n){ lock = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); ctx.correct(miss ? 50 : 100, `ได้${P[1]}แล้ว! ${P[0]}`); ctx.after(1100, done); return; }
+        miss++;
+        if (miss < 2){ ctx.wrong(`ตอนนี้ ${v} ใบ ${v < n ? "ยังไม่พอ" : "เกินราคา"} (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; c = [Math.floor(n/100), Math.floor(n/10)%10, n%10]; draw(); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0});
+        ctx.reveal(`📖 เฉลย: ${aa}`); ctx.after(3400, done);
+      };
+    }
+    ctx.progress(0, N); ctx.say("ร้านเกมเปิดแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

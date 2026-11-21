@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แม่มดน้อยปรุงน้ำยา</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.lab{display:flex;justify-content:center;background:radial-gradient(circle at 50% 100%,#5B4B8A,#2C2450);border-radius:24px;border:4px solid #fff;box-shadow:0 6px 0 rgba(44,36,80,.3);padding:12px}
+.lab.magic{animation:magic 1s}
+.jug{width:min(200px,56vw)}
+.liq{transition:y .4s,height .4s}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.box{background:#fff;border-radius:20px;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);padding:10px;text-align:center;font-weight:700}
+.cont{font-size:3.4rem;line-height:1.1}
+.cups{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;margin-top:4px}
+.cups span{font-size:1.4rem}
+.tb{border:none;border-radius:18px;padding:12px 14px;font-size:1.1rem;font-weight:700;color:#fff;background:#8C75E0;box-shadow:0 5px 0 #6E58C4}
+.tb.ghost{background:#fff;color:var(--ink);box-shadow:0 5px 0 var(--line),0 0 0 3px var(--line) inset}
+.choices .choice{font-size:clamp(1.2rem,5vw,1.8rem)}
+@keyframes magic{50%{box-shadow:0 0 0 10px #FFE07A,0 0 40px #FFE07A}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const POTIONS = [["น้ำยาบินได้","#86D9F0"],["น้ำยาตัวจิ๋ว","#B7A4EE"],["น้ำยาล่องหน","#7FD39A"],["น้ำยาพลังช้าง","#F2A65A"],["น้ำยาหัวเราะ","#F7B6C8"],["น้ำยาเรืองแสง","#F6CD6B"]];
+function near(ans, lo, hi){ const s = new Set([ans]); for (const d of shuffle([1,-1,2,-2])) if (s.size < 3 && ans+d >= lo && ans+d <= hi) s.add(ans+d); while (s.size < 3) s.add(rand(lo,hi)); return shuffle([...s]); }
+function jug(v, max, col){
+  const H = 200, top = 20, y = x => top + H - x / max * H;
+  let t = ""; for (let i = 0; i <= max; i++) t += `<line x1="118" x2="${i % 1 === 0 ? 136 : 130}" y1="${y(i)}" y2="${y(i)}" stroke="#CFE3FF" stroke-width="2.4"/><text x="142" y="${y(i)+5}" font-size="15" font-weight="700" fill="#FFFFFF">${i}</text>`;
+  return `<svg viewBox="0 0 190 240" class="jug"><path d="M30 ${top} h90 v${H} q0 12 -12 12 h-66 q-12 0 -12 -12 z" fill="#F4FBFF" stroke="#9CC8E8" stroke-width="4"/>
+    <rect class="liq" x="34" y="${y(v)}" width="82" height="${H - (y(v) - top)}" rx="4" fill="${col}" opacity=".85"/>${t}<text x="160" y="236" text-anchor="middle" font-size="13" font-weight="700" fill="#FFE07A">ลิตร</text></svg>`;
+}
+const cups = (n, ic) => `<div class="cups">${Array(n).fill(`<span>${ic}</span>`).join("")}</div>`;
+const PLAN = {1:["read","fill","more","read","fill","tool","read","more"], 2:["read","fill","more","tool","read","fill","sum","more"], 3:["fill","sum","diff","tool","read","fill","diff","sum"]};
+
+KIT.mount({
+  key:"g2-potion", title:"แม่มดน้อยปรุงน้ำยา", subtitle:"คณิตศาสตร์ ป.2 · บทที่ 8 การวัดปริมาตร",
+  heroHTML:"ปรุง<em>น้ำยาวิเศษ</em> ตวงให้พอดี 🧪", heroDesc:"แม่มดน้อยต้องปรุงน้ำยาวิเศษตามสูตร! อ่านขีดบนเหยือกตวงเป็นลิตร เทให้พอดี เปรียบเทียบว่าภาชนะไหนจุมากกว่า และเลือกเครื่องตวงให้เหมาะ",
+  progIcon:"🧪",
+  howto:["อ่านระดับน้ำยาบนเหยือกตวง ดูตัวเลขที่ตรงกับผิวน้ำ","ข้อที่ให้เท: กด \"เท 1 ลิตร\" หรือ \"เทออก\" ให้ได้ตามสูตร","ภาชนะที่ใช้ถ้วยเติมจนเต็มได้มากกว่า จุมากกว่า","ช้อนชา < ช้อนโต๊ะ < ถ้วยตวง < ลิตร"],
+  note:"ปริมาตร คือ ปริมาณของสิ่งที่อยู่ในภาชนะ · ใช้ ลิตร ตวงของเหลวปริมาณมาก ใช้ ช้อนชา ช้อนโต๊ะ ถ้วยตวง ตวงปริมาณน้อย",
+  levels:{
+    1:{pill:N+" สูตร", color:"var(--green)", desc:"อ่านเหยือกตวง 0–5 ลิตร เทให้พอดี"},
+    2:{pill:N+" สูตร", color:"var(--blue)", desc:"เหยือก 0–10 ลิตร เครื่องตวง และบวกปริมาตร"},
+    3:{pill:N+" สูตร", color:"var(--purple)", desc:"บวกลบปริมาตร โจทย์ปัญหา"}
+  },
+  play(level, ctx){
+    const max = level === 1 ? 5 : 10;
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 180}); return; }
+      const kind = PLAN[level][idx], P = POTIONS[idx % POTIONS.length];
+      if (kind === "fill") return fill(P);
+      let pre = "", html, say, opts, ans, explain, cols = 3;
+      if (kind === "read"){ const v = rand(1, max - 1); pre = `<div class="lab">${jug(v, max, P[1])}</div>`; html = `ใน${'เหยือก'}มี${P[0]}กี่ลิตร`; say = html; const o = near(v, 1, max); opts = o.map(x => `${x} ลิตร`); ans = o.indexOf(v); explain = `ผิวน้ำยาตรงกับขีด ${v} → ${v} ลิตร`; }
+      else if (kind === "more"){ const a = rand(2, 8); let b; do { b = rand(2, 8); } while (b === a);
+        pre = `<div class="duo"><div class="box"><div class="cont">🫙</div>เติมได้ ${cups(a, "🥤")}</div><div class="box"><div class="cont">🏺</div>เติมได้ ${cups(b, "🥤")}</div></div>`;
+        html = "ภาชนะไหน<b>จุมากกว่า</b>"; say = `โถแก้วเติมได้ ${a} แก้ว ไหดินเติมได้ ${b} แก้ว ภาชนะไหนจุมากกว่า`; opts = ["🫙 โถแก้ว","🏺 ไหดิน"]; ans = a > b ? 0 : 1; cols = 2; explain = `โถแก้วจุ ${a} แก้ว ไหดินจุ ${b} แก้ว · ${Math.max(a,b)} แก้วมากกว่า`; }
+      else if (kind === "tool"){ const T = pick([["ยาน้ำแก้ไอสำหรับเด็ก 1 ครั้ง","ช้อนชา"],["น้ำมันพืชสำหรับทอดไข่","ช้อนโต๊ะ"],["น้ำสำหรับผสมแป้งทำขนม","ถ้วยตวง"],["น้ำเติมตู้ปลา","ลิตร"]]);
+        html = `${T[0]} ควรใช้เครื่องตวงอะไร`; say = html; const u = shuffle(["ช้อนชา","ช้อนโต๊ะ","ถ้วยตวง","ลิตร"]); opts = u; ans = u.indexOf(T[1]); cols = 2; explain = `${T[0]} เหมาะกับ ${T[1]} (ช้อนชา < ช้อนโต๊ะ < ถ้วยตวง < ลิตร)`; }
+      else if (kind === "sum"){ const a = rand(2, 9), b = rand(2, 9); html = `เทน้ำยาสีฟ้า ${a} ลิตร และสีชมพู ${b} ลิตร ลงหม้อ<br>ในหม้อมีน้ำยากี่ลิตร`; say = html.replace("<br>", " "); const o = near(a + b, 1, 20); opts = o.map(x => `${x} ลิตร`); ans = o.indexOf(a + b); explain = `${a} + ${b} = ${a + b} ลิตร`; }
+      else { const a = rand(8, 20), b = rand(2, a - 1); html = `หม้อมีน้ำยา ${a} ลิตร ตักออกไปใช้ ${b} ลิตร<br>เหลือน้ำยากี่ลิตร`; say = html.replace("<br>", " "); const o = near(a - b, 1, 20); opts = o.map(x => `${x} ลิตร`); ans = o.indexOf(a - b); explain = `${a} − ${b} = ${a - b} ลิตร`; }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`สูตรที่ ${idx+1} จาก ${N}`, html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    function fill(P){
+      const target = rand(2, max - 1); let v = 0, miss = 0, lock = false;
+      const text = `ปรุง${P[0]} ต้องใช้ ${target} ลิตร`;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(text)}<div class="qlabel">สูตรที่ ${idx+1} จาก ${N} · เทน้ำยา</div><div class="qtext">📜 ${text}</div></div>
+        <div class="lab" id="lb"></div>
+        <div class="row"><button class="tb" type="button" id="add">🫗 เท 1 ลิตร</button><button class="tb ghost" type="button" id="sub">↩️ เทออก 1 ลิตร</button><button class="btn" type="button" id="ok" style="--c:var(--green)">✨ ปรุงเลย</button></div>`;
+      KIT.speak(text);
+      const $ = s => ctx.stage.querySelector(s), draw = () => { $("#lb").innerHTML = jug(v, max, P[1]); };
+      draw();
+      $("#add").onclick = () => { if (lock || v >= max) return; v++; KIT.sfx.pop(); draw(); };
+      $("#sub").onclick = () => { if (lock || v <= 0) return; v--; KIT.sfx.tap(); draw(); };
+      $("#ok").onclick = () => {
+        if (lock) return;
+        const qq = text, aa = `${target} ลิตร`;
+        if (v === target){ lock = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); $("#lb").classList.add("magic"); ctx.correct(miss ? 50 : 100, `ปรุง${P[0]}สำเร็จ! ✨`); ctx.after(1200, done); return; }
+        miss++;
+        if (miss < 2){ ctx.wrong(`ตอนนี้ ${v} ลิตร ${v < target ? "ยังน้อยไป" : "มากเกินไป"} (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; v = target; draw(); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 เฉลย: ต้องเทให้ผิวน้ำยาตรงกับขีด ${target} ลิตร`); ctx.after(3200, done);
+      };
+    }
+    ctx.progress(0, N); ctx.say("หม้อปรุงยาพร้อมแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

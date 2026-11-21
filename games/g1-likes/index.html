@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ปั๊มยอดไลก์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.phone{border-radius:28px;background:#1E1B2E;padding:12px;box-shadow:0 8px 0 rgba(30,27,46,.25)}
+.clip{position:relative;height:150px;border-radius:20px;background:linear-gradient(160deg,#FF8FB1,#8C75E0);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.clip .emo{font-size:4rem;animation:dance 1s ease-in-out infinite}
+.clip .cap{color:#fff;font-weight:700}
+.likes{position:absolute;right:12px;bottom:12px;display:flex;flex-direction:column;align-items:center;color:#fff;font-weight:700}
+.likes .hrt{font-size:1.8rem}
+.likes b{font-size:1.3rem;font-variant-numeric:tabular-nums}
+.burst i{position:absolute;bottom:0;font-style:normal;font-size:1.6rem;animation:up 1.2s ease-out forwards}
+.msg{position:relative;margin-top:10px;background:#fff;border-radius:16px;padding:12px 64px 12px 14px;font-size:1.15rem;line-height:1.5}
+.msg .say-btn{top:50%;transform:translateY(-50%)}
+.col{display:grid;gap:4px;justify-content:center;background:#fff;border-radius:22px;border:4px solid var(--line);box-shadow:0 6px 0 var(--line);padding:10px 20px;font-variant-numeric:tabular-nums}
+.r{display:grid;grid-template-columns:44px 70px 70px;align-items:center;justify-items:center;font-size:2.6rem;font-weight:700;height:58px}
+.r.head{font-size:.95rem;color:var(--ink-soft);height:22px}
+.r .op{color:var(--orange-deep)}
+.r.ans{border-top:4px solid var(--ink);padding-top:6px;height:72px}
+.slot{width:60px;height:62px;border-radius:14px;border:3px dashed #C9B8A8;background:#FFFDF8;font-size:2.4rem;font-weight:700;color:#3A6FB0}
+.slot.sel{border:4px solid var(--orange);background:#FFF1DD}
+.col.shown .slot{color:#2C8A52;border-color:#7FD39A}
+.carry{width:38px;height:38px;border-radius:10px;border:3px dashed #E8708F;background:#FFF0F4;font-size:1.4rem;font-weight:700;color:#E8708F}
+.pad{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.pad button{height:58px;border:none;border-radius:14px;background:#fff;font-size:1.6rem;font-weight:700;box-shadow:0 4px 0 var(--line),0 0 0 3px var(--line) inset}
+.pad .ok{grid-column:span 1;background:var(--green);color:#fff;font-size:1rem;box-shadow:0 4px 0 #4FAE6E}
+@keyframes dance{25%{transform:rotate(-10deg) translateY(-4px)}75%{transform:rotate(10deg) translateY(-4px)}}
+@keyframes up{to{transform:translateY(-150px) scale(1.4);opacity:0}}
+@media (max-width:520px){.pad{grid-template-columns:repeat(4,1fr)}.r{grid-template-columns:36px 62px 62px}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const CLIPS = [["🐱","แมวเต้น"],["🍳","ทำไข่เจียว"],["🐶","หมาร้องเพลง"],["🎨","วาดรูป"],["⚽","เดาะบอล"],["🦖","ไดโนเต้น"],["🧁","แต่งคัพเค้ก"],["🐹","แฮมสเตอร์กินเมล็ด"]];
+function gen(level, i){
+  let a, b;
+  for (let g = 0; g < 500; g++){
+    if (level === 1){ if (i % 3 === 2){ a = rand(1,6)*10; b = rand(1, 9 - a/10)*10; } else { a = rand(11, 89); b = rand(1, 9); } }
+    else if (level === 2){ a = rand(11, 78); b = rand(11, 88 - a); }
+    else { a = rand(15, 79); b = rand(i % 3 === 0 ? 3 : 12, 9 + (i % 3 === 0 ? 0 : 60)); }
+    const s = a + b; if (s > 99 || b < 1) continue;
+    const carry = (a % 10) + (b % 10) >= 10;
+    if (level < 3 && carry) continue;
+    if (level === 3 && !carry) continue;
+    return {a, b, s, carry};
+  }
+  return {a:34, b:25, s:59, carry:false};
+}
+
+KIT.mount({
+  key:"g1-likes", title:"ปั๊มยอดไลก์", subtitle:"คณิตศาสตร์ ป.1 · บทที่ 12 การบวกที่ผลบวกไม่เกิน 100",
+  heroHTML:"คลิปปัง! ช่วยนับ<em>ยอดไลก์</em> ❤️", heroDesc:"คลิปของเธอกำลังไวรัล! เพื่อน ๆ กดไลก์เพิ่มเข้ามาเรื่อย ๆ ช่วยบวกยอดไลก์แบบตั้งหลัก หน่วยบวกหน่วย สิบบวกสิบ",
+  progIcon:"❤️",
+  howto:["บวกหลักหน่วยก่อน แล้วค่อยบวกหลักสิบ","แตะช่องคำตอบ แล้วกดตัวเลข","ถ้าหลักหน่วยรวมได้ 10 ขึ้นไป ต้องทด 1 ไปหลักสิบ (แตะช่องทดเพื่อใส่ 1)","กด 🔊 ฟังโจทย์ได้"],
+  note:"ตั้งหลักให้ตรงกัน หน่วยตรงหน่วย สิบตรงสิบ · 27 + 15: 7 + 5 = 12 เขียน 2 ทด 1 · 2 + 1 + 1 = 4 → 42",
+  levels:{
+    1:{pill:N+" คลิป", color:"var(--green)", desc:"สองหลักบวกหนึ่งหลัก และบวกจำนวนเต็มสิบ"},
+    2:{pill:N+" คลิป", color:"var(--blue)", desc:"สองหลักบวกสองหลัก ไม่มีทด"},
+    3:{pill:N+" คลิป", color:"var(--purple)", desc:"บวกแบบมีการทด"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 200}); return; }
+      const Q = gen(level, idx), clip = CLIPS[idx % CLIPS.length], S = String(Q.s).padStart(2, " ");
+      const A = String(Q.a).padStart(2, " "), B = String(Q.b).padStart(2, " ");
+      const say = `คลิป${clip[1]} มี ${Q.a} ไลก์ เพื่อนกดเพิ่มอีก ${Q.b} ไลก์ ตอนนี้มีกี่ไลก์`;
+      let ans = ["", ""], carry = false, sel = 1, miss = 0, lock = false;
+      ctx.stage.innerHTML = `<div class="phone"><div class="clip"><span class="emo">${clip[0]}</span><span class="cap">คลิป${clip[1]}</span><div class="likes"><span class="hrt">❤️</span><b id="lk">${Q.a}</b></div><div class="burst" id="bu"></div></div>
+          <div class="msg">${KIT.sayBtn(say)}มี <b>${Q.a}</b> ไลก์ · เพื่อนกดเพิ่มอีก <b>${Q.b}</b> ไลก์ ตอนนี้มีกี่ไลก์?</div></div>
+        <div class="col" id="col">
+          <div class="r head"><span></span><span>สิบ</span><span>หน่วย</span></div>
+          ${level === 3 ? `<div class="r"><span></span><button class="carry" type="button" id="cy" aria-label="ช่องทด"></button><span></span></div>` : ""}
+          <div class="r"><span></span><span>${A[0].trim()}</span><span>${A[1]}</span></div>
+          <div class="r"><span class="op">+</span><span>${B[0].trim()}</span><span>${B[1]}</span></div>
+          <div class="r ans"><span></span><button class="slot" type="button" data-p="0"></button><button class="slot" type="button" data-p="1"></button></div>
+        </div>
+        <div class="pad" id="pad">${[1,2,3,4,5,6,7,8,9,0].map(d => `<button type="button" data-d="${d}">${d}</button>`).join("")}<button type="button" data-d="x" aria-label="ลบ">⌫</button><button type="button" class="ok" data-d="ok">ตรวจ ✔️</button></div>`;
+      KIT.speak(say);
+      const $ = s => ctx.stage.querySelector(s);
+      const draw = () => { ctx.stage.querySelectorAll(".slot").forEach((s, i) => { s.textContent = ans[i]; s.classList.toggle("sel", i === sel); }); if ($("#cy")) $("#cy").textContent = carry ? "1" : ""; };
+      draw();
+      $("#col").onclick = e => { const s = e.target.closest(".slot"); if (s && !lock){ sel = +s.dataset.p; draw(); } if (e.target.id === "cy" && !lock){ carry = !carry; KIT.sfx.tap(); draw(); } };
+      const finishQ = () => { idx++; ctx.progress(idx, N); next(); };
+      $("#pad").onclick = e => {
+        const b = e.target.closest("[data-d]"); if (!b || lock) return;
+        const d = b.dataset.d;
+        if (d === "x"){ ans[sel] = ""; draw(); return; }
+        if (d !== "ok"){ ans[sel] = d; KIT.sfx.tap(); if (sel === 1) sel = 0; draw(); return; }
+        if (ans[1] === ""){ ctx.say("ใส่คำตอบหลักหน่วยก่อนนะ"); return; }
+        const v = +(ans[0] + ans[1]), qq = `${Q.a} + ${Q.b}`, aa = String(Q.s);
+        if (v === Q.s){
+          lock = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1});
+          let cur = Q.a; const t = setInterval(() => { cur = Math.min(Q.s, cur + Math.max(1, Math.ceil((Q.s - cur) / 6))); const lk = $("#lk"); if (lk) lk.textContent = cur; if (cur >= Q.s) clearInterval(t); }, 70); ctx.cleanup(() => clearInterval(t));
+          $("#bu").innerHTML = Array(10).fill(0).map(() => `<i style="left:${rand(10,85)}%;animation-delay:${Math.random()*.4}s">❤️</i>`).join("");
+          ctx.correct(miss ? 50 : 100, `ตอนนี้มี ${Q.s} ไลก์! 🎉`); ctx.after(1500, finishQ); return;
+        }
+        miss++;
+        const u = (Q.a % 10 + Q.b % 10) % 10, hint = +ans[1] !== u ? `ลองบวกหลักหน่วยใหม่: ${Q.a % 10} + ${Q.b % 10}` : Q.carry ? "หลักหน่วยถูกแล้ว อย่าลืมทด 1 ไปหลักสิบนะ" : `ลองบวกหลักสิบใหม่: ${Math.floor(Q.a/10)} + ${Math.floor(Q.b/10)}`;
+        if (miss < 2){ ctx.wrong(`${hint} (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; ans = [S[0].trim(), S[1]]; carry = Q.carry; draw(); $("#col").classList.add("shown");
+        ctx.wrong(null); ctx.record({q:qq, a:aa, score:0});
+        ctx.reveal(`📖 เฉลย: หน่วย ${Q.a % 10} + ${Q.b % 10} = ${Q.a % 10 + Q.b % 10}${Q.carry ? " เขียน " + u + " ทด 1" : ""} · สิบ ${Math.floor(Q.a/10)} + ${Math.floor(Q.b/10)}${Q.carry ? " + 1" : ""} = ${Math.floor(Q.s/10)} → ${Q.s}`);
+        ctx.after(4200, finishQ);
+      };
+    }
+    ctx.progress(0, N); ctx.say("คลิปเริ่มไวรัลแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

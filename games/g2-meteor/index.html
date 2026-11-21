@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ยิงอุกกาบาตตัวเลข</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.space{position:relative;height:340px;border-radius:26px;background:linear-gradient(#0E0B2A,#2A2266 70%,#3E3488);border:4px solid #fff;box-shadow:0 6px 0 rgba(14,11,42,.3);overflow:hidden}
+.stars{position:absolute;inset:0;background-image:radial-gradient(#fff 1px,transparent 1.5px),radial-gradient(#fff 1px,transparent 1.5px);background-size:60px 60px,90px 90px;background-position:0 0,30px 40px;opacity:.6}
+.lanes{position:absolute;inset:0 0 60px 0;display:grid;grid-template-columns:repeat(3,1fr)}
+.lane{position:relative}
+.rock{position:absolute;left:50%;top:-90px;width:96px;height:96px;margin-left:-48px;border:none;border-radius:50% 46% 52% 44%;background:radial-gradient(circle at 35% 30%,#B9876A,#6E4A36 70%);box-shadow:0 0 0 4px rgba(255,140,60,.35),0 -18px 22px rgba(255,120,40,.55);animation:fall linear forwards;display:grid;place-items:center;cursor:pointer}
+.rock span{background:rgba(255,255,255,.92);border-radius:12px;padding:2px 8px;font-weight:700;font-size:1.35rem;color:#2A2266}
+.rock.boom{animation:boom .5s forwards!important}
+.rock.dud{opacity:.35;filter:grayscale(1)}
+.rock.glow{box-shadow:0 0 0 6px #7FD39A,0 0 24px #7FD39A}
+.earth{position:absolute;left:0;right:0;bottom:-40px;height:100px;border-radius:50% 50% 0 0;background:radial-gradient(ellipse at 50% 0,#5BC0EB,#2E7FB8);display:flex;justify-content:center;gap:12px;padding-top:6px;font-size:1.6rem}
+.sent{font-size:clamp(1.8rem,7vw,2.6rem);font-weight:700;letter-spacing:.04em}
+.hole{display:inline-grid;place-items:center;min-width:1.4em;border-radius:14px;background:#FFE7C2;color:var(--orange-deep);padding:0 .15em}
+@keyframes fall{to{top:calc(100% - 96px)}}
+@keyframes boom{to{transform:scale(1.8);opacity:0;filter:brightness(2.5)}}
+@media (max-width:520px){.rock{width:84px;height:84px;margin-left:-42px}.rock span{font-size:1.15rem}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+function gen(level, i){
+  for (let g = 0; g < 800; g++){
+    const op = i % 2 ? "−" : "+";
+    let a = rand(120, 899), b = level === 1 ? rand(11, 99) : rand(101, 599);
+    if (op === "+" && a + b > 1000) continue;
+    if (op === "−" && b >= a) continue;
+    const ua = a % 10, ub = b % 10, ta = Math.floor(a/10) % 10, tb = Math.floor(b/10) % 10;
+    let reg;
+    if (op === "+") reg = (ua + ub >= 10 ? 1 : 0) + (ta + tb + (ua + ub >= 10 ? 1 : 0) >= 10 ? 1 : 0);
+    else reg = (ua < ub ? 1 : 0) + (ta - (ua < ub ? 1 : 0) < tb ? 1 : 0);
+    if (level === 1 && reg) continue;
+    if (level === 2 && reg !== 1) continue;
+    if (level === 3 && reg !== 2) continue;
+    const r = op === "+" ? a + b : a - b, missing = level === 3 && i % 4 === 3;
+    return missing ? {html:`${a} ${op} <b class="hole">?</b> = ${r}`, say:`${a} ${op === "+" ? "บวก" : "ลบ"} เท่าไร ได้ ${r}`, ans:b, ex:`${a} ${op} ${b} = ${r} จำนวนที่หายไปคือ ${b}`}
+                   : {html:`${a} ${op} ${b} = <b class="hole">?</b>`, say:`${a} ${op === "+" ? "บวก" : "ลบ"} ${b} เท่ากับเท่าไร`, ans:r, ex:`${a} ${op} ${b} = ${r}${reg ? (op === "+" ? " (มีการทด)" : " (มีการกระจาย)") : ""}`};
+  }
+}
+const decoys = ans => { const s = new Set([ans]); for (const d of shuffle([10,-10,100,-100,1,-1,20])) if (s.size < 3 && ans + d >= 0 && ans + d <= 1000) s.add(ans + d); return shuffle([...s]); };
+
+KIT.mount({
+  key:"g2-meteor", title:"ยิงอุกกาบาตตัวเลข", subtitle:"คณิตศาสตร์ ป.2 · บทที่ 2 การบวกและการลบจำนวนไม่เกิน 1,000",
+  heroHTML:"ปกป้องโลก! ยิง<em>อุกกาบาต</em>ที่มีคำตอบถูก ☄️", heroDesc:"อุกกาบาต 3 ลูกพุ่งลงมา แต่มีเพียงลูกเดียวที่มีคำตอบถูก คิดเร็ว ๆ แล้วแตะยิงลูกนั้นก่อนที่จะชนโลก!",
+  progIcon:"☄️",
+  howto:["ดูโจทย์ด้านล่าง กด 🔊 ฟังได้","แตะอุกกาบาตที่มีคำตอบถูก","ยิงผิดได้อีก 1 ครั้ง ถ้าผิดอีกหรืออุกกาบาตตกถึงพื้น จะเฉลยให้ดู","บวกลบทีละหลัก หน่วย → สิบ → ร้อย อย่าลืมทดหรือกระจาย"],
+  note:"ตั้งหลักให้ตรงกัน · บวก: หลักไหนรวมได้ 10 ขึ้นไป ทด 1 ไปหลักถัดไป · ลบ: หลักไหนลบไม่ได้ กระจายจากหลักถัดไป",
+  levels:{
+    1:{pill:N+" ลูก", color:"var(--green)", desc:"สามหลักกับสองหลัก ไม่มีทด ไม่มีกระจาย ตกช้า"},
+    2:{pill:N+" ลูก", color:"var(--blue)", desc:"สามหลักกับสามหลัก มีทดหรือกระจาย 1 ครั้ง"},
+    3:{pill:N+" ลูก", color:"var(--purple)", desc:"ทดหรือกระจาย 2 ครั้ง และหาตัวที่หายไป"}
+  },
+  play(level, ctx){
+    const dur = level === 1 ? 14000 : level === 2 ? 12000 : 13000;
+    let idx = 0, shield = 3;
+    ctx.stage.innerHTML = `<div class="space" id="sp"><div class="stars"></div><div class="lanes" id="ln"></div><div class="earth">🌍<span id="sh">🛡️🛡️🛡️</span></div></div><div class="qcard" id="qc"></div>`;
+    const $ = s => ctx.stage.querySelector(s);
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 0}); return; }
+      const Q = gen(level, idx), opts = decoys(Q.ans);
+      let miss = 0, lock = false;
+      $("#qc").innerHTML = `${KIT.sayBtn(Q.say)}<div class="qlabel">อุกกาบาตลูกที่ ${idx+1} จาก ${N}</div><div class="qtext"><span class="sent">${Q.html}</span></div>`;
+      KIT.speak(Q.say);
+      $("#ln").innerHTML = opts.map((v, i) => `<div class="lane"><button class="rock" type="button" data-v="${v}" style="animation-duration:${dur + i*600}ms"><span>${v}</span></button></div>`).join("");
+      const rocks = [...ctx.stage.querySelectorAll(".rock")];
+      const end = (score, why) => {
+        lock = true; rocks.forEach(r => { r.style.animationPlayState = "paused"; r.disabled = true; });
+        ctx.record({q:Q.html.replace(/<[^>]+>/g, "").replace("?", "▢"), a:String(Q.ans), score});
+        if (score === 0){ shield = Math.max(0, shield - 1); $("#sh").textContent = "🛡️".repeat(shield) + "💥".repeat(3 - shield); rocks.find(r => +r.dataset.v === Q.ans).classList.add("glow"); ctx.wrong(null); ctx.reveal(`📖 ${why}เฉลย: ${Q.ex}`); ctx.after(3200, go); }
+        else ctx.after(900, go);
+      };
+      const go = () => { idx++; ctx.progress(idx, N); next(); };
+      rocks.forEach(r => {
+        r.onclick = () => {
+          if (lock || r.disabled) return;
+          if (+r.dataset.v === Q.ans){ r.classList.add("boom"); KIT.sfx.pop(); ctx.correct(miss ? 50 : 100, miss ? "ยิงโดน!" : "ยิงโดนเป้า! 💥"); end(miss ? .5 : 1); return; }
+          miss++; r.disabled = true; r.classList.add("dud");
+          if (miss < 2) ctx.wrong(`${r.dataset.v} ยังไม่ใช่ (เหลืออีก 1 ครั้ง)`);
+          else end(0, "");
+        };
+        r.addEventListener("animationend", e => { if (e.animationName === "fall" && !lock && +r.dataset.v === Q.ans) end(0, "อุกกาบาตตกถึงพื้นแล้ว! "); });
+      });
+    }
+    ctx.progress(0, N); ctx.say("☄️ อุกกาบาตกำลังมา!");
+    ctx.after(600, next);
+  }
+});
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โรงงานกล่องสุ่ม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.plant{border-radius:24px;background:linear-gradient(#E9EEF7,#D6DEEC);border:4px solid #fff;box-shadow:0 6px 0 rgba(92,143,207,.25);padding:12px;display:grid;gap:8px}
+.belt{position:relative;height:70px;border-radius:14px;background:repeating-linear-gradient(90deg,#596780 0 30px,#6E7D98 30px 60px);display:flex;align-items:center;gap:40px;padding-left:20px;overflow:hidden;animation:roll 1s linear infinite}
+.toy{font-size:2.6rem;animation:slide 2.4s linear infinite}
+.stack{min-height:36px;font-size:1.8rem;letter-spacing:-.2em;text-align:center}
+.stack em{font-size:.95rem;color:var(--ink-soft);letter-spacing:0}
+.story{display:flex;gap:14px;align-items:center;background:#fff;border-radius:22px;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);padding:12px 16px;font-size:1.15rem;line-height:1.6}
+.story .ic{font-size:2.6rem;flex:none}
+.sent{font-size:clamp(1.6rem,7vw,2.4rem);font-weight:700}
+.hole{display:inline-grid;place-items:center;min-width:1.4em;border-radius:14px;background:#FFE7C2;color:var(--orange-deep);padding:0 .15em}
+.choices .choice{font-size:clamp(1.3rem,5.4vw,1.9rem)}
+@keyframes roll{to{background-position:60px 0}}
+@keyframes slide{from{transform:translateX(-40px)}to{transform:translateX(40px)}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 8;
+const TOYS = ["🧸","🦄","🐰","🤖","🦖","🐱","🐼","🐸"];
+function near(ans){ const s = new Set([ans]); for (const d of shuffle([10, -10, 100, -100, 1, ans >= 1000 ? 1000 : 2])) if (s.size < 4 && ans + d > 0) s.add(ans + d); return shuffle([...s]); }
+function gen(level, i){
+  if (level === 1) return i % 2 ? [rand(11, 99), rand(2, 9)] : [rand(101, 999), rand(2, 5)];
+  if (level === 2) return i % 3 === 2 ? [rand(11, 49), rand(11, 19)] : [rand(1001, 4999), rand(2, 9)];
+  return i % 2 ? [rand(21, 99), rand(11, 99)] : [rand(1001, 9999), rand(2, 9)];
+}
+
+KIT.mount({
+  key:"g3-factory", title:"โรงงานกล่องสุ่ม", subtitle:"คณิตศาสตร์ ป.3 · บทที่ 7 การคูณ",
+  heroHTML:"ผลิต<em>กล่องสุ่ม</em>ส่งทั่วประเทศ 📦", heroDesc:"โรงงานผลิตกล่องสุ่มอาร์ตทอยวันละเป็นพัน! คำนวณยอดผลิตด้วยการคูณ ตอบถูกสายพานจะแพ็กกล่องส่งออก",
+  progIcon:"📦",
+  howto:["คูณทีละหลัก เริ่มจากหลักหน่วย อย่าลืมทด","สองหลักคูณสองหลัก: แยกตัวคูณ เช่น 23 × 14 = (23 × 10) + (23 × 4)","กด 🔊 ฟังโจทย์ได้","ผิดครั้งแรกจะได้คำใบ้"],
+  note:"ประมาณคำตอบก่อนช่วยตรวจได้ เช่น 48 × 21 ประมาณ 50 × 20 = 1,000",
+  levels:{
+    1:{pill:N+" ล็อต", color:"var(--green)", desc:"หนึ่งหลักคูณสองหลักและสามหลัก"},
+    2:{pill:N+" ล็อต", color:"var(--blue)", desc:"หนึ่งหลักคูณสี่หลัก และสองหลักคูณสองหลัก (11–19)"},
+    3:{pill:N+" ล็อต", color:"var(--purple)", desc:"สี่หลัก × หนึ่งหลัก และสองหลัก × สองหลัก"}
+  },
+  play(level, ctx){
+    let idx = 0, packed = 0;
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 240}); return; }
+      const [a, b] = gen(level, idx), t = TOYS[idx % TOYS.length], ans = a * b;
+      const two = b >= 10, text = two ? `ลังละ ${fmt(a)} ตัว ผลิตได้ ${b} ลัง มีตุ๊กตากี่ตัว` : `เครื่องจักรผลิตได้วันละ ${fmt(a)} ตัว ผลิต ${b} วัน ได้ตุ๊กตากี่ตัว`;
+      const hint = two ? `แยกเป็น ${fmt(a)} × ${Math.floor(b/10)*10} = ${fmt(a*Math.floor(b/10)*10)} กับ ${fmt(a)} × ${b % 10} แล้วนำมาบวกกัน (เหลืออีก 1 ครั้ง)` : `คูณทีละหลักจากหลักหน่วย ${a % 10} × ${b} = ${(a % 10) * b} (เหลืออีก 1 ครั้ง)`;
+      const o = near(ans);
+      ctx.stage.innerHTML = `<div class="plant"><div class="belt"><span class="toy">${t}</span><span class="toy">${t}</span><span class="toy">${t}</span></div><div class="stack">${"📦".repeat(packed) || "<em>ยังไม่มีกล่อง</em>"}</div></div>
+        <div class="story"><span class="ic">${t}</span><div>${text}</div></div><div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ล็อตที่ ${idx+1} จาก ${N}`, html:`<span class="sent">${fmt(a)} × ${b} = <b class="hole">?</b></span>`, say:text, options:o.map(fmt), answer:o.indexOf(ans), cols:2, hint,
+        explain: two ? `${fmt(a)} × ${b} = (${fmt(a)} × ${Math.floor(b/10)*10}) + (${fmt(a)} × ${b % 10}) = ${fmt(a*Math.floor(b/10)*10)} + ${fmt(a*(b % 10))} = ${fmt(ans)}` : `${fmt(a)} × ${b} = ${fmt(ans)}`,
+        onNext: ok => { if (ok) packed++; idx++; ctx.progress(idx, N); next(); }});
+    }
+    ctx.progress(0, N); ctx.say("เปิดเครื่องจักร!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

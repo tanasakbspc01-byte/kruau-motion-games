@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ชั่งน้ำหนักแก๊งน้องอ้วน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.clinic{display:flex;flex-direction:column;align-items:center;background:linear-gradient(#EAF6FF,#FFF0F4);border-radius:24px;border:4px solid #fff;box-shadow:0 6px 0 rgba(232,112,143,.25);padding:8px 10px 12px}
+.pet{font-size:3.4rem;line-height:1;margin-bottom:-12px;z-index:1;animation:squish 1.6s ease-in-out infinite}
+.dial{width:min(260px,80vw)}
+.needle{transform-origin:110px 112px;animation:wob .8s cubic-bezier(.3,1.8,.5,1)}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.duo .dial{width:100%}.duo .pet{font-size:2.4rem}
+.big{display:inline-block;font-size:2rem;font-weight:700;color:var(--orange-deep)}
+.choices .choice{font-size:clamp(1.2rem,5vw,1.8rem)}
+@keyframes squish{50%{transform:scale(1.08,.94)}}
+@keyframes wob{from{transform:rotate(-40deg)}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const PETS = [["น้องส้มอ้วน","🐱"],["น้องปุยฝ้าย","🐈"],["น้องถุงทอง","🐶"],["น้องหมูแดง","🐷"],["น้องกระต่าย","🐰"],["น้องเป็ด","🦆"]];
+const BAGS = [["ข้าวสาร","🍚"],["แตงโม","🍉"],["ส้ม","🍊"],["หนังสือ","📚"],["มะม่วง","🥭"]];
+function near(ans, lo, hi, st=1){ const s = new Set([ans]); for (const d of shuffle([st,-st,2*st,-2*st])) if (s.size < 3 && ans+d >= lo && ans+d <= hi) s.add(ans+d); while (s.size < 3) s.add(rand(lo/st,hi/st)*st); return shuffle([...s]); }
+/* dial: value v in [0,max], majors every maj with labels, minors every min */
+function dial(v, max, maj, min, unit, lab){
+  const cx = 110, cy = 112, R = 92, ang = x => (-225 + x / max * 270) * Math.PI / 180;
+  let t = "";
+  const steps = Math.round(max / min), per = Math.round(maj / min);
+  for (let i = 0; i <= steps; i++){ const x = Math.round(i * min * 1000) / 1000, M = i % per === 0, a = ang(x), r1 = M ? R - 14 : R - 8;
+    t += `<line x1="${(cx + R*Math.cos(a)).toFixed(1)}" y1="${(cy + R*Math.sin(a)).toFixed(1)}" x2="${(cx + r1*Math.cos(a)).toFixed(1)}" y2="${(cy + r1*Math.sin(a)).toFixed(1)}" stroke="#4A3A30" stroke-width="${M ? 3 : 1.4}"/>`;
+    if (M) t += `<text x="${(cx + (R-28)*Math.cos(a)).toFixed(1)}" y="${(cy + (R-28)*Math.sin(a) + 5).toFixed(1)}" text-anchor="middle" font-size="${max >= 1000 ? 11 : 14}" font-weight="700" fill="#4A3A30">${lab ? lab(x) : x}</text>`; }
+  const a = ang(v);
+  return `<svg viewBox="0 0 220 210" class="dial"><circle cx="${cx}" cy="${cy}" r="${R+8}" fill="#fff" stroke="#E8708F" stroke-width="8"/>${t}
+    <text x="${cx}" y="${cy + 64}" text-anchor="middle" font-size="14" font-weight="700" fill="#E8708F">${unit}</text>
+    <line class="needle" x1="${cx}" y1="${cy}" x2="${(cx + (R-18)*Math.cos(a)).toFixed(1)}" y2="${(cy + (R-18)*Math.sin(a)).toFixed(1)}" stroke="#D9534F" stroke-width="4" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="8" fill="#D9534F"/></svg>`;
+}
+const PLAN = {1:["kg","kg","heavier","kg","kg","heavier","kg","sum"], 2:["kgk","kgk","conv","heavier","kgk","conv","diff","kgk"], 3:["g","g","conv","g2kg","kgk","diff","sum","g"]};
+
+KIT.mount({
+  key:"g2-cats", title:"ชั่งน้ำหนักแก๊งน้องอ้วน", subtitle:"คณิตศาสตร์ ป.2 · บทที่ 4 การวัดน้ำหนัก",
+  heroHTML:"น้องอ้วนขึ้นตาชั่ง <em>หนักกี่กิโล</em>? 🐱", heroDesc:"แก๊งสัตว์เลี้ยงตัวกลมมาชั่งน้ำหนักที่คลินิก! อ่านเข็มบนตาชั่งสปริงให้ถูก เป็นกิโลกรัม ขีด และกรัม",
+  progIcon:"⚖️",
+  howto:["ดูว่าเข็มชี้ที่ตัวเลขไหน และดูว่า 1 ช่องเล็กมีค่าเท่าไร","ถ้าเข็มอยู่ระหว่างตัวเลข ให้นับช่องเล็กต่อจากตัวเลขก่อนหน้า","1 กิโลกรัม = 10 ขีด = 1,000 กรัม · 1 ขีด = 100 กรัม","กด 🔊 ฟังโจทย์ได้"],
+  note:"กิโลกรัม (กก.) ขีด และกรัม (ก.) · 2 กก. 3 ขีด = 2 กก. 300 ก. = 2,300 ก.",
+  levels:{
+    1:{pill:N+" ตัว", color:"var(--green)", desc:"อ่านตาชั่งเป็นกิโลกรัม (เลขเต็ม)"},
+    2:{pill:N+" ตัว", color:"var(--blue)", desc:"กิโลกรัมกับขีด และแปลงหน่วย"},
+    3:{pill:N+" ตัว", color:"var(--purple)", desc:"ตาชั่งกรัม แปลงกิโลกรัม-กรัม บวกลบน้ำหนัก"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 180}); return; }
+      const kind = PLAN[level][idx], P = PETS[idx % PETS.length], B = pick(BAGS);
+      let pre = "", html, say, opts, ans, explain, cols = 3;
+      const scale = (svg, who) => `<div class="clinic"><div class="pet">${who}</div>${svg}</div>`;
+      if (kind === "kg"){ const v = rand(2, 19); pre = scale(dial(v, 20, 2, 1, "กิโลกรัม"), P[1]); html = `${P[0]}หนักกี่กิโลกรัม`; say = html; const o = near(v, 1, 20); opts = o.map(x => `${x} กก.`); ans = o.indexOf(v); explain = `เข็มชี้ที่ ${v} (ช่องเล็ก 1 ช่อง = 1 กก.)`; }
+      else if (kind === "kgk"){ const k = rand(1, 4), h = rand(1, 9), v = k + h/10; pre = scale(dial(v, 5, 1, .1, "กิโลกรัม"), P[1]); html = `${P[0]}หนักเท่าไร`; say = html;
+        const right = `${k} กก. ${h} ขีด`, u = shuffle([...new Set([right, `${k} กก. ${10 - h === h ? h + 1 : 10 - h} ขีด`, `${k + 1} กก. ${h} ขีด`])]); opts = u; ans = u.indexOf(right); cols = 1; explain = `เข็มเลย ${k} กก. ไป ${h} ช่องเล็ก (1 ช่อง = 1 ขีด) = ${right}`; }
+      else if (kind === "g"){ const v = rand(1, 9) * 100 + (Math.random() < .5 ? 50 : 0); pre = scale(dial(v, 1000, 100, 50, "กรัม"), B[1]); html = `${B[0]}หนักกี่กรัม`; say = html; const o = near(v, 50, 1000, 50); opts = o.map(x => `${x} ก.`); ans = o.indexOf(v); explain = `ตัวเลขห่างกันทีละ 100 กรัม ช่องเล็ก 1 ช่อง = 50 กรัม · เข็มชี้ ${v} ก.`; }
+      else if (kind === "heavier"){ const a = rand(2, 18); let b; do { b = rand(2, 18); } while (b === a); const [Q1, Q2] = [P, PETS[(idx + 2) % PETS.length]];
+        pre = `<div class="duo">${scale(dial(a, 20, 2, 1, "กก."), Q1[1])}${scale(dial(b, 20, 2, 1, "กก."), Q2[1])}</div>`; html = "ใครหนักกว่า"; say = `${Q1[0]} กับ ${Q2[0]} ใครหนักกว่า`; opts = [`${Q1[1]} ${Q1[0]}`, `${Q2[1]} ${Q2[0]}`]; ans = a > b ? 0 : 1; cols = 2; explain = `${Q1[0]} ${a} กก. ${Q2[0]} ${b} กก.`; }
+      else if (kind === "conv"){ const k = rand(1, 5), h = rand(1, 9); if (Math.random() < .5){ html = `<span class="big">${k} กก. ${h} ขีด</span><br>เท่ากับกี่ขีด`; say = `${k} กิโลกรัม ${h} ขีด เท่ากับกี่ขีด`; const v = k*10 + h, o = shuffle([...new Set([v, k + h, k*100 + h])]); opts = o.map(x => `${x} ขีด`); ans = o.indexOf(v); explain = `1 กก. = 10 ขีด · ${k} × 10 + ${h} = ${v} ขีด`; }
+        else { html = `<span class="big">${h} ขีด</span><br>เท่ากับกี่กรัม`; say = `${h} ขีด เท่ากับกี่กรัม`; const v = h*100, o = shuffle([v, h*10, h*1000]); opts = o.map(x => `${x.toLocaleString()} ก.`); ans = o.indexOf(v); explain = `1 ขีด = 100 กรัม · ${h} ขีด = ${v} กรัม`; } }
+      else if (kind === "g2kg"){ const k = rand(1, 5), g = rand(1, 9) * 100, v = k*1000 + g; html = `<span class="big">${k} กก. ${g} ก.</span><br>เท่ากับกี่กรัม`; say = `${k} กิโลกรัม ${g} กรัม เท่ากับกี่กรัม`; const o = shuffle([v, k*100 + g, k + g]); opts = o.map(x => `${x.toLocaleString()} ก.`); ans = o.indexOf(v); explain = `1 กก. = 1,000 ก. · ${(k*1000).toLocaleString()} + ${g} = ${v.toLocaleString()} ก.`; }
+      else if (kind === "diff"){ const a = rand(5, 19), b = rand(2, a - 1); html = `${P[0]}หนัก ${a} กก. ${PETS[(idx+1)%6][0]}หนัก ${b} กก.<br>ต่างกันกี่กิโลกรัม`; say = html.replace("<br>", " "); const o = near(a - b, 1, 20); opts = o.map(x => `${x} กก.`); ans = o.indexOf(a - b); explain = `${a} − ${b} = ${a - b} กก.`; }
+      else { const a = rand(3, 12), b = rand(2, 9); html = `${P[0]}หนัก ${a} กก. อุ้ม${B[0]}หนัก ${b} กก. ขึ้นตาชั่ง<br>ตาชั่งจะชี้ที่กี่กิโลกรัม`; say = html.replace("<br>", " "); const o = near(a + b, 1, 30); opts = o.map(x => `${x} กก.`); ans = o.indexOf(a + b); explain = `${a} + ${b} = ${a + b} กก.`; }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ตัวที่ ${idx+1} จาก ${N}`, html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    ctx.progress(0, N); ctx.say("คลินิกชั่งน้ำหนักเปิดแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

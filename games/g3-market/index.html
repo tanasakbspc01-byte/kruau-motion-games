@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ร้านเปิดท้ายของน้องจิ๋ว</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.wallet{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:12px;border-radius:22px;background:#FFF6EA;border:4px solid #fff;box-shadow:0 6px 0 #E9D3B6}
+.wallet.pick{background:#EEF6EA;box-shadow:0 6px 0 #CFE3C6}
+.m{border:none;font-weight:700;color:#fff;cursor:pointer;text-shadow:0 1px 0 rgba(0,0,0,.25)}
+.m.n{width:86px;height:46px;border-radius:8px;background:var(--c);box-shadow:inset 0 0 0 3px rgba(255,255,255,.5),0 3px 0 rgba(0,0,0,.15);font-size:1.1rem;display:flex;align-items:center;justify-content:center;gap:4px}
+.m.n small{font-size:.7rem;opacity:.9}
+.m.c,.m.s{width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff8,var(--c) 45%);box-shadow:inset 0 0 0 3px rgba(0,0,0,.12),0 3px 0 rgba(0,0,0,.15);font-size:1.05rem;color:#4A3A30;text-shadow:none}
+.m.s{width:44px;height:44px;font-size:.72rem}
+.tray{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;min-height:84px;padding:12px;border-radius:20px;border:4px dashed #C9B8A8;background:#fff}
+.tray em{color:var(--ink-soft);font-weight:700}
+.now{text-align:center;font-weight:700;font-size:1.2rem;color:var(--orange-deep)}
+.book{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:16px;overflow:hidden;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);font-size:1.05rem}
+.book th{background:#FFE7C2;padding:8px 6px}
+.book td{padding:7px 8px;border-top:2px dashed var(--line);text-align:right;font-weight:700}
+.book td:first-child{text-align:left;font-weight:600}
+.book tr.sum td{background:#FFF1DD;color:var(--orange-deep);text-align:center}
+.big{display:inline-block;font-size:1.8rem;font-weight:700;color:var(--orange-deep)}
+.choices .choice{font-size:clamp(1.1rem,4.6vw,1.6rem)}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle, fmt} = KIT;
+const N = 8;
+const MONEY = [[1000,"n","#9AA7B8"],[500,"n","#B98AD9"],[100,"n","#E85A5A"],[50,"n","#5C8FCF"],[20,"n","#5BB878"],[10,"c","#E0B44A"],[5,"c","#C9CED6"],[2,"c","#E0B44A"],[1,"c","#C9CED6"],[0.5,"s","#D9A45A"],[0.25,"s","#D9A45A"]];
+const lab = v => v >= 1 ? `${v}` : `${v * 100} สต.`;
+const chip = (v, k, col, i) => `<button class="m ${k}" type="button" data-v="${v}" ${i != null ? `data-i="${i}"` : ""} style="--c:${col}">${lab(v)}${k === "n" ? "<small>บาท</small>" : ""}</button>`;
+const baht = v => { const b = Math.floor(v + 1e-9), s = Math.round((v - b) * 100); return s ? `${fmt(b)} บาท ${s} สตางค์` : `${fmt(b)} บาท`; };
+const dot = v => { const b = Math.floor(v + 1e-9), s = Math.round((v - b) * 100); return `${fmt(b)}.${String(s).padStart(2, "0")} บาท`; };
+function decompose(v, allowS){ const out = []; let r = Math.round(v * 100); for (const [m, k, c] of MONEY){ if (!allowS && k === "s") continue; const mm = Math.round(m * 100); while (r >= mm){ out.push([m, k, c]); r -= mm; } } return out; }
+const ITEMS = [["🧸","ตุ๊กตา"],["👕","เสื้อยืด"],["🎒","กระเป๋า"],["📚","หนังสือการ์ตูน"],["🪴","ต้นไม้"],["🧢","หมวก"],["🕶️","แว่นกันแดด"],["🎧","หูฟัง"]];
+const PLAN = {1:["count","pay","change","count","pay","change","count","pay"], 2:["count","pay","conv","change","record","pay","count","conv"], 3:["countS","record","payS","conv","change","record","countS","payS"]};
+
+KIT.mount({
+  key:"g3-market", title:"ร้านเปิดท้ายของน้องจิ๋ว", subtitle:"คณิตศาสตร์ ป.3 · บทที่ 12 เงินและบันทึกรายรับรายจ่าย",
+  heroHTML:"เปิด<em>ท้ายรถ</em>ขายของ นับเงินให้ถูก 💰", heroDesc:"น้องจิ๋วเปิดท้ายรถขายของมือสอง! นับเงิน จ่ายเงินให้พอดี ทอนเงินให้ถูก และจดบันทึกรายรับรายจ่ายเพื่อดูว่ามีเงินคงเหลือเท่าไร",
+  progIcon:"💰",
+  howto:["แตะธนบัตรหรือเหรียญเพื่อหยิบใส่ถาด แตะในถาดเพื่อเอาออก","1 บาท = 100 สตางค์ · 3 บาท 50 สตางค์ เขียนว่า 3.50 บาท","เงินทอน = เงินที่จ่าย − ราคาของ","บันทึกรายรับรายจ่าย: คงเหลือ = เดิม + รายรับ − รายจ่าย"],
+  note:"ธนบัตร 20 50 100 500 1,000 บาท · เหรียญ 1 2 5 10 บาท และ 25 50 สตางค์",
+  levels:{
+    1:{pill:N+" ลูกค้า", color:"var(--green)", desc:"นับเงิน จ่ายพอดี ทอนเงิน (บาท)"},
+    2:{pill:N+" ลูกค้า", color:"var(--blue)", desc:"แปลงบาท-สตางค์ บันทึกรายรับรายจ่าย"},
+    3:{pill:N+" ลูกค้า", color:"var(--purple)", desc:"เงินมีสตางค์ และคงเหลือหลายรายการ"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 240}); return; }
+      const kind = PLAN[level][idx], I = ITEMS[idx % ITEMS.length];
+      if (kind === "pay" || kind === "payS") return pay(I, kind === "payS");
+      let pre = "", html, say, opts, ans, explain, cols = 3;
+      if (kind === "count" || kind === "countS"){ const v = kind === "countS" ? rand(20, 400) + pick([0.25, 0.5, 0.75]) : rand(15, level === 1 ? 300 : 1800); const parts = shuffle(decompose(v, kind === "countS"));
+        pre = `<div class="wallet">${parts.map(p => chip(p[0], p[1], p[2])).join("")}</div>`; html = "มีเงินทั้งหมดเท่าไร"; say = html;
+        const o = shuffle([...new Set([v, v + 10, Math.max(1, v - (v > 20 ? 20 : 1)), v + 1])]).slice(0, 3); if (!o.includes(v)) o[0] = v; opts = o.map(baht); ans = o.indexOf(v); cols = 1; explain = `รวมธนบัตรก่อน แล้วรวมเหรียญ = ${baht(v)}`; }
+      else if (kind === "change"){ const price = rand(12, 95), paid = price < 20 ? 20 : price < 50 ? 50 : 100; html = `${I[0]} ${I[1]}ราคา ${price} บาท ลูกค้าจ่าย ${paid} บาท<br>ต้องทอนเงินกี่บาท`; say = html.replace("<br>", " ");
+        const v = paid - price, o = shuffle([...new Set([v, v + 10, v > 1 ? v - 1 : v + 2])]); opts = o.map(x => `${x} บาท`); ans = o.indexOf(v); explain = `${paid} − ${price} = ${v} บาท`; }
+      else if (kind === "conv"){ const b = rand(1, 15), s = pick([25, 50, 75]); if (Math.random() < .5){ html = `<span class="big">${b} บาท ${s} สตางค์</span><br>เขียนเป็นจุดได้แบบไหน`; say = `${b} บาท ${s} สตางค์ เขียนเป็นจุดได้แบบไหน`; const right = `${b}.${s} บาท`, o = shuffle([right, `${b}.${s / 5 | 0} บาท`, `${s}.${b} บาท`]); opts = o; ans = o.indexOf(right); explain = `${b} บาท ${s} สตางค์ = ${right}`; }
+        else { html = `<span class="big">${b} บาท ${s} สตางค์</span><br>เท่ากับกี่สตางค์`; say = `${b} บาท ${s} สตางค์ เท่ากับกี่สตางค์`; const v = b * 100 + s, o = shuffle([...new Set([v, b * 10 + s, b + s])]); opts = o.map(x => `${fmt(x)} สต.`); ans = o.indexOf(v); explain = `1 บาท = 100 สตางค์ · ${b} × 100 + ${s} = ${v} สตางค์`; } cols = 1; }
+      else { const start = rand(2, 9) * 100, rows = [], k = level === 3 ? 4 : 3; let bal = start;
+        for (let i = 0; i < k; i++){ const inc = Math.random() < .5; const amt = (level === 3 ? rand(10, 150) + pick([0, .5, .25]) : rand(2, 30) * 5); if (!inc && amt > bal) { rows.push(["ขายของได้", amt, 0]); bal += amt; continue; } rows.push(inc ? ["ขายของได้", amt, 0] : [pick(["ซื้อถุงใส่ของ","ค่าน้ำแข็ง","ค่าที่จอดรถ","ซื้อขนม"]), 0, amt]); bal += inc ? amt : -amt; }
+        const f = level === 3 ? dot : x => `${fmt(x)}`;
+        pre = `<table class="book"><tr><th>รายการ</th><th>รายรับ</th><th>รายจ่าย</th></tr><tr><td>เงินเดิม</td><td>${f(start)}</td><td></td></tr>${rows.map(r => `<tr><td>${r[0]}</td><td>${r[1] ? f(r[1]) : ""}</td><td>${r[2] ? f(r[2]) : ""}</td></tr>`).join("")}<tr class="sum"><td>คงเหลือ</td><td colspan="2">?</td></tr></table>`;
+        html = "น้องจิ๋วมีเงิน<b>คงเหลือ</b>เท่าไร"; say = "น้องจิ๋วมีเงินคงเหลือเท่าไร";
+        const o = shuffle([...new Set([bal, bal + 10, bal - 5])]); opts = o.map(x => level === 3 ? dot(x) : `${fmt(x)} บาท`); ans = o.indexOf(bal); cols = 1;
+        explain = `${f(start)} ${rows.map(r => r[1] ? `+ ${f(r[1])}` : `− ${f(r[2])}`).join(" ")} = ${level === 3 ? dot(bal) : fmt(bal) + " บาท"}`; }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:`ลูกค้าคนที่ ${idx+1} จาก ${N}`, html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    function pay(I, withS){
+      const price = withS ? rand(10, 90) + pick([0.25, 0.5, 0.75]) : rand(level === 1 ? 15 : 45, level === 1 ? 180 : 950);
+      const avail = MONEY.filter(m => (withS || m[1] !== "s") && m[0] <= Math.max(price, 20) * 1.01);
+      let tray = [], miss = 0, lock = false;
+      const text = `ซื้อ${I[1]}ราคา ${withS ? dot(price) : fmt(price) + " บาท"} หยิบเงินจ่ายให้พอดี`;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(`ซื้อ${I[1]}ราคา ${baht(price)} หยิบเงินจ่ายให้พอดี`)}<div class="qlabel">ลูกค้าคนที่ ${idx+1} จาก ${N} · จ่ายเงิน</div><div class="qtext">${I[0]} ${text}</div></div>
+        <div class="tray" id="tr"></div><div class="now" id="now"></div><div class="wallet pick" id="wl">${avail.map(m => chip(m[0], m[1], m[2])).join("")}</div>
+        <div class="row"><button class="btn" type="button" id="ok">💸 จ่ายเงิน</button></div>`;
+      KIT.speak(`ซื้อ${I[1]}ราคา ${baht(price)} หยิบเงินจ่ายให้พอดี`);
+      const $ = s => ctx.stage.querySelector(s), sum = () => Math.round(tray.reduce((a, m) => a + m[0], 0) * 100) / 100;
+      const draw = () => { $("#tr").innerHTML = tray.length ? tray.map((m, i) => chip(m[0], m[1], m[2], i)).join("") : "<em>แตะเงินด้านล่างเพื่อหยิบใส่ถาด</em>"; $("#now").textContent = `ในถาด: ${baht(sum())}`; };
+      draw();
+      $("#wl").onclick = e => { const b = e.target.closest(".m"); if (!b || lock) return; const m = MONEY.find(x => x[0] === +b.dataset.v); if (tray.length >= 20) return; tray.push(m); KIT.sfx.tap(); draw(); };
+      $("#tr").onclick = e => { const b = e.target.closest(".m"); if (!b || lock) return; tray.splice(+b.dataset.i, 1); draw(); };
+      $("#ok").onclick = () => {
+        if (lock) return;
+        const s = sum(), qq = `จ่ายเงินพอดี ${baht(price)}`, aa = decompose(price, withS).map(m => lab(m[0])).join(" + ");
+        if (Math.abs(s - price) < 1e-6){ lock = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); ctx.correct(miss ? 50 : 100, "จ่ายพอดีเป๊ะ! ขอบคุณค่า 💕"); ctx.after(1100, done); return; }
+        miss++;
+        if (miss < 2){ ctx.wrong(`ในถาดมี ${baht(s)} ${s < price ? "ยังไม่พอ" : "เกินราคา"} (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; tray = decompose(price, withS); draw(); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 ตัวอย่างการจ่าย: ${aa} = ${baht(price)}`); ctx.after(3600, done);
+      };
+    }
+    ctx.progress(0, N); ctx.say("เปิดท้ายรถแล้ว ลูกค้ามา!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

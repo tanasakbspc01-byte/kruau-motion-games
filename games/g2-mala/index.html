@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ร้านหม่าล่าเสียบไม้</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+.tray{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:10px;min-height:150px;padding:14px;border-radius:24px;background:linear-gradient(#FFF1E0,#FFE2C2);border:4px solid #fff;box-shadow:0 6px 0 #EBC79A}
+.stick{display:flex;flex-direction:column;align-items:center;gap:2px}
+.stick i{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff6 0 20%,var(--c) 22%);box-shadow:inset 0 -3px 0 rgba(0,0,0,.15);animation:pp .25s}
+.stick b{width:5px;height:42px;background:#D9B27A;border-radius:3px;margin-top:-2px}
+.grid{display:grid;grid-template-columns:repeat(var(--c),30px);gap:6px;justify-content:center;padding:14px;border-radius:22px;background:#FFF6EA;border:4px solid #fff;box-shadow:0 6px 0 #E9D3B6}
+.grid i{width:30px;height:30px;border-radius:50%;background:var(--c2);box-shadow:inset 0 -4px 0 rgba(0,0,0,.15)}
+.steppers{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.st{display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:8px;background:#fff;border-radius:18px;border:3px solid var(--line);padding:8px 10px;font-weight:700}
+.st button{width:46px;height:46px;border:none;border-radius:50%;font-size:1.6rem;font-weight:700;background:#F2A65A;color:#fff;box-shadow:0 4px 0 #C97A2E}
+.st b{min-width:30px;text-align:center;font-size:1.6rem}
+.now{text-align:center;font-weight:700;font-size:1.3rem;color:var(--orange-deep)}
+.sent{font-size:clamp(2rem,8vw,3rem);font-weight:700;letter-spacing:.04em}
+.hole{display:inline-grid;place-items:center;min-width:1.4em;border-radius:14px;background:#FFE7C2;color:var(--orange-deep);padding:0 .15em}
+.choices .choice{font-size:clamp(1.2rem,5vw,1.9rem)}
+@keyframes pp{from{transform:scale(0)}}
+@media (max-width:520px){.steppers{grid-template-columns:1fr}.stick i{width:20px;height:20px}}
+
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+(function(){
+const {rand, pick, shuffle} = KIT;
+const N = 8;
+const BALLS = [["#E8704A","ลูกชิ้น"],["#F2C14E","ไส้กรอก"],["#7FBF6A","ผักกาด"],["#C9824A","หมู"],["#F28CA8","ปู"]];
+const stick = (n, col) => `<span class="stick">${Array(n).fill(`<i style="--c:${col}"></i>`).join("")}<b></b></span>`;
+const sticks = (k, n, col) => `<div class="tray">${Array(k).fill(0).map(() => stick(n, col)).join("")}</div>`;
+function near(ans, lo, hi){ const s = new Set([ans]); for (const d of shuffle([1,-1,2,-2,5,-5,10])) if (s.size < 3 && ans+d >= lo && ans+d <= hi) s.add(ans+d); while (s.size < 3) s.add(rand(lo,hi)); return shuffle([...s]); }
+const PLAN = {1:["groups","repeat","groups","build","sentence","groups","build","repeat"], 2:["groups","sentence","array","build","fact","swap","build","fact"], 3:["fact","big","word","build","big","swap","word","big"]};
+
+KIT.mount({
+  key:"g2-mala", title:"ร้านหม่าล่าเสียบไม้", subtitle:"คณิตศาสตร์ ป.2 · บทที่ 5 การคูณ",
+  heroHTML:"เสียบไม้<em>หม่าล่า</em> ไม้ละเท่า ๆ กัน 🍢", heroDesc:"ร้านหม่าล่าขายดีมาก! ทุกไม้เสียบลูกชิ้นเท่ากัน นับเป็นกลุ่ม ๆ ด้วยการคูณ แล้วจัดไม้ให้ตรงออเดอร์ลูกค้า",
+  progIcon:"🍢",
+  howto:["ไม้ละ 4 ลูก มี 3 ไม้ = 4 + 4 + 4 = 3 × 4 = 12","ข้อที่ให้จัดไม้: กด + − จำนวนไม้ และจำนวนลูกต่อไม้ แล้วกดเสิร์ฟ","จำสูตรคูณ แม่ 2 ถึง แม่ 9 ให้คล่อง","กด 🔊 ฟังโจทย์ได้"],
+  note:"การคูณ คือ การบวกจำนวนที่เท่ากันหลาย ๆ ครั้ง · 3 × 4 = 4 × 3 (สลับที่ได้ผลเท่าเดิม)",
+  levels:{
+    1:{pill:N+" ออเดอร์", color:"var(--green)", desc:"กลุ่มเท่า ๆ กัน การบวกซ้ำ แม่ 2, 5, 10"},
+    2:{pill:N+" ออเดอร์", color:"var(--blue)", desc:"สูตรคูณแม่ 2–9 แถวลำดับ และการสลับที่"},
+    3:{pill:N+" ออเดอร์", color:"var(--purple)", desc:"หนึ่งหลักคูณสองหลัก และโจทย์ปัญหา"}
+  },
+  play(level, ctx){
+    let idx = 0;
+    const done = () => { idx++; ctx.progress(idx, N); next(); };
+    const lbl = () => `ออเดอร์ที่ ${idx+1} จาก ${N}`;
+    const small = () => level === 1 ? pick([2,5,10,2,5]) : rand(2, 9);
+    function next(){
+      if (idx >= N){ ctx.finish({targetSec: 190}); return; }
+      const kind = PLAN[level][idx], B = BALLS[idx % BALLS.length];
+      if (kind === "build") return build(B);
+      let pre = "", html, say, opts, ans, explain, cols = 3;
+      const k = rand(2, level === 1 ? 5 : 6), n = Math.min(small(), level === 1 ? 10 : 6);
+      if (kind === "groups"){ pre = sticks(k, n, B[0]); html = `มี${B[1]}ทั้งหมดกี่ลูก`; say = `ไม้ละ ${n} ลูก มี ${k} ไม้ มีทั้งหมดกี่ลูก`; const o = near(k*n, 1, 100); opts = o.map(String); ans = o.indexOf(k*n); explain = `${k} × ${n} = ${k*n}`; }
+      else if (kind === "repeat"){ pre = sticks(k, n, B[0]); const right = Array(k).fill(n).join(" + "), u = shuffle([right, Array(n).fill(k).join(" + ") === right ? Array(k+1).fill(n).join(" + ") : Array(n).fill(k).join(" + "), Array(k).fill(n+1).join(" + ")]);
+        html = "เขียนเป็นการบวกได้แบบไหน"; say = `ไม้ละ ${n} ลูก มี ${k} ไม้ เขียนเป็นการบวกได้แบบไหน`; opts = [...new Set(u)]; ans = opts.indexOf(right); cols = 1; explain = `ไม้ละ ${n} ลูก ${k} ไม้ = ${right} = ${k*n}`; }
+      else if (kind === "sentence"){ pre = sticks(k, n, B[0]); const right = `${k} × ${n} = ${k*n}`, u = shuffle([...new Set([right, `${k} + ${n} = ${k+n}`, `${k} × ${n+1} = ${k*(n+1)}`])]);
+        html = "เขียนเป็น<b>ประโยคสัญลักษณ์การคูณ</b>ได้แบบไหน"; say = "เขียนเป็นประโยคสัญลักษณ์การคูณได้แบบไหน"; opts = u; ans = u.indexOf(right); cols = 1; explain = `${n} ลูก ${k} ไม้ = ${k} × ${n} = ${k*n}`; }
+      else if (kind === "array"){ const r = rand(2, 5), c = rand(3, 6); pre = `<div class="grid" style="--c:${c}">${Array(r*c).fill(`<i style="--c2:${B[0]}"></i>`).join("")}</div>`;
+        html = `จัดเป็นแถว ${r} แถว แถวละ ${c} ลูก มีทั้งหมดกี่ลูก`; say = html; const o = near(r*c, 1, 60); opts = o.map(String); ans = o.indexOf(r*c); explain = `${r} × ${c} = ${r*c}`; }
+      else if (kind === "fact"){ const a = rand(2, 9), b = rand(2, 9); html = `<span class="sent">${a} × ${b} = <b class="hole">?</b></span>`; say = `${a} คูณ ${b} เท่ากับเท่าไร`; const o = near(a*b, 1, 90); opts = o.map(String); ans = o.indexOf(a*b); explain = `แม่ ${a}: ${a} × ${b} = ${a*b}`; }
+      else if (kind === "swap"){ const a = rand(2, 9), b = rand(2, 9); html = `ถ้า <b>${a} × ${b} = ${a*b}</b><br>แล้ว <span class="sent">${b} × ${a} = <b class="hole">?</b></span>`; say = `ถ้า ${a} คูณ ${b} เท่ากับ ${a*b} แล้ว ${b} คูณ ${a} เท่ากับเท่าไร`; const o = near(a*b, 1, 90); opts = o.map(String); ans = o.indexOf(a*b); explain = `การคูณสลับที่ได้ ผลคูณเท่าเดิม = ${a*b}`; }
+      else if (kind === "big"){ const a = rand(11, 45), b = rand(2, 9); const v = a*b; html = `<span class="sent">${a} × ${b} = <b class="hole">?</b></span>`; say = `${a} คูณ ${b} เท่ากับเท่าไร`; const o = near(v, 1, 999); opts = o.map(String); ans = o.indexOf(v); explain = `${a} × ${b} = (${Math.floor(a/10)*10} × ${b}) + (${a%10} × ${b}) = ${Math.floor(a/10)*10*b} + ${(a%10)*b} = ${v}`; }
+      else { const a = rand(12, 30), b = rand(3, 8); html = `ร้านขายหม่าล่ากล่องละ ${a} ไม้ ขายได้ ${b} กล่อง<br>ขายได้ทั้งหมดกี่ไม้`; say = html.replace("<br>", " "); const o = near(a*b, 1, 999); opts = o.map(String); ans = o.indexOf(a*b); explain = `${b} × ${a} = ${a*b} ไม้`; }
+      ctx.stage.innerHTML = `${pre}<div id="q"></div>`;
+      KIT.mcq(ctx, ctx.stage.querySelector("#q"), {label:lbl(), html, say, options:opts, answer:ans, cols, explain, onNext:done});
+    }
+    function build(B){
+      const k = rand(2, 5), n = level === 1 ? pick([2,5,3]) : rand(2, 6);
+      const text = level === 3 ? `ลูกค้าต้องการ${B[1]} ${k*n} ลูก เสียบไม้ละ ${n} ลูก ต้องใช้กี่ไม้` : `ลูกค้าสั่ง ${k} × ${n} คือ ${k} ไม้ ไม้ละ ${n} ลูก`;
+      let a = 1, b = 1, miss = 0, lock = false;
+      ctx.stage.innerHTML = `<div class="qcard">${KIT.sayBtn(text)}<div class="qlabel">${lbl()} · จัดไม้</div><div class="qtext">${text}</div></div>
+        <div id="tr"></div>
+        <div class="steppers"><div class="st"><span>จำนวนไม้</span><button type="button" data-w="a" data-d="-1">−</button><b id="va">1</b><button type="button" data-w="a" data-d="1">+</button></div>
+          <div class="st"><span>ลูกต่อไม้</span><button type="button" data-w="b" data-d="-1">−</button><b id="vb">1</b><button type="button" data-w="b" data-d="1">+</button></div></div>
+        <div class="now" id="now"></div><div class="row"><button class="btn" type="button" id="ok">🍢 เสิร์ฟ!</button></div>`;
+      KIT.speak(text);
+      const $ = s => ctx.stage.querySelector(s);
+      const draw = () => { $("#tr").innerHTML = sticks(a, b, B[0]); $("#va").textContent = a; $("#vb").textContent = b; $("#now").textContent = `${a} × ${b} = ${a*b} ลูก`; };
+      draw();
+      ctx.stage.querySelector(".steppers").onclick = e => { const t = e.target.closest("[data-w]"); if (!t || lock) return; if (t.dataset.w === "a") a = Math.max(1, Math.min(8, a + +t.dataset.d)); else b = Math.max(1, Math.min(9, b + +t.dataset.d)); KIT.sfx.tap(); draw(); };
+      $("#ok").onclick = () => {
+        if (lock) return;
+        const qq = text, aa = `${k} ไม้ ไม้ละ ${n} ลูก (${k} × ${n} = ${k*n})`;
+        if (a === k && b === n){ lock = true; ctx.record({q:qq, a:aa, score: miss ? .5 : 1}); ctx.correct(miss ? 50 : 100, `เสิร์ฟแล้ว! ${k} × ${n} = ${k*n} 🍢`); ctx.after(1100, () => { idx++; ctx.progress(idx, N); next(); }); return; }
+        miss++;
+        if (miss < 2){ ctx.wrong(`ตอนนี้ ${a} ไม้ ไม้ละ ${b} ลูก ยังไม่ตรงออเดอร์ (เหลืออีก 1 ครั้ง)`); return; }
+        lock = true; a = k; b = n; draw(); ctx.wrong(null); ctx.record({q:qq, a:aa, score:0}); ctx.reveal(`📖 เฉลย: ${aa}`); ctx.after(3400, () => { idx++; ctx.progress(idx, N); next(); });
+      };
+    }
+    ctx.progress(0, N); ctx.say("ร้านเปิดแล้ว!");
+    next();
+  }
+});
+
+})();
+</script>
+</body>
+</html>
