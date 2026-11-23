@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>หน่วยที่ 2 พัฒนาการของมนุษย์ในดินแดนไทย · ประวัติศาสตร์ ป.4</title>
+<title>หน่วยที่ 2 การตั้งถิ่นฐานและพัฒนาการ · ประวัติศาสตร์ ป.4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
@@ -18,6 +18,8 @@
 .vs2{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:680px){.vs2{grid-template-columns:1fr}}
 .case{background:#fff;border-left:6px solid var(--main);border-radius:14px;padding:10px 14px}
 .case h3{margin:0 0 4px}
+.case p{font-size:1.12rem;line-height:1.6}
+table.tb.wide{font-size:1.12rem}table.tb.wide td:first-child{width:auto;white-space:nowrap;font-size:1.1rem;text-align:left}
 .strong{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}@media (max-width:720px){.strong{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .sl{background:#fff;border-radius:18px;border:3px solid var(--sc);padding:10px;text-align:center;cursor:pointer;min-height:150px}
 .sl .L{font:700 52px/1 Mali,sans-serif;color:var(--sc)}.sl .en{font:700 15px Mali,sans-serif;color:#666}.sl .th{font:700 19px Mali,sans-serif}
@@ -41,7 +43,7 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 <div class="app">
 <header class="bar">
   <span class="logo">🏺</span>
-  <div class="ttl"><b>หน่วยที่ 2 พัฒนาการของมนุษย์ในดินแดนไทย</b><small>ประวัติศาสตร์ ป.4 · หน่วยที่ 2</small></div>
+  <div class="ttl"><b>หน่วยที่ 2 การตั้งถิ่นฐานและพัฒนาการ</b><small>ประวัติศาสตร์ ป.4 · หน่วยที่ 2</small></div>
   <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
   <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
   <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
@@ -52,37 +54,133 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 <section class="slide" data-title="หน้าปก"><div class="inner cover">
 <span class="badge" style="background:var(--orange)">ประวัติศาสตร์ ป.4 · หน่วยที่ 2</span>
 <img class="kru5" src="k5.webp" alt="ครูอู๋">
-<h1>พัฒนาการของมนุษย์ในดินแดนไทย</h1>
-<div class="card c-yellow goals"><h3>🎯 เรียนจบแล้ว หนูจะ…</h3><ul><li>บอก <b>การตั้งถิ่นฐาน</b> และการดำรงชีวิตของมนุษย์สมัยก่อนประวัติศาสตร์</li><li>รู้จัก <b>แหล่งโบราณคดี</b> สำคัญในแต่ละภาค</li><li>บอก <b>รัฐโบราณ</b> ในดินแดนไทยและที่ตั้ง</li><li>บอกอิทธิพลของ <b>อินเดียและจีน</b> ที่มีต่อดินแดนไทย</li></ul></div>
+<h1>การตั้งถิ่นฐานและพัฒนาการ</h1>
+<div class="card c-yellow goals"><h3>🎯 เรียนจบแล้ว หนูจะ…</h3><ul><li>บอก <b>ปัจจัย</b> ที่ทำให้มนุษย์ตั้งถิ่นฐานในดินแดนไทย</li><li>บอก <b>แหล่งชุมชนก่อนประวัติศาสตร์</b> แต่ละยุคแต่ละภาค</li><li>บอก <b>พัฒนาการ</b> ของชุมชนก่อนประวัติศาสตร์</li><li>บอก <b>แคว้นโบราณ</b> ในดินแดนไทยและหลักฐานสำคัญ</li></ul></div>
 <button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button>
 </div></section>
-<section class="slide" data-title="การตั้งถิ่นฐาน"><div class="inner">
-<h2 class="h"><span class="e">🏕️</span>มนุษย์สมัยก่อนประวัติศาสตร์ในดินแดนไทย</h2>
-<div class="grid" style="--min:220px">
- <div class="card c-blue"><h3>💧 ตั้งถิ่นฐานใกล้แหล่งน้ำ</h3><p>มีอาหาร น้ำดื่ม และดินอุดมสมบูรณ์สำหรับเพาะปลูก</p></div>
- <div class="card c-green"><h3>🌾 จากเร่ร่อนสู่ชุมชน</h3><p>เมื่อรู้จักเพาะปลูกและเลี้ยงสัตว์ จึงตั้งบ้านเรือนถาวร</p></div>
- <div class="card c-orange"><h3>⚱️ ฝังศพพร้อมสิ่งของ</h3><p>แสดงความเชื่อเรื่องชีวิตหลังความตาย</p></div>
- <div class="card c-purple"><h3>🎨 ภาพเขียนสีบนผนังถ้ำ</h3><p>เล่าวิถีชีวิต การล่าสัตว์ และพิธีกรรม</p></div>
+<section class="slide" data-title="ภาพรวม" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🗺️</span>ดินแดนไทยมีคนอยู่มานานหลายพันปี</h2>
+<div class="tl"><div class="it" style="--c:#94a3b8"><span style="font-size:30px">🏹</span><b class="n">ยุคหินเก่า</b><span class="d">มีคนอยู่ทุกภูมิภาค เร่ร่อน อาศัยถ้ำ</span></div><div class="it" style="--c:#16A34A"><span style="font-size:30px">🌾</span><b class="n">ยุคหินใหม่</b><span class="d">ตั้งหลักแหล่งถาวร เพาะปลูก เลี้ยงสัตว์</span></div><div class="it" style="--c:#F59E0B"><span style="font-size:30px">🥁</span><b class="n">ยุคโลหะ</b><span class="d">ชุมชนใหญ่ขึ้น ติดต่อค้าขายกับภายนอก</span></div><div class="it" style="--c:#E8478B"><span style="font-size:30px">🏘️</span><b class="n">บ้านเมือง</b><span class="d">บางชุมชนเติบโตเป็นบ้านเมือง</span></div><div class="it" style="--c:#2E8BEF"><span style="font-size:30px">🛕</span><b class="n">แว่นแคว้น</b><span class="d">มีกษัตริย์ปกครอง มีศาสนา ตัวอักษร (สมัยประวัติศาสตร์)</span></div></div>
+<style>.tl{display:flex;flex-direction:column;gap:6px;position:relative;padding-left:26px}.tl:before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:6px;border-radius:3px;background:linear-gradient(#94a3b8,#E8478B,#F59E0B,#16A34A,#2E8BEF)}
+.tl .it{position:relative;background:#fff;border:3px solid var(--c);border-radius:14px;padding:6px 12px;display:flex;gap:10px;align-items:center}
+.tl .it:before{content:"";position:absolute;left:-25px;top:50%;margin-top:-9px;width:18px;height:18px;border-radius:50%;background:var(--c);border:3px solid #fff}
+.tl .it b.n{font:700 1.2rem Mali,sans-serif;color:var(--c);min-width:150px}.tl .it .y{font:700 1.05rem Sarabun,sans-serif;background:var(--c);color:#fff;border-radius:999px;padding:2px 10px;white-space:nowrap}
+.tl .it span.d{flex:1;font-size:1rem}</style><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> ทำไมคนสมัยก่อนถึงเลือกมาอยู่ในดินแดนไทย? ลองเดาดูก่อนเปิดหน้าถัดไป 🤔</p></div>
+</div></section>
+<section class="slide" data-title="ตอนที่ 1 การตั้งถิ่นฐานและการดำรงชีวิต"><div class="inner cover">
+<div class="center" style="padding-top:4vh">
+<div style="font-size:84px;line-height:1">🏕️</div>
+<span class="badge" style="background:var(--orange);font-size:1.1rem">ตอนที่ 1</span>
+<h1 style="margin:8px 0">การตั้งถิ่นฐานและการดำรงชีวิต</h1><p class="muted" style="font-size:1.2rem">ปัจจัยการตั้งถิ่นฐาน · ชุมชน 4 ยุค · พัฒนาการ</p></div>
+</div></section>
+<section class="slide" data-title="ปัจจัยที่ 1 ทำเลที่ตั้ง"><div class="inner">
+<h2 class="h"><span class="e">📍</span>ปัจจัยที่ 1 ทำเลที่ตั้งที่ดี</h2>
+<div class="vs2">
+ <div class="card c-orange"><h3>🏹 ยุคหิน: อยู่ที่สูง</h3><p>เก็บของป่า ล่าสัตว์ เร่ร่อนตามป่าเขา อาศัยใน <b>ถ้ำ เพิงผา</b> ที่อยู่สูง เพื่อ <b>ป้องกันอันตรายจากสัตว์ป่า</b></p><p>🎨 ภาพเขียนสีที่ <b>เขาจันทน์งาม</b> อ.สีคิ้ว จ.นครราชสีมา</p></div>
+ <div class="card c-green"><h3>🌾 ปลูกข้าว: ลงมาอยู่ที่ราบ</h3><p>นำ <b>พันธุ์ข้าวป่า</b> มาปลูก นำ <b>สัตว์ป่ามาเลี้ยง</b> ต้องสร้างที่พักรอผลผลิต จึงอยู่เป็นหลักแหล่ง</p><p>เลือก <b>ที่ราบใกล้แหล่งน้ำ</b> ริมแม่น้ำ ชายฝั่งทะเล เหมาะกับเพาะปลูก ประมง และติดต่อชุมชนอื่น</p></div>
 </div>
 </div></section>
+<section class="slide" data-title="ปัจจัยที่ 2–3"><div class="inner">
+<h2 class="h"><span class="e">💧</span>ปัจจัยที่ 2 ทรัพยากร · ปัจจัยที่ 3 การติดต่อภายนอก</h2>
+<div class="vs2">
+ <div class="card c-blue"><h3>💧 ทรัพยากรธรรมชาติอุดมสมบูรณ์</h3><p>ต้องใช้ <b>น้ำ</b> ดื่มกิน ใช้สอย และเพาะปลูก → ที่ราบลุ่มแม่น้ำ ชายฝั่งทะเล</p><p>มีแร่และของมีค่า เช่น <b>ทองคำ ทองแดง ดีบุก เครื่องเทศ ของป่า</b> ใช้เองและเป็นสินค้า</p></div>
+ <div class="card c-purple"><h3>⛵ การติดต่อกับภายนอก</h3><p>อยู่ริมน้ำ ใช้ <b>เส้นทางน้ำ</b> เดินทางติดต่อค้าขายกับชุมชนอื่นและพ่อค้าต่างชาติ</p><p>รับวัฒนธรรมจาก <b>อินเดีย มอญ เขมรโบราณ</b> เช่น ศาสนาพราหมณ์ พุทธศาสนา ภาษาเขียน การมีกษัตริย์ → เติบโตเป็นบ้านเมืองและแคว้น</p></div>
+</div>
+</div></section>
+<section class="slide" data-title="คัดแยกปัจจัย"><div class="inner">
+<h2 class="h"><span class="e">🗂️</span>คัดแยก: เป็นปัจจัยการตั้งถิ่นฐานข้อใด</h2><div data-sorter="fac"></div>
+</div></section>
+<section class="slide" data-title="ชุมชนยุคหินเก่า" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🏹</span>ชุมชนยุคหินเก่า</h2><div class="card c-orange"><h3>🪨 ไม่มีหลักแหล่งแน่นอน</h3><p>อยู่รวมกันเป็นกลุ่มเล็ก ๆ อาศัยตามถ้ำ เพิงผา ใช้หินเป็นเครื่องมือ พบหลักฐานทุกภูมิภาค</p>
+<table class="tb wide" style="margin-top:6px"><tr><td>ภาคเหนือ</td><td>เครื่องมือหินกะเทาะ อ.แม่ทะ จ.ลำปาง · ริมโขง อ.เชียงแสน จ.เชียงราย · <b>เพิงผาถ้ำลอด</b> อ.ปางมะผ้า จ.แม่ฮ่องสอน</td></tr><tr><td>ภาคกลาง</td><td><b>บ้านเก่า</b> จ.กาญจนบุรี · ถ้ำพระ อ.ไทรโยค · ถ้ำองบะ อ.ศรีสวัสดิ์ จ.กาญจนบุรี</td></tr><tr><td>ภาคอีสาน</td><td>ริมโขง อ.เชียงคาน จ.เลย · อ.ดอนตาล จ.มุกดาหาร</td></tr><tr><td>ภาคใต้</td><td><b>ถ้ำหลังโรงเรียน</b> บ้านทับปริก จ.กระบี่ (เครื่องมือหิน เครื่องมือกระดูกสัตว์ รอยกองไฟ)</td></tr></table></div>
+</div></section>
+<section class="slide" data-title="ชุมชนยุคหินใหม่" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🌾</span>ชุมชนยุคหินใหม่</h2><div class="card c-green"><h3>🏡 ตั้งบ้านเรือนริมแม่น้ำ เชิงเขา</h3><p>เลี้ยงสัตว์ เพาะปลูก <b>ทอผ้า</b> มี <b>พิธีฝังศพ</b> (ฝังเครื่องใช้ลงไปด้วย) เครื่องมือหินขัดจนคม ทำกำไล ต่างหู ภาชนะดินเผามีลาย วาดภาพบนผนังถ้ำ</p>
+<table class="tb wide" style="margin-top:6px"><tr><td>ภาคเหนือ</td><td>เครื่องมือหิน ลุ่มน้ำ จ.แม่ฮ่องสอน เชียงใหม่ ลำปาง น่าน</td></tr><tr><td>ภาคกลาง</td><td>บ้านเก่า · ถ้ำพระ จ.กาญจนบุรี · <b>บ้านโคกพนมดี</b> จ.ชลบุรี (เนินหอย → กินอาหารทะเล)</td></tr><tr><td>ภาคอีสาน</td><td>หลักฐานการเพาะปลูก เลี้ยงสัตว์ ภาชนะดินเผา ทอผ้า ที่ <b>บ้านเชียง</b> จ.อุดรธานี</td></tr><tr><td>ภาคใต้</td><td><b>หม้อสามขา</b> ขวานหินขัด จ.กระบี่ และ จ.พังงา</td></tr></table></div>
+</div></section>
+<section class="slide" data-title="ชุมชนยุคสำริด" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🥁</span>ชุมชนยุคสำริด</h2><div class="card c-yellow"><h3>🟤 นำสำริดมาทำเครื่องมือ</h3><p>ขวาน มีด หอก หม้อ ขัน กำไล · เพาะปลูก เลี้ยงสัตว์ และ <b>ติดต่อกับชุมชนภายนอก</b></p>
+<table class="tb wide" style="margin-top:6px"><tr><td>ภาคเหนือ</td><td>เครื่องใช้สำริด จ.แม่ฮ่องสอน เชียงราย เชียงใหม่ น่าน</td></tr><tr><td>ภาคกลาง</td><td>บ้านเก่า · <b>บ้านดอนตาเพชร</b> จ.กาญจนบุรี · บ้านโคกพนมดี จ.ชลบุรี · จ.ลพบุรี</td></tr><tr><td>ภาคอีสาน</td><td><b>บ้านเชียง</b> จ.อุดรธานี · <b>บ้านโนนนกทา</b> จ.ขอนแก่น</td></tr><tr><td>ภาคใต้</td><td>ชุมชนริมทะเล จ.สงขลา กระบี่ พังงา พบ <b>กลองมโหระทึก</b> เหมือนของชุมชนนอกดินแดนไทย</td></tr></table></div>
+</div></section>
+<section class="slide" data-title="ชุมชนยุคเหล็ก" data-nofit><div class="inner">
+<h2 class="h"><span class="e">⚒️</span>ชุมชนยุคเหล็ก</h2><div class="card c-blue"><h3>⚫ ชุมชนเกษตรขนาดใหญ่</h3><p>นำเหล็กมาหลอมเป็นเครื่องใช้ที่ทนทาน ทำให้ <b>ถางป่าขยายที่เพาะปลูก</b> ได้ง่ายและมากขึ้น</p>
+<table class="tb wide" style="margin-top:6px"><tr><td>ภาคเหนือ</td><td>เครื่องมือเหล็ก โครงกระดูก ลุ่มน้ำ จ.ลำพูน เชียงใหม่ แม่ฮ่องสอน น่าน</td></tr><tr><td>ภาคกลาง</td><td>ถลุงเหล็กที่ บ้านดอนตาเพชร จ.กาญจนบุรี · บ้านหลุมข้าว จ.ลพบุรี</td></tr><tr><td>ภาคอีสาน</td><td>บ้านเชียง จ.อุดรธานี · มีดเหล็กที่ <b>เนินอุโลก</b> จ.นครราชสีมา</td></tr><tr><td>ภาคใต้</td><td>อ.คลองท่อม จ.กระบี่ · จ.พังงา · จ.สงขลา</td></tr></table></div>
+</div></section>
 <section class="slide" data-title="แหล่งโบราณคดี"><div class="inner">
-<h2 class="h"><span class="e">🗺️</span>แหล่งโบราณคดีสำคัญ · แตะการ์ดเพื่อดูสิ่งที่ขุดพบ</h2><div class="strong"><div class="sl" style="--sc:#E8478B"><div class="L" style="font-size:40px">🏺</div><div class="th">บ้านเชียง</div><div class="en">จ.อุดรธานี · ภาคอีสาน</div><div class="ex">ภาชนะดินเผาลายเขียนสีแดง · มรดกโลก</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#2E8BEF"><div class="L" style="font-size:40px">⚱️</div><div class="th">โนนนกทา</div><div class="en">จ.ขอนแก่น · ภาคอีสาน</div><div class="ex">โครงกระดูก เครื่องมือสำริด</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#16A34A"><div class="L" style="font-size:40px">🕳️</div><div class="th">ถ้ำลอด</div><div class="en">จ.แม่ฮ่องสอน · ภาคเหนือ</div><div class="ex">เครื่องมือหิน โลงศพไม้</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#F59E0B"><div class="L" style="font-size:40px">🫖</div><div class="th">บ้านเก่า</div><div class="en">จ.กาญจนบุรี · ภาคตะวันตก</div><div class="ex">หม้อสามขา (ยุคหินใหม่)</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#8B5CF6"><div class="L" style="font-size:40px">🐚</div><div class="th">บ้านโคกพนมดี</div><div class="en">จ.ชลบุรี · ภาคตะวันออก</div><div class="ex">ชุมชนริมทะเลโบราณ เปลือกหอย</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#14B8A6"><div class="L" style="font-size:40px">🦴</div><div class="th">ถ้ำหลังโรงเรียน</div><div class="en">จ.กระบี่ · ภาคใต้</div><div class="ex">เครื่องมือหินยุคแรก ๆ</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div></div>
+<h2 class="h"><span class="e">🗺️</span>แหล่งโบราณคดีสำคัญ · แตะการ์ดเพื่อดูสิ่งที่ขุดพบ</h2><div class="strong"><div class="sl" style="--sc:#E8478B"><div class="L" style="font-size:40px">🏺</div><div class="th">บ้านเชียง</div><div class="en">จ.อุดรธานี · ภาคอีสาน</div><div class="ex">ภาชนะดินเผาลายเขียนสี เครื่องสำริด ใบหอกเหล็ก · มรดกโลก</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#2E8BEF"><div class="L" style="font-size:40px">⚱️</div><div class="th">บ้านโนนนกทา</div><div class="en">จ.ขอนแก่น · ภาคอีสาน</div><div class="ex">หลักฐานชุมชนยุคสำริด</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#16A34A"><div class="L" style="font-size:40px">🕳️</div><div class="th">เพิงผาถ้ำลอด</div><div class="en">จ.แม่ฮ่องสอน · ภาคเหนือ</div><div class="ex">เครื่องมือหินกะเทาะ โครงกระดูก (อ.ปางมะผ้า)</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#F59E0B"><div class="L" style="font-size:40px">🫖</div><div class="th">บ้านเก่า</div><div class="en">จ.กาญจนบุรี · ภาคกลาง</div><div class="ex">ชุมชนต่อเนื่องหลายยุค เครื่องมือหิน ภาชนะดินเผา</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#8B5CF6"><div class="L" style="font-size:40px">🐚</div><div class="th">บ้านโคกพนมดี</div><div class="en">จ.ชลบุรี · ภาคตะวันออก</div><div class="ex">เนินหอย เบ็ดตกปลา รู้จักกินอาหารทะเล</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#14B8A6"><div class="L" style="font-size:40px">🦴</div><div class="th">ถ้ำหลังโรงเรียน</div><div class="en">จ.กระบี่ · ภาคใต้</div><div class="ex">เครื่องมือหินกะเทาะ เครื่องมือกระดูกสัตว์</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#C2410C"><div class="L" style="font-size:40px">🥣</div><div class="th">บ้านดอนตาเพชร</div><div class="en">จ.กาญจนบุรี · ภาคกลาง</div><div class="ex">ภาชนะสำริดลายวิจิตร ติดต่อกับอินเดีย</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#475569"><div class="L" style="font-size:40px">🎨</div><div class="th">เขาจันทน์งาม</div><div class="en">จ.นครราชสีมา · ภาคอีสาน</div><div class="ex">ภาพเขียนสีบนผนังเพิงผา</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div></div>
 </div></section>
 <section class="slide" data-title="เกม แหล่งโบราณคดี"><div class="inner">
 <h2 class="h"><span class="e">📍</span>เกม แหล่งโบราณคดีนี้อยู่จังหวัดใด</h2><div data-jg="site"></div>
 </div></section>
-<section class="slide" data-title="รัฐโบราณ"><div class="inner">
-<h2 class="h"><span class="e">🛕</span>รัฐโบราณในดินแดนไทย · แตะการ์ดเพื่อดูหลักฐานสำคัญ</h2><div class="strong"><div class="sl" style="--sc:#2E8BEF"><div class="L" style="font-size:40px">🛕</div><div class="th">ทวารวดี</div><div class="en">ภาคกลาง · นครปฐม / อู่ทอง</div><div class="ex">ธรรมจักรศิลา · พระปฐมเจดีย์ · นับถือพระพุทธศาสนา</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#8B5CF6"><div class="L" style="font-size:40px">🛕</div><div class="th">ละโว้</div><div class="en">ภาคกลาง · ลพบุรี</div><div class="ex">ได้รับอิทธิพลขอม · พระปรางค์สามยอด</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#16A34A"><div class="L" style="font-size:40px">🛕</div><div class="th">หริภุญชัย</div><div class="en">ภาคเหนือ · ลำพูน</div><div class="ex">พระนางจามเทวีเป็นผู้ปกครองคนแรกตามตำนาน</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#14B8A6"><div class="L" style="font-size:40px">🛕</div><div class="th">โยนก (เงินยาง)</div><div class="en">ภาคเหนือ · เชียงราย</div><div class="ex">อยู่ทางเหนือ ต่อมาเป็นส่วนหนึ่งของล้านนา</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#F59E0B"><div class="L" style="font-size:40px">🛕</div><div class="th">ศรีวิชัย</div><div class="en">ภาคใต้ · ไชยา สุราษฎร์ธานี</div><div class="ex">ค้าขายทางทะเล · พระบรมธาตุไชยา</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#E8478B"><div class="L" style="font-size:40px">🛕</div><div class="th">ลังกาสุกะ</div><div class="en">ภาคใต้ · ปัตตานี</div><div class="ex">เมืองท่าค้าขายทางทะเลภาคใต้</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div></div>
+<section class="slide" data-title="พัฒนาการของชุมชน" data-nofit><div class="inner">
+<h2 class="h"><span class="e">📈</span>พัฒนาการของชุมชนสมัยก่อนประวัติศาสตร์</h2>
+<div class="grid" style="--min:250px">
+ <div class="card c-blue"><h3>1️⃣ พัฒนาต่อเนื่องเป็นระยะ</h3><p>เร่ร่อน → เพาะปลูก เลี้ยงสัตว์ สร้างบ้าน มีผู้นำชุมชน → ใช้สำริด → <b>ใช้เหล็ก</b> (เปลี่ยนแปลงครั้งสำคัญ) → บางชุมชนเป็นบ้านเมือง</p></div>
+ <div class="card c-orange"><h3>2️⃣ แต่ละแห่งพัฒนาไม่เท่ากัน</h3><p>ขณะที่บ้านเชียงใช้สำริดแล้ว ชุมชนอื่นยังใช้หิน บางแห่งปลูกข้าวแล้ว บางแห่งยังเร่ร่อน</p></div>
+ <div class="card c-green"><h3>3️⃣ ขยายตัว ติดต่อภายนอก</h3><p>โครงกระดูกมากขึ้นในสมัยหลัง พบ <b>หินสี ลูกปัด</b> จากต่างแดน แสดงว่าแลกเปลี่ยนสิ่งของกัน</p></div>
+ <div class="card c-purple"><h3>4️⃣ รับความเจริญจากภายนอก</h3><p>บ้านเชียงใช้สำริดก่อนที่อื่น แล้วกระจายไป · <b>บ้านดอนตาเพชร</b> พบภาชนะสำริดลวดลายวิจิตร รับความเชื่อจากอินเดีย</p></div>
+</div>
 </div></section>
-<section class="slide" data-title="เกม รัฐโบราณอยู่ภาคใด"><div class="inner">
-<h2 class="h"><span class="e">🧭</span>เกม รัฐโบราณนี้อยู่ภาคใด</h2><div data-jg="state"></div>
+<section class="slide" data-title="เรียงพัฒนาการ" data-nofit><div class="inner">
+<h2 class="h"><span class="e">📶</span>เรียงลำดับพัฒนาการของมนุษย์ในดินแดนไทย</h2><div data-order="dev"></div>
 </div></section>
-<section class="slide" data-title="อิทธิพลต่างชาติ"><div class="inner">
-<h2 class="h"><span class="e">🌏</span>อิทธิพลจากอินเดียและจีน</h2>
+<section class="slide" data-title="ตอนที่ 2 แคว้นโบราณในดินแดนไทย"><div class="inner cover">
+<div class="center" style="padding-top:4vh">
+<div style="font-size:84px;line-height:1">🛕</div>
+<span class="badge" style="background:var(--blue);font-size:1.1rem">ตอนที่ 2</span>
+<h1 style="margin:8px 0">แคว้นโบราณในดินแดนไทย</h1><p class="muted" style="font-size:1.2rem">ภาคเหนือ · ภาคกลาง · ภาคอีสาน · ภาคใต้</p></div>
+</div></section>
+<section class="slide" data-title="เข้าสู่สมัยประวัติศาสตร์"><div class="inner">
+<h2 class="h"><span class="e">📜</span>จากชุมชน สู่แว่นแคว้น</h2>
+<div class="card c-blue def"><b class="t">✍️ จารึกเขาน้อย จ.สระแก้ว</b>หลักฐานตัวหนังสือเก่าที่สุดที่พบในดินแดนไทย ระบุ มหาศักราช 559 ตรงกับ <b>พ.ศ. 1180</b></div>
+<div class="grid" style="--min:200px;margin-top:8px">
+ <div class="card c-purple center"><div style="font-size:40px">👑</div><h3>มีผู้ปกครอง</h3><p>โดยกษัตริย์</p></div>
+ <div class="card c-orange center"><div style="font-size:40px">🙏</div><h3>มีศาสนา</h3><p>พราหมณ์ และพุทธ จากอินเดีย เขมรโบราณ</p></div>
+ <div class="card c-green center"><div style="font-size:40px">🔎</div><h3>หลักฐาน</h3><p>ศิลาจารึก ตำนาน โบราณสถาน โบราณวัตถุ</p></div>
+</div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> แคว้นโบราณส่วนใหญ่ตั้งอยู่ที่ไหน? (ใบ้: ที่ราบลุ่มแม่น้ำ ใกล้ทะเล 🌊)</p></div>
+</div></section>
+<section class="slide" data-title="แคว้นภาคเหนือ" data-nofit><div class="inner">
+<h2 class="h"><span class="e">⛰️</span>แคว้นโบราณ ภาคเหนือ</h2>
 <div class="vs2">
- <div class="card c-orange"><h3>🇮🇳 อินเดีย</h3><div class="chipz"><span>☸️ พระพุทธศาสนา</span><span>🕉️ ศาสนาพราหมณ์-ฮินดู</span><span>🔤 ตัวอักษร</span><span>👑 แนวคิดการปกครอง</span><span>🎭 วรรณกรรม รามายณะ</span></div></div>
- <div class="card c-red"><h3>🇨🇳 จีน</h3><div class="chipz"><span>🏺 เครื่องปั้นดินเผา</span><span>⛵ การค้าทางเรือ</span><span>🍜 อาหาร</span></div></div>
-</div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> รัฐโบราณในภาคใต้เจริญรุ่งเรืองเพราะอะไร? (ใบ้: ติดทะเล 🌊)</p></div>
+ <div class="card c-green"><h3>🛕 หริภุญชัย <small>(พศว. 13–19)</small></h3><p>ศูนย์กลาง <b>ลำพูน</b> · เรื่องราวอยู่ใน <b>ตำนานจามเทวีวงศ์</b></p><p>เจริญด้าน <b>พระพุทธศาสนา</b> ใช้ภาษามอญโบราณ</p><p>📍 <b>เจดีย์กู่กุด</b> วัดจามเทวี · <b>พระธาตุหริภุญชัย</b></p></div>
+ <div class="card c-blue"><h3>🏯 โยนก → ล้านนา</h3><p>ตำนานว่าผู้ก่อตั้งมาจากตอนใต้ของจีน สร้าง <b>เมืองเงินยาง</b> (เชียงแสน)</p><p><b>พญามังราย</b> ย้ายเมืองหลวงมาเชียงราย → เวียงกุมกาม → สร้าง <b>เชียงใหม่ พ.ศ. 1839</b> เป็นศูนย์กลางล้านนา</p><p>พุทธศตวรรษที่ 25 ล้านนารวมเป็นส่วนหนึ่งของไทย</p></div>
+</div>
+</div></section>
+<section class="slide" data-title="แคว้นภาคกลาง" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🌾</span>แคว้นโบราณ ภาคกลาง</h2>
+<div class="vs2">
+ <div class="card c-blue"><h3>☸️ ทวารวดี <small>(พศว. 11–16)</small></h3><p>จีนเรียกว่า <b>"โถโลโปตี"</b> ศูนย์กลางลุ่มเจ้าพระยาตอนล่าง เช่น <b>นครชัยศรี (นครปฐมโบราณ)</b></p><p>เมืองโบราณ: คูบัว ราชบุรี · อู่ทอง สุพรรณบุรี · <b>ศรีเทพ เพชรบูรณ์</b> (มรดกโลก) · โบราณสถานส่วนใหญ่สร้างเพื่อพุทธศาสนา</p><p>เสื่อมลงเมื่อเขมรโบราณขยายอำนาจเข้ามา</p></div>
+ <div class="card c-purple"><h3>🏛️ ละโว้ <small>(พศว. 12–18)</small></h3><p>ศูนย์กลาง <b>ลพบุรี</b> อุดมสมบูรณ์ มีแม่น้ำหลายสาย ค้าขายกับต่างถิ่นสะดวก</p><p>รับพุทธศาสนาจากทวารวดี และรับศาสนาพราหมณ์-ฮินดู พุทธมหายานจากเขมร</p><p>📍 <b>พระปรางค์สามยอด</b> · ต่อมาเป็นส่วนหนึ่งของอยุธยา</p></div>
+</div>
+</div></section>
+<section class="slide" data-title="แคว้นอีสานและใต้" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🧭</span>อีสาน: ขอม · ใต้: ตามพรลิงค์ ลังกาสุกะ</h2>
+<div class="grid" style="--min:240px">
+ <div class="card c-orange"><h3>🏯 ขอม/เขมรโบราณ <small>(พศว. 11–19)</small></h3><p>ศูนย์กลางเมืองพระนคร (กัมพูชา) ขยายอำนาจมาภาคอีสานและภาคกลาง</p><p>สร้าง <b>ปราสาทหิน ปรางค์</b>: พิมาย (นครราชสีมา) · พนมรุ้ง (บุรีรัมย์) · เมืองสิงห์ (กาญจนบุรี)</p><p>✍️ อักษรขอมมีอิทธิพลต่ออักษรไทย</p></div>
+ <div class="card c-yellow"><h3>🛕 ตามพรลิงค์ <small>(พศว. 13–18)</small></h3><p>ศูนย์กลาง <b>นครศรีธรรมราช</b> ติดต่อ <b>อินเดีย ลังกา</b></p><p>รับ <b>พุทธเถรวาท ลัทธิลังกาวงศ์</b> แล้วเผยแผ่ไปสุโขทัย ล้านนา</p><p>📍 พระบรมธาตุเจดีย์</p></div>
+ <div class="card c-pink"><h3>🌊 ลังกาสุกะ <small>(พศว. 10–18)</small></h3><p>ศูนย์กลาง <b>ปัตตานี</b> พบซากเมืองโบราณ อ.ยะรัง</p><p>เคยส่งทูตไปจีน พ.ศ. 1052 มีกษัตริย์ปกครอง</p><p>☪️ ศาสนาอิสลามในภาคใต้มาจากพ่อค้ามุสลิม</p></div>
+</div>
+</div></section>
+<section class="slide" data-title="สรุปแคว้นโบราณ"><div class="inner">
+<h2 class="h"><span class="e">🃏</span>ทบทวนแคว้นโบราณ · แตะการ์ด</h2><div class="strong"><div class="sl" style="--sc:#16A34A"><div class="L" style="font-size:40px">🛕</div><div class="th">หริภุญชัย</div><div class="en">ภาคเหนือ · ลำพูน</div><div class="ex">พุทธศตวรรษที่ 13–19<br>ตำนานจามเทวีวงศ์ · พุทธศาสนา · ภาษามอญ · เจดีย์กู่กุด พระธาตุหริภุญชัย</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#14B8A6"><div class="L" style="font-size:40px">🛕</div><div class="th">โยนก</div><div class="en">ภาคเหนือ · เมืองเงินยาง (เชียงแสน)</div><div class="ex">ต่อมาเป็นล้านนา<br>พญามังรายสร้างเชียงใหม่ พ.ศ. 1839 เป็นศูนย์กลางล้านนา</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#2E8BEF"><div class="L" style="font-size:40px">🛕</div><div class="th">ทวารวดี</div><div class="en">ภาคกลาง · นครชัยศรี (นครปฐมโบราณ)</div><div class="ex">พุทธศตวรรษที่ 11–16<br>จีนเรียก "โถโลโปตี" · นับถือพุทธศาสนา · พระประโทณเจดีย์ · เมืองโบราณศรีเทพ</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#8B5CF6"><div class="L" style="font-size:40px">🛕</div><div class="th">ละโว้</div><div class="en">ภาคกลาง · ลพบุรี</div><div class="ex">พุทธศตวรรษที่ 12–18<br>แม่น้ำหลายสาย ค้าขายสะดวก · รับศิลปะเขมร · พระปรางค์สามยอด</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#C2410C"><div class="L" style="font-size:40px">🛕</div><div class="th">ขอม (เขมรโบราณ)</div><div class="en">ภาคอีสาน · เมืองพระนคร (กัมพูชา)</div><div class="ex">พุทธศตวรรษที่ 11–19<br>ปราสาทหินพิมาย · ปราสาทหินพนมรุ้ง · อักษรขอมมีผลต่ออักษรไทย</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#F59E0B"><div class="L" style="font-size:40px">🛕</div><div class="th">ตามพรลิงค์</div><div class="en">ภาคใต้ · นครศรีธรรมราช</div><div class="ex">พุทธศตวรรษที่ 13–18<br>ติดต่ออินเดีย ลังกา · พุทธลัทธิลังกาวงศ์ · พระบรมธาตุเจดีย์</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div></div>
+</div></section>
+<section class="slide" data-title="เกม แคว้นอยู่ภาคใด"><div class="inner">
+<h2 class="h"><span class="e">🧭</span>เกม แคว้นโบราณนี้อยู่ภาคใด</h2><div data-jg="state"></div>
+</div></section>
+<section class="slide" data-title="เกม หลักฐานของแคว้นใด"><div class="inner">
+<h2 class="h"><span class="e">🔎</span>เกม หลักฐานนี้เป็นของแคว้นใด</h2><div data-jg="ev"></div>
+</div></section>
+<section class="slide" data-title="มรดกจากแคว้นโบราณ"><div class="inner">
+<h2 class="h"><span class="e">🎁</span>มรดกจากแคว้นโบราณที่ยังอยู่ถึงวันนี้</h2>
+<div class="grid" style="--min:220px">
+ <div class="card c-orange"><h3>🙏 ศาสนา</h3><p>พระพุทธศาสนา ศาสนาอิสลาม สืบทอดถึงปัจจุบัน มีผลต่อประเพณีและวิถีชีวิต</p></div>
+ <div class="card c-blue"><h3>🛕 ศิลปะ</h3><p><b>เจดีย์ทรงกลม</b> ได้อิทธิพลจากลังกาและนครศรีธรรมราช · <b>เจดีย์ทรงปรางค์</b> ได้อิทธิพลจากเขมรโบราณ</p></div>
+ <div class="card c-green"><h3>🗣️ ภาษา</h3><p>รับภาษา <b>บาลี มอญ เขมร</b> มาใช้</p></div>
+ <div class="card c-purple"><h3>🇮🇳 จากอินเดีย</h3><p>ศาสนาพราหมณ์-ฮินดู พุทธศาสนา ภาษาเขียน แนวคิดเรื่องกษัตริย์</p></div>
+</div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> ที่บ้านหรือในชุมชนของเรา มีเจดีย์ทรงกลมหรือทรงปรางค์ไหม? ลองสังเกตดูนะ 👀</p></div>
+</div></section>
+<section class="slide" data-title="เรียงประวัติล้านนา" data-nofit><div class="inner">
+<h2 class="h"><span class="e">📶</span>เรียงเหตุการณ์ จากโยนกสู่ล้านนา</h2><div data-order="lanna"></div>
 </div></section>
 <section class="slide" data-title="แบบทดสอบ"><div class="inner">
 <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายหน่วย (10 ข้อ)</h2><div data-quiz="main"></div>
@@ -90,9 +188,9 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 <section class="slide" data-title="สรุป" data-final><div class="inner">
 <h2 class="h"><span class="e">🌟</span>สรุปบทเรียน</h2>
 <div class="card c-yellow center" data-score></div>
-<div class="grid" style="--min:240px"><div class="card c-blue"><h3>🏕️ ก่อนประวัติศาสตร์</h3><p>ตั้งถิ่นฐานใกล้น้ำ จากเร่ร่อนสู่ชุมชนเกษตร</p></div><div class="card c-green"><h3>🗺️ แหล่งโบราณคดี</h3><p>บ้านเชียง อุดรธานี · บ้านเก่า กาญจนบุรี · ถ้ำลอด แม่ฮ่องสอน</p></div><div class="card c-orange"><h3>🛕 รัฐโบราณ</h3><p>ทวารวดี ละโว้ (กลาง) · หริภุญชัย (เหนือ) · ศรีวิชัย ลังกาสุกะ (ใต้)</p></div><div class="card c-red"><h3>🌏 อิทธิพล</h3><p>อินเดีย: ศาสนา อักษร · จีน: การค้า เครื่องปั้นดินเผา</p></div></div>
+<div class="grid" style="--min:240px"><div class="card c-orange"><h3>📍 ปัจจัยตั้งถิ่นฐาน</h3><p>ทำเลดี · ทรัพยากรอุดม · ติดต่อภายนอก</p></div><div class="card c-green"><h3>🏕️ ชุมชน 4 ยุค</h3><p>หินเก่า → หินใหม่ → สำริด → เหล็ก</p></div><div class="card c-blue"><h3>🛕 แคว้นโบราณ</h3><p>หริภุญชัย โยนก (เหนือ) · ทวารวดี ละโว้ (กลาง) · ขอม (อีสาน) · ตามพรลิงค์ ลังกาสุกะ (ใต้)</p></div><div class="card c-purple"><h3>🎁 มรดก</h3><p>ศาสนา ศิลปะ ภาษา</p></div></div>
 <img class="kru5" src="k11.webp" alt="ครูอู๋ปรบมือ" style="width:140px">
-<div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button><a class="btn" href="../hs4-hub/" style="text-decoration:none;background:var(--green)">🏠 กลับหน้ารวม</a><span class="muted">หน่วยต่อไป: อาณาจักรสุโขทัย</span></div>
+<div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button><a class="btn" href="../hs4-hub/" style="text-decoration:none;background:var(--green)">🏠 กลับหน้ารวม</a><span class="muted">หน่วยต่อไป: ความเป็นมาของชาติไทย</span></div>
 </div></section>
 </main>
 <nav class="nav">
@@ -104,8 +202,11 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 </div>
 <script src="kit.js"></script>
 <script>
-var JGS = {"site": {"icon": "📍", "opts": [["อุดรธานี", "อุดรธานี"], ["ขอนแก่น", "ขอนแก่น"], ["แม่ฮ่องสอน", "แม่ฮ่องสอน"], ["กาญจนบุรี", "กาญจนบุรี"], ["ชลบุรี", "ชลบุรี"], ["กระบี่", "กระบี่"]], "items": [["แหล่งโบราณคดี<b>บ้านเชียง</b><br><small>ภาชนะดินเผาลายเขียนสีแดง · มรดกโลก</small>", "อุดรธานี", "บ้านเชียง อยู่ จ.อุดรธานี (ภาคอีสาน)", "🏺"], ["แหล่งโบราณคดี<b>โนนนกทา</b><br><small>โครงกระดูก เครื่องมือสำริด</small>", "ขอนแก่น", "โนนนกทา อยู่ จ.ขอนแก่น (ภาคอีสาน)", "⚱️"], ["แหล่งโบราณคดี<b>ถ้ำลอด</b><br><small>เครื่องมือหิน โลงศพไม้</small>", "แม่ฮ่องสอน", "ถ้ำลอด อยู่ จ.แม่ฮ่องสอน (ภาคเหนือ)", "🕳️"], ["แหล่งโบราณคดี<b>บ้านเก่า</b><br><small>หม้อสามขา (ยุคหินใหม่)</small>", "กาญจนบุรี", "บ้านเก่า อยู่ จ.กาญจนบุรี (ภาคตะวันตก)", "🫖"], ["แหล่งโบราณคดี<b>บ้านโคกพนมดี</b><br><small>ชุมชนริมทะเลโบราณ เปลือกหอย</small>", "ชลบุรี", "บ้านโคกพนมดี อยู่ จ.ชลบุรี (ภาคตะวันออก)", "🐚"], ["แหล่งโบราณคดี<b>ถ้ำหลังโรงเรียน</b><br><small>เครื่องมือหินยุคแรก ๆ</small>", "กระบี่", "ถ้ำหลังโรงเรียน อยู่ จ.กระบี่ (ภาคใต้)", "🦴"], ["แหล่งโบราณคดี<b>บ้านเชียง</b><br><small>ภาชนะดินเผาลายเขียนสีแดง · มรดกโลก</small>", "อุดรธานี", "บ้านเชียง อยู่ จ.อุดรธานี (ภาคอีสาน)", "🏺"], ["แหล่งโบราณคดี<b>โนนนกทา</b><br><small>โครงกระดูก เครื่องมือสำริด</small>", "ขอนแก่น", "โนนนกทา อยู่ จ.ขอนแก่น (ภาคอีสาน)", "⚱️"], ["แหล่งโบราณคดี<b>ถ้ำลอด</b><br><small>เครื่องมือหิน โลงศพไม้</small>", "แม่ฮ่องสอน", "ถ้ำลอด อยู่ จ.แม่ฮ่องสอน (ภาคเหนือ)", "🕳️"], ["แหล่งโบราณคดี<b>บ้านเก่า</b><br><small>หม้อสามขา (ยุคหินใหม่)</small>", "กาญจนบุรี", "บ้านเก่า อยู่ จ.กาญจนบุรี (ภาคตะวันตก)", "🫖"], ["แหล่งโบราณคดี<b>บ้านโคกพนมดี</b><br><small>ชุมชนริมทะเลโบราณ เปลือกหอย</small>", "ชลบุรี", "บ้านโคกพนมดี อยู่ จ.ชลบุรี (ภาคตะวันออก)", "🐚"], ["แหล่งโบราณคดี<b>ถ้ำหลังโรงเรียน</b><br><small>เครื่องมือหินยุคแรก ๆ</small>", "กระบี่", "ถ้ำหลังโรงเรียน อยู่ จ.กระบี่ (ภาคใต้)", "🦴"]], "n": 10}, "state": {"icon": "🧭", "opts": [["n", "ภาคเหนือ"], ["c", "ภาคกลาง"], ["s", "ภาคใต้"]], "items": [["รัฐโบราณ<b>ทวารวดี</b><br><small>ศูนย์กลาง: นครปฐม / อู่ทอง</small>", "c", "ทวารวดี อยู่ภาคกลาง", "🛕"], ["รัฐโบราณ<b>ละโว้</b><br><small>ศูนย์กลาง: ลพบุรี</small>", "c", "ละโว้ อยู่ภาคกลาง", "🛕"], ["รัฐโบราณ<b>หริภุญชัย</b><br><small>ศูนย์กลาง: ลำพูน</small>", "n", "หริภุญชัย อยู่ภาคเหนือ", "🛕"], ["รัฐโบราณ<b>โยนก (เงินยาง)</b><br><small>ศูนย์กลาง: เชียงราย</small>", "n", "โยนก (เงินยาง) อยู่ภาคเหนือ", "🛕"], ["รัฐโบราณ<b>ศรีวิชัย</b><br><small>ศูนย์กลาง: ไชยา สุราษฎร์ธานี</small>", "s", "ศรีวิชัย อยู่ภาคใต้", "🛕"], ["รัฐโบราณ<b>ลังกาสุกะ</b><br><small>ศูนย์กลาง: ปัตตานี</small>", "s", "ลังกาสุกะ อยู่ภาคใต้", "🛕"], ["อาณาจักร<b>ล้านนา</b><br><small>เมืองหลวง: เชียงใหม่</small>", "n", "ล้านนาอยู่ภาคเหนือ", "🏯"], ["<b>พระปฐมเจดีย์</b> เกี่ยวข้องกับแคว้นทวารวดี<br><small>อยู่ภาคใด</small>", "c", "นครปฐม ภาคกลาง", "🛕"], ["<b>พระบรมธาตุไชยา</b> ของศรีวิชัย<br><small>อยู่ภาคใด</small>", "s", "สุราษฎร์ธานี ภาคใต้", "🛕"], ["<b>พระนางจามเทวี</b> แห่งหริภุญชัย<br><small>อยู่ภาคใด</small>", "n", "ลำพูน ภาคเหนือ", "👸"]]}};
-Kit.quizzes.main = [{"q": "แหล่งโบราณคดีบ้านเชียง อยู่ในจังหวัดใด", "c": ["อุดรธานี", "ชัยภูมิ", "อุบลราชธานี", "นครราชสีมา"], "a": 0, "w": "คำตอบที่ถูก: อุดรธานี"}, {"q": "แคว้นทวารวดีตั้งอยู่บริเวณภาคใดของไทย", "c": ["ภาคกลาง", "ภาคใต้", "ภาคเหนือ", "ภาคตะวันออกเฉียงเหนือตอนบน"], "a": 0, "w": "คำตอบที่ถูก: ภาคกลาง"}, {"q": "สิ่งที่มีชื่อเสียงของแหล่งโบราณคดีบ้านเชียง คือข้อใด", "c": ["ภาชนะดินเผาลายเขียนสีแดง", "เครื่องสังคโลก", "พระพุทธรูปปางลีลา", "ศิลาจารึก"], "a": 0, "w": "คำตอบที่ถูก: ภาชนะดินเผาลายเขียนสีแดง"}, {"q": "ธรรมจักรศิลา เป็นหลักฐานสำคัญของแคว้นใด", "c": ["ทวารวดี", "ศรีวิชัย", "หริภุญชัย", "ลังกาสุกะ"], "a": 0, "w": "คำตอบที่ถูก: ทวารวดี"}, {"q": "แหล่งโบราณคดีบ้านเก่า อยู่ในจังหวัดใด", "c": ["กาญจนบุรี", "ขอนแก่น", "กระบี่", "ลำพูน"], "a": 0, "w": "คำตอบที่ถูก: กาญจนบุรี"}, {"q": "พระปฐมเจดีย์ จังหวัดนครปฐม เกี่ยวข้องกับแคว้นใด", "c": ["ทวารวดี", "ล้านนา", "สุโขทัย", "ศรีวิชัย"], "a": 0, "w": "คำตอบที่ถูก: ทวารวดี"}, {"q": "หม้อสามขา เป็นหลักฐานสำคัญที่พบที่แหล่งโบราณคดีใด", "c": ["บ้านเก่า", "บ้านเชียง", "ถ้ำลอด", "บ้านโคกพนมดี"], "a": 0, "w": "คำตอบที่ถูก: บ้านเก่า"}, {"q": "แคว้นหริภุญชัย มีศูนย์กลางอยู่ที่จังหวัดใด", "c": ["ลำพูน", "ลพบุรี", "ปัตตานี", "นครปฐม"], "a": 0, "w": "คำตอบที่ถูก: ลำพูน"}, {"q": "แหล่งโบราณคดีถ้ำลอด อยู่ในจังหวัดใด", "c": ["แม่ฮ่องสอน", "ชลบุรี", "อุดรธานี", "นครปฐม"], "a": 0, "w": "คำตอบที่ถูก: แม่ฮ่องสอน"}, {"q": "ผู้ปกครองคนแรกของแคว้นหริภุญชัยตามตำนาน คือใคร", "c": ["พระนางจามเทวี", "พ่อขุนรามคำแหง", "พระเจ้าตากสิน", "พญามังราย"], "a": 0, "w": "คำตอบที่ถูก: พระนางจามเทวี"}];
+Kit.orders.dev = {hint:'👆 แตะจากเรื่องแรกไปเรื่องหลัง', unit:'ลำดับที่', items:['เร่ร่อน อาศัยถ้ำ เก็บของป่า ล่าสัตว์','ปลูกข้าว เลี้ยงสัตว์ ตั้งบ้านเรือน','นำสำริดมาทำเครื่องมือ','ใช้เหล็กทำเครื่องมือ ขยายที่เพาะปลูก','ชุมชนเติบโตเป็นบ้านเมือง','เป็นแว่นแคว้น มีกษัตริย์ ศาสนา ตัวอักษร']};
+Kit.orders.lanna = {hint:'👆 แตะจากเหตุการณ์แรกไปเหตุการณ์หลัง', unit:'ลำดับที่', items:['สร้างเมืองเงินยาง (แคว้นโยนก)','พญามังรายย้ายเมืองหลวงมาเชียงราย','สร้างเวียงกุมกาม','สร้างเมืองเชียงใหม่ พ.ศ. 1839','ล้านนารวมเป็นส่วนหนึ่งของไทย']};
+Kit.sorters.fac = {"bins": [{"k": "l", "t": "📍 ทำเลที่ตั้งดี", "c": "var(--orange)"}, {"k": "r", "t": "💧 ทรัพยากรอุดม", "c": "var(--blue)"}, {"k": "o", "t": "⛵ ติดต่อภายนอก", "c": "var(--purple)"}], "items": [{"t": "🏔️ อยู่ถ้ำบนที่สูง หนีสัตว์ร้าย", "k": "l"}, {"t": "🌾 ที่ราบเหมาะปลูกข้าว", "k": "l"}, {"t": "🏞️ ตั้งบ้านริมแม่น้ำ ชายฝั่งทะเล", "k": "l"}, {"t": "🚰 มีน้ำดื่มน้ำใช้ตลอดปี", "k": "r"}, {"t": "🪙 มีแร่ทองแดง ดีบุก", "k": "r"}, {"t": "🌿 มีของป่า เครื่องเทศ", "k": "r"}, {"t": "⛵ ค้าขายกับพ่อค้าต่างชาติ", "k": "o"}, {"t": "🙏 รับศาสนาจากอินเดีย", "k": "o"}, {"t": "✍️ รับภาษาเขียนจากต่างแดน", "k": "o"}]};
+var JGS = {"site": {"icon": "📍", "opts": [["อุดรธานี", "อุดรธานี"], ["ขอนแก่น", "ขอนแก่น"], ["แม่ฮ่องสอน", "แม่ฮ่องสอน"], ["กาญจนบุรี", "กาญจนบุรี"], ["ชลบุรี", "ชลบุรี"], ["กระบี่", "กระบี่"], ["นครราชสีมา", "นครราชสีมา"]], "n": 10, "items": [["แหล่งโบราณคดี<b>บ้านเชียง</b><br><small>ภาชนะดินเผาลายเขียนสี เครื่องสำริด ใบหอกเหล็ก · มรดกโลก</small>", "อุดรธานี", "บ้านเชียง อยู่ จ.อุดรธานี", "🏺"], ["แหล่งโบราณคดี<b>บ้านโนนนกทา</b><br><small>หลักฐานชุมชนยุคสำริด</small>", "ขอนแก่น", "บ้านโนนนกทา อยู่ จ.ขอนแก่น", "⚱️"], ["แหล่งโบราณคดี<b>เพิงผาถ้ำลอด</b><br><small>เครื่องมือหินกะเทาะ โครงกระดูก (อ.ปางมะผ้า)</small>", "แม่ฮ่องสอน", "เพิงผาถ้ำลอด อยู่ จ.แม่ฮ่องสอน", "🕳️"], ["แหล่งโบราณคดี<b>บ้านเก่า</b><br><small>ชุมชนต่อเนื่องหลายยุค เครื่องมือหิน ภาชนะดินเผา</small>", "กาญจนบุรี", "บ้านเก่า อยู่ จ.กาญจนบุรี", "🫖"], ["แหล่งโบราณคดี<b>บ้านโคกพนมดี</b><br><small>เนินหอย เบ็ดตกปลา รู้จักกินอาหารทะเล</small>", "ชลบุรี", "บ้านโคกพนมดี อยู่ จ.ชลบุรี", "🐚"], ["แหล่งโบราณคดี<b>ถ้ำหลังโรงเรียน</b><br><small>เครื่องมือหินกะเทาะ เครื่องมือกระดูกสัตว์</small>", "กระบี่", "ถ้ำหลังโรงเรียน อยู่ จ.กระบี่", "🦴"], ["แหล่งโบราณคดี<b>บ้านดอนตาเพชร</b><br><small>ภาชนะสำริดลายวิจิตร ติดต่อกับอินเดีย</small>", "กาญจนบุรี", "บ้านดอนตาเพชร อยู่ จ.กาญจนบุรี", "🥣"], ["แหล่งโบราณคดี<b>เขาจันทน์งาม</b><br><small>ภาพเขียนสีบนผนังเพิงผา</small>", "นครราชสีมา", "เขาจันทน์งาม อยู่ จ.นครราชสีมา", "🎨"], ["ถ้ำพระ อ.ไทรโยค", "กาญจนบุรี", "จ.กาญจนบุรี", "🕳️"], ["เนินอุโลก (มีดเหล็ก)", "นครราชสีมา", "อ.โนนสูง จ.นครราชสีมา", "🔪"], ["หม้อสามขา ขวานหินขัด (ภาคใต้)", "กระบี่", "พบที่ จ.กระบี่ และพังงา", "🫖"]]}, "state": {"icon": "🧭", "opts": [["n", "ภาคเหนือ"], ["c", "ภาคกลาง"], ["i", "ภาคอีสาน"], ["s", "ภาคใต้"]], "items": [["แคว้น<b>หริภุญชัย</b><br><small>ศูนย์กลาง: ลำพูน</small>", "n", "หริภุญชัย อยู่ภาคเหนือ", "🛕"], ["แคว้น<b>โยนก</b><br><small>ศูนย์กลาง: เมืองเงินยาง (เชียงแสน)</small>", "n", "โยนก อยู่ภาคเหนือ", "🛕"], ["แคว้น<b>ทวารวดี</b><br><small>ศูนย์กลาง: นครชัยศรี (นครปฐมโบราณ)</small>", "c", "ทวารวดี อยู่ภาคกลาง", "🛕"], ["แคว้น<b>ละโว้</b><br><small>ศูนย์กลาง: ลพบุรี</small>", "c", "ละโว้ อยู่ภาคกลาง", "🛕"], ["แคว้น<b>ขอม (เขมรโบราณ)</b><br><small>ศูนย์กลาง: เมืองพระนคร (กัมพูชา)</small>", "i", "ขอม (เขมรโบราณ) อยู่ภาคอีสาน", "🛕"], ["แคว้น<b>ตามพรลิงค์</b><br><small>ศูนย์กลาง: นครศรีธรรมราช</small>", "s", "ตามพรลิงค์ อยู่ภาคใต้", "🛕"], ["แคว้น<b>ลังกาสุกะ</b><br><small>ศูนย์กลาง: ปัตตานี</small>", "s", "ลังกาสุกะ อยู่ภาคใต้", "🛕"], ["<b>ปราสาทหินพิมาย</b><br><small>จ.นครราชสีมา</small>", "i", "ภาคอีสาน", "🏯"], ["<b>เมืองโบราณศรีเทพ</b> (มรดกโลก)<br><small>แคว้นทวารวดี</small>", "c", "จ.เพชรบูรณ์ ภาคกลาง", "🛕"], ["<b>เจดีย์กู่กุด</b><br><small>แคว้นหริภุญชัย</small>", "n", "จ.ลำพูน ภาคเหนือ", "🛕"]]}, "ev": {"icon": "🔎", "opts": [["h", "หริภุญชัย"], ["y", "โยนก/ล้านนา"], ["d", "ทวารวดี"], ["l", "ละโว้"], ["k", "ขอม"], ["t", "ตามพรลิงค์"], ["g", "ลังกาสุกะ"]], "items": [["เจดีย์กู่กุด วัดจามเทวี ลำพูน", "h", "หลักฐานแคว้นหริภุญชัย", "🛕"], ["ตำนานจามเทวีวงศ์", "h", "เรื่องราวแคว้นหริภุญชัย", "📜"], ["เวียงกุมกาม เชียงใหม่", "y", "พญามังรายสร้าง", "🏯"], ["เมืองเงินยาง เชียงแสน", "y", "ศูนย์กลางแคว้นโยนก", "🏯"], ["พระประโทณเจดีย์ นครปฐม", "d", "หลักฐานแคว้นทวารวดี", "🛕"], ["จีนเรียกว่า \"โถโลโปตี\"", "d", "ชื่อทวารวดีในบันทึกจีน", "🇨🇳"], ["พระปรางค์สามยอด ลพบุรี", "l", "สร้างสมัยเขมรปกครองละโว้", "🏛️"], ["ปราสาทหินพนมรุ้ง บุรีรัมย์", "k", "ศิลปะเขมรโบราณ", "🏯"], ["พระบรมธาตุเจดีย์ นครศรีธรรมราช", "t", "หลักฐานแคว้นตามพรลิงค์", "🛕"], ["ซากเมืองโบราณ อ.ยะรัง ปัตตานี", "g", "หลักฐานแคว้นลังกาสุกะ", "🧱"]]}};
+Kit.quizzes.main = [{"q": "แหล่งโบราณคดีบ้านเชียง อยู่ในจังหวัดใด", "c": ["อุดรธานี", "ชัยภูมิ", "อุบลราชธานี", "นครราชสีมา"], "a": 0, "w": "คำตอบที่ถูก: อุดรธานี"}, {"q": "แคว้นทวารวดีตั้งอยู่บริเวณภาคใดของไทย", "c": ["ภาคกลาง", "ภาคใต้", "ภาคเหนือ", "ภาคตะวันออกเฉียงเหนือตอนบน"], "a": 0, "w": "คำตอบที่ถูก: ภาคกลาง"}, {"q": "สิ่งที่มีชื่อเสียงของแหล่งโบราณคดีบ้านเชียง คือข้อใด", "c": ["ภาชนะดินเผาลายเขียนสีแดง", "เครื่องสังคโลก", "พระพุทธรูปปางลีลา", "ศิลาจารึก"], "a": 0, "w": "คำตอบที่ถูก: ภาชนะดินเผาลายเขียนสีแดง"}, {"q": "ธรรมจักรศิลา เป็นหลักฐานสำคัญของแคว้นใด", "c": ["ทวารวดี", "ตามพรลิงค์", "หริภุญชัย", "ลังกาสุกะ"], "a": 0, "w": "คำตอบที่ถูก: ทวารวดี"}, {"q": "แหล่งโบราณคดีบ้านเก่า อยู่ในจังหวัดใด", "c": ["กาญจนบุรี", "ขอนแก่น", "กระบี่", "ลำพูน"], "a": 0, "w": "คำตอบที่ถูก: กาญจนบุรี"}, {"q": "พระปฐมเจดีย์ จังหวัดนครปฐม เกี่ยวข้องกับแคว้นใด", "c": ["ทวารวดี", "ล้านนา", "สุโขทัย", "ตามพรลิงค์"], "a": 0, "w": "คำตอบที่ถูก: ทวารวดี"}, {"q": "หม้อสามขา เป็นหลักฐานสำคัญที่พบที่แหล่งโบราณคดีใด", "c": ["บ้านเก่า", "บ้านเชียง", "ถ้ำลอด", "บ้านโคกพนมดี"], "a": 0, "w": "คำตอบที่ถูก: บ้านเก่า"}, {"q": "แคว้นหริภุญชัย มีศูนย์กลางอยู่ที่จังหวัดใด", "c": ["ลำพูน", "ลพบุรี", "ปัตตานี", "นครปฐม"], "a": 0, "w": "คำตอบที่ถูก: ลำพูน"}, {"q": "แหล่งโบราณคดีถ้ำลอด อยู่ในจังหวัดใด", "c": ["แม่ฮ่องสอน", "ชลบุรี", "อุดรธานี", "นครปฐม"], "a": 0, "w": "คำตอบที่ถูก: แม่ฮ่องสอน"}, {"q": "ผู้ปกครองคนแรกของแคว้นหริภุญชัยตามตำนาน คือใคร", "c": ["พระนางจามเทวี", "พ่อขุนรามคำแหง", "พระเจ้าตากสิน", "พญามังราย"], "a": 0, "w": "คำตอบที่ถูก: พระนางจามเทวี"}];
 
 function JG(el, cfg) {
   var round = 0, score = 0, cur = null, lock = false, N = Math.min(cfg.n || 10, cfg.items.length), bag = [];

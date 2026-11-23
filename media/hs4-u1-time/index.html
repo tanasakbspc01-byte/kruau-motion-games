@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>หน่วยที่ 1 เวลา ยุคสมัย และหลักฐาน · ประวัติศาสตร์ ป.4</title>
+<title>หน่วยที่ 1 เวลาและเหตุการณ์ · ประวัติศาสตร์ ป.4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
@@ -18,6 +18,8 @@
 .vs2{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:680px){.vs2{grid-template-columns:1fr}}
 .case{background:#fff;border-left:6px solid var(--main);border-radius:14px;padding:10px 14px}
 .case h3{margin:0 0 4px}
+.case p{font-size:1.12rem;line-height:1.6}
+table.tb.wide{font-size:1.12rem}table.tb.wide td:first-child{width:auto;white-space:nowrap;font-size:1.1rem;text-align:left}
 .strong{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}@media (max-width:720px){.strong{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .sl{background:#fff;border-radius:18px;border:3px solid var(--sc);padding:10px;text-align:center;cursor:pointer;min-height:150px}
 .sl .L{font:700 52px/1 Mali,sans-serif;color:var(--sc)}.sl .en{font:700 15px Mali,sans-serif;color:#666}.sl .th{font:700 19px Mali,sans-serif}
@@ -41,7 +43,7 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 <div class="app">
 <header class="bar">
   <span class="logo">⏳</span>
-  <div class="ttl"><b>หน่วยที่ 1 เวลา ยุคสมัย และหลักฐาน</b><small>ประวัติศาสตร์ ป.4 · หน่วยที่ 1</small></div>
+  <div class="ttl"><b>หน่วยที่ 1 เวลาและเหตุการณ์</b><small>ประวัติศาสตร์ ป.4 · หน่วยที่ 1</small></div>
   <button class="tb" data-home aria-label="กลับหน้าแรก" title="กลับหน้าแรก">🏠</button>
   <button class="tb" data-fit aria-label="ย่อให้พอดีจอ" title="ย่อให้พอดีจอ">🔍</button>
   <button class="tb" data-sound aria-label="เสียง" title="เปิด/ปิดเสียง">🔊</button>
@@ -52,51 +54,195 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 <section class="slide" data-title="หน้าปก"><div class="inner cover">
 <span class="badge" style="background:var(--blue)">ประวัติศาสตร์ ป.4 · หน่วยที่ 1</span>
 <img class="kru5" src="k5.webp" alt="ครูอู๋">
-<h1>เวลา ยุคสมัย และการศึกษาประวัติศาสตร์ท้องถิ่น</h1>
-<div class="card c-yellow goals"><h3>🎯 เรียนจบแล้ว หนูจะ…</h3><ul><li>ใช้คำบอกช่วงเวลา <b>ทศวรรษ ศตวรรษ สหัสวรรษ</b> ได้</li><li>เทียบ <b>พ.ศ. กับ ค.ศ.</b> ได้</li><li>บอก <b>ยุคสมัยทางประวัติศาสตร์</b> ได้</li><li>ใช้ <b>หลักฐาน</b> และ <b>วิธีการทางประวัติศาสตร์</b> ศึกษาท้องถิ่นได้</li></ul></div>
+<h1>เวลาและเหตุการณ์</h1>
+<div class="card c-yellow goals"><h3>🎯 เรียนจบแล้ว หนูจะ…</h3><ul><li>นับช่วงเวลาเป็น <b>ทศวรรษ ศตวรรษ สหัสวรรษ</b> ได้</li><li>เทียบ <b>พ.ศ. กับ ค.ศ.</b> ได้</li><li>บอก <b>ยุคสมัยทางประวัติศาสตร์</b> สากลและไทยได้</li><li>ยกตัวอย่าง <b>หลักฐานชั้นต้น ชั้นรอง</b> ในท้องถิ่นได้</li></ul></div>
 <button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button>
 </div></section>
-<section class="slide" data-title="การนับช่วงเวลา"><div class="inner">
-<h2 class="h"><span class="e">⏳</span>คำบอกช่วงเวลา</h2>
+<section class="slide" data-title="ประวัติศาสตร์คืออะไร"><div class="inner">
+<h2 class="h"><span class="e">📜</span>ประวัติศาสตร์ กับ เวลา</h2>
+<div class="card c-blue def"><b class="t">📖 ประวัติศาสตร์</b>คือการศึกษา <b>เรื่องราวในอดีตของมนุษย์</b> เพื่อให้รู้ว่าคนในอดีตคิด เชื่อ และทำอะไร และ <b>ทำไม</b> จึงทำเช่นนั้น</div>
+<h3 style="margin:12px 0 6px">⏰ เวลาสำคัญกับประวัติศาสตร์อย่างไร</h3>
 <div class="grid" style="--min:200px">
- <div class="card c-green center"><h3 style="font-size:1.6rem">ทศวรรษ</h3><p class="big">10 ปี</p><p>ทศวรรษ 2560 = พ.ศ. 2560–2569</p></div>
- <div class="card c-blue center"><h3 style="font-size:1.6rem">ศตวรรษ</h3><p class="big">100 ปี</p><p>พุทธศตวรรษที่ 26 = พ.ศ. 2501–2600</p></div>
- <div class="card c-purple center"><h3 style="font-size:1.6rem">สหัสวรรษ</h3><p class="big">1,000 ปี</p><p>ปัจจุบันอยู่ในพุทธสหัสวรรษที่ 3</p></div>
-</div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> ครูอายุครบ 3 ทศวรรษ แปลว่าครูอายุกี่ปี? (คำตอบ: 30 ปี)</p></div>
+ <div class="card c-yellow center"><div style="font-size:40px">📅</div><h3>รู้ว่าเกิดขึ้นเมื่อใด</h3></div>
+ <div class="card c-green center"><div style="font-size:40px">🔢</div><h3>รู้ลำดับก่อน–หลัง</h3></div>
+ <div class="card c-pink center"><div style="font-size:40px">🔗</div><h3>เห็นความสัมพันธ์</h3><p>เหตุการณ์ที่เกิดก่อน มีผลต่อเหตุการณ์ที่เกิดทีหลัง</p></div>
+</div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> ลองเล่าเรื่อง "เมื่อวานของหนู" โดยไม่บอกเวลาเลย เพื่อน ๆ จะงงไหม? 🤔</p></div>
+</div></section>
+<section class="slide" data-title="ตอนที่ 1 เวลาและการนับช่วงเวลา"><div class="inner cover">
+<div class="center" style="padding-top:4vh">
+<div style="font-size:84px;line-height:1">⏳</div>
+<span class="badge" style="background:var(--blue);font-size:1.1rem">ตอนที่ 1</span>
+<h1 style="margin:8px 0">เวลาและการนับช่วงเวลา</h1><p class="muted" style="font-size:1.2rem">ทศวรรษ · ศตวรรษ · สหัสวรรษ · ศักราช</p></div>
+</div></section>
+<section class="slide" data-title="ทศวรรษ" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🔟</span>ทศวรรษ = รอบ 10 ปี</h2>
+<div class="card c-green center"><p style="font:700 1.5rem Mali,sans-serif"><span style="color:#16A34A">ทศ</span> (สิบ) + <span style="color:#1B63B5">วรรษ</span> (ปี) = รอบ <b>10</b> ปี</p><p>เริ่มนับจาก <b>ปีที่ลงท้ายด้วยเลข 0</b> ไปจนถึงปีที่ลงท้ายด้วยเลข 9</p></div>
+<div class="grid" style="--min:240px;margin-top:8px">
+ <div class="card c-blue"><h3>ทศวรรษ 2560</h3><p class="big">พ.ศ. 2560 – 2569</p><p>👉 ปัจจุบันเราอยู่ในทศวรรษนี้</p></div>
+ <div class="card c-purple"><h3>ทศวรรษ 1980</h3><p class="big">ค.ศ. 1980 – 1989</p></div>
+</div>
+<div class="case" style="margin-top:8px"><h3>📰 อ่านข่าวให้เข้าใจ</h3><p>"ตลอด <b>3 ทศวรรษ</b> ที่ผ่านมา…" หมายถึง ช่วงเวลา <b>30 ปี</b> · "ฉลอง <b>1 ทศวรรษ</b>" หมายถึง ครบรอบ <b>10 ปี</b></p></div>
+</div></section>
+<section class="slide" data-title="ศตวรรษ" data-nofit><div class="inner">
+<h2 class="h"><span class="e">💯</span>ศตวรรษ = รอบ 100 ปี</h2>
+<div class="card c-blue center"><p style="font:700 1.5rem Mali,sans-serif"><span style="color:#1B63B5">ศต</span> (ร้อย) + วรรษ (ปี) = รอบ <b>100</b> ปี</p><p>เริ่มนับจาก <b>ปีที่ลงท้ายด้วยเลข 1</b> เป็นปีแรก จนถึงปีที่ลงท้ายด้วย <b>00</b></p></div>
+<table class="tb" style="margin-top:8px"><tr><th>ศตวรรษที่</th><th>ช่วงปี</th><th>ศตวรรษที่</th><th>ช่วงปี</th></tr>
+<tr><td>1</td><td>1 – 100</td><td>18</td><td>1701 – 1800</td></tr><tr><td>2</td><td>101 – 200</td><td>24</td><td>2301 – 2400</td></tr><tr><td>10</td><td>901 – 1000</td><td>26</td><td>2501 – 2600</td></tr></table>
+<div class="card c-yellow" style="margin-top:8px"><h3>🧠 เคล็ดลับหาศตวรรษ</h3><p>ตัดเลข 2 หลักท้ายทิ้ง แล้ว <b>+1</b> เช่น พ.ศ. 2569 → 25 + 1 = <b>พุทธศตวรรษที่ 26</b> (ถ้าลงท้าย 00 ไม่ต้อง +1 เช่น 1800 → ศตวรรษที่ 18)</p></div>
+</div></section>
+<section class="slide" data-title="ศตวรรษในประวัติศาสตร์"><div class="inner">
+<h2 class="h"><span class="e">📜</span>ใช้ "ศตวรรษ" เล่าประวัติศาสตร์</h2>
+<div class="grid" style="--min:250px">
+ <div class="card c-pink"><h3>🐘 ตั้งกรุงสุโขทัย ราว พ.ศ. 1792</h3><p>อยู่ใน <b>พุทธศตวรรษที่ 18</b> (พ.ศ. 1701–1800)</p></div>
+ <div class="card c-orange"><h3>⚔️ สุโขทัยรวมกับอยุธยา ราว พ.ศ. 2006</h3><p>อยู่ใน <b>พุทธศตวรรษที่ 21</b> (พ.ศ. 2001–2100)</p></div>
+ <div class="card c-blue"><h3>🏯 ตั้งกรุงรัตนโกสินทร์ พ.ศ. 2325</h3><p>อยู่ใน <b>พุทธศตวรรษที่ 24</b> (พ.ศ. 2301–2400)</p></div>
+ <div class="card c-green"><h3>🔤 อักษรไทยมีอายุกว่า 7 ศตวรรษ</h3><p>หมายถึง มีอายุมากกว่า <b>700 ปี</b></p></div>
+</div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> ถ้าใช้ พ.ศ. เรียก <b>พุทธศตวรรษ</b> · ถ้าใช้ ค.ศ. เรียก <b>คริสต์ศตวรรษ</b> เช่น ศตวรรษที่ 21 = ค.ศ. 2001–2100</p></div>
+</div></section>
+<section class="slide" data-title="สหัสวรรษ" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🏔️</span>สหัสวรรษ = รอบ 1,000 ปี</h2>
+<div class="grid" style="--min:200px">
+ <div class="card c-purple center"><h3>สหัสวรรษที่ 1</h3><p class="big">ปีที่ 1 – 1000</p></div>
+ <div class="card c-purple center"><h3>สหัสวรรษที่ 2</h3><p class="big">ปีที่ 1001 – 2000</p></div>
+ <div class="card c-purple center"><h3>สหัสวรรษที่ 3</h3><p class="big">ปีที่ 2001 – 3000</p><p>👉 ปัจจุบัน (ทั้ง พ.ศ. และ ค.ศ.)</p></div>
+</div>
+<div class="case" style="margin-top:8px"><h3>💬 ตัวอย่างการใช้</h3><p>• "เมื่อ <b>5 สหัสวรรษ</b> ที่แล้ว โลกยังอยู่ในยุคหิน" = เมื่อ <b>5,000 ปี</b> ที่แล้ว<br>• "พระพุทธศาสนามีอายุเกือบ <b>3 สหัสวรรษ</b>" = เกือบ <b>3,000 ปี</b></p></div>
+<div class="grid" style="--min:160px;margin-top:8px"><div class="card c-green center"><b>ทศวรรษ</b><br>10 ปี</div><div class="card c-blue center"><b>ศตวรรษ</b><br>100 ปี</div><div class="card c-purple center"><b>สหัสวรรษ</b><br>1,000 ปี</div></div>
 </div></section>
 <section class="slide" data-title="ศักราช" data-nofit><div class="inner">
 <h2 class="h"><span class="e">📅</span>ศักราช พ.ศ. และ ค.ศ.</h2>
 <div class="vs2">
- <div class="card c-orange def"><b class="t">☸️ พุทธศักราช (พ.ศ.)</b>เริ่มนับเมื่อ <b>พระพุทธเจ้าเสด็จดับขันธปรินิพพาน</b> คนไทยใช้ พ.ศ. เป็นหลัก</div>
- <div class="card c-blue def"><b class="t">✝️ คริสต์ศักราช (ค.ศ.)</b>เริ่มนับจาก <b>ปีที่พระเยซูประสูติ</b> ใช้กันทั่วโลก</div>
+ <div class="card c-orange def"><b class="t">☸️ พุทธศักราช (พ.ศ.)</b>ศักราชทางพระพุทธศาสนา เริ่มนับเมื่อ <b>พระพุทธเจ้าเสด็จดับขันธปรินิพพาน</b> ไทยใช้ พ.ศ. เป็นหลัก</div>
+ <div class="card c-blue def"><b class="t">✝️ คริสต์ศักราช (ค.ศ.)</b>ศักราชทางคริสต์ศาสนา เริ่มนับจาก <b>ปีที่พระเยซูประสูติ</b> (ตรงกับ พ.ศ. 544) ใช้กันทั่วโลก</div>
 </div><div class="card c-blue center"><h3>🔁 เครื่องแปลงศักราช (ลองพิมพ์ตัวเลข)</h3>
 <div class="row center" style="gap:10px;font:700 22px Sarabun,sans-serif">พ.ศ. <input id="cvB" type="number" inputmode="numeric" value="2569" style="width:120px;font:700 24px Sarabun,sans-serif;border:3px solid #9cc8f5;border-radius:12px;padding:4px 8px"> ⇄ ค.ศ. <input id="cvC" type="number" inputmode="numeric" value="2026" style="width:120px;font:700 24px Sarabun,sans-serif;border:3px solid #9cc8f5;border-radius:12px;padding:4px 8px"></div>
 <p id="cvO" style="font-size:1.2rem;margin-top:8px"></p><p class="muted">สูตร: <b>พ.ศ. − 543 = ค.ศ.</b> · <b>ค.ศ. + 543 = พ.ศ.</b></p></div>
 </div></section>
-<section class="slide" data-title="เกม แปลงศักราช"><div class="inner">
+<section class="slide" data-title="เกม เวลาและศักราช"><div class="inner">
 <h2 class="h"><span class="e">🧮</span>เกม ตอบให้ถูก เวลาและศักราช</h2><div data-jg="time"></div>
 </div></section>
-<section class="slide" data-title="ยุคสมัย"><div class="inner">
-<h2 class="h"><span class="e">🪨</span>ยุคสมัยทางประวัติศาสตร์ · แตะการ์ดเพื่อดูรายละเอียด</h2><div class="strong"><div class="sl" style="--sc:#8A8F98"><div class="L" style="font-size:40px">🪨</div><div class="th">ยุคหินเก่า</div><div class="en">ก่อนประวัติศาสตร์</div><div class="ex">เร่ร่อน ล่าสัตว์ เก็บของป่า อาศัยถ้ำ ใช้เครื่องมือหินกะเทาะ</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#16A34A"><div class="L" style="font-size:40px">🪓</div><div class="th">ยุคหินใหม่</div><div class="en">ก่อนประวัติศาสตร์</div><div class="ex">เริ่มเพาะปลูก เลี้ยงสัตว์ ตั้งถิ่นฐาน ใช้ขวานหินขัด ทำภาชนะดินเผา</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#C77C00"><div class="L" style="font-size:40px">🥁</div><div class="th">ยุคโลหะ</div><div class="en">ก่อนประวัติศาสตร์</div><div class="ex">ยุคสำริด (ทองแดง+ดีบุก) และยุคเหล็ก เช่น กลองมโหระทึก</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#2E8BEF"><div class="L" style="font-size:40px">📜</div><div class="th">สมัยประวัติศาสตร์</div><div class="en">มีตัวอักษรบันทึก</div><div class="ex">เริ่มเมื่อมนุษย์มีตัวอักษรใช้บันทึกเรื่องราว เช่น ศิลาจารึก</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#E8478B"><div class="L" style="font-size:40px">👑</div><div class="th">สมัยสุโขทัย → อยุธยา</div><div class="en">ประวัติศาสตร์ไทย</div><div class="ex">แบ่งตามราชธานีหรือศูนย์กลางการปกครอง</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#8B5CF6"><div class="L" style="font-size:40px">🏛️</div><div class="th">ธนบุรี → รัตนโกสินทร์</div><div class="en">ประวัติศาสตร์ไทย</div><div class="ex">ปัจจุบันเราอยู่ในสมัยรัตนโกสินทร์ (เริ่ม พ.ศ. 2325)</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div></div>
+<section class="slide" data-title="ตอนที่ 2 ยุคสมัยทางประวัติศาสตร์"><div class="inner cover">
+<div class="center" style="padding-top:4vh">
+<div style="font-size:84px;line-height:1">🪨</div>
+<span class="badge" style="background:var(--orange);font-size:1.1rem">ตอนที่ 2</span>
+<h1 style="margin:8px 0">ยุคสมัยทางประวัติศาสตร์</h1><p class="muted" style="font-size:1.2rem">สมัยก่อนประวัติศาสตร์ · สมัยประวัติศาสตร์ · ยุคสมัยของไทย</p></div>
+</div></section>
+<section class="slide" data-title="เกณฑ์การแบ่งยุคสมัย"><div class="inner">
+<h2 class="h"><span class="e">✂️</span>แบ่งยุคสมัยด้วย "ตัวอักษร"</h2>
+<div class="vs2">
+ <div class="card c-orange center"><div style="font-size:46px">🪨🦴</div><h3>สมัยก่อนประวัติศาสตร์</h3><p><b>ยังไม่มีตัวอักษร</b> ใช้บันทึก<br>รู้เรื่องราวจากเครื่องมือ โครงกระดูก ภาชนะ ภาพเขียนสี</p><div class="chipz"><span>ยุคหิน</span><span>ยุคโลหะ</span></div></div>
+ <div class="card c-blue center"><div style="font-size:46px">📜✍️</div><h3>สมัยประวัติศาสตร์</h3><p><b>มีตัวอักษร</b> ใช้บันทึกเรื่องราวแล้ว<br>รู้เรื่องราวจากจารึก เอกสาร หนังสือ</p></div>
+</div>
+<div class="card c-yellow" style="margin-top:8px"><p>🌏 แต่ละดินแดนเข้าสู่สมัยประวัติศาสตร์ <b>ไม่พร้อมกัน</b> เพราะคนแต่ละที่มีตัวอักษรใช้ไม่พร้อมกัน</p></div>
+</div></section>
+<section class="slide" data-title="ยุคหิน"><div class="inner">
+<h2 class="h"><span class="e">🪨</span>ยุคหิน ใช้หินทำเครื่องมือ</h2>
+<div class="vs2">
+ <div class="card c-orange"><h3>🏹 ยุคหินเก่า</h3><ul><li>เร่ร่อน อาศัยใน <b>ถ้ำ</b> และ <b>เพิงผา</b></li><li>เก็บของป่า ล่าสัตว์เป็นอาหาร</li><li>เครื่องมือหิน <b>หยาบ ๆ</b> ใช้ทุบ ตัด สับ</li><li>📍 ถ้ำผีแมน อ.ปางมะผ้า จ.แม่ฮ่องสอน</li></ul></div>
+ <div class="card c-green"><h3>🌾 ยุคหินใหม่</h3><ul><li><b>ตั้งหลักแหล่ง</b> อยู่รวมกันเป็นกลุ่มเล็ก ๆ</li><li>เริ่ม <b>เพาะปลูก</b> และ <b>เลี้ยงสัตว์</b></li><li>เครื่องมือหิน <b>ขัดจนคม ผิวเรียบ</b></li><li>ปั้น <b>ภาชนะดินเผา</b> ตกแต่งให้สวยงาม</li></ul></div>
+</div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> นักโบราณคดีแบ่งละเอียดเป็น <b>หินเก่า → หินกลาง → หินใหม่</b> แต่โดยทั่วไปแบ่งกว้าง ๆ เป็นหินเก่ากับหินใหม่</p></div>
+</div></section>
+<section class="slide" data-title="ยุคโลหะ" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🥁</span>ยุคโลหะ ใช้โลหะทำเครื่องมือ</h2>
+<div class="vs2">
+ <div class="card c-yellow"><h3>🟤 ยุคสำริด</h3><p><b>สำริด</b> = ทองแดง ผสมโลหะอื่น เช่น <b>ดีบุก ตะกั่ว</b></p><p>แข็งแรงกว่าไม้หรือหิน ช่วยให้ถางป่า ตัดไม้ พรวนดินได้เร็วขึ้น</p><p>📍 เครื่องใช้สำริด แหล่งโบราณคดีบ้านเชียง จ.อุดรธานี</p></div>
+ <div class="card c-blue"><h3>⚫ ยุคเหล็ก</h3><p>ถลุงและหลอม <b>เหล็ก</b> ได้ เครื่องมือแข็งแรง <b>ทนทานกว่าสำริด</b> ไม่หักหรือบิ่นง่าย</p><p>มี ไถ จอบ มีด → <b>การเกษตรก้าวหน้า</b></p><p>📍 ใบหอกเหล็ก บ้านเชียง จ.อุดรธานี</p></div>
+</div>
+<div class="card c-purple" style="margin-top:8px"><h3>🏘️ ชีวิตคนยุคโลหะ</h3><div class="chipz"><span>อยู่รวมเป็นชุมชน</span><span>ล่าสัตว์ + เพาะปลูก</span><span>มีพิธีฝังศพ</span><span>แลกเปลี่ยนค้าขายกับชุมชนอื่น</span><span>พบลูกปัดจากอินเดีย</span></div></div>
+</div></section>
+<section class="slide" data-title="สรุปยุคก่อนประวัติศาสตร์"><div class="inner">
+<h2 class="h"><span class="e">🃏</span>ทบทวนยุคสมัย · แตะการ์ดเพื่อดูรายละเอียด</h2><div class="strong"><div class="sl" style="--sc:#8A8F98"><div class="L" style="font-size:40px">🪨</div><div class="th">ยุคหินเก่า</div><div class="en">ก่อนประวัติศาสตร์</div><div class="ex">เร่ร่อน ล่าสัตว์ เก็บของป่า อาศัยถ้ำ เครื่องมือหินหยาบ</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#16A34A"><div class="L" style="font-size:40px">🪓</div><div class="th">ยุคหินใหม่</div><div class="en">ก่อนประวัติศาสตร์</div><div class="ex">ตั้งหลักแหล่ง เพาะปลูก เลี้ยงสัตว์ เครื่องมือหินขัด ภาชนะดินเผา</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#C77C00"><div class="L" style="font-size:40px">🥁</div><div class="th">ยุคสำริด</div><div class="en">ยุคโลหะ</div><div class="ex">ทองแดงผสมดีบุก/ตะกั่ว แข็งกว่าหิน</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#475569"><div class="L" style="font-size:40px">⚔️</div><div class="th">ยุคเหล็ก</div><div class="en">ยุคโลหะ</div><div class="ex">เครื่องมือเหล็กทนทาน เกษตรก้าวหน้า</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#2E8BEF"><div class="L" style="font-size:40px">📜</div><div class="th">สมัยประวัติศาสตร์</div><div class="en">มีตัวอักษรบันทึก</div><div class="ex">รู้เรื่องราวจากจารึก เอกสาร หนังสือ</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#8B5CF6"><div class="L" style="font-size:40px">🏛️</div><div class="th">สมัยรัตนโกสินทร์</div><div class="en">ประวัติศาสตร์ไทย</div><div class="ex">สมัยปัจจุบันของเรา (เริ่ม พ.ศ. 2325)</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div></div>
+</div></section>
+<section class="slide" data-title="เกม อยู่ยุคไหน"><div class="inner">
+<h2 class="h"><span class="e">🕵️</span>เกม ชีวิตแบบนี้อยู่ยุคไหน</h2><div data-jg="age"></div>
+</div></section>
+<section class="slide" data-title="สมัยประวัติศาสตร์"><div class="inner">
+<h2 class="h"><span class="e">✍️</span>เข้าสู่สมัยประวัติศาสตร์</h2>
+<div class="vs2">
+ <div class="card c-orange"><h3>🌍 ดินแดนตะวันออกกลาง</h3><p>พบตัวอักษรเก่าแก่ที่สุดในโลก คือ <b>อักษรคูนิฟอร์ม</b> (อักษรรูปลิ่ม) ของชาว <b>สุเมเรียน</b> อายุประมาณ <b>4,000 ปีก่อนคริสต์ศักราช</b></p></div>
+ <div class="card c-blue"><h3>🇹🇭 ดินแดนไทย</h3><p>หลักฐานเก่าที่สุด คือ <b>จารึกเขาน้อย</b> ระบุปีชัดเจนตรงกับ <b>พ.ศ. 1180</b> (พุทธศตวรรษที่ 12) พบที่ อ.อรัญประเทศ <b>จ.สระแก้ว</b></p></div>
+</div>
+<div class="card c-green" style="margin-top:8px"><h3>⭐ ตัวอักษรสำคัญอย่างไร</h3><div class="chipz"><span>📝 บันทึกเรื่องราวได้</span><span>👦 คนรุ่นหลังรู้เรื่องในอดีต</span><span>📚 สร้างสรรค์งานเขียน</span></div></div>
+</div></section>
+<section class="slide" data-title="ยุคสมัยของไทย" data-nofit><div class="inner">
+<h2 class="h"><span class="e">👑</span>ยุคสมัยของไทย แบ่งตามอาณาจักรหรือราชธานี</h2><div class="tl"><div class="it" style="--c:#94a3b8"><span style="font-size:30px">🏺</span><b class="n">สมัยก่อนสุโขทัย</b><span class="y">ก่อน พ.ศ. 1792</span><span class="d">ช่วงเวลาก่อนตั้งอาณาจักรสุโขทัย</span></div><div class="it" style="--c:#E8478B"><span style="font-size:30px">🐘</span><b class="n">สมัยสุโขทัย</b><span class="y">พ.ศ. 1792 – 2006</span><span class="d">จนสุโขทัยถูกรวมเข้ากับอยุธยา</span></div><div class="it" style="--c:#F59E0B"><span style="font-size:30px">⚔️</span><b class="n">สมัยอยุธยา</b><span class="y">พ.ศ. 1893 – 2310</span><span class="d">ราชธานียาวนานที่สุด 417 ปี</span></div><div class="it" style="--c:#16A34A"><span style="font-size:30px">🐎</span><b class="n">สมัยธนบุรี</b><span class="y">พ.ศ. 2310 – 2325</span><span class="d">สมเด็จพระเจ้าตากสินมหาราช</span></div><div class="it" style="--c:#2E8BEF"><span style="font-size:30px">🏯</span><b class="n">สมัยรัตนโกสินทร์</b><span class="y">พ.ศ. 2325 – ปัจจุบัน</span><span class="d">กรุงเทพมหานครเป็นราชธานี</span></div></div>
+<style>.tl{display:flex;flex-direction:column;gap:6px;position:relative;padding-left:26px}.tl:before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:6px;border-radius:3px;background:linear-gradient(#94a3b8,#E8478B,#F59E0B,#16A34A,#2E8BEF)}
+.tl .it{position:relative;background:#fff;border:3px solid var(--c);border-radius:14px;padding:6px 12px;display:flex;gap:10px;align-items:center}
+.tl .it:before{content:"";position:absolute;left:-25px;top:50%;margin-top:-9px;width:18px;height:18px;border-radius:50%;background:var(--c);border:3px solid #fff}
+.tl .it b.n{font:700 1.2rem Mali,sans-serif;color:var(--c);min-width:150px}.tl .it .y{font:700 1.05rem Sarabun,sans-serif;background:var(--c);color:#fff;border-radius:999px;padding:2px 10px;white-space:nowrap}
+.tl .it span.d{flex:1;font-size:1rem}</style>
+</div></section>
+<section class="slide" data-title="รัตนโกสินทร์แบ่งย่อย" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🏯</span>สมัยรัตนโกสินทร์ แบ่งย่อยตามการเปลี่ยนแปลงบ้านเมือง</h2><div class="tl"><div class="it" style="--c:#2E8BEF"><span style="font-size:30px">🏯</span><b class="n">รัตนโกสินทร์ตอนต้น</b><span class="y">พ.ศ. 2325 – 2394</span><span class="d">3 รัชกาลแรก ฟื้นฟูบ้านเมือง ป้องกันประเทศ เศรษฐกิจ ศิลปวัฒนธรรม พระพุทธศาสนา</span></div><div class="it" style="--c:#8B5CF6"><span style="font-size:30px">🚂</span><b class="n">ยุคปรับปรุงและปฏิรูปประเทศ</b><span class="y">พ.ศ. 2394 – 2475</span><span class="d">ติดต่อกับชาติตะวันตก ปรับปรุงบ้านเมืองให้ทันสมัย</span></div><div class="it" style="--c:#16A34A"><span style="font-size:30px">🗳️</span><b class="n">สมัยประชาธิปไตย</b><span class="y">พ.ศ. 2475 – ปัจจุบัน</span><span class="d">เปลี่ยนแปลงการปกครองเป็นระบอบประชาธิปไตย</span></div></div>
+<style>.tl{display:flex;flex-direction:column;gap:6px;position:relative;padding-left:26px}.tl:before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:6px;border-radius:3px;background:linear-gradient(#94a3b8,#E8478B,#F59E0B,#16A34A,#2E8BEF)}
+.tl .it{position:relative;background:#fff;border:3px solid var(--c);border-radius:14px;padding:6px 12px;display:flex;gap:10px;align-items:center}
+.tl .it:before{content:"";position:absolute;left:-25px;top:50%;margin-top:-9px;width:18px;height:18px;border-radius:50%;background:var(--c);border:3px solid #fff}
+.tl .it b.n{font:700 1.2rem Mali,sans-serif;color:var(--c);min-width:150px}.tl .it .y{font:700 1.05rem Sarabun,sans-serif;background:var(--c);color:#fff;border-radius:999px;padding:2px 10px;white-space:nowrap}
+.tl .it span.d{flex:1;font-size:1rem}</style><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> ทำไมสุโขทัยกับอยุธยามีช่วงเวลาซ้อนกัน? (ใบ้: อยุธยาตั้งขึ้นปี 1893 ตอนสุโขทัยยังอยู่ แล้วค่อยรวมสุโขทัยภายหลัง)</p></div>
 </div></section>
 <section class="slide" data-title="เรียงยุคสมัย" data-nofit><div class="inner">
 <h2 class="h"><span class="e">📶</span>เรียงลำดับยุคสมัย</h2>
 <div class="vs2"><div><h3>🪨 สมัยก่อนประวัติศาสตร์</h3><div data-order="pre"></div></div><div><h3>👑 สมัยประวัติศาสตร์ไทย</h3><div data-order="thai"></div></div></div>
 </div></section>
-<section class="slide" data-title="หลักฐานทางประวัติศาสตร์"><div class="inner">
-<h2 class="h"><span class="e">🔎</span>หลักฐานทางประวัติศาสตร์</h2>
+<section class="slide" data-title="ตอนที่ 3 การศึกษาประวัติศาสตร์ท้องถิ่น"><div class="inner cover">
+<div class="center" style="padding-top:4vh">
+<div style="font-size:84px;line-height:1">🏘️</div>
+<span class="badge" style="background:var(--green);font-size:1.1rem">ตอนที่ 3</span>
+<h1 style="margin:8px 0">การศึกษาประวัติศาสตร์ท้องถิ่น</h1><p class="muted" style="font-size:1.2rem">หลักฐานชั้นต้น · หลักฐานชั้นรอง · ตัวอย่างในท้องถิ่น</p></div>
+</div></section>
+<section class="slide" data-title="ทำไมศึกษาท้องถิ่น" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🏘️</span>ศึกษาประวัติศาสตร์ท้องถิ่น ดีอย่างไร</h2>
+<div class="grid" style="--min:200px">
+ <div class="card c-blue center"><div style="font-size:40px">🧠</div><h3>รู้และเข้าใจ</h3><p>ความเป็นมาของท้องถิ่นได้ถูกต้อง</p></div>
+ <div class="card c-pink center"><div style="font-size:40px">💖</div><h3>ภาคภูมิใจ</h3><p>ในท้องถิ่นของตนเอง</p></div>
+ <div class="card c-green center"><div style="font-size:40px">🤝</div><h3>ช่วยกันรักษา</h3><p>โบราณสถาน วัฒนธรรมของบ้านเรา</p></div>
+</div>
+<h3 style="margin:12px 0 6px">🔎 หลักฐานแบ่งเป็น 2 ประเภท</h3>
 <div class="vs2">
- <div class="card c-green def"><b class="t">1️⃣ หลักฐานชั้นต้น</b>บันทึกหรือสิ่งที่ <b>ผู้อยู่ในเหตุการณ์</b> สร้างไว้ เช่น ศิลาจารึก จดหมายเหตุ บันทึกของผู้เห็นเหตุการณ์</div>
- <div class="card c-orange def"><b class="t">2️⃣ หลักฐานชั้นรอง</b>เขียนขึ้น <b>ภายหลัง</b> โดยค้นคว้าจากหลักฐานอื่น เช่น หนังสือประวัติศาสตร์ บทความ</div>
- <div class="card c-blue def"><b class="t">✍️ เป็นลายลักษณ์อักษร</b>ศิลาจารึก พงศาวดาร จดหมายเหตุ ตำนาน</div>
- <div class="card c-purple def"><b class="t">🏺 ไม่เป็นลายลักษณ์อักษร</b>โบราณสถาน (เจดีย์ วัด กำแพงเมือง) โบราณวัตถุ (พระพุทธรูป ภาชนะ) คำบอกเล่า</div>
+ <div class="card c-green def"><b class="t">1️⃣ หลักฐานชั้นต้น</b>เกิดใน <b>ช่วงเวลาเดียวกับเหตุการณ์</b> เช่น บันทึกของผู้อยู่ในเหตุการณ์ หนังสือพิมพ์ รูปถ่าย สิ่งของ</div>
+ <div class="card c-orange def"><b class="t">2️⃣ หลักฐานชั้นรอง</b>เขียนหรือรวบรวม <b>ภายหลังเหตุการณ์</b> จากการศึกษาหลักฐานชั้นต้น เช่น หนังสือต่าง ๆ</div>
+</div>
+</div></section>
+<section class="slide" data-title="ชั้นต้นกับชั้นรอง"><div class="inner">
+<h2 class="h"><span class="e">⚖️</span>ชั้นต้น vs ชั้นรอง ต่างกันอย่างไร</h2>
+<table class="tb wide"><tr><th></th><th>🟢 หลักฐานชั้นต้น</th><th>🟠 หลักฐานชั้นรอง</th></tr>
+<tr><td><b>เกิดขึ้นเมื่อไร</b></td><td>ช่วงเดียวกับเหตุการณ์</td><td>ภายหลังเหตุการณ์</td></tr>
+<tr><td><b>ใครทำ</b></td><td>คนที่อยู่ในเหตุการณ์</td><td>คนที่ศึกษาค้นคว้าภายหลัง</td></tr>
+<tr><td><b>ความน่าเชื่อถือ</b></td><td>⭐⭐⭐ มากกว่า</td><td>⭐⭐ น้อยกว่า</td></tr>
+<tr><td><b>การค้นคว้า</b></td><td>หายาก อ่านยาก</td><td>✅ สะดวกกว่า</td></tr></table><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> ภาพถ่ายงานวันเกิดปีที่แล้วของหนู เป็นหลักฐานชั้นไหน? (ชั้นต้น 📸)</p></div>
+</div></section>
+<section class="slide" data-title="หลักฐานชั้นต้นในท้องถิ่น" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🟢</span>หลักฐานชั้นต้นในท้องถิ่น</h2>
+<div class="grid" style="--min:230px">
+ <div class="card c-green"><h3>🛕 สถานที่สำคัญ</h3><p>โบราณสถาน แหล่งโบราณคดี ศาสนสถาน เช่น วัด มัสยิด โบสถ์ (เป็นศูนย์กลางชุมชนและเก็บของเก่า)</p></div>
+ <div class="card c-blue"><h3>📷 รูปถ่าย</h3><p>บันทึกสถานที่ ชีวิตความเป็นอยู่ เหตุการณ์ในอดีต เช่น ภาพคลองบางลำพู สมัยรัชกาลที่ 5</p></div>
+ <div class="card c-purple"><h3>🗂️ เอกสารทางราชการ</h3><p>จาก อบต. อบจ. สำนักงานวัฒนธรรมจังหวัด เช่น รายงานการประชุม รายงานประจำปี</p></div>
+ <div class="card c-orange"><h3>🏺 สิ่งของต่าง ๆ</h3><p>จารึกโบราณ ภาพวาด เครื่องใช้ในอดีต ศาสนวัตถุ เช่น พระพุทธรูป ธรรมจักร ตู้พระไตรปิฎก</p></div>
+</div>
+<div class="case" style="margin-top:8px"><h3>📍 ตัวอย่าง</h3><p>แหล่งโบราณคดีบ้านเชียง จ.อุดรธานี · อุทยานประวัติศาสตร์สุโขทัย · รูปถ่ายเมืองเชียงใหม่ในอดีต</p></div>
+</div></section>
+<section class="slide" data-title="หลักฐานชั้นรองในท้องถิ่น" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🟠</span>หลักฐานชั้นรองในท้องถิ่น</h2>
+<div class="grid" style="--min:230px">
+ <div class="card c-orange"><h3>🐉 ตำนาน</h3><p>เรื่องเล่าต่อ ๆ กันมา รายละเอียดเปลี่ยนไปตามผู้เล่า <b>ไม่ระบุเวลาแน่นอน</b> มักมีเรื่องเหนือธรรมชาติ เช่น เทวดา ผีสาง<br>⚠️ ต้อง <b>ตรวจสอบกับหลักฐานอื่น</b> ก่อนเชื่อ</p></div>
+ <div class="card c-blue"><h3>📚 หนังสือ</h3><p>หนังสือประวัติท้องถิ่น หนังสือแนะนำสถานที่ท่องเที่ยว ประวัติบุคคลสำคัญ</p></div>
+ <div class="card c-purple"><h3>💻 เว็บไซต์ของท้องถิ่น</h3><p>รวบรวมเรื่องราวของท้องถิ่นไว้ สะดวกในการสืบค้น</p></div>
+ <div class="card c-pink"><h3>🎶 นิทาน · เพลงพื้นบ้าน</h3><p>เล่าความเป็นมา ชีวิต และอาชีพของคนในท้องถิ่น</p></div>
+</div>
+</div></section>
+<section class="slide" data-title="ตัวอย่างตำนาน"><div class="inner">
+<h2 class="h"><span class="e">🐉</span>ตัวอย่าง ตำนานเกี่ยวกับสถานที่</h2>
+<div class="case"><h3>🛕 ตำนานพระยากง พระยาพาน (จ.นครปฐม)</h3><p>ตำนานเล่าว่า โหรทำนายว่า <b>พระยาพาน</b> จะทำร้ายพ่อของตน พระยากงจึงให้นำไปทิ้ง ยายหอมเก็บไปเลี้ยง เมื่อโตขึ้นพระยาพานรบชนะพระยากงโดยไม่รู้ว่าเป็นพ่อ ภายหลังรู้ความจริงจึงสำนึกผิด และสร้าง <b>พระปฐมเจดีย์</b> กับ <b>พระประโทณเจดีย์</b></p></div>
+<div class="grid" style="--min:220px;margin-top:8px">
+ <div class="card c-green"><h3>✅ ได้รู้อะไร</h3><p>ที่มาของสถานที่สำคัญ ความเชื่อของคนในท้องถิ่น</p></div>
+ <div class="card c-red"><h3>⚠️ ระวังอะไร</h3><p>ไม่บอกปีที่แน่นอน อาจเปลี่ยนไปตามผู้เล่า → ต้องตรวจสอบกับหลักฐานอื่น</p></div>
 </div>
 </div></section>
 <section class="slide" data-title="คัดแยกหลักฐาน"><div class="inner">
-<h2 class="h"><span class="e">🗂️</span>คัดแยก: หลักฐานเป็นลายลักษณ์อักษร หรือ ไม่เป็นลายลักษณ์อักษร</h2><div data-sorter="ev"></div>
+<h2 class="h"><span class="e">🗂️</span>คัดแยก: หลักฐานชั้นต้น หรือ ชั้นรอง</h2><div data-sorter="ev"></div>
 </div></section>
-<section class="slide" data-title="วิธีการทางประวัติศาสตร์"><div class="inner">
-<h2 class="h"><span class="e">🕵️</span>วิธีการทางประวัติศาสตร์ 5 ขั้น · เรียงให้ถูก</h2><div data-order="method"></div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> ลองใช้ 5 ขั้นนี้ศึกษา "ประวัติวัดในหมู่บ้านของเรา" ควรไปถามใคร และดูหลักฐานอะไรบ้าง?</p></div>
+<section class="slide" data-title="นักสืบท้องถิ่น" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🕵️</span>เป็นนักสืบประวัติท้องถิ่น · เรียงขั้นตอนให้ถูก</h2><div data-order="method"></div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> ลองสืบ "ประวัติวัดหรือโรงเรียนของเรา" ควรไปถามใคร และดูหลักฐานอะไรบ้าง? 🔍</p></div>
 </div></section>
 <section class="slide" data-title="แบบทดสอบ"><div class="inner">
 <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายหน่วย (10 ข้อ)</h2><div data-quiz="main"></div>
@@ -104,9 +250,9 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 <section class="slide" data-title="สรุป" data-final><div class="inner">
 <h2 class="h"><span class="e">🌟</span>สรุปบทเรียน</h2>
 <div class="card c-yellow center" data-score></div>
-<div class="grid" style="--min:240px"><div class="card c-green"><h3>⏳ ช่วงเวลา</h3><p>ทศวรรษ 10 ปี · ศตวรรษ 100 ปี · สหัสวรรษ 1,000 ปี</p></div><div class="card c-blue"><h3>📅 ศักราช</h3><p>พ.ศ. − 543 = ค.ศ.</p></div><div class="card c-orange"><h3>🪨 ยุคสมัย</h3><p>หินเก่า → หินใหม่ → โลหะ → ประวัติศาสตร์</p></div><div class="card c-purple"><h3>🔎 หลักฐาน</h3><p>ชั้นต้น / ชั้นรอง · ลายลักษณ์ / ไม่ใช่ลายลักษณ์</p></div></div>
+<div class="grid" style="--min:240px"><div class="card c-green"><h3>⏳ ช่วงเวลา</h3><p>ทศวรรษ 10 ปี · ศตวรรษ 100 ปี · สหัสวรรษ 1,000 ปี</p></div><div class="card c-blue"><h3>📅 ศักราช</h3><p>พ.ศ. − 543 = ค.ศ.</p></div><div class="card c-orange"><h3>🪨 ยุคสมัย</h3><p>ก่อนประวัติศาสตร์ (หิน โลหะ) → ประวัติศาสตร์ (มีตัวอักษร)</p></div><div class="card c-pink"><h3>👑 ยุคไทย</h3><p>สุโขทัย → อยุธยา → ธนบุรี → รัตนโกสินทร์</p></div><div class="card c-purple"><h3>🔎 หลักฐาน</h3><p>ชั้นต้น (ช่วงเหตุการณ์) · ชั้นรอง (ภายหลัง)</p></div></div>
 <img class="kru5" src="k11.webp" alt="ครูอู๋ปรบมือ" style="width:140px">
-<div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button><a class="btn" href="../hs4-hub/" style="text-decoration:none;background:var(--green)">🏠 กลับหน้ารวม</a><span class="muted">หน่วยต่อไป: พัฒนาการของมนุษย์ในดินแดนไทย</span></div>
+<div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button><a class="btn" href="../hs4-hub/" style="text-decoration:none;background:var(--green)">🏠 กลับหน้ารวม</a><span class="muted">หน่วยต่อไป: การตั้งถิ่นฐานและพัฒนาการ</span></div>
 </div></section>
 </main>
 <nav class="nav">
@@ -120,16 +266,16 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 <script>
 Kit.orders.pre = {hint:'👆 แตะจากยุคแรกสุดไปยุคหลัง', unit:'ลำดับที่', items:['ยุคหินเก่า','ยุคหินกลาง','ยุคหินใหม่','ยุคสำริด','ยุคเหล็ก']};
 Kit.orders.thai = {hint:'👆 แตะจากสมัยแรกไปสมัยปัจจุบัน', unit:'ลำดับที่', items:['สุโขทัย','อยุธยา','ธนบุรี','รัตนโกสินทร์']};
-Kit.orders.method = {hint:'👆 แตะจากขั้นแรกไปขั้นสุดท้าย', items:['กำหนดหัวข้อที่ต้องการศึกษา','รวบรวมหลักฐาน','ประเมินคุณค่าของหลักฐาน','วิเคราะห์และตีความหลักฐาน','นำเสนอผลการศึกษา']};
-Kit.sorters.ev = {bins:[{k:'w',t:'✍️ ลายลักษณ์อักษร',c:'var(--blue)'},{k:'n',t:'🏺 ไม่เป็นลายลักษณ์อักษร',c:'var(--purple)'}],items:[{"t": "📜 ศิลาจารึก", "k": "w"}, {"t": "📖 พงศาวดาร", "k": "w"}, {"t": "✉️ จดหมายเหตุ", "k": "w"}, {"t": "📒 บันทึกการเดินทาง", "k": "w"}, {"t": "📕 ตำนาน", "k": "w"}, {"t": "🛕 เจดีย์เก่า", "k": "n"}, {"t": "🗿 พระพุทธรูปโบราณ", "k": "n"}, {"t": "🏺 ภาชนะดินเผา", "k": "n"}, {"t": "🪓 เครื่องมือหิน", "k": "n"}, {"t": "🏯 กำแพงเมืองโบราณ", "k": "n"}]};
-var JGS = {"time": {"icon": "⏳", "opts": [["a", "ก"], ["b", "ข"], ["c", "ค"]], "items": [["พ.ศ. 2567 ตรงกับ ค.ศ. ใด<br><small>ก) 2024 · ข) 2025 · ค) 3110</small>", "a", "2567 − 543 = 2024", "📅"], ["ค.ศ. 2000 ตรงกับ พ.ศ. ใด<br><small>ก) 2457 · ข) 2543 · ค) 2500</small>", "b", "2000 + 543 = 2543", "📅"], ["ค.ศ. 2026 ตรงกับ พ.ศ. ใด<br><small>ก) 2569 · ข) 2568 · ค) 1483</small>", "a", "2026 + 543 = 2569", "📅"], ["3 ทศวรรษ เท่ากับกี่ปี<br><small>ก) 3 ปี · ข) 300 ปี · ค) 30 ปี</small>", "c", "1 ทศวรรษ = 10 ปี", "⏳"], ["5 ศตวรรษ เท่ากับกี่ปี<br><small>ก) 500 ปี · ข) 50 ปี · ค) 5,000 ปี</small>", "a", "1 ศตวรรษ = 100 ปี", "⏳"], ["2 สหัสวรรษ เท่ากับกี่ปี<br><small>ก) 200 ปี · ข) 2,000 ปี · ค) 20 ปี</small>", "b", "1 สหัสวรรษ = 1,000 ปี", "⏳"], ["พ.ศ. 1826 อยู่ในพุทธศตวรรษที่เท่าใด<br><small>ก) 18 · ข) 19 · ค) 20</small>", "b", "พ.ศ. 1801–1900 คือพุทธศตวรรษที่ 19", "📜"], ["พ.ศ. 1792 อยู่ในพุทธศตวรรษที่เท่าใด<br><small>ก) 18 · ข) 17 · ค) 19</small>", "a", "พ.ศ. 1701–1800 คือพุทธศตวรรษที่ 18", "👑"], ["ทศวรรษ 2550 คือช่วงปีใด<br><small>ก) 2550–2559 · ข) 2551–2560 · ค) 2500–2599</small>", "a", "ทศวรรษเริ่มที่ปีลงท้าย 0", "📆"], ["ค.ศ. เริ่มนับจากเหตุการณ์ใด<br><small>ก) พระพุทธเจ้าปรินิพพาน · ข) ตั้งกรุงสุโขทัย · ค) พระเยซูประสูติ</small>", "c", "คริสต์ศักราชนับจากปีที่พระเยซูประสูติ", "✝️"]]}};
+Kit.orders.method = {hint:'👆 แตะจากขั้นแรกไปขั้นสุดท้าย', items:['เลือกเรื่องที่อยากรู้ เช่น ประวัติวัดในชุมชน','รวบรวมหลักฐาน ถามผู้รู้ ไปดูสถานที่จริง','ตรวจสอบว่าหลักฐานน่าเชื่อถือไหม','คิดวิเคราะห์ เรียบเรียงเรื่องราว','นำเสนอให้เพื่อน ๆ ฟัง']};
+Kit.sorters.ev = {bins:[{k:'p',t:'🟢 หลักฐานชั้นต้น',c:'var(--green)'},{k:'s',t:'🟠 หลักฐานชั้นรอง',c:'var(--orange)'}],items:[{"t": "📜 จารึกโบราณ", "k": "p"}, {"t": "📷 รูปถ่ายเมืองในอดีต", "k": "p"}, {"t": "🛕 โบราณสถานในท้องถิ่น", "k": "p"}, {"t": "🗂️ รายงานประจำปีของ อบต.", "k": "p"}, {"t": "🏺 ภาชนะดินเผาบ้านเชียง", "k": "p"}, {"t": "📰 หนังสือพิมพ์วันเกิดเหตุ", "k": "p"}, {"t": "🐉 ตำนานเมือง", "k": "s"}, {"t": "📚 หนังสือประวัติท้องถิ่น", "k": "s"}, {"t": "💻 เว็บไซต์ของท้องถิ่น", "k": "s"}, {"t": "🗺️ หนังสือนำเที่ยว", "k": "s"}]};
+var JGS = {"time": {"icon": "⏳", "opts": [["a", "ก"], ["b", "ข"], ["c", "ค"]], "items": [["พ.ศ. 2567 ตรงกับ ค.ศ. ใด<br><small>ก) 2024 · ข) 2025 · ค) 3110</small>", "a", "2567 − 543 = 2024", "📅"], ["ค.ศ. 2000 ตรงกับ พ.ศ. ใด<br><small>ก) 2457 · ข) 2543 · ค) 2500</small>", "b", "2000 + 543 = 2543", "📅"], ["ค.ศ. 2026 ตรงกับ พ.ศ. ใด<br><small>ก) 2569 · ข) 2568 · ค) 1483</small>", "a", "2026 + 543 = 2569", "📅"], ["3 ทศวรรษ เท่ากับกี่ปี<br><small>ก) 3 ปี · ข) 300 ปี · ค) 30 ปี</small>", "c", "1 ทศวรรษ = 10 ปี", "⏳"], ["5 ศตวรรษ เท่ากับกี่ปี<br><small>ก) 500 ปี · ข) 50 ปี · ค) 5,000 ปี</small>", "a", "1 ศตวรรษ = 100 ปี", "⏳"], ["2 สหัสวรรษ เท่ากับกี่ปี<br><small>ก) 200 ปี · ข) 2,000 ปี · ค) 20 ปี</small>", "b", "1 สหัสวรรษ = 1,000 ปี", "⏳"], ["พ.ศ. 2325 (ตั้งกรุงรัตนโกสินทร์) อยู่ในพุทธศตวรรษที่เท่าใด<br><small>ก) 23 · ข) 24 · ค) 25</small>", "b", "พ.ศ. 2301–2400 คือพุทธศตวรรษที่ 24", "🏯"], ["พ.ศ. 1792 อยู่ในพุทธศตวรรษที่เท่าใด<br><small>ก) 18 · ข) 17 · ค) 19</small>", "a", "พ.ศ. 1701–1800 คือพุทธศตวรรษที่ 18", "👑"], ["ทศวรรษ 2550 คือช่วงปีใด<br><small>ก) 2550–2559 · ข) 2551–2560 · ค) 2500–2599</small>", "a", "ทศวรรษเริ่มที่ปีลงท้าย 0", "📆"], ["ศตวรรษที่ 21 (ค.ศ.) คือช่วงปีใด<br><small>ก) 2000–2099 · ข) 2001–2100 · ค) 2100–2199</small>", "b", "ศตวรรษเริ่มที่ปีลงท้าย 1", "📆"], ["ปัจจุบันเราอยู่ในสหัสวรรษที่เท่าใด<br><small>ก) 2 · ข) 3 · ค) 4</small>", "b", "ปีที่ 2001–3000 คือสหัสวรรษที่ 3", "🏔️"], ["ค.ศ. เริ่มนับจากเหตุการณ์ใด<br><small>ก) พระพุทธเจ้าปรินิพพาน · ข) ตั้งกรุงสุโขทัย · ค) พระเยซูประสูติ</small>", "c", "คริสต์ศักราชนับจากปีที่พระเยซูประสูติ", "✝️"]], "n": 10}, "age": {"icon": "🕵️", "opts": [["o", "🪨 หินเก่า"], ["n", "🌾 หินใหม่"], ["b", "🟤 สำริด"], ["i", "⚫ เหล็ก"]], "items": [["อาศัยในถ้ำ เร่ร่อนตามฝูงสัตว์", "o", "ยุคหินเก่ายังไม่ตั้งหลักแหล่ง", "🏹"], ["ใช้หินกะเทาะหยาบ ๆ ทุบ ตัด สับ", "o", "เครื่องมือหินเก่าหยาบ", "🪨"], ["เริ่มปลูกข้าวและเลี้ยงสัตว์", "n", "ยุคหินใหม่เริ่มเพาะปลูก", "🌾"], ["ขัดขวานหินจนคม ผิวเรียบ", "n", "ยุคหินใหม่ใช้หินขัด", "🪓"], ["ปั้นภาชนะดินเผา ตั้งบ้านเรือนอยู่รวมกัน", "n", "ยุคหินใหม่ตั้งหลักแหล่ง", "🏺"], ["หลอมทองแดงผสมดีบุกทำกำไล", "b", "สำริด = ทองแดง + ดีบุก", "🟤"], ["ตีกลองมโหระทึกในพิธี", "b", "กลองมโหระทึกทำจากสำริด", "🥁"], ["ถลุงเหล็กทำไถ จอบ ที่ไม่บิ่นง่าย", "i", "เหล็กทนทานกว่าสำริด", "⚒️"], ["ใบหอกเหล็กที่บ้านเชียง", "i", "หลักฐานยุคเหล็ก", "🗡️"], ["การเกษตรก้าวหน้าเพราะเครื่องมือแข็งแรงมาก", "i", "ยุคเหล็กทำให้เกษตรก้าวหน้า", "🚜"]]}};
 Kit.quizzes.main = [{"q": "ช่วงเวลา 10 ปี เรียกว่าอะไร", "c": ["ทศวรรษ", "ศตวรรษ", "สหัสวรรษ", "รอบปี"], "a": 0, "w": "คำตอบที่ถูก: ทศวรรษ"}, {"q": "เกณฑ์ที่ใช้แบ่ง \"สมัยก่อนประวัติศาสตร์\" กับ \"สมัยประวัติศาสตร์\" คือข้อใด", "c": ["การมีตัวอักษรใช้บันทึกเรื่องราว", "การนับถือศาสนา", "การมีกษัตริย์ปกครอง", "การรู้จักใช้ไฟ"], "a": 0, "w": "คำตอบที่ถูก: การมีตัวอักษรใช้บันทึกเรื่องราว"}, {"q": "หลักฐานชั้นต้น คือหลักฐานแบบใด", "c": ["หลักฐานที่ผู้อยู่ในเหตุการณ์บันทึกหรือสร้างไว้", "หนังสือที่เขียนขึ้นภายหลังจากการค้นคว้า", "ภาพการ์ตูนที่วาดขึ้นใหม่", "ข่าวลือที่เล่าต่อกันมา"], "a": 0, "w": "คำตอบที่ถูก: หลักฐานที่ผู้อยู่ในเหตุการณ์บันทึกหรือสร้างไว้"}, {"q": "ช่วงเวลา 100 ปี เรียกว่าอะไร", "c": ["ศตวรรษ", "ทศวรรษ", "สหัสวรรษ", "ยุคสมัย"], "a": 0, "w": "คำตอบที่ถูก: ศตวรรษ"}, {"q": "สมัยก่อนประวัติศาสตร์แบ่งยุคย่อยตามสิ่งใด", "c": ["วัสดุที่ใช้ทำเครื่องมือเครื่องใช้", "ชื่อของกษัตริย์", "ศาสนาที่นับถือ", "ภาษาที่ใช้พูด"], "a": 0, "w": "คำตอบที่ถูก: วัสดุที่ใช้ทำเครื่องมือเครื่องใช้"}, {"q": "หลักฐานชั้นรอง คือหลักฐานแบบใด", "c": ["หลักฐานที่เขียนขึ้นภายหลังโดยค้นคว้าจากหลักฐานอื่น", "บันทึกของผู้เห็นเหตุการณ์", "ศิลาจารึกสมัยสุโขทัย", "โบราณวัตถุที่ขุดพบ"], "a": 0, "w": "คำตอบที่ถูก: หลักฐานที่เขียนขึ้นภายหลังโดยค้นคว้าจากหลักฐานอื่น"}, {"q": "ช่วงเวลา 1,000 ปี เรียกว่าอะไร", "c": ["สหัสวรรษ", "ศตวรรษ", "ทศวรรษ", "พุทธศักราช"], "a": 0, "w": "คำตอบที่ถูก: สหัสวรรษ"}, {"q": "มนุษย์ยุคหินเก่าดำรงชีวิตอย่างไร", "c": ["เร่ร่อน ล่าสัตว์ และเก็บของป่า", "ปลูกข้าวและเลี้ยงสัตว์", "ค้าขายทางทะเล", "สร้างเมืองมีกำแพง"], "a": 0, "w": "คำตอบที่ถูก: เร่ร่อน ล่าสัตว์ และเก็บของป่า"}, {"q": "ข้อใดเป็นหลักฐานที่เป็นลายลักษณ์อักษร", "c": ["ศิลาจารึก", "เจดีย์", "ภาชนะดินเผา", "เครื่องมือหิน"], "a": 0, "w": "คำตอบที่ถูก: ศิลาจารึก"}, {"q": "\"เมื่อ 3 ทศวรรษที่แล้ว\" หมายถึงเมื่อกี่ปีที่แล้ว", "c": ["30 ปี", "3 ปี", "300 ปี", "3,000 ปี"], "a": 0, "w": "คำตอบที่ถูก: 30 ปี"}];
 
 document.addEventListener('DOMContentLoaded', function () {
   var b = document.getElementById('cvB'), c = document.getElementById('cvC'), o = document.getElementById('cvO');
   if (!b) return;
   function cent(y) { return Math.floor((y - 1) / 100) + 1; }
-  function show(be) { o.innerHTML = 'พ.ศ. <b>' + be + '</b> = ค.ศ. <b>' + (be - 543) + '</b><br>อยู่ใน <b>พุทธศตวรรษที่ ' + cent(be) + '</b> · <b>ทศวรรษ ' + (Math.floor(be / 10) * 10) + '</b>'; }
+  function show(be) { o.innerHTML = 'พ.ศ. <b>' + be + '</b> = ค.ศ. <b>' + (be - 543) + '</b><br>อยู่ใน <b>ทศวรรษ ' + (Math.floor(be / 10) * 10) + '</b> · <b>พุทธศตวรรษที่ ' + cent(be) + '</b> · <b>สหัสวรรษที่ ' + (Math.floor((be - 1) / 1000) + 1) + '</b><br><small>ค.ศ. ' + (be - 543) + ' อยู่ใน คริสต์ศตวรรษที่ ' + cent(be - 543) + '</small>'; }
   b.addEventListener('input', function () { var v = parseInt(b.value, 10); if (v > 543) { c.value = v - 543; show(v); } });
   c.addEventListener('input', function () { var v = parseInt(c.value, 10); if (v > 0) { b.value = v + 543; show(v + 543); } });
   show(+b.value);
