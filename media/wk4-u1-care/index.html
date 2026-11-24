@@ -18,6 +18,8 @@
 .vs2{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:680px){.vs2{grid-template-columns:1fr}}
 .case{background:#fff;border-left:6px solid var(--main);border-radius:14px;padding:10px 14px}
 .case h3{margin:0 0 4px}
+.case p{font-size:1.12rem;line-height:1.6}
+table.tb.wide{font-size:1.12rem}table.tb.wide td:first-child{width:auto;white-space:nowrap;font-size:1.1rem;text-align:left}
 .strong{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}@media (max-width:720px){.strong{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .sl{background:#fff;border-radius:18px;border:3px solid var(--sc);padding:10px;text-align:center;cursor:pointer;min-height:150px}
 .sl .L{font:700 52px/1 Mali,sans-serif;color:var(--sc)}.sl .en{font:700 15px Mali,sans-serif;color:#666}.sl .th{font:700 19px Mali,sans-serif}
@@ -53,34 +55,79 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 <span class="badge" style="background:var(--blue)">การงานอาชีพ ป.4 · หน่วยที่ 1</span>
 <img class="kru5" src="k5.webp" alt="ครูอู๋">
 <h1>ดูแลและจัดเก็บของใช้</h1>
-<div class="card c-yellow goals"><h3>🎯 เรียนจบแล้ว หนูจะ…</h3><ul><li>บอก <b>กระบวนการทำงาน 4 ขั้น</b> ได้</li><li>ดูแล <b>ของใช้ส่วนตัว</b> และ <b>เสื้อผ้า</b> ได้ถูกวิธี</li><li>จัด <b>โต๊ะเขียนหนังสือ</b> และ <b>เก็บของเป็นหมวดหมู่</b> ได้</li></ul></div>
+<div class="card c-yellow goals"><h3>🎯 เรียนจบแล้ว หนูจะ…</h3><ul><li>บอก <b>กระบวนการทำงาน 4 ขั้น</b> ได้</li><li>ดูแล <b>ของใช้ส่วนตัว</b> และ <b>เสื้อผ้า</b> ได้ถูกวิธี</li><li>จัดเก็บ <b>เอกสารส่วนตัว</b> <b>ตู้เสื้อผ้า</b> <b>โต๊ะเขียนหนังสือ</b> และ <b>กระเป๋านักเรียน</b> ได้</li><li>ใช้ทรัพยากรอย่าง <b>ประหยัดและคุ้มค่า</b></li></ul></div>
 <button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button>
 </div></section>
-<section class="slide" data-title="กระบวนการทำงาน" data-nofit><div class="inner">
-<h2 class="h"><span class="e">🧭</span>กระบวนการทำงาน 4 ขั้น</h2><div class="grid" style="--min:180px">
- <div class="card c-blue center"><h3>1️⃣ วิเคราะห์งาน</h3><p>งานนี้คืออะไร ต้องทำอะไรบ้าง</p></div>
- <div class="card c-green center"><h3>2️⃣ วางแผน</h3><p>ใช้อุปกรณ์อะไร ใช้เวลาเท่าไร ใครทำอะไร</p></div>
- <div class="card c-orange center"><h3>3️⃣ ปฏิบัติงาน</h3><p>ลงมือทำตามแผนอย่างปลอดภัย</p></div>
- <div class="card c-purple center"><h3>4️⃣ ประเมินผล</h3><p>ตรวจข้อดี ข้อเสีย เพื่อปรับปรุงครั้งหน้า</p></div>
-</div><h3 style="margin:12px 0 6px">📶 เรียงขั้นตอนให้ถูก</h3><div data-order="proc"></div>
+<section class="slide" data-title="กระบวนการทำงาน"><div class="inner">
+<h2 class="h"><span class="e">🧭</span>ทำงานให้สำเร็จ ต้องทำตาม "กระบวนการทำงาน"</h2><div class="grid" style="--min:320px"><div class="card c-blue"><h3>1️⃣ วิเคราะห์งาน</h3><p>งานนี้คืออะไร ทำไปเพื่ออะไร ต้องทำอะไรบ้าง</p></div><div class="card c-green"><h3>2️⃣ วางแผนงาน</h3><p>กำหนดขั้นตอน อุปกรณ์ ค่าใช้จ่าย ระยะเวลา</p></div><div class="card c-orange"><h3>3️⃣ ปฏิบัติงาน</h3><p>ลงมือทำตามแผน ตรวจสอบเป็นระยะ</p></div><div class="card c-purple"><h3>4️⃣ ประเมินผล</h3><p>ตรวจผลงาน หาข้อบกพร่อง และวิธีแก้ไข</p></div></div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> ทำงานด้วยความ <b>ตั้งใจ ขยัน อดทน</b> และ <b>รับผิดชอบ</b> 💪</p></div>
 </div></section>
-<section class="slide" data-title="ของใช้ส่วนตัว"><div class="inner">
-<h2 class="h"><span class="e">🪥</span>ดูแลของใช้ส่วนตัว · แตะการ์ดเพื่อดูวิธีดูแล</h2><div class="strong"><div class="sl" style="--sc:#2E8BEF"><div class="L" style="font-size:40px">🪥</div><div class="th">แปรงสีฟัน</div><div class="en">ใช้ทุกวัน</div><div class="ex">ล้างให้สะอาด เก็บแนวตั้ง หัวแปรงอยู่ด้านบน ในที่แห้ง</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#16A34A"><div class="L" style="font-size:40px">👕</div><div class="th">เสื้อผ้า</div><div class="en">สวมใส่</div><div class="ex">ระวังไม่ให้เปื้อนหรือขาด ถ้าเปื้อนรีบขยี้คราบออกทันที</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#F59E0B"><div class="L" style="font-size:40px">🎒</div><div class="th">กระเป๋านักเรียน</div><div class="en">ไปโรงเรียน</div><div class="ex">จัดของให้เป็นระเบียบ ไม่ใส่ของหนักเกินไป</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#E8478B"><div class="L" style="font-size:40px">🧸</div><div class="th">ของเล่น</div><div class="en">เล่นเสร็จ</div><div class="ex">เก็บเข้ากล่องเป็นที่ หยิบง่าย ไม่สูญหาย</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#8B5CF6"><div class="L" style="font-size:40px">📚</div><div class="th">หนังสือ สมุด</div><div class="en">เครื่องเขียน</div><div class="ex">ห่อปก ไม่พับมุม เก็บเรียงบนชั้น</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#14B8A6"><div class="L" style="font-size:40px">🪪</div><div class="th">เอกสารสำคัญ</div><div class="en">บัตร สมุดบัญชี</div><div class="ex">จัดหมวดหมู่ เก็บในที่ปลอดภัย หยิบง่าย</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div></div>
+<section class="slide" data-title="ลองใช้กระบวนการ" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🧹</span>ตัวอย่าง ใช้กระบวนการทำงาน "จัดห้องนอน"</h2>
+<table class="tb wide"><tr><th>ขั้น</th><th>ทำอะไร</th></tr>
+<tr><td>1️⃣ วิเคราะห์งาน</td><td>ห้องรก ของวางไม่เป็นที่ หาของไม่เจอ → ต้องจัดเก็บให้เป็นระเบียบ</td></tr>
+<tr><td>2️⃣ วางแผนงาน</td><td>เตรียมกล่อง ไม้กวาด ผ้าเช็ด · แยกของเป็นกลุ่ม · ใช้เวลา 1 ชั่วโมง</td></tr>
+<tr><td>3️⃣ ปฏิบัติงาน</td><td>แยกประเภทของ เก็บเข้าที่ กวาด เช็ดถู</td></tr>
+<tr><td>4️⃣ ประเมินผล</td><td>ห้องเป็นระเบียบไหม? หาของง่ายขึ้นไหม? ครั้งหน้าจะปรับอะไร</td></tr></table><h3 style="margin:10px 0 6px">📶 เรียงขั้นตอนให้ถูก</h3><div data-order="proc"></div>
+</div></section>
+<section class="slide" data-title="ตอนที่ 1 การดูแลของใช้ส่วนตัว"><div class="inner cover">
+<div class="center" style="padding-top:4vh">
+<div style="font-size:84px;line-height:1">🪥</div>
+<span class="badge" style="background:var(--blue);font-size:1.1rem;margin-top:18px;display:inline-block">ตอนที่ 1</span>
+<h1 style="margin:8px 0">การดูแลของใช้ส่วนตัว</h1><p class="muted" style="font-size:1.2rem">ของใช้และของเล่น · เสื้อผ้าเครื่องแต่งกาย</p></div>
+</div></section>
+<section class="slide" data-title="ของใช้ส่วนตัวคืออะไร" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🎒</span>ของใช้ส่วนตัว คืออะไร</h2>
+<div class="card c-blue def"><b class="t">🪥 ของใช้ส่วนตัว</b>สิ่งของเครื่องใช้ <b>ส่วนบุคคล</b> ที่ไม่ควรใช้ร่วมกับผู้อื่น และเราต้องใช้เป็นประจำ</div>
+<div class="grid" style="--min:140px;margin-top:8px"><div class="card center"><div style="font-size:38px">👕</div><b>เสื้อผ้า</b></div><div class="card center"><div style="font-size:38px">👟</div><b>เครื่องแต่งกาย</b></div><div class="card center"><div style="font-size:38px">🛁</div><b>ผ้าเช็ดตัว</b></div><div class="card center"><div style="font-size:38px">🥤</div><b>แก้วน้ำ</b></div><div class="card center"><div style="font-size:38px">🪥</div><b>แปรงสีฟัน</b></div><div class="card center"><div style="font-size:38px">✏️</div><b>อุปกรณ์การเรียน</b></div><div class="card center"><div style="font-size:38px">🧸</div><b>ของเล่น</b></div></div>
+<div class="card c-green" style="margin-top:8px"><h3>📋 หลักการดูแลของใช้ส่วนตัว</h3><p>1. แยกของใช้ออกเป็น <b>ประเภท</b> · 2. จัดเก็บแต่ละประเภท <b>ตามความเหมาะสม</b> · 3. เก็บให้ <b>เรียบร้อย ค้นหาง่าย ไม่สูญหาย</b></p></div>
+</div></section>
+<section class="slide" data-title="ของใช้และของเล่น" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🧸</span>ดูแลของใช้และของเล่น</h2><div class="grid" style="--min:213px"><div class="card c-blue"><h3>1️⃣ ใช้และเล่นอย่างทะนุถนอม</h3><p>ไม่ให้ชำรุดเสียหายก่อนเวลาอันควร</p></div><div class="card c-green"><h3>2️⃣ จัดเก็บให้เป็นระเบียบ</h3><p>หยิบใช้สะดวก ไม่สูญหาย เช่น ดินสอใส่กล่องดินสอ ของเล่นใส่กล่องของเล่น</p></div><div class="card c-orange"><h3>3️⃣ ทำความสะอาดเป็นประจำ</h3><p>ไม่ให้เป็นแหล่งสะสมเชื้อโรคและฝุ่นละออง</p></div></div>
+<div class="case" style="margin-top:8px"><h3>🪥 ตัวอย่าง วิธีดูแลแปรงสีฟัน</h3><p>1. หลังใช้ ล้างแปรงให้สะอาด · 2. เก็บใน <b>แนวตั้ง</b> ให้หัวแปรงอยู่ <b>ด้านบน</b> · 3. เก็บในที่ <b>แห้งและสะอาด</b></p></div>
+</div></section>
+<section class="slide" data-title="ดูแลเสื้อผ้า"><div class="inner">
+<h2 class="h"><span class="e">👕</span>ดูแลเสื้อผ้าเครื่องแต่งกาย</h2><div class="grid" style="--min:213px"><div class="card c-blue"><h3>1️⃣ ดูแลขณะสวมใส่</h3><p>ระวังไม่ให้เปื้อนหรือฉีกขาด ถ้าเปื้อน <b>รีบขยี้ด้วยน้ำเปล่า</b> จนคราบจาง</p></div><div class="card c-green"><h3>2️⃣ ทำความสะอาด</h3><p><b>แยกผ้าก่อนซัก</b> เช่น ผ้าขาว ผ้าสี · ซักด้วยผงซักฟอก ล้างน้ำสะอาด แล้วตากให้แห้ง</p></div><div class="card c-purple"><h3>3️⃣ จัดเก็บให้เป็นระเบียบ</h3><p>ผ้าแห้งแล้ว <b>พับ</b> หรือ <b>รีด</b> ให้เรียบร้อย แล้วเก็บเข้าตู้</p></div></div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> ทำไมต้องแยกผ้าขาวกับผ้าสีก่อนซัก? (ผ้าสีอาจตกสีใส่ผ้าขาว 🎨)</p></div>
 </div></section>
 <section class="slide" data-title="เกม ทำแบบนี้ดีไหม"><div class="inner">
-<h2 class="h"><span class="e">🤔</span>เกม ทำแบบนี้ดีไหม</h2><div data-jg="care"></div>
+<h2 class="h"><span class="e">🤔</span>เกม ดูแลของใช้แบบนี้ ดีไหม</h2><div data-jg="care"></div>
+</div></section>
+<section class="slide" data-title="ตอนที่ 2 การจัดเก็บของใช้"><div class="inner cover">
+<div class="center" style="padding-top:4vh">
+<div style="font-size:84px;line-height:1">🗂️</div>
+<span class="badge" style="background:var(--green);font-size:1.1rem;margin-top:18px;display:inline-block">ตอนที่ 2</span>
+<h1 style="margin:8px 0">การจัดเก็บของใช้</h1><p class="muted" style="font-size:1.2rem">เอกสารส่วนตัว · ตู้เสื้อผ้า · โต๊ะเขียนหนังสือ · กระเป๋านักเรียน</p></div>
+</div></section>
+<section class="slide" data-title="เอกสารส่วนตัว"><div class="inner">
+<h2 class="h"><span class="e">🪪</span>การจัดเก็บเอกสารส่วนตัว</h2>
+<div class="card c-blue def"><b class="t">📄 เอกสารส่วนตัว</b>เอกสารสำคัญที่ <b>บอกรายละเอียดของบุคคล</b> เช่น ลายมือชื่อ วันเดือนปีเกิด รูปถ่าย ที่อยู่ ควรเก็บเป็น <b>หมวดหมู่</b> ค้นหาง่าย ไม่สูญหาย</div>
+<div class="vs2" style="margin-top:8px">
+ <div class="card c-orange"><h3>👛 ต้องพกติดตัว</h3><p>บัตรประจำตัวประชาชน · บัตรประจำตัวนักเรียน · บัตรประจำตัวผู้ป่วย · บัตรห้องสมุด</p><p>➡️ เก็บใน <b>ช่องเสียบบัตร</b> ของกระเป๋าสตางค์</p></div>
+ <div class="card c-green"><h3>🏠 เก็บไว้ที่บ้าน</h3><p>ทะเบียนบ้าน · สูติบัตร · สมุดบัญชีเงินฝาก · แฟ้มผลงาน</p><p>➡️ ใส่ <b>แฟ้มหรือกล่องเอกสาร</b> เก็บในที่ปลอดภัย</p></div>
+</div>
+</div></section>
+<section class="slide" data-title="จัดตู้เสื้อผ้า" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🚪</span>การจัดตู้เสื้อผ้า</h2>
+<p style="font-size:1.1rem">เสื้อผ้าที่ซักและรีดแล้ว <b>แขวน</b> หรือ <b>พับ</b> เก็บในตู้ แยกเป็น <b>หมวดหมู่</b> หยิบใช้สะดวก</p><div class="grid" style="--min:213px"><div class="card c-blue"><h3>1️⃣ เสื้อผ้าที่ต้องรีด</h3><p>เสื้อ กางเกง กระโปรง ผ้ายับง่าย → รีดแล้ว <b>แขวน</b> แยกสีอ่อน สีเข้ม</p></div><div class="card c-green"><h3>2️⃣ เสื้อผ้าที่ไม่ต้องรีด</h3><p>ชุดชั้นใน ถุงเท้า เสื้อยืด → <b>พับ</b> ใส่ลิ้นชัก</p></div><div class="card c-orange"><h3>3️⃣ เครื่องแต่งกายอื่น ๆ</h3><p>เข็มขัด หมวก → ใส่ <b>กล่องหรือลิ้นชัก</b></p></div></div>
+<div class="grid" style="--min:240px;margin-top:8px"><div class="card c-purple"><h3>🧦 ถุงเท้า</h3><p>เก็บ <b>เข้าคู่กัน</b> พับซ้อน หยิบเร็ว</p></div><div class="card c-pink"><h3>🪢 เข็มขัด</h3><p><b>แขวน</b> ไว้ในตู้ ไม่ควรม้วน เพราะหนังจะเสียรูป</p></div></div>
 </div></section>
 <section class="slide" data-title="จัดโต๊ะเขียนหนังสือ"><div class="inner">
-<h2 class="h"><span class="e">🪑</span>จัดโต๊ะเขียนหนังสือ</h2>
-<div class="grid" style="--min:220px">
- <div class="card c-yellow"><h3>💡 ตั้งในที่แสงสว่างพอ</h3><p>ไม่ต้องเพ่ง ถนอมสายตา</p></div>
- <div class="card c-blue"><h3>✏️ ของใช้บ่อยไว้ใกล้มือ</h3><p>ดินสอ ยางลบ ไม้บรรทัด ใส่กล่องบนโต๊ะ</p></div>
- <div class="card c-green"><h3>📚 หนังสือเรียงตามขนาด</h3><p>หยิบง่าย เป็นระเบียบ</p></div>
- <div class="card c-purple"><h3>🧹 เช็ดทำความสะอาดเป็นประจำ</h3><p>ไม่สะสมฝุ่นและเชื้อโรค</p></div>
-</div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> การจัดโต๊ะให้เป็นระเบียบทุกวัน ช่วยสร้างนิสัยอะไรให้เรา? (ความมีระเบียบ ✅)</p></div>
+<h2 class="h"><span class="e">🪑</span>การจัดโต๊ะเขียนหนังสือ</h2><p style="font-size:1.1rem">ช่วยให้หยิบใช้สะดวก และสร้าง <b>นิสัยความมีระเบียบ</b></p><div class="grid" style="--min:320px"><div class="card c-blue"><h3>1️⃣ แยกประเภทของ</h3><p>หนังสือ สมุด เครื่องเขียน</p></div><div class="card c-green"><h3>2️⃣ จัดหนังสือ</h3><p>วางไว้มุมหนึ่งของโต๊ะ เรียง <b>จากเล็กไปใหญ่</b></p></div><div class="card c-orange"><h3>3️⃣ จัดเครื่องเขียน</h3><p>ดินสอ ยางลบ ไม้บรรทัด ใส่ภาชนะวางมุมโต๊ะ ที่ไม่ได้ใช้ประจำ <b>เก็บลิ้นชัก</b></p></div><div class="card c-purple"><h3>4️⃣ เว้นพื้นที่ว่าง</h3><p>ให้พอ อ่านหนังสือ วาดรูป ทำการบ้าน</p></div></div>
+</div></section>
+<section class="slide" data-title="จัดกระเป๋านักเรียน"><div class="inner">
+<h2 class="h"><span class="e">🎒</span>การจัดกระเป๋านักเรียน</h2>
+<div class="card c-blue def"><b class="t">📅 จัดตามตารางเรียน</b>จัดสมุด หนังสือ อุปกรณ์ให้ตรงกับตารางเรียนแต่ละวัน กระเป๋าจะ <b>ไม่หนักเกินไป</b> และหยิบใช้สะดวก</div><div class="grid" style="--min:213px"><div class="card c-green"><h3>1️⃣ จัดหนังสือ</h3><p>ตามตารางเรียน วางเรียงเป็นหมวดหมู่</p></div><div class="card c-orange"><h3>2️⃣ จัดเครื่องเขียน</h3><p>ใส่กล่องหรือกระเป๋าดินสอ</p></div><div class="card c-purple"><h3>3️⃣ ทำความสะอาด</h3><p>เก็บเศษขยะออก · ถ้าเปื้อนใช้ผ้าชุบน้ำบิดหมาดเช็ด แล้วเช็ดด้วยผ้าแห้ง</p></div></div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> สะพายกระเป๋าหนักเกินไปทุกวัน ส่งผลอย่างไรกับร่างกาย? (ปวดหลัง ไหล่ 😣)</p></div>
 </div></section>
 <section class="slide" data-title="คัดแยกของใช้"><div class="inner">
 <h2 class="h"><span class="e">🗂️</span>คัดแยก: ของชิ้นนี้ควรเก็บที่ไหน</h2><div data-sorter="put"></div>
+</div></section>
+<section class="slide" data-title="ประหยัดคุ้มค่า"><div class="inner">
+<h2 class="h"><span class="e">♻️</span>ใช้ของอย่างประหยัดและคุ้มค่า</h2>
+<div class="grid" style="--min:220px">
+ <div class="card c-green"><h3>👕 เสื้อผ้าที่เล็กแล้ว</h3><p>ส่งต่อให้น้อง หรือบริจาค</p></div>
+ <div class="card c-blue"><h3>🧺 ซักทีเดียวหลายชิ้น</h3><p>ประหยัดน้ำ ไฟ ผงซักฟอก</p></div>
+ <div class="card c-orange"><h3>✏️ ดูแลอุปกรณ์การเรียน</h3><p>ใช้ได้นาน ไม่ต้องซื้อใหม่บ่อย</p></div>
+ <div class="card c-purple"><h3>👨‍👩‍👧 ช่วยงานบ้าน</h3><p>ดูแลของตัวเอง = ช่วยแบ่งเบางานพ่อแม่</p></div>
+</div>
 </div></section>
 <section class="slide" data-title="แบบทดสอบ"><div class="inner">
 <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายหน่วย (10 ข้อ)</h2><div data-quiz="main"></div>
@@ -88,7 +135,7 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 <section class="slide" data-title="สรุป" data-final><div class="inner">
 <h2 class="h"><span class="e">🌟</span>สรุปบทเรียน</h2>
 <div class="card c-yellow center" data-score></div>
-<div class="grid" style="--min:240px"><div class="card c-blue"><h3>🧭 กระบวนการทำงาน</h3><p>วิเคราะห์ → วางแผน → ปฏิบัติ → ประเมินผล</p></div><div class="card c-green"><h3>🪥 ดูแลของใช้</h3><p>ใช้อย่างระวัง ทำความสะอาด เก็บเข้าที่</p></div><div class="card c-purple"><h3>🗂️ จัดเก็บ</h3><p>เป็นหมวดหมู่ ของใช้บ่อยไว้ใกล้มือ</p></div></div>
+<div class="grid" style="--min:240px"><div class="card c-blue"><h3>🧭 กระบวนการทำงาน</h3><p>วิเคราะห์ → วางแผน → ปฏิบัติ → ประเมินผล</p></div><div class="card c-green"><h3>🪥 ดูแลของใช้</h3><p>ใช้อย่างทะนุถนอม เก็บเป็นระเบียบ ทำความสะอาด</p></div><div class="card c-orange"><h3>🗂️ จัดเก็บ</h3><p>เอกสาร ตู้เสื้อผ้า โต๊ะ กระเป๋า แยกเป็นหมวดหมู่</p></div><div class="card c-purple"><h3>♻️ คุ้มค่า</h3><p>ใช้นาน ส่งต่อ ประหยัด</p></div></div>
 <img class="kru5" src="k11.webp" alt="ครูอู๋ปรบมือ" style="width:140px">
 <div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button><a class="btn" href="../wk4-hub/" style="text-decoration:none;background:var(--green)">🏠 กลับหน้ารวม</a><span class="muted">หน่วยต่อไป: มารยาทเด็กดี</span></div>
 </div></section>
@@ -103,8 +150,8 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 <script src="kit.js"></script>
 <script>
 Kit.orders.proc = {"hint": "👆 แตะจากขั้นแรกไปขั้นสุดท้าย", "items": ["วิเคราะห์งาน", "วางแผนการทำงาน", "ปฏิบัติงาน", "ประเมินผลการทำงาน"], "unit": "ขั้นที่"};
-Kit.sorters.put = {"bins": [{"k": "d", "t": "🪑 โต๊ะเขียนหนังสือ", "c": "var(--blue)"}, {"k": "b", "t": "🛁 ห้องน้ำ", "c": "var(--green)"}, {"k": "w", "t": "👚 ตู้เสื้อผ้า", "c": "var(--purple)"}], "items": [{"t": "✏️ ดินสอ", "k": "d"}, {"t": "📏 ไม้บรรทัด", "k": "d"}, {"t": "📓 สมุด", "k": "d"}, {"t": "🪥 แปรงสีฟัน", "k": "b"}, {"t": "🧴 แชมพู", "k": "b"}, {"t": "🧼 สบู่", "k": "b"}, {"t": "👕 เสื้อนักเรียน", "k": "w"}, {"t": "🩳 กางเกง", "k": "w"}, {"t": "🧦 ถุงเท้า", "k": "w"}]};
-var JGS = {"care": {"icon": "🤔", "opts": [["g", "👍 ทำได้ดี"], ["b", "👎 ไม่ควรทำ"]], "items": [["เก็บแปรงสีฟันตั้งขึ้นในที่แห้ง", "g", "แห้งเร็ว ไม่อับชื้น", "🪥"], ["ใส่เสื้อนักเรียนลงไปเล่นดิน", "b", "เสื้อจะเปื้อนและขาดง่าย", "👕"], ["เสื้อเปื้อนแล้วรีบขยี้คราบออก", "g", "คราบยังไม่ฝังแน่น ซักออกง่าย", "🧽"], ["เล่นของเล่นเสร็จแล้ววางทิ้งไว้บนพื้น", "b", "อาจเหยียบพังหรือหาย", "🧸"], ["ใส่ของทุกอย่างลงกระเป๋าจนหนักมาก", "b", "ปวดหลัง กระเป๋าขาดเร็ว", "🎒"], ["จัดตารางสอนแล้วเตรียมหนังสือตั้งแต่เย็น", "g", "ไม่ลืมของ ไม่รีบร้อนตอนเช้า", "📚"], ["พับมุมหนังสือแทนที่คั่น", "b", "หนังสือเสียหาย ควรใช้ที่คั่น", "📖"], ["เก็บบัตรประจำตัวไว้ในที่ปลอดภัย", "g", "ไม่สูญหาย หยิบใช้ได้เมื่อจำเป็น", "🪪"], ["ตั้งโต๊ะอ่านหนังสือในมุมมืด", "b", "ต้องเพ่ง เสียสายตา", "🌑"], ["หลังทำงานเสร็จ ตรวจดูข้อดีข้อเสีย", "g", "คือขั้นประเมินผล", "✅"]]}};
+Kit.sorters.put = {"bins": [{"k": "d", "t": "🪑 โต๊ะเขียนหนังสือ", "c": "var(--blue)"}, {"k": "w", "t": "👚 ตู้เสื้อผ้า", "c": "var(--purple)"}, {"k": "p", "t": "👛 กระเป๋าสตางค์", "c": "var(--orange)"}, {"k": "f", "t": "📁 แฟ้มเอกสารที่บ้าน", "c": "var(--green)"}], "items": [{"t": "✏️ ดินสอ", "k": "d"}, {"t": "📏 ไม้บรรทัด", "k": "d"}, {"t": "📓 สมุด", "k": "d"}, {"t": "👕 เสื้อนักเรียน", "k": "w"}, {"t": "🧦 ถุงเท้า", "k": "w"}, {"t": "🪢 เข็มขัด", "k": "w"}, {"t": "🪪 บัตรประชาชน", "k": "p"}, {"t": "🎓 บัตรนักเรียน", "k": "p"}, {"t": "🏠 ทะเบียนบ้าน", "k": "f"}, {"t": "🏦 สมุดบัญชีเงินฝาก", "k": "f"}]};
+var JGS = {"care": {"icon": "🤔", "opts": [["g", "👍 ทำได้ดี"], ["b", "👎 ไม่ควรทำ"]], "items": [["เก็บแปรงสีฟันแนวตั้ง หัวแปรงอยู่ด้านบน", "g", "แห้งเร็ว ไม่อับชื้น", "🪥"], ["ใส่เสื้อนักเรียนลงไปเล่นดิน", "b", "เสื้อจะเปื้อนและขาดง่าย", "👕"], ["เสื้อเปื้อน รีบขยี้คราบด้วยน้ำเปล่า", "g", "คราบยังไม่ฝัง ซักออกง่าย", "🧽"], ["ซักผ้าขาวรวมกับผ้าสีเข้ม", "b", "ผ้าสีอาจตกใส่ผ้าขาว", "🧺"], ["ม้วนเข็มขัดเก็บในลิ้นชัก", "b", "ควรแขวน หนังจะไม่เสียรูป", "🪢"], ["จัดกระเป๋าตามตารางเรียนตั้งแต่เย็น", "g", "ไม่ลืมของ กระเป๋าไม่หนัก", "🎒"], ["ใส่หนังสือทุกวิชาไว้ในกระเป๋าทุกวัน", "b", "กระเป๋าหนัก ปวดหลัง", "🏋️"], ["เก็บบัตรนักเรียนในช่องเสียบบัตรกระเป๋าสตางค์", "g", "ไม่หาย หยิบใช้ง่าย", "🪪"], ["พกทะเบียนบานติดตัวไปโรงเรียนทุกวัน", "b", "ควรเก็บไว้ที่บ้านในแฟ้ม", "🏠"], ["เก็บถุงเท้าเข้าคู่ พับซ้อนกัน", "g", "หยิบใช้เร็ว", "🧦"]]}};
 Kit.quizzes.main = [{"q": "การดูแลของใช้ส่วนตัวอย่างถูกวิธีมีประโยชน์อย่างไร", "c": ["ของใช้มีอายุการใช้งานนานขึ้นและประหยัดค่าใช้จ่าย", "ต้องซื้อของใหม่บ่อยขึ้น", "ทำให้ห้องรกขึ้น", "ทำให้ของเสียเร็วขึ้น"], "a": 0, "w": "คำตอบที่ถูก: ของใช้มีอายุการใช้งานนานขึ้นและประหยัดค่าใช้จ่าย"}, {"q": "ขั้นตอนแรกของกระบวนการทำงาน คือข้อใด", "c": ["วิเคราะห์งาน", "ปฏิบัติงาน", "ประเมินผล", "นำไปขาย"], "a": 0, "w": "คำตอบที่ถูก: วิเคราะห์งาน"}, {"q": "ข้อใดเรียงลำดับกระบวนการทำงานได้ถูกต้อง", "c": ["วิเคราะห์งาน → วางแผน → ปฏิบัติงาน → ประเมินผล", "ปฏิบัติงาน → วิเคราะห์งาน → วางแผน → ประเมินผล", "วางแผน → ประเมินผล → วิเคราะห์งาน → ปฏิบัติงาน", "ประเมินผล → ปฏิบัติงาน → วางแผน → วิเคราะห์งาน"], "a": 0, "w": "คำตอบที่ถูก: วิเคราะห์งาน → วางแผน → ปฏิบัติงาน → ประเมินผล"}, {"q": "การกำหนดว่าต้องใช้อุปกรณ์อะไร ใช้เวลาเท่าใด อยู่ในขั้นตอนใด", "c": ["วางแผนการทำงาน", "ประเมินผล", "ปฏิบัติงาน", "เก็บกวาด"], "a": 0, "w": "คำตอบที่ถูก: วางแผนการทำงาน"}, {"q": "การเก็บแปรงสีฟันที่ถูกต้อง คือข้อใด", "c": ["ล้างให้สะอาด เก็บแนวตั้งให้หัวแปรงอยู่ด้านบน ในที่แห้ง", "เก็บไว้ในกล่องปิดสนิทขณะยังเปียก", "วางหัวแปรงคว่ำลงบนพื้น", "ใช้ร่วมกับเพื่อน"], "a": 0, "w": "คำตอบที่ถูก: ล้างให้สะอาด เก็บแนวตั้งให้หัวแปรงอยู่ด้านบน ในที่แห้ง"}, {"q": "การจัดเก็บของเล่นให้เป็นระเบียบมีประโยชน์อย่างไร", "c": ["หยิบใช้สะดวกและป้องกันการสูญหาย", "ทำให้ของเล่นพังเร็ว", "ทำให้หาของไม่เจอ", "ทำให้ห้องแคบลง"], "a": 0, "w": "คำตอบที่ถูก: หยิบใช้สะดวกและป้องกันการสูญหาย"}, {"q": "การดูแลเสื้อผ้าขณะสวมใส่ ควรทำอย่างไร", "c": ["ระมัดระวังไม่ให้เปื้อนหรือขาด", "นั่งกับพื้นที่สกปรก", "ใช้เสื้อเช็ดมือ", "ปีนต้นไม้ในชุดนักเรียน"], "a": 0, "w": "คำตอบที่ถูก: ระมัดระวังไม่ให้เปื้อนหรือขาด"}, {"q": "ถ้าเสื้อเปื้อนคราบสกปรก ควรทำอย่างไร", "c": ["รีบซักหรือขยี้คราบออกทันที", "ปล่อยไว้หลายวันแล้วค่อยซัก", "เก็บใส่ตู้ทั้งที่เปื้อน", "ทิ้งเสื้อไปเลย"], "a": 0, "w": "คำตอบที่ถูก: รีบซักหรือขยี้คราบออกทันที"}, {"q": "เอกสารส่วนตัว เช่น บัตรประจำตัวประชาชน สมุดบัญชีเงินฝาก ควรเก็บอย่างไร", "c": ["จัดหมวดหมู่ เก็บในที่ปลอดภัยและหยิบง่าย", "วางทิ้งไว้บนโต๊ะ", "พับใส่กระเป๋ากางเกงแล้วซัก", "ให้เพื่อนเก็บไว้"], "a": 0, "w": "คำตอบที่ถูก: จัดหมวดหมู่ เก็บในที่ปลอดภัยและหยิบง่าย"}, {"q": "โต๊ะเขียนหนังสือควรตั้งไว้ที่ใด", "c": ["ที่มีแสงสว่างเพียงพอ", "ในที่มืด", "กลางทางเดิน", "ใกล้ห้องน้ำ"], "a": 0, "w": "คำตอบที่ถูก: ที่มีแสงสว่างเพียงพอ"}];
 
 function JG(el, cfg) {

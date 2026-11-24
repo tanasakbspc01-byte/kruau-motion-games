@@ -18,6 +18,8 @@
 .vs2{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:680px){.vs2{grid-template-columns:1fr}}
 .case{background:#fff;border-left:6px solid var(--main);border-radius:14px;padding:10px 14px}
 .case h3{margin:0 0 4px}
+.case p{font-size:1.12rem;line-height:1.6}
+table.tb.wide{font-size:1.12rem}table.tb.wide td:first-child{width:auto;white-space:nowrap;font-size:1.1rem;text-align:left}
 .strong{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}@media (max-width:720px){.strong{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .sl{background:#fff;border-radius:18px;border:3px solid var(--sc);padding:10px;text-align:center;cursor:pointer;min-height:150px}
 .sl .L{font:700 52px/1 Mali,sans-serif;color:var(--sc)}.sl .en{font:700 15px Mali,sans-serif;color:#666}.sl .th{font:700 19px Mali,sans-serif}
@@ -52,28 +54,72 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 <section class="slide" data-title="หน้าปก"><div class="inner cover">
 <span class="badge" style="background:var(--orange)">การงานอาชีพ ป.4 · หน่วยที่ 4</span>
 <img class="kru5" src="k5.webp" alt="ครูอู๋">
-<h1>ซ่อมแซมอุปกรณ์ (งานช่าง)</h1>
-<div class="card c-yellow goals"><h3>🎯 เรียนจบแล้ว หนูจะ…</h3><ul><li>บอกความหมายและ <b>ประโยชน์ของงานช่าง</b></li><li>เลือกใช้ <b>เครื่องมือช่าง</b> ได้ถูกประเภทและปลอดภัย</li><li>บอกขั้นตอน <b>ซ่อมแซม</b> ของใช้ง่าย ๆ ได้</li></ul></div>
+<h1>ซ่อมแซมอุปกรณ์</h1>
+<div class="card c-yellow goals"><h3>🎯 เรียนจบแล้ว หนูจะ…</h3><ul><li>บอกความหมายและ <b>ประโยชน์ของงานช่าง</b></li><li>รู้จัก <b>เครื่องมือช่าง 5 ประเภท</b> ใช้และดูแลได้ถูกวิธี</li><li>บอก <b>หลักการซ่อมแซม 6 ขั้น</b> และซ่อมของใช้ง่าย ๆ ได้</li><li>ทำงานช่างอย่าง <b>ปลอดภัย ประหยัด คุ้มค่า</b></li></ul></div>
 <button class="btn" onclick="Kit.go(1)">เริ่มเรียนกันเลย ▶</button>
+</div></section>
+<section class="slide" data-title="ตอนที่ 1 ความหมายและประโยชน์ของงานช่าง"><div class="inner cover">
+<div class="center" style="padding-top:4vh">
+<div style="font-size:84px;line-height:1">🔧</div>
+<span class="badge" style="background:var(--orange);font-size:1.1rem;margin-top:18px;display:inline-block">ตอนที่ 1</span>
+<h1 style="margin:8px 0">ความหมายและประโยชน์ของงานช่าง</h1><p class="muted" style="font-size:1.2rem">งานช่างคืออะไร · ช่างประเภทต่าง ๆ · ประโยชน์</p></div>
 </div></section>
 <section class="slide" data-title="งานช่าง"><div class="inner">
 <h2 class="h"><span class="e">🔧</span>งานช่าง คืออะไร</h2>
-<div class="card c-orange def"><b class="t">🛠️ งานช่าง</b>งาน <b>สร้าง ซ่อมแซม บำรุงรักษา</b> หรือ <b>ดัดแปลง</b> สิ่งของเครื่องใช้</div>
-<div class="grid" style="--min:200px;margin-top:8px">
- <div class="card c-green center"><h3>⏳ ของใช้ได้นาน</h3></div><div class="card c-blue center"><h3>💰 ประหยัดค่าใช้จ่าย</h3></div><div class="card c-purple center"><h3>💪 พึ่งตนเองได้</h3></div>
-</div>
+<div class="card c-orange def"><b class="t">🛠️ งานช่าง</b>งานที่เกี่ยวกับการ <b>สร้าง ซ่อมแซม บำรุงรักษา</b> หรือ <b>ดัดแปลง</b> วัสดุหรือเศษวัสดุให้เป็นของใช้ ทำให้ของใช้ <b>ใช้ได้นานขึ้น</b> และ <b>ประหยัดค่าใช้จ่าย</b></div>
+<div class="grid" style="--min:140px;margin-top:8px"><div class="card center"><div style="font-size:38px">🧱</div><b>ช่างปูน</b></div><div class="card center"><div style="font-size:38px">🪵</div><b>ช่างไม้</b></div><div class="card center"><div style="font-size:38px">🚰</div><b>ช่างประปา</b></div><div class="card center"><div style="font-size:38px">💡</div><b>ช่างไฟ</b></div><div class="card center"><div style="font-size:38px">🏗️</div><b>ช่างก่อสร้าง</b></div><div class="card center"><div style="font-size:38px">🎨</div><b>ช่างสี</b></div></div>
 </div></section>
-<section class="slide" data-title="เครื่องมือช่าง"><div class="inner">
-<h2 class="h"><span class="e">🧰</span>เครื่องมือช่าง · แตะการ์ดเพื่อดูวิธีใช้</h2><div class="strong"><div class="sl" style="--sc:#2E8BEF"><div class="L" style="font-size:40px">🔨</div><div class="th">ค้อน</div><div class="en">ตอก</div><div class="ex">ตอกตะปู · ถ้าด้ามหลวมต้องหยุดใช้แล้วซ่อมก่อน</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#16A34A"><div class="L" style="font-size:40px">🪛</div><div class="th">ไขควง</div><div class="en">ขัน</div><div class="ex">ขันหรือคลายสกรู · เลือกหัวให้ตรงกับร่องสกรู</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#F59E0B"><div class="L" style="font-size:40px">🗜️</div><div class="th">คีม</div><div class="en">จับ</div><div class="ex">จับ บีบ ดัด หรือตัดลวด</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#E8478B"><div class="L" style="font-size:40px">🪚</div><div class="th">เลื่อย</div><div class="en">ตัด</div><div class="ex">ตัดไม้ · จับชิ้นงานให้แน่นก่อนเลื่อย</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#8B5CF6"><div class="L" style="font-size:40px">📏</div><div class="th">ตลับเมตร</div><div class="en">วัด</div><div class="ex">วัดความยาว ก่อนตัดหรือเจาะ</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#14B8A6"><div class="L" style="font-size:40px">🔪</div><div class="th">คัตเตอร์</div><div class="en">ตัด</div><div class="ex">ตัดออกจากตัว รองด้วยแผ่นรองตัด เก็บใบมีดทุกครั้ง</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div></div>
+<section class="slide" data-title="ประโยชน์ของงานช่าง" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🎁</span>ประโยชน์ของงานช่าง</h2>
+<div class="grid" style="--min:250px"><div class="card c-blue"><b>1️⃣</b> ใช้เครื่องมือช่างได้ <b>ถูกวิธี เหมาะกับงาน</b></div><div class="card c-green"><b>2️⃣</b> <b>ซ่อมของที่ชำรุด</b> ให้กลับมาใช้ใหม่ได้</div><div class="card c-orange"><b>3️⃣</b> เข้าใจคุณสมบัติของวัสดุ เปลี่ยนหรือดูแลได้ง่าย</div><div class="card c-purple"><b>4️⃣</b> ตรวจสอบของใช้ในบ้านที่ชำรุดเสียหายได้</div><div class="card c-pink"><b>5️⃣</b> <b>ลดค่าใช้จ่าย</b> ประหยัดทรัพยากร</div><div class="card c-yellow"><b>6️⃣</b> <b>เพิ่มรายได้</b> เป็นอาชีพเสริม</div><div class="card c-blue"><b>7️⃣</b> ใช้เวลาว่างให้เกิดประโยชน์ <b>ภูมิใจในตนเอง</b></div></div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> ซ่อมโซ่จักรยานที่หลุดเองได้ ช่วยให้ปลอดภัยและประหยัดเงิน 🚲</p></div>
+</div></section>
+<section class="slide" data-title="ตอนที่ 2 เครื่องมือที่ใช้ในการทำงานช่าง"><div class="inner cover">
+<div class="center" style="padding-top:4vh">
+<div style="font-size:84px;line-height:1">🧰</div>
+<span class="badge" style="background:var(--blue);font-size:1.1rem;margin-top:18px;display:inline-block">ตอนที่ 2</span>
+<h1 style="margin:8px 0">เครื่องมือที่ใช้ในการทำงานช่าง</h1><p class="muted" style="font-size:1.2rem">ตัด · ตอก/ขันเกลียว · เจาะ · วัดระยะ · คีบ</p></div>
+</div></section>
+<section class="slide" data-title="เครื่องมือ 5 ประเภท"><div class="inner">
+<h2 class="h"><span class="e">🧰</span>เครื่องมือช่างพื้นฐาน 5 ประเภท · แตะการ์ด</h2><div class="strong"><div class="sl" style="--sc:#E8478B"><div class="L" style="font-size:40px">🪚</div><div class="th">ใช้ในการตัด</div><div class="en">ตัด ผ่า แยกวัสดุ</div><div class="ex">เลื่อยลันดา · เลื่อยคันธนู · กรรไกร · มีด · คัตเตอร์</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#F59E0B"><div class="L" style="font-size:40px">🔨</div><div class="th">ตอกและขันเกลียว</div><div class="en">ตอก ขัน คลาย</div><div class="ex">ค้อนหัวกลม · ค้อนหัวหงอน · ค้อนไม้ · ไขควง · ประแจ</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#8B5CF6"><div class="L" style="font-size:40px">🪛</div><div class="th">ใช้ในการเจาะ</div><div class="en">ทำรูที่ตรง</div><div class="ex">สิ่ว · เหล็กแหลม · สว่านมือหมุน · สว่านไฟฟ้า</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#2E8BEF"><div class="L" style="font-size:40px">📏</div><div class="th">ใช้วัดระยะ</div><div class="en">กว้าง ยาว สูง หนา</div><div class="ex">ระดับน้ำ · ตลับเมตร · ไม้บรรทัด · ฉาก</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div><div class="sl" style="--sc:#16A34A"><div class="L" style="font-size:40px">🗜️</div><div class="th">ใช้ในการคีบ</div><div class="en">จับ ตัด ดัด งอ</div><div class="ex">คีมปากแหลม · คีมปากจิ้งจก · คีมปากนกแก้ว · คีมล็อก</div><small class="muted">แตะเพื่อดูรายละเอียด</small></div></div>
 </div></section>
 <section class="slide" data-title="คัดแยกเครื่องมือ"><div class="inner">
-<h2 class="h"><span class="e">🗂️</span>คัดแยกเครื่องมือตามหน้าที่</h2><div data-sorter="tool"></div>
+<h2 class="h"><span class="e">🗂️</span>คัดแยกเครื่องมือตามประเภท</h2><div data-sorter="tool"></div>
+</div></section>
+<section class="slide" data-title="ความปลอดภัย" data-nofit><div class="inner">
+<h2 class="h"><span class="e">⚠️</span>ความปลอดภัยในการทำงานช่าง</h2>
+<div class="vs2">
+ <div class="card c-red"><h3>🚑 อุบัติเหตุเกิดจาก</h3><p>👤 <b>ตัวบุคคล</b>: แต่งตัวไม่รัดกุม ไม่ตั้งใจ ไม่สวมอุปกรณ์ป้องกัน ร่างกายไม่พร้อม</p><p>🔧 <b>เครื่องมือ</b>: ชำรุดแต่ไม่ซ่อม จัดเก็บไม่เป็นระเบียบ ใช้ผิดประเภท</p><p>🏠 <b>สภาพแวดล้อม</b>: ที่ทำงานรก แสงสว่างไม่พอ</p></div>
+ <div class="card c-green"><h3>✅ ปลอดภัยไว้ก่อน</h3><p>🥽 สวมอุปกรณ์ป้องกัน แต่งกายรัดกุม</p><p>🔍 ตรวจเครื่องมือก่อนใช้</p><p>🗜️ จับด้ามคีมห่างปลายประมาณ 4 นิ้ว</p><p>🔪 ใช้คัตเตอร์เสร็จ เลื่อนใบมีดเข้าที่ทุกครั้ง</p><p>🧑‍🔧 สว่านไฟฟ้า ป.4 ต้องอยู่ในการดูแลของผู้ใหญ่</p></div>
+</div>
 </div></section>
 <section class="slide" data-title="เกม ปลอดภัยไหม"><div class="inner">
 <h2 class="h"><span class="e">⚠️</span>เกม ใช้เครื่องมือแบบนี้ ปลอดภัยไหม</h2><div data-jg="safe"></div>
 </div></section>
+<section class="slide" data-title="ตอนที่ 3 หลักการซ่อมแซมและดูแลรักษา"><div class="inner cover">
+<div class="center" style="padding-top:4vh">
+<div style="font-size:84px;line-height:1">🪛</div>
+<span class="badge" style="background:var(--purple);font-size:1.1rem;margin-top:18px;display:inline-block">ตอนที่ 3</span>
+<h1 style="margin:8px 0">หลักการซ่อมแซมและดูแลรักษา</h1><p class="muted" style="font-size:1.2rem">6 ขั้นซ่อมแซม · ตัวอย่างการซ่อม · ดูแลเครื่องมือ</p></div>
+</div></section>
+<section class="slide" data-title="หลักการซ่อมแซม" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🧭</span>หลักการซ่อมแซมอุปกรณ์และเครื่องมือ 6 ขั้น</h2><div class="grid" style="--min:213px"><div class="card c-red"><h3>1️⃣ หาสาเหตุการชำรุด</h3><p>เช่น ด้ามค้อนหลุด ตะไบหลุดจากด้าม · ชำรุดแล้ว <b>หยุดใช้ทันที</b></p></div><div class="card c-blue"><h3>2️⃣ ศึกษาวิธีซ่อมแซม</h3><p>จากคู่มือ หรือข้อมูลในอินเทอร์เน็ต</p></div><div class="card c-green"><h3>3️⃣ วางแผนการซ่อม</h3><p>เตรียมอุปกรณ์ให้ครบ ไม่เสียเวลาหา</p></div><div class="card c-orange"><h3>4️⃣ เลือกวัสดุอุปกรณ์ให้เหมาะ</h3><p>เช่น ชนิดค้อน ไขควง ขนาดตะปู</p></div><div class="card c-purple"><h3>5️⃣ ลงมือซ่อมแซม</h3><p>ตามแผน ระมัดระวัง · งานไฟฟ้าหรือของมีคมให้ผู้ใหญ่ช่วย</p></div><div class="card c-pink"><h3>6️⃣ ตรวจสอบหลังซ่อม</h3><p>แข็งแรงพอไหม ชิ้นส่วนครบไหม ก่อนนำไปใช้</p></div></div>
+</div></section>
+<section class="slide" data-title="เรียงหลักการซ่อม" data-nofit><div class="inner">
+<h2 class="h"><span class="e">📶</span>เรียงหลักการซ่อมแซม 6 ขั้น</h2><div data-order="rule"></div>
+</div></section>
 <section class="slide" data-title="ซ่อมไม้กวาดขนไก่" data-nofit><div class="inner">
-<h2 class="h"><span class="e">🪶</span>ซ่อมด้ามไม้กวาดขนไก่ที่หัก · เรียงขั้นตอน</h2><div data-order="fix"></div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> หลังใช้หลอดกาวเสร็จ ต้องทำอะไรทันที? (ปิดฝาให้สนิท 🧴)</p></div>
+<h2 class="h"><span class="e">🪶</span>ตัวอย่าง ซ่อมด้ามไม้กวาดขนไก่ที่หัก</h2><div class="card c-yellow"><h3>🧰 วัสดุอุปกรณ์</h3><div class="chipz"><span>✂️ กรรไกร</span><span>🧴 กาวร้อน</span><span>🩹 เทปใส</span><span>🍢 ไม้เสียบลูกชิ้น</span></div></div><h3 style="margin:10px 0 6px">📶 เรียงขั้นตอนการซ่อม</h3><div data-order="fix"></div><div class="card c-yellow tipk" style="margin-top:10px"><img src="k7.webp" alt="ครูอู๋"><p><b>ครูอู๋ชวนคิด:</b> ⚠️ กาวร้อนติดผิว ห้ามดึงออก! ล้างด้วย <b>สบู่ผสมน้ำอุ่น</b> หรือหยดน้ำมันพืชแล้วค่อย ๆ ลอก · หักปลายแหลมไม้เสียบลูกชิ้นออกก่อนใช้</p></div>
+</div></section>
+<section class="slide" data-title="ซ่อมบานพับ ขาโต๊ะ" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🚪</span>ตัวอย่าง ซ่อมบานพับประตู และ ขาโต๊ะ/เก้าอี้</h2>
+<div class="vs2">
+ <div class="card c-blue"><h3>🚪 บานพับประตู</h3><p><b>อุปกรณ์</b>: ไขควง สกรู บานพับใหม่</p><p>1️⃣ เปิดประตูตั้งฉาก 90° ใช้ไขควงถอดสกรูออก<br>2️⃣ ใส่บานพับใหม่ที่ตำแหน่งเดิม ขันสกรูให้แน่น<br>3️⃣ ทำแบบเดียวกันกับบานพับอันอื่นที่ชำรุด</p></div>
+ <div class="card c-orange"><h3>🪑 ขาโต๊ะและขาเก้าอี้</h3><p><b>อุปกรณ์</b>: กาวลาเท็กซ์ ดินสอ เหล็กฉาก สว่าน ไขควง ตะปูเกลียว</p><p>1️⃣ ทากาวลาเท็กซ์ที่รอยแตก<br>2️⃣ ใช้ดินสอทำเครื่องหมาย แล้วเจาะรูติดเหล็กฉาก<br>3️⃣ ไขตะปูเกลียวยึดเหล็กฉากให้แน่น<br>4️⃣ ทดสอบความแข็งแรงก่อนใช้จริง</p></div>
+</div>
+</div></section>
+<section class="slide" data-title="ดูแลรักษาเครื่องมือ" data-nofit><div class="inner">
+<h2 class="h"><span class="e">🧽</span>การดูแลรักษาเครื่องมือ</h2><div class="grid" style="--min:320px"><div class="card c-blue"><h3>1️⃣ ชำรุด ซ่อมก่อนใช้</h3><p>สายวัดขาด ใช้เทปใสพันต่อ · ด้ามไขควงหลุด หยอดกาวร้อนรอแห้ง</p></div><div class="card c-green"><h3>2️⃣ ทำความสะอาดหลังใช้</h3><p>สายวัด เช็ดผ้าแห้ง · คีม เช็ดแล้ว <b>ทาน้ำมันกันสนิม</b></p></div><div class="card c-orange"><h3>3️⃣ ทาน้ำมันกันสนิม</h3><p>ส่วนที่เป็นโลหะ เช่น กรรไกร มีด เลื่อย</p></div><div class="card c-purple"><h3>4️⃣ จัดเก็บเข้าที่</h3><p>หรือใส่กล่องให้เรียบร้อย</p></div></div>
+<div class="card c-yellow" style="margin-top:8px"><h3>🧹 จัดที่ทำงานช่างด้วยหลัก "สะสาง สะดวก สะอาด"</h3><p><b>สะสาง</b> แยกของไม่ใช้ออก · <b>สะดวก</b> จัดของใช้บ่อยไว้ใกล้มือ · <b>สะอาด</b> หมั่นทำความสะอาดเป็นประจำ</p></div>
 </div></section>
 <section class="slide" data-title="แบบทดสอบ"><div class="inner">
 <h2 class="h"><span class="e">📝</span>แบบทดสอบท้ายหน่วย (10 ข้อ)</h2><div data-quiz="main"></div>
@@ -81,7 +127,7 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 <section class="slide" data-title="สรุป" data-final><div class="inner">
 <h2 class="h"><span class="e">🌟</span>สรุปบทเรียน</h2>
 <div class="card c-yellow center" data-score></div>
-<div class="grid" style="--min:240px"><div class="card c-orange"><h3>🛠️ งานช่าง</h3><p>สร้าง ซ่อม บำรุงรักษา ดัดแปลง</p></div><div class="card c-blue"><h3>🧰 เครื่องมือ</h3><p>ใช้ให้ถูกประเภท ตรวจก่อนใช้ เก็บเป็นหมวดหมู่</p></div><div class="card c-green"><h3>🪶 ซ่อมแซม</h3><p>ศึกษาวิธี → เตรียม → ซ่อม → ตรวจผล</p></div></div>
+<div class="grid" style="--min:240px"><div class="card c-orange"><h3>🛠️ งานช่าง</h3><p>สร้าง ซ่อม บำรุงรักษา ดัดแปลง</p></div><div class="card c-blue"><h3>🧰 เครื่องมือ 5 ประเภท</h3><p>ตัด · ตอก/ขัน · เจาะ · วัด · คีบ</p></div><div class="card c-purple"><h3>🧭 ซ่อมแซม 6 ขั้น</h3><p>หาสาเหตุ → ศึกษา → วางแผน → เลือกอุปกรณ์ → ซ่อม → ตรวจสอบ</p></div><div class="card c-green"><h3>🧽 ดูแลรักษา</h3><p>ซ่อม เช็ด ทาน้ำมันกันสนิม เก็บเข้าที่</p></div></div>
 <img class="kru5" src="k11.webp" alt="ครูอู๋ปรบมือ" style="width:140px">
 <div class="row center"><button class="btn" onclick="Kit.go(0)">🔁 เรียนอีกครั้ง</button><a class="btn" href="../wk4-hub/" style="text-decoration:none;background:var(--green)">🏠 กลับหน้ารวม</a><span class="muted">หน่วยต่อไป: งานประดิษฐ์จากใบตอง</span></div>
 </div></section>
@@ -95,9 +141,10 @@ table.tb td:first-child{font:700 1.3rem Mali,sans-serif;color:var(--main-deep);t
 </div>
 <script src="kit.js"></script>
 <script>
-Kit.sorters.tool = {"bins": [{"k": "c", "t": "✂️ ตัด", "c": "var(--red)"}, {"k": "m", "t": "📏 วัด", "c": "var(--blue)"}, {"k": "j", "t": "🔩 ตอก ขัน ยึด", "c": "var(--orange)"}], "items": [{"t": "🪚 เลื่อย", "k": "c"}, {"t": "✂️ กรรไกร", "k": "c"}, {"t": "🔪 คัตเตอร์", "k": "c"}, {"t": "📏 ตลับเมตร", "k": "m"}, {"t": "📐 ฉากเหล็ก", "k": "m"}, {"t": "📏 ไม้บรรทัด", "k": "m"}, {"t": "🔨 ค้อน", "k": "j"}, {"t": "🪛 ไขควง", "k": "j"}, {"t": "🗜️ คีม", "k": "j"}]};
-Kit.orders.fix = {"hint": "👆 แตะจากขั้นแรกไปขั้นสุดท้าย", "items": ["ศึกษาวิธีซ่อมจากคู่มือหรือแหล่งที่เชื่อถือได้", "เตรียมวัสดุ: กาว ไม้เสียบลูกชิ้น เทป", "ทากาวแล้วเสียบไม้ต่อด้ามที่หัก", "พันเทปให้แน่น รอกาวแห้ง", "ทดลองใช้ ตรวจความเรียบร้อย", "ทำความสะอาด เก็บอุปกรณ์เข้าที่"], "unit": "ขั้นที่"};
-var JGS = {"safe": {"icon": "⚠️", "opts": [["g", "✅ ปลอดภัย"], ["b", "❌ อันตราย"]], "items": [["ใช้คัตเตอร์ตัดเข้าหาตัว", "b", "ต้องตัดออกจากตัว", "🔪"], ["รองแผ่นรองตัดก่อนใช้คัตเตอร์", "g", "ไม่บาดโต๊ะ ใบมีดไม่ลื่น", "🟩"], ["ใช้ไขควงแทนสิ่วงัดของ", "b", "ใช้ผิดประเภท เครื่องมือเสียและอันตราย", "🪛"], ["ด้ามค้อนหลวม แต่ยังใช้ต่อ", "b", "หัวค้อนอาจหลุดใส่คน", "🔨"], ["เก็บเครื่องมือมีคมใส่กล่องเป็นหมวดหมู่", "g", "หยิบง่ายและปลอดภัย", "🧰"], ["ส่งกรรไกรโดยหันปลายแหลมไปหาเพื่อน", "b", "ควรหันด้ามให้เพื่อน", "✂️"], ["สวมแว่นตาป้องกันเมื่อเลื่อยไม้", "g", "ป้องกันเศษไม้เข้าตา", "🥽"], ["วางตะปูกระจายบนพื้น", "b", "อาจเหยียบโดน", "📌"], ["ตรวจเครื่องมือก่อนใช้ทุกครั้ง", "g", "พบชำรุดจะได้ซ่อมก่อน", "🔍"], ["แยกของที่ไม่ใช้ออก ทิ้งของที่ไม่จำเป็น", "g", "คือ \"สะสาง\" ทำให้ที่ทำงานโล่ง", "🧹"]]}};
+Kit.sorters.tool = {"bins": [{"k": "c", "t": "🪚 ตัด", "c": "var(--red)"}, {"k": "h", "t": "🔨 ตอก/ขันเกลียว", "c": "var(--orange)"}, {"k": "d", "t": "🪛 เจาะ", "c": "var(--purple)"}, {"k": "m", "t": "📏 วัดระยะ", "c": "var(--blue)"}, {"k": "p", "t": "🗜️ คีบ", "c": "var(--green)"}], "items": [{"t": "🪚 เลื่อยลันดา", "k": "c"}, {"t": "🔪 คัตเตอร์", "k": "c"}, {"t": "🔨 ค้อนหัวหงอน", "k": "h"}, {"t": "🔩 ไขควง", "k": "h"}, {"t": "🔧 ประแจ", "k": "h"}, {"t": "🪵 สิ่ว", "k": "d"}, {"t": "🌀 สว่านมือหมุน", "k": "d"}, {"t": "📏 ตลับเมตร", "k": "m"}, {"t": "📐 ฉาก", "k": "m"}, {"t": "🫧 ระดับน้ำ", "k": "m"}, {"t": "🗜️ คีมปากแหลม", "k": "p"}, {"t": "🦜 คีมปากนกแก้ว", "k": "p"}]};
+Kit.orders.rule = {"hint": "👆 แตะจากขั้นแรกไปขั้นสุดท้าย", "items": ["หาสาเหตุการชำรุด", "ศึกษาวิธีการซ่อมแซม", "วางแผนในการซ่อมแซม", "เลือกใช้วัสดุอุปกรณ์ที่เหมาะสม", "ซ่อมแซมตามแผน", "ตรวจสอบหลังซ่อมแซม"], "unit": "ขั้นที่"};
+Kit.orders.fix = {"hint": "👆 แตะจากขั้นแรกไปขั้นสุดท้าย", "items": ["ตรวจสภาพการชำรุด เช่น ด้ามหัก", "ทากาวตรงส่วนที่หักทั้ง 2 ด้าน", "นำด้ามมาต่อกันให้สนิท", "ทากาวด้านข้าง ติดไม้เสียบลูกชิ้นประกบ", "พันเทปใสรอบไม้เสียบลูกชิ้นและด้าม", "ทดลองใช้ ถ้าไม่แน่นให้แก้ไข"], "unit": "ขั้นที่"};
+var JGS = {"safe": {"icon": "⚠️", "opts": [["g", "✅ ปลอดภัย"], ["b", "❌ อันตราย"]], "items": [["ใช้คัตเตอร์เสร็จ เลื่อนใบมีดเข้าที่", "g", "ไม่บาดมือคนอื่น", "🔪"], ["ใช้ไขควงแทนสิ่วงัดของ", "b", "ใช้ผิดประเภท อันตราย", "🪛"], ["ด้ามค้อนหลวม แต่ยังใช้ต่อ", "b", "หัวค้อนอาจหลุดใส่คน", "🔨"], ["สวมแว่นตาป้องกันเมื่อเลื่อยไม้", "g", "ป้องกันเศษไม้เข้าตา", "🥽"], ["ใช้สว่านไฟฟ้าคนเดียวโดยไม่มีผู้ใหญ่", "b", "ป.4 ต้องมีผู้ใหญ่ดูแล", "⚡"], ["ตรวจเครื่องมือก่อนใช้ทุกครั้ง", "g", "พบชำรุดจะได้ซ่อมก่อน", "🔍"], ["กาวร้อนติดนิ้ว รีบดึงออกแรง ๆ", "b", "ผิวหนังอาจฉีก ควรล้างสบู่น้ำอุ่น", "🧴"], ["ใส่เสื้อหลวม ๆ ชายยาวทำงานช่าง", "b", "ควรแต่งกายรัดกุม", "👘"], ["ทาน้ำมันกันสนิมคีมหลังใช้", "g", "เครื่องมือใช้ได้นาน", "🛢️"], ["วางตะปูกระจายบนพื้น", "b", "อาจเหยียบโดน", "📌"]]}};
 Kit.quizzes.main = [{"q": "งานช่าง หมายถึงงานแบบใด", "c": ["งานสร้าง ซ่อมแซม บำรุงรักษา หรือดัดแปลงสิ่งของ", "งานร้องเพลง", "งานทำอาหารเท่านั้น", "งานวาดภาพระบายสี"], "a": 0, "w": "คำตอบที่ถูก: งานสร้าง ซ่อมแซม บำรุงรักษา หรือดัดแปลงสิ่งของ"}, {"q": "ประโยชน์ของงานช่างต่อครอบครัว คือข้อใด", "c": ["ทำให้ของใช้ใช้งานได้นาน และประหยัดค่าใช้จ่าย", "ทำให้ต้องซื้อของใหม่บ่อย", "ทำให้บ้านสกปรก", "ทำให้เสียเวลา"], "a": 0, "w": "คำตอบที่ถูก: ทำให้ของใช้ใช้งานได้นาน และประหยัดค่าใช้จ่าย"}, {"q": "เครื่องมือใดใช้สำหรับตัด", "c": ["เลื่อย กรรไกร และคัตเตอร์", "ค้อน และตะปู", "ไขควง และน็อต", "ตลับเมตร"], "a": 0, "w": "คำตอบที่ถูก: เลื่อย กรรไกร และคัตเตอร์"}, {"q": "ไขควง ใช้ทำอะไร", "c": ["ขันหรือคลายสกรู", "ตอกตะปู", "ตัดไม้", "วัดความยาว"], "a": 0, "w": "คำตอบที่ถูก: ขันหรือคลายสกรู"}, {"q": "ค้อน ใช้ทำอะไร", "c": ["ตอกตะปู", "ตัดกระดาษ", "ขันสกรู", "วัดความยาว"], "a": 0, "w": "คำตอบที่ถูก: ตอกตะปู"}, {"q": "คีม ใช้ทำอะไรเป็นหลัก", "c": ["จับ บีบ ดัด หรือตัดลวด", "ตอกตะปู", "ทาสี", "วัดระยะ"], "a": 0, "w": "คำตอบที่ถูก: จับ บีบ ดัด หรือตัดลวด"}, {"q": "ตลับเมตร ใช้ทำอะไร", "c": ["วัดความยาว", "ตัดไม้", "ตอกตะปู", "ขันสกรู"], "a": 0, "w": "คำตอบที่ถูก: วัดความยาว"}, {"q": "สาเหตุที่เครื่องมือชำรุดบ่อย คือข้อใด", "c": ["ใช้งานผิดประเภท หรือใช้งานเป็นเวลานาน", "เก็บไว้ในที่แห้ง", "ทำความสะอาดหลังใช้", "ใช้ตามคู่มือ"], "a": 0, "w": "คำตอบที่ถูก: ใช้งานผิดประเภท หรือใช้งานเป็นเวลานาน"}, {"q": "ถ้าพบว่าด้ามค้อนหลวมหรือหลุด ควรทำอย่างไร", "c": ["หยุดใช้ทันที แล้วซ่อมให้แน่นก่อนใช้", "ใช้ต่อไปแรง ๆ", "โยนทิ้งในถังน้ำ", "ให้น้องเล่น"], "a": 0, "w": "คำตอบที่ถูก: หยุดใช้ทันที แล้วซ่อมให้แน่นก่อนใช้"}, {"q": "ก่อนซ่อมแซมอุปกรณ์ ควรศึกษาวิธีซ่อมจากที่ใด", "c": ["คู่มือ หรือแหล่งข้อมูลที่น่าเชื่อถือ", "เดาเอาเอง", "ไม่ต้องศึกษา", "ถามคนที่ไม่รู้เรื่อง"], "a": 0, "w": "คำตอบที่ถูก: คู่มือ หรือแหล่งข้อมูลที่น่าเชื่อถือ"}];
 
 function JG(el, cfg) {
