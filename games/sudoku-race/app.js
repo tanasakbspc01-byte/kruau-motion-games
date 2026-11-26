@@ -54,7 +54,7 @@ function home() {
       <h3>เวลาสอบ</h3><div class="seg" id="emin">${[30, 45, 60, 90].map(m => `<button type="button" data-v="${m}" class="${prefs.examMin === m ? "on" : ""}">${m} นาที</button>`).join("")}</div>
       <h3>ความยาก</h3><div class="seg" id="elv">${["easy", "exam", "hard"].map(k => `<button type="button" data-v="${k}" class="${prefs.examLevel === k ? "on" : ""}">${LV[k]}</button>`).join("")}</div>
       <button type="button" class="btn big" id="startEx">⏱️ เริ่มสอบ</button>
-      ${hist.length ? `<h3>ประวัติการสอบ</h3><table class="hist"><tr><th>วันที่</th><th>ถูก</th><th>เวลาที่ใช้</th><th>รวม</th></tr>${hist.slice(0, 8).map(h => `<tr><td>${new Date(h.at).toLocaleDateString("th-TH", { day: "numeric", month: "short" })}</td><td>${h.correct}/10</td><td>${fmt(h.used)}</td><td><b>${h.total}</b></td></tr>`).join("")}</table>` : ""}
+      ${hist.length ? `<h3>ประวัติการสอบ</h3><table class="hist"><tr><th>วันที่</th><th>คะแนน</th><th>เวลาที่ใช้</th><th>รวม</th></tr>${hist.slice(0, 8).map(h => `<tr><td>${new Date(h.at).toLocaleDateString("th-TH", { day: "numeric", month: "short" })}</td><td>${h.score != null ? h.score : h.correct * 10}</td><td>${fmt(h.used)}</td><td><b>${h.total}</b></td></tr>`).join("")}</table>` : ""}
     </div>
   </section>
   <p class="foot">เล่นบนโทรศัพท์ได้เต็มจอ · ความคืบหน้าบันทึกในเครื่องอัตโนมัติ</p>`;
@@ -281,12 +281,14 @@ function openExamItem(i) {
 function submitExam(auto) {
   const ex = (B && B.ex) || LS.get("exam", null); if (!ex || ex.done) return;
   const used = Math.min(ex.dur, Math.round((Date.now() - ex.start) / 1000)), left = ex.dur - used;
-  const res = ex.items.map(it => it.cur.every((v, i) => v === it.p.sol[i]));
-  const correct = res.filter(Boolean).length, score = correct * 10;
-  const bonus = correct === 10 ? Math.floor(left / 60) : 0;
-  ex.done = true; ex.result = { res, correct, score, bonus, total: score + bonus, used, left, auto };
+  const errs = ex.items.map(it => it.cur.filter((v, i) => v !== it.p.sol[i]).length);
+  const pts = errs.map(e => e === 0 ? 10 : e <= 2 ? 10 - 3 * e : 0);
+  const res = errs.map(e => e === 0);
+  const correct = res.filter(Boolean).length, score = pts.reduce((a, b) => a + b, 0);
+  const bonus = errs.every(e => e <= 2) ? Math.floor(left / 60) * 3 : 0;
+  ex.done = true; ex.result = { res, errs, pts, correct, score, bonus, total: score + bonus, used, left, auto };
   LS.set("exam", ex);
-  const hist = LS.get("hist", []); hist.unshift({ at: Date.now(), correct, total: score + bonus, used }); LS.set("hist", hist.slice(0, 30));
+  const hist = LS.get("hist", []); hist.unshift({ at: Date.now(), correct, score, total: score + bonus, used }); LS.set("hist", hist.slice(0, 30));
   examResult();
 }
 function examResult() {
@@ -299,8 +301,8 @@ function examResult() {
     <h2>${R.auto ? "หมดเวลา! " : ""}ผลการสอบ</h2>
     <table class="sheet-t"><tr><th>เวลาที่ใช้</th><th>เวลาที่เหลือ</th><th>คะแนน</th><th>โบนัสเวลา</th><th>รวม</th></tr>
     <tr><td>${fmt(R.used)}</td><td>${fmt(R.left)}</td><td>${R.score}</td><td>${R.bonus}</td><td><b>${R.total}</b></td></tr></table>
-    <p class="muted">โบนัสเวลา: 1 คะแนนต่อ 1 นาทีที่เหลือ (ได้เมื่อถูกครบ 10 ข้อ)</p>
-    <div class="elist">${ex.items.map((it, i) => `<button type="button" class="eitem ${R.res[i] ? "ok" : "bad"}" data-i="${i}"><b>${i + 1}</b><span>${T_(it.p.type).name}<small>แตะเพื่อดูคำตอบ/เฉลย</small></span><em>${R.res[i] ? "✅ 10" : "❌ 0"}</em></button>`).join("")}</div>
+    <p class="muted">ตามกติกา: ถูกทั้งตาราง 10 คะแนน · ผิดได้ไม่เกิน 2 ช่อง หักช่องละ 3 (ช่องว่างนับเป็นผิด) · ผิดเกิน 2 ช่องได้ 0<br>โบนัสเวลา: นาทีที่เหลือ (ปัดเศษทิ้ง) × 3 ได้เมื่อทุกตารางผิดไม่เกิน 2 ช่อง</p>
+    <div class="elist">${ex.items.map((it, i) => `<button type="button" class="eitem ${R.res[i] ? "ok" : R.pts && R.pts[i] ? "part" : "bad"}" data-i="${i}"><b>${i + 1}</b><span>${T_(it.p.type).name}<small>${R.errs ? (R.errs[i] ? `ผิด/ว่าง ${R.errs[i]} ช่อง · ` : "") : ""}แตะเพื่อดูคำตอบ/เฉลย</small></span><em>${R.res[i] ? "✅ 10" : R.pts && R.pts[i] ? `⚠️ ${R.pts[i]}` : "❌ 0"}</em></button>`).join("")}</div>
     <div class="row"><button type="button" class="btn" id="again">⏱️ สอบชุดใหม่</button><button type="button" class="btn ghost" id="hm">🏠 หน้าแรก</button></div></section>`;
   app.querySelectorAll(".eitem").forEach(b => b.onclick = () => reviewItem(+b.dataset.i));
   $("#again").onclick = startExam; $("#hm").onclick = home;
