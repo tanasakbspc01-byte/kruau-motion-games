@@ -2,7 +2,7 @@
 "use strict";
 const $ = s => document.querySelector(s);
 const app = $("#app");
-const CLOCK_URL = "https://claude.ai/artifact/HCZ9LMUyWG3f5FPkb8MeDm";
+const CLOCK_URL = "../amath-clock/";
 const LS = { get(k, d) { try { const v = JSON.parse(localStorage.getItem("kruau-amath-" + k)); return v == null ? d : v; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem("kruau-amath-" + k, JSON.stringify(v)); } catch (e) {} } };
 const prefs = Object.assign({ racks: 10, sec: 90, sound: true }, LS.get("prefs", {}));
 const stats = Object.assign({ racks: 0, eqs: 0, bingos: 0, bestTimed: 0 }, LS.get("stats", {}));
@@ -45,8 +45,8 @@ function home() {
     <li>ผลหารเป็นเศษส่วนได้ (เช่น 1÷2=2÷4)</li>
     <li>เบี้ย +/− และ ×/÷ เลือกใช้ได้อย่างใดอย่างหนึ่ง · เบี้ยว่าง (BLANK) แทนได้ทุกตัว แต่ได้ 0 คะแนน</li>
     <li>คะแนน = ผลรวมแต้มเบี้ย (ยังไม่คิดช่องพิเศษบนกระดาน) · ใช้ครบ 8 ตัว <b>+40 บิงโก</b></li></ul></details>
-  <a class="clocklink board" href="https://claude.ai/artifact/1Hc2JLnyECwcKpYs7mN9ZF" target="_blank" rel="noopener">⚔️ เล่นเอแม็ทเต็มกระดาน 2 ฝั่ง</a>
-  <a class="clocklink" href="${CLOCK_URL}" target="_blank" rel="noopener">⏱️ เปิดนาฬิกาเอแม็ท (สำหรับแข่งบนกระดานจริง)</a>`;
+  <a class="clocklink board" href="../amath-board/">⚔️ เล่นเอแม็ทเต็มกระดาน 2 ฝั่ง</a>
+  <a class="clocklink" href="${CLOCK_URL}">⏱️ เปิดนาฬิกาเอแม็ท (สำหรับแข่งบนกระดานจริง)</a>`;
   app.querySelectorAll(".mode").forEach(b => b.onclick = () => start(b.dataset.m));
   app.querySelectorAll(".seg").forEach(s => s.querySelectorAll("button").forEach(b => b.onclick = () => { prefs[s.dataset.k] = +b.dataset.v; LS.set("prefs", prefs); home(); }));
   $("#snd").onchange = e => { prefs.sound = e.target.checked; LS.set("prefs", prefs); };

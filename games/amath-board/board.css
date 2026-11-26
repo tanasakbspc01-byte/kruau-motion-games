@@ -70,10 +70,14 @@ button{font-family:inherit;color:inherit;cursor:pointer}
   #app.game{flex-direction:row;align-items:stretch;gap:10px;padding:8px}
   .bwrap{order:0;width:min(calc(100dvh - 16px),calc(100vw - 330px));height:auto;max-width:none;min-width:0;align-self:center;flex:none}
   .side{display:flex;flex-direction:column;gap:7px;flex:1;min-width:300px;max-width:420px;order:1;overflow-y:auto}
-  .rack{--ts:min(calc((100vw - 100dvh - 80px) / 8.6),54px)}
+  .rack{--ts:min(calc((100vw - min(100dvh - 16px, 100vw - 330px) - 76px) / 8.4),54px)}
   .log{max-height:none;flex:1}
 }
 .exrack{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;background:linear-gradient(#8B5A34,#6B4226);border-radius:14px;padding:12px 6px 10px;--ts:min(calc((min(100vw, 480px) - 116px) / 8),48px)}
 .exrack .tile u{position:absolute;top:-6px;left:-6px;width:22px;height:22px;border-radius:50%;background:#fff;color:#DC2626;font-size:14px;font-weight:800;text-decoration:none;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.4)}
 .exrack .tile.ex{transform:translateY(-4px)}
 .ab:disabled{opacity:.45}
+.rack.wait{opacity:.55}
+.think{display:inline-block;animation:bl 1s steps(2) infinite;font-weight:700;color:#1E40AF}@keyframes bl{50%{opacity:.5}}
+.ab.hintb{background:#FEF3C7;box-shadow:0 3px 0 #E7C14A}
+[hidden]{display:none !important}

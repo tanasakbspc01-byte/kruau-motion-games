@@ -2,7 +2,7 @@
 "use strict";
 const $ = s => document.querySelector(s);
 const app = $("#app");
-const TRAINER_URL = "https://claude.ai/artifact/EcEnVvaSddYmXLDFXgoKJp";
+const TRAINER_URL = "../amath-trainer/";
 const N = 15, CENTER = 7 * N + 7, KEY = "kruau-amath-game";
 /* premium squares (ตามกระดานรุ่นประถม) */
 const PREM = (() => {
@@ -34,7 +34,8 @@ let wake = null; async function keepAwake() { try { if (navigator.wakeLock && !w
 let S = null;
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
 const loadGame = () => { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } };
-const defCfg = { names: ["ทีม A", "ทีม B"], min: 22, clock: true, hide: true, sound: true };
+const defCfg = { names: ["ทีม A", "ทีม B"], min: 22, clock: true, hide: true, sound: true, ai: false, level: 2, hints: true };
+const LVN = { 1: "ง่าย", 2: "กลาง", 3: "เก่ง" };
 let CFG = Object.assign({}, defCfg, (() => { try { return JSON.parse(localStorage.getItem(KEY + "-cfg")) || {}; } catch (e) { return {}; } })());
 
 /* ======================= SETUP ======================= */
@@ -43,15 +44,19 @@ function setup() {
   const g = loadGame(), live = g && !g.over;
   app.className = "setup";
   app.innerHTML = `
-  <header class="top"><div class="logo"><span>A</span><i>=</i></div><div><h1>เอแม็ท กระดานจริง</h1><p>เล่น 2 ฝั่งบนเครื่องเดียว · กระดาน 15×15 · เบี้ยรุ่นประถม 70 ตัว · ตรวจสมการและคิดคะแนนให้อัตโนมัติ</p></div></header>
+  <header class="top"><div class="logo"><span>A</span><i>=</i></div><div><h1>เอแม็ท กระดานจริง</h1><p>เล่น 2 ฝั่งบนเครื่องเดียว หรือเล่นกับคอม · กระดาน 15×15 · เบี้ยรุ่นประถม 70 ตัว · ตรวจสมการและคิดคะแนนให้อัตโนมัติ</p></div></header>
   ${live ? `<div class="rrow"><button type="button" class="resume" id="resume">▶ เล่นเกมที่ค้างไว้ต่อ · ${esc(g.cfg.names[0])} ${g.score[0]} – ${g.score[1]} ${esc(g.cfg.names[1])}</button><button type="button" class="rx" id="drop">✕<span>ยกเลิก</span></button></div>` : ""}
   <section class="card">
-    <h3>ชื่อทีม</h3>
-    <div class="names"><label><span class="dot d0"></span><input id="n0" value="${esc(CFG.names[0])}" maxlength="16"></label><label><span class="dot d1"></span><input id="n1" value="${esc(CFG.names[1])}" maxlength="16"></label></div>
+    <h3>คู่แข่ง</h3>
+    <div class="seg" id="opp"><button type="button" data-v="0" class="${CFG.ai ? "" : "on"}">👥 2 ฝั่ง (เครื่องเดียว)</button><button type="button" data-v="1" class="${CFG.ai ? "on" : ""}">🤖 เล่นกับคอม</button></div>
+    <div id="aiopt" ${CFG.ai ? "" : "hidden"}><p class="hint">ระดับคอมพิวเตอร์</p><div class="seg" id="lvl">${[1, 2, 3].map(v => `<button type="button" data-v="${v}" class="${CFG.level === v ? "on" : ""}">${["", "🌱 ง่าย", "🌿 กลาง", "🔥 เก่ง"][v]}</button>`).join("")}</div>
+    <label class="tg"><input type="checkbox" id="o-hint" ${CFG.hints ? "checked" : ""}> มีปุ่ม 💡 ใบ้ (ให้คอมช่วยหาสมการที่ดีที่สุดจากแป้นเรา)</label></div>
+    <h3 id="nmh">${CFG.ai ? "ชื่อผู้เล่น" : "ชื่อทีม"}</h3>
+    <div class="names"><label><span class="dot d0"></span><input id="n0" value="${esc(CFG.names[0])}" maxlength="16"></label><label id="n1l" ${CFG.ai ? "hidden" : ""}><span class="dot d1"></span><input id="n1" value="${esc(CFG.names[1])}" maxlength="16"></label></div>
     <p class="hint">ฝั่งที่เริ่มก่อนสุ่มให้อัตโนมัติ (จับเบี้ยคนละตัว ใครได้เลขน้อยกว่าเริ่มก่อน แบบในสนาม)</p>
     <h3>นาฬิกา</h3>
     <div class="seg" id="min">${[0, 18, 20, 22].map(m => `<button type="button" data-v="${m}" class="${(CFG.clock ? CFG.min : 0) === m ? "on" : ""}">${m ? m + " นาที" : "ไม่จับเวลา"}</button>`).join("")}</div>
-    <label class="tg"><input type="checkbox" id="o-hide" ${CFG.hide ? "checked" : ""}> ซ่อนแป้นตอนเปลี่ยนตา (กันอีกฝั่งเห็นเบี้ย)</label>
+    <label class="tg"><input type="checkbox" id="o-hide" ${CFG.hide ? "checked" : ""}> ซ่อนแป้นตอนเปลี่ยนตา (โหมด 2 ฝั่ง)</label>
     <label class="tg"><input type="checkbox" id="o-snd" ${CFG.sound ? "checked" : ""}> เสียง</label>
   </section>
   <button type="button" class="btn big" id="go">🎲 เริ่มเกมใหม่</button>
@@ -63,12 +68,15 @@ function setup() {
     <li>เปลี่ยนเบี้ยได้เมื่อในถุงเหลือ 5 ตัวขึ้นไป (เสียตา) · ผ่านตาได้</li>
     <li>ลงเบี้ยหมดแป้นก่อน (ถุงหมดแล้ว) ได้แต้มเบี้ยค้างของอีกฝั่ง อีกฝั่งถูกหักเท่ากัน · เกินเวลาหักนาทีละ 10</li>
   </ol></section>
-  <a class="link" href="${TRAINER_URL}" target="_blank" rel="noopener">🧮 ไปหน้าฝึกต่อสมการจากแป้น</a>`;
+  <a class="link" href="${TRAINER_URL}">🧮 ไปหน้าฝึกต่อสมการจากแป้น</a>`;
   app.querySelectorAll("#min button").forEach(b => b.onclick = () => { const v = +b.dataset.v; CFG.clock = v > 0; if (v) CFG.min = v; app.querySelectorAll("#min button").forEach(x => x.classList.toggle("on", x === b)); });
+  app.querySelectorAll("#opp button").forEach(b => b.onclick = () => { CFG.ai = b.dataset.v === "1"; app.querySelectorAll("#opp button").forEach(x => x.classList.toggle("on", x === b)); $("#aiopt").hidden = !CFG.ai; $("#n1l").hidden = CFG.ai; $("#nmh").textContent = CFG.ai ? "ชื่อผู้เล่น" : "ชื่อทีม"; });
+  app.querySelectorAll("#lvl button").forEach(b => b.onclick = () => { CFG.level = +b.dataset.v; app.querySelectorAll("#lvl button").forEach(x => x.classList.toggle("on", x === b)); });
+  $("#o-hint").onchange = e => CFG.hints = e.target.checked;
   ["n0", "n1"].forEach((id, i) => $("#" + id).oninput = e => CFG.names[i] = e.target.value.trim() || (i ? "ทีม B" : "ทีม A"));
   $("#o-hide").onchange = e => CFG.hide = e.target.checked;
   $("#o-snd").onchange = e => CFG.sound = e.target.checked;
-  if (live) { $("#resume").onclick = () => { S = g; play(); pause(true); }; $("#drop").onclick = () => confirmBox("ยกเลิกเกมที่ค้างไว้?", "กระดานและคะแนนของเกมนั้นจะถูกลบ", "ยกเลิกเกม", () => { localStorage.removeItem(KEY); setup(); }); }
+  if (live) { $("#resume").onclick = () => { S = g; play(); if (S.cfg.clock) pause(true); else if (isAI(S.turn)) scheduleAI(); }; $("#drop").onclick = () => confirmBox("ยกเลิกเกมที่ค้างไว้?", "กระดานและคะแนนของเกมนั้นจะถูกลบ", "ยกเลิกเกม", () => { localStorage.removeItem(KEY); setup(); }); }
   $("#go").onclick = () => { if (live) return confirmBox("เริ่มเกมใหม่?", "เกมที่ค้างอยู่จะถูกลบ", "เริ่มใหม่", newGame); newGame(); };
 }
 function newGame() {
@@ -78,10 +86,11 @@ function newGame() {
   const rank = k => /^\d+$/.test(k) ? +k : k === "?" ? -0.5 : -1;
   let a, b; do { a = bag[Math.floor(Math.random() * 70)]; b = bag[Math.floor(Math.random() * 70)]; } while (rank(a) === rank(b));
   const first = rank(a) < rank(b) ? 0 : 1;
-  S = { cfg: JSON.parse(JSON.stringify(CFG)), bag, board: new Array(N * N).fill(null), racks: [[], []], score: [0, 0], turn: first, pending: [], sel: -1,
-        left: [CFG.min * 60000, CFG.min * 60000], log: [], over: false, paused: false, moves: 0, draw: [a, b], view: [null, null], hidden: CFG.hide };
+  const cfg = JSON.parse(JSON.stringify(CFG)); if (cfg.ai) cfg.names = [cfg.names[0], `🤖 คอม (${LVN[cfg.level]})`];
+  S = { cfg, bag, board: new Array(N * N).fill(null), racks: [[], []], score: [0, 0], turn: first, pending: [], sel: -1,
+        left: [CFG.min * 60000, CFG.min * 60000], log: [], over: false, paused: false, moves: 0, draw: [a, b], view: [null, null], hidden: CFG.hide && !CFG.ai, hintsUsed: 0 };
   refill(0); refill(1); save();
-  play();
+  play(); if (isAI(S.turn)) scheduleAI(1800);
   toast(`จับเบี้ย: ${esc(S.cfg.names[0])} ได้ [${show(a === "?" ? "BLANK" : a)}] · ${esc(S.cfg.names[1])} ได้ [${show(b === "?" ? "BLANK" : b)}]<br><b>${esc(S.cfg.names[first])} เริ่มก่อน</b>`, 4000);
 }
 function refill(i) { while (S.racks[i].length < 8 && S.bag.length) S.racks[i].push(S.bag.pop()); S.view[i] = null; }
@@ -111,6 +120,7 @@ function play() {
       <button type="button" class="ab ok" id="play">✔ ลงเบี้ย</button>
       <button type="button" class="ab" id="recall">↩ เก็บคืน</button>
       <button type="button" class="ab" id="shuf">🔀 สลับ</button>
+      ${S.cfg.ai && S.cfg.hints ? `<button type="button" class="ab hintb" id="hintb">💡 ใบ้</button>` : ""}
     </div>
     <div class="acts">
       <button type="button" class="ab" id="exch">🔁 เปลี่ยนเบี้ย</button>
@@ -125,8 +135,9 @@ function play() {
   <div class="bwrap" id="bwrap"><div class="board" id="board"></div></div>
   <div class="ov" id="ov" hidden></div>`;
   $("#play").onclick = commit; $("#recall").onclick = recall; $("#shuf").onclick = shuffleRack;
-  $("#exch").onclick = exchange; $("#pass").onclick = () => confirmBox("ผ่านตานี้?", `ให้ ${esc(S.cfg.names[1 - S.turn])} เล่นต่อ`, "ผ่าน", () => { recall(true); logMove({ type: "pass" }); endTurn(); });
+  $("#exch").onclick = exchange; $("#pass").onclick = () => isAI(S.turn) ? 0 : confirmBox("ผ่านตานี้?", `ให้ ${esc(S.cfg.names[1 - S.turn])} เล่นต่อ`, "ผ่าน", () => { recall(true); logMove({ type: "pass" }); endTurn(); });
   if ($("#pause")) $("#pause").onclick = () => pause(!S.paused);
+  if ($("#hintb")) $("#hintb").onclick = hint;
   $("#menu").onclick = menu;
   $("#board").onclick = e => { const c = e.target.closest(".cell"); if (c) tapCell(+c.dataset.i); };
   keepAwake();
@@ -151,18 +162,19 @@ function renderBoard() {
 }
 function rackOrder(i) { const r = S.racks[i]; if (!S.view[i] || S.view[i].length !== r.length) S.view[i] = [...r.keys()]; return S.view[i]; }
 function renderRack() {
-  const i = S.turn, r = S.racks[i], used = new Set(S.pending.map(p => p.r));
+  const i = rackSide(), r = S.racks[i], used = new Set(S.turn === i ? S.pending.map(p => p.r) : []);
   $("#rack").innerHTML = rackOrder(i).map(j => { const k = r[j]; const face = k === "?" ? "" : k === "+/-" ? "+/−" : show(k);
     return `<button type="button" class="tile ${k === "?" ? "blank" : ""} ${face.length > 2 ? "sm" : ""} ${used.has(j) ? "used" : ""} ${S.sel === j ? "sel" : ""} ${S.exch && S.exch.has(j) ? "ex" : ""}" data-j="${j}"><span>${face}</span><i>${AM.PTS[k]}</i></button>`; }).join("");
   $("#rack").querySelectorAll(".tile").forEach(t => t.onclick = () => tapRack(+t.dataset.j));
+  $("#rack").classList.toggle("wait", isAI(S.turn));
   const cv = $("#cover");
   if (S.hidden && !S.over) { cv.hidden = false; cv.innerHTML = `<button type="button" id="reveal">👀 ตาของ <b>${esc(S.cfg.names[S.turn])}</b><br><small>แตะเพื่อเปิดแป้น${S.cfg.clock ? " · เวลากำลังเดิน" : ""}</small></button>`; $("#reveal").onclick = () => { S.hidden = false; last = 0; save(); renderRack(); }; }
   else cv.hidden = true;
 }
 function renderSide() {
   for (const i of [0, 1]) { $("#pl" + i).classList.toggle("on", S.turn === i && !S.over); $("#sc" + i).textContent = S.score[i]; }
-  $("#turnbar").innerHTML = S.over ? "🏁 จบเกม" : `ตาของ <span class="dot d${S.turn}"></span><b>${esc(S.cfg.names[S.turn])}</b>${S.moves === 0 ? " · ตาแรกต้องทับ ★" : ""}`;
-  $("#bagi").innerHTML = `ถุง: เหลือ <b>${S.bag.length}</b> ตัว · แป้น${esc(S.cfg.names[1 - S.turn])}: ${S.racks[1 - S.turn].length} ตัว`;
+  $("#turnbar").innerHTML = S.over ? "🏁 จบเกม" : isAI(S.turn) ? `<span class="think">🤖 คอมกำลังคิด…</span>` : `ตาของ <span class="dot d${S.turn}"></span><b>${esc(S.cfg.names[S.turn])}</b>${S.moves === 0 ? " · ตาแรกต้องทับ ★" : ""}`;
+  $("#bagi").innerHTML = S.cfg.ai ? `ถุง: เหลือ <b>${S.bag.length}</b> ตัว · คอมมีเบี้ย ${S.racks[1].length} ตัว${S.hintsUsed ? ` · ใช้ใบ้ ${S.hintsUsed} ครั้ง` : ""}` : `ถุง: เหลือ <b>${S.bag.length}</b> ตัว · แป้น${esc(S.cfg.names[1 - S.turn])}: ${S.racks[1 - S.turn].length} ตัว`;
   $("#log").innerHTML = S.log.length ? `<h4>บันทึกการเล่น</h4>` + S.log.slice().reverse().map(l => `<div class="lg l${l.p}"><span class="dot d${l.p}"></span><span class="lt">${l.text}</span><b>${l.pts > 0 ? "+" + l.pts : l.pts < 0 ? l.pts : ""}</b></div>`).join("") : "";
   paintClock();
 }
@@ -175,12 +187,13 @@ function msg(t, cls = "") { const m = $("#msg"); m.className = "msg " + cls; m.i
 /* ---------- input ---------- */
 function tapRack(j) {
   if (S.over || S.paused) return;
+  if (isAI(S.turn)) { msg("🤖 รอคอมเล่นก่อนนะ", "info"); return; }
   if (S.pending.some(p => p.r === j)) { S.pending = S.pending.filter(p => p.r !== j); S.sel = -1; renderBoard(); renderRack(); return; }
   S.sel = S.sel === j ? -1 : j; renderRack();
   if (S.sel >= 0) msg("แตะช่องว่างบนกระดานเพื่อวางเบี้ย");
 }
 function tapCell(c) {
-  if (S.over || S.paused || S.hidden || S.exch) return;
+  if (S.over || S.paused || S.hidden || S.exch || isAI(S.turn)) return;
   const p = S.pending.find(x => x.c === c);
   if (p) {
     const k = S.racks[S.turn][p.r];
@@ -240,8 +253,9 @@ function evaluate(board, pending, firstMove) {
   return { ok: true, total, parts, bingo };
 }
 function eqStr(syms) { return syms.map((x, k) => show(x) + ((x === "-" && (k === 0 || syms[k - 1] === "=")) ? "\u0001" : "")).join(" ").replace(/\u0001 /g, "").replace(/(\d) (?=\d)/g, "$1"); }
-function commit() {
+function commit(force) {
   if (S.over || S.paused || S.hidden || S.exch) return;
+  if (isAI(S.turn) && force !== true) return;
   const rack = S.racks[S.turn], pend = S.pending.map(p => ({ c: p.c, k: rack[p.r], s: p.s }));
   const r = evaluate(S.board, pend, S.moves === 0);
   if (!r.ok) { msg(r.msg, "bad"); tone(220, .25); return; }
@@ -250,7 +264,7 @@ function commit() {
   S.score[S.turn] += r.total;
   logMove({ type: "play", text: r.parts.map(p => `${p.txt}${p.em > 1 ? ` <small>×${p.em}</small>` : ""}`).join(" · ") + (r.bingo ? " · 🌟บิงโก+40" : ""), pts: r.total });
   if (r.bingo) [523, 659, 784, 1047, 1319].forEach((f, k) => setTimeout(() => tone(f, .2), k * 100)); else [660, 880].forEach((f, k) => setTimeout(() => tone(f, .1), k * 90));
-  toast(`${r.bingo ? "🌟 บิงโก! " : "✅ "}${esc(S.cfg.names[S.turn])} +${r.total} คะแนน<br><small>${r.parts.map(p => `${p.txt} = ${p.sc}`).join("<br>")}</small>`);
+  toast(`${r.bingo ? "🌟 บิงโก! " : "✅ "}${esc(S.cfg.names[S.turn])} +${r.total} คะแนน<br><small>${r.parts.map(p => `${p.txt} → ${p.sc} คะแนน`).join("<br>")}</small>`);
   S.pending = []; S.sel = -1; S.moves++;
   refill(S.turn);
   if (!S.racks[S.turn].length && !S.bag.length) return finish(S.turn);
@@ -258,11 +272,12 @@ function commit() {
 }
 function logMove(m) { S.log.push(Object.assign({ p: S.turn, pts: 0, text: m.type === "pass" ? "ผ่าน" : m.type === "exch" ? `เปลี่ยนเบี้ย ${m.n} ตัว` : "" }, m.type === "play" ? m : {})); }
 function endTurn() {
-  S.turn = 1 - S.turn; S.sel = -1; S.exch = null; S.hidden = !!S.cfg.hide; last = 0; save();
+  S.turn = 1 - S.turn; S.sel = -1; S.exch = null; S.hidden = !!S.cfg.hide && !S.cfg.ai; last = 0; save();
   renderAll(); msg("");
+  if (isAI(S.turn)) scheduleAI();
 }
 function exchange() {
-  if (S.over) return;
+  if (S.over || isAI(S.turn)) return;
   if (S.paused) { msg("กด ▶ เล่นต่อก่อน", "bad"); return; }
   if (S.bag.length < 5) { msg(`ในถุงเหลือ ${S.bag.length} ตัว (น้อยกว่า 5) เปลี่ยนเบี้ยไม่ได้`, "bad"); toast("ในถุงเหลือน้อยกว่า 5 ตัว เปลี่ยนเบี้ยไม่ได้"); return; }
   recall(true);
@@ -293,7 +308,7 @@ function pause(p) {
   S.paused = p; last = 0; save();
   const ov = $("#ov");
   if (p) { ov.hidden = false; ov.innerHTML = `<div class="psheet"><p style="font-size:24px">⏸ พักเวลา</p><p>ตรวจสมการ / เรียกกรรมการ</p><button type="button" class="btn big" id="res">▶ เล่นต่อ</button></div>`; $("#res").onclick = () => pause(false); }
-  else { ov.hidden = true; }
+  else { ov.hidden = true; if (isAI(S.turn)) scheduleAI(); }
   if ($("#pause")) $("#pause").textContent = p ? "▶ ต่อ" : "⏸ พัก";
 }
 function menu() {
@@ -334,14 +349,141 @@ function result() {
     ${S.cfg.clock ? `<tr><td>หักเกินเวลา</td>${F.pen.map(v => `<td class="${v ? "red" : ""}">${v ? "−" + v : 0}</td>`).join("")}</tr>` : ""}
     <tr class="net"><td>คะแนนสุทธิ</td>${S.score.map(v => `<td><b>${v}</b></td>`).join("")}</tr></table>
     ${diff > 150 ? `<p class="muted">รุ่นประถมนับผลต่างสูงสุด 150 คะแนน</p>` : ""}
+    ${S.cfg.ai && S.racks[1].length ? `<p class="muted">เบี้ยที่เหลือในแป้นคอม: ${S.racks[1].map(k => k === "?" ? "BLANK" : show(k)).join(" ")}</p>` : ""}
     <div class="row"><button type="button" class="ab ok" id="again">🎲 เกมใหม่</button><button type="button" class="ab" id="view">ดูกระดาน</button><button type="button" class="ab" id="hm">🏠</button></div></div>`;
   $("#again").onclick = () => { localStorage.removeItem(KEY); newGame(); };
   $("#view").onclick = () => { ov.hidden = true; const tb = $("#turnbar"); tb.innerHTML = `🏁 จบเกม · <button type="button" class="ab" id="sr">ดูผล</button>`; $("#sr").onclick = result; };
   $("#hm").onclick = () => { localStorage.removeItem(KEY); setup(); };
 }
+/* ======================= COMPUTER PLAYER ======================= */
+function isAI(i) { return !!(S && S.cfg.ai && i === 1); }
+function rackSide() { return S.cfg.ai ? 0 : S.turn; }
+let aiTimer = 0;
+function scheduleAI(delay = 700) {
+  clearTimeout(aiTimer);
+  aiTimer = setTimeout(() => { if (!S || S.over || !isAI(S.turn)) return; if (S.paused) return; aiTurn(); }, delay);
+}
+const AI_BLANK = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "×", "÷", "="];
+function genMoves(side, budget) {
+  const B = S.board, rack = S.racks[side], first = !B.some(Boolean), t0 = Date.now(), out = [];
+  const optsOf = k => k === "?" ? AI_BLANK : AM.opts(k);
+  const crossCache = new Map();
+  const crossOK = (c, d2, sym) => {
+    const key = c + "|" + d2 + "|" + sym; if (crossCache.has(key)) return crossCache.get(key);
+    const same = x => d2 === N || Math.floor(x / N) === Math.floor(c / N);
+    const before = []; let x = c - d2; while (x >= 0 && same(x) && B[x]) { before.unshift(B[x].s); x -= d2; }
+    const after = []; x = c + d2; while (x < N * N && same(x) && B[x]) { after.push(B[x].s); x += d2; }
+    const v = !before.length && !after.length ? true : AM.check([...before, sym, ...after]).ok;
+    crossCache.set(key, v); return v;
+  };
+  const hasCross = (c, d2) => { const same = x => d2 === N || Math.floor(x / N) === Math.floor(c / N); return (c - d2 >= 0 && same(c - d2) && B[c - d2]) || (c + d2 < N * N && same(c + d2) && B[c + d2]); };
+  let stop = false;
+  for (const dir of [1, N]) {
+    const d2 = dir === 1 ? N : 1;
+    for (let li = 0; li < N && !stop; li++) {
+      const at = p => dir === 1 ? li * N + p : p * N + li;
+      for (let p0 = 0; p0 < N && !stop; p0++) {
+        if (B[at(p0)]) continue;
+        for (let k = 1; k <= rack.length && !stop; k++) {
+          const news = []; let p = p0;
+          while (p < N && news.length < k) { if (!B[at(p)]) news.push(p); p++; }
+          if (news.length < k) break;
+          let end = news[k - 1]; while (end + 1 < N && B[at(end + 1)]) end++;
+          let st = p0; while (st - 1 >= 0 && B[at(st - 1)]) st--;
+          const L = end - st + 1; if (L < 3) continue;
+          const cellsNew = news.map(at);
+          if (first) { if (!cellsNew.includes(CENTER)) continue; }
+          else if (!(L > k || cellsNew.some(c => hasCross(c, d2)))) continue;
+          /* pattern */
+          const pat = []; for (let q = st; q <= end; q++) { const c = at(q); pat.push(B[c] ? { fixed: B[c].s, c } : { c, cross: hasCross(c, d2) }); }
+          const used = new Array(rack.length).fill(false), seq = [], fill = [];
+          const rec = (pos, stt, run, zero, eq) => {
+            if (Date.now() - t0 > budget) { stop = true; return; }
+            if (pos === pat.length) {
+              if ((stt === 2 || stt === 3) && eq > 0 && AM.check(seq).ok) {
+                const pend = fill.map(f => ({ c: f.c, k: rack[f.r], s: f.s }));
+                const ev = evaluate(B, pend, first);
+                if (ev.ok) out.push({ pend: fill.map(f => ({ c: f.c, r: f.r, s: f.s })), total: ev.total, n: fill.length });
+              }
+              return;
+            }
+            const cell = pat[pos];
+            const step = (s, r) => {
+              let ns = -1, nr = 0, nz = false, ne = eq;
+              if (s.length === 1 && s >= "0" && s <= "9") { if (stt === 0 || stt === 1 || stt === 4) { ns = 2; nr = 1; nz = s === "0"; } else if (stt === 2 && run < 3 && !(run === 1 && zero)) { ns = 2; nr = run + 1; nz = zero; } }
+              else if (s.length === 2) { if (stt === 0 || stt === 1 || stt === 4) ns = 3; }
+              else if (s === "=") { if (stt === 2 || stt === 3) { ns = 0; ne = eq + 1; } }
+              else if (s === "-") { if (stt === 2 || stt === 3) ns = 4; else if (stt === 0) ns = 1; }
+              else if (stt === 2 || stt === 3) ns = 4;
+              if (ns < 0) return;
+              seq.push(s); if (r >= 0) fill.push({ c: cell.c, r, s });
+              rec(pos + 1, ns, nr, nz, ne);
+              seq.pop(); if (r >= 0) fill.pop();
+            };
+            if (cell.fixed) { step(cell.fixed, -1); return; }
+            const tried = new Set();
+            for (let r = 0; r < rack.length && !stop; r++) {
+              if (used[r] || tried.has(rack[r])) continue; tried.add(rack[r]);
+              used[r] = true;
+              for (const s of optsOf(rack[r])) { if (cell.cross && !crossOK(cell.c, d2, s)) continue; step(s, r); if (stop) break; }
+              used[r] = false;
+            }
+          };
+          rec(0, 0, 0, false, 0);
+        }
+      }
+    }
+  }
+  /* unique by placement */
+  const seen = new Set(), list = [];
+  out.sort((a, b) => b.total - a.total);
+  for (const m of out) { const key = m.pend.map(x => x.c + x.s).sort().join(","); if (!seen.has(key)) { seen.add(key); list.push(m); } }
+  return { list, timedOut: stop, ms: Date.now() - t0 };
+}
+function pickMove(list, level) {
+  if (!list.length) return null;
+  if (level >= 3) return list[0];
+  if (level === 2) { const i = Math.min(list.length - 1, Math.floor(list.length * (0.08 + Math.random() * 0.17))); return list[i]; }
+  const short = list.filter(m => m.n <= 4); const pool = short.length ? short : list;
+  return pool[Math.floor(pool.length * (0.4 + Math.random() * 0.6)) % pool.length];
+}
+function aiTurn() {
+  if (!isAI(S.turn) || S.over) return;
+  const budget = { 1: 1200, 2: 2000, 3: 3500 }[S.cfg.level] || 2000;
+  const res = genMoves(1, budget), mv = pickMove(res.list, S.cfg.level);
+  if (mv) {
+    S.pending = mv.pend.map(x => ({ c: x.c, r: x.r, s: x.s })); renderBoard();
+    tone(500, .06, .08);
+    setTimeout(() => { if (S && isAI(S.turn) && !S.paused) commit(true); else if (S) { S.pending = []; renderBoard(); } }, 1100);
+    return;
+  }
+  const rack = S.racks[1];
+  if (S.bag.length >= 5) {
+    let keepEq = false; const sel = []; rack.forEach((k, j) => { if (k === "=" && !keepEq) { keepEq = true; return; } if (k === "?") return; sel.push(j); });
+    const outT = sel.map(j => rack[j]); S.racks[1] = rack.filter((_, j) => !sel.includes(j)); refill(1); S.bag.push(...outT); AM.shuffle(S.bag);
+    logMove({ type: "exch", n: outT.length }); toast(`🤖 คอมเปลี่ยนเบี้ย ${outT.length} ตัว`); endTurn();
+  } else {
+    const prev = S.log[S.log.length - 1];
+    logMove({ type: "pass" });
+    toast(prev && prev.text === "ผ่าน" ? "🤖 คอมผ่านตา<br><small>ทั้งสองฝั่งลงต่อไม่ได้แล้ว กด ☰ → 🏁 จบเกม ได้เลย</small>" : "🤖 คอมผ่านตา", 4000);
+    endTurn();
+  }
+}
+function hint() {
+  if (S.over || isAI(S.turn) || S.paused) return;
+  msg("💡 กำลังหาสมการที่ดีที่สุดจากแป้นของคุณ…", "info");
+  setTimeout(() => {
+    const res = genMoves(0, 3000), mv = res.list[0];
+    if (!mv) { msg("💡 แป้นนี้หาที่ลงไม่ได้เลย ลองเปลี่ยนเบี้ยหรือผ่านตา", "info"); return; }
+    S.hintsUsed = (S.hintsUsed || 0) + 1;
+    S.pending = mv.pend.map(x => ({ c: x.c, r: x.r, s: x.s })); S.sel = -1; renderBoard(); renderRack(); renderSide();
+    msg(`💡 ลองแบบนี้ได้ <b>${mv.total}</b> คะแนน${res.list.length > 1 ? ` (หาได้ ${res.list.length}${res.timedOut ? "+" : ""} แบบ)` : ""} · กด ✔ ลงเบี้ย หรือ ↩ เก็บคืนแล้วคิดเอง`, "info");
+  }, 60);
+}
+
 document.addEventListener("visibilitychange", () => { if (document.hidden && S) save(); else if (S && !S.over) keepAwake(); });
 
 const g0 = loadGame();
-if (g0 && !g0.over && location.hash !== "#new") { S = g0; play(); if (S.cfg.clock) pause(true); }
+if (g0 && !g0.over && location.hash !== "#new") { S = g0; play(); if (S.cfg.clock) pause(true); else if (isAI(S.turn)) scheduleAI(); }
 else setup();
 })();

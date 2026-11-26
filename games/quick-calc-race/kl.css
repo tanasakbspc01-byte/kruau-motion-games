@@ -1,0 +1,73 @@
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;font-family:"Mali",system-ui,sans-serif;color:#2A1B47;background:#FFF5E8}
+body{background-image:radial-gradient(#F6DDBA 1.3px,transparent 1.3px);background-size:22px 22px;min-height:100dvh}
+button{font-family:inherit;color:inherit;cursor:pointer}
+sup{font-size:.62em;line-height:0}
+#app{max-width:720px;margin:0 auto;padding:12px 10px 40px}
+.top{display:flex;gap:12px;align-items:center;background:linear-gradient(120deg,#FF7A45,#FFB547);color:#fff;border-radius:22px;padding:14px 16px;margin-bottom:12px;box-shadow:0 5px 0 #E0602D}
+.logo{flex:none;width:74px;height:74px;border-radius:18px;background:#2A1B47;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}.logo b{font-size:20px;letter-spacing:2px}.logo i{font-style:normal;font-size:15px;color:#FFD166}
+.top h1{margin:0;font-size:clamp(24px,5.8vw,32px)}.top p{margin:3px 0 0;font-size:14px;opacity:.95}
+.card{background:#fff;border-radius:18px;padding:12px 14px;margin-bottom:12px;box-shadow:0 3px 0 #F1DCC0}
+.card h3{margin:0 0 8px;font-size:16px}
+.hint{font-size:13px;opacity:.7;margin:6px 0 0}
+.seg{display:flex;gap:5px;flex-wrap:wrap}.seg button{flex:1;min-width:64px;border:2px solid #F1DCC0;background:#FFFBF5;border-radius:10px;padding:9px 4px;font-weight:700;font-size:14px}.seg button.on{background:#2A1B47;border-color:#2A1B47;color:#fff}
+.seg.sm button{padding:7px 4px;font-size:13px}
+.modes{display:grid;gap:10px;margin-bottom:12px}
+.mode{border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:0 4px 0 rgba(0,0,0,.1)}
+.mode>b{font-size:19px}.mode>small{font-size:14px;opacity:.8;margin-top:-4px}
+.m1{background:#FFE9A8}.m2{background:#FFD3DE}.m3{background:#CFEAFF}
+.mrow{display:flex;gap:8px;align-items:center}.mrow>span{flex:none;width:64px;font-weight:700;font-size:13px}.mrow .seg{flex:1}
+.btn{border:0;background:#2A1B47;color:#fff;font-weight:700;font-size:17px;border-radius:999px;padding:12px 22px;box-shadow:0 4px 0 #000}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #000}.btn.ghost{background:#fff;color:#2A1B47;border:2px solid #F1DCC0;box-shadow:0 3px 0 #F1DCC0}
+.btn.big{font-size:22px;padding:14px 30px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center}.stats b{display:block;font-size:24px;color:#E0602D}.stats small{font-size:12px;opacity:.7}
+.hist{width:100%;border-collapse:collapse;font-size:14px}.hist th,.hist td{padding:6px;border-bottom:1px solid #F5E6D2;text-align:center}
+.rules summary{font-weight:700;cursor:pointer}.rules ul{margin:8px 0 0;padding-left:20px;font-size:14px;line-height:1.65}
+/* play */
+#app.play{display:flex;flex-direction:column;gap:10px}
+.bh{display:flex;align-items:center;gap:8px}.ib{width:44px;height:44px;border:0;border-radius:12px;background:#fff;font-size:20px;box-shadow:0 3px 0 #F1DCC0}
+.tt{flex:1;font-size:17px}
+.clock{font-weight:800;font-size:26px;min-width:64px;text-align:center;background:#2A1B47;color:#fff;border-radius:12px;padding:3px 10px;font-variant-numeric:tabular-nums}.clock.low{background:#E11D48;animation:bl 1s steps(2) infinite}@keyframes bl{50%{opacity:.6}}
+.tb{height:8px;border-radius:9px;background:#F1DCC0;overflow:hidden}.tb i{display:block;height:100%;background:linear-gradient(90deg,#FF7A45,#FFB547);transition:width 1s linear}
+.prob{background:#2A1B47;color:#fff;border-radius:20px;padding:12px;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:6px 12px;box-shadow:0 5px 0 #140B26}
+.pl{font-size:14px;opacity:.75;text-align:right}
+.digits{display:flex;gap:8px}
+.dg{width:clamp(50px,14vw,70px);height:clamp(58px,16vw,80px);border:0;border-radius:14px;background:#FFD166;color:#2A1B47;font-size:clamp(32px,9vw,46px);font-weight:800;box-shadow:0 4px 0 #C99A2E;font-family:ui-rounded,-apple-system,"Segoe UI",Roboto,sans-serif}
+.dg.used{opacity:.25;box-shadow:none;transform:translateY(3px)}
+.dg:active{transform:translateY(3px);box-shadow:0 1px 0 #C99A2E}
+.target{font-size:clamp(44px,12vw,64px);font-weight:800;color:#7CF0B5;line-height:1;font-family:ui-rounded,-apple-system,"Segoe UI",Roboto,sans-serif}
+.work{background:#fff;border:3px dashed #F1C27D;border-radius:18px;padding:10px 12px;min-height:110px}
+.expr{font-size:clamp(26px,7vw,36px);font-weight:700;min-height:1.4em;word-break:break-word;font-family:ui-rounded,-apple-system,"Segoe UI",Roboto,sans-serif}
+.expr .ph{font-size:15px;font-weight:400;opacity:.5;font-family:"Mali",sans-serif}
+.expr sup.cs{color:#E0602D}
+.val{font-size:18px;margin-top:6px;min-height:1.4em}.val b{font-size:24px;color:#E0602D}.val.eq b{color:#16A34A}.val.wait{opacity:.6;font-size:14px}.val em{font-style:normal;color:#B45309;font-size:13px;margin-left:6px}
+.keys{display:flex;flex-direction:column;gap:6px}
+.kr{display:flex;gap:6px}
+.k{flex:1;height:56px;border:0;border-radius:14px;background:#fff;font-size:26px;font-weight:800;box-shadow:0 3px 0 #F1DCC0}
+.k.op{background:#FFE4D6;color:#C2410C}.k.del{background:#F3F4F6}.k.clr{flex:.6;font-size:17px;background:#F3F4F6}.k.sub{flex:1.6;font-size:19px;background:#16A34A;color:#fff;box-shadow:0 3px 0 #0F7A35}
+.k:active{transform:translateY(2px);box-shadow:none}.k:disabled{opacity:.4}
+.tip{font-size:13px;opacity:.7;margin:0;text-align:center}
+.res{border-radius:18px;padding:14px;text-align:center;animation:in .3s ease-out}@keyframes in{from{transform:translateY(16px);opacity:0}}
+.res.good{background:#DCFCE7}.res.ok{background:#E0F2FE}.res.bad{background:#FFE4E6}
+.res h3{margin:0 0 8px;font-size:20px}.res p{margin:6px 0;font-size:16px}.sx{font-size:20px}
+.muted{opacity:.7;font-size:14px}
+/* exam result */
+.resx{text-align:center}.cele{font-size:52px}.resx h2{margin:4px 0 10px}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.sum div{background:#FFF5E8;border-radius:14px;padding:10px}.sum b{font-size:30px;color:#E0602D;display:block}.sum small{font-size:12px;opacity:.75}
+.lg{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0;text-align:left}.lg th,.lg td{padding:7px 5px;border-bottom:1px solid #F5E6D2;vertical-align:top}
+.lg tr.g td:first-child{border-left:5px solid #16A34A}.lg tr.o td:first-child{border-left:5px solid #0EA5E9}.lg tr.b td:first-child{border-left:5px solid #FDA4AF}
+.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+/* teacher */
+#app.teach{max-width:none;min-height:100dvh;background:#1B1135;color:#fff;display:flex;flex-direction:column;padding:10px 14px}
+.teach .seg button{background:#2B1E4F;border-color:#3B2C66;color:#fff}.teach .seg button.on{background:#FFD166;color:#1B1135;border-color:#FFD166}
+.tbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.tbar .seg{flex:1;min-width:200px}
+.tmain{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center}
+.tno{font-size:22px;opacity:.7}.tlbl{font-size:clamp(16px,2.4vw,24px);opacity:.6;margin-top:6px}
+.tdig{font-size:clamp(80px,17vw,200px);font-weight:800;letter-spacing:.18em;line-height:1;color:#FFD166;font-family:ui-rounded,-apple-system,"Segoe UI",Roboto,sans-serif}
+.ttg{font-size:clamp(70px,14vw,170px);font-weight:800;line-height:1;color:#7CF0B5;font-family:ui-rounded,-apple-system,"Segoe UI",Roboto,sans-serif}
+.tclock{font-size:clamp(40px,7vw,80px);font-weight:800;margin-top:8px;font-variant-numeric:tabular-nums}.tclock.low{color:#FF6B81;animation:bl 1s steps(2) infinite}
+.tsol{font-size:clamp(22px,3.6vw,40px);min-height:1.3em;color:#FFE9A8}
+.tctl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:10px 0}
+.teach .btn{background:#FFD166;color:#1B1135;box-shadow:0 4px 0 #C99A2E}.teach .btn.ghost{background:transparent;color:#fff;border:2px solid #3B2C66;box-shadow:none}
+.teach .ib{background:#2B1E4F;color:#fff;box-shadow:none}
+#toast{position:fixed;left:50%;top:30%;transform:translate(-50%,-50%) scale(.9);background:#2A1B47;color:#fff;padding:12px 20px;border-radius:16px;font-size:17px;font-weight:700;opacity:0;transition:.2s;z-index:40;pointer-events:none;text-align:center}#toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}

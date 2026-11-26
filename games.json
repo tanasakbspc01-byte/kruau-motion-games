@@ -515,11 +515,21 @@
   },
   "EcEnVvaSddYmXLDFXgoKJp": {
    "folder": "amath-trainer",
-   "title": "ฝึกต่อสมการ เอแม็ท · รุ่นประถม"
+   "title": "ฝึกต่อสมการ เอแม็ท · รุ่นประถม",
+   "upstream": {
+    "trainer.js": "0489ae5c"
+   }
   },
   "1Hc2JLnyECwcKpYs7mN9ZF": {
    "folder": "amath-board",
-   "title": "เอแม็ท กระดานจริง · เล่น 2 ฝั่ง"
+   "title": "เอแม็ท กระดานจริง · เล่น 2 ฝั่ง",
+   "upstream": {
+    "board.js": "5bc30e28"
+   }
+  },
+  "9CoLCYbQccoZbbcsiHzymd": {
+   "folder": "quick-calc-race",
+   "title": "คิดเลขเร็ว สนามแข่ง · ศิลปหัตถกรรม"
   }
  }
 }
