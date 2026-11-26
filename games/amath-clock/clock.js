@@ -76,7 +76,7 @@ function setup() {
   $("#o-sound").onchange = e => c.sound = e.target.checked;
   if ($("#resume")) $("#resume").onclick = () => { play(); setPaused(true); };
   $("#go").onclick = () => {
-    if (live && !confirm("มีเกมที่ค้างอยู่ จะเริ่มเกมใหม่แทนใช่ไหม?")) return;
+    if (live && !$("#go").dataset.sure) { $("#go").dataset.sure = "1"; $("#go").textContent = "⚠️ แตะอีกครั้งเพื่อยืนยัน: ล้างเกมเดิมแล้วเริ่มใหม่"; $("#go").classList.add("warn"); return; }
     const ms = c.min * 60000;
     S = { cfg: c, names: c.names.slice(), left: [ms, ms], total: ms, turn: c.first, running: false, paused: false, started: false, ended: false, scores: [[], []], turns: [0, 0], warned: [false, false], overBeep: [0, 0], log: [] };
     try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); ac.resume && ac.resume(); } catch (e) {}

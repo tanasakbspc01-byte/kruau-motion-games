@@ -81,3 +81,12 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .think{display:inline-block;animation:bl 1s steps(2) infinite;font-weight:700;color:#1E40AF}@keyframes bl{50%{opacity:.5}}
 .ab.hintb{background:#FEF3C7;box-shadow:0 3px 0 #E7C14A}
 [hidden]{display:none !important}
+.ab.ana{background:#FEF3C7;box-shadow:0 3px 0 #E7C14A}.ab.sm{flex:none;padding:5px 10px;font-size:12px;margin-left:6px}
+.ana-s{max-width:640px;text-align:left}.ana-s>p{text-align:center}
+.ana-list{display:flex;flex-direction:column;gap:6px;max-height:62vh;overflow-y:auto}
+.ana-row{border-radius:12px;padding:8px 10px;background:#F6F9FF;font-size:14px;border-left:5px solid #CBD5E1}
+.ana-row.good{border-left-color:#16A34A;background:#F0FDF4}.ana-row.mid{border-left-color:#F59E0B;background:#FFFBEB}.ana-row.bad{border-left-color:#E11D48;background:#FFF1F2}
+.ana-h{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap}.ana-me{flex:1;opacity:.85}.ana-me em{font-style:normal;font-weight:700}
+.ana-best{margin-top:4px}
+.rvb{width:min(100%,460px);margin:6px auto}.rvb .board{aspect-ratio:1;height:auto}
+.bt.best{background:linear-gradient(#22C55E,#15803D)}.bt.mine{background:linear-gradient(#60A5FA,#2563EB)}

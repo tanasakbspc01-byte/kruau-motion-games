@@ -507,7 +507,10 @@
   },
   "V6zhRp9CucBetpGGodZWec": {
    "folder": "sudoku-race",
-   "title": "ซูโดกุ สนามแข่ง · ฝึกซ้อมศิลปหัตถกรรม"
+   "title": "ซูโดกุ สนามแข่ง · ฝึกซ้อมศิลปหัตถกรรม",
+   "upstream": {
+    "index.html": "8731d530"
+   }
   },
   "HCZ9LMUyWG3f5FPkb8MeDm": {
    "folder": "amath-clock",
@@ -524,12 +527,19 @@
    "folder": "amath-board",
    "title": "เอแม็ท กระดานจริง · เล่น 2 ฝั่ง",
    "upstream": {
-    "board.js": "5bc30e28"
+    "board.js": "de78c206"
    }
   },
   "9CoLCYbQccoZbbcsiHzymd": {
    "folder": "quick-calc-race",
-   "title": "คิดเลขเร็ว สนามแข่ง · ศิลปหัตถกรรม"
+   "title": "คิดเลขเร็ว สนามแข่ง · ศิลปหัตถกรรม",
+   "upstream": {
+    "index.html": "da05e71f"
+   }
+  },
+  "59n34ZoCkY3JfjdTLD3S5t": {
+   "folder": "math-genius",
+   "title": "อัจฉริยภาพทางคณิตศาสตร์ · ข้อสอบจำลอง"
   }
  }
 }

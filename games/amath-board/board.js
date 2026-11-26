@@ -89,7 +89,7 @@ function newGame() {
   const cfg = JSON.parse(JSON.stringify(CFG)); if (cfg.ai) cfg.names = [cfg.names[0], `🤖 คอม (${LVN[cfg.level]})`];
   S = { cfg, bag, board: new Array(N * N).fill(null), racks: [[], []], score: [0, 0], turn: first, pending: [], sel: -1,
         left: [CFG.min * 60000, CFG.min * 60000], log: [], over: false, paused: false, moves: 0, draw: [a, b], view: [null, null], hidden: CFG.hide && !CFG.ai, hintsUsed: 0 };
-  refill(0); refill(1); save();
+  refill(0); refill(1); takeSnap(); save();
   play(); if (isAI(S.turn)) scheduleAI(1800);
   toast(`จับเบี้ย: ${esc(S.cfg.names[0])} ได้ [${show(a === "?" ? "BLANK" : a)}] · ${esc(S.cfg.names[1])} ได้ [${show(b === "?" ? "BLANK" : b)}]<br><b>${esc(S.cfg.names[first])} เริ่มก่อน</b>`, 4000);
 }
@@ -262,7 +262,7 @@ function commit(force) {
   pend.forEach(p => S.board[p.c] = { k: p.k, s: p.s, m: S.moves, p: S.turn });
   const usedIdx = new Set(S.pending.map(p => p.r)); S.racks[S.turn] = rack.filter((_, j) => !usedIdx.has(j));
   S.score[S.turn] += r.total;
-  logMove({ type: "play", text: r.parts.map(p => `${p.txt}${p.em > 1 ? ` <small>×${p.em}</small>` : ""}`).join(" · ") + (r.bingo ? " · 🌟บิงโก+40" : ""), pts: r.total });
+  logMove({ type: "play", cells: pend.map(p => p.c), text: r.parts.map(p => `${p.txt}${p.em > 1 ? ` <small>×${p.em}</small>` : ""}`).join(" · ") + (r.bingo ? " · 🌟บิงโก+40" : ""), pts: r.total });
   if (r.bingo) [523, 659, 784, 1047, 1319].forEach((f, k) => setTimeout(() => tone(f, .2), k * 100)); else [660, 880].forEach((f, k) => setTimeout(() => tone(f, .1), k * 90));
   toast(`${r.bingo ? "🌟 บิงโก! " : "✅ "}${esc(S.cfg.names[S.turn])} +${r.total} คะแนน<br><small>${r.parts.map(p => `${p.txt} → ${p.sc} คะแนน`).join("<br>")}</small>`);
   S.pending = []; S.sel = -1; S.moves++;
@@ -270,9 +270,10 @@ function commit(force) {
   if (!S.racks[S.turn].length && !S.bag.length) return finish(S.turn);
   endTurn();
 }
-function logMove(m) { S.log.push(Object.assign({ p: S.turn, pts: 0, text: m.type === "pass" ? "ผ่าน" : m.type === "exch" ? `เปลี่ยนเบี้ย ${m.n} ตัว` : "" }, m.type === "play" ? m : {})); }
+function takeSnap() { S.snap = { b: S.board.map((t, i) => t ? [i, t.k, t.s] : null).filter(Boolean), r: S.racks[S.turn].slice() }; }
+function logMove(m) { S.log.push(Object.assign({ p: S.turn, pts: 0, text: m.type === "pass" ? "ผ่าน" : m.type === "exch" ? `เปลี่ยนเบี้ย ${m.n} ตัว` : "", snap: S.snap, type: m.type }, m.type === "play" ? m : {})); }
 function endTurn() {
-  S.turn = 1 - S.turn; S.sel = -1; S.exch = null; S.hidden = !!S.cfg.hide && !S.cfg.ai; last = 0; save();
+  S.turn = 1 - S.turn; takeSnap(); S.sel = -1; S.exch = null; S.hidden = !!S.cfg.hide && !S.cfg.ai; last = 0; save();
   renderAll(); msg("");
   if (isAI(S.turn)) scheduleAI();
 }
@@ -315,9 +316,11 @@ function menu() {
   const ov = $("#ov"); ov.hidden = false;
   ov.innerHTML = `<div class="psheet"><p>เมนู</p><div class="col">
     <button type="button" class="ab" id="m-end">🏁 จบเกมตอนนี้ (หักแต้มเบี้ยค้างแป้นทั้งสองฝั่ง)</button>
+    <button type="button" class="ab" id="m-ana">🔍 วิเคราะห์ตาที่เล่นมาแล้ว (ตาไหนมีสมการที่ดีกว่า)</button>
     <button type="button" class="ab" id="m-home">🏠 ออกไปหน้าแรก (เกมค้างไว้เล่นต่อได้)</button>
     <button type="button" class="ab" id="m-x">ปิด</button></div></div>`;
   $("#m-end").onclick = () => { ov.hidden = true; confirmBox("จบเกมตอนนี้?", "แต่ละฝั่งจะถูกหักแต้มเบี้ยที่ค้างในแป้นของตัวเอง", "จบเกม", () => finish(-1)); };
+  $("#m-ana").onclick = () => { if (S.cfg.clock && !S.paused) pause(true); analyze(); };
   $("#m-home").onclick = () => { if (S.cfg.clock) S.paused = true; save(); setup(); };
   $("#m-x").onclick = () => ov.hidden = true;
 }
@@ -350,11 +353,64 @@ function result() {
     <tr class="net"><td>คะแนนสุทธิ</td>${S.score.map(v => `<td><b>${v}</b></td>`).join("")}</tr></table>
     ${diff > 150 ? `<p class="muted">รุ่นประถมนับผลต่างสูงสุด 150 คะแนน</p>` : ""}
     ${S.cfg.ai && S.racks[1].length ? `<p class="muted">เบี้ยที่เหลือในแป้นคอม: ${S.racks[1].map(k => k === "?" ? "BLANK" : show(k)).join(" ")}</p>` : ""}
-    <div class="row"><button type="button" class="ab ok" id="again">🎲 เกมใหม่</button><button type="button" class="ab" id="view">ดูกระดาน</button><button type="button" class="ab" id="hm">🏠</button></div></div>`;
+    <div class="row"><button type="button" class="ab ok" id="again">🎲 เกมใหม่</button><button type="button" class="ab" id="view">ดูกระดาน</button><button type="button" class="ab ana" id="ana">🔍 วิเคราะห์เกม</button><button type="button" class="ab" id="hm">🏠</button></div></div>`;
   $("#again").onclick = () => { localStorage.removeItem(KEY); newGame(); };
+  $("#ana").onclick = analyze;
   $("#view").onclick = () => { ov.hidden = true; const tb = $("#turnbar"); tb.innerHTML = `🏁 จบเกม · <button type="button" class="ab" id="sr">ดูผล</button>`; $("#sr").onclick = result; };
   $("#hm").onclick = () => { localStorage.removeItem(KEY); setup(); };
 }
+/* ======================= GAME REVIEW ======================= */
+function miniBoard(snapB, mine, best) {
+  const map = new Map(snapB.map(([i, k, s]) => [i, { k, s }]));
+  const mineM = new Map((mine || []).map(x => [x.c, x])), bestM = new Map((best || []).map(x => [x.c, x]));
+  let h = "";
+  for (let i = 0; i < N * N; i++) {
+    const t = map.get(i), m = mineM.get(i), b = bestM.get(i), pr = PREM[i];
+    const x = b || m || t;
+    let inner = pr && !x ? `<em>${pr}</em>` : "";
+    if (x) inner = `<span class="bt ${x.k === "?" ? "bl" : ""} ${b ? "best" : m ? "mine" : ""}"><b class="${String(show(x.s)).length > 1 ? "two" : ""}">${show(x.s)}</b><i>${AM.PTS[x.k]}</i></span>`;
+    h += `<div class="cell ${pr ? "pr pr" + pr.replace("★", "S") : ""}">${inner}</div>`;
+  }
+  return `<div class="rvb"><div class="board">${h}</div></div>`;
+}
+function analyze() {
+  const who = S.cfg.ai ? [0] : [0, 1];
+  const rows = S.log.map((l, i) => ({ l, i })).filter(x => who.includes(x.l.p) && x.l.snap);
+  const ov = $("#ov"); ov.hidden = false;
+  ov.innerHTML = `<div class="psheet ana-s"><p style="font-size:21px">🔍 วิเคราะห์เกม</p>
+    <p class="muted" id="anaSum">กำลังให้คอมหาสมการที่ดีที่สุดของแต่ละตา… <b id="anaP">0/${rows.length}</b></p>
+    <div class="ana-list" id="anaList">${rows.map((r, k) => `<div class="ana-row" id="ar${k}"><div class="ana-h"><span class="dot d${r.l.p}"></span><b>ตาที่ ${r.i + 1}</b> <span class="ana-me">${r.l.type === "play" ? r.l.text.replace(/<[^>]+>/g, "") : r.l.text} <em>+${r.l.pts}</em></span></div><div class="ana-best">⏳ กำลังวิเคราะห์…</div></div>`).join("") || "<p>ยังไม่มีตาที่วิเคราะห์ได้</p>"}</div>
+    <div class="row"><button type="button" class="ab" id="anaX">ปิด</button></div></div>`;
+  let stop = false; $("#anaX").onclick = () => { stop = true; ov.hidden = true; if (S.over) result(); };
+  let sumMe = 0, sumBest = 0, perfect = 0, missedBingo = 0, done = 0;
+  const step = k => {
+    if (stop || k >= rows.length) return;
+    const { l } = rows[k], Bm = new Array(N * N).fill(null); l.snap.b.forEach(([i, kk, s]) => Bm[i] = { k: kk, s });
+    const res = genMoves(l.p, 1800, Bm, l.snap.r), best = res.list[0];
+    const bp = best ? best.total : 0, me = l.pts || 0, diff = Math.max(0, bp - me);
+    sumMe += me; sumBest += Math.max(bp, me); if (diff === 0) perfect++; if (best && best.n === 8 && !(l.cells && l.cells.length === 8)) missedBingo++;
+    const el = $("#ar" + k); if (!el) return;
+    el.classList.add(diff === 0 ? "good" : diff >= 20 ? "bad" : "mid");
+    const bestTxt = best ? best.pend.map(x => x.s) : null;
+    el.querySelector(".ana-best").innerHTML = !best ? "คอมก็หาที่ลงไม่ได้ · เปลี่ยนเบี้ยหรือผ่านถูกแล้ว 👍" : diff === 0 ? `✅ ดีที่สุดแล้ว (สูงสุด ${bp} คะแนน)` :
+      `💡 ทำได้ <b>${bp}</b> คะแนน${best.n === 8 ? " 🌟บิงโก" : ""} · พลาดไป <b class="red">${diff}</b> คะแนน <button type="button" class="ab sm" data-k="${k}">ดูบนกระดาน</button><div class="ana-bd" id="ab${k}" hidden></div>`;
+    const btn = el.querySelector("[data-k]");
+    if (btn) btn.onclick = () => {
+      const box = $("#ab" + k);
+      if (box.hidden) {
+        const rk = l.snap.r, mine = (l.cells || []).map(c => { const t = S.board[c]; return t ? { c, k: t.k, s: t.s } : null; }).filter(Boolean);
+        box.innerHTML = `<p class="muted">🟦 สีฟ้า = ที่เราลง · 🟩 สีเขียว = สมการที่ดีที่สุด · แป้นตอนนั้น: ${rk.map(x => x === "?" ? "BLANK" : show(x)).join(" ")}</p>` + miniBoard(l.snap.b, mine, best.pend.map(x => ({ c: x.c, k: rk[x.r], s: x.s })));
+        box.hidden = false; btn.textContent = "ซ่อนกระดาน";
+      } else { box.hidden = true; btn.textContent = "ดูบนกระดาน"; }
+    };
+    done++;
+    $("#anaP").textContent = `${done}/${rows.length}`;
+    if (done === rows.length) $("#anaSum").innerHTML = `ได้ <b>${sumMe}</b> จากที่ทำได้สูงสุด <b>${sumBest}</b> คะแนน (<b>${sumBest ? Math.round(100 * sumMe / sumBest) : 100}%</b>) · ลงดีที่สุด ${perfect}/${rows.length} ตา${missedBingo ? ` · พลาดบิงโก ${missedBingo} ครั้ง` : ""}<br><small>คอมคิดตาละไม่เกิน 2 วินาที อาจมีสมการที่ดีกว่านี้อีก</small>`;
+    setTimeout(() => step(k + 1), 30);
+  };
+  setTimeout(() => step(0), 60);
+}
+
 /* ======================= COMPUTER PLAYER ======================= */
 function isAI(i) { return !!(S && S.cfg.ai && i === 1); }
 function rackSide() { return S.cfg.ai ? 0 : S.turn; }
@@ -364,8 +420,8 @@ function scheduleAI(delay = 700) {
   aiTimer = setTimeout(() => { if (!S || S.over || !isAI(S.turn)) return; if (S.paused) return; aiTurn(); }, delay);
 }
 const AI_BLANK = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "×", "÷", "="];
-function genMoves(side, budget) {
-  const B = S.board, rack = S.racks[side], first = !B.some(Boolean), t0 = Date.now(), out = [];
+function genMoves(side, budget, B0, rack0) {
+  const B = B0 || S.board, rack = rack0 || S.racks[side], first = !B.some(Boolean), t0 = Date.now(), out = [];
   const optsOf = k => k === "?" ? AI_BLANK : AM.opts(k);
   const crossCache = new Map();
   const crossOK = (c, d2, sym) => {

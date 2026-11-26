@@ -57,6 +57,8 @@ function home() {
       ${hist.length ? `<h3>ประวัติการสอบ</h3><table class="hist"><tr><th>วันที่</th><th>คะแนน</th><th>เวลาที่ใช้</th><th>รวม</th></tr>${hist.slice(0, 8).map(h => `<tr><td>${new Date(h.at).toLocaleDateString("th-TH", { day: "numeric", month: "short" })}</td><td>${h.score != null ? h.score : h.correct * 10}</td><td>${fmt(h.used)}</td><td><b>${h.total}</b></td></tr>`).join("")}</table>` : ""}
     </div>
   </section>
+  <section class="card"><h3>🖨️ ใบงานสำหรับพิมพ์ (PDF)</h3><p class="lead">สุ่มโจทย์ใหม่ลงกระดาษ A4 รูปแบบเดียวกับข้อสอบ พร้อมหน้าเฉลยแยก ให้นักเรียนซ้อมเขียนจริง</p>
+    <button type="button" class="btn wide" id="prn">🖨️ สร้างใบงาน</button></section>
   <p class="foot">เล่นบนโทรศัพท์ได้เต็มจอ · ความคืบหน้าบันทึกในเครื่องอัตโนมัติ</p>`;
   app.querySelectorAll(".tab").forEach(b => b.onclick = () => { app.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x === b)); $("#tab-pr").hidden = b.dataset.tab !== "pr"; $("#tab-ex").hidden = b.dataset.tab !== "ex"; });
   const segBind = (id, key, num) => app.querySelectorAll(`#${id} button`).forEach(b => b.onclick = () => { prefs[key] = num ? +b.dataset.v : b.dataset.v; savePrefs(); app.querySelectorAll(`#${id} button`).forEach(x => x.classList.toggle("on", x === b)); });
@@ -64,6 +66,7 @@ function home() {
   app.querySelectorAll("[data-p]").forEach(i => i.onchange = () => { prefs[i.dataset.p] = i.checked; savePrefs(); });
   app.querySelectorAll(".tcard").forEach(b => b.onclick = () => newPractice(b.dataset.t));
   $("#rnd").onclick = () => newPractice(TYPES[Math.floor(Math.random() * 10)].id);
+  $("#prn").onclick = printMenu;
   if ($("#resume")) $("#resume").onclick = () => openPractice(cur);
   if ($("#resumeEx")) $("#resumeEx").onclick = () => examList();
   if ($("#cancelCur")) $("#cancelCur").onclick = () => ask("ยกเลิกโจทย์ที่ทำค้างไว้?", "ข้อที่ทำค้างจะถูกลบ เริ่มข้อใหม่ได้ทุกเมื่อ", "ยกเลิกโจทย์", () => { LS.del("cur"); home(); });
@@ -312,6 +315,85 @@ function reviewItem(i) {
   const ex = LS.get("exam", null), it = ex.items[i];
   B = mkBoard({ p: it.p, cur: it.cur, notes: it.notes.map(() => 0) }, "review", { ex, idx: i, ok: ex.result.res[i], showSol: false });
   render();
+}
+
+/* ======================= PRINT ======================= */
+const PRN = Object.assign({ set: "exam", type: "c9", count: 4, level: "exam", key: true }, LS.get("print", {}));
+function printMenu() {
+  const m = modal(`<h2>🖨️ สร้างใบงานซูโดกุ</h2>
+    <div class="seg" id="pset"><button type="button" data-v="exam" class="${PRN.set === "exam" ? "on" : ""}">ชุดข้อสอบ 10 แบบ</button><button type="button" data-v="one" class="${PRN.set === "one" ? "on" : ""}">เลือกแบบเดียว</button></div>
+    <div id="pone" ${PRN.set === "one" ? "" : "hidden"}><select id="ptype">${TYPES.map(t => `<option value="${t.id}" ${PRN.type === t.id ? "selected" : ""}>${t.name} · ${t.th}</option>`).join("")}</select>
+      <div class="seg" id="pcount">${[4, 8, 12].map(v => `<button type="button" data-v="${v}" class="${PRN.count === v ? "on" : ""}">${v} ข้อ</button>`).join("")}</div></div>
+    <p class="lb">ระดับ</p><div class="seg" id="plv">${Object.entries(LV).map(([k, t]) => `<button type="button" data-v="${k}" class="${PRN.level === k ? "on" : ""}">${t}</button>`).join("")}</div>
+    <label class="tg"><input type="checkbox" id="pkey" ${PRN.key ? "checked" : ""}> แนบหน้าเฉลยท้ายใบงาน</label>
+    <div class="row"><button type="button" class="btn" id="pgo">สร้างใบงาน</button><button type="button" class="btn ghost" id="pcx">ยกเลิก</button></div>`);
+  const seg = (id, k, num) => m.querySelectorAll(`#${id} button`).forEach(b => b.onclick = () => { PRN[k] = num ? +b.dataset.v : b.dataset.v; m.querySelectorAll(`#${id} button`).forEach(x => x.classList.toggle("on", x === b)); if (id === "pset") m.querySelector("#pone").hidden = PRN.set !== "one"; });
+  seg("pset", "set"); seg("pcount", "count", 1); seg("plv", "level");
+  m.querySelector("#ptype").onchange = e => PRN.type = e.target.value;
+  m.querySelector("#pkey").onchange = e => PRN.key = e.target.checked;
+  m.querySelector("#pcx").onclick = () => m.remove();
+  m.querySelector("#pgo").onclick = async () => {
+    LS.set("print", PRN);
+    const box = m.querySelector(".sheet"); box.innerHTML = `<div class="spin"></div><p>กำลังสุ่มโจทย์และจัดหน้า…</p>`;
+    await PR.ready(); await new Promise(r => setTimeout(r, 30));
+    const ids = PRN.set === "exam" ? TYPES.map(t => t.id) : Array(PRN.count).fill(PRN.type);
+    const ps = ids.map(id => generate(id, PRN.level));
+    const pages = buildSheets(ps);
+    m.remove();
+    PR.preview(pages, `sudoku-${PRN.set === "exam" ? "10แบบ" : T_(PRN.type).id}-${new Date().toISOString().slice(0, 10)}.pdf`);
+  };
+}
+function drawGrid(g, p, x, y, size, showSol) {
+  const T = T_(p.type), n = T.n, cs = size / n, reg = p.regions;
+  for (let i = 0; i < n * n; i++) {
+    const r = Math.floor(i / n), c = i % n;
+    if (p.shade && p.shade[i]) { g.fillStyle = "#C8C8C8"; g.fillRect(x + c * cs, y + r * cs, cs, cs); }
+    else if (T.diag && (r === c || r + c === n - 1)) { g.fillStyle = "#EFEFEF"; g.fillRect(x + c * cs, y + r * cs, cs, cs); }
+  }
+  if (T.diag) { g.strokeStyle = "#9A9A9A"; g.lineWidth = 2; g.setLineDash([8, 6]); g.beginPath(); g.moveTo(x, y); g.lineTo(x + size, y + size); g.moveTo(x + size, y); g.lineTo(x, y + size); g.stroke(); g.setLineDash([]); }
+  g.strokeStyle = "#888"; g.lineWidth = 1.5; g.beginPath();
+  for (let k = 1; k < n; k++) { g.moveTo(x + k * cs, y); g.lineTo(x + k * cs, y + size); g.moveTo(x, y + k * cs); g.lineTo(x + size, y + k * cs); }
+  g.stroke();
+  g.strokeStyle = "#000"; g.lineWidth = 5; g.lineCap = "square"; g.beginPath();
+  for (let i = 0; i < n * n; i++) {
+    const r = Math.floor(i / n), c = i % n, X = x + c * cs, Y = y + r * cs;
+    if (c < n - 1 && reg[i + 1] !== reg[i]) { g.moveTo(X + cs, Y); g.lineTo(X + cs, Y + cs); }
+    if (r < n - 1 && reg[i + n] !== reg[i]) { g.moveTo(X, Y + cs); g.lineTo(X + cs, Y + cs); }
+  }
+  g.rect(x, y, size, size); g.stroke();
+  g.textAlign = "center"; g.textBaseline = "middle";
+  for (let i = 0; i < n * n; i++) {
+    const r = Math.floor(i / n), c = i % n, gv = p.givens[i], v = gv || (showSol ? p.sol[i] : 0);
+    if (!v) continue;
+    PR.font(g, Math.round(cs * .56), gv ? 700 : 500); g.fillStyle = gv ? "#000" : "#1D4ED8";
+    g.fillText(SYMS[T.sym][v], x + c * cs + cs / 2, y + r * cs + cs / 2 + cs * .04);
+  }
+  g.textAlign = "left"; g.textBaseline = "alphabetic";
+}
+function buildSheets(ps) {
+  const per = 4, keyPer = 12, nQ = Math.ceil(ps.length / per), nK = PRN.key ? Math.ceil(ps.length / keyPer) : 0, total = nQ + nK, out = [];
+  const date = new Date().toLocaleDateString("th-TH", { day: "numeric", month: "short", year: "2-digit" });
+  const sub = `${PRN.set === "exam" ? "ชุดข้อสอบ 10 แบบ" : T_(ps[0].type).th} · ระดับ${LV[PRN.level].replace(/^\S+ /, "")} · ${date}`;
+  for (let pg = 0; pg < nQ; pg++) {
+    const { c, g } = PR.page(); let y0 = PR.header(g, "ใบงานซูโดกุ", sub, pg + 1, total);
+    ps.slice(pg * per, pg * per + per).forEach((p, k) => {
+      const T = T_(p.type), col = k % 2, row = Math.floor(k / 2), x = 80 + col * 560, y = y0 + row * 690, size = 500;
+      PR.text(g, `ข้อ ${pg * per + k + 1}.  ${T.name}`, x, y + 10, 28, { w: 700 });
+      const yy = PR.wrap(g, T.rule, x, y + 48, size, 20, 28, { color: "#333" });
+      drawGrid(g, p, x, Math.max(yy, y + 100) - 8, size, false);
+    });
+    out.push(c);
+  }
+  for (let pg = 0; pg < nK; pg++) {
+    const { c, g } = PR.page(); const y0 = PR.header(g, "เฉลยใบงานซูโดกุ", sub, nQ + pg + 1, total, false);
+    ps.slice(pg * keyPer, pg * keyPer + keyPer).forEach((p, k) => {
+      const col = k % 3, row = Math.floor(k / 3), x = 80 + col * 370, y = y0 + row * 350, size = 280;
+      PR.text(g, `ข้อ ${pg * keyPer + k + 1}. ${T_(p.type).name}`, x, y + 10, 22, { w: 700 });
+      drawGrid(g, p, x, y + 30, size, true);
+    });
+    out.push(c);
+  }
+  return out;
 }
 
 /* ======================= KEYBOARD ======================= */

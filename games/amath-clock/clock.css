@@ -71,3 +71,4 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .rt .net td{font-size:20px}.rt .red{color:#E11D48;font-weight:700}
 .rd{text-align:center;font-size:18px;margin:12px 0 0}.rd small{font-size:12px;opacity:.7}
 .tl{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:14px}.tl p{display:flex;flex-wrap:wrap;gap:4px 10px;margin:6px 0}
+.btn.warn{background:#E11D48;box-shadow:0 4px 0 #9F1239;font-size:17px}

@@ -6,7 +6,9 @@
 - ลิงก์ที่ถูกเปลี่ยน จะเอา target="_blank" / rel="noopener" ออก ให้เปิดในกรอบเดิม
 - บันทึก sha256 (8 ตัวแรก) ของไฟล์ต้นฉบับจาก claude.ai ไว้ใน games.json ช่อง "upstream"
   ตอนซิงก์ให้เทียบ sha ที่ Artifact list แสดงกับค่านี้ (ไม่ใช่ไฟล์ในเครื่อง ซึ่งถูกแก้ลิงก์แล้ว)
-- รันซ้ำได้ (ไฟล์ที่ไม่มีลิงก์ claude.ai เหลือแล้ว จะไม่ถูกแตะ)
+- เกมที่เรียก claude.use("downloads") (ปุ่มดาวน์โหลด PDF ซึ่งใช้ได้เฉพาะบน claude.ai)
+  จะได้ไฟล์ kruau-shim.js ในโฟลเดอร์เกม + แทรก <script> ใน index.html ให้ดาวน์โหลดผ่านเบราว์เซอร์แทน
+- รันซ้ำได้ (ไฟล์ที่แก้แล้ว จะไม่ถูกแตะซ้ำ)
 
 ใช้: python3 tools/relink.py            (ทุกเกม)
      python3 tools/relink.py amath-     (เฉพาะโฟลเดอร์ที่ขึ้นต้นด้วย)
@@ -15,6 +17,41 @@ import hashlib, json, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LINK = re.compile(r'https://claude\.ai/(?:artifact|public/artifacts)/([A-Za-z0-9]+)')
+
+
+SHIM = """/* KruAu: แทน claude.use("downloads") เมื่อเปิดนอก claude.ai ให้บันทึกไฟล์ผ่านเบราว์เซอร์ */
+(function () {
+  if (window.claude && window.claude.use) return;
+  window.claude = window.claude || {};
+  window.claude.use = function (name) {
+    if (name !== "downloads") return Promise.reject(new Error("unsupported"));
+    return Promise.resolve({ save: function (o) {
+      var d = o.data, blob = d instanceof Blob ? d : new Blob([d]);
+      var url = URL.createObjectURL(blob), a = document.createElement("a");
+      a.href = url; a.download = o.filename || "file"; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 10000);
+      return Promise.resolve();
+    } });
+  };
+})();
+"""
+SHIM_TAG = '<script src="kruau-shim.js"></script>'
+
+
+def shim(g, gdir, changed):
+    srcs = ''.join(open(os.path.join(gdir, n), encoding='utf-8').read() for n in os.listdir(gdir) if n.endswith('.js') and n != 'kruau-shim.js')
+    if 'claude.use("downloads")' not in srcs and "claude.use('downloads')" not in srcs:
+        return
+    open(os.path.join(gdir, 'kruau-shim.js'), 'w', encoding='utf-8').write(SHIM)
+    fp = os.path.join(gdir, 'index.html'); raw = open(fp, 'rb').read(); text = raw.decode('utf-8')
+    if SHIM_TAG in text:
+        return
+    i = text.find('<script')
+    if i < 0:
+        return
+    g.setdefault('upstream', {})['index.html'] = hashlib.sha256(raw).hexdigest()[:8]
+    open(fp, 'w', encoding='utf-8', newline='').write(text[:i] + SHIM_TAG + text[i:])
+    changed.append('%s/index.html + kruau-shim.js (upstream %s)' % (g['folder'], g['upstream']['index.html']))
 
 
 def main(prefix=''):
@@ -47,6 +84,7 @@ def main(prefix=''):
             open(fp, 'w', encoding='utf-8', newline='').write('\n'.join(out))
             g.setdefault('upstream', {})[name] = sha
             changed.append('%s/%s (upstream %s)' % (g['folder'], name, sha))
+        shim(g, gdir, changed)
     if changed:
         open(path, 'w', encoding='utf-8').write(json.dumps(book, ensure_ascii=False, indent=1) + '\n')
     print('\n'.join(changed) or 'ไม่มีลิงก์ claude.ai ที่ต้องเปลี่ยน')

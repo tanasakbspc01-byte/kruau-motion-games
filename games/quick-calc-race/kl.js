@@ -54,6 +54,8 @@ function home() {
     <div class="mode m3"><b>📺 โหมดครู · สุ่มโจทย์ขึ้นจอ</b><small>ใช้แทน "โปรแกรมสุ่มตัวเลขพร้อมแสดงเวลา" ให้นักเรียนทั้งห้องเขียนคำตอบลงกระดาษ</small>
       <button type="button" class="btn" id="goT">📺 เปิดโหมดครู</button></div>
   </section>
+  <section class="card"><h3>🖨️ ใบงานสำหรับพิมพ์ (PDF)</h3><p class="hint">สุ่มโจทย์ชุดใหม่ลงกระดาษ A4 มีช่องให้เขียนวิธีคิด พร้อมหน้าเฉลย (ระดับ ${prefs.lv === 1 ? "ป.1–3" : "ป.4–6"})</p>
+    <div class="row"><button type="button" class="btn" data-pr="1">รอบ 1 · 30 ข้อ (4 ตัว)</button><button type="button" class="btn" data-pr="2">รอบ 2 · 20 ข้อ (5 ตัว)</button></div></section>
   <section class="card stats"><div><b>${st.items}</b><small>ข้อที่ฝึก</small></div><div><b>${st.exact}</b><small>ได้ตรงเป๊ะ</small></div><div><b>${st.best}</b><small>เท่าคำตอบที่ดีที่สุด</small></div></section>
   ${hist.length ? `<section class="card"><h3>ประวัติจำลองสอบ</h3><table class="hist"><tr><th>วันที่</th><th>รอบ</th><th>ตรงเป๊ะ</th><th>ดีที่สุด</th></tr>${hist.slice(0, 6).map(h => `<tr><td>${new Date(h.at).toLocaleDateString("th-TH", { day: "numeric", month: "short" })}</td><td>${h.name}</td><td>${h.exact}/${h.n}</td><td>${h.best}/${h.n}</td></tr>`).join("")}</table></section>` : ""}
   <details class="card rules"><summary>📘 กติกา (งานศิลปหัตถกรรมนักเรียน)</summary><ul>
@@ -65,6 +67,7 @@ function home() {
     <li>ได้คะแนนเมื่อคำตอบตรงผลลัพธ์ ถ้าไม่มีใครตรง คำตอบที่ใกล้ที่สุดได้คะแนน</li></ul></details>`;
   app.querySelectorAll("#lv button").forEach(b => b.onclick = () => { prefs.lv = +b.dataset.v; savePrefs(); home(); });
   app.querySelectorAll(".seg[data-k]").forEach(sg => sg.querySelectorAll("button").forEach(b => b.onclick = () => { prefs[sg.dataset.k] = +b.dataset.v; savePrefs(); sg.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); }));
+  app.querySelectorAll("[data-pr]").forEach(b => b.onclick = () => makeSheet(+b.dataset.pr));
   $("#goP").onclick = () => start("practice"); $("#goE").onclick = () => start("exam"); $("#goT").onclick = teacher;
 }
 
@@ -105,7 +108,7 @@ function render() {
   </div>
   ${rootKeys ? `<p class="tip">รากที่ n: แตะตัวเลขที่เป็นอันดับที่ก่อน แล้วแตะ <sup>n</sup>√ เช่น 3 <sup>n</sup>√ 8 = <sup>3</sup>√8 = 2</p>` : ""}
   <div id="fb"></div>`;
-  $("#hm").onclick = () => { stopTimer(); if (G.mode === "exam" && G.log.length) { if (!confirm("ออกจากการสอบ? ผลจะไม่ถูกบันทึก")) { return; } } home(); };
+  $("#hm").onclick = () => { if (G.mode === "exam" && G.log.length) { const m = document.createElement("div"); m.className = "modal"; m.innerHTML = `<div class="sheet"><h3>ออกจากการสอบ?</h3><p>ข้อที่ทำไปแล้วจะไม่ถูกบันทึก</p><div class="row"><button type="button" class="btn danger" id="qy">ออกเลย</button><button type="button" class="btn ghost" id="qn">ทำต่อ</button></div></div>`; document.body.appendChild(m); m.querySelector("#qy").onclick = () => { m.remove(); stopTimer(); home(); }; m.querySelector("#qn").onclick = () => m.remove(); return; } stopTimer(); home(); };
   app.querySelectorAll("[data-op]").forEach(b => b.onclick = () => push({ t: "op", v: b.dataset.op }));
   app.querySelectorAll("[data-p]").forEach(b => b.onclick = () => push({ t: b.dataset.p }));
   app.querySelectorAll("[data-r]").forEach(b => b.onclick = () => push({ t: b.dataset.r }));
@@ -172,6 +175,45 @@ function examResult() {
     <div class="row"><button type="button" class="btn" id="again">🔁 สอบอีกรอบ</button><button type="button" class="btn ghost" id="hm2">🏠 หน้าแรก</button></div></section>`;
   if (be >= L.length * .8) yay();
   $("#again").onclick = () => start("exam"); $("#hm2").onclick = home;
+}
+
+/* ======================= PRINT ======================= */
+const SUP = { 0: "⁰", 1: "¹", 2: "²", 3: "³", 4: "⁴", 5: "⁵", 6: "⁶", 7: "⁷", 8: "⁸", 9: "⁹" };
+const exText = e => e.replace(/(\d)√/g, (m, d) => SUP[d] + "√").replace(/\^(\d+)/g, (m, d) => d.split("").map(x => SUP[x]).join(""));
+async function makeSheet(round) {
+  const m = document.createElement("div"); m.className = "modal"; m.innerHTML = `<div class="sheet"><h3>กำลังสุ่มโจทย์และหาเฉลย…</h3><p>รอสักครู่</p></div>`; document.body.appendChild(m);
+  await PR.ready(); await new Promise(r => setTimeout(r, 40));
+  const n = round === 1 ? 30 : 20, d = round === 1 ? 4 : 5, allowRoot = prefs.lv === 2;
+  const items = Array.from({ length: n }, () => { const p = KL.problem(d); return { p, s: KL.solve(p.digits, p.target, allowRoot, 1200) }; });
+  const per = 15, keyPer = 30, nQ = Math.ceil(n / per), nK = Math.ceil(n / keyPer), total = nQ + nK, out = [];
+  const date = new Date().toLocaleDateString("th-TH", { day: "numeric", month: "short", year: "2-digit" });
+  const sub = `รอบที่ ${round} · เลขโดด ${d} ตัว ผลลัพธ์ ${round === 1 ? 2 : 3} หลัก · ${prefs.lv === 1 ? "ป.1–3 (+ − × ÷ ยกกำลัง)" : "ป.4–6 (+ − × ÷ ยกกำลัง ถอดราก)"} · ${date}`;
+  for (let pg = 0; pg < nQ; pg++) {
+    const { c, g } = PR.page(); const y0 = PR.header(g, "ใบงานคิดเลขเร็ว", sub, pg + 1, total);
+    PR.text(g, "ข้อ", 80, y0 + 6, 22, { w: 700 }); PR.text(g, "โจทย์", 170, y0 + 6, 22, { w: 700 }); PR.text(g, "ผลลัพธ์", 470, y0 + 6, 22, { w: 700 }); PR.text(g, "วิธีคิด (ใช้ตัวเลขครบทุกตัว)", 640, y0 + 6, 22, { w: 700 });
+    items.slice(pg * per, pg * per + per).forEach((it, k) => {
+      const y = y0 + 30 + k * 88;
+      g.strokeStyle = "#999"; g.lineWidth = 1.5; g.beginPath(); g.moveTo(80, y + 84); g.lineTo(PR.PW - 80, y + 84); g.stroke();
+      PR.text(g, String(pg * per + k + 1), 80, y + 56, 28, { w: 700 });
+      PR.text(g, it.p.digits.join("  "), 170, y + 58, 40, { w: 700 });
+      g.strokeStyle = "#000"; g.lineWidth = 2; g.strokeRect(462, y + 16, 130, 58); PR.text(g, String(it.p.target), 527, y + 58, 40, { w: 700, align: "center" });
+      g.strokeStyle = "#bbb"; g.setLineDash([4, 6]); g.beginPath(); g.moveTo(640, y + 62); g.lineTo(PR.PW - 80, y + 64); g.stroke(); g.setLineDash([]);
+    });
+    out.push(c);
+  }
+  for (let pg = 0; pg < nK; pg++) {
+    const { c, g } = PR.page(); const y0 = PR.header(g, "เฉลยใบงานคิดเลขเร็ว", sub, nQ + pg + 1, total, false);
+    PR.wrap(g, "เฉลยเป็นวิธีหนึ่งที่ได้คำตอบตรงหรือใกล้ที่สุด วิธีอื่นที่ถูกต้องก็ได้คะแนนเช่นกัน", 80, y0, PR.PW - 160, 20, 28, { color: "#444" });
+    items.slice(pg * keyPer, pg * keyPer + keyPer).forEach((it, k) => {
+      const y = y0 + 40 + k * 46, s = it.s;
+      PR.text(g, `${pg * keyPer + k + 1}.`, 80, y + 30, 22, { w: 700 });
+      PR.text(g, `${it.p.digits.join(" ")} → ${it.p.target}`, 130, y + 30, 22, { w: 700 });
+      PR.text(g, s.best ? `${exText(s.best.e)} = ${s.best.r[0]}${s.dist ? `   (ใกล้ที่สุด ห่าง ${+s.dist.toFixed(2)})` : "  ✓"}` : "–", 400, y + 30, 22, { w: 400, color: s.dist ? "#9a3412" : "#000" });
+    });
+    out.push(c);
+  }
+  m.remove();
+  PR.preview(out, `คิดเลขเร็ว-รอบ${round}-${new Date().toISOString().slice(0, 10)}.pdf`);
 }
 
 /* ======================= TEACHER (projector) ======================= */
