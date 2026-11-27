@@ -65,7 +65,7 @@ let G = null, wake = null;
 async function start(){
   { const cw = $("#cw"); if (cw) prefs.custom = cw.value; } save();
   const words = deck();
-  if (!words.length){ alert("ยังไม่มีคำให้เล่น เลือกหมวดคำ หรือบันทึกคำของครูก่อนนะ"); return; }
+  if (!words.length){ { let t = document.getElementById("hutoast"); if (!t) { t = document.createElement("div"); t.id = "hutoast"; t.style.cssText = "position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);background:#2b1a55;color:#fff;padding:14px 20px;border-radius:16px;font:600 17px Mali,sans-serif;z-index:99;text-align:center;max-width:88vw"; document.body.appendChild(t); } t.textContent = "ยังไม่มีคำให้เล่น เลือกหมวดคำ หรือบันทึกคำของครูก่อนนะ"; t.style.display = "block"; clearTimeout(t._h); t._h = setTimeout(() => t.style.display = "none", 2600); } return; }
   try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); ac.resume && ac.resume(); } catch(e){}
   let permP = null;
   if (prefs.tilt && window.DeviceOrientationEvent){
