@@ -33,7 +33,7 @@ function home() {
   <section class="card"><h3>ระดับ</h3><div class="seg" id="lv">${[1, 2].map(v => `<button type="button" data-v="${v}" class="${prefs.lv === v ? "on" : ""}">${LVN[v]}</button>`).join("")}</div></section>
   <section class="mode m1"><b>🏆 ข้อสอบจำลองเต็มชุด</b><small>3 ตอน 40 ข้อ · ตอนที่ 1 ปรนัย 10 ข้อ (ข้อละ 1) · ตอนที่ 2 คิดเลขเร็ว/คำนวณ 20 ข้อ (ข้อละ 2) · ตอนที่ 3 โจทย์ปัญหา 10 ข้อ (ข้อละ 5) · เต็ม 100</small>
     <div class="mrow"><span>เวลา</span><div class="seg sm" id="min">${[[120, "120 นาที (จริง)"], [90, "90 นาที"], [60, "60 นาที"]].map(([v, t]) => `<button type="button" data-v="${v}" class="${prefs.min === v ? "on" : ""}">${t}</button>`).join("")}</div></div>
-    <button type="button" class="btn" id="goE">🏆 เริ่มสอบ</button></section>
+    <div class="row l"><button type="button" class="btn" id="goE">🏆 เริ่มสอบ</button><button type="button" class="btn ghost" id="prn">🖨️ พิมพ์ข้อสอบ PDF</button></div></section>
   <section class="mode m2"><b>📘 ฝึกรายตอน</b><small>ทำทีละข้อ ตรวจทันที พร้อมเฉลยวิธีคิด ไม่จำกัดจำนวน</small>
     <div class="row l">${[1, 2, 3].map(p => `<button type="button" class="btn ghost" data-part="${p}">ตอนที่ ${p}</button>`).join("")}</div></section>
   <section class="mode m3"><b>🎯 ฝึกรายเรื่อง</b><small>เลือกเรื่องที่ยังไม่คล่อง ตัวเลขในวงเล็บคือ ถูก/ทำทั้งหมด</small>
@@ -48,6 +48,7 @@ function home() {
     <li>คำตอบเศษส่วนให้ตอบเป็นเศษส่วนอย่างต่ำ พิมพ์แบบ 3/4 (เศษเกินได้) หรือทศนิยมก็ได้</li></ul></details>`;
   app.querySelectorAll("#lv button").forEach(b => b.onclick = () => { prefs.lv = +b.dataset.v; savePrefs(); home(); });
   app.querySelectorAll("#min button").forEach(b => b.onclick = () => { prefs.min = +b.dataset.v; savePrefs(); app.querySelectorAll("#min button").forEach(x => x.classList.toggle("on", x === b)); });
+  $("#prn").onclick = printMenu;
   $("#goE").onclick = () => { if (ex && !ex.done && left > 0) return ask("มีข้อสอบที่ทำค้างอยู่", "จะยกเลิกชุดเดิมแล้วเริ่มชุดใหม่ใช่ไหม?", "เริ่มชุดใหม่", startExam); startExam(); };
   if ($("#resume")) { $("#resume").onclick = () => openExam(0); $("#cx").onclick = () => ask("ยกเลิกข้อสอบที่ทำค้าง?", "คำตอบที่ทำไว้จะถูกลบ ไม่บันทึกคะแนน", "ยกเลิก", () => { LS.del("exam"); home(); }); }
   app.querySelectorAll("[data-part]").forEach(b => b.onclick = () => practice(+b.dataset.part, null));
@@ -172,5 +173,129 @@ function result() {
   if (R.total >= 80) yay();
   $("#again").onclick = startExam; $("#hm").onclick = () => { LS.del("exam"); home(); };
 }
+/* ======================= PRINT (PDF) ======================= */
+function richTokens(html) {
+  const out = [];
+  html = String(html).replace(/<br\s*\/?>/g, "\n").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+  const re = /<span class="fr"><span>(.*?)<\/span><span>(.*?)<\/span><\/span>|<sup[^>]*>(.*?)<\/sup>|\n/g;
+  let last = 0, m;
+  const pushText = t => { t = t.replace(/<[^>]+>/g, ""); if (t) out.push({ t: "text", s: t }); };
+  while ((m = re.exec(html))) {
+    pushText(html.slice(last, m.index));
+    if (m[0] === "\n") out.push({ t: "br" });
+    else if (m[1] != null) out.push({ t: "fr", n: m[1].replace(/<[^>]+>/g, ""), d: m[2].replace(/<[^>]+>/g, "") });
+    else out.push({ t: "sup", s: m[3].replace(/<[^>]+>/g, "") });
+    last = re.lastIndex;
+  }
+  pushText(html.slice(last));
+  return out;
+}
+/* lay out rich text; returns {lines:[{h,items:[{x,tok}]}], height} */
+function layoutRich(g, html, maxW, size, weight = 600) {
+  PR.font(g, size, weight);
+  const fs = size * .72, lines = []; let cur = { items: [], w: 0, fr: false };
+  const push = () => { lines.push(cur); cur = { items: [], w: 0, fr: false }; };
+  const wOf = tok => { if (tok.t === "fr") { PR.font(g, fs, weight); const w = Math.max(g.measureText(tok.n).width, g.measureText(tok.d).width) + 8; PR.font(g, size, weight); return w; } if (tok.t === "sup") { PR.font(g, fs, weight); const w = g.measureText(tok.s).width + 2; PR.font(g, size, weight); return w; } return g.measureText(tok.s).width; };
+  const place = tok => { const w = wOf(tok); if (cur.w + w > maxW && cur.items.length) push(); cur.items.push({ x: cur.w, tok }); cur.w += w; if (tok.t === "fr") cur.fr = true; };
+  for (const tok of richTokens(html)) {
+    if (tok.t === "br") { push(); continue; }
+    if (tok.t !== "text") { place(tok); continue; }
+    for (const piece of tok.s.split(/(\s+)/)) {
+      if (!piece) continue;
+      if (!cur.items.length && /^\s+$/.test(piece)) continue;
+      const w = g.measureText(piece).width;
+      if (w <= maxW) { place({ t: "text", s: piece }); continue; }
+      let chunk = ""; for (const ch of piece) { if (g.measureText(chunk + ch).width > maxW - cur.w && chunk) { place({ t: "text", s: chunk }); push(); chunk = ""; } chunk += ch; } if (chunk) place({ t: "text", s: chunk });
+    }
+  }
+  if (cur.items.length) push();
+  lines.forEach(l => l.h = size * (l.fr ? 2.25 : 1.6));
+  return { lines, height: lines.reduce((a, l) => a + l.h, 0), size, weight };
+}
+function drawRich(g, L, x, y, color = "#000") {
+  const size = L.size, fs = size * .72;
+  for (const l of L.lines) {
+    const mid = y + l.h / 2;
+    for (const it of l.items) {
+      const tk = it.tok; g.fillStyle = color; g.textBaseline = "middle";
+      if (tk.t === "text") { PR.font(g, size, L.weight); g.fillText(tk.s, x + it.x, mid); }
+      else if (tk.t === "sup") { PR.font(g, fs, L.weight); g.fillText(tk.s, x + it.x + 1, mid - size * .32); }
+      else { PR.font(g, fs, L.weight); const w = Math.max(g.measureText(tk.n).width, g.measureText(tk.d).width) + 8, cx = x + it.x + w / 2; g.textAlign = "center"; g.fillText(tk.n, cx, mid - fs * .62); g.fillText(tk.d, cx, mid + fs * .66); g.textAlign = "left"; g.strokeStyle = color; g.lineWidth = 2; g.beginPath(); g.moveTo(x + it.x + 2, mid); g.lineTo(x + it.x + w - 2, mid); g.stroke(); }
+    }
+    y += l.h;
+  }
+  g.textBaseline = "alphabetic";
+  return y;
+}
+function printMenu() {
+  const m = modal(`<h3>🖨️ พิมพ์ข้อสอบจำลอง (PDF)</h3><p>สุ่มข้อสอบชุดใหม่ 40 ข้อ 3 ตอน ระดับ <b>${LVN[prefs.lv]}</b> ลงกระดาษ A4 รูปแบบเดียวกับการสอบ</p>
+    <label class="tg"><input type="checkbox" id="pk" checked> แนบหน้าเฉลยท้ายชุด</label>
+    <label class="tg"><input type="checkbox" id="px" checked> เฉลยแบบมีวิธีคิด (ถ้าไม่เลือก มีแต่คำตอบ)</label>
+    <div class="row"><button type="button" class="btn" id="pgo">สร้างข้อสอบ</button><button type="button" class="btn ghost" id="pcx">ยกเลิก</button></div>`);
+  m.querySelector("#pcx").onclick = () => m.remove();
+  m.querySelector("#pgo").onclick = async () => {
+    const key = m.querySelector("#pk").checked, exp = m.querySelector("#px").checked;
+    m.querySelector(".sheet").innerHTML = `<h3>กำลังสุ่มข้อสอบและจัดหน้า…</h3><p>รอสักครู่</p>`;
+    await PR.ready(); await new Promise(r => setTimeout(r, 40));
+    const qs = QG.exam(prefs.lv), pages = buildExamPDF(qs, key, exp);
+    m.remove();
+    PR.preview(pages, `อัจฉริยภาพ-${LVN[prefs.lv].replace(/[^0-9ป]/g, "")}-${new Date().toISOString().slice(0, 10)}.pdf`);
+  };
+}
+function buildExamPDF(qs, key, exp) {
+  const X = 80, W = PR.PW - 160, BOTTOM = PR.PH - 110, pages = [];
+  const date = new Date().toLocaleDateString("th-TH", { day: "numeric", month: "short", year: "2-digit" });
+  const sub = `ระดับ ${LVN[prefs.lv]} · 3 ตอน 40 ข้อ · คะแนนเต็ม 100 · เวลา 120 นาที · ${date}`;
+  let pg = null, y = 0;
+  const newPage = (title, student) => { pg = PR.page(); pages.push(pg); y = PR.header(pg.g, title, sub, pages.length, 0, student); };
+  const need = h => { if (y + h > BOTTOM) newPage("แบบทดสอบอัจฉริยภาพทางคณิตศาสตร์", false); };
+  newPage("แบบทดสอบอัจฉริยภาพทางคณิตศาสตร์", true);
+  let part = 0;
+  qs.forEach((q, i) => {
+    const g = pg.g;
+    if (q.part !== part) {
+      part = q.part; need(110);
+      const t = PARTN[part] + ` (${[10, 20, 10][part - 1]} ข้อ ข้อละ ${PTS[part]} คะแนน)`;
+      pg.g.fillStyle = "#EEF6F4"; pg.g.fillRect(X, y + 10, W, 52); PR.text(pg.g, t, X + 16, y + 46, 26, { w: 700 }); y += 80;
+    }
+    const L = layoutRich(pg.g, q.q, W - 60, 26, 500);
+    let h = L.height + 16, chL = null, colW = (W - 60) / 2;
+    if (q.ch) { chL = q.ch.map((c, k) => layoutRich(pg.g, `${"กขคง"[k]}. ${q.chH ? q.chH[k] : c}`, colW - 20, 24, 500)); h += Math.max(chL[0].height, chL[1].height) + Math.max(chL[2].height, chL[3].height) + 10; }
+    else h += 56;
+    need(h + 10);
+    const gg = pg.g;
+    PR.text(gg, `${i + 1}.`, X, y + 6 + L.lines[0].h / 2 + 9, 26, { w: 700 });
+    let yy = drawRich(gg, L, X + 60, y + 6);
+    if (q.ch) {
+      const r1 = Math.max(chL[0].height, chL[1].height), r2 = Math.max(chL[2].height, chL[3].height);
+      drawRich(gg, chL[0], X + 60, yy + 4); drawRich(gg, chL[1], X + 60 + colW, yy + 4);
+      drawRich(gg, chL[2], X + 60, yy + 8 + r1); drawRich(gg, chL[3], X + 60 + colW, yy + 8 + r1);
+      yy += r1 + r2 + 12;
+    } else {
+      PR.text(gg, "ตอบ", X + 60, yy + 40, 24, { w: 600 });
+      gg.strokeStyle = "#777"; gg.setLineDash([4, 6]); gg.lineWidth = 1.5; gg.beginPath(); gg.moveTo(X + 120, yy + 42); gg.lineTo(X + 460, yy + 42); gg.stroke(); gg.setLineDash([]);
+      if (q.unit) PR.text(gg, q.unit, X + 472, yy + 40, 24, { w: 400 });
+      yy += 56;
+    }
+    y = yy + 14;
+  });
+  if (key) {
+    pg = PR.page(); pages.push(pg); y = PR.header(pg.g, "เฉลยแบบทดสอบ", sub, pages.length, 0, false);
+    qs.forEach((q, i) => {
+      const ans = q.ch ? `${"กขคง"[q.ci]}. ${q.chH ? q.chH[q.ci] : q.ch[q.ci]}` : `${q.ansH || q.ans}${q.unit ? " " + q.unit : ""}`;
+      const A = layoutRich(pg.g, `ข้อ ${i + 1}  →  ${ans}`, W, 23, 700);
+      const E = exp ? layoutRich(pg.g, q.ex, W - 40, 19, 400) : null;
+      const h = A.height + (E ? E.height + 6 : 0) + 10;
+      if (y + h > BOTTOM) { pg = PR.page(); pages.push(pg); y = PR.header(pg.g, "เฉลยแบบทดสอบ (ต่อ)", sub, pages.length, 0, false); }
+      y = drawRich(pg.g, A, X, y);
+      if (E) y = drawRich(pg.g, E, X + 40, y, "#444") + 6;
+      y += 4;
+    });
+  }
+  /* fix page numbers */
+  pages.forEach((p, k) => { const g = p.g; g.fillStyle = "#fff"; g.fillRect(PR.PW - 300, PR.PH - 80, 220, 40); PR.text(g, `หน้า ${k + 1}/${pages.length}`, PR.PW - 80, PR.PH - 50, 20, { w: 400, color: "#666", align: "right" }); });
+  return pages.map(p => p.c);
+}
+
 home();
 })();

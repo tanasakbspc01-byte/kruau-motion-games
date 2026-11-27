@@ -539,7 +539,10 @@
   },
   "59n34ZoCkY3JfjdTLD3S5t": {
    "folder": "math-genius",
-   "title": "อัจฉริยภาพทางคณิตศาสตร์ · ข้อสอบจำลอง"
+   "title": "อัจฉริยภาพทางคณิตศาสตร์ · ข้อสอบจำลอง",
+   "upstream": {
+    "index.html": "1e92305a"
+   }
   },
   "RsmYWHwdnPpVJUqFc9aax3": {
    "folder": "pose-ac-shared",
